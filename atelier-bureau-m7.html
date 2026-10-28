@@ -5725,7 +5725,7 @@ function chargerSdkClaude(){
   return sdkClaude;
 }
 /* une clé personnelle d'abord ; sinon le code de la classe, par le relais (la clé du crédit commun n'est jamais dans la page) */
-const RELAIS_CLASSE = 'https://lumiere-claude.lexator300.workers.dev';
+const RELAIS_CLASSE = 'https://lumiere-claude.lumiere-classe.workers.dev';
 function clientClaude(A, cle, classe){
   const viaRelais = !!classe || (!cle && !TU.claude.cle && !!TU.claude.classe);
   const secret = viaRelais ? (classe || TU.claude.classe) : (cle || TU.claude.cle), id = (viaRelais ? 'classe:' : 'cle:') + secret;
