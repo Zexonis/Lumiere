@@ -5215,6 +5215,10 @@ const Tuteur = (() => {
 const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 const tronque = (s, n) => s.length > n ? s.slice(0, n) + ' […]' : s;
 const K = s => P + '-' + s;
+/* les clés et le code de la classe valent pour tous les ateliers du site : rangés aussi sous un nom commun */
+const KC = s => 'lumiere-' + s;
+const lireCle = s => memo.get(K(s)) || memo.get(KC(s)) || null;
+const ecrireCle = (s, v) => { memo.set(K(s), v); memo.set(KC(s), v); };
 const FOURN = {
   claude:  {nom:'Claude',  site:'https://claude.ai/new',         siteNom:'claude.ai'},
   gemini:  {nom:'Gemini',  site:'https://gemini.google.com/app', siteNom:'gemini.google.com'},
@@ -5227,7 +5231,7 @@ const MODELES_CLAUDE = [
 ];
 const TIER_NOM = {quick:'niveau rapide (famille Haiku)', default:'niveau standard (famille Sonnet)', complex:'niveau complexe (famille Opus)'};
 const TU = {env:null, f:'claude',
-  claude:{sample:null, images:false, modele:'claude-haiku-5-5', cle:null},
+  claude:{sample:null, images:false, modele:'claude-haiku-5-5', cle:null, classe:null, permis:null},
   gemini:{cle:null, modele:null, modeles:[]},
   chatgpt:{cle:null, modele:null, modeles:[]},
   tours:[], pj:null, ctl:null, enCours:false, rec:null, dernier:null, coupe:false, dejaAutorise:false,
@@ -5238,7 +5242,7 @@ function mode(f){
   f = f || TU.f;
   if(!TU.env) return null;
   if(TU.env === 'claude') return f === 'claude' ? (TU.claude.sample ? 'api' : 'indispo') : 'copie';
-  return TU[f].cle ? 'api' : 'copie';
+  return TU[f].cle || (f === 'claude' && TU.claude.classe) ? 'api' : 'copie';
 }
 
 /* les règles d'engagement communes (recette §7.4) s'ajoutent à la fin de la liste des règles de l'atelier */
@@ -5373,12 +5377,14 @@ let finDetection; const detection = new Promise(r => { finDetection = r; });
 async function detecterMoteur(){
   const dansClaude = !!(window.claude && typeof window.claude.use === 'function');
   ['gemini', 'chatgpt'].forEach(f => {
-    TU[f].cle = memo.get(K(f + '-cle')) || null;
-    TU[f].modele = memo.get(K(f + '-modele')) || null;
-    const l = lireJSON(K(f + '-modeles'), []); TU[f].modeles = Array.isArray(l) ? l.filter(x => typeof x === 'string') : [];
+    TU[f].cle = lireCle(f + '-cle');
+    TU[f].modele = lireCle(f + '-modele');
+    const l = lireJSON(K(f + '-modeles'), null) || lireJSON(KC(f + '-modeles'), []); TU[f].modeles = Array.isArray(l) ? l.filter(x => typeof x === 'string') : [];
   });
   const mc = memo.get(K('claude-modele')); if(MODELES_CLAUDE.some(m => m.id === mc)) TU.claude.modele = mc;
-  TU.claude.cle = memo.get(K('claude-cle')) || null;
+  TU.claude.cle = lireCle('claude-cle');
+  TU.claude.classe = lireCle('claude-classe');
+  try{ const pm = JSON.parse(lireCle('claude-permis') || 'null'); if(Array.isArray(pm) && pm.length) TU.claude.permis = pm; }catch(e){}
   if(dansClaude){
     TU.env = 'claude';
     let s = null; try{ s = await window.claude.use('sample'); }catch(e){}
@@ -5386,7 +5392,7 @@ async function detecterMoteur(){
   } else TU.env = 'fichier';
   const pref = memo.get(K('fourn'));
   TU.f = FOURN[pref] && mode(pref) !== 'indispo' ? pref
-       : TU.env === 'claude' ? (TU.claude.sample ? 'claude' : 'gemini') : TU.claude.cle ? 'claude' : 'gemini';
+       : TU.env === 'claude' ? (TU.claude.sample ? 'claude' : 'gemini') : TU.claude.cle || TU.claude.classe ? 'claude' : 'gemini';
   majMoteurUI();
   restaurer();
   initMicro();
@@ -5412,7 +5418,7 @@ function majMoteurUI(){
   /* le choix du modèle n'a de sens que si la page parle elle-même à l'IA */
   const sel = RT('tu-modele'), w = RT('tu-modele-w');
   if(md === 'api'){
-    const liste = TU.f === 'claude' ? MODELES_CLAUDE.map(m => ({id:m.id, nom:m.nom + ' · ' + m.note}))
+    const liste = TU.f === 'claude' ? modelesClaude().map(m => ({id:m.id, nom:m.nom + ' · ' + m.note}))
       : (TU[TU.f].modeles.length ? TU[TU.f].modeles : [TU[TU.f].modele]).filter(Boolean).map(id => ({id, nom:nomModele(TU.f, id)}));
     const choisi = TU.f === 'claude' ? TU.claude.modele : TU[TU.f].modele;
     sel.innerHTML = liste.map(m => '<option value="' + esc(m.id) + '"' + (m.id === choisi ? ' selected' : '') + '>' + esc(m.nom) + '</option>').join('');
@@ -5435,7 +5441,7 @@ function majMoteurUI(){
     : md === 'copie' ? FOURN[TU.f].nom + ' · copier-coller'
     : esc((TU.f === 'chatgpt' ? 'ChatGPT · ' : '') + nomModele(TU.f, choix));
   RT('tu-reglages').hidden = TU.env !== 'fichier';
-  RT('tu-reglages').textContent = TU[TU.f] && TU[TU.f].cle ? 'Clé ✓' : 'Clé';
+  RT('tu-reglages').textContent = TU[TU.f] && (TU[TU.f].cle || (TU.f === 'claude' && TU.claude.classe)) ? 'Clé ✓' : 'Clé';
   const b = RT('tu-envoyer');
   b.disabled = md === 'indispo' && !TU.enCours;
   b.textContent = TU.enCours ? 'Arrêter' : md === 'copie' ? 'Copier pour ' + FOURN[TU.f].nom : 'Envoyer';
@@ -5486,7 +5492,7 @@ RT('tu-modele').addEventListener('change', e => {
 
 /* ---------- les clés (fichier seulement) ---------- */
 const CONFIG = {
-  claude:{titre:'Brancher Claude avec une clé API', bouton:'Ajouter une clé API Claude', lien:'https://platform.claude.com/settings/keys', lienNom:'platform.claude.com/settings/keys', compte:'ton compte Claude',
+  claude:{titre:'Brancher Claude avec une clé API', bouton:'Entrer le code de la classe', lien:'https://platform.claude.com/settings/keys', lienNom:'platform.claude.com/settings/keys', compte:'ton compte Claude',
     note:'L’API de Claude est payante à l’usage (crédits achetés d’avance sur platform.claude.com), à part de l’abonnement Claude ; seul Max inclut un crédit API mensuel. Une question coûte environ un dixième de cent avec Haiku, deux cents avec Sonnet, quatre avec Opus. Gratuit : une clé Gemini, ou le copier-coller vers claude.ai.', qui:'Anthropic'},
   gemini:{titre:'Activer Gemini, gratuit', bouton:'Ajouter une clé Gemini gratuite', lien:'https://aistudio.google.com/apikey', lienNom:'aistudio.google.com/apikey', compte:'ton compte Google personnel (pas celui du Collège)',
     note:'Gratuit, sans carte : sans facturation, Google ne peut rien te facturer ; au-delà de la limite du jour, la clé refuse jusqu’au lendemain. Il faut avoir 18 ans (conditions de Google). Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel. Un abonnement Google AI Pro ne s’applique pas aux clés ; il sert sur gemini.google.com, par le copier-coller.', qui:'Google'},
@@ -5496,12 +5502,23 @@ const CONFIG = {
 function montrerConfig(f){
   const k = CONFIG[f]; if(!k) return;
   const c = RT('tu-config'); c.hidden = false;
-  c.innerHTML = '<h3>' + k.titre + '</h3>' +
-    '<ol><li>Ouvre <a href="' + k.lien + '" target="_blank" rel="noopener">' + k.lienNom + '</a> avec ' + k.compte + '.</li><li>Crée une clé, puis copie-la.</li><li>Colle-la ci-dessous et clique Activer.</li></ol>' +
+  const perso = '<ol><li>Ouvre <a href="' + k.lien + '" target="_blank" rel="noopener">' + k.lienNom + '</a> avec ' + k.compte + '.</li><li>Crée une clé, puis copie-la.</li><li>Colle-la ci-dessous et clique Activer.</li></ol>' +
     '<div class="tu-cle"><label class="sr" for="tu-cle">Clé ' + FOURN[f].nom + '</label><input type="password" id="tu-cle" autocomplete="off" spellcheck="false" placeholder="' + (TU[f].cle ? 'Clé enregistrée — colle une autre clé pour la remplacer' : 'Colle ta clé ici') + '"><button type="button" class="tu-envoyer" id="tu-cle-ok">Activer</button></div>' +
     '<p class="tu-note" id="tu-cle-etat"></p>' +
     '<p class="tu-note">La clé reste dans ce navigateur, sur cet appareil ; elle n’est jamais écrite dans le fichier, que tu peux donc partager sans risque. ' + k.note + '</p>' +
-    '<div class="tu-barre">' + (TU[f].cle ? '<button type="button" class="tu-btn" id="tu-cle-oubli">Oublier ma clé</button>' : '') + '<span class="tu-espace"></span><button type="button" class="tu-btn" id="tu-cle-fermer">Fermer</button></div>';
+    '';
+  const barre = '<div class="tu-barre">' + (TU[f].cle ? '<button type="button" class="tu-btn" id="tu-cle-oubli">Oublier ma clé</button>' : '') +
+    (f === 'claude' && TU.claude.classe ? '<button type="button" class="tu-btn" id="tu-code-oubli">Oublier le code</button>' : '') +
+    '<span class="tu-espace"></span><button type="button" class="tu-btn" id="tu-cle-fermer">Fermer</button></div>';
+  /* sur le site, Claude passe d'abord par le code de la classe : le crédit commun, sans clé dans la page */
+  const classe = f === 'claude' && TU.env === 'fichier';
+  c.innerHTML = classe
+    ? '<h3>Claude pour la classe</h3>' +
+      '<p class="tu-note">Ton représentant a ouvert un accès commun à Claude (le modèle Haiku). Tape le code de la classe une fois : il vaut pour tous les ateliers de ce navigateur.</p>' +
+      '<div class="tu-cle"><label class="sr" for="tu-code">Code de la classe</label><input type="password" id="tu-code" autocomplete="off" spellcheck="false" placeholder="' + (TU.claude.classe ? 'Code enregistré : tape-le de nouveau pour le changer' : 'Code de la classe') + '"><button type="button" class="tu-envoyer" id="tu-code-ok">Activer</button></div>' +
+      '<p class="tu-note" id="tu-code-etat"></p>' +
+      '<details class="tu-perso"' + (TU.claude.cle ? ' open' : '') + '><summary>Ou ta propre clé API Claude (payante à part)</summary>' + perso + '</details>' + barre
+    : '<h3>' + k.titre + '</h3>' + perso + barre;
   const etat = t => { RT('tu-cle-etat').textContent = t; };
   RT('tu-cle-ok').addEventListener('click', async () => {
     const cle = RT('tu-cle').value.trim(); if(!cle){ etat('Colle d’abord ta clé.'); return; }
@@ -5511,7 +5528,7 @@ function montrerConfig(f){
         await verifierCleClaude(cle);
         /* le modèle déjà choisi est gardé ; sinon Haiku, le moins cher (environ un dixième de cent la question), que l'étudiant peut changer dans la liste */
         if(!memo.get(K('claude-modele'))){ TU.claude.modele = 'claude-haiku-5-5'; memo.set(K('claude-modele'), TU.claude.modele); }
-        TU.claude.cle = cle; memo.set(K('claude-cle'), cle);
+        TU.claude.cle = cle; ecrireCle('claude-cle', cle);
         TU.f = f; memo.set(K('fourn'), f);
         c.hidden = true; majMoteurUI();
         noteSysteme('Claude activé avec ' + nomModele('claude', TU.claude.modele) + '. Sonnet et Opus, dans la liste en haut, sont plus forts et coûtent beaucoup plus.');
@@ -5521,7 +5538,7 @@ function montrerConfig(f){
       if(!l.length) throw {message:'Aucun modèle de conversation trouvé pour cette clé.'};
       const defaut = f === 'chatgpt' ? (l.find(id => /mini/.test(id)) || l[0]) : l[0];
       TU[f].cle = cle; TU[f].modeles = l; TU[f].modele = defaut;
-      memo.set(K(f + '-cle'), cle); memo.set(K(f + '-modele'), defaut); memo.set(K(f + '-modeles'), JSON.stringify(l));
+      ecrireCle(f + '-cle', cle); ecrireCle(f + '-modele', defaut); ecrireCle(f + '-modeles', JSON.stringify(l));
       TU.f = f; memo.set(K('fourn'), f);
       c.hidden = true; majMoteurUI();
       noteSysteme(FOURN[f].nom + ' activé avec ' + nomModele(f, defaut) + '. Tu peux changer de modèle dans la liste en haut.');
@@ -5532,11 +5549,30 @@ function montrerConfig(f){
   });
   const ob = RT('tu-cle-oubli');
   if(ob) ob.addEventListener('click', () => {
-    if(f === 'claude'){ memo.set(K('claude-cle'), ''); TU.claude.cle = null; TU.claude.client = null; }
-    else { ['cle', 'modele', 'modeles'].forEach(x => memo.set(K(f + '-' + x), '')); TU[f] = {cle:null, modele:null, modeles:[]}; }
+    if(f === 'claude'){ ecrireCle('claude-cle', ''); TU.claude.cle = null; TU.claude.client = null; }
+    else { ['cle', 'modele', 'modeles'].forEach(x => ecrireCle(f + '-' + x, '')); TU[f] = {cle:null, modele:null, modeles:[]}; }
     montrerConfig(f); majMoteurUI();
   });
   RT('tu-cle-fermer').addEventListener('click', () => { c.hidden = true; });
+  const bc = RT('tu-code-ok');
+  if(bc) bc.addEventListener('click', async () => {
+    const code = RT('tu-code').value.trim(), et = t => { RT('tu-code-etat').textContent = t; };
+    if(!code){ et('Tape d’abord le code de la classe.'); return; }
+    et('Vérification…');
+    try{
+      const permis = await verifierCodeClasse(code);
+      TU.claude.classe = code; TU.claude.permis = permis.length ? permis : ['claude-haiku-5-5']; TU.claude.client = null;
+      ecrireCle('claude-classe', code); ecrireCle('claude-permis', JSON.stringify(TU.claude.permis));
+      if(!TU.claude.cle && !TU.claude.permis.includes(TU.claude.modele)){ TU.claude.modele = TU.claude.permis[0]; memo.set(K('claude-modele'), TU.claude.modele); }
+      TU.f = 'claude'; memo.set(K('fourn'), 'claude');
+      c.hidden = true; majMoteurUI();
+      noteSysteme('Claude de la classe activé : ' + nomModele('claude', TU.claude.modele) + '. Le code vaut pour tous les ateliers de ce navigateur.');
+    }catch(e){
+      et(e.status === 401 ? 'Ce code n’est pas reconnu : vérifie-le auprès de ton représentant.' : e.code === 'sdk_indispo' ? MSG_ERREUR.sdk_indispo : 'Impossible de joindre le relais de la classe. ' + (e.message || 'Vérifie ta connexion.'));
+    }
+  });
+  const oc = RT('tu-code-oubli');
+  if(oc) oc.addEventListener('click', () => { ecrireCle('claude-classe', ''); ecrireCle('claude-permis', ''); TU.claude.classe = null; TU.claude.permis = null; TU.claude.client = null; montrerConfig(f); majMoteurUI(); });
 }
 RT('tu-reglages').addEventListener('click', () => { const c = RT('tu-config'); if(c.hidden) montrerConfig(TU.f); else c.hidden = true; });
 
@@ -5677,10 +5713,24 @@ function chargerSdkClaude(){
   }
   return sdkClaude;
 }
-function clientClaude(A, cle){
-  cle = cle || TU.claude.cle;
-  if(!TU.claude.client || TU.claude.client.cle !== cle) TU.claude.client = {cle, c:new A({apiKey:cle, dangerouslyAllowBrowser:true})};
+/* une clé personnelle d'abord ; sinon le code de la classe, par le relais (la clé du crédit commun n'est jamais dans la page) */
+const RELAIS_CLASSE = 'https://lumiere-claude.lexator300.workers.dev';
+function clientClaude(A, cle, classe){
+  const viaRelais = !!classe || (!cle && !TU.claude.cle && !!TU.claude.classe);
+  const secret = viaRelais ? (classe || TU.claude.classe) : (cle || TU.claude.cle), id = (viaRelais ? 'classe:' : 'cle:') + secret;
+  if(!TU.claude.client || TU.claude.client.id !== id)
+    TU.claude.client = {id, c:viaRelais ? new A({apiKey:secret, baseURL:RELAIS_CLASSE, dangerouslyAllowBrowser:true}) : new A({apiKey:secret, dangerouslyAllowBrowser:true})};
   return TU.claude.client.c;
+}
+const parClasse = () => TU.env === 'fichier' && !TU.claude.cle && !!TU.claude.classe;
+function modelesClaude(){ return parClasse() && TU.claude.permis ? MODELES_CLAUDE.filter(m => TU.claude.permis.includes(m.id)) : MODELES_CLAUDE; }
+/* le relais répond lui-même à la vérification, avec les modèles que ce code permet */
+async function verifierCodeClasse(code){
+  const A = await chargerSdkClaude();
+  try{
+    const r = await clientClaude(A, null, code).messages.countTokens({model:'claude-haiku-5-5', messages:[{role:'user', content:'Bonjour'}]});
+    return Array.isArray(r && r.modeles) ? r.modeles.filter(id => MODELES_CLAUDE.some(m => m.id === id)) : ['claude-haiku-5-5'];
+  }catch(e){ throw erreurClaude(e, A, ''); }
 }
 /* les erreurs typées de la bibliothèque, ramenées à la forme qu'attend gererErreur */
 function erreurClaude(e, A, texte){
@@ -6046,6 +6096,12 @@ function gererErreur(e, b, question){
         : 'Limite gratuite de Gemini atteinte. Attends une minute, ou reviens demain si c’est la limite du jour.')
       : e.status === 529 ? qui + ' est surchargé en ce moment : réessaie dans un instant.'
       : qui + ' a répondu par une erreur (' + e.status + ') : ' + tronque(String(e.message || ''), 160);
+  }
+  if(e && e.f === 'claude' && parClasse() && e.status){
+    msg = e.status === 401 ? 'Le code de la classe est refusé : clique « Clé » pour le vérifier.'
+      : e.status === 429 ? 'Trop de questions en même temps dans la classe : réessaie dans un instant.'
+      : /credit|balance/i.test(e.message || '') ? 'Le crédit Claude de la classe est épuisé pour ce mois : choisis Gemini (gratuit) en haut du panneau.'
+      : msg;
   }
   if(!msg) msg = 'La connexion a été interrompue. Réessaie.';
   corps.innerHTML = (e && e.text && code !== 'refused' ? mdTuteur(e.text) : '') + '<p class="tmsg erreur">' + esc(msg) + '</p>';
