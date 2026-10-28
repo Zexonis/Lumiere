@@ -1257,6 +1257,11 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .tu-prop-q{margin:4px 0 8px;white-space:pre-wrap}
 .tu-propose{border-style:dashed}
 .tu-prop-etat{display:block;font:600 10.5px var(--f-mono);color:var(--ink-3);margin-top:3px}
+.tu-coller{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:6px}
+.tu-coller label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--ink-2)}
+.tu-coller textarea{width:100%;min-height:64px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:7px 9px;font:inherit;font-size:14px;resize:vertical}
+.tu-coller .tu-btn{align-self:flex-start}
+.cv-tut[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
 </style>
 
 <div class="app" id="app">
@@ -8154,7 +8159,9 @@ function copierPourIA(question, extra, complet){
     '<p class="tu-etat-copie">Copie…</p>' +
     '<p class="tu-liens"><a class="tu-ouvrir-ia" href="' + F.site + '" target="_blank" rel="noopener">Ouvrir ' + F.nom + ' et coller</a> <span class="tu-astuce">ou : ' + autres + '</span></p>' +
     (sel && sel.blob ? '<p><button type="button" class="tu-btn" data-img>Copier aussi l’image de la zone</button></p>' : '') +
-    '<details><summary>Voir le texte copié</summary><textarea class="tu-copie" readonly rows="7" aria-label="Texte copié"></textarea></details></div></div>');
+    '<details><summary>Voir le texte copié</summary><textarea class="tu-copie" readonly rows="7" aria-label="Texte copié"></textarea></details>' +
+    '<div class="tu-coller"><label><span>Puis colle ici la réponse de ' + F.nom + ' : elle rejoint la conversation (et ton partenaire de Convergence la voit).</span><textarea rows="3"></textarea></label>' +
+    '<button type="button" class="tu-btn" data-coller>Ajouter la réponse</button></div></div></div>');
   tfil.appendChild(carte); defiler();
   const ta = carte.querySelector('textarea'), det = carte.querySelector('details'), etat = carte.querySelector('.tu-etat-copie');
   ta.value = txt;
@@ -8169,9 +8176,25 @@ function copierPourIA(question, extra, complet){
   });
   signer(carte, 'copié pour ' + F.nom + ' (site)');
   TU.dernier = null;
-  TU.tours.push({role:'user', content:'[' + (ICI ? ICI.titre : '') + '] ' + question, vu:question, ecran:ICI && ICI.id},
-                {role:'assistant', content:'(Question copiée pour ' + F.nom + ' ; la réponse est sur son site.)', modele:'copié pour ' + F.nom, copie:true});
+  const reponse = {role:'assistant', content:'(Question copiée pour ' + F.nom + ' ; la réponse est sur son site.)', modele:'copié pour ' + F.nom, copie:true};
+  TU.tours.push({role:'user', content:'[' + (ICI ? ICI.titre : '') + '] ' + question, vu:question, ecran:ICI && ICI.id}, reponse);
   sauver(); majMoteurUI();
+  /* la réponse collée devient un vrai tour : elle entre dans l'historique, les notes, et le miroir de Convergence */
+  const id = 'c' + Date.now().toString(36), ecranQ = ICI && ICI.id;
+  signaler({type:'debut', id, q:question, ecran:ecranQ});
+  signaler({type:'flux', id, texte:'*(question copiée pour ' + F.nom + ' : la réponse s’affiche ici quand elle est collée)*'});
+  const zc = carte.querySelector('.tu-coller');
+  zc.querySelector('[data-coller]').addEventListener('click', () => {
+    const t = zc.querySelector('textarea').value.trim().slice(0, 12000); if(!t){ zc.querySelector('textarea').focus(); return; }
+    zc.remove();
+    const b = H('<div class="tmsg tu-rep"><div class="tu-corps"></div></div>');
+    carte.after(b);
+    const label = F.nom + ' (réponse collée)';
+    rendreReponse(b, t, true); signer(b, label); boutonNotes(b, t, ecranQ);
+    Object.assign(reponse, {content:sansAct(t), modele:label, copie:false});
+    sauver(); defiler();
+    signaler({type:'fin', id, texte:sansAct(t), label});
+  });
 }
 /* chaque réponse porte le nom du modèle qui l'a écrite : on peut changer d'IA en cours de route */
 function signer(b, label, confirme){
@@ -8412,8 +8435,11 @@ function carteProposee(nom, texte, repondre){
     const b = e.target.closest('[data-p]'); if(!b) return;
     const ligne = 'Question de ' + nom + ' : ' + texte;
     if(b.dataset.p === 'envoyer'){
-      if(TU.enCours || mode() !== 'api'){ noteSysteme(TU.enCours ? 'Attends la fin de la réponse en cours, puis renvoie la question.' : 'Ton tuteur ne répond pas ici pour l’instant.'); return; }
-      d.remove(); repondre('envoyee'); envoyer(ligne);
+      if(TU.enCours){ noteSysteme('Attends la fin de la réponse en cours, puis renvoie la question.'); return; }
+      if(mode() === 'indispo'){ noteSysteme('Ton tuteur n’est pas disponible pour l’instant.'); return; }
+      d.remove(); repondre('envoyee');
+      /* en copier-coller (un abonnement Claude, par exemple), la question part dans le presse-papiers : ce clic est le geste qu'il faut */
+      if(mode() === 'api') envoyer(ligne); else copierPourIA(ligne);
     } else if(b.dataset.p === 'modifier'){
       d.remove(); repondre('modifiee');
       if(!app.classList.contains('avec-tuteur')) ouvrirTuteur(true);
@@ -9237,12 +9263,15 @@ const nomDe = p => propre(p && p.nom, 24) || 'Quelqu’un';
 /* le texte d'un tour de tuteur garde ses retours à la ligne (markdown) */
 const propreTexte = (x, max) => typeof x === 'string' ? x.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, '').slice(0, max) : '';
 const aTuteur = () => typeof Tuteur !== 'undefined' && Tuteur.peutJSON();
+/* ce que mon tuteur fait dans la séance : propre (une IA répond ici), copie (copier-coller, par exemple un abonnement Claude),
+   mien (copier-coller, sans relais voulu), relais (je suis celui de l'autre) ; S.choix vient de la puce « Tuteur » de la barre */
+function monTuteur(){ if(S.choix === 'suivre') return 'relais'; if(aTuteur()) return 'propre'; return S.choix === 'mien' ? 'mien' : 'copie'; }
 const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 
 const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', code:'', role:'', nom:'', raie:'F',
   etat:'repos',                              // repos · attente (hôte) · demande (invité) · lie
   part:'', pNom:'', pRaie:'F', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-  repere:{e:'', n:0, auto:false}, pret:0, desab:[], envois:{}, nonLus:0, pTuteur:'', pMiroir:null};
+  repere:{e:'', n:0, auto:false}, pret:0, desab:[], envois:{}, nonLus:0, pTuteur:'', pMiroir:null, choix:'auto'};
 
 /* ---------- le relais ---------- */
 let chargement = null;
@@ -9271,7 +9300,7 @@ function moi(){
   /* l'hôte qui accepte s'affiche déjà « lie » : c'est le signal que l'invité attend pour confirmer */
   return {v:1, nom:S.nom, raie:S.raie, role:S.role, etat:S.accepte ? 'lie' : S.etat, avec:S.part || S.accepte || '', refus:S.refusUid, at:P,
     ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto}, pret:S.pret,
-    tuteur:aTuteur() ? 'propre' : 'relais', t:Date.now()};
+    tuteur:monTuteur(), t:Date.now()};
 }
 let tPres = null;
 function publier(){
@@ -9307,7 +9336,7 @@ async function quitter(){
   if(MIR.actif || (typeof Tuteur !== 'undefined' && Tuteur.enRelais())){ MIR.actif = false; Tuteur.relais(null); Tuteur.suivi(null); Tuteur.duo(null); }
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', part:'', pNom:'', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-    repere:{e:'', n:0, auto:false}, pret:0, envois:{}, nonLus:0, pTuteur:'', pMiroir:null});
+    repere:{e:'', n:0, auto:false}, pret:0, envois:{}, nonLus:0, pTuteur:'', pMiroir:null, choix:'auto'});
   sauverSeance(); majRail();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad();
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
@@ -9324,7 +9353,7 @@ function surMembres(m){
     if(!p){ majBarre(); majRelais(); return; }
     S.pEcran = typeof p.ecran === 'string' ? p.ecran : '';
     S.pPret = typeof p.pret === 'number' ? p.pret : 0;
-    S.pTuteur = p.tuteur === 'propre' ? 'propre' : p.tuteur === 'relais' ? 'relais' : '';
+    S.pTuteur = ['propre', 'copie', 'mien', 'relais'].includes(p.tuteur) ? p.tuteur : '';
     S.pMiroir = p.miroir && typeof p.miroir === 'object' ? p.miroir : null;
     accorderRepere(p);
     verifierPrets();
@@ -9694,12 +9723,13 @@ function montrerBarre(){
       '<button type="button" class="btn cv-b cv-pret" data-a="pret" aria-pressed="false" title="Prêt·e à continuer : quand vous l’êtes tous les deux, le repère passe à l’écran suivant">Prêt·e</button>' +
       '<span class="cv-prets" aria-live="polite"></span>' +
       '<span class="cv-espace"></span>' +
+      '<button type="button" class="btn cv-b cv-tut" data-a="tuteur" aria-pressed="false">Tuteur</button>' +
       '<button type="button" class="btn cv-b" data-a="messages">Messages<span class="cv-badge" hidden></span></button>' +
       '<button type="button" class="btn cv-b" data-a="croquis">Croquis</button>' +
       '<button type="button" class="btn cv-b" data-a="quitter">Quitter</button></div>');
     barre.addEventListener('click', e => {
       const b = e.target.closest('[data-a]'); if(!b) return;
-      ({recentrer, placer:placerRepere, pret:basculerPret, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page.')) quitter(); }})[b.dataset.a]();
+      ({recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page.')) quitter(); }})[b.dataset.a]();
     });
     const haut = $('.haut');
     if(haut) haut.appendChild(barre); else document.body.prepend(barre);
@@ -9733,7 +9763,7 @@ function majBarre(){
   $('.cv-pret', barre).textContent = pret ? 'Prêt·e ✓' : 'Prêt·e';
   $('.cv-prets', barre).textContent = (pret || pPret) ? 'Toi ' + (pret ? '✓' : '…') + ' · ' + S.pNom + ' ' + (pPret ? '✓' : '…') : '';
   const bd = $('.cv-badge', barre); bd.hidden = !S.nonLus; bd.textContent = S.nonLus;
-  majRail();
+  majRail(); majPuceTuteur();
 }
 
 /* ---------- le petit avis, en haut ---------- */
@@ -9849,9 +9879,9 @@ function majSuivi(){
 }
 function majRelais(){
   if(typeof Tuteur === 'undefined') return;
-  const lie = S.etat === 'lie' && S.pLa;
-  /* servir : j'ai une IA, l'autre n'en a pas */
-  const servir = lie && S.pTuteur === 'relais' && aTuteur();
+  const lie = S.etat === 'lie' && S.pLa, moiT = monTuteur(), lui = S.pTuteur;
+  /* servir : l'autre a choisi de me suivre, ou n'a pas d'IA face à la mienne (en copier-coller, je colle chaque réponse) */
+  const servir = lie && moiT !== 'relais' && (lui === 'relais' || (lui === 'copie' && moiT === 'propre'));
   if(servir && !MIR.actif){
     MIR.actif = true; MIR.ids = [];
     const tours = {};
@@ -9859,23 +9889,45 @@ function majRelais(){
     S.F.set(refMir(), {actif:true, prive:MIR.prive, tours}).catch(() => {});
     Tuteur.duo('Deux étudiants étudient ensemble : ' + S.nom + ' (qui t’écrit) et ' + S.pNom + '. Une question qui commence par « Question de ' + S.pNom + ' » vient de ' + S.pNom + ' : réponds-lui en l’appelant par son surnom.');
     majSuivi();
-    toast('« ' + S.pNom + ' » n’a pas d’IA branchée : ton tuteur sert à vous deux. Ses questions t’arrivent comme des cartes.');
+    toast('« ' + S.pNom + ' » suit maintenant ton tuteur : ses questions t’arrivent comme des cartes.' + (aTuteur() ? '' : ' En copier-coller, colle chaque réponse dans le panneau pour la partager.'));
   } else if(!servir && MIR.actif){
     MIR.actif = false;
     if(S.refMoi) S.F.remove(refMir()).catch(() => {});
     Tuteur.duo(null); Tuteur.suivi(null);
   }
-  /* suivre : je n'ai pas d'IA, l'autre en a une et la partage */
-  const m = S.pMiroir, suivre = lie && !aTuteur() && m && m.actif === true;
+  /* suivre : je l'ai choisi, ou je n'ai pas d'IA et l'autre en a une ; il faut que l'autre partage */
+  const m = S.pMiroir, suivre = lie && (moiT === 'relais' || (moiT === 'copie' && lui === 'propre')) && m && m.actif === true;
   if(suivre){
     if(!Tuteur.enRelais()) Tuteur.relais({hote:S.pNom, proposer:(id, texte, ecranId) => envoyer('question', JSON.stringify({id, texte, ecran:ecranId || ''}), null)});
     Tuteur.miroir({prive:!!m.prive, tours:toursDe(m.tours)});
   } else if(Tuteur.enRelais()) Tuteur.relais(null);
+  majPuceTuteur();
+}
+/* la puce « Tuteur » de la barre : dit qui sert qui, et laisse choisir */
+function majPuceTuteur(){
+  const b = barre && $('[data-a="tuteur"]', barre); if(!b || typeof Tuteur === 'undefined') return;
+  const lui = S.pTuteur;
+  let t, titre;
+  if(MIR.actif){ t = 'Tuteur partagé ✓'; titre = '« ' + S.pNom + ' » suit ton tuteur. Clique pour l’ouvrir.'; }
+  else if(Tuteur.enRelais()){ t = 'Tuteur de ' + S.pNom; titre = 'Tu suis le tuteur de « ' + S.pNom + ' ». Clique pour reprendre le tien.'; }
+  else if(S.choix === 'suivre'){ t = 'Tuteur de ' + S.pNom + '…'; titre = 'En attente : « ' + S.pNom + ' » doit avoir un tuteur qui répond (une clé, ou le copier-coller). Clique pour annuler.'; }
+  else if(S.pLa && lui && lui !== 'relais'){ t = 'Suivre le tuteur de ' + S.pNom; titre = 'Ton panneau du tuteur montrera la conversation de « ' + S.pNom + ' », et tes questions lui seront proposées.'; }
+  else { t = 'Tuteur : chacun le sien'; titre = '« ' + S.pNom + ' » suit déjà ton tuteur, ou n’est pas là.'; }
+  b.textContent = t; b.title = titre;
+  b.setAttribute('aria-pressed', String(MIR.actif || Tuteur.enRelais()));
+}
+function basculerTuteur(){
+  if(MIR.actif){ Tuteur.ouvrir(true); return; }
+  if(Tuteur.enRelais() || S.choix === 'suivre') S.choix = 'mien';
+  else if(S.pLa && S.pTuteur && S.pTuteur !== 'relais') S.choix = 'suivre';
+  else return;
+  publier(); majRelais();
+  if(S.choix === 'suivre') Tuteur.ouvrir(true);
 }
 /* les tours du tuteur, recopiés pour l'autre au fil de l'eau (la réponse en cours, au plus trois fois par seconde) */
 function surTuteur(ev){
   if(ev.type === 'moteur'){
-    const t = aTuteur() ? 'propre' : 'relais';
+    const t = monTuteur();
     if(t !== S.monTuteur){ S.monTuteur = t; if(S.etat === 'lie'){ publier(); majRelais(); } }
     return;
   }
