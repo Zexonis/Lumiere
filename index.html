@@ -1,0 +1,557 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prisme · Techniques d’opticien</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap">
+<style>
+/* Prisme · Techniques d’opticien. The greeting emits a white beam; a glass prism splits it into a line spectrum:
+   the five Fraunhofer lines used to characterize lens glass (C, d, e, F, g), one per course, in true
+   order of deviation (g bends most). Each line lands on its course; the ateliers sit below.
+   One deliberate world: light in darkness, so the page is single-theme dark. */
+:root{
+  color-scheme:dark;
+  --nuit:#05070D; --nuit-2:#0A0E18; --trait:#1C2437; --trait-2:#2A3450;
+  --blanc:#F3F5FB; --gris:#AEB7C9; --gris-2:#828CA2;
+  --rouge:#FF5A4A; --jaune:#FFD23F; --vert:#9BF25C; --bleu:#34C6FF; --violet:#A385FF;
+  --f-titre:"Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --f-texte:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono", ui-monospace, Consolas, monospace;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{background:var(--nuit)}
+body{margin:0;background:var(--nuit);color:var(--blanc);font:16.5px/1.6 var(--f-texte);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--nuit)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--blanc);outline-offset:3px;border-radius:6px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0;text-wrap:pretty}
+[hidden]{display:none!important}
+.bande{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.contenu{max-width:1180px;margin:0 auto}
+
+/* une raie spectrale : un trait vertical qui brille */
+.raie{display:block;width:3px;border-radius:2px;background:var(--c);box-shadow:0 0 7px var(--c), 0 0 18px color-mix(in srgb, var(--c) 55%, transparent)}
+.sombre .raie,.port.sombre .raie{background:repeating-linear-gradient(var(--c) 0 3px, transparent 3px 6px);box-shadow:none;opacity:.7}
+
+/* ---------- le ciel : le faisceau, le prisme, les cinq raies ---------- */
+.ciel{position:relative;overflow:hidden;background:radial-gradient(120% 90% at 62% 48%, #0C1124 0%, #070A14 46%, var(--nuit) 78%)}
+#faisceau{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ciel-in{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;min-height:470px;padding-block:34px 30px}
+.accueil{display:flex;flex-direction:column;gap:16px;align-self:start;padding-top:18px;min-width:0}
+.sur{font:600 12px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gris-2)}
+h1{font-family:var(--f-titre);font-weight:500;font-size:clamp(44px, 6vw, 80px);line-height:1.02;letter-spacing:-.012em;font-optical-sizing:auto}
+h1 .mot{display:block;color:var(--gris)}
+h1 em{display:inline;font-style:italic;font-weight:500;color:var(--blanc);text-shadow:0 0 28px rgba(255,255,255,.22)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  /* le spectre de raies traverse les mots une fois ; au repos, seul le tiers transparent est visible : le blanc */
+  h1 em{background-image:linear-gradient(100deg, transparent 0 38%, var(--rouge) 41%, var(--jaune) 45%, var(--vert) 49%, var(--bleu) 53%, var(--violet) 57%, transparent 61% 100%), linear-gradient(var(--blanc), var(--blanc));
+    background-size:300% 100%, 100% 100%;background-position:100% 0, 0 0;background-repeat:no-repeat;
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 16px rgba(255,255,255,.2));
+    animation:refracte 2.4s .5s ease-in-out both}
+}
+@keyframes refracte{from{background-position:100% 0, 0 0}to{background-position:0 0, 0 0}}
+.sous{max-width:34ch;font-size:18px;line-height:1.55;color:var(--gris)}
+.reprendre{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;text-decoration:none;border:1px solid var(--trait-2);background:rgba(10,14,24,.7);
+  border-radius:999px;padding:7px 14px;font-size:14.5px;color:var(--blanc)}
+.reprendre span{color:var(--gris-2);font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.reprendre:hover{border-color:var(--gris)}
+.scene{display:none}
+
+.ports{display:flex;flex-direction:column;justify-content:center;gap:12px;padding-block:6px;min-width:0}
+.port{--c:var(--blanc);display:grid;grid-template-columns:3px minmax(0,1fr);column-gap:13px;align-items:center;text-align:left;cursor:pointer;
+  background:rgba(5,7,13,.62);border:1px solid color-mix(in srgb, var(--c) 26%, transparent);border-radius:12px;padding:8px 16px 8px 12px;color:var(--blanc);
+  font:inherit;line-height:1.2;transition:border-color .2s, background .2s, box-shadow .2s}
+.port .raie{height:30px;grid-row:span 2}
+.port .nom{font-weight:700;font-size:15px;white-space:nowrap}
+.port .nm{font:600 11px/1.3 var(--f-mono);letter-spacing:.06em;color:var(--gris-2);white-space:nowrap}
+.port.sombre .nom{color:var(--gris)}
+.port:hover,.port:focus-visible,.port.actif{border-color:var(--c);background:color-mix(in srgb, var(--c) 12%, rgba(5,7,13,.8));box-shadow:0 0 22px -6px var(--c)}
+.port:focus-visible{outline-color:var(--c)}
+
+/* ---------- le sol : ce qui se lit sous la lumière ---------- */
+.sol{padding-block:30px 56px;display:flex;flex-direction:column;gap:54px}
+.tete-sec{display:flex;align-items:baseline;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-bottom:18px}
+h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px);line-height:1.1;letter-spacing:-.01em}
+.tete-sec p{color:var(--gris-2);font:600 12.5px var(--f-mono);letter-spacing:.06em}
+
+/* les cours : deux colonnes qui s'écoulent sur grand écran ; le défilement vers une carte vise sa position mesurée */
+.cours-flux{columns:2 440px;column-gap:20px}
+.cours{--c:var(--blanc);break-inside:avoid;margin:0 0 20px;padding:20px 20px 18px;scroll-margin-top:12px;border-radius:var(--r);border:1px solid var(--trait);
+  background:radial-gradient(130% 70% at 0% 0%, color-mix(in srgb, var(--c) 9%, transparent) 0%, transparent 60%), var(--nuit-2);
+  transition:border-color .3s, box-shadow .3s}
+.cours.sombre{background:var(--nuit-2)}
+.cours:hover,.cours:focus-within{border-color:color-mix(in srgb, var(--c) 45%, var(--trait))}
+.cours.eclaire{animation:eclaire 1.4s ease}
+@keyframes eclaire{0%{box-shadow:0 0 0 0 var(--c)}25%{box-shadow:0 0 0 2px var(--c), 0 0 46px -6px var(--c)}100%{box-shadow:0 0 0 0 transparent}}
+.cours header{display:grid;grid-template-columns:3px minmax(0,1fr);column-gap:14px;row-gap:3px;align-items:center;margin-bottom:14px}
+.cours header .raie{height:100%;min-height:44px;grid-row:span 2}
+.cours h3{font-family:var(--f-titre);font-weight:500;font-size:28px;line-height:1.1;color:var(--blanc)}
+.cours.sombre h3{font-size:24px;color:var(--gris)}
+.cours h3:focus{outline:none}
+.cours .ident{font:600 11.5px/1.4 var(--f-mono);letter-spacing:.06em;color:var(--gris-2)}
+.cours .ident b{color:var(--c);font-weight:600}
+.cours .vide{font-size:14.5px;color:var(--gris-2)}
+.pages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.page{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;align-items:start;padding:10px 12px;margin:0 -12px;border-radius:10px;text-decoration:none}
+.page:hover,.page:focus-visible{background:color-mix(in srgb, var(--c) 8%, transparent)}
+.page .haut{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.page .genre{font:600 10.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c);border:1px solid color-mix(in srgb, var(--c) 40%, transparent);border-radius:5px;padding:3px 6px}
+.page .titre{font-weight:700;font-size:16.5px;line-height:1.3}
+.page.vedette .titre{font-family:var(--f-titre);font-weight:600;font-size:21px}
+.page .desc{display:block;margin-top:3px;font-size:14.5px;line-height:1.5;color:var(--gris)}
+.page .fleche{color:var(--gris-2);font-size:17px;line-height:1.6;transition:transform .2s, color .2s}
+.page:hover .fleche,.page:focus-visible .fleche{color:var(--c);transform:translate(2px,-2px)}
+/* la page principale du cours (l'atelier, le banc) : la lumière y tombe en premier */
+.principal{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;align-items:center;text-decoration:none;
+  padding:16px 16px 15px;border-radius:12px;border:1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  background:linear-gradient(120deg, color-mix(in srgb, var(--c) 16%, transparent), color-mix(in srgb, var(--c) 4%, transparent) 70%), var(--nuit);
+  box-shadow:0 0 30px -14px var(--c);transition:border-color .2s, box-shadow .2s, transform .2s}
+.principal:hover,.principal:focus-visible{border-color:var(--c);box-shadow:0 0 38px -10px var(--c)}
+.principal .lib{display:block;font:600 11px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.principal .lib i{font-style:normal;color:var(--gris-2)}
+.principal .titre{display:block;margin-top:5px;font-family:var(--f-titre);font-weight:600;font-size:24px;line-height:1.12;color:var(--blanc)}
+.principal .desc{display:block;margin-top:6px;font-size:15px;line-height:1.5;color:var(--gris)}
+.principal .aller{align-self:center;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:999px;padding:7px 13px;
+  background:var(--c);color:var(--nuit);font-weight:700;font-size:14.5px}
+.sous-tete{margin:16px 0 4px;font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gris-2)}
+.sous-tete b{color:var(--gris);font-weight:600}
+.extras .page{padding:7px 12px}
+.extras .page .titre{font-size:15px;font-weight:600}
+.extras .page .desc{font-size:13.5px;margin-top:1px}
+.extras .page .genre{font-size:9.5px;padding:2px 5px;color:var(--gris);border-color:var(--trait-2)}
+.ua1-bloc{margin-top:14px;padding-top:2px;border-top:1px dashed var(--trait-2)}
+.ua1-bloc .sous-tete{margin-top:12px}
+/* la bascule UA2 / UA1 */
+.filtre{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filtre .compte{color:var(--gris-2);font:600 12.5px var(--f-mono);letter-spacing:.06em}
+.bascule-ua{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--trait-2);background:var(--nuit-2);color:var(--gris);border-radius:999px;
+  padding:6px 12px 6px 7px;font:600 13.5px var(--f-texte);cursor:pointer}
+.bascule-ua .piste{position:relative;width:30px;height:17px;border-radius:999px;background:var(--trait-2);transition:background .2s}
+.bascule-ua .piste::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--gris);transition:transform .2s, background .2s}
+.bascule-ua[aria-pressed="true"]{color:var(--blanc);border-color:var(--gris-2)}
+.bascule-ua[aria-pressed="true"] .piste{background:var(--gris-2)}
+.bascule-ua[aria-pressed="true"] .piste::after{transform:translateX(13px);background:var(--blanc)}
+.annexe{margin-top:14px;padding-top:14px;border-top:1px solid var(--trait)}
+.annexe p{font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gris-2);margin-bottom:8px}
+.puces{display:flex;flex-wrap:wrap;gap:6px}
+.puce{display:inline-flex;gap:7px;align-items:baseline;text-decoration:none;border:1px solid var(--trait-2);border-radius:999px;padding:4px 11px;font-size:13.5px;color:var(--gris);line-height:1.35}
+.puce b{font:600 11.5px var(--f-mono);color:var(--c)}
+.puce:hover,.puce:focus-visible{border-color:var(--c);color:var(--blanc)}
+
+/* lumière blanche */
+.outils{display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 270px), 1fr));gap:14px}
+.outil{display:flex;flex-direction:column;gap:6px;padding:18px 18px 16px;border-radius:var(--r);border:1px solid var(--trait);text-decoration:none;
+  background:linear-gradient(115deg, rgba(255,255,255,.05), transparent 55%), var(--nuit-2);transition:border-color .2s}
+.outil:hover,.outil:focus-visible{border-color:var(--gris)}
+.outil .genre{font:600 10.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gris-2)}
+.outil .titre{font-family:var(--f-titre);font-size:22px;font-weight:500;line-height:1.15}
+.outil .desc{font-size:14.5px;color:var(--gris)}
+
+.pied{border-top:1px solid var(--trait);padding-top:20px;display:flex;flex-direction:column;gap:8px;color:var(--gris-2);font-size:13.5px;max-width:1180px}
+.pied .mono{font:600 11.5px/1.6 var(--f-mono);letter-spacing:.04em;max-width:96ch}
+
+/* ---------- téléphone ---------- */
+/* ciel empilé sous 1000 px : le texte, puis le prisme dans sa propre bande, puis les raies en rangée.
+   Le script lit cette même requête (CIEL_EMPILE) : la mise en page et le dessin ne divergent jamais. */
+@media (max-width:999px){
+  .ciel-in{grid-template-columns:minmax(0,1fr);min-height:0;padding-block:26px 22px;gap:6px}
+  .accueil{padding-top:6px;gap:12px}
+  .scene{display:block;height:clamp(210px, 28vw, 270px)}
+  .ports{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;gap:7px}
+  .port{padding:6px 12px 6px 10px;column-gap:10px}
+  .port .nm{display:none}
+  .port .raie{grid-row:auto;height:18px}
+}
+@media (max-width:759px){
+  .sous{font-size:17px}
+  .cours-flux{columns:auto}
+  .cours{padding:18px 16px 16px}
+  .principal{grid-template-columns:minmax(0,1fr);row-gap:12px;padding:14px}
+  .principal .aller{justify-self:start}
+  .principal .titre{font-size:22px}
+  .page{margin:0 -8px;padding:10px 8px}
+}
+@media (prefers-reduced-motion: reduce){
+  h1 em{animation:none!important;background-position:0 0, 0 0!important}
+  .cours.eclaire{animation:none}
+  .port,.cours,.page .fleche,.principal,.bascule-ua .piste,.bascule-ua .piste::after{transition:none}
+}
+</style>
+
+<header class="ciel" id="ciel">
+  <canvas id="faisceau" aria-hidden="true"></canvas>
+  <div class="ciel-in bande contenu">
+    <div class="accueil">
+      <p class="sur">Lumière · Techniques d’opticien</p>
+      <h1 id="salut"><span class="mot" id="salut-mot">Bonjour,</span> <em>cher rayon<br> de lumière.</em></h1>
+      <p class="sous">Ton métier : offrir aux autres la lumière d’une vision nette. Ici, elle traverse ce prisme et ressort en cinq raies : une par cours, à toi de choisir.</p>
+      <a class="reprendre" id="reprendre" href="#" target="_blank" rel="noopener" hidden><span>Reprendre</span><b id="reprendre-titre"></b> ↗</a>
+    </div>
+    <div class="scene" id="scene" aria-hidden="true"></div>
+    <nav class="ports" id="ports" aria-label="Les cinq cours"></nav>
+  </div>
+</header>
+
+<main class="sol bande">
+  <section class="contenu" aria-labelledby="t-raies">
+    <div class="tete-sec"><h2 id="t-raies">Les cinq raies</h2><div class="filtre"><span class="compte" id="raies-compte"></span><button type="button" class="bascule-ua" id="voir-ua1" aria-pressed="false" aria-controls="cours-flux outils"><span class="piste" aria-hidden="true"></span>Voir aussi l’UA1</button></div></div>
+    <div class="cours-flux" id="cours-flux"></div>
+  </section>
+
+  <section class="contenu" aria-labelledby="t-blanche">
+    <div class="tete-sec"><h2 id="t-blanche">Lumière blanche</h2><p>pour tous les cours</p></div>
+    <div class="outils" id="outils"></div>
+  </section>
+
+  <footer class="contenu pied">
+    <p>Chaque page garde ses propres notes et sa progression. Les liens s’ouvrent dans un nouvel onglet.</p>
+    <p class="mono">Les cinq raies sont celles qui servent à caractériser le verre des lentilles : C 656,3 nm (hydrogène), d 587,6 nm (hélium), e 546,1 nm (mercure), F 486,1 nm (hydrogène), g 435,8 nm (mercure). L’indice de réfraction d’un verre se donne à la raie d ou e ; son nombre d’Abbe compare F et C. Plus la longueur d’onde est courte, plus le prisme dévie : g en bas, C en haut.</p>
+  </footer>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const A = id => 'https://claude.ai/artifact/' + id;
+
+/* ---------- données ---------- */
+/* les raies de Fraunhofer des verres optiques, de la moins déviée (C) à la plus déviée (g) */
+const COURS = [
+  {id:'adm',  court:'Bureau ophtalmique',      long:'Principes et procédures d’un bureau ophtalmique', code:'ADM 0010',  raie:'C', nm:'656,3', couleur:'rouge'},
+  {id:'opt',  court:'Optique',                 long:'',                                                code:'SCI 23546', raie:'d', nm:'587,6', couleur:'jaune'},
+  {id:'lab',  court:'Labo tests ophtalmiques', long:'Laboratoire de tests ophtalmiques',               code:'SAN 0030',  raie:'e', nm:'546,1', couleur:'vert'},
+  {id:'anat', court:'Anatomie',                long:'Anatomie et physiologie oculaires',               code:'SCI 23545', raie:'F', nm:'486,1', couleur:'bleu'},
+  {id:'to',   court:'Tests ophtalmiques',      long:'',                                                code:'SAN 0010',  raie:'g', nm:'435,8', couleur:'violet'}
+];
+/* g : genre · t : titre · u : lien · d : une ligne · v : la page principale du cours (atelier, banc)
+   ua : l'unité (2 = en cours ; 1 = révision, cachée tant qu'on n'affiche pas l'UA1) */
+const PAGES = {
+  adm:[
+    {g:'Atelier', t:'Atelier Bureau M7', u:'atelier-bureau-m7.html', v:true, ua:2,
+     d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+    {g:'Guide', t:'Réviser l’UA1', u:'reviser-ua1.html', ua:1, d:'Le guide de révision de l’UA1.'},
+    {g:'Cartes', t:'Cartes UA1', u:'cartes-ua1.html', ua:1, d:'80 cartes éclair de l’UA1.'},
+    {g:'Drills', t:'Drills Rx', u:'drills-ua1.html', ua:1, d:'40 QCM sur les Rx et la facturation.'},
+    {g:'Fiches', t:'Fiches de référence', u:'fiches-ua1.html', ua:1, d:'22 tableaux de référence, à parcourir avec les flèches.'}
+  ],
+  opt:[
+    {g:'Banc', t:'Banc d’optique UA2', u:'banc-optique-ua2.html', v:true, ua:2,
+     d:'Modules 6 et 7 : amétropies, punctum remotum et proximum, accommodation et addition. Schémas réglables, exercices, Rappel du jour, guide pas à pas et tuteur.'},
+    {g:'Exercices', t:'Opticaide', u:'https://zexonis.github.io/Opticaide/', ua:1,
+     d:'Générateur d’exercices d’optique, modules 1 à 3.'}
+  ],
+  anat:[
+    {g:'Atelier', t:'Atelier Anatomie M6', u:'atelier-anatomie-m6.html', v:true, ua:2,
+     d:'Système nerveux, film lacrymal et clignement : simulateurs, gestes, fiches de cas. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+    {g:'Document', t:'Anatomie M6 — système nerveux, larmes, clignement', u:A('UQFUMh5vm1qkPwrBYmy65V'), ua:2,
+     d:'La distillation du module 6, en document.'},
+    {g:'Planches', t:'Œil — planches d’anatomie', u:'planches-oeil.html', ua:1,
+     d:'Treize planches, Anatomie 1.1 à 3.2, en trois modes : fiches, révision et repères à nommer.'},
+    {g:'Guide', t:'Anatomie oculaire UA1', u:'anatomie-oculaire-ua1.html', ua:1, d:'Le guide d’étude de l’UA1.'}
+  ],
+  to:[
+    {g:'Atelier', t:'Atelier TO M5–M6', u:'atelier-to-m5-m6.html', v:true, ua:2,
+     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre et OCT. Rappel du jour, guide pas à pas, annotations et tuteur.'}
+  ]
+};
+const NOTES_UA1 = [
+  ['1.1', 'Organisation générale de l’œil', '3kbTTouk53tMDvXe6k7kZC'], ['1.2–1.3', 'Trajet de la lumière', 'KTaAAwjvQyLdEahhF45mV3'],
+  ['2.1', 'Paupières et parties externes', '3uWJyCpq9UhP5ZqvTnSHjU'], ['2.2', 'Larmes et conjonctive', 'PidFodjgWe7XBMLGV5ysBY'],
+  ['2.3', 'Conjonctive', '4Gbp317b61LkKDK1YQpLRp'], ['2.4', 'Cornée', 'Eo8usogj7tdP8eUJTKGzpZ'],
+  ['3.1', 'Segment antérieur', 'D6XbWcTZnKrxQzTkWme7dR'], ['3.2', 'Cristallin et accommodation', 'KxsUXh2KNK2YB4T4DHHFtn'],
+  ['4.1–4.3', 'Tuniques et protection du globe', 'DL7Zcp5nmyAgKpH1kCg722'], ['4.2', 'La rétine', 'T9b2KHGTxtHdKEQMAVm43y']
+];
+const OUTILS = [
+  {g:'Compétences', t:'Grille des 216 compétences', u:'competences-nacor.html', d:'Les compétences nationales des opticiens canadiens (NACOR), tous cours confondus.'}
+];
+
+/* ---------- outils ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+const memo = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+};
+const varCoul = c => 'var(--' + c.couleur + ')';
+
+/* ---------- accueil ---------- */
+/* l'heure de l'appareil : Bonjour de 5 h à 18 h, Bonsoir ensuite ; la page restée ouverte change d'elle-même */
+function majSalut(){
+  const h = new Date().getHours(), mot = h >= 5 && h < 18 ? 'Bonjour,' : 'Bonsoir,';
+  if($('#salut-mot').textContent !== mot) $('#salut-mot').textContent = mot;
+}
+majSalut();
+setInterval(majSalut, 30000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) majSalut(); });
+{
+  let der = null; try{ der = JSON.parse(memo.get('prisme-dernier') || 'null'); }catch(e){}
+  if(der && typeof der.t === 'string' && /^https:\/\//.test(der.u || '')){ const r = $('#reprendre'); r.href = der.u; $('#reprendre-titre').textContent = der.t; r.hidden = false; }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-titre]');
+  if(a) memo.set('prisme-dernier', JSON.stringify({t:a.dataset.titre, u:a.href}));
+});
+
+/* ---------- les ports : là où chaque raie se pose ---------- */
+$('#ports').innerHTML = COURS.map((c, i) => {
+  const vide = !PAGES[c.id];
+  return '<button type="button" class="port' + (vide ? ' sombre' : '') + '" data-i="' + i + '" style="--c:' + varCoul(c) + '" aria-label="' + esc(c.court + ', raie ' + c.raie + ', ' + c.nm + ' nanomètres' + (vide ? ', pas encore d’atelier' : '')) + '">' +
+    '<span class="raie" aria-hidden="true"></span><span class="nom">' + esc(c.court) + '</span><span class="nm">raie ' + c.raie + ' · ' + c.nm + ' nm</span></button>';
+}).join('');
+
+/* ---------- les cours : la page principale d'abord, puis les extras ; l'UA1 sur demande ---------- */
+const lienHTML = p =>
+  '<li><a class="page" href="' + esc(p.u) + '" target="_blank" rel="noopener" data-titre="' + esc(p.t) + '">' +
+    '<span><span class="haut"><span class="genre">' + esc(p.g) + '</span><span class="titre">' + esc(p.t) + '</span></span>' +
+    '<span class="desc">' + esc(p.d) + '</span></span><span class="fleche" aria-hidden="true">↗</span></a></li>' +
+  (p.ext ? '<li><a class="page" href="' + esc(p.ext.u) + '" target="_blank" rel="noopener" data-titre="' + esc(p.t + ' · ' + p.ext.t) + '"><span><span class="haut"><span class="genre">' + esc(p.ext.t) + '</span><span class="titre">' + esc(p.t) + ' en ligne</span></span><span class="desc">' + esc(p.ext.d) + '</span></span><span class="fleche" aria-hidden="true">↗</span></a></li>' : '');
+const principalHTML = p =>
+  '<a class="principal" href="' + esc(p.u) + '" target="_blank" rel="noopener" data-titre="' + esc(p.t) + '">' +
+    '<span><span class="lib">' + esc(p.g) + ' du cours <i>· UA2 · commence ici</i></span><span class="titre">' + esc(p.t) + '</span>' +
+    '<span class="desc">' + esc(p.d) + '</span></span><span class="aller">Ouvrir ↗</span></a>';
+$('#cours-flux').innerHTML = COURS.map((c, i) => {
+  const pages = PAGES[c.id] || [];
+  const princ = pages.filter(p => p.v), extras = pages.filter(p => !p.v && p.ua === 2), ua1 = pages.filter(p => p.ua === 1);
+  const notes = c.id === 'anat' ? '<div class="annexe"><p>Notes de l’UA1</p><div class="puces">' + NOTES_UA1.map(([n, t, id]) =>
+      '<a class="puce" href="' + A(id) + '" target="_blank" rel="noopener" data-titre="' + esc('Notes – ' + n + ' ' + t) + '"><b>' + n + '</b>' + esc(t) + '</a>').join('') + '</div></div>' : '';
+  return '<section class="cours' + (princ.length ? '' : ' sombre') + '" id="cours-' + c.id + '" data-i="' + i + '" style="--c:' + varCoul(c) + '" aria-labelledby="h-' + c.id + '">' +
+    '<header><span class="raie" aria-hidden="true"></span><h3 id="h-' + c.id + '" tabindex="-1">' + esc(c.court) + '</h3>' +
+    '<p class="ident"><b>raie ' + c.raie + ' · ' + c.nm + ' nm</b> · ' + esc(c.code) + (c.long ? ' · ' + esc(c.long) : '') + '</p></header>' +
+    (princ.length ? princ.map(principalHTML).join('') : '<p class="vide">Pas encore d’atelier. Sa raie s’allumera avec la première page.</p>') +
+    (extras.length ? '<p class="sous-tete">Extras</p><ul class="pages extras">' + extras.map(lienHTML).join('') + '</ul>' : '') +
+    (ua1.length || notes ? '<div class="ua1-bloc ua1" hidden><p class="sous-tete">UA1 · <b>révision</b></p>' +
+      (ua1.length ? '<ul class="pages extras">' + ua1.map(lienHTML).join('') + '</ul>' : '') + notes + '</div>' : '') +
+    '</section>';
+}).join('');
+$('#outils').innerHTML = OUTILS.map(o =>
+  '<a class="outil' + (o.ua === 1 ? ' ua1' : '') + '" href="' + esc(o.u) + '" target="_blank" rel="noopener" data-titre="' + esc(o.t) + '"' + (o.ua === 1 ? ' hidden' : '') + '><span class="genre">' + esc(o.g) + '</span><span class="titre">' + esc(o.t) + ' ↗</span><span class="desc">' + esc(o.d) + '</span></a>').join('');
+
+/* la bascule : l'UA2 par défaut, l'UA1 seulement si on la demande */
+const nUA2 = Object.values(PAGES).flat().filter(p => p.ua === 2).length;
+const nUA1 = Object.values(PAGES).flat().filter(p => p.ua === 1).reduce((n, p) => n + (p.ext ? 2 : 1), 0) + NOTES_UA1.length;
+function voirUA1(on){
+  $('#voir-ua1').setAttribute('aria-pressed', String(on));
+  $$('.ua1').forEach(x => { x.hidden = !on; });
+  $('#raies-compte').textContent = on ? (nUA2 + nUA1) + ' pages · UA2 et UA1' : nUA2 + ' pages · UA2';
+}
+$('#voir-ua1').addEventListener('click', () => voirUA1($('#voir-ua1').getAttribute('aria-pressed') !== 'true'));
+voirUA1(false);
+
+/* ---------- le faisceau : canvas ---------- */
+const reduit = window.matchMedia('(prefers-reduced-motion: reduce)');
+/* la même requête que la feuille (ciel empilé), lue à l'envers : aucune largeur, même fractionnaire, ne tombe entre les deux */
+const CIEL_EMPILE = window.matchMedia('(max-width:999px)');
+const cv = $('#faisceau'), ctx = cv.getContext('2d'), ciel = $('#ciel');
+const style = getComputedStyle(document.documentElement);
+const RGB = COURS.map(c => { const n = parseInt(style.getPropertyValue('--' + c.couleur).trim().slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(','); });
+const BLANC = '246,248,255';
+let W = 0, H = 0, dpr = 1, geo = null, motes = [], actif = -1, pointeur = null, t0 = performance.now(), visible = true, raf = 0, dernierT = 0;
+
+const lerp = (p, q, t) => ({x:p.x + (q.x - p.x) * t, y:p.y + (q.y - p.y) * t});
+const borne = (x, a, b) => Math.min(b, Math.max(a, x));
+const doux = t => t < 0 ? 0 : t > 1 ? 1 : 1 - Math.pow(1 - t, 3);
+function distSeg(px, py, a, b){
+  const vx = b.x - a.x, vy = b.y - a.y, l2 = vx * vx + vy * vy || 1;
+  const t = borne(((px - a.x) * vx + (py - a.y) * vy) / l2, 0, 1);
+  const dx = px - (a.x + vx * t), dy = py - (a.y + vy * t);
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function mesurer(){
+  const r = ciel.getBoundingClientRect();
+  W = r.width; H = r.height; dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.max(1, Math.round(W * dpr)); cv.height = Math.max(1, Math.round(H * dpr));
+  const rel = el => { const b = el.getBoundingClientRect(); return {x:b.left - r.left, y:b.top - r.top, w:b.width, h:b.height}; };
+  const large = !CIEL_EMPILE.matches;
+  let O, cx, cy, hp, cibles;
+  if(large){
+    /* le faisceau sort de la fin de “de lumière.” ; le prisme se pose dans l'espace libre,
+       à droite de tout le texte (le sous-titre compris) et avant l'éventail des raies */
+    const lignes = $('#salut em').getClientRects(), der = lignes[lignes.length - 1];
+    O = {x:der.right - r.left + 26, y:der.top - r.top + der.height * 0.62};
+    const ports = $$('.port'), gauche = Math.min(...ports.map(p => rel(p).x)), sous = rel($('.sous'));
+    const L = Math.max(O.x, sous.x + sous.w + 24), R = gauche - 48;
+    const span = Math.max(100, R - L);
+    hp = borne(Math.min(H * 0.38, span * 0.5), 56, 196);
+    cx = L + Math.max(hp / 0.866 / 2 + 8, span * 0.42);
+    /* à hauteur du faisceau, tout entier dans le ciel */
+    cy = borne(O.y + hp * 0.15, 2 * hp / 3 + 14, H - hp / 3 - 34);
+    cibles = ports.map(p => { const d = rel(p.querySelector('.raie')); return {x:d.x + d.w / 2, y:d.y + d.h / 2}; });
+  } else {
+    const sc = rel($('#scene'));
+    hp = borne(Math.min(sc.h * 0.6, W * 0.3), 60, 130);
+    cx = W * 0.38; cy = sc.y + sc.h * 0.5;
+    O = {x:-12, y:cy + hp * 0.05};
+    cibles = COURS.map((c, i) => ({x:W + 40, y:sc.y + sc.h * (0.06 + i * 0.88 / 4)}));
+  }
+  const s = hp / 0.866;
+  const Ap = {x:cx, y:cy - 2 * hp / 3}, B = {x:cx - s / 2, y:cy + hp / 3}, C = {x:cx + s / 2, y:cy + hp / 3};
+  const P = lerp(Ap, B, 0.55);
+  const E = COURS.map((c, i) => lerp(Ap, C, 0.36 + i * 0.06));
+  geo = {O, A:Ap, B, C, P, E, T:cibles, large, cx, hp};
+  semer();
+}
+function semer(){
+  const n = Math.round(borne(W * H / 5200, 70, 240));
+  const ancien = motes;
+  motes = [];
+  for(let k = 0; k < n; k++){
+    const m = ancien[k] && ancien[k].x < W && ancien[k].y < H ? ancien[k] : null;
+    motes.push(m || {x:Math.random() * W, y:Math.random() * H, vx:(Math.random() - 0.5) * 0.012, vy:-0.004 - Math.random() * 0.01, r:0.5 + Math.random() * 1.1, ph:Math.random() * 6.28});
+  }
+}
+/* intensité d'une raie : allumée si le cours a des pages, renforcée au survol, les autres s'effacent */
+function force(i){
+  let a = PAGES[COURS[i].id] ? 0.9 : 0.3;
+  if(actif >= 0) a = i === actif ? 1.15 : a * 0.32;
+  return a;
+}
+function trait(a, b, rgb, alpha, l){
+  if(alpha <= 0.002) return;
+  ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+  ctx.strokeStyle = 'rgba(' + rgb + ',' + (alpha * 0.05) + ')'; ctx.lineWidth = l * 11; ctx.stroke();
+  ctx.strokeStyle = 'rgba(' + rgb + ',' + (alpha * 0.16) + ')'; ctx.lineWidth = l * 3.6; ctx.stroke();
+  ctx.strokeStyle = 'rgba(' + rgb + ',' + Math.min(1, alpha * 0.92) + ')'; ctx.lineWidth = l; ctx.stroke();
+}
+function dessiner(t){
+  if(!geo) return;
+  const g = geo, ecoule = reduit.matches ? 1e9 : t - t0;
+  const pFaisceau = doux(ecoule / 650);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.lineCap = 'round';
+  ctx.globalCompositeOperation = 'lighter';
+
+  /* le faisceau blanc */
+  const bout = lerp(g.O, g.P, pFaisceau);
+  trait(g.O, bout, BLANC, 0.95, 1.8);
+
+  /* le prisme : du verre */
+  ctx.globalCompositeOperation = 'source-over';
+  const verre = ctx.createLinearGradient(g.B.x, g.A.y, g.C.x, g.C.y);
+  verre.addColorStop(0, 'rgba(200,215,255,0.10)'); verre.addColorStop(0.55, 'rgba(160,180,255,0.04)'); verre.addColorStop(1, 'rgba(220,200,255,0.08)');
+  ctx.beginPath(); ctx.moveTo(g.A.x, g.A.y); ctx.lineTo(g.B.x, g.B.y); ctx.lineTo(g.C.x, g.C.y); ctx.closePath();
+  ctx.fillStyle = verre; ctx.fill();
+  ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(225,232,255,0.5)'; ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.globalCompositeOperation = 'lighter';
+  const eclat = doux((ecoule - 560) / 380) * (1 - 0.6 * doux((ecoule - 940) / 600));
+  if(eclat > 0){
+    const rg = ctx.createRadialGradient(g.P.x, g.P.y, 0, g.P.x, g.P.y, g.hp * 0.9);
+    rg.addColorStop(0, 'rgba(255,255,255,' + (0.35 * eclat) + ')'); rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(g.P.x, g.P.y, g.hp * 0.9, 0, 6.2832); ctx.fill();
+  }
+  /* la dispersion dans le verre, puis les cinq raies */
+  COURS.forEach((c, i) => {
+    const p = doux((ecoule - 720 - i * 110) / 650);
+    if(p <= 0) return;
+    const a = force(i);
+    trait(g.P, lerp(g.P, g.E[i], Math.min(1, p * 2)), RGB[i], 0.4 * Math.min(1, a), 0.9);
+    if(p > 0.15) trait(g.E[i], lerp(g.E[i], g.T[i], (p - 0.15) / 0.85), RGB[i], a, i === actif ? 2.3 : 1.4);
+  });
+  /* légende dans la lumière */
+  if(g.large && ecoule > 900){
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.font = '600 11px "Atkinson Hyperlegible Mono", ui-monospace, monospace';
+    ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(130,140,162,' + doux((ecoule - 900) / 600) + ')';
+    ctx.fillText('dispersion · n(λ)', g.cx, g.C.y + 24);
+    ctx.globalCompositeOperation = 'lighter';
+  }
+  /* la poussière qui s'éclaire dans la lumière (effet Tyndall) */
+  const segs = [{a:g.O, b:bout, rgb:BLANC, f:0.9}];
+  COURS.forEach((c, i) => { const p = doux((ecoule - 720 - i * 110) / 650); if(p > 0.15) segs.push({a:g.E[i], b:lerp(g.E[i], g.T[i], (p - 0.15) / 0.85), rgb:RGB[i], f:force(i), i}); });
+  const dt = reduit.matches ? 0 : Math.min(48, t - (dernierT || t)); dernierT = t;
+  for(const m of motes){
+    if(dt){
+      m.x += m.vx * dt; m.y += m.vy * dt + Math.sin(t / 1400 + m.ph) * 0.006 * dt;
+      if(pointeur){ const dx = m.x - pointeur.x, dy = m.y - pointeur.y, d2 = dx * dx + dy * dy; if(d2 < 4900 && d2 > 1){ const k = 0.018 * dt / Math.sqrt(d2); m.x += dx * k; m.y += dy * k; } }
+      if(m.y < -4) { m.y = H + 4; m.x = Math.random() * W; }
+      if(m.x < -4) m.x = W + 4; else if(m.x > W + 4) m.x = -4;
+    }
+    let lum = 0.05, rgb = BLANC, best = 0;
+    for(const s of segs){
+      const d = distSeg(m.x, m.y, s.a, s.b);
+      if(d < 24){
+        const l = Math.pow(1 - d / 24, 2) * s.f;
+        lum += l;
+        if(l > best){ best = l; rgb = s.rgb; }
+        if(dt && s.i === actif && actif >= 0){ const vx = s.b.x - s.a.x, vy = s.b.y - s.a.y, n = Math.hypot(vx, vy) || 1; m.x += vx / n * 0.03 * dt; m.y += vy / n * 0.03 * dt; }
+      }
+    }
+    if(pointeur){ const d = Math.hypot(m.x - pointeur.x, m.y - pointeur.y); if(d < 140) lum += Math.pow(1 - d / 140, 2) * 0.55; }
+    ctx.fillStyle = 'rgba(' + rgb + ',' + Math.min(1, lum) + ')';
+    ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, 6.2832); ctx.fill();
+  }
+  /* la lanterne du pointeur */
+  if(pointeur){
+    const rg = ctx.createRadialGradient(pointeur.x, pointeur.y, 0, pointeur.x, pointeur.y, 150);
+    rg.addColorStop(0, 'rgba(255,244,225,0.07)'); rg.addColorStop(1, 'rgba(255,244,225,0)');
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(pointeur.x, pointeur.y, 150, 0, 6.2832); ctx.fill();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+}
+function boucle(t){ raf = 0; dessiner(t); if(visible && !reduit.matches && !document.hidden) raf = requestAnimationFrame(boucle); }
+function relancer(){ if(reduit.matches){ dessiner(performance.now()); return; } if(!raf && visible && !document.hidden) raf = requestAnimationFrame(boucle); }
+
+if(window.ResizeObserver) new ResizeObserver(() => requestAnimationFrame(() => { mesurer(); relancer(); })).observe(ciel);
+else window.addEventListener('resize', () => { mesurer(); relancer(); });
+if(window.IntersectionObserver) new IntersectionObserver(es => { visible = es[0].isIntersecting; relancer(); }).observe(ciel);
+document.addEventListener('visibilitychange', relancer);
+if(reduit.addEventListener) reduit.addEventListener('change', () => { mesurer(); relancer(); });
+if(CIEL_EMPILE.addEventListener) CIEL_EMPILE.addEventListener('change', () => requestAnimationFrame(() => { mesurer(); relancer(); }));
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(() => { mesurer(); relancer(); });
+
+ciel.addEventListener('pointermove', e => { const r = ciel.getBoundingClientRect(); pointeur = {x:e.clientX - r.left, y:e.clientY - r.top}; if(reduit.matches) dessiner(performance.now()); });
+ciel.addEventListener('pointerleave', () => { pointeur = null; if(reduit.matches) dessiner(performance.now()); });
+
+/* ---------- une raie s'allume quand on vise son cours ---------- */
+function allumer(i){
+  actif = i;
+  $$('.port').forEach(p => p.classList.toggle('actif', +p.dataset.i === i));
+  if(reduit.matches) dessiner(performance.now());
+}
+$$('.port').forEach(p => {
+  const i = +p.dataset.i;
+  p.addEventListener('pointerenter', () => allumer(i));
+  p.addEventListener('pointerleave', () => allumer(-1));
+  p.addEventListener('focus', () => allumer(i));
+  p.addEventListener('blur', () => allumer(-1));
+  p.addEventListener('click', () => {
+    const sec = $('#cours-' + COURS[i].id); if(!sec) return;
+    /* on vise la carte par sa position mesurée, et on ne lui donne le focus qu'une fois le défilement fini :
+       un focus pendant un défilement doux peut l'interrompre sur téléphone */
+    const y = Math.max(0, sec.getBoundingClientRect().top + window.scrollY - 12);
+    const h3 = sec.querySelector('h3');
+    let fait = false;
+    const fin = () => { if(fait) return; fait = true; if(h3) h3.focus({preventScroll:true}); };
+    if(reduit.matches){ window.scrollTo(0, y); fin(); }
+    else {
+      const depart = window.scrollY;
+      window.scrollTo({top:y, behavior:'smooth'});
+      /* un défilement doux peut ne jamais partir (certains téléphones, une vue intégrée) : alors on saute */
+      setTimeout(() => { if(Math.abs(window.scrollY - depart) < 2 && Math.abs(y - depart) > 2){ window.scrollTo(0, y); fin(); } }, 260);
+      if('onscrollend' in window) window.addEventListener('scrollend', fin, {once:true});
+      setTimeout(fin, 900);
+    }
+    sec.classList.remove('eclaire'); void sec.offsetWidth; sec.classList.add('eclaire');
+  });
+});
+$$('.cours').forEach(s => {
+  const i = +s.dataset.i;
+  s.addEventListener('pointerenter', () => allumer(i));
+  s.addEventListener('pointerleave', () => allumer(-1));
+  s.addEventListener('focusin', () => allumer(i));
+  s.addEventListener('focusout', () => allumer(-1));
+});
+
+mesurer();
+t0 = performance.now();
+relancer();
+})();
+</script>
+</body></html>

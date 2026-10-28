@@ -1,0 +1,339 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Drills Rx</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Parti pris : un seul thème, sombre et or. Tout est posé explicitement sur
+   :root, avec color-scheme:dark pour que les contrôles natifs suivent. */
+:root{
+  --noir:#0B0C10; --fond:#101219; --carte:#161922; --creux:#1C202B;
+  --rim:#2A2F3D;                       /* filet neutre */
+  --or:#D4AF5C; --or-vif:#EFCD7E; --or-creux:#231D0E;
+  --encre:#ECE8DF; --terne:#8D94A6;
+  --juste:#5FC48B; --juste-creux:#102218;
+  --faux:#E8736B; --faux-creux:#2A1413;
+  --d:'Archivo',system-ui,sans-serif;
+  --s:'Fraunces',Georgia,serif;
+  --m:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--fond);color:var(--encre);font-family:var(--d);font-size:16px;
+  line-height:1.55;display:flex;flex-direction:column;
+  background-image:radial-gradient(1200px 600px at 50% -10%, #171A24 0%, var(--fond) 60%)}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--or);outline-offset:2px;border-radius:6px}
+
+/* ---------- barre ---------- */
+.top{flex:none;border-bottom:1px solid var(--rim);background:rgba(11,12,16,.72);backdrop-filter:blur(8px)}
+.top .in{max-width:44rem;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:.65rem}
+.row{display:flex;align-items:center;gap:.5rem}
+.marque{font-family:var(--s);font-weight:600;font-size:1.02rem;letter-spacing:-.01em}
+.marque em{font-style:normal;color:var(--or)}
+.spacer{flex:1}
+.chip{font-family:var(--d);font-size:.74rem;font-weight:600;letter-spacing:.04em;color:var(--terne);
+  border:1px solid var(--rim);border-radius:999px;padding:.24rem .58rem;background:var(--carte)}
+.chip[aria-pressed="true"]{color:var(--noir);background:var(--or);border-color:var(--or)}
+.chip:hover{color:var(--encre)}
+.chip[aria-pressed="true"]:hover{color:var(--noir)}
+.chip.ico{padding:.26rem .36rem;display:inline-flex;align-items:center}
+.chip.ico svg{display:block}
+.confirm{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;margin-top:.55rem;
+  border:1px solid var(--faux);background:var(--faux-creux);border-radius:9px;padding:.5rem .65rem;
+  font-size:.82rem}
+.confirm .txt{flex:1;min-width:11rem}
+.confirm button{font-family:var(--d);font-size:.76rem;font-weight:600;border-radius:6px;
+  padding:.28rem .6rem;border:1px solid var(--rim);background:var(--carte)}
+.confirm button.oui{background:var(--faux);border-color:var(--faux);color:var(--noir)}
+.lien{font-family:var(--d);font-size:.78rem;font-weight:600;color:var(--terne);
+  text-decoration:underline;text-underline-offset:3px;margin-top:.7rem}
+.lien:hover{color:var(--faux)}
+.jauge{height:3px;background:var(--creux);border-radius:99px;margin-top:.6rem;overflow:hidden}
+.jauge i{display:block;height:100%;background:linear-gradient(90deg,var(--or),var(--or-vif));
+  transition:width .4s ease}
+.compte{display:flex;gap:.9rem;margin-top:.42rem;font-size:.72rem;font-weight:600;color:var(--terne)}
+.compte b{color:var(--encre);font-variant-numeric:tabular-nums}
+.compte .j b{color:var(--juste)} .compte .f b{color:var(--faux)}
+
+/* ---------- scène ---------- */
+main{flex:1;overflow-y:auto;max-width:44rem;width:100%;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:1.4rem 1rem}
+.eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--or);
+  display:flex;align-items:center;gap:.5rem}
+.eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--or-creux),transparent)}
+.question{font-family:var(--s);font-size:clamp(1.3rem,4.4vw,1.72rem);font-weight:400;line-height:1.3;
+  text-wrap:balance;margin:.7rem 0 0}
+/* Les mises en situation de facturation font plusieurs phrases : à la taille
+   d'affichage elles repoussent les quatre choix hors de l'écran. On descend
+   d'un cran et on repasse en interlignage de lecture. */
+.question.longue{font-size:clamp(1.08rem,3.5vw,1.26rem);line-height:1.45;text-wrap:pretty}
+
+/* l'ordonnance : le bloc qui doit respirer et s'aligner */
+.rx{font-family:var(--m);font-size:clamp(.92rem,3.4vw,1.06rem);font-weight:500;white-space:pre;
+  background:var(--noir);border:1px solid var(--or-creux);border-left:3px solid var(--or);
+  border-radius:10px;padding:.9rem 1rem;margin:1.05rem 0 0;overflow-x:auto;
+  box-shadow:inset 0 0 40px -22px var(--or)}
+.donnees{font-family:var(--m);font-size:.9rem;white-space:pre;background:var(--creux);
+  border:1px solid var(--rim);border-radius:10px;padding:.8rem .95rem;margin:1.05rem 0 0;overflow-x:auto;color:var(--encre)}
+
+/* ---------- les quatre choix ---------- */
+.choix{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.25rem}
+@media(max-width:560px){.choix{grid-template-columns:1fr}}
+.opt{display:flex;gap:.65rem;align-items:flex-start;text-align:left;width:100%;
+  background:var(--carte);border:1px solid var(--rim);border-radius:12px;padding:.85rem .9rem;
+  font-size:.93rem;line-height:1.4;transition:border-color .15s,background .15s,transform .08s;
+  position:relative}
+.opt:hover:not(:disabled){border-color:var(--or);background:#1A1E28}
+.opt:active:not(:disabled){transform:translateY(1px)}
+.opt .lettre{font-family:var(--m);font-size:.74rem;font-weight:600;color:var(--or);
+  border:1px solid var(--or-creux);border-radius:5px;width:1.35rem;height:1.35rem;flex:none;
+  display:grid;place-items:center;margin-top:.08rem}
+.opt:disabled{cursor:default}
+.opt.bon{border-color:var(--juste);background:var(--juste-creux)}
+.opt.bon .lettre{color:var(--juste);border-color:var(--juste)}
+.opt.mauvais{border-color:var(--faux);background:var(--faux-creux)}
+.opt.mauvais .lettre{color:var(--faux);border-color:var(--faux)}
+.opt.estompe{opacity:.46}
+.verdict{font-family:var(--d);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  position:absolute;top:.5rem;right:.65rem}
+.opt.bon .verdict{color:var(--juste)} .opt.mauvais .verdict{color:var(--faux)}
+
+/* ---------- explication ---------- */
+.expl{margin-top:1.1rem;border:1px solid var(--or-creux);border-radius:12px;background:var(--creux);
+  padding:1rem 1.05rem;font-size:.94rem;line-height:1.6}
+.expl .tete{font-family:var(--d);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--or);margin-bottom:.45rem}
+.expl .src{margin-top:.7rem;font-size:.72rem;color:var(--terne);font-family:var(--d);letter-spacing:.03em}
+.expl code,.expl .mono{font-family:var(--m);font-size:.9em;background:var(--noir);padding:.08em .32em;border-radius:4px}
+
+/* ---------- commandes ---------- */
+.ctl{flex:none;max-width:44rem;width:100%;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 1.1rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+  padding:.92rem 1rem;border-radius:11px;font-family:var(--d);font-weight:600;font-size:.98rem;
+  border:1px solid var(--rim);background:var(--carte);transition:transform .08s,border-color .15s}
+.btn:hover{border-color:var(--or)}
+.btn:active{transform:translateY(1px)}
+.btn.or{background:linear-gradient(180deg,var(--or-vif),var(--or));color:var(--noir);border-color:transparent}
+.btn.or:hover{filter:brightness(1.06)}
+.btn kbd{font-family:var(--m);font-size:.7rem;opacity:.6;font-weight:400}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+
+/* ---------- fin ---------- */
+.fin{text-align:center;padding:2.2rem 0}
+.fin .grand{font-family:var(--s);font-size:clamp(1.7rem,6.5vw,2.3rem);font-weight:600;color:var(--or);
+  margin:0 0 .5rem;text-wrap:balance}
+.fin p{color:var(--terne);margin:.4rem 0 0;font-size:.95rem}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin:1.6rem 0}
+.tuiles div{background:var(--carte);border:1px solid var(--rim);border-radius:11px;padding:.85rem .4rem}
+.tuiles b{display:block;font-family:var(--s);font-size:1.6rem;font-variant-numeric:tabular-nums;color:var(--or)}
+.tuiles span{font-size:.7rem;color:var(--terne);font-weight:600}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="top"><div class="in">
+  <div class="row">
+    <div class="marque">Drills <em>Rx</em></div>
+    <div class="spacer"></div>
+    <button class="chip" data-sec="toutes" aria-pressed="true">Toutes</button>
+    <button class="chip" data-sec="A" aria-pressed="false">A</button>
+    <button class="chip" data-sec="B" aria-pressed="false">B</button>
+    <button class="chip" data-sec="C" aria-pressed="false">C</button>
+    <button class="chip ico" id="bReset" title="Remettre la progression à zéro" aria-label="Remettre la progression à zéro"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.9-4.15"/><path d="M13.6 2.2v3.1h-3.1"/></svg></button>
+  </div>
+  <div class="jauge"><i id="jauge" style="width:0"></i></div>
+  <div class="compte">
+    <span><b id="cPos">0</b> / <b id="cTot">0</b></span>
+    <span class="j"><b id="cJuste">0</b> justes</span>
+    <span class="f"><b id="cFaux">0</b> ratés</span>
+    <span><b id="cTaux">—</b></span>
+  </div>
+  <div id="zoneReset"></div>
+</div></div>
+
+<main id="scene"></main>
+<div class="ctl" id="ctl"></div>
+
+<script>
+/* ============================================================
+   Les drills, injectés à la construction.
+   ============================================================ */
+const DRILLS = [{"id":"A-01","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -1.5 -0.75 x 090\nOS  -1.25 -0.50 x 085","choix":["Aucune erreur : les deux yeux respectent le format du cours.","Erreur d'axe : il faut écrire « x 90 » plutôt que « x 090 ».","Erreur de format sur la sphère, à corriger soi-même : « -1.50 -0.75 x 090 ».","Sphère incomplète : la faire préciser par le prescripteur avant d'aller plus loin."],"bonne":2,"explication":"La sphère de l'OD n'a qu'une décimale : « Sphère à écrire avec deux décimales ». La valeur et le signe sont connus (-1.5, c'est -1.50), donc c'est une erreur de FORMAT que tu corriges toi-même, sans déranger le prescripteur. Le choix « aucune erreur » laisse passer la décimale manquante ; le choix sur l'axe applique une règle au mauvais champ, car « x 090 » est déjà la bonne graphie à trois chiffres ; et faire préciser la sphère inverse les deux actions, puisque rien n'y manque.","source":"Corrigé 40 ex., Q1"},{"id":"A-02","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur selon le format demandé dans le cahier ?","rx":"OD  -2.25 -0.75 x 180\nOS  -2.00 -0.50 x 005","choix":["Aucune erreur : « Aucun changement ».","L'axe « x 005 » doit s'écrire « x 5 », sans les zéros.","Les deux cylindres devraient être positifs.","Il manque l'ADD aux deux yeux : à faire préciser."],"bonne":0,"explication":"Deux décimales partout, axes à trois chiffres compris entre 001 et 180, cylindres tous deux négatifs, incréments d'un quart de dioptrie : « Aucun changement ». « x 005 » est justement la graphie exigée, car « il est standard d'inclure trois chiffre y inclus les zéros ». Exiger des cylindres positifs renverse la règle, qui demande seulement que « les deux cyl doivent être soit + ou - » — c'est le cas ici. Et réclamer une ADD invente un manque : l'absence d'addition signifie simplement Simple Vision.","source":"Corrigé 40 ex., Q2"},{"id":"A-03","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -1.75 -0.50\nOS  -1.50 -0.25 x 170","choix":["Corriger l'OD en « -1.75 -0.50 x 180 », l'axe par défaut.","Il manque l'axe de l'OD : « Axe à faire préciser » auprès du prescripteur.","Aucune erreur : l'axe est facultatif quand le cylindre est faible.","Erreur de format : écrire « -1.75 -0.50 x ___ » pour marquer la case vide."],"bonne":1,"explication":"L'OD porte un cylindre sans axe, et une « Rx Torique dois toujour inclure Sph Cyl et Axe ». Mais la valeur de l'axe ne se déduit de rien : « Une information manquante ne doit pas être inventée » → « Axe à faire préciser ». Choisir « x 180 par défaut » invente la donnée, le péché capital de la section ; dire que l'axe est facultatif contredit la règle qui lie cylindre et axe ; et noter une case vide ne corrige rien, l'ordonnance reste inanalysable.","source":"Corrigé 40 ex., Q6"},{"id":"A-04","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -1.25 -0.25 x 190\nOS  -1.00 -0.50 x 095","choix":["Corriger l'axe en « x 090 » : 190 est une faute de frappe évidente.","Corriger l'axe en « x 010 », soit 190 − 180.","Aucune erreur : l'axe peut aller jusqu'à 360 degrés.","« Axe hors de 001 à 180, à faire préciser » : on ne le corrige pas soi-même."],"bonne":3,"explication":"« L'axe du cylindre est toujours compris entre 001 et 180 degrés » ; un axe de 190 « n'existe pas, doit être entre 001 et 180 ». Comme l'axe réel est inconnu, la seule action est de le faire préciser. Les choix « x 090 » et « x 010 » inventent tous deux une valeur plausible — exactement ce que « ne pas inventer » interdit, et soustraire 180 n'est pas une règle du cours. Le choix « jusqu'à 360 degrés » invente une plage qui n'existe nulle part dans la matière.","source":"Corrigé 40 ex., Q7"},{"id":"A-05","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  1.25 -0.25 x 085\nOS  1.25 -0.25 x 088","choix":["« Signe de la sphère à faire préciser » : le prescripteur doit trancher le « +/-? ».","Corriger en « -1.25 », puisque le cylindre est négatif.","Corriger en « +1.25 » : sans signe, une puissance est positive par convention.","Aucune erreur : le signe de la sphère se déduit de l'axe."],"bonne":0,"explication":"Une sphère sans signe ne veut rien dire : le prof écrit lui-même « +/-? 1.25 -0.25 x 085 » sur son corrigé, donc « Signe de la sphère à faire préciser ». Rien dans l'ordonnance ne permet de choisir entre myope et hypermétrope. Déduire « -1.25 » du cylindre négatif ou « +1.25 » d'une prétendue convention invente la donnée manquante dans les deux cas. Et l'axe ne dit rien du signe de la sphère : il ne donne que l'orientation de l'astigmatisme.","source":"Corrigé 40 ex., Q8 ; diapositive « Trouvez l'erreur » (M3_a)"},{"id":"A-06","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -2.00 -0.50 x 180   3.00 Δ\nOS  -1.75 -0.25 x 175","choix":["Erreur de format : écrire « 3.00 Δ BI », la base la plus fréquente.","Erreur de format : le prisme doit porter un signe, soit « +3.00 Δ ».","« Base du prisme à faire préciser » : un prisme sans direction est inutilisable.","Aucune erreur : la base est facultative lorsque le prisme est au même œil qu'un cylindre."],"bonne":2,"explication":"Le prisme « doit inclure la direction de la base » (BI, BE, BH, BB) ; ici elle manque et ne se devine pas, donc « Base du prisme à faire préciser ». Écrire « BI » parce que c'est la base la plus courante invente la donnée manquante. Ajouter un signe est doublement faux, car pour le prisme « +/- non applicable ». Et la base n'est jamais facultative : avec la puissance, elle constitue la moitié de l'information prismatique.","source":"Corrigé 40 ex., Q3"},{"id":"A-07","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -3.00 -0.75 x 090   -2.00 Δ BI\nOS  -2.75 -0.50 x 085","choix":["Faire préciser la puissance du prisme : le signe négatif la rend ambiguë.","Erreur de format à corriger soi-même : « 2.00 Δ BI ». « Pas de signe négatif devant la puissance prismatique ».","Corriger la base en « BE » : un prisme noté négatif est toujours base externe.","Aucune erreur : le prisme prend le signe de la sphère."],"bonne":1,"explication":"La puissance prismatique ne porte jamais de signe : « Force de déplacement Δ direction de déplacement — Donc +/- non applicable ». Toute l'information est présente (2.00 Δ, base interne), donc tu biffes le signe toi-même et tu écris « 2.00 Δ BI ». Faire préciser inverse les deux actions, puisque rien ne manque. Transformer le signe en base « BE » ou faire suivre le prisme au signe de la sphère sont deux règles inventées : la base est prescrite, elle ne se calcule pas.","source":"Corrigé 40 ex., Q4"},{"id":"A-08","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  +2 -1.00 x 060\nOS  +1.75 -0.75 x 055","choix":["Aucune erreur : « +2 » et « +2.00 » sont équivalents.","Faire préciser la sphère de l'OD auprès du prescripteur.","Corriger l'axe en « x 60 » pour l'aligner sur la graphie de « +2 ».","Corriger soi-même en « +2.00 -1.00 x 060 » : deux décimales obligatoires."],"bonne":3,"explication":"« Les unités de puissance doivent être exprimé en quart de dioptrie et il faut toujours inclure les DEUX décimale » : « +2 » s'écrit « +2.00 ». La valeur et le signe sont connus, donc c'est une erreur de format que tu corriges, exactement comme le prof le fait sur sa diapositive. Dire que les deux graphies sont équivalentes nie la règle ; faire préciser dérange le prescripteur pour une information qui ne manque pas ; et raccourcir l'axe en « x 60 » abîme un champ qui était déjà conforme aux trois chiffres du cours.","source":"Corrigé 40 ex., Q10 ; diapositive « Trouvez l'erreur » (M3_a)"},{"id":"A-09","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur selon le format demandé dans le cahier ?","rx":"OD  -4.00 -1.00 x 010   2.00 Δ BI\nOS  -3.75 -0.75 x 170   2.00 Δ BI","choix":["Le prisme doit porter un signe négatif, comme la sphère.","Les axes 010 et 170 sont incompatibles entre les deux yeux : à faire préciser.","Aucune erreur : « Aucun changement ».","Un prisme aux deux yeux est interdit : en faire préciser un seul."],"bonne":2,"explication":"Deux décimales, axes à trois chiffres dans 001–180, cylindres tous deux négatifs, et chaque prisme porte une puissance ET une base : rien à reprendre. Le signe réclamé sur le prisme n'existe pas, « +/- non applicable ». Des axes différents d'un œil à l'autre sont normaux : c'est le format du cylindre, pas l'axe, qui doit être commun aux deux yeux. Et la seule interdiction du cours est de « ne superpose jamais Horizontal ou Vertical » au même œil, pas de prescrire un prisme aux deux yeux.","source":"Corrigé 40 ex., Q5 et Q9"},{"id":"A-10","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  +0.75 -0.50 x 7\nOS  +0.50 -0.25 x 012","choix":["Corriger soi-même en « +0.75 -0.50 x 007 » : « Axe sur trois chiffres selon le format du cours ».","Faire préciser l'axe de l'OD : « x 7 » est ambigu.","Corriger l'axe en « x 070 » : un axe à un chiffre se complète par la droite.","Aucune erreur : les zéros de l'axe sont facultatifs."],"bonne":0,"explication":"L'axe se note sur trois chiffres, zéros inclus (« x 005 », « x 035 ») : « x 7 » devient donc « x 007 ». La valeur, elle, est connue et bien comprise entre 001 et 180, donc c'est du format : tu corriges sans déranger le prescripteur, ce que le choix « faire préciser » fait à tort. « x 070 » invente un tout autre axe en ajoutant le zéro du mauvais côté. Et dire que les zéros sont facultatifs contredit directement le format du cours.","source":"Corrigé 40 ex., Q13"},{"id":"A-11","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -2.50 -0.75 x 095   ADD +1.5\nOS  -2.25 -0.50 x 090   ADD +1.5","choix":["Faire préciser l'ADD : « +1.5 » pourrait être +1.50 comme +1.75.","Aucune erreur : l'ADD s'écrit sans décimale inutile.","Erreur : l'ADD doit être négative à l'œil le plus myope.","Corriger soi-même : « ADD +1.50. Deux décimales »."],"bonne":3,"explication":"La règle des deux décimales vaut pour toute mesure en dioptrie, l'addition comprise : « ADD +1.50. Deux décimales ». « +1.5 » et « +1.50 » désignent la même puissance, donc rien ne manque : le premier choix invente une ambiguïté entre +1.50 et +1.75 qui n'existe pas. Prétendre que l'ADD se passe de décimale nie la règle. Et l'ADD est toujours notée en positif, « + X.XX » — elle ne suit pas le signe de la myopie.","source":"Corrigé 40 ex., Q15"},{"id":"A-12","section":"A","titre":"Identification des erreurs","enonce":"Combien d'erreurs cette ordonnance comporte-t-elle, et quelle action pour chacune ?","rx":"OD  -100\nOS  -1.25 -0.25 x 190","choix":["Une seule erreur : la sphère de l'OD, à corriger en « -1.00 ».","Deux erreurs, deux actions : « -100 » se corrige en « -1.00 », et l'axe « x 190 », qui « n'existe pas, doit être entre 001 et 180 », est à faire préciser.","Deux erreurs, à corriger toutes les deux soi-même : « -1.00 » et « x 010 ».","Deux erreurs, à faire préciser toutes les deux : la sphère et l'axe."],"bonne":1,"explication":"L'exercice du prof contient deux fautes, et elles n'appellent pas la même action : « -100 » est un problème de format dont la valeur est connue, tu écris « -1.00 » ; « x 190 » est une donnée impossible, tu la fais préciser. S'arrêter à la première erreur fait manquer l'axe — il faut toujours finir la vérification des deux yeux. Corriger l'axe en « x 010 » invente la donnée manquante. Et faire préciser la sphère inverse l'action : rien ne lui manque, sinon ses décimales.","source":"Diapositive « Trouvez l'erreur » (M3_a) ; corrigé 40 ex., Q1 et Q7"},{"id":"A-13","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur, et quelle est la bonne action ?","rx":"OD  -4.25 -0.75 x 180\nOS  -4.00 +0.50 x 145","choix":["Aucune erreur : chaque œil peut avoir son propre format de cylindre.","Faire préciser l'axe de l'OS : il ne correspond pas à celui de l'OD.","« Les deux cyl doivent être soit + ou - » : « Cylindre et cohérence de la correction à faire préciser; ne pas inventer ».","Corriger l'OS en « -4.00 -0.50 x 145 » : il suffit d'inverser le signe du cylindre."],"bonne":2,"explication":"Les deux yeux sont écrits dans des formats de cylindre opposés, ce que le prof interdit : « les deux cyl doivent être soit + ou - ». On ne réécrit pas l'œil fautif, on fait préciser l'ordonnance au prescripteur. Le choix « chaque œil son format » nie la règle. Faire préciser l'axe cible le mauvais champ : des axes différents aux deux yeux sont normaux, c'est le signe du cylindre qui cloche. Et inverser simplement le signe du cylindre invente une correction qui change la puissance réelle de l'œil.","source":"Corrigé 40 ex., Q12 ; diapositive « Trouvez l'erreur » (M3_a)"},{"id":"A-14","section":"A","titre":"Identification des erreurs","enonce":"Cette ordonnance comporte-t-elle une erreur selon le format demandé dans le cahier ?","rx":"OD  Plano -3.25 x 180\nOS  -3.50","choix":["Aucune erreur : « Aucun changement ».","Il manque la sphère de l'OD : « Plano » n'est pas une puissance, à faire préciser.","L'OS est incomplet : « Rx Torique dois toujour inclure Sph Cyl et Axe », donc ajouter « x 180 ».","Erreur de format : écrire « 0.00 » au lieu de « Plano » et « -3.50 DS » à l'OS."],"bonne":0,"explication":"C'est la version corrigée de l'exercice du prof : « PLANO (PL) = 0.00 D » est bel et bien une puissance, donc l'OD contient Sph, Cyl et Axe comme l'exige la règle « Rx Torique dois toujour inclure Sph Cyl et Axe » — réclamer sa sphère reviendrait à faire préciser une information déjà écrite. L'OS, sans cylindre ni axe, est une ordonnance sphérique parfaitement valide : lui ajouter un axe inventerait un astigmatisme, et la règle du torique ne s'applique qu'en présence d'un cylindre. Quant à « 0.00 » et « DS », ce sont des graphies que le cours n'impose pas : « Si il n'y a pas de force dioptrique, donc force 0.00 D, le terme PLANO ou PL est indiqué ».","source":"Corrigé 40 ex., Q16 ; diapositive « Trouvez l'erreur » (M3_a)"},{"id":"B-01","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +1.75 DS\nOS  +2.25 DS","choix":["OU myope sphérique","OU hypermétrope sphérique","OU hypermétrope torique","OU hypermétrope sphérique avec presbytie"],"bonne":1,"explication":"Étape 1 : aucun cylindre n'est écrit, l'analyse est donc permise. Étape 2 : la sphère est positive aux deux yeux → hypermétrope ; étape 3 : rien sous CYL ni AXE → sphérique. Les étapes 4 et 5 ne produisent aucune étiquette, puisqu'il n'y a ni Δ ni ADD, et les deux yeux tombent dans la même catégorie, d'où le OU. « OU myope sphérique » confond le signe de la sphère, « OU hypermétrope torique » invente un cylindre absent, et « avec presbytie » ajoute une ADD qui n'est pas écrite.","source":"Corrigé 40 ex., Q17"},{"id":"B-02","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -2.50 -0.75 x 180\nOS  -3.00 -1.25 x 005","choix":["OU myope sphérique","OU hypermétrope torique","OU myope torique","OU myope torique avec presbytie"],"bonne":2,"explication":"Le cylindre est négatif aux deux yeux : l'étape 1 autorise l'analyse. Étape 2 : sphère négative → myope ; étape 3 : un CYL accompagné de son AXE → torique. Aucun prisme et aucune ADD, donc les étapes 4 et 5 n'ajoutent rien. « OU myope sphérique » rate le cylindre, « OU hypermétrope torique » inverse le signe de la sphère, et « avec presbytie » ajoute une addition inexistante.","source":"Corrigé 40 ex., Q18"},{"id":"B-03","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -4.00 DS\nOS  -3.75 DS\nADD +2.00","choix":["OU myope sphérique avec presbytie","OU myope sphérique","OU hypermétrope sphérique avec presbytie","OU myope torique avec presbytie"],"bonne":0,"explication":"Sphère négative aux deux yeux → myope (étape 2) ; aucune donnée sous CYL ni AXE → sphérique (étape 3) ; l'étape 5 trouve une ADD +2.00 → « avec presbytie », le patient étant adulte, l'exception de l'enfant ne s'applique pas. « OU myope sphérique » oublie l'ADD, « OU hypermétrope sphérique avec presbytie » confond le signe de la sphère, et « OU myope torique avec presbytie » invente un astigmatisme.","source":"Corrigé 40 ex., Q19"},{"id":"B-04","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +2.00 -1.00 x 075\nOS  +1.75 -0.50 x 090\nADD +1.75","choix":["OU myope torique avec presbytie","OU hypermétrope sphérique avec presbytie","OU hypermétrope torique","OU hypermétrope torique avec presbytie"],"bonne":3,"explication":"Les cylindres sont négatifs, l'étape 1 est franchie. Étape 2 : sphères positives → hypermétrope ; étape 3 : CYL et AXE présents → torique ; étape 5 : ADD +1.75 → avec presbytie. « OU myope torique avec presbytie » confond le signe de la sphère, « OU hypermétrope sphérique avec presbytie » rate le cylindre, et « OU hypermétrope torique » oublie l'addition.","source":"Corrigé 40 ex., Q20"},{"id":"B-05","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -4.00 DS  2 Δ BI\nOS  -4.25 DS  2 Δ BI","choix":["OU myope sphérique","OU myope sphérique avec prisme","OU myope torique avec prisme","OU myope sphérique avec presbytie"],"bonne":1,"explication":"Aucun cylindre n'est écrit : l'étape 2 lit une sphère négative → myope, et l'étape 3 ne trouve ni CYL ni AXE → sphérique. L'étape 4 trouve un prisme, 2 Δ BI aux deux yeux → « avec prisme » ; l'étape 5 ne trouve aucune ADD. « OU myope sphérique » rate le prisme, « OU myope torique avec prisme » invente un cylindre, et « OU myope sphérique avec presbytie » lit le Δ comme une addition — or le prisme est une force de déplacement avec une base, jamais un pouvoir d'addition.","source":"Corrigé 40 ex., Q21"},{"id":"B-06","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -3.75 -1.00 x 085\nOS  -3.50 -0.75 x 095\nADD +1.75","choix":["OU myope torique","OU myope sphérique avec presbytie","OU myope torique avec presbytie","OU hypermétrope torique avec presbytie"],"bonne":2,"explication":"Cylindres négatifs → analyse permise ; sphères négatives → myope ; CYL et AXE présents → torique ; ADD +1.75 → avec presbytie. C'est exactement la forme de l'exemple du cours, « Myope, astigmate et presbyte : OD -3.75 -1.00 x 085 Add +1.75 ». « OU myope torique » oublie l'ADD, « OU myope sphérique avec presbytie » rate le cylindre, et « OU hypermétrope torique avec presbytie » confond le signe de la sphère.","source":"Corrigé 40 ex., Q22"},{"id":"B-07","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +1.25 DS\nOS  +1.50 DS\nADD +2.25","choix":["OU hypermétrope sphérique","OU myope sphérique avec presbytie","OU hypermétrope torique avec presbytie","OU hypermétrope sphérique avec presbytie"],"bonne":3,"explication":"Étape 2 : les sphères sont positives → hypermétrope ; étape 3 : rien sous CYL ni AXE → sphérique ; étape 5 : ADD +2.25 → avec presbytie. L'addition est la même aux deux yeux, ce qui est la forme habituelle de la presbytie, « en générale celle-ci est la même pour les deux yeux ». « OU hypermétrope sphérique » oublie l'addition, « OU myope sphérique avec presbytie » confond le signe, et « OU hypermétrope torique avec presbytie » invente un cylindre.","source":"Corrigé 40 ex., Q23"},{"id":"B-08","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -2.00 DS\nOS  -1.75 -0.75 x 010","choix":["OD myope sphérique; OS myope torique","OU myope sphérique","OU myope torique","OD myope torique; OS myope sphérique"],"bonne":0,"explication":"« L'analyse d'ordonnance est réalisée un œil à la fois. » OD : sphère négative, aucun cylindre → myope sphérique. OS : sphère négative, mais un CYL -0.75 avec son AXE 010 → myope torique. Les deux yeux ne tombent pas dans la même catégorie, il faut donc les nommer séparément : « OU myope sphérique » et « OU myope torique » uniformisent les deux yeux, le premier en effaçant le cylindre de l'OS, le second en étendant ce cylindre à l'OD. La quatrième option intervertit l'œil droit et l'œil gauche.","source":"Corrigé 40 ex., Q24"},{"id":"B-09","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +1.50 DS\nOS  -1.00 DS","choix":["OU hypermétrope sphérique","OD hypermétrope sphérique; OS myope sphérique","OD myope sphérique; OS hypermétrope sphérique","OU myope sphérique"],"bonne":1,"explication":"Un œil à la fois. OD : sphère +1.50, aucun cylindre → hypermétrope sphérique. OS : sphère -1.00, aucun cylindre → myope sphérique. Le signe de la sphère diffère d'un œil à l'autre, donc la catégorie de l'étape 2 diffère aussi et chaque œil doit être nommé. Les deux réponses en « OU » uniformisent à tort les deux yeux, chacune dans le sens d'un œil au détriment de l'autre, et l'option inversée attribue l'hypermétropie au mauvais œil.","source":"Corrigé 40 ex., Q25"},{"id":"B-10","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +2.50 -0.75 x 170  2 Δ BE\nOS  +2.75 -1.00 x 015  2 Δ BE","choix":["OU hypermétrope torique avec prisme","OU hypermétrope torique avec presbytie","OU hypermétrope sphérique avec prisme","OU myope torique avec prisme"],"bonne":0,"explication":"Cylindres négatifs : l'étape 1 est franchie. Étape 2 : sphères positives → hypermétrope ; étape 3 : CYL et AXE présents → torique ; étape 4 : 2 Δ BE aux deux yeux → avec prisme ; étape 5 : aucune ADD, donc aucune presbytie. « avec presbytie » lit le prisme comme une addition, « OU hypermétrope sphérique avec prisme » rate le cylindre, et « OU myope torique avec prisme » confond le signe de la sphère.","source":"Corrigé 40 ex., Q26"},{"id":"B-11","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  Plano DS\nOS  Plano DS\nADD +2.00","choix":["OU emmétrope, aucune correction n'est requise","OU hypermétrope sphérique avec presbytie","OU emmétrope pour la correction réfractive de loin","OU emmétrope torique avec presbytie"],"bonne":2,"explication":"Étape 2 : la sphère est Plano, c'est-à-dire 0.00 D, et il n'y a aucun cylindre — la branche « Plano sans cyl » mène à emmétrope. L'ordonnance existe pourtant, parce qu'une ADD +2.00 l'accompagne : c'est uniquement la correction de loin qui est nulle, d'où la précision « pour la correction réfractive de loin ». Dire « aucune correction n'est requise » oublie l'ADD, « OU hypermétrope sphérique avec presbytie » lit Plano comme une puissance positive, et « OU emmétrope torique avec presbytie » invente un cylindre alors que CYL et AXE sont vides.","source":"Corrigé 40 ex., Q27"},{"id":"B-12","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  Plano -1.25 x 180\nOS  Plano -1.00 x 175","choix":["OU emmétrope sphérique, Plano signifie aucune correction","OU torique avec astigmatisme myopique composé","OU torique avec astigmatisme mixte","OU torique avec astigmatisme myopique simple"],"bonne":3,"explication":"Étape 1 : les cylindres sont négatifs, l'analyse est permise. Étape 2 : la sphère est Plano, mais un cylindre est présent — la branche Plano « avec cyl » mène directement à torique, et non à emmétrope. Chaque œil porte donc un méridien à 0.00 D, celui de l'axe, et un méridien négatif, -1.25 à l'OD et -1.00 à l'OS : myopie à un méridien et emmétropie à l'autre, soit par définition un astigmatisme myopique simple. « Plano ne signifie pas absence d'astigmatisme » : la première option tombe exactement dans ce piège ; « composé » exigerait de la myopie aux deux méridiens, et « mixte » exigerait un méridien myope et un méridien hypermétrope.","source":"Corrigé 40 ex., Q28"},{"id":"B-13","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  -1.00 DS\nOS  -2.25 DS","choix":["OU myope sphérique","OU myope sphérique avec prisme","OU hypermétrope sphérique","OU myope torique"],"bonne":0,"explication":"Sphère négative → myope ; aucun CYL ni AXE → sphérique ; aucun Δ et aucune ADD, donc les étapes 4 et 5 ne produisent aucune étiquette. Les puissances diffèrent d'un œil à l'autre, -1.00 et -2.25, mais la catégorie est la même, et son cadrage le dit : « OU signifie ici « aux deux yeux », même si leurs puissances diffèrent » — inutile donc de nommer OD et OS séparément. Les trois autres options ajoutent une caractéristique absente, un prisme ou un cylindre, ou confondent le signe de la sphère.","source":"Corrigé 40 ex., section B (cadrage du OU)"},{"id":"B-14","section":"B","titre":"Type d'ordonnance","enonce":"Comment nomme-t-on ce type d'ordonnance ?","rx":"OD  +3.00 -1.50 x 060\nOS  +2.75 -1.75 x 120","choix":["OU hypermétrope sphérique","OU hypermétrope torique","OU myope torique","OU hypermétrope torique avec presbytie"],"bonne":1,"explication":"Cylindres négatifs : l'analyse est permise. Étape 2 : sphères positives → hypermétrope ; étape 3 : CYL et AXE présents aux deux yeux → torique ; étapes 4 et 5 : ni Δ ni ADD, aucune étiquette supplémentaire. Les deux méridiens restent ici positifs, +3.00 et +1.50 à l'OD, ce qui en fait un astigmatisme hypermétropique composé — à comparer avec le Plano de l'astigmatisme myopique simple. « OU hypermétrope sphérique » rate le cylindre, « OU myope torique » confond le signe, et « avec presbytie » invente une ADD.","source":"Corrigé 40 ex., section B (M3_e, ordonnance torique)"},{"id":"C-01","section":"C","titre":"Facture services","enonce":"Mme Tremblay passe un examen de la vue au tarif régulier de 260 $ et la clinique applique un rabais promotionnel de 70 $ sur l'examen. Elle repart aussi avec une monture de 210 $ et des verres ophtalmiques de 390 $, sans rabais. Quelle est la facture SERVICES ?","donnees":"Examen de la vue : 260 $\nRabais sur l'examen : 70 $\nMonture : 210 $\nVerres ophtalmiques : 390 $","choix":["790 $","190 $","600 $","260 $"],"bonne":1,"explication":"La facture services ne contient que l'examen.\nExamen : 260 $\nRabais monétaire : − 70 $\nFacture SERVICES : 260 − 70 = 190 $\n\n790 $ = 190 + 210 + 390, le TOTAL services et produits : on a répondu au total au lieu de la facture services.\n600 $ = 210 + 390, la facture PRODUITS : les deux factures ont été confondues.\n260 $ = l'examen sans soustraire le rabais.","source":"Corrigé 40 ex., Q29"},{"id":"C-02","section":"C","titre":"Facture services","enonce":"M. Bouchard passe un examen de la vue de 280 $. La clinique annonce un rabais de 25 % sur l'examen de la vue. Il achète également une monture de 240 $ et des verres ophtalmiques de 360 $, sans rabais. Quelle est la facture SERVICES ?","donnees":"Examen de la vue : 280 $\nRabais : 25 % sur l'examen\nMonture : 240 $\nVerres ophtalmiques : 360 $","choix":["280 $","660 $","210 $","70 $"],"bonne":2,"explication":"« Rabais de 25 % » veut dire qu'on SOUSTRAIT 25 %, donc qu'on paie 75 %.\nRabais : 280 × 0,25 = 70 $\nFacture SERVICES : 280 − 70 = 210 $  (ou 280 × 0,75 = 210 $)\n\n280 $ = l'examen sans appliquer le rabais.\n660 $ = (280 + 240 + 360) × 0,75 : le rabais a été appliqué à toute la facture au lieu du seul examen, et on a répondu un total.\n70 $ = le montant du rabais, pas la facture.","source":"Corrigé 40 ex., Q29 (variante en pourcentage)"},{"id":"C-03","section":"C","titre":"Facture produits","enonce":"Promotion en vigueur : « 150 $ de rabais sur les lunettes avec un examen de la vue ». M. Lalonde passe l'examen de la vue à 190 $, puis choisit une monture de 280 $ et des verres ophtalmiques de 420 $. Quelle est la facture PRODUITS ?","donnees":"Examen de la vue : 190 $\nMonture : 280 $\nVerres ophtalmiques : 420 $\nRabais sur les lunettes : 150 $","choix":["550 $","740 $","700 $","270 $"],"bonne":0,"explication":"Lunette = monture + verres ophtalmiques.\nLunettes avant rabais : 280 + 420 = 700 $\nRabais monétaire : − 150 $\nFacture PRODUITS : 700 − 150 = 550 $\nNe pas ajouter l'examen : il appartient à la facture services.\n\n740 $ = 550 + 190 : on a ajouté l'examen à une facture produits. C'est le piège central de la question.\n700 $ = les lunettes sans soustraire le rabais.\n270 $ = 420 − 150 : la monture a été oubliée dans le calcul des lunettes.","source":"Corrigé 40 ex., Q35"},{"id":"C-04","section":"C","titre":"Facture produits","enonce":"Promotion : « rabais de 60 % sur les lunettes ». Mme Pilon achète une monture de 180 $, des verres ophtalmiques de 300 $ et des lentilles cornéennes de 340 $. Les lentilles cornéennes ne sont pas visées par la promotion. Quelle est la facture PRODUITS ?","donnees":"Monture : 180 $\nVerres ophtalmiques : 300 $\nLentilles cornéennes : 340 $\nRabais : 60 % sur les lunettes seulement","choix":["628 $","532 $","328 $","192 $"],"bonne":1,"explication":"Lunettes avant rabais : 180 + 300 = 480 $\nRabais de 60 % : 480 × 0,60 = 288 $\nLunettes nettes : 480 − 288 = 192 $\nAjouter les lentilles cornéennes : 192 + 340 = 532 $\n\n628 $ = 288 + 340 : on a payé 60 % des lunettes au lieu d'en soustraire 60 %. Pourcentage appliqué à l'envers.\n328 $ = (480 + 340) × 0,40 : le rabais a été appliqué à toute la facture, lentilles cornéennes incluses.\n192 $ = les lunettes nettes seules : les lentilles cornéennes ont été oubliées.","source":"Corrigé 40 ex., Q31"},{"id":"C-05","section":"C","titre":"Promotion conditionnelle","enonce":"Promotion : « lentilles cornéennes offertes à l'achat d'une monture de 300 $ ou plus ». M. Séguin choisit une monture de 350 $, des verres ophtalmiques de 260 $ et une provision de lentilles cornéennes de 240 $. Quelle est la facture PRODUITS ?","donnees":"Monture : 350 $\nVerres ophtalmiques : 260 $\nLentilles cornéennes : 240 $\nCondition de la promotion : monture de 300 $ ou plus","choix":["850 $","590 $","350 $","610 $"],"bonne":3,"explication":"La monture de 350 $ satisfait la condition de la promotion (300 $ ou plus).\nLes lentilles cornéennes sont offertes : 0 $\nLes verres ophtalmiques, eux, restent payables.\nFacture PRODUITS : 350 + 260 = 610 $\n\n850 $ = 350 + 260 + 240 : la promotion n'a pas été appliquée.\n590 $ = 350 + 240 : ce sont les verres ophtalmiques qu'on a cru offerts, au lieu des lentilles cornéennes.\n350 $ = la monture seule : on a cru que tout le reste était offert.","source":"Corrigé 40 ex., Q32"},{"id":"C-06","section":"C","titre":"Promotion conditionnelle","enonce":"Promotion : « examen de la vue à 85 $ au lieu de 230 $ à l'achat de lentilles cornéennes ». Mme Dagenais achète des lentilles cornéennes de 480 $ et des lunettes (monture et verres) de 560 $, puis passe l'examen de la vue. Quel est le TOTAL services et produits ?","donnees":"Examen de la vue : 230 $ (85 $ avec la promotion)\nLentilles cornéennes : 480 $\nLunettes (monture et verres) : 560 $","choix":["1 270 $","1 040 $","1 125 $","565 $"],"bonne":2,"explication":"L'achat de lentilles cornéennes remplit la condition : l'examen passe au tarif promotionnel de 85 $.\nServices : 85 $\nProduits : 480 + 560 = 1 040 $\nTOTAL : 85 + 1 040 = 1 125 $\n\n1 270 $ = 230 + 1 040 : l'examen a été facturé au tarif régulier, la condition de la promotion n'a pas été vue.\n1 040 $ = la facture produits seule : on a oublié les services alors qu'on demande le total.\n565 $ = 85 + 480 : les lunettes ont été oubliées dans les produits.","source":"Corrigé 40 ex., Q36"},{"id":"C-07","section":"C","titre":"Total services et produits","enonce":"M. Ouellette passe un examen de la vue de 220 $ avec un rabais de 60 $. La clinique facture les verres progressifs à 60 % du prix régulier; la monture et les lentilles cornéennes restent à plein prix. Quel est le TOTAL services et produits ?","donnees":"Examen de la vue : 220 $\nRabais sur l'examen : 60 $\nMonture : 190 $\nVerres progressifs : 700 $ (facturés à 60 %)\nLentilles cornéennes : 280 $","choix":["890 $","862 $","910 $","1 050 $"],"bonne":3,"explication":"Services : 220 − 60 = 160 $\nVerres progressifs : 700 × 0,60 = 420 $\nProduits : 190 + 420 + 280 = 890 $\nTOTAL : 160 + 890 = 1 050 $\n\n890 $ = la facture produits seule : on a oublié les services alors qu'on demande le total.\n862 $ = 160 + (190 + 700 + 280) × 0,60 : le 60 % a été appliqué à toute la facture produits au lieu des seuls verres progressifs.\n910 $ = 160 + 190 + (700 × 0,40) + 280 : « facturés à 60 % » a été lu comme « rabais de 60 % ». Pourcentage à l'envers.","source":"Corrigé 40 ex., Q33"},{"id":"C-08","section":"C","titre":"Total services et produits","enonce":"Mme Charette passe un examen de la vue de 160 $, sans rabais. Elle achète une monture de 220 $ à plein prix et des verres ophtalmiques dont le prix régulier est de 480 $, facturés à 75 % (× 0,75). Quel est le TOTAL services et produits ?","donnees":"Examen de la vue : 160 $\nMonture : 220 $\nVerres ophtalmiques : 480 $ × 0,75","choix":["740 $","580 $","500 $","685 $"],"bonne":0,"explication":"« × 0,75 » veut dire qu'on PAIE 75 % du prix (rabais de 25 %).\nVerres : 480 × 0,75 = 360 $\nProduits : 220 + 360 = 580 $\nTOTAL : 580 + 160 = 740 $\n\n580 $ = la facture produits seule : on a oublié l'examen alors qu'on demande le total.\n500 $ = 160 + 220 + (480 × 0,25) : « × 0,75 » a été lu comme « rabais de 75 % ». Comparer avec un énoncé qui dit « rabais de 25 % » : les deux formulations donnent la même facture, mais le calcul n'est pas le même.\n685 $ = 160 + (220 + 480) × 0,75 : le 75 % a été appliqué à la monture aussi, alors qu'elle est à plein prix.","source":"Corrigé 40 ex., Q34"},{"id":"C-09","section":"C","titre":"Assurance : plafond produits","enonce":"M. Fortier a une assurance privée qui rembourse 80 % de la facture nette, jusqu'à un maximum de 80 $ pour les services et de 250 $ pour les produits, par période de 24 mois. Il n'a jamais soumis de demande. Ses lunettes, dont le prix régulier est de 720 $, sont facturées à 90 % (× 0,90). Combien lui reste-t-il à payer pour les lunettes ?","donnees":"Lunettes : 720 $ × 0,90\nAssurance : 80 % de la facture nette\nPlafond services : 80 $ / 24 mois\nPlafond produits : 250 $ / 24 mois\nAucune demande soumise à ce jour","choix":["129,60 $","250 $","470 $","398 $"],"bonne":3,"explication":"Le rabais s'applique AVANT l'assurance.\nFacture nette : 720 × 0,90 = 648 $\nRemboursement théorique : 648 × 0,80 = 518,40 $\nPlafond disponible : 250 $\nRemboursement réel : le moindre des deux = 250 $\nPatient : 648 − 250 = 398 $\n\n129,60 $ = 648 − 518,40 : on a versé le remboursement théorique en oubliant le plafond de 250 $.\n250 $ = le remboursement de l'assurance, pas ce qui reste au patient.\n470 $ = 720 − 250 : le rabais de 10 % n'a pas été appliqué avant l'assurance.","source":"Corrigé 40 ex., Q37"},{"id":"C-10","section":"C","titre":"Assurance : plafond services","enonce":"Mme Lafrance a la même assurance : 80 % de la facture nette, maximum 80 $ pour les services et 250 $ pour les produits, par période de 24 mois; elle n'a jamais soumis de demande. Son examen de la vue est de 230 $ et la clinique accorde un rabais de 50 $ sur l'examen. Combien lui reste-t-il à payer pour l'examen ?","donnees":"Examen de la vue : 230 $\nRabais sur l'examen : 50 $\nAssurance : 80 % de la facture nette\nPlafond services : 80 $ / 24 mois\nAucune demande soumise à ce jour","choix":["36 $","100 $","80 $","150 $"],"bonne":1,"explication":"Examen net : 230 − 50 = 180 $\nRemboursement théorique : 180 × 0,80 = 144 $\nPlafond disponible : 80 $\nRemboursement réel : le moindre des deux = 80 $\nPatient : 180 − 80 = 100 $\n\n36 $ = 180 − 144 : on a versé le remboursement théorique en oubliant le plafond de 80 $. C'est le plafond des SERVICES qui s'applique ici, pas celui de 250 $.\n80 $ = le remboursement de l'assurance, pas ce qui reste au patient.\n150 $ = 230 − 80 : le rabais de 50 $ n'a pas été soustrait avant l'assurance.","source":"Corrigé 40 ex., Q38"},{"id":"C-11","section":"C","titre":"Assurance : plafond déjà entamé","enonce":"M. Chartrand a une assurance qui rembourse 80 % de la facture nette, jusqu'à 250 $ pour les produits par période de 24 mois. Il y a dix mois, l'assurance lui a déjà remboursé 215 $ pour des produits. Il achète aujourd'hui des lunettes dont la facture nette est de 380 $. Combien lui reste-t-il à payer pour ce nouvel achat ?","donnees":"Facture nette des lunettes : 380 $\nAssurance : 80 % de la facture nette\nPlafond produits : 250 $ / 24 mois\nDéjà remboursé il y a 10 mois : 215 $","choix":["345 $","130 $","76 $","35 $"],"bonne":0,"explication":"Le plafond est déjà entamé : il faut d'abord calculer ce qu'il en reste.\nPlafond restant : 250 − 215 = 35 $\nRemboursement théorique : 380 × 0,80 = 304 $\nRemboursement réel : le moindre des trois (théorique, plafond, solde) = 35 $\nPatient : 380 − 35 = 345 $\n\n130 $ = 380 − 250 : on a utilisé le plafond complet alors qu'il ne restait que 35 $ dans la période de 24 mois.\n76 $ = 380 − 304 : on a versé le remboursement théorique en oubliant le plafond.\n35 $ = le remboursement de l'assurance, pas ce qui reste au patient.","source":"Corrigé 40 ex., Q39"},{"id":"C-12","section":"C","titre":"Assurance : cas combiné","enonce":"Mme Bisson a une assurance privée qui rembourse 80 % de la facture nette, jusqu'à 80 $ pour les services et 250 $ pour les produits, par période de 24 mois; sa dernière soumission date de plus de 24 mois, les deux plafonds sont donc entiers. Son examen de la vue est de 250 $ avec un rabais de 60 $. Ses lunettes (monture 340 $ et verres ophtalmiques 460 $) sont facturées à 75 % (× 0,75). Combien lui reste-t-il à payer en tout ?","donnees":"Examen de la vue : 250 $\nRabais sur l'examen : 60 $\nMonture : 340 $\nVerres ophtalmiques : 460 $\nLunettes facturées à 75 % (× 0,75)\nAssurance : 80 %, max 80 $ services et 250 $ produits, par 24 mois\nAucune soumission depuis plus de 24 mois","choix":["330 $","158 $","460 $","350 $"],"bonne":2,"explication":"Deux factures, deux plafonds : on traite les services et les produits séparément.\nSERVICES — Examen net : 250 − 60 = 190 $\nAssurance examen : 190 × 0,80 = 152 $, limitée à 80 $\nReste examen : 190 − 80 = 110 $\nPRODUITS — Lunettes nettes : (340 + 460) × 0,75 = 800 × 0,75 = 600 $\nAssurance produits : 600 × 0,80 = 480 $, limitée à 250 $\nReste lunettes : 600 − 250 = 350 $\nTOTAL au patient : 110 + 350 = 460 $\n\n330 $ = 80 + 250 : ce sont les deux remboursements de l'assurance additionnés, pas ce qui reste au patient.\n158 $ = (190 − 152) + (600 − 480) : les deux remboursements théoriques ont été versés, les deux plafonds oubliés.\n350 $ = le reste pour les lunettes seulement : la part de l'examen a été oubliée.","source":"Corrigé 40 ex., Q40"}];
+
+const KEY='ua1drills.v1';
+const DEF={vus:{},sec:'toutes',mode:'tous',juste:0,faux:0};
+let S=charger();
+function charger(){try{const r=localStorage.getItem(KEY);if(r)return Object.assign({},DEF,JSON.parse(r));}catch(e){}
+  return Object.assign({},DEF,{vus:{}});}
+function garder(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const V=id=>S.vus[id]||(S.vus[id]={bon:0,rate:0});
+
+let file=[],d=null,choisi=null,expl=false;
+
+function selection(){
+  return DRILLS.filter(x=>{
+    if(S.sec!=='toutes'&&x.section!==S.sec) return false;
+    if(S.mode==='rates'&&!V(x.id).rate) return false;
+    return true;
+  });
+}
+function remplir(){
+  const l=selection().slice();
+  for(let i=l.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[l[i],l[j]]=[l[j],l[i]];}
+  file=l;
+}
+function suivant(){
+  if(!file.length) remplir();
+  d=file.shift()||null; choisi=null; expl=false; rendre();
+  document.getElementById('scene').scrollTop=0;
+}
+function repondre(i){
+  if(choisi!==null||!d) return;
+  choisi=i;
+  const v=V(d.id);
+  if(i===d.bonne){v.bon++;S.juste++;}
+  else{v.rate++;S.faux++;
+    /* un drill raté revient dans la même session, plus loin */
+    file.splice(Math.min(5,file.length),0,d);}
+  garder(); rendre();
+}
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+/* balisage minimal toléré dans les textes : **gras**, `mono`, sauts de ligne */
+const tx=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+                  .replace(/`(.+?)`/g,'<span class="mono">$1</span>')
+                  .replace(/\n/g,'<br>');
+const LETTRE=['A','B','C','D'];
+const NOMSEC={A:'Identification des erreurs',B:'Type d\'ordonnance',C:'Facturation et assurances'};
+
+function rendre(){
+  const sel=selection();
+  const faits=sel.filter(x=>V(x.id).bon>0).length;
+  $('jauge').style.width=(sel.length?100*faits/sel.length:0)+'%';
+  $('cPos').textContent=faits; $('cTot').textContent=sel.length;
+  $('cJuste').textContent=S.juste; $('cFaux').textContent=S.faux;
+  const t=S.juste+S.faux;
+  $('cTaux').textContent=t?Math.round(100*S.juste/t)+'%':'—';
+
+  if(!d){
+    const rien=sel.length===0;
+    $('scene').innerHTML='<div class="fin">'+(rien
+      ? '<p class="grand">Rien ici</p><p>Ce filtre ne retient aucun drill.</p>'
+      : '<p class="grand">Série terminée.</p>'+
+        '<div class="tuiles">'+
+          '<div><b>'+S.juste+'</b><span>justes</span></div>'+
+          '<div><b>'+S.faux+'</b><span>ratés</span></div>'+
+          '<div><b>'+(t?Math.round(100*S.juste/t):0)+'%</b><span>réussite</span></div>'+
+        '</div><p>Les drills ratés sont revenus dans la file au fur et à mesure. Relance pour un nouvel ordre.</p>')
+      +'</div>';
+    $('ctl').innerHTML=rien?'':'<div class="duo">'+
+      '<button class="btn" id="bRates">Refaire les ratés</button>'+
+      '<button class="btn or" id="bRelance">Relancer</button></div>'+
+      '<div style="text-align:center"><button class="lien" id="bZero">Repartir de zéro</button></div>';
+    const z=$('bZero'); if(z)z.onclick=demanderReset;
+    /* Relancer repart à zéro sur le compteur de la SÉRIE, pour que le taux
+       affiché soit celui de la série en cours et non d'un cumul qui finit par
+       ne plus rien vouloir dire. Les drills déjà réussis (`vus`) sont gardés :
+       c'est ce qui alimente « refaire les ratés ». */
+    const a=$('bRates'), b=$('bRelance');
+    if(a)a.onclick=()=>{S.mode='rates';S.juste=0;S.faux=0;garder();file=[];suivant();};
+    if(b)b.onclick=()=>{S.mode='tous';S.juste=0;S.faux=0;garder();file=[];suivant();};
+    return;
+  }
+
+  const rep=choisi!==null;
+  $('scene').innerHTML=
+    '<div class="eyebrow">Section '+esc(d.section)+' · '+esc(NOMSEC[d.section]||d.titre)+'</div>'+
+    '<p class="question'+(d.enonce.length>150?' longue':'')+'">'+tx(d.enonce)+'</p>'+
+    (d.rx?'<div class="rx">'+esc(d.rx)+'</div>':'')+
+    (d.donnees?'<div class="donnees">'+esc(d.donnees)+'</div>':'')+
+    '<div class="choix">'+d.choix.map((c,i)=>{
+      let cl='opt';
+      if(rep){
+        if(i===d.bonne) cl+=' bon';
+        else if(i===choisi) cl+=' mauvais';
+        else cl+=' estompe';
+      }
+      const verdict=rep&&i===d.bonne?'<span class="verdict">Bonne</span>'
+        :(rep&&i===choisi?'<span class="verdict">Ton choix</span>':'');
+      return '<button class="'+cl+'" data-i="'+i+'"'+(rep?' disabled':'')+'>'+
+        '<span class="lettre">'+LETTRE[i]+'</span><span>'+tx(c)+'</span>'+verdict+'</button>';
+    }).join('')+'</div>'+
+    (expl?'<div class="expl"><div class="tete">Pourquoi</div>'+tx(d.explication)+
+      '<div class="src">'+esc(d.source||'')+'</div></div>':'');
+
+  if(!rep){
+    [...document.querySelectorAll('.opt')].forEach(b=>b.onclick=()=>repondre(+b.dataset.i));
+    $('ctl').innerHTML='';
+  }else{
+    $('ctl').innerHTML='<div class="duo">'+
+      '<button class="btn" id="bExpl">'+(expl?'Masquer':'Explication')+' <kbd>e</kbd></button>'+
+      '<button class="btn or" id="bNext">Suivant <kbd>↵</kbd></button></div>';
+    $('bExpl').onclick=()=>{expl=!expl;rendre();};
+    $('bNext').onclick=suivant;
+  }
+}
+
+/* ============================================================
+   Remise à zéro.
+   « Relancer » ne vidait que les compteurs de la série ; l'historique
+   par drill (`vus`) survivait, donc la jauge restait pleine et « refaire
+   les ratés » gardait d'anciens ratés. Ceci efface vraiment tout.
+   La confirmation est dans la page : confirm() est inerte dans un artefact.
+   ============================================================ */
+function remiseAZero(){
+  S=Object.assign({},DEF,{prog:undefined,vus:{}});
+  delete S.prog;
+  garder(); file=[]; $('zoneReset').innerHTML='';
+  [...document.querySelectorAll('[data-sec]')].forEach(x=>
+    x.setAttribute('aria-pressed', String(x.dataset.sec===S.sec)));
+  suivant();
+}
+function demanderReset(){
+  const z=$('zoneReset');
+  if(z.innerHTML){ z.innerHTML=''; return; }   // second clic = on referme
+  const n=DRILLS.filter(x=>V(x.id).bon||V(x.id).rate).length;
+  const compte = n
+    ? (n>1 ? ' '+n+' drills déjà répondus redeviendront neufs.'
+           : ' 1 drill déjà répondu redeviendra neuf.')
+    : '';
+  z.innerHTML='<div class="confirm"><span class="txt">Effacer la progression ?'+compte+
+    '</span><button id="rNon">Annuler</button><button class="oui" id="rOui">Effacer</button></div>';
+  $('rOui').onclick=remiseAZero;
+  $('rNon').onclick=()=>{z.innerHTML='';};
+}
+$('bReset').onclick=demanderReset;
+
+[...document.querySelectorAll('[data-sec]')].forEach(b=>b.onclick=()=>{
+  S.sec=b.dataset.sec; S.mode='tous'; S.juste=0; S.faux=0; garder();
+  [...document.querySelectorAll('[data-sec]')].forEach(x=>
+    x.setAttribute('aria-pressed', String(x.dataset.sec===S.sec)));
+  file=[]; suivant();
+});
+
+document.addEventListener('keydown',e=>{
+  if(!d) return;
+  const k=e.key.toLowerCase();
+  if(choisi===null){
+    const i='abcd'.indexOf(k); const n=parseInt(k,10);
+    if(i>=0&&i<d.choix.length){e.preventDefault();repondre(i);}
+    else if(n>=1&&n<=d.choix.length){e.preventDefault();repondre(n-1);}
+  }else{
+    if(k==='e'){e.preventDefault();expl=!expl;rendre();}
+    else if(e.key==='Enter'||e.key===' '){e.preventDefault();suivant();}
+  }
+});
+
+[...document.querySelectorAll('[data-sec]')].forEach(x=>
+  x.setAttribute('aria-pressed', String(x.dataset.sec===S.sec)));
+suivant();
+</script>
+</body></html>

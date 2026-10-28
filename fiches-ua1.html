@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches de référence</title>
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0f1012; --bg2:#15171a; --panel:#1b1e22; --line:#2b3037;
+    --txt:#e8e6e1; --dim:#9aa0a8; --faint:#6d747c;
+    --gold:#d8b25c; --gold-dim:#8a7238; --gold-glow:rgba(216,178,92,.14);
+    --coeur:#e0b351; --fourni:#6fa8c9;
+    --r:14px; --sb:300px;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--txt);
+    font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex; overflow:hidden;
+  }
+
+  /* ---------- index ---------- */
+  aside{
+    width:var(--sb); flex:0 0 var(--sb); background:var(--bg2);
+    border-right:1px solid var(--line); display:flex; flex-direction:column; min-height:0;
+  }
+  .marque{padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+  .marque h1{margin:0;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .marque p{margin:4px 0 0;font-size:12px;color:var(--faint)}
+  .chercher{padding:12px 14px;border-bottom:1px solid var(--line)}
+  .chercher input{
+    width:100%;padding:9px 12px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel);color:var(--txt);font:inherit;font-size:14px;
+  }
+  .chercher input:focus{outline:none;border-color:var(--gold-dim);box-shadow:0 0 0 3px var(--gold-glow)}
+  .chercher input::placeholder{color:var(--faint)}
+  .filtres{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px 0}
+  .filtres button{
+    font:inherit;font-size:11.5px;padding:4px 10px;border-radius:999px;cursor:pointer;
+    background:transparent;color:var(--dim);border:1px solid var(--line);
+  }
+  .filtres button:hover{color:var(--txt);border-color:var(--gold-dim)}
+  .filtres button[aria-pressed="true"]{background:var(--gold);color:#17120a;border-color:var(--gold);font-weight:600}
+  .liste{flex:1;overflow-y:auto;padding:10px 10px 24px;min-height:0}
+  .liste .vide{padding:24px 10px;color:var(--faint);font-size:13px;text-align:center}
+  .item{
+    display:block;width:100%;text-align:left;font:inherit;cursor:pointer;
+    background:transparent;border:1px solid transparent;border-radius:10px;
+    padding:9px 11px;margin-bottom:2px;color:var(--dim);
+  }
+  .item:hover{background:var(--panel);color:var(--txt)}
+  .item[aria-current="true"]{
+    background:var(--panel);border-color:var(--gold-dim);color:var(--txt);
+    box-shadow:inset 3px 0 0 var(--gold);
+  }
+  .item .t{display:block;font-size:13.5px;line-height:1.35;font-weight:500}
+  .item .m{display:block;font-size:11px;color:var(--faint);margin-top:3px;letter-spacing:.04em}
+  .item .pastille{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:1px}
+  .p-coeur{background:var(--coeur)} .p-fourni{background:var(--fourni)}
+  .p-mixte{background:linear-gradient(90deg,var(--coeur) 50%,var(--fourni) 50%)}
+
+  /* ---------- fiche ---------- */
+  main{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+  header{
+    display:flex;align-items:center;gap:12px;padding:14px 26px;
+    border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap;
+  }
+  .compte{font:600 13px/1 var(--mono);color:var(--gold);letter-spacing:.06em;white-space:nowrap}
+  .badge{
+    font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+    padding:4px 10px;border-radius:999px;white-space:nowrap;
+  }
+  .b-coeur{background:rgba(224,179,81,.13);color:var(--coeur);border:1px solid rgba(224,179,81,.3)}
+  .b-fourni{background:rgba(111,168,201,.13);color:var(--fourni);border:1px solid rgba(111,168,201,.3)}
+  .b-mixte{background:rgba(216,178,92,.1);color:var(--gold);border:1px solid var(--gold-dim)}
+  .b-mod{background:var(--panel);color:var(--dim);border:1px solid var(--line)}
+  .espace{flex:1}
+  .nav{display:flex;gap:8px}
+  .nav button, .copier{
+    font:inherit;font-size:13px;padding:7px 14px;border-radius:9px;cursor:pointer;
+    background:var(--panel);color:var(--txt);border:1px solid var(--line);white-space:nowrap;
+  }
+  .nav button:hover:not(:disabled), .copier:hover{border-color:var(--gold-dim);color:var(--gold)}
+  .nav button:disabled{opacity:.3;cursor:default}
+  .copier.ok{border-color:var(--gold);color:var(--gold)}
+
+  .defile{flex:1;overflow-y:auto;min-height:0}
+  article{max-width:920px;margin:0 auto;padding:30px 26px 80px}
+  article h2{
+    margin:0 0 6px;font-size:27px;line-height:1.25;font-weight:650;letter-spacing:-.01em;
+  }
+  .src{margin:0 0 26px;font-size:12.5px;color:var(--faint);font-family:var(--mono)}
+
+  .bloc{margin:0 0 20px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;background:var(--panel);
+        border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  thead th{
+    background:#22262b;color:var(--gold);text-align:left;padding:11px 14px;
+    font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+    border-bottom:1px solid var(--line);vertical-align:bottom;
+  }
+  tbody td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:hover td{background:#1f2328}
+  tbody td:first-child{color:var(--txt)}
+  tbody td:not(:first-child){color:var(--dim)}
+  tr.bande td{
+    background:#262a30;color:var(--gold);font-size:11.5px;letter-spacing:.11em;
+    text-transform:uppercase;font-weight:600;padding:8px 14px;
+  }
+  tr.bande:hover td{background:#262a30}
+  .legende{margin:8px 2px 0;font-size:12.5px;color:var(--faint);line-height:1.5}
+
+  .note{
+    background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold-dim);
+    border-radius:0 var(--r) var(--r) 0;padding:13px 17px;font-size:14.5px;color:var(--dim);
+  }
+  .note b{color:var(--txt)}
+  ul.liste-b{margin:0;padding:0 0 0 20px;font-size:14.5px;color:var(--dim)}
+  ul.liste-b li{margin-bottom:9px}
+  ul.liste-b li::marker{color:var(--gold-dim)}
+  pre.schema{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 18px;overflow-x:auto;font:13px/1.5 var(--mono);color:var(--dim);margin:0;
+  }
+  code{font:13.5px var(--mono);background:#24282e;color:var(--gold);padding:1.5px 6px;border-radius:5px}
+  b{color:var(--txt);font-weight:650}
+
+  footer{
+    border-top:1px solid var(--line);background:var(--bg2);padding:9px 26px;
+    font-size:11.5px;color:var(--faint);display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+  }
+  kbd{
+    font:11px var(--mono);background:var(--panel);border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:5px;padding:1.5px 6px;color:var(--dim);
+  }
+  .burger{display:none}
+
+  @media (max-width:860px){
+    body{flex-direction:column}
+    aside{
+      position:fixed;inset:0 auto 0 0;z-index:40;width:min(86vw,320px);flex-basis:auto;
+      transform:translateX(-101%);transition:transform .22s ease;box-shadow:0 0 40px rgba(0,0,0,.6);
+    }
+    body.menu aside{transform:none}
+    .burger{
+      display:inline-flex;font:inherit;font-size:13px;padding:7px 12px;border-radius:9px;
+      background:var(--panel);color:var(--txt);border:1px solid var(--line);cursor:pointer;
+    }
+    header{padding:12px 16px}
+    article{padding:22px 16px 70px}
+    article h2{font-size:22px}
+    table{font-size:13.5px}
+    thead th,tbody td,tr.bande td{padding:9px 10px}
+    footer{display:none}
+    .voile{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:39;display:none}
+    body.menu .voile{display:block}
+  }
+</style>
+</head>
+<body>
+
+<div class="voile" id="voile"></div>
+
+<aside id="aside">
+  <div class="marque">
+    <h1>Fiches de référence</h1>
+    <p>Principes et procédures d'un bureau ophtalmique — UA1</p>
+  </div>
+  <div class="chercher">
+    <input id="q" type="search" placeholder="Chercher : mcss, V415, 18 mois…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="filtres" id="filtres"></div>
+  <div class="liste" id="liste"></div>
+</aside>
+
+<main>
+  <header>
+    <button class="burger" id="burger">☰ Index</button>
+    <span class="compte" id="compte">—</span>
+    <span class="badge b-mod" id="bmod">—</span>
+    <span class="badge" id="bstat">—</span>
+    <span class="espace"></span>
+    <button class="copier" id="copier">Copier</button>
+    <div class="nav">
+      <button id="prec" title="Flèche gauche">←</button>
+      <button id="suiv" title="Flèche droite">→</button>
+    </div>
+  </header>
+
+  <div class="defile" id="defile">
+    <article id="fiche"></article>
+  </div>
+
+  <footer>
+    <span><kbd>←</kbd> <kbd>→</kbd> fiche précédente / suivante</span>
+    <span><kbd>/</kbd> chercher</span>
+    <span><kbd>Échap</kbd> vider la recherche</span>
+    <span><kbd>c</kbd> copier</span>
+    <span><kbd>Début</kbd> <kbd>Fin</kbd> première / dernière</span>
+  </footer>
+</main>
+
+<script>
+const FICHES = [{"id":"F-01","titre":"Fréquences OHIP — par âge et par statut","module":"M4","statut":"coeur","resume":"Tous les 12 / 24 / 18 mois, et le « + 1 jour ». N'est PAS sur l'aide-mémoire.","tags":["ohip","frequence","frequences","12 mois","18 mois","24 mois","plus un jour","admissibilite","age","posph","odsp","ontario works","ow","65 ans"],"source":"M4_c · Assurance Santé-OHIP","blocs":[{"t":"note","texte":"**Rien de ce tableau n'est imprimé sur l'aide-mémoire.** C'est l'omission la plus coûteuse : la feuille te donne le code `V406`, jamais le fait qu'il s'ouvre tous les **18 mois**. Sans la fréquence, impossible de calculer une date d'admissibilité."},{"t":"table","cols":["Patient","Examen majeur couvert"],"rows":[["0–19 ans","tous les **12 mois** (1 an **+ 1 jour**) + **tout examen mineur nécessaire**"],["20–64 ans, en santé","**aucune couverture OHIP** pour les examens majeurs"],["20–64 ans, trouble médical admissible","tous les **12 mois** + **2** examens de suivi mineurs"],["20–64 ans, POSPH / ODSP","tous les **24 mois** (2 ans **+ 1 jour**)"],["20–64 ans, Ontario au travail (OW)","tous les **24 mois**"],["65 ans et plus, en santé","tous les **18 mois** (18 mois **+ 1 jour**) + **2** suivis mineurs"],["65 ans et plus, trouble médical admissible","tous les **12 mois** + **2** suivis mineurs"]]},{"t":"note","texte":"**Le « + 1 jour ».** Le droit se rouvre le **lendemain** de l'échéance. Dernier examen le 22 septembre 2019, ODSP (24 mois) → prochain admissible le **23 septembre 2021**, pas le 22."},{"t":"note","texte":"**OHIP ne couvre jamais de produits** — ni monture, ni verres, ni lentilles cornéennes. Uniquement des **services**."}]},{"id":"F-02","titre":"Codes de service V4xx","module":"M4","statut":"fourni","resume":"V404 · V402 · V409 · V408 · V450 · V451 · V406 · V407 · V415","tags":["code de service","v404","v402","v409","v408","v450","v451","v406","v407","v415","majeur","mineur","aide-memoire"],"source":"Aide-mémoire OHIP (remis à l'examen)","blocs":[{"t":"table","cols":["Détails du patient","Examen **majeur** (complet)","Examen **mineur** (partiel)"],"rows":[["0–19 ans","**V404**","**V402**"],["20–64 ans (avec conditions médicales admissibles)","**V409**","**V408**"],["20–64 ans (POSPH / ODSP)","**V450**","—"],["20–64 ans (OW)","**V451**","—"],["65 ans et plus","**V406**","**V415**"],["65 ans et plus (avec conditions médicales admissible)","**V407**","**V415**"]]},{"t":"note","texte":"**Trois pièges de lecture.** (a) **V415 apparaît deux fois** — c'est le code mineur des *deux* lignes 65+. (b) Les lignes **POSPH/ODSP et OW n'ont aucun code mineur**. (c) Il n'y a **pas de ligne « 20–64 ans en santé »** : ce patient n'est pas couvert du tout."},{"t":"note","texte":"La feuille te donne la grille, **pas la catégorie du patient**. Déterminer si ton patient est « 65+ avec condition médicale » ou « 65+ en santé » reste un travail de tête — et c'est là que se joue le choix entre `V407` et `V406`."}]},{"id":"F-03","titre":"Codes d'admissibilité de service — 101 / 102 / 201","module":"M4","statut":"fourni","resume":"La réponse du système quand tu soumets : valide, mauvais code, ou trop tôt.","tags":["code admissibilite","101","102","201","soumission","trop tot","aide-memoire"],"source":"Aide-mémoire OHIP (remis à l'examen)","blocs":[{"t":"table","cols":["Code","Signification (verbatim)","Le geste à poser"],"rows":[["**101**","OHIP valide / Code de service valide","**Procéder** — la soumission passe"],["**102**","OHIP valide / Code de service **invalide**","Mauvais **code de service** : revérifier la catégorie du patient (majeur/mineur, âge, statut)"],["**201**","OHIP valide / Code de service **soumis trop tôt**","Noter la **date du dernier examen**, recalculer la fréquence **+ 1 jour**, revérifier"]]},{"t":"note","texte":"Les trois commencent tous par « **OHIP valide** » — la carte n'est jamais en cause ici. C'est le **code de service** ou la **date** qui coince. Pour un problème de carte, c'est le *code de réponse* qu'il faut lire."}]},{"id":"F-04","titre":"Codes de réponse — bandes 0-49 / 50-59 / 60-89","module":"M4","statut":"fourni","resume":"L'état de la carte et du titulaire. Repérer la bande avant le code.","tags":["code de reponse","carte","0-49","50-59","60-89","carte volee","carte expiree","aide-memoire"],"source":"Aide-mémoire OHIP (remis à l'examen)","blocs":[{"t":"table","cols":["Bande","État","Codes"],"rows":[["**0–49**","Carte **invalide** — titulaire **non admissible**","`05` Mauvais #OHIP · `10` #OHIP non assigné · `15` Nouveau-né · `20` Non admissible · `25` Non admissible"],["**50–59**","Carte **valide et éligible** — carte & titulaire valides","`50` OK · `51` OK · `52` OK – Carte expire bientôt · `55` OK – Ministère requiert d'adresse"],["**60–89**","Carte **invalide** mais titulaire **admissible**","`60` Carte expirée · `65` Carte de version incorrecte · `70` Carte volée · `75` Carte annulée · `83` Carte perdue"]]},{"t":"note","texte":"**La bande suffit souvent.** 0–49 → la personne n'a pas droit. 50–59 → ça passe. 60–89 → **la personne a droit, c'est la carte qui est le problème** — donc on remplace la carte, on ne refuse pas le patient. C'est la bande la plus piégeuse."},{"t":"note","texte":"Traduire en geste : aviser le patient (`52`, `55`) · corriger le numéro ou la version (`05`, `65`) · faire remplacer la carte (`60`, `70`, `75`, `83`)."}]},{"id":"F-05","titre":"Codes diagnostics","module":"M4","statut":"fourni","resume":"250 Diabète · 365 Glaucome · 366 Cataracte · 367 / 371 Amétropie · 369 Cécité","tags":["code diagnostic","250","365","366","367","369","371","diabete","glaucome","cataracte","aide-memoire"],"source":"Aide-mémoire OHIP (remis à l'examen)","blocs":[{"t":"table","cols":["Code","Diagnostic (verbatim)"],"rows":[["**250**","Diabète"],["**365**","Glaucome"],["**366**","Cataracte, exclus diabétique et congénital"],["**367**","Ammétropie : Myopie, Astigmatisme régulier, presbytie"],["**369**","Cécité et basse vision"],["**371**","Amétropie : Myopie **au delà de 9D**, Astigmatisme **irrégulier**"]]},{"t":"note","texte":"**367 vs 371** est la seule vraie décision ici : les deux disent « amétropie ». `367` = le cas ordinaire (myopie, astigmatisme **régulier**, presbytie). `371` = les cas extrêmes — **myopie au-delà de 9 D** ou astigmatisme **irrégulier**."},{"t":"note","texte":"Le code diagnostic se colle au code de service : la forme vue en classe est `V415_366`."}]},{"id":"F-06","titre":"Examen majeur vs mineur — ET / OU","module":"M4","statut":"coeur","resume":"Un seul mot change entre les deux définitions. C'est l'appât de l'examen.","tags":["examen majeur","examen mineur","complet","partiel","suivi","refraction","sante oculaire","et","ou"],"source":"M4_d (définitions verbatim)","blocs":[{"t":"table","cols":["","Définition du prof (verbatim)","Synonymes"],"rows":[["**Majeur**","« Examen de la vue qui comprend la réfraction pour la vision **ET** la vérification de la santé oculaire des yeux. »","Examen de la vue · Examen **complet**"],["**Mineur**","« Examen de la vue qui comprend soit la réfraction pour la vision **OU** la vérification de la santé oculaire des yeux. »","Examen **partiel** · Examen de **suivi** · **Suivi**"]]},{"t":"note","texte":"**ET = majeur. OU = mineur.** Les deux phrases sont identiques mot pour mot sauf là. Si l'énoncé dit « réfraction seulement » ou « contrôle de la pression seulement », c'est un **mineur**."},{"t":"note","texte":"Les **2** composantes d'un examen complet : **réfraction** + **santé oculaire**. Un chiffre à retenir."}]},{"id":"F-07","titre":"Grille MCSS — Vision Care Fee Schedule (001 à 018)","module":"M4","statut":"coeur","resume":"Le plafond que le ministère paie pour les PRODUITS d'un bénéficiaire POSPH/ODSP/OW.","tags":["mcss","vision care fee schedule","grille","001","018","cr-39","polycarbonate","pal","bifocal","trifocal","monture","etui","maximum amount payable","posph","odsp","ow"],"source":"MCSS Vision Care Fee Schedule (M3) · M4_c","blocs":[{"t":"note","texte":"« **MCSS Maximum Amount Payable** » + code. MCSS est le ministère qui administre POSPH/ODSP et Ontario Works ; la grille plafonne ce que le ministère paie pour les **produits**. Les diapos écrivent `*MCSS = POSPH/ODSP/OW`."},{"t":"table","cols":["Item","Montant","Code"],"rows":["Lenses — Single Vision",["Single Vision CR-39 with Scratch Resistant Coating (both sides)","**68,50 $**","001"],["Single Vision Polycarbonate with Scratch Resistance Coating","**76,50 $**","002"],"Bifocal Lenses",["CR-39 Bifocals with Scratch Resistant Coating (both sides)","**94,50 $**","003"],["Polycarbonate Bifocals with Scratch Resistant Coating","**123,00 $**","004"],"PALS / Trifocals Lenses",["CR-39 PALs with Scratch Resistant Coating (both sides)","**205,50 $**","005"],["Polycarbonate PALs with Scratch Resistant Coating","**243,00 $**","006"],["Trifocal CR-39 with Scratch Resistant Coating","**132,00 $**","007"],["Trifocal Polycarbonate with Scratch Resistant Coating","**171,00 $**","008"],"Additions",["High Sphere Power (10.00 D – 16.00 D) – additional cost","**39,75 $**","009"],["High Cylinder Power (over 6.00 D) – additional cost","**32,25 $**","010"],["Prism (up to 10Δ) – additional cost","**27,50 $**","011"],["High Reading addition (+4.25 D to +6.00 D) – additional cost","**60,00 $**","012"],["Solid Lens Tints – additional cost","**21,50 $**","013"],["Gradient Lens Tints – additional cost","**25,50 $**","014"],["Photochromic Tints (Transitions, Colormatic etc.) – additional cost","**105,00 $**","015"],["Re-edging client's own lenses into a new frame","**20,00 $**","016"],"Frame and Case",["Frame","**42,20 $**","017"],["Case","**2,00 $**","018"]]},{"t":"note","texte":"**La structure plutôt que les 18 montants.** `001–008` = lentilles de base, en paires *CR-39 / Polycarbonate*. `009–015` = suppléments (`additional cost`). `016–018` = retaillage, monture, étui."},{"t":"note","texte":"**Le polycarbonate coûte toujours plus** que le CR-39 équivalent : 68,50 → 76,50 · 94,50 → 123,00 · 132,00 → 171,00 · 205,50 → 243,00."},{"t":"note","texte":"**Le piège d'ordre :** le **trifocal** (132,00 / 171,00) est **moins cher** que le **PAL** (205,50 / 243,00), et le bifocal est moins cher que le trifocal. Ordre de prix = complexité du design : **SV < BF < TF < PAL**. Plus cher de la grille : **PAL polycarbonate, 243,00 $ (006)**. Moins cher : **étui, 2,00 $ (018)**."},{"t":"note","texte":"Les trois teintes montent par paliers : solide **21,50** < dégradé **25,50** ≪ photochromique **105,00**."}]},{"id":"F-08","titre":"Escomptes Lumiris","module":"M4","statut":"coeur","resume":"Produits en %, services en montant. Lunette −25 %, verre de contact −15 %.","tags":["lumiris","escompte","rabais","25%","15%","205","110","115","60","sans frais","centre de la vue"],"source":"Escomptes Lumiris (M4)","blocs":[{"t":"table","cols":["PRODUITS","Coût typique","Coût LUMIRIS"],"rows":[["Lunette","—","**−25 %**"],["Verre de contact","—","**−15 %**"]],"legende":"Lunette : *s'applique sur monture et/ou verre claire et/ou verre fumé · Maui Jim non-rx exclus*"},{"t":"table","cols":["SERVICES","Coût typique","Coût LUMIRIS"],"rows":[["Examen de la vue (réfraction **et** santé oculaire)","205 $","**110 $**"],["Examen de la vue partiel (réfraction **ou** santé oculaire)","115 $","**60 $**"],["Auto-Réfracto / Kérato","20 $","**Sans Frais**"],["Tonomètre","20 $","**Sans Frais**"],["Image rétinienne","50 $","**Sans Frais**"],["Topographie","45 $","**Sans Frais**"],["Optical Coherence Tomography","95 $","**Sans Frais**"],["Champs visuel","55 $","**Sans Frais**"],["Ajustement de verre de contact","95 $","**Sans Frais**"],["Suivi de verre de contact","35 $","**Sans Frais**"],["Ajustement et services en lunetterie","—","**Sans Frais**"]],"legende":"Les deux examens portent la note *0-19 ans et 65 et plus = Couverture OHIP*."},{"t":"note","texte":"**La distinction qui rapporte des points :** chez Lumiris les **services** sont un rabais **monétaire** (le prix tombe à 110 $ / 60 $), les **produits** sont un rabais en **pourcentage** (−25 % / −15 %). Deux mécanismes différents sur la même facture."},{"t":"note","texte":"`205 − 95 = 110` donne le même résultat que de lire `110 $` directement. À l'examen, **lis la grille** ; ne re-dérive pas le 95 $."}]},{"id":"F-09","titre":"Escompte Famille AOpto-Opti","module":"M4","statut":"coeur","resume":"Services automatiques ; produits sur demande au Comité de la réussite étudiante.","tags":["aopto-opti","escompte famille","etudiant","prix coutant","15%","30%","formulaire","comite de la reussite etudiante","patient-modele"],"source":"Directive : Escompte Famille AOpto-Opti (M4)","blocs":[{"t":"table","cols":["SERVICES — escompte appliqué **sans** demande","Prix"],"rows":[["Examen de la vue **complet** (comprend les tests ophtalmiques)","**110 $**"],["Examen de la vue **partiel**","**60 $**"]]},{"t":"table","cols":["PRODUITS illimités — escompte **exige une demande**","Prix"],"rows":[["Contactologie **pour vous**","**Prix coûtant**"],["Contactologie **pour vos proches**","**Prix coûtant** si ils sont patient-modèle pour un étudiant-opticien.ne"],["Lunetterie **pour vous**","**Prix coûtant + 15 %**"],["Lunetterie **pour vos proches**","**Prix coûtant + 30 %** si ils sont patient-modèle pour un étudiant-opticien.ne"]],"legende":"La demande passe par le **formulaire**, examinée par le **Comité de la réussite étudiante AOpto-Opti**, sur une base hebdomadaire ou bi-mensuelle."},{"t":"note","texte":"**La ligne couperet :** « `ATTN: Un.e étudiant-opticien.ne ne peut pas être à la fois patient et stagiaire. Par conséquent, vous ne pouvez pas être patient lors de votre stage Lumiris.` »"},{"t":"note","texte":"**Le piège de l'appartenance.** Un étudiant d'un *autre* programme de La Cité n'a que les escomptes Lumiris ordinaires. Seul un étudiant **AOpto-Opti** déclenche cette grille."},{"t":"note","texte":"Vous ou vos proches **pouvez soumettre la facture payée à votre assureur** si vous avez des bénéfices en santé oculaire."}]},{"id":"F-10","titre":"La méthode de facturation en 4 étapes","module":"M4","statut":"coeur","resume":"Mêmes 3 premières étapes ; seule l'étape 4 change entre service et produit.","tags":["facturation","4 etapes","methode","frais","escompte","facture","ohip","assureur","service","produit"],"source":"M4_a / M4_b","blocs":[{"t":"table","cols":["","Facture **SERVICE**","Facture **PRODUIT**"],"rows":[["**Étape 1**","Quel est le frais ?","Quel est le frais ?"],["**Étape 2**","Est-ce qu'il y a un escompte ?","Est-ce qu'il y a un escompte ?"],["**Étape 3**","Calcul de la facture (frais − escompte)","Calcul de la facture (frais − escompte)"],["**Étape 4**","**Est-ce couvert par OHIP ?** Si oui, facturez OHIP directement.","**Est-ce couvert par un assureur ?** Si oui, calculez la couverture."]]},{"t":"note","texte":"**La facture produit saute l'étape OHIP** — parce qu'**OHIP ne couvre jamais de produits**. C'est la seule différence structurelle entre les deux colonnes."},{"t":"note","texte":"**Pas de taxes** sur un service ni sur un produit médical."}]},{"id":"F-11","titre":"Ordre de gestion financière — Service vs Produits","module":"M4","statut":"coeur","resume":"4 payeurs pour un service, 3 pour un produit. OHIP disparaît du côté produit.","tags":["gestion financiere","payeur","payeurs tiers","assurance privee","ordre","service","produit"],"source":"M4_a","blocs":[{"t":"table","cols":["Gestion financière de **Service**","Gestion financière de **Produits**"],"rows":[["1. Assurance Santé Provincial (**OHIP**)","1. **Payeurs Tiers**"],["2. Payeurs Tiers","2. Patient avec Assurance Privée"],["3. Patient avec Assurance Privée","3. Patient sans assurance privée"],["4. Patient sans assurance privée","—"]]},{"t":"note","texte":"La colonne produit est la colonne service **moins OHIP**, décalée d'un cran. Retenir « **4 à gauche, 3 à droite** » suffit à reconstruire le tableau."}]},{"id":"F-12","titre":"Paramètres du plan d'assurance AE","module":"M4","statut":"coeur","resume":"80 % partout, mais deux plafonds différents : 80 $ services, 250 $ produits.","tags":["ae","assurance","assurance privee","80%","80$","250$","maximum","24 mois","debourse"],"source":"M4_b / exercices de facturation","blocs":[{"t":"table","cols":["","Pourcentage","Maximum","Période"],"rows":[["**Services**","80 %","**80 $**","chaque **24 mois**"],["**Produits**","80 %","**250 $**","chaque **24 mois**"]]},{"t":"note","texte":"**La mécanique :** on calcule `facture × 0,80`, **puis** on écrête au maximum. Facture de 110 $ → `110 × 0,80 = 88 $`, mais le max service est 80 $ → l'assurance verse **80 $**, et le patient débourse `110 − 80 = 30 $`."},{"t":"note","texte":"Le même 88 $ **passe** du côté produit (sous le plafond de 250 $). Même calcul, plafond différent : c'est là qu'on se trompe."},{"t":"note","texte":"**Déboursé patient = facture − couverture.** Toujours partir de la facture *après escompte*, jamais du frais de départ."}]},{"id":"F-13","titre":"Ce qui est fourni, permis et interdit à l'examen","module":"M4","statut":"mixte","resume":"L'aide-mémoire OHIP est REMIS. Calculatrice de base permise, pas de notes.","tags":["examen","fourni","permis","interdit","aide-memoire","calculatrice","strategie","prep examen"],"source":"Prep Examen UA1 (16 oct) · M4_c","blocs":[{"t":"table","cols":["","Contenu (verbatim)"],"rows":[["**Fourni**","`Papier *demeure en salle de classe` · **`Aide-mémoire OHIP`**"],["**Permis**","`Stylo, crayons, taille-crayon, efface, Calculatrice de base`"],["**Interdits**","`Calculatrice intelligente` · `Note de cours`"]]},{"t":"note","texte":"**La règle qui découle de tout ça : l'aide-mémoire porte les CODES, ta tête porte les RÈGLES, les FRÉQUENCES et les MONTANTS.**"},{"t":"liste","items":["**Sur la feuille** (à savoir **trouver vite**, pas réciter) : codes d'admissibilité `101/102/201` · codes de réponse (bandes et codes) · codes de service `V4xx` · codes diagnostics.","**Pas sur la feuille** (à savoir **à froid**) : les fréquences par âge et statut · **majeur = ET / mineur = OU** · la **catégorie** du patient · la grille **MCSS** · les tarifs **Lumiris** et **AOpto-Opti** · la méthode en 4 étapes · les paramètres du plan AE · le fait qu'OHIP ne couvre jamais de produits."]},{"t":"note","texte":"Avec `60 minutes` pour `60-100 pts`, la compétence à entraîner n'est plus la récitation mais la **vitesse de consultation**. Vise moins de dix secondes pour poser le doigt sur la bonne ligne."}]},{"id":"F-14","titre":"Organigramme d'identification — les 5 étapes","module":"M3","statut":"coeur","resume":"Les cinq questions à poser à toute ordonnance, dans l'ordre.","tags":["organigramme","identification","5 etapes","analyse d'ordonnance","cylindre negatif","sphere","astigmatisme","prisme","addition"],"source":"Organigramme_Étape Identification_eCité_2022 (M3)","blocs":[{"t":"table","cols":["","Question (verbatim)"],"rows":[["**Étape 1**","Pouvons-nous faire l'analyse ? → « **Cylindre doit être négatif ou absent** »"],["**Étape 2**","**Quel est le pouvoir du sphérique ?**"],["**Étape 3**","**As-t-il de l'astigmatisme ?**"],["**Étape 4**","**As-t-il un pouvoir prismatique ?**"],["**Étape 5**","**As-t-il un pouvoir d'addition ?**"]]},{"t":"note","texte":"Les étapes **2 à 5** renvoient toutes à « **Voir tableau d'aide mémoire** »."},{"t":"note","texte":"L'étape 1 est un **portillon** : si le cylindre est positif, on ne commence pas l'analyse — on transpose d'abord (hors UA1). Format `Cyl négatif = OD et RO` · `Cyl positif = MD (ophtalmologiste)`."},{"t":"note","texte":"Le diagramme écrit « **As-t-il** » (et non « A-t-il ») aux étapes 3, 4 et 5. Cite-le tel quel si on te demande de reproduire les étapes."}]},{"id":"F-15","titre":"Tableau de réfraction — sphérique vs torique","module":"M3","statut":"coeur","resume":"Un point focal / deux points focaux, et les 5 types d'astigmatisme.","tags":["tableau de refraction","emmetropie","ametropie","myope","hypermetrope","astigmatisme","spherique","torique","point focal","5 types"],"source":"M3_f · M3_a (RAPPEL)","blocs":[{"t":"pre","texte":"                    Emmétropie ──────── Emmétrope\n                    -absence d'amétropie\n                    -aucune anomalie\n\n                    Amétropie\n                       │\n     ┌─────────────────┴─────────────────┐\n   Myope                           Hypermétrope\n                       │\n              Astigmatisme (5 types)"},{"t":"table","cols":["","**Sphérique**","**Torique**"],"rows":[["Points focaux","« **un point focaux** »","« **deux point focaux** »"],["Astigmatisme","« **absence d'astigmatisme** »","« **présence d'astigmatisme** »"],["Lentille","« **lentilles sphérique requis** »","« **lentilles torique requis** »"],["Qui s'y range","• Myope<br>• Hypermétrope","• Ast. Myopique Simple<br>• Ast. Hypermétropique Simple<br>• Ast. Myopique Composé<br>• Ast. Hypermétropique Composé<br>• Ast. Mixte"]]},{"t":"note","texte":"Les trois lignes se récitent par cœur **dans les deux colonnes** — c'est la façon la plus économique de retenir tout le tableau : *un/deux points focaux · absence/présence d'astigmatisme · lentille sphérique/torique*."},{"t":"note","texte":"Les diapos abrègent (« Ast. Myope Simple », « Ast. Mixed »). Pour une **réponse écrite**, utilise les formes complètes des Notes : *Astigmatisme Myopique Simple*, *Astigmatisme Mixte*."}]},{"id":"F-16","titre":"Les champs de l'ordonnance — SPH · CYL · AXE · PRISME · ADD","module":"M3","statut":"coeur","resume":"Les cinq champs sont fixes ; leur place sur la page ne l'est pas.","tags":["ordonnance","sph","sphere","cyl","cylindre","axe","prisme","add","addition","plano","dioptrie","base","presbytie"],"source":"M3_a · M3_e","blocs":[{"t":"table","cols":["Champ","Ce qu'il porte","Règles de format"],"rows":[["**SPH**","« Force Principale de l'ordonnance »","**Négatif → myope** · **Positif → hypermétrope** · zéro → `PLANO` ou `PL`"],["**CYL**","**Force** de l'astigmatisme","`Cyl négatif = OD et RO` · `Cyl positif = MD (ophtalmologiste)`"],["**AXE**","**Placement** de l'astigmatisme","**001 à 180** toujours · **trois chiffres**, zéros inclus (`x 005`, `x 035`)"],["**PRISME (Δ)**","« déplacement de l'image »","**doit inclure la direction de la base** · **+/− non applicable** · `2ΔBI`, `1ΔBU 3ΔBO`"],["**ADD**","Grossissement pour la perte d'accommodation","Toujours **positif** `+X.XX` · « se retrouve généralement à la fin »"]]},{"t":"table","cols":["Base — ANGLAIS","Base — FRANÇAIS"],"rows":[["**BU** : Base UP","**BH** : Base en Haut (Base Supérieure)"],["**BD** : Base DOWN","**BB** : Base en Bas (Base Inférieure)"],["**BI** : Base IN","**BI** : Base Interne (Base Nasal)"],["**BO** : Base OUT","**BE** : Base Externe (Base Temporal)"]],"legende":"« *ne superpose jamais Horizontal ou Vertical* » — une horizontale avec une verticale, jamais deux du même axe."},{"t":"note","texte":"**L'unité est la DIOPTRIE**, en **quart de dioptrie**, avec **toujours deux décimales** : `+0.25`, `-1.50`, `+2.25`, `-3.00`. Le `D` est **exclu** de l'ordonnance."},{"t":"note","texte":"**L'exception ADD, matière à vrai/faux :** « Si ADD inclus dans l'ordonnance d'une **enfant** ceci **n'est pas de la presbytie** mais plutôt prescrit pour soutenir la mise au point de près (**prévenir strabisme accomodatif**). » Donc « toute ADD indique une presbytie » → **FAUX**."},{"t":"note","texte":"**La grille n'est pas fixe.** Ne déduis jamais qu'un nombre est une ADD à cause de sa position : lis l'en-tête, et lis les `NOTES`. L'analyse de **prisme** n'est pas abordée dans ce cours — tu dois seulement le **reconnaître** et nommer sa base."}]},{"id":"F-17","titre":"Parcours patient — les étapes de services","module":"M2","statut":"coeur","resume":"Réception → Pré-tests → Examen de la vue → Lunetterie / Contactologie.","tags":["parcours patient","etapes de services","reception","pre-test","examen de la vue","lunetterie","contactologie","offre active"],"source":"M2.1 Parcours patient · Tableau chronologique (21 sept)","blocs":[{"t":"table","cols":["Étape","Qui ?","Quoi ?"],"rows":[["**1. Réception / accueil**","Réceptionniste, Assistant.e Optométrique<br>*(« Opticien mais plutôt rare »)*","Accueil · gestion de dossier · communication · **gestion horaire (rdv OD, RO)** · paiement et soumission payeurs tiers · tâches administratives"],["**2. Tests ophtalmiques (pré-test)**","Assistant.e Optométrique","Accueil et **explication claire du déroulement** · données de référence"],["**3. Examen de la vue**","Optométriste (OD)","**Réfraction** + **santé oculaire**"],["**4. Lunetterie**","Opticien (RO)","Analyse d'ordonnance · besoins · mesures · commande · livraison et suivi"],["**4. Contactologie**","Opticien (RO)","Analyse d'ordonnance · santé oculaire"]]},{"t":"note","texte":"**La réception est le lieu où se joue l'offre active**, précisément parce que c'est « **dès le premier contact** ». Les deux notions sont faites pour être reliées dans une réponse courte."},{"t":"note","texte":"**L'offre active, mot pour mot :** « **Proposer, de façon proactive, dès le premier contact, un ensemble de services en français avec confiance et conviction.** » Et son avertissement : « **Le simple acte de parler la même langue ne résulte pas nécessairement en une bonne communication.** »"}]},{"id":"F-18","titre":"Grille des 20 fonctions (A → T)","module":"M2","statut":"coeur","resume":"Qui peut faire quoi : RO autonome, AOV sous délégation, AOV autonome.","tags":["analyse de fonctions","20 fonctions","grille","ro","aov","delegation","autonome","assistant optometrique","etudiant-opticien"],"source":"M2.2 Analyse de fonction et prestataire","blocs":[{"t":"note","texte":"Les en-têtes abrègent les colonnes 2 et 3 en **AOV**, mais elles incluent **l'étudiant-opticien** — c'est-à-dire **toi**, cette année."},{"t":"table","cols":["","Fonction","RO","AOV **sous délégation**","AOV **autonome**"],"rows":[["**A**","Vente d'un verre fumée **sans ordonnance**","✳","✳","✳"],["**B**","**Mesure pour lunette ophtalmique (avec ordonnance)**","✳","✳","—"],["**C**","Vente d'accessoires en lunetterie (cordes, étuis, nettoyeur)","✳","✳","✳"],["**D**","Taillage et montage d'un verre dans une monture","✳","✳","✳"],["**E**","Réception d'un bureau ophtalmique","✳","✳","✳"],["**F**","Discussion des besoins oculaires du patient","✳","✳","—"],["**G**","**Prescrire des gouttes ophtalmiques médicamentées**","—","—","— *aucun de ses professionnels*"],["**H**","Conseil en mode de lunetterie","✳","✳","✳"],["**I**","Vente de solutions d'entretien pour lentilles cornéennes","✳","✳","✳"],["**J**","Réparation et ajustements de lunettes ophtalmiques","✳","✳","—"],["**K**","Rappel du patient","✳","✳","✳"],["**L**","Transaction financière","✳","✳","✳"],["**M**","Saisie des données","✳","✳","✳"],["**N**","**Interprétation de l'ordonnance ophtalmique**","✳","✳","—"],["**O**","Administrer des gouttes ophtalmiques","✳","✳","—"],["**P**","Administration de tests ophtalmiques","✳","✳","—"],["**Q**","**Ajustement de lentilles cornéennes**","✳","—","—"],["**R**","Apprentissage du port de lentilles cornéennes","✳","✳","—"],["**S**","**Vérification finale de lunettes avant la livraison**","✳","—","—"],["**T**","**Suivi des soins pour lentilles cornéennes**","✳","—","—"]]},{"t":"note","texte":"La diapo de fermeture : « **LE TOUT EST PLUS GRAND QUE LA SOMME DES SES PARTIES** » *(sic — « des ses » dans la diapo)*."}]},{"id":"F-19","titre":"Les 3 profils de la grille des fonctions","module":"M2","statut":"coeur","resume":"9 fonctions ouvertes à tous, 7 sous délégation, 3 RO seulement, 1 à personne.","tags":["profils","9 7 3 1","qst","aucun de ses professionnels","delegation","groupes","memorisation"],"source":"M2.2 Analyse de fonction et prestataire","blocs":[{"t":"note","texte":"**Apprends les groupes, pas les 20 lignes.** Quatre profils couvrent toute la grille : 9 + 7 + 3 + 1 = 20."},{"t":"table","cols":["Profil","Fonctions","Ce qui les unit"],"rows":[["**Les trois colonnes** (✳✳✳) — **9**","**A, C, D, E, H, I, K, L, M**","Rien d'**ophtalmique** au sens réservé : vente sans ordonnance, accessoires, **travail de laboratoire**, administration, mode, rappels, argent, données"],["**RO + sous délégation** (✳✳) — **7**","**B, F, J, N, O, P, R**","Il y a un **patient** ou une **ordonnance** en jeu → l'AOV ne peut agir que **sous délégation**"],["**RO seulement** (✳) — **3**","**Q, S, T**","**Lentilles cornéennes** (ajustement, suivi) + **vérification finale** — les actes où l'opticien engage seul sa responsabilité"],["**Personne** — **1**","**G**","Prescrire un médicament n'est dans aucune des trois colonnes"]]},{"t":"note","texte":"*Truc pour les trois RO :* **Q – S – T**, contigus dans l'alphabet, et tous trois des **points de non-retour** — la lentille qui touche la cornée, le verre qui part chez le patient, le suivi clinique qui en découle."},{"t":"note","texte":"*Truc pour G :* la prescription de médicaments appartient à l'**optométriste** et au médecin — donc à **aucune** des trois colonnes. « **Aucun** » est une réponse valide à un QCM."},{"t":"table","cols":["Paire à contraster","La différence"],"rows":[["**A** (verre fumée **sans** ordonnance) vs **B** (mesure **avec** ordonnance)","L'ordonnance change tout : A ouvert à tous ; B ferme l'AOV autonome"],["**D** (taillage et montage) vs **S** (vérification finale)","Le **laboratoire** est ouvert aux trois ; la **sortie vers le patient** est RO seul"],["**I** (vente de solutions) vs **Q/T** (ajustement, suivi des LC)","**Vendre** le produit ≠ **ajuster** ou **suivre** la lentille"],["**O/P** (administrer gouttes, tests) vs **G** (prescrire)","**Administrer** ≠ **prescrire**"],["**F** (besoins oculaires) vs **H** (conseil en **mode**)","Le **besoin visuel** est clinique (✳✳) ; le **style** ne l'est pas (✳✳✳)"]]}]},{"id":"F-20","titre":"Les 8 principes des soins centrés sur le patient","module":"M2","statut":"coeur","resume":"Respect · Coordination · Information · Confort · Soutien · Implication · Continuité · Accès","tags":["8 principes","soins centres sur le patient","respect","coordination","information","confort","soutien emotionnel","implication","continuite","acces","60-90 cm","40 cm"],"source":"M2.3 Soins et services","blocs":[{"t":"table","cols":["#","Principe"],"rows":[["**1**","Respect des Préférences du Patient"],["**2**","Coordination & Intégration des Soins"],["**3**","Information et Éducation"],["**4**","Confort Physique"],["**5**","Soutien émotionnel"],["**6**","Implication de la Famille et des Proches"],["**7**","Continuité & Transition"],["**8**","Accès aux Soins"]]},{"t":"note","texte":"*Comment les tenir :* les **trois premiers** portent sur **la décision** (préférences, coordination, information) · **#4–#5** sur **le corps et l'émotion** · **#6** sur **les autres** · **#7–#8** sur **le temps et la porte d'entrée**."},{"t":"table","cols":["Chiffre","Ce qu'il mesure"],"rows":[["**60–90 cm**","distance personnelle à maintenir « lorsque possible » (**#4 Confort physique**)"],["**40 cm**","**exception** — pour les **mesures ophtalmiques**"],["**5**","sous-points de **#2** : Obligation principale · Limites professionnelles · Champ de pratique · Orientations appropriées · Relations d'équipe"],["**2**","composantes de l'examen complet : **Réfraction** + **Santé oculaire**"],["**4**","journaux de bord à remettre pour l'Atelier Offre active"]]},{"t":"note","texte":"**Deux règles couperet.** **#6** — « Un **consentement écrit** est obligatoire avant tout partage d'informations avec la famille ou les amis », et **c'est le patient qui désigne qui est « la famille »**. **#5** — « **L'empathie n'est pas la sympathie** (simple compassion). »"},{"t":"note","texte":"**Trois mots à retenir en français**, c'est le vocabulaire de l'examen : **prise de décision partagée**, **autogestion**, **observance**. Le trio : information claire → attentes réalistes → **observance**."}]},{"id":"F-21","titre":"Récapitulatif — réglementé vs non réglementé","module":"M1","statut":"coeur","resume":"La table en 5 lignes que la prof a construite en classe. Deux pièges dedans.","tags":["reglemente","non reglemente","recapitulatif","ordre","titre reserve","supervision","champ de pratique","assistant optometrique"],"source":"M1_c, diapos 24–25","blocs":[{"t":"table","cols":["Caractéristique","Professionnel **réglementé**","Intervenant **non réglementé**"],"rows":[["**Membre d'un Ordre ?**","✅","✘"],["**Titre réservé ?**","✅","✘"],["**Supervision nécessaire ?**","✘","✅"],["**Peut poser des actes médicaux ?**","✅ **Dans son champ de pratique**","✘"],["**Exemple ?**","**Opticien, Optométriste, Ophtalmologiste**","**Assistant.e optométrique**"]]},{"t":"note","texte":"**Piège 1 — la ligne 3 s'inverse.** Les lignes 1, 2 et 4 sont ✅/✘ ; la ligne **supervision** est ✘/✅. Le professionnel réglementé n'a **pas** besoin de supervision ; c'est le non réglementé qui en a besoin."},{"t":"note","texte":"**Piège 2 — le ✅ de la ligne 4 est conditionnel :** « **Dans son champ de pratique** ». Donc « un professionnel réglementé peut poser n'importe quel acte médical » → **FAUX**. Laisse tomber la condition et tu perds la note."}]},{"id":"F-22","titre":"Les 3 « O » et leurs Ordres","module":"M1","statut":"coeur","resume":"Trois professions, trois Ordres différents — et seulement deux sont oculaires.","tags":["3 o","trois o","opticien","optometriste","ophtalmologiste","ordre","ro","od","md","ood","quebec","ontario"],"source":"M1_c, diapos 18–21","blocs":[{"t":"note","texte":"« **Les professionnels de la santé oculaire réglementée doivent tous être membre d'un ordre professionnel afin de pratiquer.** »"},{"t":"table","cols":["Prestataire","Désignation","Ordre (verbatim)"],"rows":[["**Opticien**","**(RO)**","« **Ordre des opticiens de l'Ontario** »"],["**Optométriste**","**(OD)**","« **Ordre des optométristes de l'Ontario** »"],["**Ophtalmologiste**","**(MD spécialisé)**","« **Ordre des médecins et chirurgiens de l'Ontario** »"]]},{"t":"note","texte":"**La ligne qu'on rate, c'est la troisième.** L'ophtalmologiste n'est **pas** encadré par un Ordre oculaire : c'est un **médecin**, donc c'est l'Ordre général des **médecins et chirurgiens**. Trois professions, trois Ordres *différents*, et seulement deux sont spécifiques à l'œil."},{"t":"table","cols":["Titre","Signification","Province"],"rows":[["**RO**","*Registered Optician*","**Ontario**"],["**OOD**","**Opticien d'Ordonnance**","**Québec**"]],"legende":"Même métier, titre légal différent, Ordre différent, selon la province."},{"t":"table","cols":["FRANÇAIS","ANGLAIS"],"rows":[["**Ophtalmologiste**","Ophthalmologist"],["**Optométriste**","Optometrist"],["**Opticien**","Optician"]]}]}];
+const CLE = 'fiches-ua1-v1';
+
+/* ---------- rendu du balisage interne ----------
+   Les fiches ne contiennent que **gras**, `code` et <br>. On échappe tout le
+   HTML, puis on réintroduit uniquement ces trois formes : une fiche ne peut
+   donc pas injecter de balise, même si une source en contenait une. */
+function ech(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function md(s){
+  let h = ech(s).replace(/&lt;br&gt;/g,'<br>');
+  // Les spans `code` sortent du texte avant gras et italique : sinon un
+  // astérisque cité dans du code (ex. `*MCSS = POSPH/ODSP/OW`) serait mangé.
+  const gardes = [];
+  h = h.replace(/`([^`]+)`/g, (_,c)=> '\u0000'+(gardes.push(c)-1)+'\u0000');
+  h = h.replace(/\*\*([^*]+?)\*\*/g,'<b>$1</b>')
+       .replace(/\*([^*]+?)\*/g,'<i>$1</i>');
+  return h.replace(/\u0000(\d+)\u0000/g, (_,i)=> '<code>'+gardes[+i]+'</code>');
+}
+
+/* accents retirés pour que « refraction » trouve « réfraction » */
+function pli(s){
+  return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+}
+
+const LIB_STATUT = {coeur:'★ par cœur', fourni:'○ fourni à l’examen', mixte:'★ / ○ mixte'};
+
+/* index de recherche : titre + résumé + tags + tout le texte des blocs */
+FICHES.forEach(f=>{
+  const bits=[f.id,f.titre,f.resume,f.module,(f.tags||[]).join(' '),f.source];
+  (f.blocs||[]).forEach(b=>{
+    if(b.t==='table'){
+      bits.push((b.cols||[]).join(' '));
+      (b.rows||[]).forEach(r=> bits.push(Array.isArray(r)? r.join(' ') : r));
+      if(b.legende) bits.push(b.legende);
+    } else if(b.t==='liste'){ bits.push((b.items||[]).join(' ')); }
+    else { bits.push(b.texte||''); }
+  });
+  f._idx = pli(bits.join(' ').replace(/\*\*|`|<br>/g,' '));
+});
+
+let filtre = 'tout';
+let vue = FICHES.slice();
+let pos = 0;
+
+function appliquer(){
+  const q = pli(document.getElementById('q').value.trim());
+  const mots = q ? q.split(/\s+/) : [];
+  const avant = vue[pos];
+  vue = FICHES.filter(f=>{
+    if(filtre!=='tout'){
+      if(filtre==='coeur'  && f.statut==='fourni') return false;
+      if(filtre==='fourni' && f.statut==='coeur')  return false;
+      if(filtre.startsWith('M') && f.module!==filtre) return false;
+    }
+    return mots.every(m=> f._idx.includes(m));
+  });
+  // on reste sur la même fiche si elle survit au filtre
+  const i = avant ? vue.indexOf(avant) : -1;
+  pos = i >= 0 ? i : 0;
+  dessinerListe(); dessinerFiche();
+}
+
+function dessinerListe(){
+  const l = document.getElementById('liste');
+  if(!vue.length){ l.innerHTML = '<p class="vide">Aucune fiche ne correspond.</p>'; return; }
+  l.innerHTML = vue.map((f,i)=>
+    '<button class="item" data-i="'+i+'" aria-current="'+(i===pos)+'">'
+    + '<span class="t"><span class="pastille p-'+f.statut+'"></span>'+ech(f.titre)+'</span>'
+    + '<span class="m">'+ech(f.module)+' · '+ech(f.resume)+'</span></button>'
+  ).join('');
+  const a = l.querySelector('[aria-current="true"]');
+  if(a) a.scrollIntoView({block:'nearest'});
+}
+
+function dessinerFiche(){
+  const f = vue[pos];
+  const art = document.getElementById('fiche');
+  const cpt = document.getElementById('compte');
+  const bm = document.getElementById('bmod'), bs = document.getElementById('bstat');
+
+  if(!f){
+    cpt.textContent='0 / 0'; bm.textContent='—'; bs.textContent='—'; bs.className='badge b-mod';
+    art.innerHTML='<h2>Aucune fiche</h2><p class="src">Change la recherche ou le filtre.</p>';
+    maj(); return;
+  }
+
+  cpt.textContent = (pos+1)+' / '+vue.length;
+  bm.textContent = f.module;
+  bs.textContent = LIB_STATUT[f.statut];
+  bs.className = 'badge b-'+f.statut;
+
+  let h = '<h2>'+ech(f.titre)+'</h2><p class="src">'+ech(f.id+' · '+f.source)+'</p>';
+  (f.blocs||[]).forEach(b=>{ h += '<div class="bloc">'+bloc(b)+'</div>'; });
+  art.innerHTML = h;
+  document.getElementById('defile').scrollTop = 0;
+  try{ localStorage.setItem(CLE, f.id); }catch(e){}
+  maj();
+}
+
+function bloc(b){
+  if(b.t==='table'){
+    const n = (b.cols||[]).length;
+    let h = '<table><thead><tr>'+(b.cols||[]).map(c=>'<th>'+md(c)+'</th>').join('')+'</tr></thead><tbody>';
+    (b.rows||[]).forEach(r=>{
+      if(!Array.isArray(r)){ h += '<tr class="bande"><td colspan="'+n+'">'+md(r)+'</td></tr>'; return; }
+      h += '<tr>'+r.map(c=>'<td>'+md(c)+'</td>').join('')+'</tr>';
+    });
+    h += '</tbody></table>';
+    if(b.legende) h += '<p class="legende">'+md(b.legende)+'</p>';
+    return h;
+  }
+  if(b.t==='liste') return '<ul class="liste-b">'+(b.items||[]).map(i=>'<li>'+md(i)+'</li>').join('')+'</ul>';
+  if(b.t==='pre')   return '<pre class="schema">'+ech(b.texte)+'</pre>';
+  return '<div class="note">'+md(b.texte)+'</div>';
+}
+
+function maj(){
+  document.getElementById('prec').disabled = pos<=0;
+  document.getElementById('suiv').disabled = pos>=vue.length-1;
+  document.querySelectorAll('.item').forEach(el=>
+    el.setAttribute('aria-current', String(+el.dataset.i===pos)));
+}
+
+function aller(d){
+  const n = pos+d;
+  if(n<0 || n>=vue.length) return;
+  pos = n; dessinerFiche();
+  const a = document.querySelector('.item[aria-current="true"]');
+  if(a) a.scrollIntoView({block:'nearest'});
+}
+
+/* ---------- copie pour une IA ---------- */
+function texteBrut(f){
+  const out = ['Fiche de référence pour l’examen RO, Principes et procédures d’un bureau ophtalmique, examen 1 (UA1) :',''];
+  out.push(f.titre + '  [' + f.module + ' — ' + LIB_STATUT[f.statut] + ']');
+  out.push('Source : ' + f.source, '');
+  // U+002A seulement : le ✳ de la grille des fonctions (U+2733) doit survivre.
+  const net = s => String(s).replace(/\*/g,'').replace(/`/g,'').replace(/<br>/g,' ; ');
+  (f.blocs||[]).forEach(b=>{
+    if(b.t==='table'){
+      out.push((b.cols||[]).map(net).join(' | '));
+      out.push((b.cols||[]).map(()=>'---').join(' | '));
+      (b.rows||[]).forEach(r=> out.push(Array.isArray(r)? r.map(net).join(' | ') : '-- '+net(r)+' --'));
+      if(b.legende) out.push('('+net(b.legende)+')');
+    } else if(b.t==='liste'){ (b.items||[]).forEach(i=> out.push('- '+net(i))); }
+    else if(b.t==='pre'){ out.push(b.texte); }
+    else { out.push(net(b.texte)); }
+    out.push('');
+  });
+  out.push('Aide-moi à retenir cette fiche : interroge-moi dessus, repère ce que je confonds, et explique-moi en anglais pendant que tu gardes les termes français du cours tels quels.');
+  return out.join('\n');
+}
+
+function copier(){
+  const f = vue[pos]; if(!f) return;
+  const t = texteBrut(f), btn = document.getElementById('copier');
+  const fini = ()=>{ btn.textContent='Copié ✓'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent='Copier'; btn.classList.remove('ok'); },1400); };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(t).then(fini, secours);
+  } else secours();
+  function secours(){
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); fini(); }catch(e){ alert('Copie impossible.'); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ---------- filtres ---------- */
+const MODULES = [...new Set(FICHES.map(f=>f.module))].sort();
+document.getElementById('filtres').innerHTML =
+  [['tout','Tout'],['coeur','★ par cœur'],['fourni','○ fourni']]
+    .concat(MODULES.map(m=>[m,m]))
+    .map(([v,l])=>'<button data-f="'+v+'" aria-pressed="'+(v==='tout')+'">'+l+'</button>').join('');
+
+document.getElementById('filtres').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  filtre = b.dataset.f;
+  document.querySelectorAll('#filtres button').forEach(x=>
+    x.setAttribute('aria-pressed', String(x.dataset.f===filtre)));
+  appliquer();
+});
+
+document.getElementById('q').addEventListener('input', appliquer);
+document.getElementById('liste').addEventListener('click', e=>{
+  const b = e.target.closest('.item'); if(!b) return;
+  pos = +b.dataset.i; dessinerFiche();
+  document.body.classList.remove('menu');
+});
+document.getElementById('prec').addEventListener('click', ()=>aller(-1));
+document.getElementById('suiv').addEventListener('click', ()=>aller(1));
+document.getElementById('copier').addEventListener('click', copier);
+document.getElementById('burger').addEventListener('click', ()=>document.body.classList.toggle('menu'));
+document.getElementById('voile').addEventListener('click', ()=>document.body.classList.remove('menu'));
+
+document.addEventListener('keydown', e=>{
+  const q = document.getElementById('q');
+  if(e.target===q){
+    if(e.key==='Escape'){ q.value=''; appliquer(); q.blur(); }
+    // les flèches servent aussi depuis le champ : on sifte sans le quitter
+    else if(e.key==='ArrowDown'){ e.preventDefault(); aller(1); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); aller(-1); }
+    else if(e.key==='Enter'){ e.preventDefault(); q.blur(); }
+    return;
+  }
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.key==='ArrowRight'){ e.preventDefault(); aller(1); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); aller(-1); }
+  else if(e.key==='Home'){ e.preventDefault(); pos=0; dessinerFiche(); }
+  else if(e.key==='End'){ e.preventDefault(); pos=Math.max(0,vue.length-1); dessinerFiche(); }
+  else if(e.key==='/'){ e.preventDefault(); q.focus(); q.select(); }
+  else if(e.key==='c'||e.key==='C'){ copier(); }
+  else if(e.key==='Escape'){ document.body.classList.remove('menu'); }
+});
+
+/* reprendre là où on s'était arrêté */
+try{
+  const id = localStorage.getItem(CLE);
+  const i = id ? FICHES.findIndex(f=>f.id===id) : -1;
+  if(i>=0) pos = i;
+}catch(e){}
+
+dessinerListe(); dessinerFiche();
+</script>
+</body>
+</html>

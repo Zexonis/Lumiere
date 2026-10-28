@@ -1,0 +1,1672 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Anatomie oculaire UA1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: an exam-room workbench. Sticky tab rail on top; each tab is a wide "stage" (diagram, card, quiz) with a narrow fiche panel beside it. */
+:root{
+  --bg:#f2f4f6; --surface:#ffffff; --surface-2:#e9edf2; --ink:#15202b; --muted:#536274; --line:#d5dce4;
+  --accent:#2747c9; --accent-ink:#ffffff; --accent-soft:#e2e8ff;
+  --warm:#b8501f; --good:#1d7a4c; --good-soft:#dcf1e5; --bad:#b83a2c; --bad-soft:#fae2de; --mask:#c9d2dd;
+  --hl:#2747c9; --hl-soft:rgba(39,71,201,.30);
+  --t-fib:#2f6fd6; --t-uv:#9a3fc0; --t-ner:#e0731f;
+  --a-skin:#f0d7c6; --a-skin-line:#c79c84; --a-sclera:#fbfbf7; --a-sclera-edge:#c8cfd8; --a-cornea:#9fd2ea;
+  --a-aq:#dff1fa; --a-iris:#4d7688; --a-pupil:#0f151b; --a-lens:#f1e3a9; --a-lens-edge:#bfa75a; --a-vit:#edf4f7;
+  --a-ret:#e7834f; --a-chor:#7d3426; --a-cil:#a65b45; --a-zon:#7c8a99; --a-nerve:#f0d083; --a-nerve-edge:#c9a54b;
+  --a-muscle:#c4554a; --a-fat:#f5e6a6; --a-fatblob:#e4cf7a; --a-bone:#c4bdae; --a-lid:#ebc8b1; --a-tarse:#ddd4c0;
+  --a-meib:#cf9a35; --a-orb:#bb5d52; --a-conj:#db5f74; --a-caro:#e58f9a; --a-svg:#ffffff;
+  --f-in:#f2a465; --f-mid:#d5622d; --f-out:#6e2010; --f-disc:#f7dcae; --f-cup:#fff3dc; --f-mac:#8c2a12; --f-art:#d9432b; --f-vein:#8a1c13;
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e141b; --surface:#151d26; --surface-2:#1c2632; --ink:#e3e9ef; --muted:#97a5b4; --line:#293543;
+  --accent:#8ea5ff; --accent-ink:#0e141b; --accent-soft:#1f2a4d;
+  --warm:#f08a55; --good:#55c78f; --good-soft:#163527; --bad:#ff8577; --bad-soft:#3d1c19; --mask:#2f3b49;
+  --hl:#8ea5ff; --hl-soft:rgba(142,165,255,.34);
+  --t-fib:#6ea2ff; --t-uv:#cf86ef; --t-ner:#ffa45c;
+  --a-skin:#8a6a58; --a-skin-line:#b48d77; --a-sclera:#dfe3e7; --a-sclera-edge:#7f8a96; --a-cornea:#5ea6c7;
+  --a-aq:#203644; --a-iris:#6b98ab; --a-pupil:#05080b; --a-lens:#cdbb77; --a-lens-edge:#e5d28e; --a-vit:#18242e;
+  --a-ret:#e08350; --a-chor:#a24c3a; --a-cil:#b86a52; --a-zon:#a2b0bf; --a-nerve:#d1b46a; --a-nerve-edge:#ead08a;
+  --a-muscle:#c35e53; --a-fat:#4e4628; --a-fatblob:#6b5f33; --a-bone:#5d6570; --a-lid:#9a7764; --a-tarse:#b4a98f;
+  --a-meib:#e0ae4c; --a-orb:#d0766a; --a-conj:#ec7a8e; --a-caro:#d98591; --a-svg:#121a22;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e141b; --surface:#151d26; --surface-2:#1c2632; --ink:#e3e9ef; --muted:#97a5b4; --line:#293543;
+  --accent:#8ea5ff; --accent-ink:#0e141b; --accent-soft:#1f2a4d;
+  --warm:#f08a55; --good:#55c78f; --good-soft:#163527; --bad:#ff8577; --bad-soft:#3d1c19; --mask:#2f3b49;
+  --hl:#8ea5ff; --hl-soft:rgba(142,165,255,.34);
+  --t-fib:#6ea2ff; --t-uv:#cf86ef; --t-ner:#ffa45c;
+  --a-skin:#8a6a58; --a-skin-line:#b48d77; --a-sclera:#dfe3e7; --a-sclera-edge:#7f8a96; --a-cornea:#5ea6c7;
+  --a-aq:#203644; --a-iris:#6b98ab; --a-pupil:#05080b; --a-lens:#cdbb77; --a-lens-edge:#e5d28e; --a-vit:#18242e;
+  --a-ret:#e08350; --a-chor:#a24c3a; --a-cil:#b86a52; --a-zon:#a2b0bf; --a-nerve:#d1b46a; --a-nerve-edge:#ead08a;
+  --a-muscle:#c35e53; --a-fat:#4e4628; --a-fatblob:#6b5f33; --a-bone:#5d6570; --a-lid:#9a7764; --a-tarse:#b4a98f;
+  --a-meib:#e0ae4c; --a-orb:#d0766a; --a-conj:#ec7a8e; --a-caro:#d98591; --a-svg:#121a22;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);margin:0}
+table{font:inherit;color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+@media (max-width:520px){.wrap{padding-inline:16px}}
+.eyebrow{font:600 .72rem/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- header ---------- */
+.top{padding-block:22px 14px}
+.top .wrap{display:flex;gap:18px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+.brand h1{font-size:clamp(1.9rem,4.4vw,2.7rem);font-weight:800;letter-spacing:-.02em;margin-top:6px}
+.brand h1 em{font-style:normal;color:var(--accent)}
+.brand p.sub{color:var(--muted);margin-top:6px;max-width:58ch}
+.acuity{position:relative}
+.acuity summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.acuity summary::-webkit-details-marker{display:none}
+.acuity .lbl{display:flex;flex-direction:column;gap:2px}
+.acuity .val{font:700 1.5rem/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.snl{display:flex;align-items:flex-end;gap:3px;font-family:var(--f-display);font-weight:800;line-height:1;height:30px}
+.snl span{display:block;transition:font-size .4s}
+@media (max-width:640px){.acuity .pop{left:0;right:auto}}
+.acuity .pop{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:min(340px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 12px 32px rgba(10,20,40,.18);display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:96px 1fr 44px;gap:10px;align-items:center;font-size:.9rem}
+.bar .tr{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar .tr i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bar b{font:600 .85rem var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.small{font-size:.85rem;color:var(--muted)}
+
+/* ---------- tabs ---------- */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{appearance:none;background:none;border:0;padding:12px 12px 10px;border-bottom:3px solid transparent;color:var(--muted);font-weight:700;white-space:nowrap;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.tab small{font:600 .68rem var(--f-mono);letter-spacing:.06em;opacity:.8}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+main{padding-block:22px 64px}
+.panel-h{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.panel-h h2{font-size:1.6rem;font-weight:700}
+.panel-h p{color:var(--muted);max-width:62ch}
+
+/* ---------- generic controls ---------- */
+.btn{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.92rem;cursor:pointer;display:inline-flex;gap:6px;align-items:center;line-height:1.2}
+.btn:hover{border-color:var(--accent)}
+.btn.on,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent}
+.btn.bad{border-color:var(--bad);color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{appearance:none;border:0;background:none;padding:7px 14px;font-weight:700;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.chip{display:inline-flex;align-items:center;gap:6px;font:600 .75rem/1 var(--f-mono);letter-spacing:.03em;padding:5px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.chip.m{background:var(--accent-soft);color:var(--accent)}
+.chip.t-fib{background:transparent;border:1.5px solid var(--t-fib);color:var(--t-fib)}
+.chip.t-uv{background:transparent;border:1.5px solid var(--t-uv);color:var(--t-uv)}
+.chip.t-ner{background:transparent;border:1.5px solid var(--t-ner);color:var(--t-ner)}
+
+/* ---------- atlas ---------- */
+.atlas{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media (max-width:900px){.atlas{grid-template-columns:minmax(0,1fr)}}
+.stage{padding:12px;min-width:0}
+.stage-top{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.svgbox{overflow-x:auto;border-radius:10px;background:var(--a-svg)}
+.svgbox svg{display:block;width:100%;height:auto}
+.svgbox.wide svg{min-width:640px}
+.svgbox.mid svg{min-width:520px}
+.svgbox[data-v="fond"] svg{max-width:600px;margin:0 auto}
+.hoverline{font:600 .8rem var(--f-mono);color:var(--muted);padding:8px 4px 0;min-height:1.9em}
+.cap{margin-top:10px;display:grid;gap:10px}
+.steps{display:flex;flex-wrap:wrap;gap:6px;counter-reset:st;padding:0;margin:0;list-style:none}
+.steps li button{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px 5px 6px;cursor:pointer;display:flex;gap:7px;align-items:center;font-size:.86rem;color:var(--muted)}
+.steps li button::before{counter-increment:st;content:counter(st);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--surface-2);font:700 .72rem var(--f-mono)}
+.steps li button.cur{border-color:var(--accent);color:var(--ink)}
+.steps li button.cur::before{background:var(--accent);color:var(--accent-ink)}
+.steps li button.done{color:var(--ink)}
+.capline{font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.88rem}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+
+.info{padding:18px;display:grid;gap:12px;position:sticky;top:64px}
+@media (max-width:900px){.info{position:static}}
+.info h3{font-size:1.45rem}
+.info ul{margin:0;padding-left:1.1em;display:grid;gap:6px}
+.info .see{display:flex;flex-wrap:wrap;gap:6px}
+.linkchip{appearance:none;border:1px dashed var(--line);background:none;border-radius:999px;padding:4px 10px;font-size:.84rem;cursor:pointer;color:var(--accent);font-weight:700}
+.linkchip:hover{border-style:solid;border-color:var(--accent)}
+.index{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.opts{display:grid;gap:8px}
+.opt{appearance:none;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:700;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.ko{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.score{font:600 .85rem var(--f-mono);color:var(--muted)}
+
+/* anatomy svg */
+.anat .hot{cursor:pointer;transition:fill .2s,stroke .2s,opacity .2s}
+.anat .f{stroke-width:1.2}
+.anat .s{fill:none}
+.anat .bone{stroke:var(--a-bone);stroke-width:14;stroke-linecap:round}
+.anat .fat{fill:var(--a-fat)}
+.anat .fatpat{fill:url(#fatPat);pointer-events:none}
+.anat .fatblob{fill:none;stroke:var(--a-fatblob);stroke-width:1.4}
+.anat .muscle{fill:var(--a-muscle);stroke:var(--a-muscle)}
+.anat .nerve{fill:var(--a-nerve);stroke:var(--a-nerve-edge)}
+.anat .vit{fill:var(--a-vit);stroke:none}
+.anat .sclera{stroke:var(--a-sclera);stroke-width:14}
+.anat .scleraEdge{fill:none;stroke:var(--a-sclera-edge);stroke-width:1.2;pointer-events:none}
+.anat .chor{stroke:var(--a-chor);stroke-width:8}
+.anat .ret{stroke:var(--a-ret);stroke-width:8}
+.anat .mac{stroke:var(--f-mac);stroke-width:9;stroke-linecap:round}
+.anat .fov{fill:var(--a-svg);stroke:var(--f-mac);stroke-width:2}
+.anat .pap{stroke:var(--a-nerve);stroke-width:11;stroke-linecap:round}
+.anat .aq{fill:var(--a-aq);stroke:none}
+.anat .zon{stroke:var(--a-zon);stroke-width:1.6}
+.anat .cil{fill:var(--a-cil);stroke:var(--a-cil)}
+.anat .iris{fill:var(--a-iris);stroke:var(--a-iris)}
+.anat .schl{fill:var(--a-svg);stroke:var(--accent);stroke-width:2}
+.anat .lens{fill:var(--a-lens);stroke:var(--a-lens-edge);stroke-width:1.6}
+.anat .pup{fill:transparent;pointer-events:all}
+.anat .cornea{stroke:var(--a-cornea);stroke-width:9}
+.anat .lid{fill:var(--a-lid);stroke:var(--a-skin-line)}
+.anat .tarse{fill:var(--a-tarse);stroke:var(--a-skin-line);stroke-width:.8}
+.anat .meib{stroke:var(--a-meib);stroke-width:4;stroke-dasharray:5 3;stroke-linecap:round}
+.anat .orb{stroke:var(--a-orb);stroke-width:6;stroke-dasharray:6 4;stroke-linecap:round}
+.anat .cils{stroke:var(--ink);stroke-width:1.6;stroke-linecap:round}
+.anat .conj{stroke:var(--a-conj);stroke-width:2.6;stroke-linecap:round}
+.anat .fornix{fill:transparent;stroke:var(--a-conj);stroke-width:1.5;stroke-dasharray:2 2}
+.anat .axis{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;fill:none;pointer-events:none;opacity:.6}
+.anat .compass text{font:700 11px var(--f-mono);fill:var(--muted)}
+.anat .compass line{stroke:var(--muted);stroke-width:1.2}
+/* face */
+.anat .skin{fill:var(--a-skin)}
+.anat .brow{fill:none;stroke:var(--a-skin-line);stroke-width:14;stroke-linecap:round;opacity:.7}
+.anat .noseline{fill:none;stroke:var(--a-skin-line);stroke-width:3;opacity:.7}
+.anat .crease{stroke:var(--a-skin-line);stroke-width:3;stroke-linecap:round}
+.anat .gland{fill:var(--a-fat);stroke:var(--a-skin-line);stroke-dasharray:4 3;stroke-width:1.6}
+.anat .bulbe{fill:var(--a-sclera);stroke:none}
+.anat .irisF{fill:var(--a-iris);stroke:var(--a-pupil);stroke-width:2}
+.anat .pupF{fill:var(--a-pupil)}
+.anat .reflex{fill:#ffffff;opacity:.85;pointer-events:none}
+.anat .plica{fill:var(--a-conj);opacity:.75}
+.anat .caro{fill:var(--a-caro);stroke:var(--a-conj)}
+.anat .margin{stroke:var(--a-skin-line);stroke-width:5;stroke-linecap:round}
+.anat .lash{stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;pointer-events:none}
+.anat .canal{stroke:var(--accent);stroke-width:3.5;stroke-dasharray:5 4;stroke-linecap:round}
+.anat .punct{fill:var(--a-svg);stroke:var(--accent);stroke-width:2}
+.anat .sac{fill:var(--a-aq);stroke:var(--accent);stroke-width:2;stroke-dasharray:5 3}
+.anat .duct{stroke:var(--accent);stroke-width:8;stroke-linecap:round;stroke-dasharray:9 5;opacity:.75}
+.anat .canthus{fill:transparent;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:2 2}
+.anat .dim{stroke:var(--muted);stroke-width:1.5;fill:none}
+.anat .hit{stroke:transparent;stroke-width:18;fill:none;pointer-events:stroke}
+.anat .dimtext{font:600 12px var(--f-mono);fill:var(--muted)}
+.anat .orient{font:700 12px var(--f-mono);fill:var(--muted);letter-spacing:.06em}
+/* fundus */
+.anat .fbg{fill:url(#fundGrad)}
+.anat .disc{fill:url(#discGrad);stroke:#e7b77d;stroke-width:1}
+.anat .macF{fill:var(--f-mac);opacity:.42}
+.anat .fovF{fill:var(--f-mac);opacity:.75}
+.anat .art{stroke:var(--f-art);stroke-width:2.6;fill:none;stroke-linecap:round}
+.anat .vein{stroke:var(--f-vein);stroke-width:4;fill:none;stroke-linecap:round}
+.anat .vhit{stroke:transparent;stroke-width:12;fill:none;pointer-events:stroke}
+/* selection & highlight */
+.anat .f.sel,.anat .f.hl{stroke:var(--hl)!important;stroke-width:3!important;filter:drop-shadow(0 0 4px var(--hl-soft))}
+.anat .aq.sel,.anat .aq.hl,.anat .vit.sel,.anat .vit.hl,.anat .pup.sel,.anat .pup.hl{fill:var(--hl-soft)!important}
+.anat .s.sel,.anat .s.hl{stroke:var(--hl)!important;filter:drop-shadow(0 0 4px var(--hl-soft))}
+.anat .hit.sel,.anat .hit.hl,.anat g.sel .hit,.anat g.hl .hit,.anat g.sel .vhit,.anat g.hl .vhit{stroke:var(--hl-soft)!important}
+.anat g.sel .dim,.anat g.hl .dim,.anat g.sel .art,.anat g.hl .art,.anat g.sel .vein,.anat g.hl .vein{stroke:var(--hl)!important}
+.anat .vhit.sel,.anat .vhit.hl{stroke:var(--hl-soft)!important}
+.anat .quiz{animation:pulse 1.1s ease-in-out infinite}
+.qring{fill:none;stroke:var(--hl);stroke-width:3;stroke-dasharray:6 4;pointer-events:none;animation:pulse 1.1s ease-in-out infinite}
+.qnum{font:700 .78rem var(--f-mono);letter-spacing:.06em;color:var(--accent)}
+.qtarget{color:var(--accent)}
+@keyframes pulse{50%{opacity:.35}}
+/* tunics overlay */
+.tunics .sclera,.tunics .cornea{stroke:var(--t-fib)}
+.tunics .chor{stroke:var(--t-uv)}
+.tunics .iris,.tunics .cil{fill:var(--t-uv);stroke:var(--t-uv)}
+.tunics .ret,.tunics .mac,.tunics .pap{stroke:var(--t-ner)}
+.tunics .fov{stroke:var(--t-ner)}
+.tunics .lid,.tunics .tarse,.tunics .muscle,.tunics .fat,.tunics .nerve,.tunics .lens{opacity:.35}
+/* overlays */
+.ovl{pointer-events:none}
+.ray{fill:none;stroke:var(--warm);stroke-width:2.2;stroke-dasharray:7 6;animation:dash 1.2s linear infinite}
+.sig{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:3 7;stroke-linecap:round;animation:dash .8s linear infinite}
+.ovltext{font:700 12px var(--f-mono);fill:var(--accent)}
+@keyframes dash{to{stroke-dashoffset:-26}}
+.flowpath{fill:none;stroke:none}
+.drop{fill:var(--accent);opacity:.9}
+.labels line{stroke:var(--ink);stroke-width:1;opacity:.55}
+.labels circle{fill:var(--ink)}
+.labels text{font:600 13px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--a-svg);stroke-width:4px;stroke-linejoin:round;cursor:pointer}
+.labels text.sel{fill:var(--accent)}
+.hide-labels .labels{display:none}
+
+/* ---------- fiches ---------- */
+.fiche-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.toggle{display:inline-flex;gap:10px;align-items:center;cursor:pointer;font-weight:700}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+.modnav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.mod{margin-bottom:34px}
+.mod-h{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;border-top:2px solid var(--ink);padding-top:12px;margin-bottom:14px}
+.mod-n{font:700 .8rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.mod-h h2{font-size:clamp(1.3rem,3vw,1.7rem)}
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+@media (max-width:520px){.mod-grid{grid-template-columns:minmax(0,1fr)}}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.blk.wide{grid-column:1/-1}
+.blk h3{font-size:1.08rem;font-weight:700}
+.blk ul{margin:0;padding-left:1.1em;display:grid;gap:5px}
+.spec{width:100%;border-collapse:collapse;font-size:.95rem}
+.spec th,.spec td{text-align:left;vertical-align:top;padding:7px 8px;border-top:1px solid var(--line)}
+.spec tr:first-child th,.spec tr:first-child td{border-top:0}
+.spec th{font-weight:700;white-space:nowrap}
+.spec thead th{font:600 .7rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-top:0}
+.tblwrap{overflow-x:auto}
+.chain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;counter-reset:ch}
+.chain li{display:flex;align-items:center;gap:6px}
+.chain li .node{background:var(--surface-2);border-radius:8px;padding:5px 9px;font-weight:700;font-size:.92rem}
+.chain li .node::before{counter-increment:ch;content:counter(ch) " ";font:600 .72rem var(--f-mono);color:var(--muted)}
+.chain li+li::before{content:"→";color:var(--muted);font-weight:700}
+.memo{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:.93rem}
+.memo>span:first-child{display:block;font:700 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.k{font-weight:700}
+.k[data-go]{text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
+.hidekeys .k{color:transparent;background:var(--mask);border-radius:4px;cursor:pointer;text-decoration:none;user-select:none}
+.hidekeys .k.shown{color:inherit;background:transparent}
+.hidekeys .chain li .node .k{color:transparent}
+.hidekeys .chain li .node .k.shown{color:inherit}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.compare>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px}
+.compare h4{font-size:.95rem}
+.compare ol{margin:0;padding-left:1.2em}
+
+/* ---------- simulateurs ---------- */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;margin-bottom:22px}
+@media (max-width:900px){.sim{grid-template-columns:minmax(0,1fr)}}
+.sim .card{padding:16px}
+.sim h3{font-size:1.2rem;margin-bottom:6px}
+.ctrls{display:grid;gap:14px}
+.ctrls label{font-weight:700;display:grid;gap:6px}
+.ctrls label.toggle{display:inline-flex}
+.ctrls input[type=range]{width:100%;accent-color:var(--accent)}
+.state{display:grid;gap:6px}
+.state div{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:6px;font-size:.95rem}
+.state b{text-align:right}
+.verdict{border-radius:10px;padding:10px 12px;font-weight:700}
+.verdict.ok{background:var(--good-soft);color:var(--good)}
+.verdict.ko{background:var(--bad-soft);color:var(--bad)}
+.acc .ac-muscle{fill:var(--a-cil);stroke:var(--a-cil)}
+.acc .ac-zon{stroke:var(--a-zon);stroke-width:1.8;fill:none}
+.acc .ac-lens{fill:var(--a-lens);stroke:var(--a-lens-edge);stroke-width:2}
+.acc .ac-ret{fill:none;stroke:var(--a-ret);stroke-width:7;stroke-linecap:round}
+.acc .ac-iris{fill:var(--a-iris)}
+.acc .ac-ray{stroke:var(--warm);stroke-width:1.6;fill:none;opacity:.9}
+.acc .ac-img{stroke-width:6;stroke-linecap:round}
+.acc .ac-img.ok{stroke:var(--good)} .acc .ac-img.ko{stroke:var(--bad)}
+.acc .ac-focus{fill:var(--warm)}
+.acc .ac-txt{font:600 12px var(--f-mono);fill:var(--muted)}
+.acc .ac-obj{fill:var(--ink)}
+.acc .ac-axis{stroke:var(--muted);stroke-dasharray:3 5;opacity:.5}
+.stack{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 10px}
+.grp{writing-mode:vertical-rl;transform:rotate(180deg);font:700 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-right:2px solid var(--muted);padding-left:6px;text-align:center;margin-block:2px}
+.grp.none{border:0}
+.layer{appearance:none;border:0;width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 12px;cursor:pointer;color:#14202b;font-weight:700;font-size:.9rem;border-bottom:1px solid rgba(0,0,0,.08)}
+.layer small{font:600 .7rem var(--f-mono);opacity:.75}
+.layer.sel{outline:3px solid var(--accent);outline-offset:-3px;position:relative;z-index:1}
+.flowtag{font:600 .75rem var(--f-mono);color:var(--muted);padding:4px 0}
+.camgrid{display:grid;gap:8px}
+.camgrid>div{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;border-top:1px solid var(--line);padding-top:8px}
+.camgrid>div:first-child{border-top:0;padding-top:0}
+.camgrid span:nth-child(2){color:var(--muted);font-family:var(--f-mono)}
+.blind{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-radius:10px;background:#ffffff;color:#000;font:800 26px var(--f-mono)}
+
+/* ---------- séquences ---------- */
+.seqwrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:800px){.seqwrap{grid-template-columns:minmax(0,1fr)}}
+.seqlist{display:grid;gap:6px;padding:10px}
+.seqlist button{appearance:none;border:0;background:none;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-weight:700;color:var(--ink)}
+.seqlist button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+.seqlist button .st{font:600 .72rem var(--f-mono);color:var(--good)}
+.seqstage{padding:18px;display:grid;gap:14px;min-width:0}
+.slots{list-style:none;margin:0;padding:0;display:grid;gap:6px;counter-reset:sl}
+.slots li{display:flex;gap:10px;align-items:center;border:1.5px dashed var(--line);border-radius:10px;padding:8px 10px;min-height:44px;color:var(--muted)}
+.slots li::before{counter-increment:sl;content:counter(sl);display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface-2);font:700 .75rem var(--f-mono);color:var(--muted)}
+.slots li.filled{border-style:solid;border-color:var(--good);background:var(--good-soft);color:var(--ink);font-weight:700}
+.slots li.filled::before{background:var(--good);color:var(--surface)}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.pool button{appearance:none;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer;color:var(--ink)}
+.pool button:hover{border-color:var(--accent)}
+.pool button.shake{animation:shake .35s;border-color:var(--bad);background:var(--bad-soft)}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.accq{display:grid;gap:14px}
+.accrow{display:grid;gap:8px;border:1px solid var(--line);border-radius:10px;padding:12px}
+.accrow h4{font-size:1rem}
+.accrow .row{gap:6px}
+.accrow .lab{font:600 .78rem var(--f-mono);color:var(--muted);min-width:118px}
+
+/* ---------- flashcards ---------- */
+.fc{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px;align-items:start}
+@media (max-width:860px){.fc{grid-template-columns:minmax(0,1fr)}}
+.flash{appearance:none;width:100%;min-height:260px;border:1px solid var(--line);border-radius:16px;background:var(--surface);cursor:pointer;padding:26px 24px;display:grid;align-content:center;gap:14px;text-align:center;color:var(--ink)}
+.flash .q{font:700 clamp(1.25rem,3vw,1.6rem)/1.25 var(--f-display);text-wrap:balance}
+.flash .a{font-size:1.1rem;max-width:56ch;margin:0 auto;text-wrap:pretty}
+.flash .hint{font:600 .75rem var(--f-mono);color:var(--muted)}
+.flash.back{border-color:var(--accent)}
+.fcbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fcbtns .btn{justify-content:center;padding:12px;border-radius:12px}
+.boxes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;height:110px}
+.boxes div{display:grid;gap:4px;justify-items:center;align-self:end}
+.boxes i{display:block;width:100%;background:var(--accent);border-radius:6px 6px 2px 2px;min-height:3px;opacity:.35}
+.boxes div:nth-child(4) i,.boxes div:nth-child(5) i{opacity:1}
+.boxes b{font:600 .75rem var(--f-mono);font-variant-numeric:tabular-nums}
+.boxes span{font:600 .65rem var(--f-mono);color:var(--muted)}
+
+/* ---------- quiz ---------- */
+.quizbox{max-width:760px;padding:22px;display:grid;gap:16px}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.qprog{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.qprog i{display:block;height:100%;background:var(--accent)}
+.qtext{font:700 1.3rem/1.3 var(--f-display);text-wrap:balance}
+.expl{border-left:3px solid var(--accent);padding:6px 12px;color:var(--ink);background:var(--accent-soft);border-radius:0 8px 8px 0}
+.big{font:800 3rem/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.missed{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.missed li{border-top:1px solid var(--line);padding-top:8px}
+.missed b{display:block}
+.missed span{color:var(--good)}
+.field{display:grid;gap:6px;font-weight:700}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <p class="eyebrow">UA1 · Évaluation sommative · Modules 1 à 4</p>
+      <h1>Anatomie <em>oculaire</em></h1>
+      <p class="sub">Explorez les schémas, manipulez l’accommodation, remettez les circuits dans l’ordre, puis testez-vous.</p>
+    </div>
+    <details class="acuity" id="acuity">
+      <summary aria-label="Progression de révision">
+        <div class="lbl"><span class="eyebrow">Acuité de révision</span><span class="val" id="acuVal">20/200</span></div>
+        <div class="snl" id="acuSnl" aria-hidden="true"><span>E</span><span>F</span><span>P</span></div>
+      </summary>
+      <div class="pop">
+        <p class="small">Votre progression convertie en ligne de Snellen : de 20/200 (début) à 20/20 (prêt pour l’examen).</p>
+        <div class="bar"><span>Flashcards</span><span class="tr"><i id="pgFc" style="width:0"></i></span><b id="pgFcN">0 %</b></div>
+        <div class="bar"><span>Quiz</span><span class="tr"><i id="pgQz" style="width:0"></i></span><b id="pgQzN">0 %</b></div>
+        <div class="bar"><span>Séquences</span><span class="tr"><i id="pgSq" style="width:0"></i></span><b id="pgSqN">0 %</b></div>
+        <div class="row"><button class="btn ghost" id="resetBtn" type="button">Réinitialiser la progression</button></div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" data-tab="atlas" type="button">Atlas <small>schémas</small></button>
+    <button class="tab" role="tab" data-tab="fiches" type="button">Fiches <small>M1–M4</small></button>
+    <button class="tab" role="tab" data-tab="simulateurs" type="button">Simulateurs</button>
+    <button class="tab" role="tab" data-tab="sequences" type="button">Séquences</button>
+    <button class="tab" role="tab" data-tab="flashcards" type="button">Flashcards</button>
+    <button class="tab" role="tab" data-tab="quiz" type="button">Quiz</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= ATLAS ================= -->
+<section class="panel" id="p-atlas" role="tabpanel">
+  <div class="panel-h">
+    <div>
+      <h2>Atlas interactif</h2>
+      <p>Touchez une structure pour ouvrir sa fiche. Lancez les circuits pour voir la lumière, l’humeur aqueuse et les larmes circuler.</p>
+    </div>
+    <div class="seg" id="viewSeg" role="group" aria-label="Vue">
+      <button type="button" data-view="sag" aria-pressed="true">Coupe sagittale</button>
+      <button type="button" data-view="face" aria-pressed="false">Vue de face</button>
+      <button type="button" data-view="fond" aria-pressed="false">Fond d’œil</button>
+    </div>
+  </div>
+  <div class="atlas">
+    <div class="card stage">
+      <div class="stage-top">
+        <div class="row" id="atlasTools"></div>
+      </div>
+
+      <div class="svgbox wide" data-v="sag">
+<svg id="svgSag" class="anat" viewBox="0 0 800 500" role="img" aria-label="Coupe sagittale de l’œil, des paupières et de l’orbite">
+  <defs>
+    <pattern id="fatPat" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="8.5" class="fatblob"/></pattern>
+  </defs>
+  <path class="hot s bone" data-id="orbite" d="M170 14 Q560 10 745 205"/>
+  <path class="hot s bone" data-id="orbite" d="M170 486 Q560 490 745 295"/>
+  <path class="hot f fat" data-id="graisse" d="M330 30 Q560 22 735 210 L735 290 Q560 478 330 470 Z"/>
+  <path class="fatpat" d="M330 30 Q560 22 735 210 L735 290 Q560 478 330 470 Z"/>
+  <g class="mir"><path class="hot f muscle" data-id="muscle" d="M362 62 C450 40 600 95 728 222 L728 236 C600 112 470 80 372 74 Z"/></g>
+  <path class="hot f nerve" data-id="nerf" d="M598 286 C650 285 700 268 745 262 L745 298 C700 304 650 330 590 326 Z"/>
+  <circle class="hot f vit" data-id="vitre" cx="420" cy="250" r="168"/>
+  <path class="hot s sclera" data-id="sclere" d="M255.5 155 A190 190 0 1 1 255.5 345"/>
+  <path class="scleraEdge" d="M251 148 A197 197 0 1 1 251 352"/>
+  <path class="hot s chor" data-id="choroide" d="M291.2 125.7 A179 179 0 1 1 291.2 374.3"/>
+  <path class="hot s ret" data-id="retine" d="M305.6 122.9 A171 171 0 1 1 305.6 377.1"/>
+  <path class="hot s mac" data-id="macula" d="M588.9 223.3 A171 171 0 0 1 588.9 276.7"/>
+  <circle class="hot f fov" data-id="fovea" cx="588" cy="250" r="5"/>
+  <path class="hot s pap" data-id="papille" d="M585.9 291.4 A171 171 0 0 1 576.2 319.6"/>
+  <path class="hot f aq" data-id="chambreAnt" d="M254.7 166 A100 100 0 0 0 254.7 334 L266 332 L270 282 Q282 250 270 218 L266 168 Z"/>
+  <g class="mir">
+    <path class="hot f aq" data-id="chambrePost" d="M274 170 L286 170 L297 162 L292 186 L281 210 L277 220 Z"/>
+    <path class="hot s zon" data-id="zonules" d="M288 166 L293 198 M294 161 L301 195 M300 156 L309 198"/>
+    <path class="hot f cil" data-id="corpsCiliaire" d="M262 162 L292 124 L306 126 L300 150 L284 172 Z"/>
+    <path class="hot f iris" data-id="iris" d="M262 164 L274 168 L277 221 L269 223 Z"/>
+    <circle class="hot f schl" data-id="schlemm" cx="257" cy="162" r="4"/>
+  </g>
+  <ellipse class="hot f lens" data-id="cristallin" cx="302" cy="250" rx="24" ry="56"/>
+  <rect class="hot pup" data-id="pupille" x="266" y="225" width="10" height="50"/>
+  <path class="hot s cornea" data-id="cornee" d="M258.4 158 A105 105 0 0 0 258.4 342"/>
+  <g class="mir">
+    <path class="hot f lid" data-id="paupiere" d="M222 176 C252 128 290 92 312 70 C300 52 285 40 268 30 C225 52 196 100 194 178 Q206 186 222 176 Z"/>
+    <path class="hot f tarse" data-id="tarse" d="M214 172 C238 134 262 108 280 94 L272 88 C250 104 224 132 205 168 Z"/>
+    <path class="hot s meib" data-id="meibomius" d="M211 172 C230 142 248 120 266 100"/>
+    <path class="hot s orb" data-id="orbiculaire" d="M203 160 C206 122 224 86 256 50"/>
+    <path class="hot s cils" data-id="bordLibre" d="M197 176 Q182 170 176 158 M199 179 Q183 177 172 168 M202 181 Q186 184 175 180"/>
+    <path class="hot s conj" data-id="conjonctive" d="M251 145 A199 199 0 0 1 326.6 74.3 Q324 62 312 70 C290 92 252 128 222 176"/>
+    <circle class="hot f fornix" data-id="fornix" cx="320" cy="68" r="7"/>
+  </g>
+  <line class="axis" x1="20" y1="250" x2="588" y2="250"/>
+  <g class="ovl" id="gRays" hidden>
+    <polyline class="ray" points="20,214 206,214 288,228 588,250"/>
+    <polyline class="ray" points="20,250 588,250"/>
+    <polyline class="ray" points="20,286 206,286 288,272 588,250"/>
+    <path class="sig" d="M582 305 C640 300 700 284 780 276"/>
+    <text class="ovltext" x="676" y="258">→ cortex visuel</text>
+  </g>
+  <g class="ovl" id="gAq" hidden>
+    <g class="flowA"><path class="flowpath" d="M298 158 L286 178 L278 205 L272 228 C262 236 240 220 246 196 L255 170 L257 163"/></g>
+    <g class="flowA" transform="matrix(1 0 0 -1 0 500)"><path class="flowpath" d="M298 158 L286 178 L278 205 L272 228 C262 236 240 220 246 196 L255 170 L257 163"/></g>
+  </g>
+  <g class="compass" aria-hidden="true" transform="translate(738 58)">
+    <line x1="0" y1="-20" x2="0" y2="20"/><line x1="-20" y1="0" x2="20" y2="0"/>
+    <text x="0" y="-25" text-anchor="middle">SUP</text><text x="0" y="35" text-anchor="middle">INF</text>
+    <text x="-24" y="4" text-anchor="end">ANT</text><text x="24" y="4">POST</text>
+  </g>
+  <g class="labels" id="lab-sag"></g>
+</svg>
+      </div>
+
+      <div class="svgbox wide" data-v="face" hidden>
+<svg id="svgFace" class="anat" viewBox="0 0 760 440" role="img" aria-label="Vue de face de l’œil et du système lacrymal">
+  <defs><clipPath id="clipFis"><path d="M200 215 C270 130 470 115 565 222 C480 300 280 300 200 215 Z"/></clipPath></defs>
+  <rect class="skin" x="0" y="0" width="760" height="440" rx="14"/>
+  <g id="faceFlip">
+    <path class="brow" d="M150 70 Q380 10 600 90"/>
+    <path class="noseline" d="M690 30 C665 150 700 280 650 410"/>
+    <path class="hot s crease" data-id="pliPalp" d="M215 190 C280 95 480 85 572 196"/>
+    <ellipse class="hot f gland" data-id="glandeLac" cx="248" cy="122" rx="54" ry="22" transform="rotate(-14 248 122)"/>
+    <path class="hot f bulbe" data-id="sclere" d="M200 215 C270 130 470 115 565 222 C480 300 280 300 200 215 Z"/>
+    <g clip-path="url(#clipFis)">
+      <circle class="hot f irisF" data-id="iris" cx="385" cy="212" r="64"/>
+      <circle class="hot f pupF" data-id="pupille" cx="385" cy="212" r="24"/>
+      <circle class="reflex" cx="371" cy="199" r="6"/>
+    </g>
+    <path class="hot f plica" data-id="plica" d="M536 204 Q520 224 536 244 Q528 224 536 204 Z"/>
+    <ellipse class="hot f caro" data-id="caroncule" cx="549" cy="224" rx="12" ry="10"/>
+    <path class="hot s margin" data-id="bordLibre" d="M200 215 C270 130 470 115 565 222 C480 300 280 300 200 215"/>
+    <g id="lashes"></g>
+    <path class="hot s canal" data-id="canalicules" d="M533 194 L533 184 L597 200 M536 243 L536 253 L597 232"/>
+    <circle class="hot f punct" data-id="points" cx="533" cy="194" r="4.5"/>
+    <circle class="hot f punct" data-id="points" cx="536" cy="243" r="4.5"/>
+    <ellipse class="hot f sac" data-id="sac" cx="606" cy="214" rx="11" ry="26"/>
+    <path class="hot s duct" data-id="canalNL" d="M606 240 L614 372"/>
+    <circle class="hot f canthus" data-id="canthusLat" cx="201" cy="215" r="7"/>
+    <circle class="hot f canthus" data-id="canthusMed" cx="566" cy="222" r="7"/>
+    <g class="hot" data-id="fente">
+      <path class="dim s" d="M200 318 L565 318 M200 308 L200 328 M565 308 L565 328"/>
+      <path class="hit s" d="M200 318 L565 318"/>
+    </g>
+    <g class="ovl" id="gTears" hidden><path class="flowpath" d="M262 138 Q300 178 380 212 Q470 245 536 243 L536 253 L597 232 L606 240 L614 372"/></g>
+  </g>
+  <text class="dimtext" x="382" y="342" text-anchor="middle">fente palpébrale</text>
+  <text class="orient" x="380" y="20" text-anchor="middle">SUPÉRIEUR</text>
+  <text class="orient" id="oLeft" x="16" y="428">← TEMPORAL</text>
+  <text class="orient" id="oRight" x="744" y="428" text-anchor="end">NASAL →</text>
+  <text class="orient" id="oEye" x="16" y="24">OD · œil droit, vu de face</text>
+  <g class="labels" id="lab-face"></g>
+</svg>
+      </div>
+
+      <div class="svgbox mid" data-v="fond" hidden>
+<svg id="svgFond" class="anat" viewBox="0 0 460 420" role="img" aria-label="Fond d’œil droit">
+  <defs>
+    <radialGradient id="fundGrad" cx="45%" cy="50%" r="60%">
+      <stop offset="0" style="stop-color:var(--f-in)"/>
+      <stop offset=".6" style="stop-color:var(--f-mid)"/>
+      <stop offset="1" style="stop-color:var(--f-out)"/>
+    </radialGradient>
+    <radialGradient id="discGrad"><stop offset="0" style="stop-color:var(--f-cup)"/><stop offset=".45" style="stop-color:var(--f-cup)"/><stop offset=".5" style="stop-color:var(--f-disc)"/><stop offset="1" style="stop-color:var(--f-disc)"/></radialGradient>
+    <clipPath id="clipFund"><circle cx="230" cy="210" r="190"/></clipPath>
+  </defs>
+  <circle class="hot f fbg" data-id="retine" cx="230" cy="210" r="190"/>
+  <g clip-path="url(#clipFund)">
+    <circle class="hot f macF" data-id="macula" cx="185" cy="214" r="46"/>
+    <g class="hot" data-id="vaisseaux">
+      <path class="vein s" d="M318 186 C296 118 214 98 40 128 M244 110 C236 82 218 60 188 36 M318 232 C296 300 214 318 40 290 M244 312 C236 340 218 362 188 386 M326 186 C340 150 356 120 386 92 M326 232 C340 268 356 298 386 326 M262 140 C240 160 226 172 218 178 M262 282 C240 262 226 252 218 244"/>
+      <path class="art s" d="M314 190 C288 132 210 116 40 150 M232 126 C224 100 206 80 178 60 M314 228 C288 288 210 304 40 268 M232 296 C224 322 206 342 178 362 M330 190 C346 158 366 134 400 112 M330 228 C346 260 366 284 400 306"/>
+      <path class="vhit s" d="M318 186 C296 118 214 98 40 128 M318 232 C296 300 214 318 40 290 M326 186 C340 150 356 120 386 92 M326 232 C340 268 356 298 386 326"/>
+    </g>
+    <circle class="hot f disc" data-id="papille" cx="322" cy="209" r="25"/>
+    <circle class="hot f fovF" data-id="fovea" cx="185" cy="214" r="13"/>
+    <circle class="reflex" cx="185" cy="214" r="2.6"/>
+  </g>
+  <text class="orient" x="14" y="410">← TEMPORAL</text>
+  <text class="orient" x="446" y="410" text-anchor="end">NASAL →</text>
+  <text class="orient" x="14" y="22">OD · fond d’œil</text>
+  <g class="labels" id="lab-fond"></g>
+</svg>
+      </div>
+
+      <p class="hoverline" id="hoverLine">Survolez ou touchez une structure.</p>
+      <div class="cap" id="atlasCap" hidden></div>
+    </div>
+
+    <aside class="card info" id="info" aria-live="polite"></aside>
+  </div>
+</section>
+
+<!-- ================= FICHES ================= -->
+<section class="panel" id="p-fiches" role="tabpanel" hidden>
+  <div class="panel-h">
+    <div>
+      <h2>Fiches de synthèse</h2>
+      <p>Toute la matière des modules 1 à 4. Activez le mode révision pour cacher les mots clés, puis touchez-les un à un pour vérifier votre mémoire. Les termes soulignés en pointillé s’ouvrent dans l’atlas.</p>
+    </div>
+    <div class="fiche-tools">
+      <label class="toggle" for="hideKeys"><input type="checkbox" id="hideKeys"> Mode révision (masquer les mots clés)</label>
+      <button class="btn ghost" type="button" id="revealAll" hidden>Tout révéler</button>
+    </div>
+  </div>
+  <nav class="modnav" aria-label="Modules">
+    <a class="btn" href="#m1">Module 1</a><a class="btn" href="#m2">Module 2</a><a class="btn" href="#m3">Module 3</a><a class="btn" href="#m4">Module 4</a>
+  </nav>
+  <div id="fiches">
+
+  <section class="mod" id="m1">
+    <header class="mod-h"><span class="mod-n">Module 1</span><h2>Organisation générale, orientation et trajet de la lumière</h2></header>
+    <div class="mod-grid">
+      <article class="blk">
+        <h3>Vocabulaire d’orientation</h3>
+        <div class="tblwrap"><table class="spec"><tbody>
+          <tr><th>OD</th><td><b class="k">Oculus Dexter</b> : œil <b class="k">droit</b></td></tr>
+          <tr><th>OS</th><td><b class="k">Oculus Sinister</b> : œil <b class="k">gauche</b></td></tr>
+          <tr><th>Supérieur / Inférieur</th><td>en haut / en bas</td></tr>
+          <tr><th>Interne / Externe</th><td>vers l’intérieur / vers l’extérieur</td></tr>
+          <tr><th>Nasal / Temporal</th><td>vers le <b class="k">nez</b> / vers la <b class="k">tempe</b></td></tr>
+          <tr><th>Antérieur / Postérieur</th><td>en <b class="k">avant</b> / en <b class="k">arrière</b></td></tr>
+        </tbody></table></div>
+        <p class="memo"><span>Astuce</span>Dexter → « dextérité », la main droite. Sinister → « senestre », la gauche.</p>
+      </article>
+      <article class="blk">
+        <h3>Analogie de l’appareil photo</h3>
+        <div class="camgrid">
+          <div><b>Objectif</b><span>=</span><b class="k" data-go="cornee">Cornée &amp; cristallin</b></div>
+          <div><b>Diaphragme / ouverture</b><span>=</span><b class="k" data-go="iris">Iris / pupille</b></div>
+          <div><b>Capteur / pellicule</b><span>=</span><b class="k" data-go="retine">Rétine</b></div>
+        </div>
+        <p class="memo"><span>Astuce</span>Ce qui <i>courbe</i> la lumière = objectif. Ce qui <i>dose</i> la lumière = diaphragme. Ce qui <i>capte</i> la lumière = capteur.</p>
+      </article>
+      <article class="blk wide">
+        <h3>Trajet séquentiel de la lumière (du photon au cerveau)</h3>
+        <ol class="chain" data-seq="lumiere"></ol>
+        <p class="memo"><span>Astuce</span>Devant → derrière, en traversant d’abord les milieux transparents (cornée, humeur aqueuse, cristallin, vitré), puis la partie nerveuse (rétine, nerf optique, cerveau).</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mod" id="m2">
+    <header class="mod-h"><span class="mod-n">Module 2</span><h2>Structures externes, système lacrymal, conjonctive et cornée</h2></header>
+    <div class="mod-grid">
+      <article class="blk">
+        <h3>Paupières : repères externes</h3>
+        <ul>
+          <li><b class="k" data-go="canthusMed">Canthus médial</b> et <b class="k" data-go="canthusLat">canthus latéral</b></li>
+          <li><b class="k" data-go="pliPalp">Pli palpébral</b></li>
+          <li><b class="k" data-go="bordLibre">Bord libre</b> (porte les cils)</li>
+          <li><b class="k" data-go="fente">Fente palpébrale</b></li>
+        </ul>
+      </article>
+      <article class="blk">
+        <h3>Caroncule et plica semilunaris</h3>
+        <p><b class="k" data-go="caroncule">Caroncule</b> : protubérance rosée au <b class="k">canthus médial</b>, faite de <b class="k">peau modifiée</b>, de glandes <b class="k">sébacées</b> et <b class="k">sudoripares</b>. Source des <b class="k">sécrétions matinales</b>.</p>
+        <p><b class="k" data-go="plica">Plica semilunaris</b> : repli conjonctival en <b class="k">croissant</b>, vestige de la <b class="k">3ᵉ paupière</b>, qui facilite la <b class="k">rotation du globe</b>.</p>
+      </article>
+      <article class="blk">
+        <h3>Muscles, squelette et glandes</h3>
+        <ul>
+          <li><b class="k" data-go="orbiculaire">Muscle orbiculaire</b> (orbicularis oculi) : <b class="k">fermeture</b> des paupières.</li>
+          <li><b class="k" data-go="tarse">Tarse</b> : plaque <b class="k">fibreuse rigide</b>, squelette de la paupière.</li>
+          <li><b class="k" data-go="meibomius">Glandes de Meibomius</b> : glandes <b class="k">sébacées</b> alignées dans le tarse, qui débouchent sur le <b class="k">bord libre, derrière les cils</b>.</li>
+        </ul>
+      </article>
+      <article class="blk wide">
+        <h3>Film lacrymal : 3 couches (de l’air vers l’œil)</h3>
+        <div class="tblwrap"><table class="spec">
+          <thead><tr><th>Couche</th><th>Position</th><th>Source</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <tr><th><b class="k">Lipidique</b></th><td>externe</td><td><b class="k">Glandes de Meibomius</b></td><td>évite l’<b class="k">évaporation</b></td></tr>
+            <tr><th><b class="k">Aqueuse</b></th><td>médiane</td><td><b class="k">Glande lacrymale principale</b></td><td><b class="k">hydratation et nutriments</b></td></tr>
+            <tr><th><b class="k">Mucinique</b></th><td>interne</td><td><b class="k">Cellules conjonctivales</b></td><td><b class="k">ancre</b> le liquide à l’œil</td></tr>
+          </tbody>
+        </table></div>
+        <p class="memo"><span>Astuce</span>Les larmes forment une « LAMe » : <b>L</b>ipidique, <b>A</b>queuse, <b>M</b>ucinique, de l’air vers la cornée.</p>
+      </article>
+      <article class="blk wide">
+        <h3>Circuit de drainage lacrymal</h3>
+        <ol class="chain" data-seq="larmes"></ol>
+        <p class="memo"><span>Astuce</span>Glande en haut et du côté <b>temporal</b> ; drainage au canthus <b>médial</b>. Les larmes traversent l’œil en diagonale, puis finissent dans le <b>nez</b> (d’où le nez qui coule quand on pleure).</p>
+      </article>
+      <article class="blk">
+        <h3>Conjonctive</h3>
+        <p>Membrane <b class="k">muqueuse lâche</b> et très <b class="k">vascularisée</b>. Trois régions :</p>
+        <ul>
+          <li><b class="k">Palpébrale</b> : face interne des paupières.</li>
+          <li><b class="k">Bulbaire</b> : sur la sclère, jusqu’au <b class="k">limbe</b>.</li>
+          <li><b class="k" data-go="fornix">Cul-de-sac (fornix)</b> : repli de jonction <b class="k">étanche</b> qui empêche tout objet de passer <b class="k">derrière l’œil</b>.</li>
+        </ul>
+      </article>
+      <article class="blk">
+        <h3>Cornée</h3>
+        <p>Fenêtre <b class="k">antérieure transparente</b> de la <b class="k">tunique fibreuse</b>.</p>
+        <ul>
+          <li>3 fonctions : <b class="k">transparence</b>, <b class="k">protection</b>, <b class="k">réfraction</b>.</li>
+          <li><b class="k">Avasculaire</b> : nourrie par les <b class="k">larmes</b> en avant et l’<b class="k">humeur aqueuse</b> en arrière.</li>
+          <li>Très innervée : <b class="k">200×</b> plus que la peau (<b class="k">plexus sous-épithélial</b>).</li>
+        </ul>
+        <div class="tblwrap"><table class="spec"><tbody>
+          <tr><th><b class="k">Épithélium</b></th><td>barrière externe</td></tr>
+          <tr><th><b class="k">Stroma</b></th><td>structure et rigidité (<b class="k">collagène</b>)</td></tr>
+          <tr><th><b class="k">Endothélium</b></th><td><b class="k">pompe de déshydratation</b> qui maintient la transparence</td></tr>
+        </tbody></table></div>
+        <p class="memo"><span>Astuce</span>É-S-E, de l’extérieur vers l’intérieur : É-pithélium, S-troma, E-ndothélium.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mod" id="m3">
+    <header class="mod-h"><span class="mod-n">Module 3</span><h2>Segment antérieur, humeur aqueuse et cristallin</h2></header>
+    <div class="mod-grid">
+      <article class="blk">
+        <h3>Chambres et cavités</h3>
+        <ul>
+          <li><b class="k" data-go="chambreAnt">Chambre antérieure</b> : entre la <b class="k">cornée</b> et l’<b class="k">iris</b>.</li>
+          <li><b class="k" data-go="chambrePost">Chambre postérieure</b> : espace étroit entre <b class="k">iris</b>, <b class="k">corps ciliaire</b> et <b class="k">cristallin</b>.</li>
+          <li><b class="k" data-go="vitre">Cavité vitréenne</b> : espace postérieur, <b class="k">derrière le cristallin</b>.</li>
+        </ul>
+      </article>
+      <article class="blk">
+        <h3>Humeur aqueuse</h3>
+        <ul>
+          <li>Rôle : nourrit la <b class="k">cornée</b> et le <b class="k">cristallin</b> (tissus avasculaires).</li>
+          <li>Production : <b class="k" data-go="corpsCiliaire">procès ciliaires</b> du corps ciliaire, dans la <b class="k">chambre postérieure</b>.</li>
+          <li>Blocage du <b class="k" data-go="schlemm">trabéculum</b> → <b class="k">↑ pression intraoculaire (PIO)</b>.</li>
+        </ul>
+        <p class="memo"><span>Astuce</span>Produite <b>derrière</b> l’iris, évacuée <b>devant</b>, dans l’angle de la chambre antérieure.</p>
+      </article>
+      <article class="blk wide">
+        <h3>Circuit d’évacuation de l’humeur aqueuse</h3>
+        <ol class="chain" data-seq="aqueuse"></ol>
+      </article>
+      <article class="blk wide">
+        <h3>Cristallin et accommodation</h3>
+        <p>Structures clés : <b class="k" data-go="corpsCiliaire">muscle ciliaire</b> et <b class="k" data-go="zonules">zonules de Zinn</b> (ligaments suspenseurs).</p>
+        <div class="compare">
+          <div><h4>Vision de loin</h4><ol><li>Muscle ciliaire <b class="k">relâché</b></li><li>Zonules <b class="k">tendues</b></li><li>Cristallin <b class="k">étiré / mince</b></li></ol></div>
+          <div><h4>Vision de près (accommodation)</h4><ol><li>Muscle ciliaire <b class="k">contracté</b></li><li>Zonules <b class="k">relâchées</b></li><li>Cristallin <b class="k">s’arrondit / s’épaissit</b></li></ol></div>
+        </div>
+        <p class="memo"><span>Astuce</span>Le muscle ciliaire est un anneau : en se contractant, il se resserre vers le cristallin, donc les zonules se détendent et le cristallin reprend sa forme ronde. Testez-le dans l’onglet Simulateurs.</p>
+        <p><b>Presbytie</b> : perte progressive de l’<b class="k">élasticité du cristallin</b> avec l’âge (<b class="k">40 ans et plus</b>).</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mod" id="m4">
+    <header class="mod-h"><span class="mod-n">Module 4</span><h2>Segment postérieur, tuniques du globe, rétine et protection</h2></header>
+    <div class="mod-grid">
+      <article class="blk wide">
+        <h3>Les 3 tuniques (enveloppes) du globe</h3>
+        <div class="tblwrap"><table class="spec">
+          <thead><tr><th>Tunique</th><th>Position</th><th>Composantes</th></tr></thead>
+          <tbody>
+            <tr><th><b class="k">Fibreuse</b></th><td>externe</td><td><b class="k" data-go="cornee">Cornée</b> (antérieure) et <b class="k" data-go="sclere">sclère</b> (postérieure, blanche, résistante, insertion des <b class="k">muscles extra-oculaires</b>)</td></tr>
+            <tr><th><b class="k">Vasculaire / uvée</b></th><td>moyenne</td><td><b class="k" data-go="iris">Iris</b>, <b class="k" data-go="corpsCiliaire">corps ciliaire</b> et <b class="k" data-go="choroide">choroïde</b> (vaisseaux : <b class="k">nutriments et pigments</b>)</td></tr>
+            <tr><th><b class="k">Nerveuse / neurosensorielle</b></th><td>interne</td><td><b class="k" data-go="retine">Rétine</b></td></tr>
+          </tbody>
+        </table></div>
+        <p class="memo"><span>Astuce</span>Uvée = « ICC » : Iris, Corps ciliaire, Choroïde. De dehors en dedans : Fibreuse → Vasculaire → Nerveuse.</p>
+      </article>
+      <article class="blk">
+        <h3>Rétine et fond d’œil</h3>
+        <ul>
+          <li>Composante neurosensorielle : convertit l’énergie lumineuse en <b class="k">signal électrique</b>.</li>
+          <li>Deux couches : <b class="k">pigmentaire</b> et <b class="k">nerveuse</b>.</li>
+          <li><b class="k" data-go="macula">Macula</b> : zone centrale, <b class="k">vision centrale</b> et <b class="k">des couleurs</b>.</li>
+          <li><b class="k" data-go="fovea">Fovéa</b> (et fovéola) : centre de la macula, <b class="k">meilleure acuité</b>.</li>
+          <li><b class="k" data-go="papille">Papille optique</b> : tête du nerf optique, <b class="k">point aveugle</b> (aucun photorécepteur).</li>
+        </ul>
+      </article>
+      <article class="blk">
+        <h3>Photorécepteurs</h3>
+        <div class="tblwrap"><table class="spec"><tbody>
+          <tr><th><b class="k">Bâtonnets</b></th><td>sensibilité à la lumière, <b class="k">vision nocturne</b></td></tr>
+          <tr><th><b class="k">Cônes</b></th><td>vision des <b class="k">couleurs</b> (rouge, vert, bleu) et <b class="k">acuité en lumière intense</b></td></tr>
+        </tbody></table></div>
+        <p class="memo"><span>Astuce</span><b>B</b>âtonnets = <b>B</b>asse lumière. <b>C</b>ônes = <b>C</b>ouleurs.</p>
+      </article>
+      <article class="blk">
+        <h3>Protection du globe</h3>
+        <ul>
+          <li><b class="k" data-go="orbite">Orbite</b> : cavité <b class="k">osseuse</b> qui protège le globe.</li>
+          <li>Matelassage : <b class="k" data-go="graisse">graisse rétrobulbaire</b> et tissu conjonctif qui <b class="k">amortissent les impacts</b>.</li>
+          <li><b class="k" data-go="vitre">Corps vitré</b> : <b class="k">gel transparent</b> qui maintient la <b class="k">forme et le volume</b> de la cavité vitréenne.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+  </div>
+</section>
+
+<!-- ================= SIMULATEURS ================= -->
+<section class="panel" id="p-simulateurs" role="tabpanel" hidden>
+  <div class="panel-h">
+    <div><h2>Simulateurs</h2><p>Manipulez les mécanismes au lieu de les apprendre par cœur.</p></div>
+  </div>
+
+  <div class="sim">
+    <div class="card">
+      <h3>Accommodation</h3>
+      <p class="small">Choisissez un objet, puis contractez ou relâchez le muscle ciliaire jusqu’à obtenir une image nette sur la rétine.</p>
+      <div class="svgbox mid" style="margin-top:10px">
+        <svg id="accSvg" class="acc" viewBox="0 0 680 300" role="img" aria-label="Simulateur d’accommodation"></svg>
+      </div>
+    </div>
+    <div class="card ctrls">
+      <div class="field">Objet regardé
+        <div class="seg" role="group" aria-label="Objet">
+          <button type="button" data-obj="far" aria-pressed="true">De loin</button>
+          <button type="button" data-obj="near" aria-pressed="false">De près</button>
+        </div>
+      </div>
+      <label for="accRange">Contraction du muscle ciliaire <input type="range" id="accRange" min="0" max="100" value="0"></label>
+      <label class="toggle" for="presb"><input type="checkbox" id="presb"> Cristallin presbyte (40 ans et +)</label>
+      <button class="btn primary" type="button" id="accAuto">Faire la mise au point automatiquement</button>
+      <div class="state" id="accState"></div>
+      <div class="verdict" id="accVerdict"></div>
+    </div>
+  </div>
+
+  <div class="sim">
+    <div class="card">
+      <h3>Coupe : film lacrymal et cornée</h3>
+      <p class="small">De l’air (en haut) vers la chambre antérieure (en bas). Touchez une couche.</p>
+      <div style="margin-top:12px">
+        <p class="flowtag">↓ Air, paupière, clignement · nutriments apportés par les larmes</p>
+        <div class="stack" id="layerStack"></div>
+        <p class="flowtag">↑ Nutriments apportés par l’humeur aqueuse</p>
+      </div>
+    </div>
+    <div class="card" id="layerInfo" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ================= SEQUENCES ================= -->
+<section class="panel" id="p-sequences" role="tabpanel" hidden>
+  <div class="panel-h">
+    <div><h2>Séquences</h2><p>Les circuits tombent souvent à l’examen. Touchez les étapes dans le bon ordre ; une erreur fait trembler l’étiquette.</p></div>
+  </div>
+  <div class="seqwrap">
+    <div class="card seqlist" id="seqList"></div>
+    <div class="card seqstage" id="seqStage"></div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section class="panel" id="p-flashcards" role="tabpanel" hidden>
+  <div class="panel-h">
+    <div><h2>Flashcards</h2><p>Répétition espacée (boîtes de Leitner) : une carte réussie monte d’une boîte, une carte ratée retourne dans la boîte 1. Les cartes des petites boîtes reviennent plus souvent.</p></div>
+    <div class="row" id="fcFilters"></div>
+  </div>
+  <div class="fc">
+    <div>
+      <button class="flash" type="button" id="flash" aria-live="polite"></button>
+      <div class="fcbtns">
+        <button class="btn bad" type="button" id="fcNo">À revoir <small>(1)</small></button>
+        <button class="btn primary" type="button" id="fcYes">Je savais <small>(2)</small></button>
+      </div>
+      <p class="small" style="margin-top:8px">Clavier : Espace pour retourner, 1 = à revoir, 2 = je savais.</p>
+    </div>
+    <div class="card" style="padding:16px;display:grid;gap:12px">
+      <p class="eyebrow">Répartition dans les boîtes</p>
+      <div class="boxes" id="boxes"></div>
+      <p class="small" id="fcStat"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="panel" id="p-quiz" role="tabpanel" hidden>
+  <div class="panel-h">
+    <div><h2>Quiz</h2><p>Questions à choix multiples avec explication après chaque réponse.</p></div>
+  </div>
+  <div class="card quizbox" id="quizBox"></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const NS='http://www.w3.org/2000/svg';
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store={
+  get(k,d){try{const v=localStorage.getItem('ua1-oeil:'+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+  set(k,v){try{localStorage.setItem('ua1-oeil:'+k,JSON.stringify(v));}catch(e){}},
+  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf('ua1-oeil:')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}}
+};
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ================= DATA ================= */
+const MOD={1:'Organisation et lumière',2:'Annexes, larmes, cornée',3:'Segment antérieur',4:'Segment postérieur'};
+const TUN={fib:'Tunique fibreuse',uv:'Tunique vasculaire (uvée)',ner:'Tunique nerveuse'};
+const S={
+  cornee:{n:'Cornée',m:[2,4],t:'fib',d:'Fenêtre antérieure transparente de la tunique fibreuse.',f:['3 fonctions : transparence, protection, réfraction.','Avasculaire : nourrie par les larmes (en avant) et l’humeur aqueuse (en arrière).','Très innervée : 200× plus que la peau (plexus sous-épithélial).','3 couches : épithélium (barrière), stroma (collagène, rigidité), endothélium (pompe de déshydratation).','1ʳᵉ étape du trajet de la lumière ; « objectif » avec le cristallin.'],see:['sclere','chambreAnt','conjonctive']},
+  sclere:{n:'Sclère',m:[4],t:'fib',d:'Partie postérieure de la tunique fibreuse : le blanc de l’œil.',f:['Blanche et résistante.','Point d’insertion des muscles extra-oculaires.','Recouverte en avant par la conjonctive bulbaire, jusqu’au limbe.'],see:['cornee','muscle','conjonctive']},
+  conjonctive:{n:'Conjonctive',m:[2],d:'Membrane muqueuse lâche et très vascularisée.',f:['Palpébrale : tapisse la face interne des paupières.','Bulbaire : recouvre la sclère jusqu’au limbe.','Cul-de-sac (fornix) : repli de jonction entre les deux.','Ses cellules produisent la couche mucinique du film lacrymal.'],see:['fornix','plica','sclere']},
+  fornix:{n:'Cul-de-sac conjonctival (fornix)',m:[2],d:'Repli où la conjonctive palpébrale rejoint la conjonctive bulbaire.',f:['Jonction étanche : empêche tout objet (une lentille, une poussière) de passer derrière l’œil.'],see:['conjonctive','paupiere']},
+  chambreAnt:{n:'Chambre antérieure',m:[1,3],d:'Espace entre la cornée et l’iris, rempli d’humeur aqueuse.',f:['2ᵉ étape du trajet de la lumière.','L’humeur aqueuse y arrive par la pupille et en sort par le trabéculum, dans l’angle.'],see:['chambrePost','schlemm','cornee']},
+  chambrePost:{n:'Chambre postérieure',m:[3],d:'Espace étroit entre l’iris, le corps ciliaire et le cristallin.',f:['Lieu de production de l’humeur aqueuse (procès ciliaires).','L’humeur aqueuse passe ensuite par la pupille vers la chambre antérieure.'],see:['corpsCiliaire','chambreAnt']},
+  iris:{n:'Iris',m:[1,4],t:'uv',d:'Partie antérieure de l’uvée : le diaphragme coloré autour de la pupille.',f:['Analogie : diaphragme de l’appareil photo.','Règle la quantité de lumière qui entre.'],see:['pupille','corpsCiliaire','choroide']},
+  pupille:{n:'Pupille',m:[1,3],d:'Ouverture centrale de l’iris.',f:['Analogie : ouverture du diaphragme.','Laisse passer la lumière… et l’humeur aqueuse (chambre postérieure → chambre antérieure).'],see:['iris']},
+  cristallin:{n:'Cristallin',m:[1,3],d:'Lentille transparente et avasculaire, suspendue derrière l’iris.',f:['Nourri par l’humeur aqueuse.','Accommodation : s’arrondit pour la vision de près.','Presbytie : perte d’élasticité avec l’âge (40 ans et plus).','Analogie : objectif (avec la cornée).'],see:['zonules','corpsCiliaire']},
+  zonules:{n:'Zonules de Zinn',m:[3],d:'Ligaments suspenseurs du cristallin, attachés au corps ciliaire.',f:['Loin : tendues → cristallin étiré, mince.','Près : relâchées → cristallin arrondi.'],see:['cristallin','corpsCiliaire']},
+  corpsCiliaire:{n:'Corps ciliaire',m:[3,4],t:'uv',d:'Partie moyenne de l’uvée, entre l’iris et la choroïde.',f:['Procès ciliaires : produisent l’humeur aqueuse dans la chambre postérieure.','Muscle ciliaire : contracté = vision de près ; relâché = vision de loin.'],see:['zonules','chambrePost','iris']},
+  schlemm:{n:'Trabéculum et canal de Schlemm',m:[3],d:'Filtre situé dans l’angle de la chambre antérieure, qui évacue l’humeur aqueuse vers le canal de Schlemm.',f:['Dernières étapes du circuit de l’humeur aqueuse.','Blocage du trabéculum → hausse de la pression intraoculaire (PIO).'],see:['chambreAnt']},
+  vitre:{n:'Corps vitré (cavité vitréenne)',m:[1,3,4],d:'Gel transparent qui remplit la cavité vitréenne, derrière le cristallin.',f:['Maintient la forme et le volume de la cavité vitréenne.','5ᵉ étape du trajet de la lumière.'],see:['cristallin','retine']},
+  choroide:{n:'Choroïde',m:[4],t:'uv',d:'Partie postérieure de l’uvée, entre la sclère et la rétine.',f:['Riche en vaisseaux sanguins : apporte nutriments et pigments.'],see:['iris','corpsCiliaire','retine']},
+  retine:{n:'Rétine',m:[1,4],t:'ner',d:'Tunique nerveuse (interne) : le capteur de l’œil.',f:['Convertit l’énergie lumineuse en signal électrique.','Deux couches : pigmentaire et nerveuse.','Photorécepteurs : bâtonnets (vision nocturne) et cônes (couleurs, acuité).'],see:['macula','fovea','papille']},
+  macula:{n:'Macula',m:[4],t:'ner',d:'Zone centrale de la rétine.',f:['Vision centrale et vision des couleurs.'],see:['fovea','retine']},
+  fovea:{n:'Fovéa (et fovéola)',m:[4],t:'ner',d:'Petite dépression au centre de la macula ; la fovéola en est le centre.',f:['Meilleure acuité visuelle de l’œil.','C’est là que se forme l’image de ce que l’on fixe.'],see:['macula']},
+  papille:{n:'Papille optique (disque)',m:[4],t:'ner',d:'Tête du nerf optique, visible au fond d’œil.',f:['Aucun photorécepteur : c’est le point aveugle.'],see:['nerf','retine']},
+  nerf:{n:'Nerf optique',m:[1,4],d:'Transmet le signal électrique de la rétine au cerveau (cortex visuel).',f:['Quitte le globe en arrière, au niveau de la papille.','7ᵉ étape du trajet de la lumière, avant le cortex visuel.'],see:['papille']},
+  muscle:{n:'Muscles extra-oculaires',m:[4],d:'Muscles qui orientent le globe (ici, le droit supérieur et le droit inférieur).',f:['S’insèrent sur la sclère.'],see:['sclere']},
+  graisse:{n:'Graisse rétrobulbaire',m:[4],d:'Coussin de graisse et de tissu conjonctif derrière le globe.',f:['Matelassage : amortit les impacts.'],see:['orbite']},
+  orbite:{n:'Orbite',m:[4],d:'Cavité osseuse qui loge et protège le globe.',see:['graisse']},
+  paupiere:{n:'Paupières',m:[2],d:'Voiles mobiles qui protègent le globe en avant.',f:['Fermées par le muscle orbiculaire.','Squelette : le tarse.','Repères : canthus, pli palpébral, bord libre, fente palpébrale.'],see:['tarse','orbiculaire','meibomius']},
+  tarse:{n:'Tarse',m:[2],d:'Plaque fibreuse rigide qui forme le squelette de la paupière.',f:['Contient les glandes de Meibomius.'],see:['meibomius','paupiere']},
+  meibomius:{n:'Glandes de Meibomius',m:[2],d:'Glandes sébacées alignées dans le tarse.',f:['Débouchent sur le bord libre, derrière les cils.','Produisent la couche lipidique du film lacrymal (contre l’évaporation).'],see:['tarse','bordLibre']},
+  orbiculaire:{n:'Muscle orbiculaire',m:[2],d:'Orbicularis oculi : muscle circulaire des paupières.',f:['Fermeture des paupières (clignement).'],see:['paupiere']},
+  bordLibre:{n:'Bord libre et cils',m:[2],d:'Bord de la paupière qui porte les cils.',f:['Les glandes de Meibomius s’y ouvrent, derrière les cils.','Les points lacrymaux s’y trouvent, près du canthus médial.'],see:['meibomius','points']},
+  glandeLac:{n:'Glande lacrymale principale',m:[2],d:'Glande située en haut et du côté temporal, sous le rebord de l’orbite.',f:['Produit la couche aqueuse : hydratation et nutriments.','1ʳᵉ étape du circuit lacrymal.'],see:['points','sac']},
+  points:{n:'Points lacrymaux',m:[2],d:'Petits orifices sur le bord libre, près du canthus médial (un en haut, un en bas).',f:['Recueillent les larmes de la surface oculaire.'],see:['canalicules']},
+  canalicules:{n:'Canalicules lacrymaux',m:[2],d:'Petits conduits qui relient les points lacrymaux au sac lacrymal.',see:['points','sac']},
+  sac:{n:'Sac lacrymal',m:[2],d:'Réservoir du côté nasal, entre les canalicules et le canal naso-lacrymal.',see:['canalicules','canalNL']},
+  canalNL:{n:'Canal naso-lacrymal',m:[2],d:'Conduit qui descend du sac lacrymal vers la cavité nasale.',f:['Dernière étape : les larmes sont drainées dans le nez.'],see:['sac']},
+  caroncule:{n:'Caroncule',m:[2],d:'Petite protubérance rosée au canthus médial.',f:['Peau modifiée avec glandes sébacées et sudoripares.','Source des sécrétions du matin.'],see:['plica','canthusMed']},
+  plica:{n:'Plica semilunaris',m:[2],d:'Repli conjonctival en forme de croissant, à côté de la caroncule.',f:['Vestige de la 3ᵉ paupière.','Facilite la rotation du globe.'],see:['caroncule']},
+  canthusMed:{n:'Canthus médial',m:[2],d:'Angle interne (nasal) de la fente palpébrale.',f:['On y trouve la caroncule et la plica semilunaris.'],see:['caroncule','canthusLat']},
+  canthusLat:{n:'Canthus latéral',m:[2],d:'Angle externe (temporal) de la fente palpébrale.',see:['canthusMed']},
+  pliPalp:{n:'Pli palpébral',m:[2],d:'Sillon de la paupière supérieure, au-dessus du bord libre.',see:['bordLibre']},
+  fente:{n:'Fente palpébrale',m:[2],d:'Ouverture entre les bords libres des deux paupières, d’un canthus à l’autre.',see:['canthusMed','canthusLat']},
+  vaisseaux:{n:'Vaisseaux rétiniens',m:[4],d:'Repère du fond d’œil : artères (plus claires, plus fines) et veines (plus sombres, plus larges) qui partent de la papille.',f:['Ils contournent la fovéa.'],see:['papille']}
+};
+
+const SEQ={
+  lumiere:{n:'Trajet de la lumière',p:'Du photon jusqu’au cerveau.',items:['Cornée','Chambre antérieure (humeur aqueuse)','Pupille / iris','Cristallin','Cavité vitréenne (corps vitré)','Rétine','Nerf optique','Cerveau (cortex visuel)']},
+  larmes:{n:'Drainage lacrymal',p:'De la production jusqu’au nez.',items:['Glande lacrymale principale','Surface oculaire','Points lacrymaux','Canalicules lacrymaux','Sac lacrymal','Canal naso-lacrymal']},
+  aqueuse:{n:'Humeur aqueuse',p:'De la production jusqu’à l’évacuation.',items:['Procès ciliaires','Chambre postérieure','Pupille','Chambre antérieure','Trabéculum','Canal de Schlemm']},
+  film:{n:'Couches du film lacrymal',p:'De l’air vers la cornée.',items:['Couche lipidique','Couche aqueuse','Couche mucinique']},
+  cornee:{n:'Couches de la cornée',p:'De l’avant vers l’arrière.',items:['Épithélium','Stroma','Endothélium']},
+  tuniques:{n:'Tuniques du globe',p:'De l’extérieur vers l’intérieur.',items:['Tunique fibreuse (cornée, sclère)','Tunique vasculaire (uvée)','Tunique nerveuse (rétine)']}
+};
+const SEQ_IDS=Object.keys(SEQ).concat(['accom']);
+
+const CARDS=[
+ [1,'Que signifie OD ?','Oculus Dexter : l’œil droit.'],
+ [1,'Que signifie OS ?','Oculus Sinister : l’œil gauche.'],
+ [1,'Direction « nasal » ?','Vers le nez.'],
+ [1,'Direction « temporal » ?','Vers la tempe.'],
+ [1,'Antérieur / postérieur ?','En avant / en arrière.'],
+ [1,'Trajet complet de la lumière ?','Cornée → chambre antérieure (humeur aqueuse) → pupille / iris → cristallin → cavité vitréenne (corps vitré) → rétine → nerf optique → cerveau (cortex visuel).'],
+ [1,'Quelle structure suit immédiatement la cornée sur le trajet de la lumière ?','La chambre antérieure (humeur aqueuse).'],
+ [1,'Où l’information visuelle est-elle interprétée ?','Dans le cerveau, au cortex visuel.'],
+ [1,'Appareil photo : à quoi correspond l’objectif ?','À la cornée et au cristallin.'],
+ [1,'Appareil photo : à quoi correspond le diaphragme ?','À l’iris / la pupille.'],
+ [1,'Appareil photo : à quoi correspond le capteur (pellicule) ?','À la rétine.'],
+ [2,'Qu’est-ce que la caroncule ?','Protubérance rosée au canthus médial : peau modifiée, glandes sébacées et sudoripares. Source des sécrétions matinales.'],
+ [2,'Qu’est-ce que la plica semilunaris ?','Repli conjonctival en croissant, vestige de la 3ᵉ paupière ; facilite la rotation du globe.'],
+ [2,'Quel muscle ferme les paupières ?','Le muscle orbiculaire (orbicularis oculi).'],
+ [2,'Qu’est-ce que le tarse ?','Plaque fibreuse rigide qui forme le squelette de la paupière.'],
+ [2,'Glandes de Meibomius : nature et localisation ?','Glandes sébacées alignées dans le tarse ; débouchent sur le bord libre, derrière les cils.'],
+ [2,'Les 5 repères externes des paupières ?','Canthus médial, canthus latéral, pli palpébral, bord libre, fente palpébrale.'],
+ [2,'Les 3 couches du film lacrymal (de l’extérieur vers l’intérieur) ?','Lipidique → aqueuse → mucinique.'],
+ [2,'Couche lipidique : source et rôle ?','Glandes de Meibomius ; évite l’évaporation. Couche externe.'],
+ [2,'Couche aqueuse : source et rôle ?','Glande lacrymale principale ; hydratation et nutriments. Couche médiane.'],
+ [2,'Couche mucinique : source et rôle ?','Cellules conjonctivales ; ancre le liquide à l’œil. Couche interne.'],
+ [2,'Circuit de drainage lacrymal ?','Glande lacrymale principale → surface oculaire → points lacrymaux → canalicules lacrymaux → sac lacrymal → canal naso-lacrymal (drainage nasal).'],
+ [2,'Où se drainent finalement les larmes ?','Dans le nez, par le canal naso-lacrymal.'],
+ [2,'Nature de la conjonctive ?','Membrane muqueuse lâche et très vascularisée.'],
+ [2,'Les 3 régions de la conjonctive ?','Palpébrale, bulbaire, cul-de-sac (fornix).'],
+ [2,'Que recouvre la conjonctive bulbaire ?','La sclère, jusqu’au limbe.'],
+ [2,'Rôle du cul-de-sac conjonctival (fornix) ?','Repli de jonction étanche qui empêche tout objet de passer derrière l’œil.'],
+ [2,'Définition de la cornée ?','Fenêtre antérieure transparente de la tunique fibreuse.'],
+ [2,'Les 3 fonctions de la cornée ?','Transparence, protection, réfraction.'],
+ [2,'Comment la cornée est-elle nourrie ?','Elle est avasculaire : par les larmes en avant et l’humeur aqueuse en arrière.'],
+ [2,'Innervation de la cornée ?','Très innervée : 200× plus que la peau, via le plexus sous-épithélial.'],
+ [2,'Les 3 couches principales de la cornée ?','Épithélium (barrière externe), stroma (structure, collagène), endothélium (pompe de déshydratation).'],
+ [2,'Rôle de l’endothélium cornéen ?','Pompe de déshydratation qui maintient la transparence.'],
+ [2,'Rôle du stroma cornéen ?','Structure et rigidité (collagène).'],
+ [3,'Où est la chambre antérieure ?','Entre la cornée et l’iris.'],
+ [3,'Où est la chambre postérieure ?','Espace étroit entre l’iris, le corps ciliaire et le cristallin.'],
+ [3,'Où est la cavité vitréenne ?','Espace postérieur, derrière le cristallin.'],
+ [3,'Rôle de l’humeur aqueuse ?','Nourrir la cornée et le cristallin, qui sont avasculaires.'],
+ [3,'Où l’humeur aqueuse est-elle produite ?','Par les procès ciliaires du corps ciliaire, dans la chambre postérieure.'],
+ [3,'Circuit de l’humeur aqueuse ?','Procès ciliaires → chambre postérieure → pupille → chambre antérieure → trabéculum → canal de Schlemm.'],
+ [3,'Conséquence d’un blocage du trabéculum ?','Augmentation de la pression intraoculaire (PIO).'],
+ [3,'Les 2 structures clés de l’accommodation ?','Le muscle ciliaire et les zonules de Zinn.'],
+ [3,'Vision de loin : muscle, zonules, cristallin ?','Muscle ciliaire relâché → zonules tendues → cristallin étiré / mince.'],
+ [3,'Vision de près : muscle, zonules, cristallin ?','Muscle ciliaire contracté → zonules relâchées → cristallin s’arrondit / s’épaissit.'],
+ [3,'Que sont les zonules de Zinn ?','Les ligaments suspenseurs du cristallin.'],
+ [3,'Qu’est-ce que la presbytie ?','Perte progressive de l’élasticité du cristallin avec l’âge (40 ans et plus).'],
+ [4,'Les 3 tuniques du globe ?','Fibreuse (externe), vasculaire / uvée (moyenne), nerveuse (interne).'],
+ [4,'Composition de la tunique fibreuse ?','Cornée (antérieure) et sclère (postérieure).'],
+ [4,'Caractéristiques de la sclère ?','Blanche, résistante, point d’insertion des muscles extra-oculaires.'],
+ [4,'Composition de l’uvée ?','Iris, corps ciliaire et choroïde.'],
+ [4,'Rôle de la choroïde ?','Riche en vaisseaux : apporte nutriments et pigments.'],
+ [4,'Quelle structure forme la tunique nerveuse ?','La rétine.'],
+ [4,'Rôle de la composante neurosensorielle de la rétine ?','Convertir l’énergie lumineuse en signal électrique.'],
+ [4,'Les 2 couches de la rétine ?','Couche pigmentaire et couche nerveuse.'],
+ [4,'Rôle de la macula ?','Zone centrale : vision centrale et vision des couleurs.'],
+ [4,'Qu’est-ce que la fovéa ?','Le centre de la macula (avec la fovéola au centre) : meilleure acuité visuelle.'],
+ [4,'Qu’est-ce que la papille optique ?','La tête du nerf optique, visible au fond d’œil ; elle correspond au point aveugle.'],
+ [4,'Pourquoi la papille est-elle un point aveugle ?','Parce qu’elle ne contient aucun photorécepteur.'],
+ [4,'Rôle des bâtonnets ?','Sensibilité à la lumière, vision nocturne.'],
+ [4,'Rôle des cônes ?','Vision des couleurs (rouge, vert, bleu) et acuité en lumière intense.'],
+ [4,'Qu’est-ce que l’orbite ?','La cavité osseuse qui protège le globe.'],
+ [4,'Qu’est-ce qui « matelasse » le globe ?','La graisse rétrobulbaire et le tissu conjonctif, qui amortissent les impacts.'],
+ [4,'Rôle du corps vitré ?','Gel transparent qui maintient la forme et le volume de la cavité vitréenne.']
+];
+
+const QUIZ=[
+ [1,'Que désigne l’abréviation OS ?',['L’œil gauche (Oculus Sinister)','L’œil droit','Les deux yeux','L’œil dominant'],'OD = Oculus Dexter (droit), OS = Oculus Sinister (gauche).'],
+ [1,'Une structure située du côté de la tempe est dite :',['Temporale','Nasale','Antérieure','Supérieure'],'Temporal = vers la tempe ; nasal = vers le nez.'],
+ [1,'Quel est l’ordre correct du trajet de la lumière ?',['Cornée → chambre antérieure → pupille → cristallin → vitré → rétine','Cornée → cristallin → pupille → chambre antérieure → vitré → rétine','Pupille → cornée → cristallin → rétine → vitré','Cornée → vitré → cristallin → pupille → rétine'],'La lumière traverse d’abord les milieux transparents d’avant en arrière, puis atteint la rétine.'],
+ [1,'Juste après le cristallin, la lumière traverse :',['La cavité vitréenne (corps vitré)','La chambre antérieure','La chambre postérieure','Le nerf optique'],'Cristallin → cavité vitréenne → rétine.'],
+ [1,'Dans l’analogie de l’appareil photo, la rétine correspond :',['Au capteur / à la pellicule','À l’objectif','Au diaphragme','Au boîtier'],'La rétine capte l’image, comme le capteur.'],
+ [1,'Dans l’analogie de l’appareil photo, l’objectif correspond :',['À la cornée et au cristallin','À l’iris et à la pupille','À la rétine','Au nerf optique'],'Cornée et cristallin réfractent la lumière, comme les lentilles d’un objectif.'],
+ [1,'Où le signal visuel est-il finalement interprété ?',['Au cortex visuel','Dans la rétine','Dans le nerf optique','Dans le cristallin'],'Le nerf optique transmet ; le cortex visuel interprète.'],
+ [1,'« Nasal » signifie :',['Vers le nez','Vers la tempe','Vers l’arrière','Vers le haut'],'Nasal = vers le nez.'],
+ [2,'La caroncule se situe :',['Au canthus médial','Au canthus latéral','Sur le bord libre supérieur','Dans le fornix inférieur'],'Protubérance rosée au canthus médial (peau modifiée, glandes sébacées et sudoripares).'],
+ [2,'La plica semilunaris est :',['Un repli conjonctival en croissant, vestige de la 3ᵉ paupière','Une glande sébacée du tarse','L’orifice d’entrée des larmes','Le muscle de fermeture des paupières'],'Elle facilite la rotation du globe.'],
+ [2,'Quel muscle ferme les paupières ?',['Le muscle orbiculaire','Le muscle ciliaire','Le muscle droit supérieur','Le muscle de l’iris'],'Orbicularis oculi : fermeture des paupières.'],
+ [2,'Le tarse est :',['La plaque fibreuse rigide qui forme le squelette de la paupière','Une glande lacrymale accessoire','La jonction cornée-sclère','Un repli de la conjonctive'],'Les glandes de Meibomius sont alignées dans le tarse.'],
+ [2,'Les glandes de Meibomius produisent la couche :',['Lipidique','Aqueuse','Mucinique','Endothéliale'],'Glandes sébacées → lipides → couche externe du film lacrymal.'],
+ [2,'Rôle principal de la couche lipidique du film lacrymal :',['Éviter l’évaporation','Hydrater et nourrir','Ancrer le liquide à l’œil','Réfracter la lumière'],'Couche externe : barrière contre l’évaporation.'],
+ [2,'La couche mucinique est produite par :',['Les cellules conjonctivales','La glande lacrymale principale','Les glandes de Meibomius','L’endothélium cornéen'],'Couche interne qui ancre le liquide à l’œil.'],
+ [2,'La couche aqueuse provient :',['De la glande lacrymale principale','Des glandes de Meibomius','De la caroncule','Du corps ciliaire'],'Couche médiane : hydratation et nutriments.'],
+ [2,'Ordre des couches du film lacrymal, de l’extérieur vers l’œil :',['Lipidique → aqueuse → mucinique','Mucinique → aqueuse → lipidique','Aqueuse → lipidique → mucinique','Lipidique → mucinique → aqueuse'],'« LAMe » : Lipidique, Aqueuse, Mucinique.'],
+ [2,'Après les points lacrymaux, les larmes passent dans :',['Les canalicules lacrymaux','Le sac lacrymal directement','Le canal naso-lacrymal','La glande lacrymale'],'Points → canalicules → sac → canal naso-lacrymal.'],
+ [2,'Le canal naso-lacrymal draine les larmes vers :',['La cavité nasale','La chambre antérieure','Le fornix','Le sinus frontal'],'D’où le nez qui coule quand on pleure.'],
+ [2,'Les 3 régions de la conjonctive sont :',['Palpébrale, bulbaire, cul-de-sac (fornix)','Épithélium, stroma, endothélium','Iris, corps ciliaire, choroïde','Lipidique, aqueuse, mucinique'],'Palpébrale (paupières), bulbaire (sclère), fornix (jonction).'],
+ [2,'Rôle du cul-de-sac conjonctival (fornix) :',['Empêcher tout objet de passer derrière l’œil','Produire les larmes','Drainer l’humeur aqueuse','Nourrir la cornée'],'C’est un repli de jonction étanche.'],
+ [2,'La conjonctive bulbaire recouvre :',['La sclère jusqu’au limbe','La face interne des paupières','Toute la cornée','L’iris'],'La palpébrale tapisse les paupières ; la bulbaire couvre la sclère.'],
+ [2,'Les 3 fonctions essentielles de la cornée :',['Transparence, protection, réfraction','Accommodation, nutrition, drainage','Production des larmes, protection, couleurs','Transparence, accommodation, pigmentation'],'Fenêtre antérieure transparente qui protège et réfracte.'],
+ [2,'Comment la cornée, avasculaire, est-elle nourrie ?',['Par les larmes en avant et l’humeur aqueuse en arrière','Par les vaisseaux de la choroïde','Par le corps vitré','Par des vaisseaux qui la traversent'],'Pas de vaisseaux : la transparence est préservée.'],
+ [2,'La cornée est environ … plus innervée que la peau.',['200 fois','2 fois','20 fois','2 000 fois'],'Grâce au plexus sous-épithélial.'],
+ [2,'Quelle couche de la cornée agit comme pompe de déshydratation ?',['L’endothélium','L’épithélium','Le stroma','La couche mucinique'],'Elle maintient la transparence en retirant l’eau du stroma.'],
+ [2,'Le stroma cornéen assure :',['La structure et la rigidité (collagène)','La barrière externe','La déshydratation','L’ancrage des larmes'],'Couche du milieu, la plus épaisse.'],
+ [3,'La chambre postérieure est située entre :',['L’iris, le corps ciliaire et le cristallin','La cornée et l’iris','Le cristallin et la rétine','La sclère et la choroïde'],'Entre cornée et iris, c’est la chambre antérieure.'],
+ [3,'L’humeur aqueuse est produite par :',['Les procès ciliaires du corps ciliaire','Le trabéculum','La glande lacrymale','La choroïde'],'Production dans la chambre postérieure.'],
+ [3,'Ordre d’évacuation de l’humeur aqueuse :',['Chambre postérieure → pupille → chambre antérieure → trabéculum → canal de Schlemm','Chambre antérieure → pupille → chambre postérieure → canal de Schlemm → trabéculum','Trabéculum → chambre antérieure → pupille → procès ciliaires','Chambre postérieure → vitré → rétine → nerf optique'],'Produite derrière l’iris, évacuée devant, dans l’angle.'],
+ [3,'Un blocage du trabéculum entraîne :',['Une hausse de la pression intraoculaire','Une presbytie','Une sécheresse oculaire','Une perte de la vision des couleurs'],'L’humeur aqueuse continue d’être produite mais ne s’évacue plus.'],
+ [3,'L’humeur aqueuse nourrit :',['La cornée et le cristallin','La rétine et la choroïde','La sclère et les muscles','Les paupières'],'Ce sont deux tissus avasculaires.'],
+ [3,'Vision de loin :',['Muscle ciliaire relâché, zonules tendues, cristallin mince','Muscle ciliaire contracté, zonules relâchées, cristallin arrondi','Muscle ciliaire relâché, zonules relâchées, cristallin arrondi','Muscle ciliaire contracté, zonules tendues, cristallin mince'],'Au repos, les zonules tirent sur le cristallin et l’étirent.'],
+ [3,'Vision de près (accommodation) :',['Muscle contracté → zonules relâchées → cristallin s’arrondit','Muscle relâché → zonules tendues → cristallin s’arrondit','Muscle contracté → zonules tendues → cristallin s’amincit','Muscle relâché → zonules relâchées → cristallin s’amincit'],'L’anneau musculaire se resserre, les zonules se détendent, le cristallin s’arrondit.'],
+ [3,'Les zonules de Zinn sont :',['Les ligaments suspenseurs du cristallin','Des glandes du corps ciliaire','Des fibres du nerf optique','Des replis de la conjonctive'],'Elles relient le corps ciliaire au cristallin.'],
+ [3,'La presbytie est due à :',['Une perte d’élasticité du cristallin avec l’âge','Un blocage du trabéculum','Une opacité de la cornée','L’absence de photorécepteurs'],'Le cristallin ne peut plus s’arrondir suffisamment pour la vision de près.'],
+ [3,'La presbytie apparaît habituellement :',['Vers 40 ans et plus','Dès l’enfance','Vers 20 ans','À la naissance'],'Perte progressive à partir de la quarantaine.'],
+ [4,'Quelle tunique comprend l’iris, le corps ciliaire et la choroïde ?',['La tunique vasculaire (uvée)','La tunique fibreuse','La tunique nerveuse','La conjonctive'],'Uvée = ICC : Iris, Corps ciliaire, Choroïde.'],
+ [4,'La tunique fibreuse est formée de :',['La cornée et la sclère','L’iris et la choroïde','La rétine et le nerf optique','La conjonctive et le tarse'],'Cornée en avant, sclère en arrière.'],
+ [4,'Les muscles extra-oculaires s’insèrent sur :',['La sclère','La cornée','La choroïde','La conjonctive palpébrale'],'La sclère est blanche, résistante, et sert de point d’insertion.'],
+ [4,'La choroïde apporte surtout :',['Nutriments et pigments','Humeur aqueuse','Larmes','L’influx nerveux'],'Elle est riche en vaisseaux sanguins.'],
+ [4,'La rétine fait partie de la tunique :',['Nerveuse (interne)','Fibreuse (externe)','Vasculaire (moyenne)','Conjonctivale'],'Tunique nerveuse ou neurosensorielle.'],
+ [4,'Zone qui offre la meilleure acuité visuelle :',['La fovéa','La papille','La rétine périphérique','La choroïde'],'Centre de la macula ; la fovéola en est le centre.'],
+ [4,'La papille optique est un point aveugle parce que :',['Elle ne contient aucun photorécepteur','Elle est recouverte par l’iris','Elle ne contient que des bâtonnets','Elle est avasculaire'],'C’est la tête du nerf optique.'],
+ [4,'La macula est responsable de :',['La vision centrale et des couleurs','La vision nocturne','La production d’humeur aqueuse','L’accommodation'],'Zone centrale de la rétine.'],
+ [4,'Les bâtonnets servent surtout à :',['La vision nocturne (sensibilité à la lumière)','La vision des couleurs','L’acuité en lumière intense','L’accommodation'],'Bâtonnets = basse lumière.'],
+ [4,'Les cônes permettent :',['La vision des couleurs et l’acuité en lumière intense','La vision nocturne','Le drainage de l’humeur aqueuse','La fermeture des paupières'],'Trois types : rouge, vert, bleu.'],
+ [4,'Rôle de la graisse rétrobulbaire :',['Amortir les impacts','Produire les larmes','Nourrir la cornée','Réfracter la lumière'],'Matelassage, avec le tissu conjonctif.'],
+ [4,'Le corps vitré est :',['Un gel transparent qui maintient la forme et le volume de la cavité vitréenne','Un liquide produit par les procès ciliaires','Une membrane qui tapisse la paupière','La couche pigmentaire de la rétine'],'Le liquide produit par les procès ciliaires, c’est l’humeur aqueuse.'],
+ [4,'Quelle composante de la rétine convertit la lumière en signal électrique ?',['La composante neurosensorielle','La choroïde','La sclère','Le corps vitré'],'La rétine est la tunique nerveuse.']
+];
+
+/* ================= PROGRESS / ACUITY ================= */
+const fcBox=store.get('fc',{});
+const qzLast=store.get('qz',{});
+const seqDone=store.get('seq',{});
+const SNELLEN=['20/200','20/100','20/70','20/50','20/40','20/30','20/25','20/20'];
+function progress(){
+  let fc=0;CARDS.forEach((c,i)=>{fc+=((fcBox[i]||1)-1)/4;});fc/=CARDS.length;
+  const qz=QUIZ.reduce((a,q,i)=>a+(qzLast[i]?1:0),0)/QUIZ.length;
+  const sq=SEQ_IDS.filter(k=>seqDone[k]).length/SEQ_IDS.length;
+  return {fc,qz,sq,all:.45*fc+.4*qz+.15*sq};
+}
+function updateAcuity(){
+  const p=progress();
+  const idx=Math.min(7,Math.floor(p.all*8));
+  $('#acuVal').textContent=SNELLEN[idx];
+  const sz=[30,26,22,19,16,13,11,9][idx];
+  $$('#acuSnl span').forEach(s=>s.style.fontSize=sz+'px');
+  [['Fc',p.fc],['Qz',p.qz],['Sq',p.sq]].forEach(([k,v])=>{$('#pg'+k).style.width=Math.round(v*100)+'%';$('#pg'+k+'N').textContent=Math.round(v*100)+' %';});
+}
+const resetBtn=$('#resetBtn');let resetArm=false;
+resetBtn.addEventListener('click',()=>{
+  if(!resetArm){resetArm=true;resetBtn.textContent='Confirmer : tout effacer';resetBtn.classList.add('bad');setTimeout(()=>{resetArm=false;resetBtn.textContent='Réinitialiser la progression';resetBtn.classList.remove('bad');},4000);return;}
+  store.clear();Object.keys(fcBox).forEach(k=>delete fcBox[k]);Object.keys(qzLast).forEach(k=>delete qzLast[k]);Object.keys(seqDone).forEach(k=>delete seqDone[k]);
+  resetArm=false;resetBtn.textContent='Progression effacée';resetBtn.classList.remove('bad');
+  updateAcuity();renderFc();renderSeqList();
+});
+
+/* ================= TABS ================= */
+const TABS=['atlas','fiches','simulateurs','sequences','flashcards','quiz'];
+function showTab(id,scroll){
+  if(TABS.indexOf(id)<0)id='atlas';
+  $$('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===id)));
+  $$('.panel').forEach(p=>p.hidden=p.id!=='p-'+id);
+  store.set('tab',id);
+  if(id==='atlas')renderLabels();
+  if(id==='simulateurs')drawAcc();
+  if(scroll)window.scrollTo({top:0,behavior:'smooth'});
+}
+$$('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+
+/* ================= ATLAS ================= */
+$$('#svgSag g.mir').forEach(g=>{const c=g.cloneNode(true);c.setAttribute('transform','matrix(1 0 0 -1 0 500)');c.classList.remove('mir');g.after(c);});
+
+// lashes along the face fissure
+(function(){
+  const g=$('#lashes');
+  const bz=(p,t)=>{const u=1-t;return [u*u*u*p[0]+3*u*u*t*p[2]+3*u*t*t*p[4]+t*t*t*p[6],u*u*u*p[1]+3*u*u*t*p[3]+3*u*t*t*p[5]+t*t*t*p[7]];};
+  const up=[200,215,270,130,470,115,565,222], lo=[565,222,480,300,280,300,200,215];
+  for(let t=.1;t<.9;t+=.045){const [x,y]=bz(up,t);el('path',{class:'lash',d:`M${x.toFixed(1)} ${y.toFixed(1)} q -5 -9 -9 -15`},g);}
+  for(let t=.12;t<.86;t+=.07){const [x,y]=bz(lo,t);el('path',{class:'lash',d:`M${x.toFixed(1)} ${y.toFixed(1)} q -3 6 -6 9`},g);}
+})();
+
+const LABELS={
+  sag:[
+    ['fornix','Cul-de-sac (fornix)',16,30,316,72],
+    ['orbiculaire','Muscle orbiculaire',16,58,214,104],
+    ['conjonctive','Conjonctive',16,86,268,124],
+    ['meibomius','Glandes de Meibomius',16,114,244,130],
+    ['paupiere','Paupière',16,142,201,150],
+    ['tarse','Tarse',16,170,222,156],
+    ['bordLibre','Bord libre et cils',16,198,190,176],
+    ['iris','Iris',16,226,272,200],
+    ['chambreAnt','Chambre antérieure',16,252,236,244],
+    ['pupille','Pupille',16,278,271,262],
+    ['cornee','Cornée',16,304,212,292],
+    ['chambrePost','Chambre postérieure',16,330,286,318],
+    ['cristallin','Cristallin',16,356,310,290],
+    ['zonules','Zonules de Zinn',16,382,300,322],
+    ['corpsCiliaire','Corps ciliaire',16,408,292,356],
+    ['schlemm','Trabéculum / canal de Schlemm',16,434,257,338],
+    ['sclere','Sclère',430,128,500,78],
+    ['choroide','Choroïde',430,152,540,117],
+    ['retine','Rétine',430,176,575,178],
+    ['vitre','Corps vitré',400,400,null,null],
+    ['macula','Macula',560,218,588,232],
+    ['fovea','Fovéa',560,284,588,253],
+    ['papille','Papille',548,322,580,306],
+    ['nerf','Nerf optique',636,350,690,300],
+    ['graisse','Graisse rétrobulbaire',626,404,null,null],
+    ['muscle','Muscle extra-oculaire',600,186,640,140],
+    ['orbite','Orbite (os)',560,44,600,96]
+  ],
+  face:[
+    ['glandeLac','Glande lacrymale',16,96,214,118],
+    ['pliPalp','Pli palpébral',318,100,340,124],
+    ['canthusLat','Canthus latéral',16,262,201,216],
+    ['bordLibre','Bord libre',16,300,279,263],
+    ['iris','Iris',300,384,345,252],
+    ['pupille','Pupille',400,384,388,230],
+    ['sclere','Sclère (conj. bulbaire)',520,384,470,214],
+    ['canalicules','Canalicules',632,150,572,192],
+    ['points','Points lacrymaux',632,176,537,196],
+    ['sac','Sac lacrymal',632,202,617,210],
+    ['canthusMed','Canthus médial',632,228,570,224],
+    ['caroncule','Caroncule',632,254,556,230],
+    ['plica','Plica semilunaris',632,280,532,234],
+    ['canalNL','Canal naso-lacrymal',632,336,612,330]
+  ],
+  fond:[
+    ['papille','Papille (point aveugle)',300,58,322,186],
+    ['vaisseaux','Vaisseaux',398,368,372,300],
+    ['macula','Macula',70,360,168,250],
+    ['fovea','Fovéa',96,76,183,206],
+    ['retine','Rétine',230,404,null,null]
+  ]
+};
+
+const atlas={view:'sag',labels:store.get('labels',true),mode:null,os:false,quiz:null,sel:null};
+const SVG={sag:$('#svgSag'),face:$('#svgFace'),fond:$('#svgFond')};
+const curSvg=()=>SVG[atlas.view];
+
+function renderLabels(){
+  const v=atlas.view, svg=curSvg(), g=$('#lab-'+v);
+  if(!g)return;
+  g.innerHTML='';
+  if(!atlas.labels||atlas.mode==='quiz')return;
+  const W=+svg.viewBox.baseVal.width;
+  LABELS[v].forEach(([id,txt,tx,ty,px,py])=>{
+    let x=tx,anchor='start';
+    if(v==='face'&&atlas.os){x=W-tx;}
+    let pxx=px;if(v==='face'&&atlas.os&&px!=null)pxx=W-px;
+    const t=el('text',{x,y:ty,'data-id':id},g);t.textContent=txt;
+    let w=0;try{w=t.getComputedTextLength();}catch(e){}
+    if(!w)w=txt.length*7;
+    // labels whose text sits to the right of the point keep start-anchor but must flip on OS
+    if(v==='face'&&atlas.os){t.setAttribute('text-anchor','end');anchor='end';}
+    if(pxx==null)return;
+    const left=anchor==='start'?x:x-w, right=left+w, cx=(left+right)/2;
+    let sx,sy;
+    if(pxx>right+2){sx=right+4;sy=ty-4;}
+    else if(pxx<left-2){sx=left-4;sy=ty-4;}
+    else{sx=Math.max(left,Math.min(right,pxx));sy=py<ty?ty-14:ty+4;}
+    el('line',{x1:sx,y1:sy,x2:pxx,y2:py},g);
+    el('circle',{cx:pxx,cy:py,r:2.2},g);
+    g.appendChild(t);
+  });
+  if(atlas.sel)$$(`[data-id="${atlas.sel}"]`,g).forEach(e=>e.classList.add('sel'));
+}
+
+function viewIds(){const s=new Set();$$('.hot[data-id]',curSvg()).forEach(e=>s.add(e.dataset.id));return Array.from(s);}
+
+function clearMarks(){$$('.sel,.hl,.quiz',curSvg()).forEach(e=>e.classList.remove('sel','hl','quiz'));}
+
+function select(id){
+  if(atlas.mode==='quiz')return;
+  atlas.sel=id;
+  $$('.sel',curSvg()).forEach(e=>e.classList.remove('sel'));
+  $$(`[data-id="${id}"]`,curSvg()).forEach(e=>e.classList.add('sel'));
+  renderInfo(id);
+}
+
+function chipsFor(e){
+  let h=e.m.map(m=>`<span class="chip m">M${m} · ${esc(MOD[m])}</span>`).join(' ');
+  if(e.t)h+=` <span class="chip t-${e.t}">${esc(TUN[e.t])}</span>`;
+  return h;
+}
+const BLIND=`<div style="display:grid;gap:8px"><p class="eyebrow">Testez votre point aveugle</p><div class="blind" aria-hidden="true"><span>+</span><span>●</span></div><p class="small">Fermez l’œil gauche et fixez la croix avec l’œil droit. Rapprochez ou éloignez lentement l’écran (environ 25 à 40 cm) : le point disparaît quand son image tombe sur la papille, où il n’y a aucun photorécepteur.</p></div>`;
+function indexHtml(){
+  return `<div class="index"><p class="eyebrow" style="width:100%">Structures de cette vue</p>${viewIds().map(id=>`<button class="linkchip" type="button" data-pick="${id}">${esc(S[id].n)}</button>`).join('')}</div>`;
+}
+function renderInfo(id){
+  const box=$('#info');
+  if(!id||!S[id]){
+    box.innerHTML=`<p class="eyebrow">Fiche structure</p><h3>Touchez le schéma</h3><p>Chaque zone colorée est cliquable. Utilisez <b>M’interroger</b> pour un test d’identification, ou masquez les étiquettes pour vous entraîner à les nommer.</p>${atlas.view==='fond'?BLIND:''}${indexHtml()}`;
+    return;
+  }
+  const e=S[id];
+  const seeIds=(e.see||[]).filter(x=>S[x]);
+  box.innerHTML=`<div class="row">${chipsFor(e)}</div><h3>${esc(e.n)}</h3><p>${esc(e.d)}</p>${e.f?`<ul>${e.f.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${id==='papille'?BLIND:''}${seeIds.length?`<div class="see"><span class="small" style="width:100%">Voir aussi</span>${seeIds.map(x=>`<button class="linkchip" type="button" data-pick="${x}">${esc(S[x].n)}</button>`).join('')}</div>`:''}${indexHtml()}`;
+}
+$('#info').addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-pick]');if(b){goStructure(b.dataset.pick,false);return;}
+  const o=ev.target.closest('.opt');if(o&&atlas.quiz)answerId(o);
+  const n=ev.target.closest('#idNext');if(n)nextId();
+  const q=ev.target.closest('#idStop');if(q)setMode(null);
+});
+
+function goStructure(id,switchTab){
+  // pick the view that contains id
+  let v=atlas.view;
+  if(!$(`.hot[data-id="${id}"]`,SVG[v])){v=['sag','face','fond'].find(k=>$(`.hot[data-id="${id}"]`,SVG[k]))||v;}
+  if(atlas.mode==='quiz')setMode(null);
+  if(v!==atlas.view)setView(v);
+  if(switchTab)showTab('atlas',true);
+  select(id);
+}
+
+Object.values(SVG).forEach(svg=>{
+  svg.addEventListener('click',ev=>{const h=ev.target.closest('[data-id]');if(!h)return;if(atlas.mode==='quiz')answerFind(h.dataset.id);else select(h.dataset.id);});
+  svg.addEventListener('mousemove',ev=>{
+    const h=ev.target.closest('[data-id]');
+    $('#hoverLine').textContent=h&&atlas.mode!=='quiz'?S[h.dataset.id].n:'Survolez ou touchez une structure.';
+  });
+});
+
+/* toolbar */
+const TOOLS={
+  sag:[['labels','Étiquettes'],['light','Trajet de la lumière'],['aq','Humeur aqueuse'],['tun','Tuniques'],['quiz','M’interroger']],
+  face:[['labels','Étiquettes'],['flip','OD ⇄ OS'],['tears','Drainage des larmes'],['quiz','M’interroger']],
+  fond:[['labels','Étiquettes'],['quiz','M’interroger']]
+};
+function renderTools(){
+  const box=$('#atlasTools');
+  box.innerHTML=TOOLS[atlas.view].map(([k,t])=>{
+    const on=k==='labels'?atlas.labels:k==='flip'?atlas.os:atlas.mode===k;
+    return `<button class="btn" type="button" data-tool="${k}" aria-pressed="${on}">${esc(t)}</button>`;
+  }).join('');
+}
+$('#atlasTools').addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-tool]');if(!b)return;
+  const k=b.dataset.tool;
+  if(k==='labels'){atlas.labels=!atlas.labels;store.set('labels',atlas.labels);renderLabels();renderTools();return;}
+  if(k==='flip'){atlas.os=!atlas.os;applyFlip();renderTools();return;}
+  setMode(atlas.mode===k?null:k);
+});
+function applyFlip(){
+  $('#faceFlip').setAttribute('transform',atlas.os?'translate(760 0) scale(-1 1)':'');
+  $('#oLeft').textContent=atlas.os?'← NASAL':'← TEMPORAL';
+  $('#oRight').textContent=atlas.os?'TEMPORAL →':'NASAL →';
+  $('#oEye').textContent=atlas.os?'OS · œil gauche, vu de face':'OD · œil droit, vu de face';
+  renderLabels();
+}
+
+function setView(v){
+  setMode(null);
+  atlas.view=v;atlas.sel=null;
+  $$('#viewSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===v)));
+  $$('.svgbox[data-v]').forEach(b=>b.hidden=b.dataset.v!==v);
+  renderTools();renderLabels();renderInfo(null);
+}
+$('#viewSeg').addEventListener('click',ev=>{const b=ev.target.closest('[data-view]');if(b&&b.dataset.view!==atlas.view)setView(b.dataset.view);});
+
+/* steps player + flow animation */
+let playTimer=null, flowRAF=null;
+function stopPlay(){clearInterval(playTimer);playTimer=null;}
+function stopFlow(){if(flowRAF)cancelAnimationFrame(flowRAF);flowRAF=null;$$('circle.drop').forEach(c=>c.remove());}
+function startFlow(groups){
+  stopFlow();
+  const items=[];
+  groups.forEach(g=>{const p=g.querySelector('path');const L=p.getTotalLength();const n=Math.max(5,Math.round(L/38));for(let k=0;k<n;k++){items.push({c:el('circle',{r:3.4,class:'drop'},g),p,L,off:k/n});}});
+  const t0=performance.now();
+  const frame=t=>{const s=((t-t0)/1000)*0.12;items.forEach(it=>{const pt=it.p.getPointAtLength(((it.off+s)%1)*it.L);it.c.setAttribute('cx',pt.x.toFixed(1));it.c.setAttribute('cy',pt.y.toFixed(1));});if(!reduce)flowRAF=requestAnimationFrame(frame);};
+  frame(t0);
+}
+const STEPS={
+  light:[{ids:['cornee'],t:'Cornée : première réfraction'},{ids:['chambreAnt'],t:'Chambre antérieure : humeur aqueuse'},{ids:['pupille','iris'],t:'Pupille / iris : dose la lumière'},{ids:['cristallin'],t:'Cristallin : mise au point'},{ids:['vitre'],t:'Cavité vitréenne : corps vitré'},{ids:['retine','macula','fovea'],t:'Rétine : lumière → signal électrique'},{ids:['nerf','papille'],t:'Nerf optique : transmission'},{ids:[],t:'Cerveau : le cortex visuel interprète'}],
+  aq:[{ids:['corpsCiliaire'],t:'Procès ciliaires : production'},{ids:['chambrePost'],t:'Chambre postérieure'},{ids:['pupille'],t:'Pupille'},{ids:['chambreAnt'],t:'Chambre antérieure'},{ids:['schlemm'],t:'Trabéculum (dans l’angle)'},{ids:['schlemm'],t:'Canal de Schlemm : évacuation'}],
+  tears:[{ids:['glandeLac'],t:'Glande lacrymale principale : sécrétion'},{ids:['sclere','iris'],t:'Surface oculaire : le clignement étale les larmes'},{ids:['points'],t:'Points lacrymaux'},{ids:['canalicules'],t:'Canalicules lacrymaux'},{ids:['sac'],t:'Sac lacrymal'},{ids:['canalNL'],t:'Canal naso-lacrymal : drainage dans le nez'}]
+};
+function runSteps(key){
+  const steps=STEPS[key], cap=$('#atlasCap');
+  let i=0;
+  const draw=()=>{
+    $$('.hl',curSvg()).forEach(e=>e.classList.remove('hl'));
+    steps[i].ids.forEach(id=>$$(`.hot[data-id="${id}"]`,curSvg()).forEach(e=>e.classList.add('hl')));
+    cap.innerHTML=`<p class="capline">${i+1}. ${esc(steps[i].t)}</p><ol class="steps">${steps.map((s,k)=>`<li><button type="button" data-step="${k}" class="${k===i?'cur':k<i?'done':''}">${esc(s.t.split(' : ')[0])}</button></li>`).join('')}</ol><div class="row"><button class="btn" type="button" data-step="replay">Rejouer</button></div>`;
+  };
+  cap.hidden=false;
+  cap.onclick=ev=>{const b=ev.target.closest('[data-step]');if(!b)return;stopPlay();if(b.dataset.step==='replay'){i=0;draw();auto();}else{i=+b.dataset.step;draw();}};
+  const auto=()=>{stopPlay();playTimer=setInterval(()=>{if(i<steps.length-1){i++;draw();}else stopPlay();},reduce?2600:1700);};
+  draw();auto();
+}
+function setMode(m){
+  stopPlay();stopFlow();
+  const svg=curSvg();
+  $$('.hl,.quiz',svg).forEach(e=>e.classList.remove('hl','quiz'));
+  svg.classList.remove('tunics');
+  $('#gRays').hidden=true;$('#gAq').hidden=true;$('#gTears').hidden=true;
+  const cap=$('#atlasCap');cap.hidden=true;cap.innerHTML='';cap.onclick=null;
+  const wasQuiz=atlas.mode==='quiz';
+  clearRing();
+  atlas.mode=m;atlas.quiz=null;
+  if(m==='light'){$('#gRays').hidden=false;runSteps('light');}
+  else if(m==='aq'){$('#gAq').hidden=false;startFlow($$('#gAq .flowA'));runSteps('aq');}
+  else if(m==='tears'){$('#gTears').hidden=false;startFlow([$('#gTears')]);runSteps('tears');}
+  else if(m==='tun'){svg.classList.add('tunics');cap.hidden=false;cap.innerHTML=`<div class="legend"><span><i style="background:var(--t-fib)"></i>Fibreuse (externe) : cornée + sclère</span><span><i style="background:var(--t-uv)"></i>Vasculaire / uvée (moyenne) : iris, corps ciliaire, choroïde</span><span><i style="background:var(--t-ner)"></i>Nerveuse (interne) : rétine</span></div>`;}
+  else if(m==='quiz'){$$('.sel',svg).forEach(e=>e.classList.remove('sel'));atlas.quiz={n:0,ok:0,num:0,pool:[]};nextId();}
+  if(wasQuiz||m==='quiz')renderLabels();
+  if(m!=='quiz'&&wasQuiz)renderInfo(atlas.sel);
+  renderTools();
+}
+/* identification quiz: alternates "name the blinking part" and "tap the named part" */
+function clearRing(){const r=$('.qring',curSvg());if(r)r.remove();}
+function ringAround(id){
+  clearRing();
+  const svg=curSvg(),t=$(`.hot[data-id="${id}"]`,svg);if(!t)return;
+  const r=t.getBoundingClientRect(),m=svg.getScreenCTM();if(!m||!r.width&&!r.height)return;
+  const inv=m.inverse(),pt=svg.createSVGPoint();
+  pt.x=r.left+r.width/2;pt.y=r.top+r.height/2;const c=pt.matrixTransform(inv);
+  const rad=Math.max(r.width,r.height)/2*inv.a+12;
+  el('circle',{class:'qring',cx:c.x.toFixed(1),cy:c.y.toFixed(1),r:Math.min(rad,90).toFixed(1)},svg);
+  // keep the target on screen (phones: page scroll + horizontal scroll of the diagram)
+  const box=svg.closest('.svgbox');
+  const br=box.getBoundingClientRect();
+  if(box.scrollWidth>box.clientWidth){box.scrollLeft+=(r.left+r.width/2)-(br.left+br.width/2);}
+  if(br.top<0||br.bottom>window.innerHeight)box.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});
+}
+function nextId(){
+  const q=atlas.quiz;if(!q)return;
+  const ids=viewIds();
+  if(!q.pool.length)q.pool=shuffle(ids);
+  const target=q.pool.pop();
+  q.target=target;q.answered=false;q.num++;
+  q.type=Math.random()<.5?'name':'find';
+  $$('.quiz,.sel',curSvg()).forEach(e=>e.classList.remove('quiz','sel'));
+  clearRing();
+  const head=`<p class="qnum">Question ${q.num} · score ${q.ok}/${q.n}</p>`;
+  const foot=`<div id="idFb"></div><div class="row"><button class="btn primary" type="button" id="idNext" hidden>Question suivante</button><button class="btn ghost" type="button" id="idStop">Terminer</button></div>`;
+  if(q.type==='name'){
+    $$(`.hot[data-id="${target}"]`,curSvg()).forEach(e=>e.classList.add('quiz','sel'));
+    ringAround(target);
+    const opts=shuffle([target].concat(shuffle(ids.filter(x=>x!==target)).slice(0,3)));
+    $('#info').innerHTML=`${head}<h3>Quelle structure clignote dans le cercle ?</h3><div class="opts">${opts.map(o=>`<button class="opt" type="button" data-ans="${o}">${esc(S[o].n)}</button>`).join('')}</div>${foot}`;
+  }else{
+    $('#info').innerHTML=`${head}<h3>Touchez sur le schéma : <span class="qtarget">${esc(S[target].n)}</span></h3><p class="small">Touchez directement la structure dans le dessin.</p>${foot}`;
+    const box=curSvg().closest('.svgbox'),br=box.getBoundingClientRect();
+    if(br.top<0||br.bottom>window.innerHeight)box.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});
+  }
+}
+function finishId(ok,picked){
+  const q=atlas.quiz;
+  q.answered=true;q.n++;if(ok)q.ok++;
+  $$('.quiz',curSvg()).forEach(e=>e.classList.remove('quiz'));
+  $$(`.hot[data-id="${q.target}"]`,curSvg()).forEach(e=>e.classList.add('sel'));
+  ringAround(q.target);
+  const e=S[q.target];
+  const msg=ok?'Exact.':(q.type==='find'&&picked?`Non : vous avez touché ${esc(S[picked].n)}. La bonne structure est entourée.`:`Non : c’est ${esc(e.n)}.`);
+  $('#idFb').innerHTML=`<p class="expl"><b>${msg}</b> ${esc(e.n)} : ${esc(e.d)}</p>`;
+  $('#info .qnum').textContent=`Question ${q.num} · score ${q.ok}/${q.n}`;
+  $('#idNext').hidden=false;$('#idNext').focus({preventScroll:true});
+}
+function answerId(btn){
+  const q=atlas.quiz;if(!q||q.answered||q.type!=='name')return;
+  $$('#info .opt').forEach(b=>{b.disabled=true;if(b.dataset.ans===q.target)b.classList.add('ok');else if(b===btn)b.classList.add('ko');});
+  finishId(btn.dataset.ans===q.target);
+}
+function answerFind(id){
+  const q=atlas.quiz;if(!q||q.answered||q.type!=='find')return;
+  finishId(id===q.target,id);
+}
+
+/* ================= FICHES ================= */
+$$('.chain[data-seq]').forEach(ol=>{
+  ol.innerHTML=SEQ[ol.dataset.seq].items.map(t=>`<li><span class="node"><b class="k">${esc(t)}</b></span></li>`).join('');
+});
+const fiches=$('#fiches');
+$('#hideKeys').addEventListener('change',e=>{
+  fiches.classList.toggle('hidekeys',e.target.checked);
+  $$('.k.shown',fiches).forEach(k=>k.classList.remove('shown'));
+  $('#revealAll').hidden=!e.target.checked;
+});
+$('#revealAll').addEventListener('click',()=>$$('.k',fiches).forEach(k=>k.classList.add('shown')));
+fiches.addEventListener('click',ev=>{
+  const k=ev.target.closest('.k');if(!k)return;
+  if(fiches.classList.contains('hidekeys')&&!k.classList.contains('shown')){k.classList.add('shown');return;}
+  if(k.dataset.go&&S[k.dataset.go])goStructure(k.dataset.go,true);
+});
+$$('.modnav a').forEach(a=>a.addEventListener('click',ev=>{ev.preventDefault();const t=$(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}));
+
+/* ================= ACCOMMODATION ================= */
+const acc={obj:'far',c:0,presb:false,anim:null};
+const accSvg=$('#accSvg');
+function drawAcc(){
+  const c=acc.c, e=c*(acc.presb?0.3:1), need=acc.obj==='near'?1:0;
+  const cx=300,cy=150,RX=620;
+  const lrx=16+16*e, lry=70-8*e;
+  const mY=36+16*c, mR=12+6*c;
+  const fx=Math.max(430,RX+(need-e)*150);
+  let s='';
+  s+=`<line class="ac-axis" x1="10" y1="150" x2="670" y2="150"/>`;
+  // object
+  if(acc.obj==='far'){s+=`<text class="ac-txt" x="14" y="24">Objet éloigné : rayons parallèles</text>`;}
+  else{s+=`<path class="ac-obj" d="M64 150 l0 -26 l-6 8 m6 -8 l6 8" stroke="currentColor" style="stroke:var(--ink);stroke-width:2;fill:none"/><circle class="ac-obj" cx="64" cy="150" r="3"/><text class="ac-txt" x="14" y="24">Objet proche : rayons divergents</text>`;}
+  // rays
+  const offs=[-46,-23,0,23,46];
+  let maxSpread=0;
+  offs.forEach(o=>{
+    const y0=cy+o*(lry/70);
+    const x0=acc.obj==='far'?20:64, ys=acc.obj==='far'?y0:150;
+    const yr=cy+(y0-cy)*(1-(RX-cx)/(fx-cx));
+    maxSpread=Math.max(maxSpread,Math.abs(yr-cy));
+    s+=`<polyline class="ac-ray" points="${x0},${ys.toFixed(1)} ${cx},${y0.toFixed(1)} ${RX},${yr.toFixed(1)}"/>`;
+  });
+  // iris
+  s+=`<rect class="ac-iris" x="258" y="60" width="7" height="40" rx="3"/><rect class="ac-iris" x="258" y="200" width="7" height="40" rx="3"/><text class="ac-txt" x="232" y="116">iris</text>`;
+  // zonules
+  [-14,-5,5,14].forEach((dx,i)=>{
+    [1,-1].forEach(sg=>{
+      const x1=cx+dx*1.4, y1=sg>0?mY+mR:300-mY-mR;
+      const ex=cx+dx*(lrx/18)*.9; const ny=Math.sqrt(Math.max(0,1-Math.pow((ex-cx)/lrx,2)));
+      const y2=sg>0?cy-lry*ny:cy+lry*ny;
+      const sag=(i%2?1:-1)*10*c;
+      s+=`<path class="ac-zon" d="M${x1.toFixed(1)} ${y1.toFixed(1)} Q ${((x1+ex)/2+sag).toFixed(1)} ${((y1+y2)/2).toFixed(1)} ${ex.toFixed(1)} ${y2.toFixed(1)}"/>`;
+    });
+  });
+  // ciliary muscle
+  s+=`<ellipse class="ac-muscle" cx="${cx}" cy="${mY.toFixed(1)}" rx="30" ry="${mR.toFixed(1)}"/><ellipse class="ac-muscle" cx="${cx}" cy="${(300-mY).toFixed(1)}" rx="30" ry="${mR.toFixed(1)}"/>`;
+  s+=`<text class="ac-txt" x="${cx+38}" y="${(mY+4).toFixed(1)}">muscle ciliaire</text><text class="ac-txt" x="${cx+38}" y="${(mY+mR+30).toFixed(1)}">zonules</text>`;
+  // lens
+  s+=`<ellipse class="ac-lens" cx="${cx}" cy="${cy}" rx="${lrx.toFixed(1)}" ry="${lry.toFixed(1)}"/><text class="ac-txt" x="${cx-28}" y="290">cristallin</text>`;
+  // retina
+  s+=`<path class="ac-ret" d="M600 30 Q640 150 600 270"/><text class="ac-txt" x="572" y="292">rétine</text>`;
+  const sharp=maxSpread<4;
+  s+=`<line class="ac-img ${sharp?'ok':'ko'}" x1="${RX}" y1="${(cy-Math.max(3,maxSpread)).toFixed(1)}" x2="${RX}" y2="${(cy+Math.max(3,maxSpread)).toFixed(1)}"/>`;
+  if(!sharp){const fxd=Math.min(fx,672);s+=`<circle class="ac-focus" cx="${fxd.toFixed(1)}" cy="${cy}" r="4"/><text class="ac-txt" x="366" y="290">${fx>RX?'foyer derrière la rétine →':'foyer devant la rétine'}</text>`;}
+  accSvg.innerHTML=s;
+  const contracted=c>=.5;
+  $('#accState').innerHTML=`<div><span>Muscle ciliaire</span><b>${contracted?'contracté':'relâché'}</b></div><div><span>Zonules de Zinn</span><b>${contracted?'relâchées':'tendues'}</b></div><div><span>Cristallin</span><b>${e>=.5?'arrondi, épais':e>.15?'à mi-chemin':'étiré, mince'}</b></div>`;
+  const v=$('#accVerdict');
+  if(sharp){v.className='verdict ok';v.textContent=acc.obj==='near'?'Image nette : accommodation réussie.':'Image nette : vision de loin au repos.';}
+  else{v.className='verdict ko';v.textContent=acc.obj==='near'?(acc.presb&&c>.9?'Flou : le cristallin presbyte ne s’arrondit plus assez. C’est la presbytie.':'Image floue : contractez le muscle ciliaire.'):'Image floue : relâchez le muscle ciliaire pour voir de loin.';}
+  $('#accRange').value=Math.round(c*100);
+}
+$('#accRange').addEventListener('input',e=>{cancelAnimationFrame(acc.anim);acc.c=e.target.value/100;drawAcc();});
+$('#presb').addEventListener('change',e=>{acc.presb=e.target.checked;drawAcc();});
+$$('[data-obj]').forEach(b=>b.addEventListener('click',()=>{acc.obj=b.dataset.obj;$$('[data-obj]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawAcc();}));
+$('#accAuto').addEventListener('click',()=>{
+  cancelAnimationFrame(acc.anim);
+  const from=acc.c,to=acc.obj==='near'?1:0,t0=performance.now(),D=reduce?1:900;
+  const step=t=>{const k=Math.min(1,(t-t0)/D);acc.c=from+(to-from)*(1-Math.pow(1-k,3));drawAcc();if(k<1)acc.anim=requestAnimationFrame(step);};
+  acc.anim=requestAnimationFrame(step);
+});
+
+/* ================= LAYERS ================= */
+const LAYERS=[
+  {g:'film',n:'Couche lipidique',pos:'externe',h:24,bg:'#f1c96b',src:'Glandes de Meibomius',role:'Évite l’évaporation des larmes.'},
+  {g:'film',n:'Couche aqueuse',pos:'médiane',h:48,bg:'#a9d8ef',src:'Glande lacrymale principale',role:'Hydratation et apport de nutriments à la cornée.'},
+  {g:'film',n:'Couche mucinique',pos:'interne',h:20,bg:'#c9b8e8',src:'Cellules conjonctivales',role:'Ancre le liquide à la surface de l’œil.'},
+  {g:'cornee',n:'Épithélium',pos:'externe',h:40,bg:'radial-gradient(circle at 10px 10px,#f6d6d0 6px,#efc2ba 7px) 0 0/20px 20px',src:'Cornée',role:'Barrière externe. Très innervée (plexus sous-épithélial : 200× la peau).'},
+  {g:'cornee',n:'Stroma',pos:'moyenne',h:118,bg:'repeating-linear-gradient(0deg,#e7eef3 0 9px,#d4e0e8 9px 11px)',src:'Cornée',role:'Structure et rigidité, grâce au collagène. La couche la plus épaisse.'},
+  {g:'cornee',n:'Endothélium',pos:'interne',h:22,bg:'repeating-linear-gradient(90deg,#b6d3c4 0 22px,#8fbca5 22px 24px)',src:'Cornée',role:'Pompe de déshydratation : retire l’eau du stroma pour maintenir la transparence.'},
+  {g:null,n:'Chambre antérieure',pos:'',h:34,bg:'#dff1fa',src:'Humeur aqueuse',role:'Nourrit la cornée par l’arrière (la cornée est avasculaire).'}
+];
+let layerSel=1;
+function renderLayers(){
+  const st=$('#layerStack');
+  const groups=[['film','Film lacrymal'],['cornee','Cornée'],[null,'']];
+  st.innerHTML=groups.map(([g,lab])=>{
+    const ls=LAYERS.map((l,i)=>[l,i]).filter(([l])=>l.g===g);
+    return `<div class="grp ${g?'':'none'}">${esc(lab)}</div><div>${ls.map(([l,i])=>`<button type="button" class="layer${i===layerSel?' sel':''}" data-layer="${i}" style="height:${l.h}px;background:${l.bg}"><span>${esc(l.n)}</span>${l.pos?`<small>${esc(l.pos)}</small>`:''}</button>`).join('')}</div>`;
+  }).join('');
+  const l=LAYERS[layerSel];
+  $('#layerInfo').innerHTML=`<div style="padding:16px;display:grid;gap:10px"><p class="eyebrow">${l.g==='film'?'Film lacrymal · Module 2':l.g==='cornee'?'Cornée · Module 2':'Module 3'}</p><h3 style="font-size:1.3rem">${esc(l.n)}</h3>${l.pos?`<div class="state"><div><span>Position</span><b>${esc(l.pos)}</b></div><div><span>${l.g==='film'?'Source':'Structure'}</span><b>${esc(l.src)}</b></div></div>`:''}<p>${esc(l.role)}</p></div>`;
+}
+$('#layerStack').addEventListener('click',ev=>{const b=ev.target.closest('[data-layer]');if(b){layerSel=+b.dataset.layer;renderLayers();}});
+
+/* ================= SEQUENCES ================= */
+let seqCur=store.get('seqCur','lumiere');
+if(SEQ_IDS.indexOf(seqCur)<0)seqCur='lumiere';
+let seqState=null;
+function renderSeqList(){
+  $('#seqList').innerHTML=SEQ_IDS.map(k=>`<button type="button" data-seq="${k}" aria-pressed="${k===seqCur}"><span>${esc(k==='accom'?'Accommodation : loin / près':SEQ[k].n)}</span>${seqDone[k]?'<span class="st">✓ réussi</span>':''}</button>`).join('');
+}
+$('#seqList').addEventListener('click',ev=>{const b=ev.target.closest('[data-seq]');if(!b)return;seqCur=b.dataset.seq;store.set('seqCur',seqCur);renderSeqList();startSeq();});
+function startSeq(){
+  if(seqCur==='accom'){renderAccQ();return;}
+  const s=SEQ[seqCur];
+  seqState={k:seqCur,next:0,err:0,pool:shuffle(s.items.map((t,i)=>i))};
+  drawSeq();
+}
+function drawSeq(){
+  const s=SEQ[seqState.k], st=seqState, done=st.next===s.items.length;
+  $('#seqStage').innerHTML=`<div><p class="eyebrow">${esc(s.p)}</p><h3 style="font-size:1.35rem">${esc(s.n)}</h3></div>
+  <ol class="slots">${s.items.map((t,i)=>`<li class="${i<st.next?'filled':''}">${i<st.next?esc(t):'…'}</li>`).join('')}</ol>
+  ${done?`<p class="verdict ${st.err===0?'ok':'ko'}">${st.err===0?'Parfait, aucune erreur.':'Terminé avec '+st.err+' erreur'+(st.err>1?'s':'')+'. Recommencez pour viser zéro.'}</p><div class="row"><button class="btn primary" type="button" data-sq="again">Recommencer</button><button class="btn" type="button" data-sq="next">Séquence suivante</button></div>`
+  :`<div class="pool">${st.pool.filter(i=>i>=st.next).map(i=>`<button type="button" data-item="${i}">${esc(s.items[i])}</button>`).join('')}</div><p class="score">Étape ${st.next+1} sur ${s.items.length} · erreurs : ${st.err}</p>`}`;
+}
+$('#seqStage').addEventListener('click',ev=>{
+  const sq=ev.target.closest('[data-sq]');
+  if(sq){if(sq.dataset.sq==='again')startSeq();else{const i=SEQ_IDS.indexOf(seqCur);seqCur=SEQ_IDS[(i+1)%SEQ_IDS.length];store.set('seqCur',seqCur);renderSeqList();startSeq();}return;}
+  const ac=ev.target.closest('[data-acc]');if(ac){pickAcc(ac);return;}
+  if(ev.target.closest('#accCheck')){checkAcc();return;}
+  const b=ev.target.closest('[data-item]');if(!b||!seqState||seqCur==='accom')return;
+  const i=+b.dataset.item;
+  if(i===seqState.next){
+    seqState.next++;
+    if(seqState.next===SEQ[seqState.k].items.length){seqDone[seqState.k]=true;store.set('seq',seqDone);renderSeqList();updateAcuity();}
+    drawSeq();
+  }else{
+    seqState.err++;b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+    $('#seqStage .score').textContent=`Étape ${seqState.next+1} sur ${SEQ[seqState.k].items.length} · erreurs : ${seqState.err}`;
+  }
+});
+const ACCQ={rows:[['loin','Vision de loin'],['pres','Vision de près']],parts:[['m','Muscle ciliaire',['relâché','contracté']],['z','Zonules',['tendues','relâchées']],['c','Cristallin',['mince / étiré','arrondi / épais']]]};
+let accAns={};
+function renderAccQ(){
+  accAns={};
+  $('#seqStage').innerHTML=`<div><p class="eyebrow">Mécanisme de l’accommodation</p><h3 style="font-size:1.35rem">Accommodation : loin / près</h3><p class="small">Choisissez l’état de chaque structure, puis vérifiez.</p></div><div class="accq">${ACCQ.rows.map(([r,rn])=>`<div class="accrow"><h4>${esc(rn)}</h4>${ACCQ.parts.map(([p,pn,opts])=>`<div class="row"><span class="lab">${esc(pn)}</span>${opts.map((o,oi)=>`<button class="btn" type="button" data-acc="${r}|${p}|${oi}" aria-pressed="false">${esc(o)}</button>`).join('')}</div>`).join('')}</div>`).join('')}</div><div class="row"><button class="btn primary" type="button" id="accCheck">Vérifier</button></div><div id="accFb"></div>`;
+}
+function pickAcc(b){
+  const [r,p,oi]=b.dataset.acc.split('|');accAns[r+p]=+oi;
+  $$(`[data-acc^="${r}|${p}|"]`).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+}
+function checkAcc(){
+  let ok=0,total=6;
+  ACCQ.rows.forEach(([r],ri)=>ACCQ.parts.forEach(([p])=>{if(accAns[r+p]===ri)ok++;}));
+  const fb=$('#accFb');
+  if(ok===total){seqDone.accom=true;store.set('seq',seqDone);renderSeqList();updateAcuity();fb.innerHTML=`<p class="verdict ok">6 / 6. Loin : relâché → tendues → mince. Près : contracté → relâchées → arrondi.</p>`;}
+  else fb.innerHTML=`<p class="verdict ko">${ok} / 6. Indice : le muscle ciliaire et les zonules sont toujours dans des états opposés.</p>`;
+}
+
+/* ================= FLASHCARDS ================= */
+let fcFilter='all', fcCur=null, fcBack=false, fcLast=-1;
+const FCF=[['all','Toutes'],['1','M1'],['2','M2'],['3','M3'],['4','M4'],['weak','À revoir']];
+$('#fcFilters').innerHTML=FCF.map(([k,t])=>`<button class="btn" type="button" data-fcf="${k}" aria-pressed="${k==='all'}">${t}</button>`).join('');
+$('#fcFilters').addEventListener('click',ev=>{const b=ev.target.closest('[data-fcf]');if(!b)return;fcFilter=b.dataset.fcf;$$('[data-fcf]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));pickCard();});
+function fcPool(){return CARDS.map((c,i)=>i).filter(i=>fcFilter==='all'||(fcFilter==='weak'?(fcBox[i]||1)<=2:String(CARDS[i][0])===fcFilter));}
+function pickCard(){
+  const pool=fcPool();
+  if(!pool.length){fcCur=null;renderFc();return;}
+  // weighted: lower boxes more likely
+  const w=pool.map(i=>{const b=fcBox[i]||1;return i===fcLast&&pool.length>1?0:Math.pow(2,5-b);});
+  let r=Math.random()*w.reduce((a,b)=>a+b,0);
+  fcCur=pool[pool.length-1];
+  for(let k=0;k<pool.length;k++){r-=w[k];if(r<=0){fcCur=pool[k];break;}}
+  fcBack=false;renderFc();
+}
+function renderFc(){
+  const f=$('#flash');
+  if(fcCur==null){f.className='flash';f.innerHTML=`<span class="q">Aucune carte à revoir ici.</span><span class="hint">Choisissez un autre filtre.</span>`;}
+  else{
+    const c=CARDS[fcCur],b=fcBox[fcCur]||1;
+    f.className='flash'+(fcBack?' back':'');
+    f.innerHTML=`<span class="hint">M${c[0]} · ${esc(MOD[c[0]])} · boîte ${b}</span><span class="q">${esc(c[1])}</span>${fcBack?`<span class="a">${esc(c[2])}</span>`:`<span class="hint">Touchez pour voir la réponse</span>`}`;
+  }
+  const counts=[0,0,0,0,0];CARDS.forEach((c,i)=>counts[(fcBox[i]||1)-1]++);
+  const mx=Math.max(...counts,1);
+  $('#boxes').innerHTML=counts.map((n,i)=>`<div><b>${n}</b><i style="height:${Math.round(70*n/mx)}px"></i><span>B${i+1}</span></div>`).join('');
+  const mastered=counts[3]+counts[4];
+  $('#fcStat').textContent=`${mastered} carte${mastered>1?'s':''} sur ${CARDS.length} en boîte 4 ou 5.`;
+}
+function gradeCard(ok){
+  if(fcCur==null)return;
+  const b=fcBox[fcCur]||1;
+  fcBox[fcCur]=ok?Math.min(5,b+1):1;
+  store.set('fc',fcBox);fcLast=fcCur;updateAcuity();pickCard();
+}
+$('#flash').addEventListener('click',()=>{if(fcCur!=null){fcBack=!fcBack;renderFc();}});
+$('#fcYes').addEventListener('click',()=>gradeCard(true));
+$('#fcNo').addEventListener('click',()=>gradeCard(false));
+document.addEventListener('keydown',ev=>{
+  if($('#p-flashcards').hidden||ev.target.closest('input,select,textarea'))return;
+  if(ev.key===' '&&!ev.target.closest('button')){ev.preventDefault();$('#flash').click();}
+  else if(ev.key==='1')gradeCard(false);
+  else if(ev.key==='2')gradeCard(true);
+});
+
+/* ================= QUIZ ================= */
+let qz=null, qzMod='all', qzCount='10';
+function quizSetup(){
+  const n=i=>QUIZ.filter(q=>i==='all'||String(q[0])===i).length;
+  $('#quizBox').innerHTML=`<div><p class="eyebrow">Nouveau quiz</p><h3 class="qtext">Choisissez la matière et la longueur</h3></div>
+  <div class="field">Module<div class="row" id="qzMods">${[['all','Tous'],['1','M1'],['2','M2'],['3','M3'],['4','M4']].map(([k,t])=>`<button class="btn" type="button" data-qm="${k}" aria-pressed="${k===qzMod}">${t} <small>(${n(k)})</small></button>`).join('')}</div></div>
+  <div class="field">Nombre de questions<div class="row" id="qzCounts">${[['10','10'],['20','20'],['all','Toutes']].map(([k,t])=>`<button class="btn" type="button" data-qc="${k}" aria-pressed="${k===qzCount}">${t}</button>`).join('')}</div></div>
+  <div class="row"><button class="btn primary" type="button" data-q="start">Commencer</button></div>`;
+}
+function quizStart(onlyIdx){
+  let idx=onlyIdx||QUIZ.map((q,i)=>i).filter(i=>qzMod==='all'||String(QUIZ[i][0])===qzMod);
+  idx=shuffle(idx);if(!onlyIdx&&qzCount!=='all')idx=idx.slice(0,+qzCount);
+  qz={idx,i:0,ok:0,missed:[],answered:false};
+  quizQ();
+}
+function quizQ(){
+  const qi=qz.idx[qz.i],q=QUIZ[qi];
+  qz.answered=false;qz.opts=shuffle(q[2].map((o,k)=>k));
+  $('#quizBox').innerHTML=`<div class="qhead"><span class="score">Question ${qz.i+1} / ${qz.idx.length} · M${q[0]}</span><span class="score">${qz.ok} bonne${qz.ok>1?'s':''}</span></div><div class="qprog"><i style="width:${Math.round(100*qz.i/qz.idx.length)}%"></i></div>
+  <p class="qtext">${esc(q[1])}</p><div class="opts">${qz.opts.map(k=>`<button class="opt" type="button" data-qo="${k}">${esc(q[2][k])}</button>`).join('')}</div><div id="qzFb"></div>`;
+}
+function quizAnswer(btn){
+  if(qz.answered)return;qz.answered=true;
+  const qi=qz.idx[qz.i],q=QUIZ[qi],k=+btn.dataset.qo,ok=k===0;
+  if(ok)qz.ok++;else qz.missed.push(qi);
+  qzLast[qi]=ok;store.set('qz',qzLast);updateAcuity();
+  $$('#quizBox .opt').forEach(b=>{b.disabled=true;if(+b.dataset.qo===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');});
+  const last=qz.i===qz.idx.length-1;
+  $('#qzFb').innerHTML=`<p class="expl"><b>${ok?'Exact.':'Pas tout à fait.'}</b> ${esc(q[3])}</p><div class="row" style="margin-top:12px"><button class="btn primary" type="button" data-q="${last?'end':'next'}">${last?'Voir le résultat':'Question suivante'}</button></div>`;
+  $('#qzFb button').focus();
+}
+function quizEnd(){
+  const n=qz.idx.length,pct=Math.round(100*qz.ok/n);
+  $('#quizBox').innerHTML=`<div><p class="eyebrow">Résultat</p><p class="big">${qz.ok} / ${n}</p><p class="small">${pct} % · ${pct>=90?'Prêt pour l’examen sur cette matière.':pct>=70?'Solide. Revoyez les erreurs ci-dessous.':'Revoyez les fiches puis refaites les erreurs.'}</p></div>
+  ${qz.missed.length?`<ul class="missed">${qz.missed.map(i=>`<li><b>${esc(QUIZ[i][1])}</b><span>${esc(QUIZ[i][2][0])}</span></li>`).join('')}</ul>`:''}
+  <div class="row">${qz.missed.length?`<button class="btn primary" type="button" data-q="retry">Refaire mes erreurs</button>`:''}<button class="btn" type="button" data-q="setup">Nouveau quiz</button></div>`;
+}
+$('#quizBox').addEventListener('click',ev=>{
+  const m=ev.target.closest('[data-qm]');if(m){qzMod=m.dataset.qm;$$('[data-qm]').forEach(x=>x.setAttribute('aria-pressed',String(x===m)));return;}
+  const c=ev.target.closest('[data-qc]');if(c){qzCount=c.dataset.qc;$$('[data-qc]').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));return;}
+  const o=ev.target.closest('[data-qo]');if(o){quizAnswer(o);return;}
+  const a=ev.target.closest('[data-q]');if(!a)return;
+  const k=a.dataset.q;
+  if(k==='start')quizStart();
+  else if(k==='next'){qz.i++;quizQ();}
+  else if(k==='end')quizEnd();
+  else if(k==='retry')quizStart(qz.missed.slice());
+  else if(k==='setup')quizSetup();
+});
+
+/* ================= INIT ================= */
+renderTools();renderInfo(null);
+renderLayers();renderSeqList();startSeq();pickCard();quizSetup();updateAcuity();
+const h=(location.hash||'').slice(1);
+showTab(TABS.indexOf(h)>=0?h:store.get('tab','atlas'));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!$('#p-atlas').hidden)renderLabels();});
+})();
+</script>
+</body></html>

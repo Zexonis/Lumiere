@@ -1,0 +1,462 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Réviser l'UA1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single reading column, sticky section nav, cards only where a block is a distinct object. */
+:root{
+  --bg:#FBFAF7; --surface:#FFFFFF; --sunk:#F2F0EA;
+  --ink:#16181D; --muted:#5E6472; --line:#E0DDD4;
+  --accent:#1B3A6B;        /* bleu d'encre — la couleur des ordonnances */
+  --accent-soft:#E8EDF6;
+  --amber:#B36A09;         /* l'orange des branches de l'organigramme */
+  --amber-soft:#FBF0DE;
+  --red:#A32638; --red-soft:#FBEAEC;
+  --green:#1F6B4A; --green-soft:#E6F2EB;
+  --d:'Archivo',system-ui,sans-serif;
+  --b:'Source Serif 4',Georgia,serif;
+  --m:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#13151A; --surface:#1B1E25; --sunk:#22262F;
+  --ink:#ECEAE4; --muted:#9BA2B2; --line:#2E333E;
+  --accent:#8FB2E8; --accent-soft:#1C2940;
+  --amber:#E6AE5C; --amber-soft:#2E2514;
+  --red:#F09098; --red-soft:#331A1E;
+  --green:#79C9A1; --green-soft:#16281F;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13151A; --surface:#1B1E25; --sunk:#22262F;
+  --ink:#ECEAE4; --muted:#9BA2B2; --line:#2E333E;
+  --accent:#8FB2E8; --accent-soft:#1C2940;
+  --amber:#E6AE5C; --amber-soft:#2E2514;
+  --red:#F09098; --red-soft:#331A1E;
+  --green:#79C9A1; --green-soft:#16281F;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--b);font-size:17px;line-height:1.62;margin:0}
+.wrap{max-width:46rem;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 4rem}
+h1,h2,h3,h4{font-family:var(--d);text-wrap:balance;line-height:1.18;margin:0}
+h1{font-size:clamp(1.9rem,6vw,2.7rem);font-weight:700;letter-spacing:-.022em}
+h2{font-size:clamp(1.3rem,4vw,1.65rem);font-weight:700;letter-spacing:-.016em;margin:3rem 0 .5rem;padding-top:1.4rem;border-top:2px solid var(--ink)}
+h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .4rem;color:var(--accent)}
+h4{font-size:.93rem;font-weight:600;margin:1.3rem 0 .3rem}
+p,ul,ol{margin:.7rem 0}
+ul,ol{padding-left:1.15rem}
+li{margin:.25rem 0}
+code,.mono{font-family:var(--m);font-size:.88em;background:var(--sunk);padding:.08em .34em;border-radius:3px}
+strong{font-weight:600}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--d);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* en-tête */
+header{background:var(--accent);color:#fff;margin-bottom:1.5rem;
+  padding-block:2.4rem 2rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+header .in{max-width:46rem;margin:0 auto}
+header h1{color:#fff}
+header .eyebrow{color:#B9CCEA}
+header p{color:#D7E2F3;margin:.6rem 0 0;font-size:1rem}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.3rem;list-style:none;padding:0}
+.facts li{font-family:var(--d);font-size:.8rem;font-weight:600;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:.3rem .6rem;margin:0}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);
+  border-bottom:1px solid var(--line);margin-bottom:1rem}
+nav .in{max-width:46rem;margin:0 auto;display:flex;gap:.1rem;overflow-x:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:.55rem}
+nav a{font-family:var(--d);font-size:.8rem;font-weight:600;color:var(--muted);text-decoration:none;
+  white-space:nowrap;padding:.3rem .55rem;border-radius:5px}
+nav a:hover{background:var(--sunk);color:var(--ink)}
+
+/* tableaux */
+.tw{overflow-x:auto;margin:1rem 0;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:0}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--d);font-size:.76rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  background:var(--sunk);color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--m);white-space:nowrap}
+
+/* encadrés */
+.box{border-radius:8px;padding:.85rem 1rem;margin:1.1rem 0;font-size:.95rem}
+.box p:first-child{margin-top:0}.box p:last-child{margin-bottom:0}
+.box.trap{background:var(--red-soft);border-left:3px solid var(--red)}
+.box.key{background:var(--amber-soft);border-left:3px solid var(--amber)}
+.box.ok{background:var(--green-soft);border-left:3px solid var(--green)}
+.box.quote{background:var(--sunk);border-left:3px solid var(--accent);font-style:italic}
+.box .lab{font-family:var(--d);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  display:block;margin-bottom:.3rem}
+.trap .lab{color:var(--red)}.key .lab{color:var(--amber)}.ok .lab{color:var(--green)}
+
+/* verrous */
+.locks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin:1rem 0}
+.lock{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.7rem .8rem}
+.lock b{font-family:var(--m);font-size:1.3rem;color:var(--red);display:block;line-height:1}
+.lock span{font-size:.84rem;color:var(--muted);display:block;margin-top:.25rem}
+
+/* associations */
+details.q{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:.7rem 0;overflow:hidden}
+details.q>summary{cursor:pointer;padding:.7rem .9rem;font-family:var(--d);font-weight:600;font-size:.92rem;
+  list-style:none;display:flex;justify-content:space-between;gap:.6rem;align-items:center}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary::after{content:'voir';font-size:.74rem;font-weight:600;color:var(--accent);
+  background:var(--accent-soft);padding:.15rem .45rem;border-radius:4px;flex:none}
+details.q[open]>summary::after{content:'masquer'}
+details.q .body{padding:0 .9rem .9rem}
+.pairs{display:grid;grid-template-columns:1fr;gap:.35rem;font-size:.88rem}
+.pair{display:flex;gap:.5rem;align-items:baseline;padding:.3rem .5rem;background:var(--sunk);border-radius:5px}
+.pair b{font-family:var(--m);color:var(--accent);flex:none}
+
+footer{margin-top:3.5rem;padding-top:1.3rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <div class="in">
+    <span class="eyebrow">ADM 23542 · Sommative UA1 · 35 %</span>
+    <h1>Réviser l'UA1</h1>
+    <p>Principes et procédures d'un bureau ophtalmique — les quatre semaines, compressées.</p>
+    <ul class="facts">
+      <li>Lundi 19 octobre, 14 h 30</li><li>60 minutes</li><li>60–100 pts</li>
+      <li>Courtes · V/F · QCM · Association</li><li>Aide-mémoire OHIP fourni</li>
+    </ul>
+  </div>
+</header>
+
+<nav><div class="in">
+  <a href="#fil">Le fil</a><a href="#s1">Sem. 1</a><a href="#s2">Sem. 2</a>
+  <a href="#s3">Sem. 3</a><a href="#s4">Sem. 4</a><a href="#assoc">Associations</a>
+  <a href="#plan">Plan</a><a href="#pieges">Pièges</a>
+</div></nav>
+
+<div class="wrap">
+
+<section id="fil">
+<h2>Le fil conducteur</h2>
+<p>Les quatre semaines racontent une seule histoire, dans l'ordre : <strong>qui a le droit d'agir</strong> → <strong>comment le patient traverse le bureau</strong> → <strong>le document qui autorise tout</strong> → <strong>qui paie</strong>.</p>
+<p>Rien n'est posé sans ordonnance valide ; personne n'agit hors de son champ d'exercice ; rien n'est facturé sans savoir qui est couvert. Si une question te surprend, remonte à cette phrase.</p>
+
+<div class="box key"><span class="lab">Où l'examen pèse vraiment</span>
+<p>Sur les 17 compétences NACOR rattachées à l'UA1, <strong>16 sont dans la semaine 2</strong> (professionnalisme, consentement, confidentialité, champ d'exercice). La 17<sup>e</sup> — « démontrer une compréhension <em>des composantes</em> d'une ordonnance » — dit exactement ce qu'on attend en semaine 3 : comprendre, pas manipuler.</p>
+<p><strong>La semaine 4 occupe le plus de pages ; la semaine 2 porte le plus de points.</strong></p></div>
+</section>
+
+<section id="s1">
+<h2>Semaine 1 — Cadre professionnel</h2>
+
+<h3>Le « Récapitulatif » — vide à une diapo, rempli à la suivante</h3>
+<p>C'est la forme classique d'une question d'examen. Les cinq lignes :</p>
+<div class="tw"><table>
+<tr><th>Caractéristique</th><th>Réglementé</th><th>Non réglementé</th></tr>
+<tr><td>Membre d'un Ordre ?</td><td>✅</td><td>✘</td></tr>
+<tr><td>Titre réservé ?</td><td>✅</td><td>✘</td></tr>
+<tr><td>Supervision nécessaire ?</td><td>✘</td><td>✅</td></tr>
+<tr><td>Peut poser des actes médicaux ?</td><td>✅ <em>dans son champ de pratique</em></td><td>✘</td></tr>
+<tr><td>Exemple ?</td><td>Opticien, Optométriste, Ophtalmologiste</td><td>Assistant.e optométrique</td></tr>
+</table></div>
+
+<div class="box quote"><p>Profession réglementée = « profession régie par un organisme qui <strong>fixe</strong> les critères d'adhésion, <strong>évalue</strong> les qualifications et les diplômes, <strong>accorde</strong> le certificat, le titre ou le permis » — souvent « pour des raisons de santé et de sécurité publique ».</p></div>
+
+<div class="box trap"><span class="lab">L'interdiction, diapo ATTN</span>
+<p>« Il est interdit de <strong>travailler</strong> ou <strong>d'employer le titre</strong> professionnel si vous n'êtes pas membre en règle de l'Ordre. » — <em>deux</em> interdictions dans une phrase.</p></div>
+
+<h3>Les 3 « O »</h3>
+<div class="tw"><table>
+<tr><th>Français</th><th>Désignation</th><th>Ordre</th></tr>
+<tr><td>Ophtalmologiste</td><td class="num">MD spécialisé</td><td>Ordre des médecins et chirurgiens de l'Ontario</td></tr>
+<tr><td>Optométriste</td><td class="num">OD</td><td>Ordre des optométristes de l'Ontario</td></tr>
+<tr><td>Opticien</td><td class="num">RO</td><td>Ordre des opticiens de l'Ontario</td></tr>
+</table></div>
+<p><span class="mono">RO</span> = <em>Registered Optician</em>, titre en Ontario. <span class="mono">OOD</span> = <em>Opticien d'Ordonnance</em>, titre au Québec.</p>
+
+<h3>Devenir opticien.ne — la séquence</h3>
+<p>Diplômé du programme → Membre de l'Ordre <strong>Stagiaire</strong> → <strong>Examen NACOR</strong> → Membre de l'Ordre <strong>Professionnel</strong>, « de la <strong>province</strong> dans laquelle vous souhaitez travailler ».</p>
+<p><strong>Assistant.e en optométrie</strong> : avoir réussi le programme <em>Assistance en optométrie</em>, <strong>ou</strong> l'<strong>Étape 1-2</strong> du programme Opticien.</p>
+
+<h3>Délégation — les quatre mots</h3>
+<p>Un professionnel réglementé peut déléguer « dans certaines circonstances », <strong>mais</strong> « la responsabilité professionnelle demeure encadrée par le professionnel réglementé ».</p>
+<div class="box key"><span class="lab">Pourquoi la distinction importe</span>
+<p><strong>Protection du public · Compétence · Responsabilité · Transparence</strong></p></div>
+</section>
+
+<section id="s2">
+<h2>Semaine 2 — Parcours patient</h2>
+
+<h3>Le parcours, dans l'ordre</h3>
+<p>Réception/accueil → Pré-tests → <strong>Examen de la vue (OD / MD)</strong> → [Réfraction RO sous délégation] → Orthèses visuelles → Lunetterie → Taillage et montage → <strong>Vérification finale</strong> → Livraison → Paiement.</p>
+<p>L'examen complet a <strong>2 composantes : réfraction + santé oculaire.</strong> Retiens ce « 2 » — il revient en semaine 4.</p>
+
+<h3>Qui peut faire quoi — les 20 fonctions se répartissent 9 / 7 / 3 / 1</h3>
+<p>Ne mémorise que les <strong>quatre verrous</strong>. Tout le reste est permissif.</p>
+<div class="locks">
+  <div class="lock"><b>Q</b><span>Ajustement de lentilles cornéennes — <strong>RO seulement</strong></span></div>
+  <div class="lock"><b>S</b><span>Vérification finale avant livraison — <strong>RO seulement</strong></span></div>
+  <div class="lock"><b>T</b><span>Suivi des soins pour LC — <strong>RO seulement</strong></span></div>
+  <div class="lock"><b>G</b><span>Prescrire des gouttes médicamentées — <strong>personne</strong></span></div>
+</div>
+<p>Pour <span class="mono">G</span>, la diapo écrit « aucun de ses professionnels ». C'est le seul acte du cours que personne ne peut poser.</p>
+
+<h3>Les 8 principes, dans l'ordre numéroté</h3>
+<ol>
+<li>Respect des Préférences du Patient</li><li>Coordination &amp; Intégration des Soins</li>
+<li>Information et Éducation</li><li>Confort Physique</li><li>Soutien émotionnel</li>
+<li>Implication de la Famille et des Proches</li><li>Continuité &amp; Transition</li><li>Accès aux Soins</li>
+</ol>
+<p><em>Découpage :</em> 1-3 la décision · 4-5 le corps et l'émotion · 6 les autres · 7-8 le temps et la porte.</p>
+
+<div class="box key"><span class="lab">Les trois règles couperet</span>
+<p><strong>#4</strong> — maintenir <strong>60–90 cm</strong> « lorsque possible ». <strong>Exception : 40 cm pour les mesures ophtalmiques.</strong> Demander la permission avant tout contact physique.</p>
+<p><strong>#5</strong> — « L'empathie n'est pas la sympathie (simple compassion). »</p>
+<p><strong>#6</strong> — « Un consentement <strong>écrit</strong> est obligatoire avant tout partage d'informations avec la famille ou les amis », et <strong>c'est le patient qui désigne qui est « la famille »</strong>.</p></div>
+
+<h3>L'offre active — à savoir mot pour mot</h3>
+<div class="box quote"><p>« Proposer, de façon proactive, dès le premier contact, un ensemble de services en français avec confiance et conviction. »</p></div>
+<p>Quatre justifications : <strong>qualité, sécurité, éthique, équité</strong>.</p>
+<div class="box trap"><span class="lab">Le piège vrai-faux</span>
+<p>L'attente de l'Ordre est seulement qu'on puisse servir « <strong>dans une langue officiel</strong> ». L'offre active <em>en français</em> est présentée comme « notre <strong>devoir</strong> » de professionnel francophone — <strong>pas</strong> une exigence du College of Opticians. Une question affirmant que l'Ordre exige le français est <strong>FAUSSE</strong>.</p></div>
+</section>
+
+<section id="s3">
+<h2>Semaine 3 — L'ordonnance</h2>
+<p><span class="mono">Px</span> = Patient · <span class="mono">Rx</span> = Ordonnance. L'opticien conserve l'original <strong>7 ans</strong> ; l'ACO recommande une validité <strong>n'excédant pas 2 ans</strong>.</p>
+
+<h3>Les cinq colonnes</h3>
+<div class="tw"><table>
+<tr><th>SPH</th><th>CYL</th><th>AXE</th><th>PRISME</th><th>ADD</th></tr>
+<tr><td class="num">+/- X.XX</td><td class="num">- X.XX (OD/RO)<br>+ X.XX (MD)</td><td class="num">001–180</td><td class="num">xx Δ B?</td><td class="num">+ X.XX</td></tr>
+</table></div>
+<p><span class="mono">OD</span> <em>Oculus Dexter</em>, œil droit · <span class="mono">OS</span> <em>Oculus Sinister</em>, œil gauche · <span class="mono">OU</span> les deux yeux.</p>
+
+<h3>Les règles d'écriture — chacune est une faute à repérer</h3>
+<ul>
+<li>Tout en dioptries, le <span class="mono">D</span> est <strong>omis</strong>.</li>
+<li><strong>Deux décimales toujours</strong> : <span class="mono">-0.75</span>, <span class="mono">+2.00</span> — jamais <span class="mono">-75</span> ni <span class="mono">+2</span>.</li>
+<li><strong>Quarts de dioptrie</strong> : <span class="mono">+1.00, +1.25, +1.50…</span></li>
+<li><strong>Axe sur trois chiffres</strong>, <span class="mono">001</span>–<span class="mono">180</span>.</li>
+<li><span class="mono">PLANO (PL) = 0.00 D</span>.</li>
+<li>Une Rx torique porte <strong>toujours</strong> SPH <em>et</em> CYL <em>et</em> AXE → <span class="mono">-3.25 x 180</span> est fautif ; il faut <span class="mono">Plano -3.25 x 180</span>.</li>
+<li>Les deux yeux dans le <strong>même format de cylindre</strong>.</li>
+</ul>
+
+<h3>Les quatre amétropies</h3>
+<div class="tw"><table>
+<tr><th>Amétropie</th><th>Cause</th><th>Signe</th><th>Lentille</th></tr>
+<tr><td><strong>Myopie</strong></td><td>œil trop long ou trop fort</td><td class="num">−</td><td>négative, concave, divergente</td></tr>
+<tr><td><strong>Hypermétropie</strong></td><td>œil trop court ou trop faible</td><td class="num">+</td><td>positive, convexe, convergente</td></tr>
+<tr><td><strong>Astigmatisme</strong></td><td>courbure irrégulière de la cornée</td><td class="num">CYL + AXE</td><td>cylindrique / torique</td></tr>
+<tr><td><strong>Presbytie</strong></td><td>perte d'accommodation</td><td class="num">ADD</td><td>unifocale VP ou multifocale</td></tr>
+</table></div>
+<p><strong>Emmétropie</strong> : œil normal, ~<strong>15 %</strong> de la population, aucune Rx requise. <strong>Amétropie</strong> : « Ce n'est <strong>PAS</strong> une maladie. C'est une divergence par rapport à la forme idéale de l'œil. »</p>
+<p><strong>Sphérique</strong> = sans astigmatisme = <strong>UN</strong> point focal. <strong>Torique</strong> = avec astigmatisme = <strong>DEUX</strong> points focaux.</p>
+
+<h3>L'organigramme — les 5 étapes</h3>
+<div class="box key"><span class="lab">Étape 1 — la porte</span>
+<p>« Pouvons-nous faire l'analyse ? » → <strong>« Cylindre doit être négatif ou absent »</strong>. Une Rx en cylindre positif doit être convertie avant toute analyse — et le cours ne t'apprend pas encore à le faire, c'est l'UA2.</p></div>
+<div class="tw"><table>
+<tr><th>Question</th><th>Réponse</th><th>Étiquette</th></tr>
+<tr><td rowspan="4"><strong>SPH ?</strong></td><td>Négatif (−)</td><td>Myope</td></tr>
+<tr><td>Positif (+)</td><td>Hypermétrope</td></tr>
+<tr><td>Plano, <strong>sans</strong> cyl</td><td>Émmetrope <em>(graphie du doc)</em></td></tr>
+<tr><td>Plano, <strong>avec</strong> cyl</td><td>Torique</td></tr>
+<tr><td rowspan="2"><strong>CYL / Axe ?</strong></td><td>oui</td><td>Torique</td></tr>
+<tr><td>non</td><td>Sphérique</td></tr>
+<tr><td><strong>PRISME ?</strong></td><td>oui</td><td>Prismatique</td></tr>
+<tr><td><strong>ADD ?</strong></td><td>oui</td><td>Presbytee <em>(graphie du doc)</em></td></tr>
+</table></div>
+<p><strong>Binoculaire</strong> → y a-t-il une ADD ? non = <em>Simple Vision</em>, oui = <em>Multifocal</em>. <strong>Monoculaire</strong> → sphérique ou torique ? « L'analyse est réalisée un œil à la fois. »</p>
+</section>
+
+<section id="s4">
+<h2>Semaine 4 — Facturation</h2>
+
+<h3>Deux factures, toujours</h3>
+<p><strong>Services</strong> (besoin médical : l'examen) et <strong>Produits</strong> (monture, verres, lentilles). « Les taxes ne sont pas applicable si c'est un service ou produit médicale. »</p>
+<p>Trois types d'escompte : <strong>items</strong> (monture gratuite) · <strong>pourcentage</strong> (<span class="mono">Frais × 0.XX</span>) · <strong>monétaire</strong> (50 $, 100 $).</p>
+
+<div class="box trap"><span class="lab">La seule formule à ne pas confondre</span>
+<p><span class="mono">déboursé = FACTURE − versement de l'assureur</span> — et <strong>non</strong> <span class="mono">calcul à 80 % − versement</span>.</p>
+<p>Une diapo du cours se trompe là-dessus : facture 255 $, l'assureur verse 100 $, elle annonce <strong>104 $</strong> au lieu de <strong>155 $</strong> (elle a fait 204 − 100). Applique la bonne méthode et <strong>écris ta ligne intermédiaire</strong> ; demande à la prof avant l'examen.</p></div>
+
+<h3>L'ordre de la gestion financière</h3>
+<div class="tw"><table>
+<tr><th>Service</th><th>Produits</th></tr>
+<tr><td>1. <strong>OHIP</strong></td><td>1. Payeurs tiers</td></tr>
+<tr><td>2. Payeurs tiers</td><td>2. Patient avec assurance privée</td></tr>
+<tr><td>3. Patient avec assurance privée</td><td>3. Patient sans assurance</td></tr>
+<tr><td>4. Patient sans assurance</td><td>—</td></tr>
+</table></div>
+<p><strong>OHIP ne couvre JAMAIS de produits.</strong> La facture produit saute l'étape OHIP.</p>
+
+<h3>Les fréquences OHIP — elles ne sont PAS sur l'aide-mémoire</h3>
+<div class="tw"><table>
+<tr><th>Patient</th><th>Examen majeur</th></tr>
+<tr><td>0–19 ans</td><td class="num">12 mois</td></tr>
+<tr><td>20–64 ans, en santé</td><td class="num">aucune couverture</td></tr>
+<tr><td>20–64 ans, trouble médical admissible</td><td class="num">12 mois + 2 suivis</td></tr>
+<tr><td>20–64 ans, POSPH/ODSP ou Ontario Works</td><td class="num">24 mois</td></tr>
+<tr><td>65 ans +, en santé</td><td class="num">18 mois + 2 suivis</td></tr>
+<tr><td>65 ans +, trouble médical admissible</td><td class="num">12 mois + 2 suivis</td></tr>
+</table></div>
+<p>Toujours <strong>+ 1 jour</strong>. <em>Les jeunes et les malades tous les 12 ; les aînés en santé 18 ; l'aide sociale 24 ; l'adulte en santé, rien.</em></p>
+
+<div class="box key"><span class="lab">Le mot qui décide tout</span>
+<p><strong>Majeur</strong> = réfraction <strong>ET</strong> santé oculaire <em>(examen de la vue, complet)</em>.<br>
+<strong>Mineur</strong> = réfraction <strong>OU</strong> santé oculaire <em>(partiel, suivi)</em>.</p></div>
+
+<h3>Fourni vs à mémoriser</h3>
+<div class="tw"><table>
+<tr><th>✅ Fourni à l'examen</th><th>❌ À savoir à froid</th></tr>
+<tr><td>Codes d'admissibilité 101 / 102 / 201</td><td>Les <strong>fréquences</strong> OHIP</td></tr>
+<tr><td>Codes de réponse (0-49, 50-59, 60-89)</td><td>Majeur = ET, mineur = OU</td></tr>
+<tr><td>Codes de service V404, V402, V409…</td><td>La <strong>catégorie</strong> du patient</td></tr>
+<tr><td>Codes diagnostics</td><td>La grille MCSS, Lumiris, AOpto-Opti</td></tr>
+<tr><td>Du papier</td><td>La méthode en 4 étapes · tout M1, M2, M3</td></tr>
+</table></div>
+<div class="box ok"><span class="lab">La règle</span>
+<p>L'aide-mémoire porte les <strong>CODES</strong> ; ta tête porte les <strong>RÈGLES</strong>, les <strong>FRÉQUENCES</strong> et les <strong>MONTANTS</strong>. Il te donne le code <span class="mono">V406</span>, jamais le fait qu'il s'ouvre tous les <strong>18 mois</strong>.</p></div>
+
+<h3>Les escomptes — à mémoriser</h3>
+<p><strong>Lumiris</strong> : lunette <strong>−25 %</strong> · verre de contact <strong>−15 %</strong> · examen 205 $ → <strong>110 $</strong> · partiel 115 $ → <strong>60 $</strong> · autres services <strong>sans frais</strong>.</p>
+<p><strong>Famille AOpto-Opti</strong> : services sans demande (complet <strong>110 $</strong>, partiel <strong>60 $</strong>) ; produits sur demande — contactologie prix coûtant, lunetterie coûtant <strong>+ 15 %</strong> (toi) / <strong>+ 30 %</strong> (tes proches patients-modèles). Un étudiant-opticien <strong>ne peut pas être à la fois patient et stagiaire</strong>.</p>
+
+<h3>La grille MCSS</h3>
+<div class="tw"><table>
+<tr><th>Verres</th><th>$</th><th>Code</th><th>Suppléments</th><th>$</th><th>Code</th></tr>
+<tr><td>SV CR-39</td><td class="num">68,50</td><td class="num">001</td><td>Forte sphère 10–16 D</td><td class="num">39,75</td><td class="num">009</td></tr>
+<tr><td>SV polycarbonate</td><td class="num">76,50</td><td class="num">002</td><td>Fort cylindre &gt; 6 D</td><td class="num">32,25</td><td class="num">010</td></tr>
+<tr><td>Bifocaux CR-39</td><td class="num">94,50</td><td class="num">003</td><td>Prisme ≤ 10Δ</td><td class="num">27,50</td><td class="num">011</td></tr>
+<tr><td>Bifocaux polycarb.</td><td class="num">123,00</td><td class="num">004</td><td>Forte add. +4,25 à +6,00</td><td class="num">60,00</td><td class="num">012</td></tr>
+<tr><td>PAL CR-39</td><td class="num">205,50</td><td class="num">005</td><td>Teinte unie</td><td class="num">21,50</td><td class="num">013</td></tr>
+<tr><td>PAL polycarbonate</td><td class="num">243,00</td><td class="num">006</td><td>Teinte dégradée</td><td class="num">25,50</td><td class="num">014</td></tr>
+<tr><td>Trifocaux CR-39</td><td class="num">132,00</td><td class="num">007</td><td>Photochromique</td><td class="num">105,00</td><td class="num">015</td></tr>
+<tr><td>Trifocaux polycarb.</td><td class="num">171,00</td><td class="num">008</td><td>Remontage verres client</td><td class="num">20,00</td><td class="num">016</td></tr>
+<tr><td></td><td></td><td></td><td><strong>Monture</strong></td><td class="num">42,20</td><td class="num">017</td></tr>
+<tr><td></td><td></td><td></td><td><strong>Étui</strong></td><td class="num">2,00</td><td class="num">018</td></tr>
+</table></div>
+<p><em>CR-39 toujours moins cher que le polycarbonate, et l'écart grandit avec la complexité : 8 $ en simple vision, 37,50 $ en PAL.</em></p>
+
+<h3>La méthode, en 4 étapes</h3>
+<ol><li><strong>Quel est le frais ?</strong></li><li><strong>Y a-t-il un escompte ?</strong></li>
+<li><strong>Calcul</strong> : frais − escompte. <em>Écris la ligne intermédiaire.</em></li>
+<li><strong>Est-ce couvert ?</strong> OHIP → tiers payeur → assurance privée → patient.</li></ol>
+<p><strong>Plan AE</strong> : 80 %, max <strong>80 $</strong> (services) ; 80 %, max <strong>250 $</strong> (produits) ; chaque 24 mois.</p>
+</section>
+
+<section id="assoc">
+<h2>Associations — le 4<sup>e</sup> format</h2>
+<p>Ce format ne teste pas la définition mais l'<strong>appariement</strong>. Place d'abord les paires dont tu es certain ; le reste se déduit. Et compte les deux colonnes : si la droite est plus courte, <strong>une réponse sert plusieurs fois</strong> et l'élimination te trahira.</p>
+
+<details class="q"><summary>Prestataire ↔ Ordre</summary><div class="body"><div class="pairs">
+<div class="pair"><b>Opticien</b> Ordre des opticiens de l'Ontario</div>
+<div class="pair"><b>Optométriste</b> Ordre des optométristes de l'Ontario</div>
+<div class="pair"><b>Ophtalmologiste</b> Ordre des médecins et chirurgiens de l'Ontario</div>
+<div class="pair"><b>Assistant.e optométrique</b> aucun — non réglementé</div>
+</div></div></details>
+
+<details class="q"><summary>Fonction ↔ Qui peut la poser</summary><div class="body"><div class="pairs">
+<div class="pair"><b>Q</b> ajustement LC → RO seulement</div>
+<div class="pair"><b>S</b> vérification finale → RO seulement</div>
+<div class="pair"><b>T</b> suivi LC → RO seulement</div>
+<div class="pair"><b>G</b> gouttes médicamentées → personne</div>
+<div class="pair"><b>C</b> vente d'accessoires → les trois</div>
+<div class="pair"><b>N</b> interprétation de l'ordonnance → RO + délégation</div>
+</div><p style="font-size:.85rem;color:var(--muted);margin-top:.6rem">Trois items pointent vers « RO seulement » — c'est exactement le piège du format.</p></div></details>
+
+<details class="q"><summary>Amétropie ↔ Lentille</summary><div class="body"><div class="pairs">
+<div class="pair"><b>Myopie</b> négative, concave, divergente</div>
+<div class="pair"><b>Hypermétropie</b> positive, convexe, convergente</div>
+<div class="pair"><b>Astigmatisme</b> cylindrique / torique</div>
+<div class="pair"><b>Presbytie</b> unifocale VP ou multifocale</div>
+<div class="pair"><b>Emmétropie</b> aucune correction</div>
+</div></div></details>
+
+<details class="q"><summary>Branche de l'organigramme ↔ Étiquette</summary><div class="body"><div class="pairs">
+<div class="pair"><b>SPH −</b> Myope</div><div class="pair"><b>SPH +</b> Hypermétrope</div>
+<div class="pair"><b>Plano sans cyl</b> Émmetrope</div><div class="pair"><b>Plano avec cyl</b> Torique</div>
+<div class="pair"><b>CYL : non</b> Sphérique</div><div class="pair"><b>ADD : oui</b> Presbytee</div>
+</div></div></details>
+
+<details class="q"><summary>Âge ↔ Fréquence OHIP</summary><div class="body"><div class="pairs">
+<div class="pair"><b>0–19 ans</b> 12 mois</div>
+<div class="pair"><b>20–64 en santé</b> aucune couverture</div>
+<div class="pair"><b>POSPH / OW</b> 24 mois</div>
+<div class="pair"><b>65 + en santé</b> 18 mois</div>
+</div></div></details>
+
+<details class="q"><summary>Produit ↔ Montant MCSS</summary><div class="body"><div class="pairs">
+<div class="pair"><b>Monture</b> 42,20 $</div><div class="pair"><b>Étui</b> 2,00 $</div>
+<div class="pair"><b>SV CR-39</b> 68,50 $</div><div class="pair"><b>PAL CR-39</b> 205,50 $</div>
+<div class="pair"><b>PAL polycarbonate</b> 243,00 $</div>
+</div></div></details>
+
+<details class="q"><summary>Terme ↔ Définition</summary><div class="body"><div class="pairs">
+<div class="pair"><b>Examen majeur</b> réfraction ET santé oculaire</div>
+<div class="pair"><b>Examen mineur</b> réfraction OU santé oculaire</div>
+<div class="pair"><b>Amétropie</b> divergence par rapport à la forme idéale</div>
+<div class="pair"><b>Emmétropie</b> ~15 % de la population, aucune Rx</div>
+<div class="pair"><b>Plano</b> 0.00 D, aucune correction</div>
+</div></div></details>
+</section>
+
+<section id="plan">
+<h2>Plan de révision — Groupe II, lundi 14 h 30</h2>
+<p>Tu as le week-end <strong>et la matinée de lundi</strong>. C'est confortable, à condition de ne pas tout relire la veille.</p>
+<div class="tw"><table>
+<tr><th>Quand</th><th>Quoi</th><th>Durée</th></tr>
+<tr><td><strong>Vendredi soir</strong></td><td>Cette page en entier, sans mémoriser. Savoir où habite quoi.</td><td class="num">1 h</td></tr>
+<tr><td><strong>Samedi</strong></td><td>Chapitre 2 complet (16 compétences sur 17), puis chapitre 1. Associations 1 à 4.</td><td class="num">2 h 30</td></tr>
+<tr><td><strong>Dimanche</strong></td><td>Chapitre 3 jusqu'à redessiner l'organigramme de mémoire. Chapitre 4 : refais trois scénarios à la main <em>avant</em> de lire le corrigé. Fréquences OHIP et grille MCSS à part.</td><td class="num">3 h</td></tr>
+<tr><td><strong>Dimanche soir</strong></td><td><strong>Le Questionnaire Pratique sur eCité.</strong> La prof écrit « Pratique! » trois fois.</td><td class="num">20 min</td></tr>
+<tr><td><strong>Lundi matin</strong></td><td>Les pièges à voix haute, les associations 2, 4 et 5. <strong>Ne relis aucun chapitre long.</strong></td><td class="num">45 min</td></tr>
+</table></div>
+<div class="box key"><span class="lab">Lundi midi</span>
+<p>Appareil numérique <strong>chargé à bloc</strong>. Calculatrice <strong>de base</strong> — pas le téléphone, pas la montre. Stylo, crayon, efface. Tout le reste au casier. <strong>Arrive en avance : si un étudiant est déjà sorti, tu n'entres plus.</strong></p></div>
+<p style="font-size:.9rem;color:var(--muted)"><strong>Le rythme :</strong> 60 minutes pour 60–100 points, soit 0,6 à 1 minute par point. Premier passage, tout ce qui part en moins de 30 secondes ; deuxième passage, les associations et les scénarios. Ne bloque jamais plus d'une minute sur un item — il vaut le même point que celui d'à côté.</p>
+</section>
+
+<section id="pieges">
+<h2>Les pièges, rassemblés</h2>
+<div class="tw"><table>
+<tr><th>L'affirmation</th><th>La réponse</th></tr>
+<tr><td>L'Ordre exige le service en français</td><td><strong>Faux</strong> — « une langue officiel »</td></tr>
+<tr><td>L'empathie, c'est la sympathie</td><td><strong>Faux</strong> — la sympathie est « simple compassion »</td></tr>
+<tr><td>40 cm est la distance normale</td><td><strong>Faux</strong> — c'est l'exception ; la norme est 60–90 cm</td></tr>
+<tr><td>La famille, c'est la famille biologique</td><td><strong>Faux</strong> — le patient désigne son cercle</td></tr>
+<tr><td>Un AOV autonome peut faire la vérification finale</td><td><strong>Faux</strong> — RO seulement</td></tr>
+<tr><td>Un RO peut prescrire des gouttes médicamentées</td><td><strong>Faux</strong> — personne</td></tr>
+<tr><td><span class="mono">-3.25 x 180</span> est une Rx torique valide</td><td><strong>Faux</strong> — il manque la sphère</td></tr>
+<tr><td>OHIP couvre les montures des 0–19 ans</td><td><strong>Faux</strong> — jamais de produits</td></tr>
+<tr><td>Un adulte de 40 ans en santé a un examen couvert</td><td><strong>Faux</strong> — aucune couverture</td></tr>
+<tr><td>Un examen « partiel » est un examen majeur</td><td><strong>Faux</strong> — majeur = ET, mineur = OU</td></tr>
+<tr><td>On peut analyser une Rx en cylindre positif</td><td><strong>Faux</strong> — étape 1 l'interdit</td></tr>
+<tr><td>Il faut mémoriser les codes de réponse OHIP</td><td><strong>Faux</strong> — ils sont fournis</td></tr>
+</table></div>
+
+<h3>Et six questions pour la prof</h3>
+<ol>
+<li>L'erreur de calcul de la diapo : 104 $ ou <strong>155 $</strong> ?</li>
+<li>Transposition et croix optique sont bien hors UA1 ?</li>
+<li>Où est le « tableau d'aide mémoire » des étapes 2 à 5 de l'organigramme ?</li>
+<li>Les définitions de consentement implicite vs explicite sont-elles exigibles ? Elles n'existent qu'en titre de vidéo.</li>
+<li>COMT et COT — jamais définis dans le cours.</li>
+<li>L'Atelier IP et le FIP101, toujours sans date.</li>
+</ol>
+</section>
+
+<footer>
+<p>Construit le 16 octobre 2026 à partir des 23 documents déposés sur eCité pour les modules 1 à 4, de la transcription de l'organigramme et du document « Prep Examen UA1 ». Les chapitres détaillés — environ 48 000 mots et 290 questions corrigées — restent dans le dossier <span class="mono">Guides/UA1-Bureau-Ophtalmique</span>.</p>
+<p><strong>Deux échéances la même semaine :</strong> l'Atelier « Offre active » le <strong>19 octobre</strong> (dernier jour à 60 %, 4 journaux de bord + certificat au pigeonnier) et la Formation culturelle « Les 4 saisons de réconciliation » le <strong>20 octobre</strong>.</p>
+</footer>
+
+</div>
+</body></html>
