@@ -216,6 +216,26 @@ h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px)
 <script>
 (() => {
 'use strict';
+{
+  const m = location.hash.match(/(?:^#|&)classe=([^&]{1,64})/);
+  if(m){
+    try{
+      const code = decodeURIComponent(m[1]).trim();
+      if(code){
+        localStorage.setItem('lumiere-claude-classe', code);
+        if(!localStorage.getItem('lumiere-claude-permis')) localStorage.setItem('lumiere-claude-permis', JSON.stringify(['claude-haiku-5-5']));
+        window.addEventListener('DOMContentLoaded', () => {
+          const p = document.createElement('p');
+          p.setAttribute('role', 'status');
+          p.textContent = 'Claude de la classe est activé sur cet appareil, pour tous les ateliers.';
+          p.style.cssText = 'position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:99;margin:0;padding:10px 16px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 15px system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.4);max-width:calc(100vw - 32px)';
+          document.body.appendChild(p); setTimeout(() => p.remove(), 6000);
+        });
+      }
+    }catch(e){}
+    try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  }
+}
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const A = id => 'https://claude.ai/artifact/' + id;

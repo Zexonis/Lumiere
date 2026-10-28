@@ -6348,6 +6348,16 @@ function noteSysteme(t, cls){ const p = H('<p class="tmsg note ' + (cls || '') +
 /* Claude peut mettre jusqu'à dix secondes à dire « indisponible » : une question posée
    pendant ce temps attend la réponse au lieu de partir sur le mauvais moteur. */
 let finDetection; const detection = new Promise(r => { finDetection = r; });
+/* le lien de la classe (…#classe=CODE), partagé par le représentant : le code se range une fois pour tous les ateliers, puis s'efface de l'adresse */
+function prendreLienClasse(){
+  const m = location.hash.match(/(?:^#|&)classe=([^&]{1,64})/);
+  if(!m) return;
+  try{
+    const code = decodeURIComponent(m[1]).trim();
+    if(code){ ecrireCle('claude-classe', code); if(!lireCle('claude-permis')) ecrireCle('claude-permis', JSON.stringify(['claude-haiku-5-5'])); }
+  }catch(e){}
+  try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+}
 async function detecterMoteur(){
   const dansClaude = !!(window.claude && typeof window.claude.use === 'function');
   ['gemini', 'chatgpt'].forEach(f => {
@@ -6357,6 +6367,7 @@ async function detecterMoteur(){
   });
   const mc = memo.get(K('claude-modele')); if(MODELES_CLAUDE.some(m => m.id === mc)) TU.claude.modele = mc;
   TU.claude.cle = lireCle('claude-cle');
+  prendreLienClasse();
   TU.claude.classe = lireCle('claude-classe');
   try{ const pm = JSON.parse(lireCle('claude-permis') || 'null'); if(Array.isArray(pm) && pm.length) TU.claude.permis = pm; }catch(e){}
   if(dansClaude){
@@ -6489,7 +6500,7 @@ function montrerConfig(f){
   c.innerHTML = classe
     ? '<h3>Claude pour la classe</h3>' +
       '<p class="tu-note">Ton représentant a ouvert un accès commun à Claude (le modèle Haiku). Tape le code de la classe une fois : il vaut pour tous les ateliers de ce navigateur.</p>' +
-      '<div class="tu-cle"><label class="sr" for="tu-code">Code de la classe</label><input type="password" id="tu-code" autocomplete="off" spellcheck="false" placeholder="' + (TU.claude.classe ? 'Code enregistré : tape-le de nouveau pour le changer' : 'Code de la classe') + '"><button type="button" class="tu-envoyer" id="tu-code-ok">Activer</button></div>' +
+      '<div class="tu-cle"><label class="sr" for="tu-code">Code de la classe</label><input type="password" id="tu-code" autocomplete="off" spellcheck="false" placeholder="' + (TU.claude.classe ? 'Code enregistré : tape-le de nouveau pour le changer' : 'Code de la classe') + '"><button type="button" class="tu-envoyer" id="tu-code-ok">Activer</button></div>' +
       '<p class="tu-note" id="tu-code-etat"></p>' +
       '<details class="tu-perso"' + (TU.claude.cle ? ' open' : '') + '><summary>Ou ta propre clé API Claude (payante à part)</summary>' + perso + '</details>' + barre
     : '<h3>' + k.titre + '</h3>' + perso + barre;
@@ -6687,7 +6698,7 @@ function chargerSdkClaude(){
   }
   return sdkClaude;
 }
-/* une clé personnelle d'abord ; sinon le code de la classe, par le relais (la clé du crédit commun n'est jamais dans la page) */
+/* une clé personnelle d'abord ; sinon le code de la classe, par le relais (la clé du crédit commun n'est jamais dans la page) */
 const RELAIS_CLASSE = 'https://lumiere-claude.lexator300.workers.dev';
 function clientClaude(A, cle, classe){
   const viaRelais = !!classe || (!cle && !TU.claude.cle && !!TU.claude.classe);
