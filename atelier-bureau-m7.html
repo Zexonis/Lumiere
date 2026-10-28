@@ -909,6 +909,13 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .tu-coller textarea{width:100%;min-height:64px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:7px 9px;font:inherit;font-size:14px;resize:vertical}
 .tu-coller .tu-btn{align-self:flex-start}
 .cv-tut[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+/* l'énergie de questions (Claude de la classe) : trois cases qui se remplissent au rythme du relais */
+.tu-energie{display:flex;align-items:center;gap:8px;margin:0 0 6px;font:600 11.5px var(--f-mono);letter-spacing:.04em;color:var(--ink-3)}
+.tu-energie-lib{text-transform:uppercase;letter-spacing:.1em}
+.tu-energie-cases{display:inline-flex;gap:4px}
+.tu-energie-cases i{position:relative;display:block;width:26px;height:8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
+.tu-energie-cases b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);box-shadow:0 0 6px var(--accent)}
+.tu-energie.vide .tu-energie-txt{color:var(--accent)}
 </style>
 <div class="app" id="app">
 
@@ -5302,6 +5309,7 @@ const panneau = H(`<aside class="tuteur" id="tuteur" aria-label="Tuteur intégr�
   <form class="tu-compo" id="tu-compo">
     <div class="tu-pj" id="tu-pj" hidden></div>
     <div class="tu-rapide" id="tu-rapide" hidden></div>
+    <div class="tu-energie" id="tu-energie" role="meter" aria-label="Énergie de questions" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" hidden title="Le crédit Claude de la classe : trois questions d’affilée, puis une qui se recharge toutes les 20 secondes. Au-delà, le tuteur attend un peu avant de répondre."><span class="tu-energie-lib">Énergie</span><span class="tu-energie-cases" aria-hidden="true"></span><span class="tu-energie-txt"></span></div>
     <label class="sr" for="tu-q">Ta question</label>
     <textarea id="tu-q" rows="2" placeholder="Ta question… Entrée pour envoyer, Maj + Entrée pour aller à la ligne"></textarea>
     <div class="tu-barre">
@@ -5475,6 +5483,7 @@ function majMoteurUI(){
   }
   RT('tu-modes').hidden = !!RELAIS;
   majBandeau(md);
+  majEnergie();
   rendreZone();
   signaler({type:'moteur', api:md === 'api'});
 }
@@ -5754,7 +5763,11 @@ function clientClaude(A, cle, classe){
   const viaRelais = !!classe || (!cle && !TU.claude.cle && !!TU.claude.classe);
   const secret = viaRelais ? (classe || TU.claude.classe) : (cle || TU.claude.cle), id = (viaRelais ? 'classe:' : 'cle:') + secret;
   if(!TU.claude.client || TU.claude.client.id !== id)
-    TU.claude.client = {id, c:viaRelais ? new A({apiKey:secret, baseURL:RELAIS_CLASSE, dangerouslyAllowBrowser:true, defaultHeaders:{'x-lumiere-appareil':appareil()}}) : new A({apiKey:secret, dangerouslyAllowBrowser:true})};
+    TU.claude.client = {id, c:viaRelais ? new A({apiKey:secret, baseURL:RELAIS_CLASSE, dangerouslyAllowBrowser:true, defaultHeaders:{'x-lumiere-appareil':appareil()},
+      fetch:(url, init) => {
+        if(ENERGIE && /\/v1\/messages(\?|$)/.test(String(url))) poserEnergie(Math.max(0, niveauEnergie() - 1), ENERGIE.capacite, ENERGIE.recharge);
+        return window.fetch(url, init).then(r => { lireEnergie(r); return r; });
+      }}) : new A({apiKey:secret, dangerouslyAllowBrowser:true})};
   return TU.claude.client.c;
 }
 /* un identifiant d'appareil tiré au hasard (rien de personnel) : le relais l'utilise pour son anti-pourriel par appareil */
@@ -5763,6 +5776,34 @@ function appareil(){
   if(!id){ id = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/[^\w-]/g, ''); memo.set('lumiere-appareil', id); }
   return id;
 }
+/* l'énergie de l'appareil, telle que le relais la compte (son seau) : {n, t, capacite, recharge} ; null pour un code vip */
+let ENERGIE = null, tEnergie = 0;
+const niveauEnergie = () => ENERGIE ? Math.min(ENERGIE.capacite, ENERGIE.n + (Date.now() - ENERGIE.t) / ENERGIE.recharge) : 0;
+function poserEnergie(n, capacite, recharge){
+  if(!(isFinite(n) && capacite > 0 && recharge > 0)){ ENERGIE = null; majEnergie(); return; }
+  ENERGIE = {n:Math.max(0, n), t:Date.now(), capacite, recharge};
+  majEnergie();
+}
+function lireEnergie(r){
+  const n = parseFloat(r.headers.get('x-lumiere-energie'));
+  if(isFinite(n)) poserEnergie(n, +r.headers.get('x-lumiere-capacite') || 3, +r.headers.get('x-lumiere-recharge') || 20000);
+}
+function majEnergie(){
+  const el = RT('tu-energie'); if(!el) return;
+  const voir = !!ENERGIE && TU.f === 'claude' && parClasse() && !RELAIS;
+  el.hidden = !voir;
+  clearTimeout(tEnergie);
+  if(!voir) return;
+  const cap = ENERGIE.capacite, L = niveauEnergie(), cases = el.querySelector('.tu-energie-cases');
+  if(cases.children.length !== cap) cases.innerHTML = '<i><b></b></i>'.repeat(cap);
+  Array.from(cases.children).forEach((c, i) => { c.firstChild.style.width = (Math.max(0, Math.min(1, L - i)) * 100).toFixed(1) + '%'; });
+  const plein = L >= cap - 1e-6, entier = Math.floor(L + 1e-6);
+  const s = Math.max(1, Math.ceil(((entier + 1) - L) * ENERGIE.recharge / 1000));
+  el.querySelector('.tu-energie-txt').textContent = entier + '/' + cap + (plein ? '' : L < 1 ? ' · prochaine dans ' + s + ' s' : ' · +1 dans ' + s + ' s');
+  el.classList.toggle('vide', L < 1);
+  el.setAttribute('aria-valuemax', String(cap)); el.setAttribute('aria-valuenow', String(entier));
+  if(!plein) tEnergie = setTimeout(majEnergie, 250);
+}
 const parClasse = () => TU.env === 'fichier' && !TU.claude.cle && !!TU.claude.classe;
 function modelesClaude(){ return parClasse() && TU.claude.permis ? MODELES_CLAUDE.filter(m => TU.claude.permis.includes(m.id)) : MODELES_CLAUDE; }
 /* le relais répond lui-même à la vérification, avec les modèles que ce code permet */
@@ -5770,6 +5811,8 @@ async function verifierCodeClasse(code){
   const A = await chargerSdkClaude();
   try{
     const r = await clientClaude(A, null, code).messages.countTokens({model:'claude-haiku-5-5', messages:[{role:'user', content:'Bonjour'}]});
+    const e = r && r.energie;
+    if(e && typeof e === 'object') poserEnergie(+e.n, +e.capacite, +e.recharge); else { ENERGIE = null; majEnergie(); }
     return Array.isArray(r && r.modeles) ? r.modeles.filter(id => MODELES_CLAUDE.some(m => m.id === id)) : ['claude-haiku-5-5'];
   }catch(e){ throw erreurClaude(e, A, ''); }
 }
@@ -8085,7 +8128,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'd622725fdef0';
+  const ICI = '4fbe58f51338';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
