@@ -6728,8 +6728,14 @@ function clientClaude(A, cle, classe){
   const viaRelais = !!classe || (!cle && !TU.claude.cle && !!TU.claude.classe);
   const secret = viaRelais ? (classe || TU.claude.classe) : (cle || TU.claude.cle), id = (viaRelais ? 'classe:' : 'cle:') + secret;
   if(!TU.claude.client || TU.claude.client.id !== id)
-    TU.claude.client = {id, c:viaRelais ? new A({apiKey:secret, baseURL:RELAIS_CLASSE, dangerouslyAllowBrowser:true}) : new A({apiKey:secret, dangerouslyAllowBrowser:true})};
+    TU.claude.client = {id, c:viaRelais ? new A({apiKey:secret, baseURL:RELAIS_CLASSE, dangerouslyAllowBrowser:true, defaultHeaders:{'x-lumiere-appareil':appareil()}}) : new A({apiKey:secret, dangerouslyAllowBrowser:true})};
   return TU.claude.client.c;
+}
+/* un identifiant d'appareil tiré au hasard (rien de personnel) : le relais l'utilise pour son anti-pourriel par appareil */
+function appareil(){
+  let id = memo.get('lumiere-appareil');
+  if(!id){ id = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/[^\w-]/g, ''); memo.set('lumiere-appareil', id); }
+  return id;
 }
 const parClasse = () => TU.env === 'fichier' && !TU.claude.cle && !!TU.claude.classe;
 function modelesClaude(){ return parClasse() && TU.claude.permis ? MODELES_CLAUDE.filter(m => TU.claude.permis.includes(m.id)) : MODELES_CLAUDE; }
@@ -7108,7 +7114,7 @@ function gererErreur(e, b, question){
   }
   if(e && e.f === 'claude' && parClasse() && e.status){
     msg = e.status === 401 ? 'Le code de la classe est refusé : clique « Clé » pour le vérifier.'
-      : e.status === 429 ? 'Trop de questions en même temps dans la classe : réessaie dans un instant.'
+      : e.status === 429 ? (/^(Doucement|Trop de codes)/.test(e.message || '') ? e.message : 'Trop de questions en même temps dans la classe : réessaie dans un instant.')
       : /credit|balance/i.test(e.message || '') ? 'Le crédit Claude de la classe est épuisé pour ce mois : choisis Gemini (gratuit) en haut du panneau.'
       : msg;
   }
@@ -9053,7 +9059,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '04ea979a5670';
+  const ICI = 'd622725fdef0';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
