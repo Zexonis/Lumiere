@@ -7661,14 +7661,15 @@ async function detecterMoteur(){
 }
 /* les modèles qu'un code permet viennent du relais (un code vip en a plus qu'un code de classe) :
    relus à chaque ouverture, sans frais, le relais répondant lui-même */
-async function rafraichirPermis(){
+async function rafraichirPermis(bruyant){
   try{
     const permis = await verifierCodeClasse(TU.claude.classe);
-    if(!permis.length) return;
+    if(!permis.length) return permis;
     TU.claude.permis = permis; ecrireCle('claude-permis', JSON.stringify(permis));
     if(parClasse() && !permis.includes(TU.claude.modele)){ TU.claude.modele = permis[0]; memo.set(K('claude-modele'), TU.claude.modele); }
     majMoteurUI();
-  }catch(e){}
+    return permis;
+  }catch(e){ if(bruyant) throw e; }
 }
 
 /* ---------- l'en-tête : fournisseur, modèle, modèle réellement utilisé ---------- */
@@ -7779,7 +7780,7 @@ function montrerConfig(f){
     '<p class="tu-note">La clé reste dans ce navigateur, sur cet appareil ; elle n’est jamais écrite dans le fichier, que tu peux donc partager sans risque. ' + k.note + '</p>' +
     '';
   const barre = '<div class="tu-barre">' + (TU[f].cle ? '<button type="button" class="tu-btn" id="tu-cle-oubli">Oublier ma clé</button>' : '') +
-    (f === 'claude' && TU.claude.classe ? '<button type="button" class="tu-btn" id="tu-code-oubli">Oublier le code</button>' : '') +
+    (f === 'claude' && TU.claude.classe ? '<button type="button" class="tu-btn" id="tu-code-verif">Vérifier mon accès</button><button type="button" class="tu-btn" id="tu-code-oubli">Oublier le code</button>' : '') +
     '<span class="tu-espace"></span><button type="button" class="tu-btn" id="tu-cle-fermer">Fermer</button></div>';
   /* sur le site, Claude passe d'abord par le code de la classe : le crédit commun, sans clé dans la page */
   const classe = f === 'claude' && TU.env === 'fichier';
@@ -7840,6 +7841,17 @@ function montrerConfig(f){
       noteSysteme('Claude de la classe activé : ' + nomModele('claude', TU.claude.modele) + '. Le code vaut pour tous les ateliers de ce navigateur.');
     }catch(e){
       et(e.status === 401 ? 'Ce code n’est pas reconnu : vérifie-le auprès de ton représentant.' : e.code === 'sdk_indispo' ? MSG_ERREUR.sdk_indispo : 'Impossible de joindre le relais de la classe. ' + (e.message || 'Vérifie ta connexion.'));
+    }
+  });
+  const vc = RT('tu-code-verif');
+  if(vc) vc.addEventListener('click', async () => {
+    const et = t => { RT('tu-code-etat').textContent = t; };
+    et('Vérification…');
+    try{
+      const permis = await rafraichirPermis(true);
+      et('Accès vérifié : ' + (permis || []).map(id => nomModele('claude', id)).join(', ') + '.');
+    }catch(e){
+      et(e.status === 401 ? 'Ce code n’est plus reconnu : demande le nouveau lien à ton représentant.' : e.status === 429 ? 'Trop d’essais depuis cette connexion : réessaie plus tard.' : 'Impossible de joindre le relais de la classe. ' + (e.message || 'Vérifie ta connexion.'));
     }
   });
   const oc = RT('tu-code-oubli');
@@ -10311,6 +10323,29 @@ function demarrer(){
   window.addEventListener('pagehide', () => { if(tPersist){ clearTimeout(tPersist); tPersist = null; ecrireLocal(); } });
 }
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', demarrer); else demarrer();
+})();
+</script>
+<script>
+(() => {
+  const ICI = '04ea979a5670';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
 })();
 </script>
 </body></html>
