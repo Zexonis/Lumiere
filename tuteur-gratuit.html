@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le tuteur gratuit · Lumière</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap">
+<style>
+/* le monde du hub : la lumière dans le noir, un seul thème */
+:root{color-scheme:dark;--nuit:#05070D;--nuit-2:#0B0F1A;--trait:#1C2437;--trait-2:#2A3450;--blanc:#F3F5FB;--gris:#AEB7C9;--gris-2:#828CA2;--vert:#9BF25C;--bleu:#34C6FF;--jaune:#FFD23F;
+  --f-titre:"Bodoni Moda","Bodoni 72",Didot,Georgia,serif;--f-texte:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;--f-mono:"Atkinson Hyperlegible Mono",ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--nuit);color:var(--blanc)}
+body{font:17px/1.6 var(--f-texte);-webkit-text-size-adjust:100%}
+.page{max-width:760px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+a{color:var(--bleu)}
+:focus-visible{outline:2px solid var(--blanc);outline-offset:3px;border-radius:4px}
+.retour{font:600 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--gris-2)}
+h1{font:500 clamp(38px,7vw,60px)/1.05 var(--f-titre);margin:14px 0 10px;letter-spacing:-.01em}
+h1 em{color:var(--gris)}
+h2{font:500 26px/1.2 var(--f-titre);margin:34px 0 8px}
+.chapeau{color:var(--gris);font-size:18.5px;max-width:58ch;margin:0}
+ol.etapes{counter-reset:e;list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:10px}
+ol.etapes li{counter-increment:e;position:relative;background:var(--nuit-2);border:1px solid var(--trait);border-radius:14px;padding:12px 14px 12px 54px}
+ol.etapes li::before{content:counter(e);position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:600 14px var(--f-mono);color:var(--nuit);background:var(--vert);box-shadow:0 0 12px rgba(155,242,92,.45)}
+b.ui{font-weight:700;color:var(--blanc);background:var(--trait);border-radius:6px;padding:0 6px;white-space:nowrap}
+.note{color:var(--gris);font-size:15.5px}
+.encart{border-left:3px solid var(--jaune);background:rgba(255,210,63,.07);border-radius:0 12px 12px 0;padding:10px 14px;margin:14px 0}
+.encart p{margin:4px 0}
+.table{overflow-x:auto;margin:14px 0;border:1px solid var(--trait);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--trait);vertical-align:top}
+th{font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--gris-2);background:var(--nuit-2)}
+tr:last-child td{border-bottom:0}
+td.oui{color:var(--vert);font-weight:700}
+ul{padding-left:20px}
+li{margin:4px 0}
+</style>
+</head>
+<body>
+<main class="page">
+  <a class="retour" href="./">← Lumière</a>
+  <h1>Le tuteur, <em>gratuitement</em></h1>
+  <p class="chapeau">Le tuteur des ateliers répond dans son panneau dès qu’on lui branche une clé d’IA. La clé Gemini de Google est gratuite, sans carte&nbsp; deux minutes, une fois par appareil.</p>
+
+  <h2>Brancher Gemini</h2>
+  <ol class="etapes">
+    <li>Ouvre <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> avec ton compte Google. Aucune carte de crédit n’est demandée.</li>
+    <li>Clique <b class="ui">Create API key</b> (créer une clé), puis copie la clé.</li>
+    <li>Dans un atelier&nbsp; <b class="ui">Demander au tuteur</b>, choisis <b class="ui">Gemini</b>, clique <b class="ui">Clé</b>, colle la clé, puis <b class="ui">Activer</b>.</li>
+    <li>Refais-le sur ton téléphone et sur ton ordinateur&nbsp; la clé reste dans le navigateur où tu l’as collée, jamais sur le site.</li>
+  </ol>
+
+  <h2>Quand la limite du jour est atteinte</h2>
+  <p>La clé gratuite a une limite de questions par jour. Le tuteur passe alors seul à un autre modèle Gemini gratuit, qui a sa propre limite. Si tout est épuisé&nbsp;</p>
+  <ul>
+    <li>choisis <b class="ui">Claude</b>, <b class="ui">Gemini</b> ou <b class="ui">ChatGPT</b> sans clé&nbsp; ta question part dans le presse-papiers, avec l’écran que tu regardes&nbsp;</li>
+    <li>colle-la sur le site de l’IA (un compte gratuit suffit, et un abonnement marche aussi)&nbsp;</li>
+    <li>colle la réponse dans la case <b class="ui">Ajouter la réponse</b> sous ta question&nbsp; elle rejoint la conversation et tes notes.</li>
+  </ul>
+  <p>Le lendemain, la clé Gemini répond de nouveau.</p>
+
+  <h2>À deux, une clé suffit</h2>
+  <p>Avec <b class="ui">Convergence</b> (en haut de chaque atelier), si une seule des deux personnes a une clé, l’autre clique <b class="ui">Suivre le tuteur de…</b> : elle voit la conversation en direct, et ses questions arrivent chez l’autre, qui les envoie d’un clic.</p>
+
+  <h2>Bon à savoir</h2>
+  <div class="encart">
+    <p><b>Aucune facture possible.</b> Sans compte de facturation, Google ne peut rien te facturer&nbsp; au-delà de la limite, la clé refuse simplement jusqu’au lendemain.</p>
+    <p><b>Rien de personnel.</b> Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits. Des questions de cours, oui&nbsp; ton dossier de santé, non.</p>
+    <p><b>Garde ta clé pour toi.</b> Elle porte ta limite du jour&nbsp; la prêter, c’est la partager.</p>
+  </div>
+
+  <h2>Les autres options</h2>
+  <div class="table"><table>
+    <tr><th>Option</th><th>Prix</th><th>Répond dans le panneau</th></tr>
+    <tr><td>Clé Gemini (AI Studio)</td><td>Gratuite, avec une limite par jour</td><td class="oui">Oui</td></tr>
+    <tr><td>Copier-coller vers claude.ai, gemini.google.com ou chatgpt.com</td><td>Gratuit avec un compte gratuit&nbsp; compris dans un abonnement</td><td>La réponse se colle</td></tr>
+    <tr><td>Clé Claude (platform.claude.com)</td><td>Payante à part, environ un dixième de cent la question avec Haiku</td><td class="oui">Oui</td></tr>
+    <tr><td>Clé OpenAI (ChatGPT)</td><td>Payante à part</td><td class="oui">Oui</td></tr>
+  </table></div>
+  <p class="note">Un abonnement Claude Pro ou ChatGPT Plus ne donne pas de clé&nbsp; il sert sur le site de l’IA, donc ici par copier-coller.</p>
+</main>
+</body>
+</html>

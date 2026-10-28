@@ -6461,7 +6461,7 @@ RT('tu-modele').addEventListener('change', e => {
 /* ---------- les clés (fichier seulement) ---------- */
 const CONFIG = {
   claude:{titre:'Brancher Claude avec une clé API', bouton:'Ajouter une clé API Claude', lien:'https://platform.claude.com/settings/keys', lienNom:'platform.claude.com/settings/keys', compte:'ton compte Claude',
-    note:'L’API de Claude est payante à l’usage (crédits achetés d’avance sur platform.claude.com), facturée à part de l’abonnement Claude Pro ou Max. Une question coûte environ un dixième de cent avec Haiku, deux cents avec Sonnet, quatre avec Opus. Sans clé, le copier-coller vers claude.ai reste compris dans ton abonnement.', qui:'Anthropic'},
+    note:'L’API de Claude est payante à l’usage (crédits achetés d’avance sur platform.claude.com), à part de l’abonnement Claude ; seul Max inclut un crédit API mensuel. Une question coûte environ un dixième de cent avec Haiku, deux cents avec Sonnet, quatre avec Opus. Gratuit : une clé Gemini, ou le copier-coller vers claude.ai.', qui:'Anthropic'},
   gemini:{titre:'Activer Gemini, gratuit', bouton:'Ajouter une clé Gemini gratuite', lien:'https://aistudio.google.com/apikey', lienNom:'aistudio.google.com/apikey', compte:'ton compte Google',
     note:'Gratuit avec des limites par minute et par jour. Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel.', qui:'Google'},
   chatgpt:{titre:'Brancher ChatGPT avec une clé OpenAI', bouton:'Ajouter une clé OpenAI', lien:'https://platform.openai.com/api-keys', lienNom:'platform.openai.com/api-keys', compte:'ton compte OpenAI',
@@ -6483,12 +6483,12 @@ function montrerConfig(f){
     try{
       if(f === 'claude'){
         await verifierCleClaude(cle);
-        /* le modèle déjà choisi est gardé ; sinon le plus fort, que l'étudiant peut changer dans la liste */
-        if(!memo.get(K('claude-modele'))){ TU.claude.modele = 'claude-opus-5-5'; memo.set(K('claude-modele'), TU.claude.modele); }
+        /* le modèle déjà choisi est gardé ; sinon Haiku, le moins cher (environ un dixième de cent la question), que l'étudiant peut changer dans la liste */
+        if(!memo.get(K('claude-modele'))){ TU.claude.modele = 'claude-haiku-5-5'; memo.set(K('claude-modele'), TU.claude.modele); }
         TU.claude.cle = cle; memo.set(K('claude-cle'), cle);
         TU.f = f; memo.set(K('fourn'), f);
         c.hidden = true; majMoteurUI();
-        noteSysteme('Claude activé avec ' + nomModele('claude', TU.claude.modele) + '. Tu peux changer de modèle dans la liste en haut : Haiku coûte beaucoup moins cher.');
+        noteSysteme('Claude activé avec ' + nomModele('claude', TU.claude.modele) + '. Sonnet et Opus, dans la liste en haut, sont plus forts et coûtent beaucoup plus.');
         return;
       }
       const l = f === 'gemini' ? await modelesGemini(cle) : await modelesOpenAI(cle);
@@ -6520,8 +6520,9 @@ async function modelesGemini(cle){
   if(!res.ok){ let m = res.statusText; try{ const j = await res.json(); m = (j.error && j.error.message) || m; }catch(e){} throw {status:res.status, message:m}; }
   const j = await res.json();
   const ids = (j.models || []).filter(x => (x.supportedGenerationMethods || []).includes('generateContent')).map(x => String(x.name).replace(/^models\//, ''));
-  const re = /^gemini-(\d+(?:\.\d+)?)-(flash|pro)(-preview(?:-[\w-]+)?)?$/;
-  const l = ids.map(id => { const m = id.match(re); return m ? {id, v:parseFloat(m[1]), pro:m[2] === 'pro' ? 1 : 0, pre:m[3] ? 1 : 0} : null; })
+  /* Flash d'abord (gratuit), puis Flash-Lite (gratuit aussi, avec son propre quota du jour : le repli quand Flash est épuisé), Pro en dernier (payant) */
+  const re = /^gemini-(\d+(?:\.\d+)?)-(flash-lite|flash|pro)(-preview(?:-[\w-]+)?)?$/;
+  const l = ids.map(id => { const m = id.match(re); return m ? {id, v:parseFloat(m[1]), pro:m[2] === 'pro' ? 2 : m[2] === 'flash-lite' ? 1 : 0, pre:m[3] ? 1 : 0} : null; })
     .filter(Boolean).sort((a, b) => a.pro - b.pro || b.v - a.v || a.pre - b.pre).map(x => x.id);
   if(ids.includes('gemini-flash-latest')) l.push('gemini-flash-latest');
   return l.length ? l.slice(0, 8) : ['gemini-flash-latest'];
