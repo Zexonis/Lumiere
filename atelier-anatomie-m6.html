@@ -996,6 +996,20 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .cv-pad-etat{margin:0;padding:6px 12px calc(6px + env(safe-area-inset-bottom,0px));color:var(--ink-2);font-size:14px;min-height:1.6em}
 @media (max-width:560px){ .cv-pad-outils{gap:4px} .cv-pad-outils > button,.cv-grp button{padding:3px 8px;font-size:12.5px;min-height:30px} .cv-grp{margin-right:0} .cv-grp i{width:16px} .cv-espace{flex-basis:0} }
 @media (prefers-reduced-motion: reduce){ .cv-voile{transition:none} }
+
+/* Convergence dans le plan : le point de l'autre (sa couleur), le repère commun (pointillés de l'atelier) */
+.fil button[data-cv-lui]{position:relative}
+.fil button[data-cv-lui]::after{content:"";position:absolute;left:2px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--cv-c);box-shadow:0 0 0 2px var(--panel),0 0 8px var(--cv-c)}
+.fil button[data-cv-repere]{outline:1.5px dashed var(--accent);outline-offset:-3px}
+.fil button[data-cv-repere] .n{color:var(--accent)}
+/* Convergence dans le tuteur : qui suit, la question proposée, le miroir */
+.tu-suivi{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 0 6px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);font-size:13.5px;color:var(--ink)}
+.tu-suivi span{flex:1;min-width:0}
+.tu-proposee{border:1px solid var(--accent);border-radius:12px;background:var(--accent-soft);padding:8px 10px}
+.tu-prop-de{margin:0;font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tu-prop-q{margin:4px 0 8px;white-space:pre-wrap}
+.tu-propose{border-style:dashed}
+.tu-prop-etat{display:block;font:600 10.5px var(--f-mono);color:var(--ink-3);margin-top:3px}
 </style>
 
 <div class="app" id="app">
@@ -5610,9 +5624,9 @@ function mode(f){
 }
 
 /* les règles d'engagement communes (recette §7.4) s'ajoutent à la fin de la liste des règles de l'atelier */
-const ENGAGEMENT = '\n- Pour un exercice, monte une échelle d’indices : une question qui oriente, puis un indice qui nomme la notion, puis une réponse partielle ; la réponse complète seulement si on te la demande ou après ces trois marches.' +
+const ENGAGEMENT = '\n- Pour un exercice, monte une échelle d’indices : une question qui oriente, puis un indice qui nomme la notion, puis une réponse partielle ; la réponse complète seulement si on te la demande ou après ces trois marches.' +
   '\n- Une seule question par tour.' +
-  '\n- Nomme une idée fausse clairement (“Attention : …”) ; félicite avec précision (ce qui est juste, exactement), jamais en général.' +
+  '\n- Nomme une idée fausse clairement (“Attention : …”) ; félicite avec précision (ce qui est juste, exactement), jamais en général.' +
   '\n- Quand les notes ou les annotations de l’étudiant éclairent la question, sers-t’en (“dans ta note, tu as écrit…”).';
 const REGLES = (r => {
   let i = r.indexOf('\n\nL’essentiel'); if(i < 0) i = r.indexOf('\n\nDÉMONSTRATION DANS L’ATELIER');
@@ -5622,9 +5636,19 @@ const REGLES = (r => {
 /* Verrou français : l'étudiant peut écrire en anglais, la réponse reste en français (les examens le sont).
    Dit deux fois : dans les consignes, et en rappel juste après la question. */
 const LANGUE_LIBRE = '- Réponds dans la langue de la question (français par défaut).';
-const LANGUE_FR = '- Réponds TOUJOURS en français, même si la question est écrite en anglais ou dans une autre langue : l’étudiant suit le cours et passe ses examens en français. Ne traduis pas la question, réponds-y directement en français.';
+const LANGUE_FR = '- Réponds TOUJOURS en français, même si la question est écrite en anglais ou dans une autre langue : l’étudiant suit le cours et passe ses examens en français. Ne traduis pas la question, réponds-y directement en français.';
 const RAPPEL_FR = '\n\n(Réponds en français, même si la question est en anglais.)';
-function consignes(){ return TU.fr ? REGLES.replace(LANGUE_LIBRE, () => LANGUE_FR) : REGLES; }
+function consignes(){
+  const r = TU.fr ? REGLES.replace(LANGUE_LIBRE, () => LANGUE_FR) : REGLES;
+  return DUO ? r.replace(ENGAGEMENT, () => ENGAGEMENT + '\n- ' + DUO) : r;
+}
+
+/* Convergence (DESIGN-convergence.md §3.3) : le tuteur annonce ses tours à qui l'écoute (l'hôte d'un
+   relais les recopie pour son partenaire), prend une ligne de consigne quand deux étudiants le partagent,
+   et, chez l'invité sans IA, devient le miroir du tuteur de l'autre. */
+const ECOUTEURS = [];
+const signaler = ev => ECOUTEURS.forEach(f => { try{ f(ev); }catch(e){ console.error(e); } });
+let DUO = '', RELAIS = null, SUIVI = null;
 
 const QUESTION_ECRAN = TUTEUR_CONFIG.QUESTION_ECRAN;
 
@@ -5708,7 +5732,7 @@ RT('tu-poignee').addEventListener('pointerdown', e => {
 const numEcran = () => { const i = PARCOURS.indexOf(ICI); return i >= 0 ? 'écran ' + (i + 1) + ' sur ' + PARCOURS.length : 'outil'; };
 function majContexte(){
   const v = RT('tu-voit'); if(!v || !ICI) return;
-  v.innerHTML = 'Il voit : <b>' + esc(ICI.titre) + '</b> (' + numEcran() + '), les réglages de l’écran, ce qui est affiché, tes notes et tes annotations de l’écran.';
+  v.innerHTML = 'Il voit : <b>' + esc(ICI.titre) + '</b> (' + numEcran() + '), les réglages de l’écran, ce qui est affiché, tes notes et tes annotations de l’écran.';
   if(G.actif && G.ecran !== ICI.id) pauseGuide();
   if(G.fin && G.ecran !== ICI.id) G.fin = false;
   rendreZone();
@@ -5778,14 +5802,14 @@ function majMoteurUI(){
   } else w.hidden = true;
   const a = RT('tu-actuel');
   if(!md) a.textContent = 'Démarrage…';
-  else if(md === 'copie') a.innerHTML = 'Mode copier-coller vers <b>' + FOURN[TU.f].siteNom + '</b> : le modèle est celui que tu choisis sur le site.';
+  else if(md === 'copie') a.innerHTML = 'Mode copier-coller vers <b>' + FOURN[TU.f].siteNom + '</b> : le modèle est celui que tu choisis sur le site.';
   else if(md === 'indispo') a.textContent = 'Claude n’est pas connecté dans cette fenêtre.';
   else {
     const d = TU.dernier, choisi = TU.f === 'claude' ? TU.claude.modele : TU[TU.f].modele;
     a.innerHTML = d && d.f === TU.f
-      ? 'Dernière réponse : <b>' + esc(d.label) + '</b> <span class="' + (d.confirme ? 'ok' : 'warn') + '">' + (d.confirme ? '· confirmé par ' + FOURN[d.f].nom : '· ' + esc(d.note || 'modèle demandé, non confirmé')) + '</span>'
-        + (d.id && d.id !== choisi ? '<br>Prochaine réponse : <b>' + esc(nomModele(TU.f, choisi)) + '</b>' : '')
-      : 'Prochaine réponse : <b>' + esc(nomModele(TU.f, choisi)) + '</b>';
+      ? 'Dernière réponse : <b>' + esc(d.label) + '</b> <span class="' + (d.confirme ? 'ok' : 'warn') + '">' + (d.confirme ? '· confirmé par ' + FOURN[d.f].nom : '· ' + esc(d.note || 'modèle demandé, non confirmé')) + '</span>'
+        + (d.id && d.id !== choisi ? '<br>Prochaine réponse : <b>' + esc(nomModele(TU.f, choisi)) + '</b>' : '')
+      : 'Prochaine réponse : <b>' + esc(nomModele(TU.f, choisi)) + '</b>';
   }
   const choix = TU.f === 'claude' ? TU.claude.modele : TU[TU.f].modele;
   RT('tu-resume').innerHTML = !md ? 'Démarrage…'
@@ -5797,16 +5821,29 @@ function majMoteurUI(){
   const b = RT('tu-envoyer');
   b.disabled = md === 'indispo' && !TU.enCours;
   b.textContent = TU.enCours ? 'Arrêter' : md === 'copie' ? 'Copier pour ' + FOURN[TU.f].nom : 'Envoyer';
+  if(RELAIS){
+    b.disabled = false; b.textContent = 'Proposer à ' + RELAIS.hote;
+    RT('tu-resume').textContent = 'Tuteur de ' + RELAIS.hote;
+  }
+  RT('tu-modes').hidden = !!RELAIS;
   majBandeau(md);
   rendreZone();
+  signaler({type:'moteur', api:md === 'api'});
 }
 function majBandeau(md){
   const band = RT('tu-bandeau');
   let h = '';
+  if(RELAIS){
+    h = '<p><b>Tu suis le tuteur de « ' + esc(RELAIS.hote) + ' »</b> : ses réponses s’affichent ici en direct. Tes questions lui sont proposées ; ' + esc(RELAIS.hote) + ' les envoie au tuteur d’un geste.</p>' +
+      (RELAIS.prive ? '<p class="tu-note">' + esc(RELAIS.hote) + ' a mis sa conversation en privé pour l’instant.</p>' : '') +
+      (TU.env === 'fichier' ? '<p class="tu-note">Pour avoir ton propre tuteur, ajoute une clé (bouton Clé).</p>' : '');
+    band.innerHTML = h; band.hidden = false; band.classList.remove('a-alerte');
+    return;
+  }
   if(TU.env === 'claude' && !TU.claude.sample)
-    h += '<p class="tu-alerte"><b>Claude n’est pas disponible dans cette fenêtre</b> : tu n’es pas connecté·e à claude.ai, ou c’est une fenêtre privée. <a href="https://claude.ai/login" target="_blank" rel="noopener">Me connecter</a>, puis recharger la page. En attendant, choisis Gemini ou ChatGPT en copier-coller.</p>';
+    h += '<p class="tu-alerte"><b>Claude n’est pas disponible dans cette fenêtre</b> : tu n’es pas connecté·e à claude.ai, ou c’est une fenêtre privée. <a href="https://claude.ai/login" target="_blank" rel="noopener">Me connecter</a>, puis recharger la page. En attendant, choisis Gemini ou ChatGPT en copier-coller.</p>';
   if(md === 'copie'){
-    h += '<p><b>Copier-coller :</b> ta question part dans le presse-papiers avec l’écran, ses réglages et ce que tu regardes ; tu la colles sur ' + FOURN[TU.f].siteNom + '.</p>';
+    h += '<p><b>Copier-coller :</b> ta question part dans le presse-papiers avec l’écran, ses réglages et ce que tu regardes ; tu la colles sur ' + FOURN[TU.f].siteNom + '.</p>';
     if(TU.env === 'claude') h += '<p class="tu-note">Ici, Claude bloque tout contact avec une autre IA (règle de sécurité). Pour des réponses de ' + FOURN[TU.f].nom + ' dans ce panneau, ouvre la version fichier de la page.</p>';
     else h += '<p><button type="button" class="tu-btn" data-cle="' + TU.f + '">' + CONFIG[TU.f].bouton + '</button> pour avoir les réponses ici.</p>';
   }
@@ -5834,7 +5871,7 @@ const CONFIG = {
   claude:{titre:'Brancher Claude avec une clé API', bouton:'Ajouter une clé API Claude', lien:'https://platform.claude.com/settings/keys', lienNom:'platform.claude.com/settings/keys', compte:'ton compte Claude',
     note:'L’API de Claude est payante à l’usage (crédits achetés d’avance sur platform.claude.com), facturée à part de l’abonnement Claude Pro ou Max. Une question coûte environ un dixième de cent avec Haiku, deux cents avec Sonnet, quatre avec Opus. Sans clé, le copier-coller vers claude.ai reste compris dans ton abonnement.', qui:'Anthropic'},
   gemini:{titre:'Activer Gemini, gratuit', bouton:'Ajouter une clé Gemini gratuite', lien:'https://aistudio.google.com/apikey', lienNom:'aistudio.google.com/apikey', compte:'ton compte Google',
-    note:'Gratuit avec des limites par minute et par jour. Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel.', qui:'Google'},
+    note:'Gratuit avec des limites par minute et par jour. Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel.', qui:'Google'},
   chatgpt:{titre:'Brancher ChatGPT avec une clé OpenAI', bouton:'Ajouter une clé OpenAI', lien:'https://platform.openai.com/api-keys', lienNom:'platform.openai.com/api-keys', compte:'ton compte OpenAI',
     note:'L’API d’OpenAI est payante à l’usage, facturée à part de l’abonnement ChatGPT. Sans clé, le copier-coller vers chatgpt.com reste gratuit.', qui:'OpenAI'}
 };
@@ -5845,7 +5882,7 @@ function montrerConfig(f){
     '<ol><li>Ouvre <a href="' + k.lien + '" target="_blank" rel="noopener">' + k.lienNom + '</a> avec ' + k.compte + '.</li><li>Crée une clé, puis copie-la.</li><li>Colle-la ci-dessous et clique Activer.</li></ol>' +
     '<div class="tu-cle"><label class="sr" for="tu-cle">Clé ' + FOURN[f].nom + '</label><input type="password" id="tu-cle" autocomplete="off" spellcheck="false" placeholder="' + (TU[f].cle ? 'Clé enregistrée — colle une autre clé pour la remplacer' : 'Colle ta clé ici') + '"><button type="button" class="tu-envoyer" id="tu-cle-ok">Activer</button></div>' +
     '<p class="tu-note" id="tu-cle-etat"></p>' +
-    '<p class="tu-note">La clé reste dans ce navigateur, sur cet appareil ; elle n’est jamais écrite dans le fichier, que tu peux donc partager sans risque. ' + k.note + '</p>' +
+    '<p class="tu-note">La clé reste dans ce navigateur, sur cet appareil ; elle n’est jamais écrite dans le fichier, que tu peux donc partager sans risque. ' + k.note + '</p>' +
     '<div class="tu-barre">' + (TU[f].cle ? '<button type="button" class="tu-btn" id="tu-cle-oubli">Oublier ma clé</button>' : '') + '<span class="tu-espace"></span><button type="button" class="tu-btn" id="tu-cle-fermer">Fermer</button></div>';
   const etat = t => { RT('tu-cle-etat').textContent = t; };
   RT('tu-cle-ok').addEventListener('click', async () => {
@@ -5859,7 +5896,7 @@ function montrerConfig(f){
         TU.claude.cle = cle; memo.set(K('claude-cle'), cle);
         TU.f = f; memo.set(K('fourn'), f);
         c.hidden = true; majMoteurUI();
-        noteSysteme('Claude activé avec ' + nomModele('claude', TU.claude.modele) + '. Tu peux changer de modèle dans la liste en haut : Haiku coûte beaucoup moins cher.');
+        noteSysteme('Claude activé avec ' + nomModele('claude', TU.claude.modele) + '. Tu peux changer de modèle dans la liste en haut : Haiku coûte beaucoup moins cher.');
         return;
       }
       const l = f === 'gemini' ? await modelesGemini(cle) : await modelesOpenAI(cle);
@@ -6007,7 +6044,7 @@ async function viaClaude(hist, dernier, sel, ctl, onT){
    La bibliothèque officielle d'Anthropic, en un module autonome aux dépendances figées
    (vendor/, outils/construire_sdk_anthropic.py), chargée à la première demande : à côté de
    la page sur le site, sinon depuis le site (un fichier ouvert sur l'appareil). Jamais dans
-   Claude : là, c'est `sample`. dangerouslyAllowBrowser : la clé est celle de l'étudiant, elle
+   Claude : là, c'est `sample`. dangerouslyAllowBrowser : la clé est celle de l'étudiant, elle
    reste dans son navigateur et ne part que vers Anthropic. */
 const SDK_CLAUDE = 'vendor/anthropic-sdk-0.134.0.js';
 const SITE = 'https://zexonis.github.io/Lumiere/';
@@ -6092,7 +6129,7 @@ function blocsDans(r){
     if(!b.width && !b.height) return;
     if(b.right < r.x || b.left > r.x + r.w || b.bottom < r.y || b.top > r.y + r.h) return;
     const tag = el.tagName.toLowerCase();
-    const t = tag === 'svg' ? '[schéma : ' + (el.getAttribute('aria-label') || 'dessin') + ']' : tag === 'canvas' ? '[' + (el.getAttribute('aria-label') || 'carte') + ' : image, voir la capture si jointe]' : (el.innerText || '').replace(/\s+/g, ' ').trim();
+    const t = tag === 'svg' ? '[schéma : ' + (el.getAttribute('aria-label') || 'dessin') + ']' : tag === 'canvas' ? '[' + (el.getAttribute('aria-label') || 'carte') + ' : image, voir la capture si jointe]' : (el.innerText || '').replace(/\s+/g, ' ').trim();
     if(!t) return;
     pris.push(el); out.push(t);
   });
@@ -6102,18 +6139,18 @@ function blocsDans(r){
 function reglages(){
   if(!ICI) return '';
   const sec = ICI.el, L = [];
-  /* le nom d'un champ : son label (for=…), ou le texte du label qui l'enveloppe (sans le contenu des listes) */
+  /* le nom d'un champ : son label (for=…), ou le texte du label qui l'enveloppe (sans le contenu des listes) */
   const nomDe = el => {
     const l = el.id && sec.querySelector('label[for="' + el.id + '"]'), p = el.closest('label');
     const enveloppe = p ? Array.from(p.childNodes).filter(n => n.nodeType === 3).map(n => n.textContent).join(' ') : '';
     return ((l && l.textContent) || enveloppe.trim() || el.getAttribute('aria-label') || el.placeholder || el.id || '').replace(/\s+/g, ' ').trim();
   };
-  sec.querySelectorAll('input[type=range]').forEach(el => { const o = el.parentElement && el.parentElement.querySelector('output'); L.push(nomDe(el) + ' : ' + (o ? o.textContent : el.value)); });
-  sec.querySelectorAll('input.champ, input[type=text]').forEach(el => { if(el.value.trim()) L.push(nomDe(el) + ' : ' + el.value.trim()); });
-  sec.querySelectorAll('select').forEach(el => { if(el.value) L.push(nomDe(el) + ' : ' + el.options[el.selectedIndex].text); });
-  sec.querySelectorAll('input[type=checkbox]').forEach(el => { if(el.closest('.case')) L.push(el.closest('.case').textContent.replace(/\s+/g, ' ').trim() + ' : ' + (el.checked ? 'oui' : 'non')); });
+  sec.querySelectorAll('input[type=range]').forEach(el => { const o = el.parentElement && el.parentElement.querySelector('output'); L.push(nomDe(el) + ' : ' + (o ? o.textContent : el.value)); });
+  sec.querySelectorAll('input.champ, input[type=text]').forEach(el => { if(el.value.trim()) L.push(nomDe(el) + ' : ' + el.value.trim()); });
+  sec.querySelectorAll('select').forEach(el => { if(el.value) L.push(nomDe(el) + ' : ' + el.options[el.selectedIndex].text); });
+  sec.querySelectorAll('input[type=checkbox]').forEach(el => { if(el.closest('.case')) L.push(el.closest('.case').textContent.replace(/\s+/g, ' ').trim() + ' : ' + (el.checked ? 'oui' : 'non')); });
   const choisis = Array.from(sec.querySelectorAll('[aria-pressed="true"], [aria-selected="true"]')).map(b => (b.getAttribute('aria-label') || b.textContent).replace(/\s+/g, ' ').trim()).filter(Boolean);
-  if(choisis.length) L.push('Choix actifs : ' + choisis.join(' · '));
+  if(choisis.length) L.push('Choix actifs : ' + choisis.join(' · '));
   return L.join('\n');
 }
 function contexte(sel){
@@ -6121,7 +6158,7 @@ function contexte(sel){
   const visible = blocsDans({x:sc.left, y:haut, w:sc.width, h:window.innerHeight - haut}).join('\n');
   const tout = ICI ? (ICI.el.innerText || '').replace(/\n{3,}/g, '\n\n') : '';
   const notes = ICI ? texteNote(ICI.id).trim() : '';
-  let s = 'CE QUE L’ÉTUDIANT REGARDE\n' + (ICI ? 'Écran : ' + ICI.titre + ' (' + ICI.partie + ', ' + numEcran() + ')' : '') +
+  let s = 'CE QUE L’ÉTUDIANT REGARDE\n' + (ICI ? 'Écran : ' + ICI.titre + ' (' + ICI.partie + ', ' + numEcran() + ')' : '') +
     '\n\nRéglages et choix actuels de l’écran :\n' + (reglages() || '(aucun)') +
     '\n\nPartie visible à l’écran en ce moment :\n' + tronque(visible, 2500) +
     '\n\nTexte complet de l’écran, pour référence :\n' + tronque(tout, 6000);
@@ -6129,7 +6166,7 @@ function contexte(sel){
   const an = ICI ? Annot.textePourTuteur(ICI.id) : '';
   if(an) s += '\n\nANNOTATIONS DE L’ÉTUDIANT SUR CET ÉCRAN :\n' + an;
   const lp = ICI ? Pas.liste(ICI.id) : [];
-  if(lp.length) s += '\n\nMAÎTRISE DES PAS DE L’ÉCRAN (non vu, vu, expliqué, réussi, maîtrisé) :\n' + lp.map(p => '- ' + p.titre + ' : ' + Pas.NOMS[Pas.niv(p.id)]).join('\n');
+  if(lp.length) s += '\n\nMAÎTRISE DES PAS DE L’ÉCRAN (non vu, vu, expliqué, réussi, maîtrisé) :\n' + lp.map(p => '- ' + p.titre + ' : ' + Pas.NOMS[Pas.niv(p.id)]).join('\n');
   if(sel) s += '\n\nZONE ENCADRÉE PAR L’ÉTUDIANT' + (sel.blob ? ' (capture jointe en image)' : '') + ' :\n' + tronque(sel.texte || '(un schéma ou une carte, sans texte)', 2000);
   return s;
 }
@@ -6201,7 +6238,7 @@ function rendrePj(){
   const z = RT('tu-pj'), pj = TU.pj;
   if(!pj){ z.hidden = true; z.innerHTML = ''; return; }
   z.hidden = false;
-  const desc = pj.attente ? 'Capture en cours…' : pj.echec ? 'Zone jointe en texte (l’image n’a pas pu être faite)' : 'Zone jointe : image et texte';
+  const desc = pj.attente ? 'Capture en cours…' : pj.echec ? 'Zone jointe en texte (l’image n’a pas pu être faite)' : 'Zone jointe : image et texte';
   z.innerHTML = (pj.apercu ? '<img src="' + pj.apercu + '" alt="Aperçu de la zone encadrée">' : '') + '<span>' + desc + '</span><button type="button" class="tu-btn" aria-label="Retirer la zone">✕</button>';
   z.querySelector('button').addEventListener('click', () => { TU.pj = null; rendrePj(); });
 }
@@ -6232,6 +6269,7 @@ q.addEventListener('keydown', e => { if(e.key === 'Enter' && !e.shiftKey && !e.i
 RT('tu-compo').addEventListener('submit', e => {
   e.preventDefault();
   if(TU.enCours){ if(TU.ctl) TU.ctl.abort(); return; }
+  if(RELAIS){ proposerAuRelais(q.value); return; }
   if(surEnvoiMode(q.value)) return;
   if(TU.env && mode() !== 'api'){ copierPourIA(q.value); return; }   // dans le geste : le presse-papiers l'exige
   envoyer(q.value);
@@ -6244,7 +6282,7 @@ function copierPourIA(question, extra, complet){
   if(!question && !sel){ q.focus(); return; }
   if(!question) question = 'Explique-moi ce que montre la zone encadrée.';
   const regles = consignes().split('\n\nDÉMONSTRATION DANS L’ATELIER')[0];
-  const recents = TU.tours.slice(-6).map(t => (t.role === 'user' ? 'Étudiant : ' + (t.vu || t.content) : 'Tuteur (' + (t.modele || 'IA') + ') : ' + t.content)).join('\n\n');
+  const recents = TU.tours.slice(-6).map(t => (t.role === 'user' ? 'Étudiant : ' + (t.vu || t.content) : 'Tuteur (' + (t.modele || 'IA') + ') : ' + t.content)).join('\n\n');
   const txt = complet || regles + '\n\n' + contexte(sel) + (recents ? '\n\nCONVERSATION JUSQU’ICI :\n' + tronque(recents, 4000) : '') + '\n\nQUESTION DE L’ÉTUDIANT :\n' + question + (extra ? '\n\n' + extra : '') + (TU.fr ? RAPPEL_FR : '');
   const sug = tfil.querySelector('.tu-suggestions'); if(sug) sug.remove();
   bulleMoi(question, sel && sel.apercu);
@@ -6253,7 +6291,7 @@ function copierPourIA(question, extra, complet){
   const autres = Object.keys(FOURN).filter(k => k !== TU.f).map(k => '<a href="' + FOURN[k].site + '" target="_blank" rel="noopener">' + FOURN[k].nom + '</a>').join(' · ');
   const carte = H('<div class="tmsg tu-rep"><div class="tu-corps">' +
     '<p class="tu-etat-copie">Copie…</p>' +
-    '<p class="tu-liens"><a class="tu-ouvrir-ia" href="' + F.site + '" target="_blank" rel="noopener">Ouvrir ' + F.nom + ' et coller</a> <span class="tu-astuce">ou : ' + autres + '</span></p>' +
+    '<p class="tu-liens"><a class="tu-ouvrir-ia" href="' + F.site + '" target="_blank" rel="noopener">Ouvrir ' + F.nom + ' et coller</a> <span class="tu-astuce">ou : ' + autres + '</span></p>' +
     (sel && sel.blob ? '<p><button type="button" class="tu-btn" data-img>Copier aussi l’image de la zone</button></p>' : '') +
     '<details><summary>Voir le texte copié</summary><textarea class="tu-copie" readonly rows="7" aria-label="Texte copié"></textarea></details></div></div>');
   tfil.appendChild(carte); defiler();
@@ -6265,16 +6303,16 @@ function copierPourIA(question, extra, complet){
   try{ navigator.clipboard.writeText(txt).then(ok, secours); }catch(e){ secours(); }
   const bi = carte.querySelector('[data-img]');
   if(bi) bi.addEventListener('click', async () => {
-    try{ await navigator.clipboard.write([new ClipboardItem({[sel.blob.type || 'image/png']:sel.blob})]); bi.textContent = 'Image copiée : colle-la aussi'; }
-    catch(e){ bi.textContent = 'Copie d’image bloquée : fais Win + Maj + S'; bi.disabled = true; }
+    try{ await navigator.clipboard.write([new ClipboardItem({[sel.blob.type || 'image/png']:sel.blob})]); bi.textContent = 'Image copiée : colle-la aussi'; }
+    catch(e){ bi.textContent = 'Copie d’image bloquée : fais Win + Maj + S'; bi.disabled = true; }
   });
   signer(carte, 'copié pour ' + F.nom + ' (site)');
   TU.dernier = null;
   TU.tours.push({role:'user', content:'[' + (ICI ? ICI.titre : '') + '] ' + question, vu:question, ecran:ICI && ICI.id},
-                {role:'assistant', content:'(Question copiée pour ' + F.nom + ' ; la réponse est sur son site.)', modele:'copié pour ' + F.nom, copie:true});
+                {role:'assistant', content:'(Question copiée pour ' + F.nom + ' ; la réponse est sur son site.)', modele:'copié pour ' + F.nom, copie:true});
   sauver(); majMoteurUI();
 }
-/* chaque réponse porte le nom du modèle qui l'a écrite : on peut changer d'IA en cours de route */
+/* chaque réponse porte le nom du modèle qui l'a écrite : on peut changer d'IA en cours de route */
 function signer(b, label, confirme){
   const s = H('<p class="tu-signature' + (confirme === false ? ' non-confirme' : '') + '"></p>');
   s.textContent = '— ' + label + (confirme === false ? ' (non confirmé)' : '');
@@ -6284,7 +6322,7 @@ function signer(b, label, confirme){
 function boutonNotes(b, texte, ecranId){
   const id = ecranId && ecran(ecranId) ? ecranId : (ICI ? ICI.id : 'general');
   const bt = H('<button type="button" class="tu-btn tu-vers-notes">＋ Mes notes</button>');
-  bt.title = 'Ajouter cette réponse aux notes de « ' + (TITRES[id] || id) + ' »';
+  bt.title = 'Ajouter cette réponse aux notes de « ' + (TITRES[id] || id) + ' »';
   bt.addEventListener('click', () => {
     const cur = texteNote(id).replace(/\s+$/, '');
     setNote(id, (cur ? cur + '\n\n' : '') + '[Tuteur] ' + sansAct(texte).replace(/\*\*/g, '') + '\n');
@@ -6294,7 +6332,7 @@ function boutonNotes(b, texte, ecranId){
   b.appendChild(bt);
   const l = Voix.boutonLire(() => sansAct(texte)); if(l) b.appendChild(l);
 }
-RT('tu-nouveau').addEventListener('click', () => { if(TU.enCours && TU.ctl) TU.ctl.abort(); TU.tours = []; sauver(); tfil.innerHTML = ''; arreterModes(); majMoteurUI(); suggestions(); });
+RT('tu-nouveau').addEventListener('click', () => { if(TU.enCours && TU.ctl) TU.ctl.abort(); TU.tours = []; sauver(); tfil.innerHTML = ''; arreterModes(); majMoteurUI(); suggestions(); signaler({type:'efface'}); });
 
 function mdTuteur(texte){
   const ligne = s => esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g, '$1<i>$2</i>').replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -6351,11 +6389,11 @@ function rendreReponse(b, texte, fini){
 const MSG_ERREUR = {
   not_granted:'Le tuteur n’a pas été autorisé sur cette page.', sampling_disabled:'Claude n’est pas disponible pour ce compte.',
   not_declared:'Cette version de la page n’a pas accès à Claude.', capability_disabled:'Claude n’est pas utilisable dans cette vue.',
-  capability_removed:'Mets à jour l’application Claude pour utiliser le tuteur.', images_unavailable:'Cette vue ne peut pas envoyer d’image : retire la zone et renvoie la question.',
-  image_rejected:'Capture refusée : encadre une zone plus petite.', rate_limited:'Trop de questions d’un coup, ou limite d’utilisation atteinte. Réessaie dans un moment.',
+  capability_removed:'Mets à jour l’application Claude pour utiliser le tuteur.', images_unavailable:'Cette vue ne peut pas envoyer d’image : retire la zone et renvoie la question.',
+  image_rejected:'Capture refusée : encadre une zone plus petite.', rate_limited:'Trop de questions d’un coup, ou limite d’utilisation atteinte. Réessaie dans un moment.',
   session_expired:'Reconnecte-toi à Claude, puis réessaie.', refused:'Le tuteur ne peut pas répondre à cette demande telle quelle. Reformule-la.',
-  empty_completion:'Pas de réponse. Reformule plus simplement.', prompt_too_large:'Trop de texte d’un coup : commence une nouvelle discussion.',
-  sdk_indispo:'Impossible de charger la bibliothèque de Claude : vérifie ta connexion internet, puis réessaie.', reseau:'Pas de connexion avec Anthropic. Vérifie ta connexion internet, puis réessaie.'
+  empty_completion:'Pas de réponse. Reformule plus simplement.', prompt_too_large:'Trop de texte d’un coup : commence une nouvelle discussion.',
+  sdk_indispo:'Impossible de charger la bibliothèque de Claude : vérifie ta connexion internet, puis réessaie.', reseau:'Pas de connexion avec Anthropic. Vérifie ta connexion internet, puis réessaie.'
 };
 function gererErreur(e, b){
   const corps = b.querySelector('.tu-corps');
@@ -6364,13 +6402,13 @@ function gererErreur(e, b){
   let msg = MSG_ERREUR[code];
   if(!msg && e && e.status){
     const qui = e.f === 'chatgpt' ? 'OpenAI' : e.f === 'claude' ? 'Anthropic' : 'Google', ia = FOURN[e.f] ? FOURN[e.f].nom : 'Gemini';
-    msg = e.status === 401 || e.status === 403 || (e.status === 400 && e.f !== 'claude' && /key|clé|api/i.test(e.message || '')) ? qui + ' refuse la clé ' + ia + '. Clique « Clé » pour la vérifier.'
-      : e.status === 404 ? 'Ce modèle n’est pas accessible avec ta clé : choisis-en un autre dans la liste.'
+    msg = e.status === 401 || e.status === 403 || (e.status === 400 && e.f !== 'claude' && /key|clé|api/i.test(e.message || '')) ? qui + ' refuse la clé ' + ia + '. Clique « Clé » pour la vérifier.'
+      : e.status === 404 ? 'Ce modèle n’est pas accessible avec ta clé : choisis-en un autre dans la liste.'
       : e.status === 429 ? (e.f === 'chatgpt' ? 'Limite atteinte chez OpenAI, ou crédit épuisé. Vérifie ton compte OpenAI.'
-        : e.f === 'claude' ? 'Limite atteinte chez Anthropic : attends une minute, puis réessaie.'
+        : e.f === 'claude' ? 'Limite atteinte chez Anthropic : attends une minute, puis réessaie.'
         : 'Limite gratuite de Gemini atteinte. Attends une minute, ou reviens demain si c’est la limite du jour.')
-      : e.status === 529 ? qui + ' est surchargé en ce moment : réessaie dans un instant.'
-      : qui + ' a répondu par une erreur (' + e.status + ') : ' + tronque(String(e.message || ''), 160);
+      : e.status === 529 ? qui + ' est surchargé en ce moment : réessaie dans un instant.'
+      : qui + ' a répondu par une erreur (' + e.status + ') : ' + tronque(String(e.message || ''), 160);
   }
   if(!msg) msg = 'La connexion a été interrompue. Réessaie.';
   corps.innerHTML = (e && e.text && code !== 'refused' ? mdTuteur(e.text) : '') + '<p class="tmsg erreur">' + esc(msg) + '</p>';
@@ -6390,7 +6428,7 @@ async function envoyer(question, extra){
   question = String(question || '').trim();
   if(TU.enCours) return;
   if(!TU.env){ const n = noteSysteme('Le tuteur démarre…'); await detection; n.remove(); }
-  if(mode() === 'indispo'){ noteSysteme('Claude n’est pas connecté dans cette fenêtre : choisis Gemini ou ChatGPT en haut du panneau (copier-coller).'); return; }
+  if(mode() === 'indispo'){ noteSysteme('Claude n’est pas connecté dans cette fenêtre : choisis Gemini ou ChatGPT en haut du panneau (copier-coller).'); return; }
   if(mode() !== 'api'){ copierPourIA(question, extra); return; }
   const sel = TU.pj && !TU.pj.attente ? TU.pj : null;
   if(!question && !sel) return;
@@ -6400,26 +6438,29 @@ async function envoyer(question, extra){
   q.value = ''; autoTaille(); TU.pj = null; rendrePj();
   bulleMoi(question, sel && sel.apercu);
   const dernier = contexte(sel) + '\n\nQUESTION DE L’ÉTUDIANT :\n' + question + (extra ? '\n\n' + extra : '') + (TU.fr ? RAPPEL_FR : '');
-  const trace = '[' + (ICI ? ICI.titre : '') + '] ' + question + (extra ? '\n' + tronque(extra, 1500) : '') + (sel ? '\n[Zone encadrée : ' + tronque(sel.texte || 'un schéma ou une carte', 300) + ']' : '');
+  const trace = '[' + (ICI ? ICI.titre : '') + '] ' + question + (extra ? '\n' + tronque(extra, 1500) : '') + (sel ? '\n[Zone encadrée : ' + tronque(sel.texte || 'un schéma ou une carte', 300) + ']' : '');
   return executer(bulleTuteur(), dernier, sel, {content:trace, vu:question, ecran:ICI && ICI.id});
 }
 /* une réponse en flux dans la bulle b ; le tour est gardé (cache : rejoué au modèle, pas réaffiché) */
 async function executer(b, dernier, sel, tour){
   const ctl = new AbortController(); TU.ctl = ctl; etatEnvoi(true); TU.coupe = false;
   const hist = TU.tours.filter(t => !t.copie).slice(-12).map(t => ({role:t.role, content:t.content}));
+  const id = 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  signaler({type:'debut', id, q:tour.vu || '', ecran:tour.ecran});
   try{
     const f = TU.f, via = f === 'claude' ? (TU.env === 'claude' ? viaClaude : viaClaudeCle) : f === 'gemini' ? viaGemini : viaOpenAI;
-    const r = await via(hist, dernier, sel, ctl, t => rendreReponse(b, t, false));
+    const r = await via(hist, dernier, sel, ctl, t => { rendreReponse(b, t, false); signaler({type:'flux', id, texte:String(t).replace(/\[\[ATELIER[\s\S]*$/, '')}); });
     if(f === 'claude') TU.dejaAutorise = true;
-    rendreReponse(b, r.texte + (TU.coupe ? '\n\n*(réponse coupée : demande moins à la fois)*' : ''), true);
+    rendreReponse(b, r.texte + (TU.coupe ? '\n\n*(réponse coupée : demande moins à la fois)*' : ''), true);
     const label = f === 'claude' ? r.label : FOURN[f].nom + ' · ' + r.label;
     signer(b, label, r.confirme);
     boutonNotes(b, r.texte, tour.ecran);
     TU.dernier = {f, label, confirme:r.confirme, note:r.note, id:f === 'claude' ? TU.claude.modele : TU[f].modele};
     TU.tours.push(Object.assign({role:'user'}, tour), {role:'assistant', content:sansAct(r.texte), modele:label, confirme:r.confirme, ecran:tour.ecran, cache:!!tour.cache});
     sauver();
+    signaler({type:'fin', id, texte:sansAct(r.texte), label});
     return r.texte;
-  }catch(e){ gererErreur(e, b); return null; }
+  }catch(e){ gererErreur(e, b); signaler({type:'fin', id, texte:(e && e.text) || '', label:'', erreur:true}); return null; }
   finally{ etatEnvoi(false); TU.ctl = null; }
 }
 function sauver(){ memo.set(K('discussion'), JSON.stringify(TU.tours.slice(-30))); }
@@ -6437,8 +6478,109 @@ function restaurer(){
 /* ---------- depuis la page : une question toute prête (sélection, question, situation, exercice) ---------- */
 async function demander(question, extra){
   if(!app.classList.contains('avec-tuteur')) ouvrirTuteur(true);
+  if(RELAIS){ proposerAuRelais(question); return; }
   if(TU.env && mode() !== 'api'){ copierPourIA(question, extra); return; }   // encore dans le geste
   envoyer(question, extra);
+}
+
+/* ---------- Convergence : le relais du tuteur ---------- */
+/* chez l'invité sans IA : le fil du partenaire, en lecture, à la place du sien (gardé, il revient après) */
+function relais(o){
+  if(!o){
+    if(RELAIS){ RELAIS.el.remove(); RELAIS = null; tfil.hidden = false; majMoteurUI(); }
+    return;
+  }
+  if(!RELAIS){
+    const el = H('<div class="tu-fil tu-miroir" aria-live="polite"></div>');
+    tfil.after(el); tfil.hidden = true;
+    RELAIS = {el, bulles:{}, props:{}, proposer:null, hote:'', prive:false};
+    noteRelais('Tu suis maintenant le tuteur de « ' + o.hote + ' ».');
+  }
+  RELAIS.hote = o.hote; RELAIS.proposer = o.proposer;
+  majMoteurUI();
+}
+function noteRelais(t){ const p = H('<p class="tmsg note"></p>'); p.textContent = t; RELAIS.el.appendChild(p); RELAIS.el.scrollTop = RELAIS.el.scrollHeight; }
+/* m = {prive, tours:[{id, q, r, m, fini}]} dans l'ordre ; seules les bulles qui changent sont redessinées */
+function miroir(m){
+  if(!RELAIS) return;
+  if(!!m.prive !== RELAIS.prive){ RELAIS.prive = !!m.prive; majMoteurUI(); }
+  const vus = {};
+  (m.tours || []).forEach(t => {
+    vus[t.id] = true;
+    let x = RELAIS.bulles[t.id];
+    if(!x){
+      x = RELAIS.bulles[t.id] = {r:null, texte:null, fini:false, els:[]};
+      if(t.q){ const q1 = H('<div class="tmsg moi tu-de-hote"></div>'); q1.textContent = t.q; RELAIS.el.appendChild(q1); x.els.push(q1); }
+      x.r = H('<div class="tmsg tu-rep"><div class="tu-corps"><p class="tu-reflechit">Le tuteur réfléchit<i>.</i><i>.</i><i>.</i></p></div></div>');
+      RELAIS.el.appendChild(x.r); x.els.push(x.r);
+    }
+    if(x.fini || (t.r === x.texte && !t.fini)) return;
+    x.texte = t.r;
+    if(t.r) rendreReponse(x.r, t.r, !!t.fini);
+    if(t.fini){
+      x.fini = true;
+      if(t.m) signer(x.r, t.m + ' · tuteur de ' + RELAIS.hote);
+      if(t.r) boutonNotes(x.r, t.r, ICI && ICI.id);
+    }
+  });
+  Object.keys(RELAIS.bulles).forEach(id => { if(!vus[id]){ RELAIS.bulles[id].els.forEach(e => e.remove()); delete RELAIS.bulles[id]; } });
+  RELAIS.el.scrollTop = RELAIS.el.scrollHeight;
+}
+function proposerAuRelais(t){
+  t = String(t || '').trim(); if(!t || !RELAIS) return;
+  if(!app.classList.contains('avec-tuteur')) ouvrirTuteur(true);
+  q.value = ''; autoTaille();
+  const id = 'p' + Date.now().toString(36);
+  const b = H('<div class="tmsg moi tu-propose"></div>'); b.textContent = t;
+  const e = H('<span class="tu-prop-etat"></span>'); e.textContent = 'proposée à ' + RELAIS.hote + '…'; b.appendChild(e);
+  RELAIS.el.appendChild(b); RELAIS.el.scrollTop = RELAIS.el.scrollHeight;
+  RELAIS.props[id] = e;
+  RELAIS.proposer(id, t.slice(0, 1000), ICI && ICI.id);
+}
+function etatProposition(id, etat){
+  const e = RELAIS && RELAIS.props[id]; if(!e) return;
+  e.textContent = etat === 'envoyee' ? 'envoyée au tuteur ✓' : etat === 'modifiee' ? RELAIS.hote + ' la reformule' : 'pas envoyée cette fois';
+}
+/* chez l'hôte : la question proposée attend son geste (une réponse d'IA se paie sur son compte) */
+function carteProposee(nom, texte, repondre){
+  enleverVide();
+  const d = H('<div class="tmsg tu-proposee"><p class="tu-prop-de"></p><p class="tu-prop-q"></p><div class="tu-barre"><button type="button" class="tu-btn" data-p="envoyer">Envoyer</button><button type="button" class="tu-btn" data-p="modifier">Modifier</button><button type="button" class="tu-btn" data-p="ignorer">Ignorer</button></div></div>');
+  d.querySelector('.tu-prop-de').textContent = '« ' + nom + ' » demande :';
+  d.querySelector('.tu-prop-q').textContent = texte;
+  d.addEventListener('click', e => {
+    const b = e.target.closest('[data-p]'); if(!b) return;
+    const ligne = 'Question de ' + nom + ' : ' + texte;
+    if(b.dataset.p === 'envoyer'){
+      if(TU.enCours || mode() !== 'api'){ noteSysteme(TU.enCours ? 'Attends la fin de la réponse en cours, puis renvoie la question.' : 'Ton tuteur ne répond pas ici pour l’instant.'); return; }
+      d.remove(); repondre('envoyee'); envoyer(ligne);
+    } else if(b.dataset.p === 'modifier'){
+      d.remove(); repondre('modifiee');
+      if(!app.classList.contains('avec-tuteur')) ouvrirTuteur(true);
+      q.value = ligne; autoTaille(); q.focus();
+    } else { d.remove(); repondre('ignoree'); }
+  });
+  tfil.appendChild(d); defiler();
+}
+/* chez l'hôte : qui suit la conversation, et le bouton pour la garder privée un moment */
+function suivi(o){
+  if(SUIVI){ SUIVI.remove(); SUIVI = null; }
+  if(!o) return;
+  SUIVI = H('<div class="tu-suivi"><span></span><button type="button" class="tu-btn"></button></div>');
+  SUIVI.querySelector('span').textContent = o.prive ? 'Conversation privée : « ' + o.nom + ' » ne la voit plus.' : '« ' + o.nom + ' » suit ta conversation.';
+  const bt = SUIVI.querySelector('button');
+  bt.textContent = o.prive ? 'Partager à nouveau' : 'Conversation privée';
+  bt.addEventListener('click', o.basculer);
+  RT('tu-bandeau').before(SUIVI);
+}
+/* les derniers tours visibles, pour qu'un partenaire qui arrive ait le fil de la discussion */
+function historique(n){
+  const l = [];
+  TU.tours.forEach((t, i) => {
+    if(t.role !== 'assistant' || t.copie) return;
+    const u = TU.tours[i - 1];
+    l.push({q:u && u.role === 'user' ? (u.vu || '') : '', r:t.content, m:t.modele || ''});
+  });
+  return l.slice(-(n || 6));
 }
 /* ======================================================================
    Les modes du tuteur (recette §7.3) : Question · Guide-moi ·
@@ -6448,18 +6590,18 @@ async function demander(question, extra){
 const MODES = [['question', 'Question'], ['guide', 'Guide-moi'], ['quiz', 'Interroge-moi'], ['explique', 'Je t’explique'], ['concret', 'Rends-le concret']];
 const NIVEAUX = {zero:'Zéro', normal:'Normal', examen:'Examen'};
 const CONSIGNE_NIVEAU = {
-  zero:'Niveau “zéro” : l’étudiant ne connaît rien au sujet. Des mots de tous les jours, une seule idée à la fois, une analogie tirée du corps ou de la vie quotidienne ; chaque terme du cours est expliqué la première fois qu’il apparaît.',
-  normal:'Niveau “normal” : un étudiant de première session qui a suivi le cours une fois.',
-  examen:'Niveau “examen” : les termes exacts du cours, les pièges, et les mots exacts du cours entre « » quand ils sont dans le texte fourni.'
+  zero:'Niveau “zéro” : l’étudiant ne connaît rien au sujet. Des mots de tous les jours, une seule idée à la fois, une analogie tirée du corps ou de la vie quotidienne ; chaque terme du cours est expliqué la première fois qu’il apparaît.',
+  normal:'Niveau “normal” : un étudiant de première session qui a suivi le cours une fois.',
+  examen:'Niveau “examen” : les termes exacts du cours, les pièges, et les mots exacts du cours entre « » quand ils sont dans le texte fourni.'
 };
 const RES_NOM = {juste:'compris', partiel:'compris après relance', revoir:'à revoir', passe:'passé'};
 const VIDE = {
-  guide:'<b>Guide-moi</b> : le tuteur te fait traverser l’écran pas à pas. Il éclaire chaque pas sur la page, l’explique à ton niveau, puis te pose une question. Tes réponses font monter la maîtrise.',
-  quiz:'<b>Interroge-moi</b> : des questions de mémoire, les pas les plus fragiles d’abord. Chaque réponse est corrigée et nourrit le Rappel du jour.',
-  explique:'<b>Je t’explique</b> : explique l’écran, ou un pas, avec tes mots (à voix haute, c’est l’idéal). Un camarade curieux te pose une question naïve, puis tu vois les points clés couverts et ceux qui manquent.',
-  concret:'<b>Rends-le concret</b> : choisis un pas, puis une expérience sur toi, une scène au comptoir ou une analogie de la vie. Le tuteur la construit sur la même structure que l’idée.'
+  guide:'<b>Guide-moi</b> : le tuteur te fait traverser l’écran pas à pas. Il éclaire chaque pas sur la page, l’explique à ton niveau, puis te pose une question. Tes réponses font monter la maîtrise.',
+  quiz:'<b>Interroge-moi</b> : des questions de mémoire, les pas les plus fragiles d’abord. Chaque réponse est corrigée et nourrit le Rappel du jour.',
+  explique:'<b>Je t’explique</b> : explique l’écran, ou un pas, avec tes mots (à voix haute, c’est l’idéal). Un camarade curieux te pose une question naïve, puis tu vois les points clés couverts et ceux qui manquent.',
+  concret:'<b>Rends-le concret</b> : choisis un pas, puis une expérience sur toi, une scène au comptoir ou une analogie de la vie. Le tuteur la construit sur la même structure que l’idée.'
 };
-const INVITE = {question:'Ta question… Entrée pour envoyer, Maj + Entrée pour aller à la ligne', guide:'Ta réponse… (ou : plus simple, un exemple, répète, reviens)',
+const INVITE = {question:'Ta question… Entrée pour envoyer, Maj + Entrée pour aller à la ligne', guide:'Ta réponse… (ou : plus simple, un exemple, répète, reviens)',
   quiz:'Ta réponse, de mémoire…', explique:'Explique avec tes mots, comme à un camarade…', concret:'Précise ce que tu veux rendre concret (facultatif)…'};
 let MODE = memo.get(K('mode')) || 'question'; if(!MODES.some(m => m[0] === MODE)) MODE = 'question';
 let NIV = NIVEAUX[memo.get(K('niveau'))] ? memo.get(K('niveau')) : 'normal';
@@ -6514,16 +6656,16 @@ const normCle = s => sansBalises(s).toLowerCase().replace(/[’']/g, "'").replac
 async function evaluer(o){
   const cle = (o.cle || []).map(sansBalises).filter(Boolean);
   const prompt = consignes().split('\n\nDÉMONSTRATION DANS L’ATELIER')[0] +
-    '\n\nTÂCHE : ' + (o.tache || 'Évalue la réponse de l’étudiant.') +
-    '\nQuestion : ' + sansBalises(o.q) +
-    (o.r ? '\nRéponse attendue (pour toi seulement) : ' + sansBalises(o.r) : '') +
-    (o.passage ? '\nPassage du cours : “' + String(o.passage).slice(0, 800) + '”' : '') +
-    (cle.length ? '\nPoints clés à chercher ; recopie exactement dans "points" ceux que la réponse contient, même dits avec d’autres mots :\n' + cle.map(k => '- ' + k).join('\n') : '') +
-    '\nRéponse de l’étudiant : “' + String(o.reponse || '').slice(0, 3000) + '”' +
-    '\n\nJuste = l’essentiel est là et exact ; partiel = exact mais incomplet ; faux = une erreur de fond, hors sujet, vide ou “je ne sais pas”.' +
-    '\n"manque" : ce qui manque ou ce qui est faux, en une courte phrase (vide si rien). "relance" : ' + (o.relance || 'une question courte qui aide l’étudiant à trouver ce qui manque, sans donner la réponse (vide si juste).') +
+    '\n\nTÂCHE : ' + (o.tache || 'Évalue la réponse de l’étudiant.') +
+    '\nQuestion : ' + sansBalises(o.q) +
+    (o.r ? '\nRéponse attendue (pour toi seulement) : ' + sansBalises(o.r) : '') +
+    (o.passage ? '\nPassage du cours : “' + String(o.passage).slice(0, 800) + '”' : '') +
+    (cle.length ? '\nPoints clés à chercher ; recopie exactement dans "points" ceux que la réponse contient, même dits avec d’autres mots :\n' + cle.map(k => '- ' + k).join('\n') : '') +
+    '\nRéponse de l’étudiant : “' + String(o.reponse || '').slice(0, 3000) + '”' +
+    '\n\nJuste = l’essentiel est là et exact ; partiel = exact mais incomplet ; faux = une erreur de fond, hors sujet, vide ou “je ne sais pas”.' +
+    '\n"manque" : ce qui manque ou ce qui est faux, en une courte phrase (vide si rien). "relance" : ' + (o.relance || 'une question courte qui aide l’étudiant à trouver ce qui manque, sans donner la réponse (vide si juste).') +
     '\nRéponds seulement avec ce JSON, en français :\n{"verdict":"juste|partiel|faux","points":["…"],"manque":"…","relance":"…"}' +
-    '\nExemple : {"verdict":"partiel","points":["le V"],"manque":"le rôle du centre","relance":"Et qui décide de répondre ?"}';
+    '\nExemple : {"verdict":"partiel","points":["le V"],"manque":"le rôle du centre","relance":"Et qui décide de répondre ?"}';
   const v = await json(prompt);
   if(!v || typeof v !== 'object' || !['juste', 'partiel', 'faux'].includes(v.verdict)) throw {code:'invalid_json', texte:JSON.stringify(v).slice(0, 400)};
   const dits = (Array.isArray(v.points) ? v.points : []).filter(x => typeof x === 'string').map(normCle).filter(x => x.length > 1);
@@ -6534,7 +6676,7 @@ async function evaluer(o){
 async function corriger(o){
   const e = await evaluer({tache:'Corrige la réponse de l’étudiant à cette carte de rappel.', q:o.q, r:o.r, cle:o.points, reponse:o.reponse});
   const cle = o.points.map(sansBalises);
-  return {points:e.points.map(p => cle.indexOf(p)).filter(i => i >= 0), remarque:[e.manque && 'Il manque : ' + e.manque + '.', e.relance].filter(Boolean).join(' ')};
+  return {points:e.points.map(p => cle.indexOf(p)).filter(i => i >= 0), remarque:[e.manque && 'Il manque : ' + e.manque + '.', e.relance].filter(Boolean).join(' ')};
 }
 
 /* ---------- une réponse du tuteur sans question visible (guide) ---------- */
@@ -6550,15 +6692,15 @@ async function diffuser(trace, consigne){
 /* ---------- le paquet du copier-coller (guide, quiz, je t'explique) ---------- */
 function paquet(type, ajout){
   const l = ICI ? pasDeEcran(ICI.id) : [];
-  const pasTxt = l.map((p, i) => (i + 1) + '. ' + p.titre + '\n   Points clés : ' + p.cle.map(sansBalises).join(' ; ') +
-    '\n   Question de vérification : ' + sansBalises(p.verif.q) + '\n   Réponse attendue : ' + sansBalises(p.verif.r)).join('\n');
+  const pasTxt = l.map((p, i) => (i + 1) + '. ' + p.titre + '\n   Points clés : ' + p.cle.map(sansBalises).join(' ; ') +
+    '\n   Question de vérification : ' + sansBalises(p.verif.q) + '\n   Réponse attendue : ' + sansBalises(p.verif.r)).join('\n');
   const consigne = {
-    guide:'Fais-moi une visite guidée de cet écran, pas à pas. ' + CONSIGNE_NIVEAU[NIV] + ' Pour chaque pas : explique-le en 120 mots au plus à partir de ses points clés (n’ajoute aucun fait ; marque “(hors cours)” ce qui dépasse le cours), termine par un ancrage concret (le corps, le comptoir de l’opticien ou la vie de tous les jours), puis pose la question de vérification et ATTENDS ma réponse. Si elle est juste, passe au pas suivant ; sinon, explique autrement (deux fois au plus), puis passe. À la fin : trois questions de mémoire, puis un bilan (pas compris, pas à revoir).',
-    quiz:'Interroge-moi sur cet écran : une question à la fois, de mémoire, en commençant par les pas les plus difficiles. Après chaque réponse : juste, partiel ou faux, ce qui manque et une ligne de pourquoi, puis la question suivante. Cinq questions, puis un bilan.',
-    explique:'Je vais t’expliquer cet écran avec mes mots. Joue un camarade curieux qui ne connaît pas le sujet : pose-moi une ou deux questions naïves, puis montre la liste des points clés que j’ai couverts et ceux qui manquent, et dis en une phrase le plus grand trou.'
+    guide:'Fais-moi une visite guidée de cet écran, pas à pas. ' + CONSIGNE_NIVEAU[NIV] + ' Pour chaque pas : explique-le en 120 mots au plus à partir de ses points clés (n’ajoute aucun fait ; marque “(hors cours)” ce qui dépasse le cours), termine par un ancrage concret (le corps, le comptoir de l’opticien ou la vie de tous les jours), puis pose la question de vérification et ATTENDS ma réponse. Si elle est juste, passe au pas suivant ; sinon, explique autrement (deux fois au plus), puis passe. À la fin : trois questions de mémoire, puis un bilan (pas compris, pas à revoir).',
+    quiz:'Interroge-moi sur cet écran : une question à la fois, de mémoire, en commençant par les pas les plus difficiles. Après chaque réponse : juste, partiel ou faux, ce qui manque et une ligne de pourquoi, puis la question suivante. Cinq questions, puis un bilan.',
+    explique:'Je vais t’expliquer cet écran avec mes mots. Joue un camarade curieux qui ne connaît pas le sujet : pose-moi une ou deux questions naïves, puis montre la liste des points clés que j’ai couverts et ceux qui manquent, et dis en une phrase le plus grand trou.'
   }[type];
-  return consignes().split('\n\nDÉMONSTRATION DANS L’ATELIER')[0] + '\n\nÉCRAN : ' + (ICI ? ICI.titre : '') +
-    '\nLES PAS DE L’ÉCRAN (vérité de référence : ne les montre pas d’un coup) :\n' + pasTxt +
+  return consignes().split('\n\nDÉMONSTRATION DANS L’ATELIER')[0] + '\n\nÉCRAN : ' + (ICI ? ICI.titre : '') +
+    '\nLES PAS DE L’ÉCRAN (vérité de référence : ne les montre pas d’un coup) :\n' + pasTxt +
     '\n\nTEXTE DE L’ÉCRAN :\n' + tronque(ICI ? ICI.el.innerText : '', 5000) + '\n\nCONSIGNE :\n' + consigne + (ajout ? '\n\n' + ajout : '') + (TU.fr ? RAPPEL_FR : '');
 }
 function copierPaquet(type, ajout){
@@ -6574,7 +6716,7 @@ function stGuide(id){ if(!ETAT.guide[id] || typeof ETAT.guide[id] !== 'object') 
 async function demarrerGuide(depuis){
   if(!ICI) return;
   const l = pasDeEcran(ICI.id);
-  if(!l.length){ noteSysteme('Cet écran n’a pas de pas à parcourir : ouvre un écran de leçon (le plan à gauche).'); return; }
+  if(!l.length){ noteSysteme('Cet écran n’a pas de pas à parcourir : ouvre un écran de leçon (le plan à gauche).'); return; }
   if(!TU.env) await detection;
   if(mode() !== 'api'){ copierPaquet('guide'); return; }
   const st = stGuide(ICI.id);
@@ -6586,17 +6728,17 @@ async function demarrerGuide(depuis){
 function instructionGuide(p, variante){
   const el = Pas.element(p.id);
   let s = 'MODE GUIDE-MOI. Tu fais avancer l’étudiant pas à pas dans l’écran “' + (ICI ? ICI.titre : '') + '”. ' + CONSIGNE_NIVEAU[NIV] +
-    '\nPas à expliquer maintenant (' + (G.i + 1) + ' sur ' + G.liste.length + ') : “' + p.titre + '”.' +
+    '\nPas à expliquer maintenant (' + (G.i + 1) + ' sur ' + G.liste.length + ') : “' + p.titre + '”.' +
     '\nTexte du pas sur la page :\n' + tronque(el ? el.innerText.replace(/\s+/g, ' ').trim() : '', 1200) +
     '\nPoints clés (vérité de référence) :\n' + p.cle.map(k => '- ' + sansBalises(k)).join('\n') +
-    '\nQuestion de vérification : ' + sansBalises(p.verif.q) + ' (réponse attendue, pour toi seulement : ' + sansBalises(p.verif.r) + ')' +
-    '\nConsignes :\n- 120 mots au plus, à partir du texte du pas et des points clés seulement : reformule, n’ajoute aucun fait. Ce qui sort du cours est marqué “(hors cours)”.' +
-    '\n- Termine l’explication par un ancrage concret : le corps, le comptoir de l’opticien ou la vie de tous les jours.' +
+    '\nQuestion de vérification : ' + sansBalises(p.verif.q) + ' (réponse attendue, pour toi seulement : ' + sansBalises(p.verif.r) + ')' +
+    '\nConsignes :\n- 120 mots au plus, à partir du texte du pas et des points clés seulement : reformule, n’ajoute aucun fait. Ce qui sort du cours est marqué “(hors cours)”.' +
+    '\n- Termine l’explication par un ancrage concret : le corps, le comptoir de l’opticien ou la vie de tous les jours.' +
     '\n- Puis pose la question de vérification, reformulée pour le niveau, seule sur la dernière ligne. Ne donne pas la réponse.';
-  if(variante === 'simple') s += '\nL’étudiant a demandé plus simple : refais l’explication avec des mots plus simples et une étape plus petite.';
-  else if(variante === 'exemple') s += '\nL’étudiant veut un exemple : donne un exemple concret de ce pas (au comptoir ou dans la vie), puis repose la question.';
-  else if(variante === 'repete') s += '\nL’étudiant demande de répéter : redis-le autrement et plus court, puis repose la question.';
-  else if(variante && typeof variante === 'object') s += '\nL’étudiant a répondu : “' + variante.reponse + '” (' + variante.verdict + '). Ce qui manque : ' + (variante.manque || 'à toi de voir') +
+  if(variante === 'simple') s += '\nL’étudiant a demandé plus simple : refais l’explication avec des mots plus simples et une étape plus petite.';
+  else if(variante === 'exemple') s += '\nL’étudiant veut un exemple : donne un exemple concret de ce pas (au comptoir ou dans la vie), puis repose la question.';
+  else if(variante === 'repete') s += '\nL’étudiant demande de répéter : redis-le autrement et plus court, puis repose la question.';
+  else if(variante && typeof variante === 'object') s += '\nL’étudiant a répondu : “' + variante.reponse + '” (' + variante.verdict + '). Ce qui manque : ' + (variante.manque || 'à toi de voir') +
     '.\nExplique autrement (une autre analogie, ou une étape plus petite), 90 mots au plus, sans donner la réponse mot pour mot, puis repose la même question, reformulée.';
   return s;
 }
@@ -6608,7 +6750,7 @@ async function presenterPas(variante){
   Pas.noter(p.id, 'vu');
   if(!variante){ G.boucle = 0; noteSysteme('Pas ' + (G.i + 1) + ' / ' + G.liste.length + ' · ' + p.titre, 'tu-etape'); }
   rendreZone();
-  const t = await diffuser('[Guide-moi · pas ' + (G.i + 1) + ' : ' + p.titre + (variante ? ' · ' + (typeof variante === 'string' ? variante : 'relance') : '') + ']', instructionGuide(p, variante));
+  const t = await diffuser('[Guide-moi · pas ' + (G.i + 1) + ' : ' + p.titre + (variante ? ' · ' + (typeof variante === 'string' ? variante : 'relance') : '') + ']', instructionGuide(p, variante));
   if(!G.actif) return;
   G.attente = t !== null;
   rendreZone();
@@ -6635,18 +6777,18 @@ async function repondreGuide(texte, special){
     const n = noteSysteme('Le tuteur lit ta réponse…');
     try{ r = await evaluer({tache:'Évalue la réponse de l’étudiant à la question de vérification du guide.', q:p.verif.q, r:p.verif.r, cle:p.verif.points.concat(p.cle), reponse:t}); }
     catch(e){
-      n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté. ' + String(e.texte || '').slice(0, 300) : messageErreur(e);
+      n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté. ' + String(e.texte || '').slice(0, 300) : messageErreur(e);
       G.occupe = false; G.attente = true; rendreZone(); return;
     }
     n.remove(); G.occupe = false;
   }
   TU.tours.push({role:'user', content:'[Guide-moi · réponse] ' + (t || 'je ne sais pas'), vu:t || 'Je ne sais pas.', ecran:G.ecran, cache:true},
-                {role:'assistant', content:'[Évaluation : ' + r.verdict + (r.manque ? ' ; manque : ' + r.manque : '') + ']', ecran:G.ecran, cache:true});
+                {role:'assistant', content:'[Évaluation : ' + r.verdict + (r.manque ? ' ; manque : ' + r.manque : '') + ']', ecran:G.ecran, cache:true});
   sauver();
   if(r.verdict === 'juste'){
     Pas.noter(p.id, 'explique'); Pas.noter(p.id, 'ok');
     resultatGuide(p.id, G.boucle ? 'partiel' : 'juste');
-    carteVerdict('juste', '<b>' + MOT_VERDICT.juste + '</b> ' + (r.points.length ? 'Tu as bien mis : ' + esc(r.points.slice(0, 3).join(' · ')) + '.' : ''));
+    carteVerdict('juste', '<b>' + MOT_VERDICT.juste + '</b> ' + (r.points.length ? 'Tu as bien mis : ' + esc(r.points.slice(0, 3).join(' · ')) + '.' : ''));
     suiteGuide(false);
     return;
   }
@@ -6655,11 +6797,11 @@ async function repondreGuide(texte, special){
   if(G.boucle > 2){
     resultatGuide(p.id, 'revoir');
     Rappel.rafraichirPas(p.id);
-    carteVerdict('faux', '<b>On le garde pour plus tard.</b> Réponse attendue : ' + p.verif.r + ' <span class="lib">Ce pas passe “à revoir” : sa carte est dans le Rappel du jour.</span>');
+    carteVerdict('faux', '<b>On le garde pour plus tard.</b> Réponse attendue : ' + p.verif.r + ' <span class="lib">Ce pas passe “à revoir” : sa carte est dans le Rappel du jour.</span>');
     suiteGuide(false);
     return;
   }
-  carteVerdict(r.verdict, '<b>' + MOT_VERDICT[r.verdict] + '</b> ' + esc(r.manque ? 'Il manque : ' + r.manque + '.' : '') + ' Je l’explique autrement.');
+  carteVerdict(r.verdict, '<b>' + MOT_VERDICT[r.verdict] + '</b> ' + esc(r.manque ? 'Il manque : ' + r.manque + '.' : '') + ' Je l’explique autrement.');
   presenterPas({reponse:t || 'je ne sais pas', verdict:r.verdict, manque:r.manque});
 }
 function finGuide(){
@@ -6713,7 +6855,7 @@ async function demarrerQuiz(o = {}){
   if(!TU.env) await detection;
   if(mode() !== 'api'){ copierPaquet('quiz'); return; }
   const items = itemsQuiz(o);
-  if(!items.length){ noteSysteme('Pas de questions ici : ouvre un écran de leçon, ou choisis “Tout le module”.'); return; }
+  if(!items.length){ noteSysteme('Pas de questions ici : ouvre un écran de leçon, ou choisis “Tout le module”.'); return; }
   pauseGuide();
   Object.assign(QZ, {actif:true, items, i:0, bons:0, attente:false});
   poserQuiz();
@@ -6741,24 +6883,24 @@ async function repondreQuiz(texte, special){
     QZ.occupe = true;
     const n = noteSysteme('Correction…');
     try{ r = await evaluer({tache:'Évalue la réponse de l’étudiant à cette question de rappel.', q:it.q, r:it.r, cle:it.points, reponse:t}); n.remove(); }
-    catch(e){ n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté.' : messageErreur(e); QZ.occupe = false; QZ.attente = true; rendreZone(); return; }
+    catch(e){ n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté.' : messageErreur(e); QZ.occupe = false; QZ.attente = true; rendreZone(); return; }
     QZ.occupe = false;
   }
   TU.tours.push({role:'user', content:'[Interroge-moi · réponse] ' + (t || 'je ne sais pas'), vu:t || 'Je ne sais pas.', ecran:it.ecran, cache:true},
-                {role:'assistant', content:'[Évaluation : ' + r.verdict + ']', ecran:it.ecran, cache:true});
+                {role:'assistant', content:'[Évaluation : ' + r.verdict + ']', ecran:it.ecran, cache:true});
   sauver();
   const juste = r.verdict === 'juste';
   if(juste){ QZ.bons++; it.pas.forEach(id => Pas.noter(id, 'ok')); }
   else if(r.verdict === 'faux'){ it.pas.forEach(id => { Pas.noter(id, 'ko'); Rappel.rafraichirPas(id); }); }
   if(it.carte) Rappel.marquerCarte(it.carte, juste, 'sur');
-  carteVerdict(r.verdict, '<b>' + MOT_VERDICT[r.verdict] + '</b> ' + (r.manque && !juste ? esc('Il manque : ' + r.manque + '. ') : '') + '<span class="pourquoi">' + it.r + '</span>');
+  carteVerdict(r.verdict, '<b>' + MOT_VERDICT[r.verdict] + '</b> ' + (r.manque && !juste ? esc('Il manque : ' + r.manque + '. ') : '') + '<span class="pourquoi">' + it.r + '</span>');
   suiteQuiz();
 }
 function suiteQuiz(){
   QZ.i++;
   if(QZ.i < QZ.items.length){ poserQuiz(); return; }
   QZ.actif = false; QZ.attente = false;
-  carteVerdict(QZ.bons === QZ.items.length ? 'juste' : 'partiel', '<b>Bilan : ' + QZ.bons + ' juste' + (QZ.bons > 1 ? 's' : '') + ' sur ' + QZ.items.length + '.</b> Les réponses ratées reviennent dans le Rappel du jour.');
+  carteVerdict(QZ.bons === QZ.items.length ? 'juste' : 'partiel', '<b>Bilan : ' + QZ.bons + ' juste' + (QZ.bons > 1 ? 's' : '') + ' sur ' + QZ.items.length + '.</b> Les réponses ratées reviennent dans le Rappel du jour.');
   rendreZone();
 }
 
@@ -6786,17 +6928,17 @@ async function repondreExplique(texte){
   try{
     r = await evaluer({tache:'L’étudiant explique ' + sujet + ' avec ses mots, comme à un camarade. Repère les points clés présents dans son explication (tout ce qu’il a dit jusqu’ici).',
       q:'Explique ' + sujet + '.', cle:l.flatMap(p => p.cle), reponse:TB.texte,
-      relance:'joue un camarade curieux qui ne connaît pas le sujet : UNE question naïve, au tutoiement, sur le point le plus important qui manque, sans donner la réponse (vide si tout y est).'});
+      relance:'joue un camarade curieux qui ne connaît pas le sujet : UNE question naïve, au tutoiement, sur le point le plus important qui manque, sans donner la réponse (vide si tout y est).'});
     n.remove();
-  }catch(e){ n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté.' : messageErreur(e); TB.occupe = false; return; }
+  }catch(e){ n.textContent = e && e.code === 'invalid_json' ? 'Réponse du tuteur illisible : rien n’est compté.' : messageErreur(e); TB.occupe = false; return; }
   TB.occupe = false;
-  TU.tours.push({role:'user', content:'[Je t’explique · ' + sujet + '] ' + t, vu:t, ecran:ICI.id, cache:true}, {role:'assistant', content:'[Bilan : ' + r.verdict + ']', ecran:ICI.id, cache:true});
+  TU.tours.push({role:'user', content:'[Je t’explique · ' + sujet + '] ' + t, vu:t, ecran:ICI.id, cache:true}, {role:'assistant', content:'[Bilan : ' + r.verdict + ']', ecran:ICI.id, cache:true});
   sauver();
   if(r.relance){ const b = H('<div class="tmsg tu-rep tu-camarade"><div class="tu-corps"><p><span class="lib">Ton camarade</span></p><p></p></div></div>'); $$('p', b)[1].textContent = r.relance; tfil.appendChild(b); }
   const coches = new Set(r.points);
   const liste = l.map(p => (l.length > 1 ? '<li class="tu-pas-titre">' + esc(p.titre) + '</li>' : '') + p.cle.map(k => { const s = sansBalises(k); return '<li class="' + (coches.has(s) ? 'ok' : 'manque') + '">' + (coches.has(s) ? '✓ ' : '○ ') + esc(s) + '</li>'; }).join('')).join('');
   const total = l.reduce((s, p) => s + p.cle.length, 0);
-  carteVerdict(r.verdict, '<p><b>' + coches.size + ' point' + (coches.size > 1 ? 's' : '') + ' clé' + (coches.size > 1 ? 's' : '') + ' sur ' + total + '.</b> ' + esc(r.manque ? 'Le plus grand trou : ' + r.manque + '.' : '') + '</p><ul class="tu-cles">' + liste + '</ul>' + (r.relance ? '<p class="lib">Réponds au camarade pour compléter : ton explication s’additionne.</p>' : ''));
+  carteVerdict(r.verdict, '<p><b>' + coches.size + ' point' + (coches.size > 1 ? 's' : '') + ' clé' + (coches.size > 1 ? 's' : '') + ' sur ' + total + '.</b> ' + esc(r.manque ? 'Le plus grand trou : ' + r.manque + '.' : '') + '</p><ul class="tu-cles">' + liste + '</ul>' + (r.relance ? '<p class="lib">Réponds au camarade pour compléter : ton explication s’additionne.</p>' : ''));
   if(r.verdict !== 'faux') l.forEach(p => {
     const presents = p.cle.filter(k => coches.has(sansBalises(k))).length;
     if(presents) Pas.noter(p.id, 'explique');
@@ -6809,7 +6951,7 @@ async function repondreExplique(texte){
    Rends-le concret
    ====================================================================== */
 const GENRE_CONCRET = {
-  corps:['Une expérience sur toi', 'une expérience à faire sur soi en 60 secondes au plus, sans danger : ne jamais toucher l’œil lui-même, seulement un léger contact sur les paupières ou la peau. Des étapes courtes ; à chaque étape, le mot du cours à dire à voix haute'],
+  corps:['Une expérience sur toi', 'une expérience à faire sur soi en 60 secondes au plus, sans danger : ne jamais toucher l’œil lui-même, seulement un léger contact sur les paupières ou la peau. Des étapes courtes ; à chaque étape, le mot du cours à dire à voix haute'],
   comptoir:['Une scène au comptoir', 'une courte scène au comptoir de l’opticien (3 ou 4 lignes), puis la question que se pose l’opticien et sa réponse tirée du pas'],
   vie:['Une analogie de la vie', 'une analogie de la vie de tous les jours']
 };
@@ -6818,13 +6960,13 @@ function concret(genre, precision){
   const c = cibleCourante(), p = c && c !== '*' ? Pas.get(c) : null;
   const l = p ? [p] : pasDeEcran(ICI.id);
   const sujet = p ? 'le pas “' + p.titre + '”' : 'l’écran “' + ICI.titre + '”';
-  const quoi = GENRE_CONCRET[genre] ? GENRE_CONCRET[genre][1] : 'la forme la plus parlante parmi : une expérience sur soi (60 s, sans toucher l’œil), une scène au comptoir de l’opticien, une analogie de la vie';
-  const patient = genre === 'comptoir' && typeof PATIENT === 'object' && PATIENT.nom ? ' Le patient de l’atelier : ' + PATIENT.nom + (PATIENT.portrait ? ' (' + PATIENT.portrait + ')' : '') + '.' : '';
+  const quoi = GENRE_CONCRET[genre] ? GENRE_CONCRET[genre][1] : 'la forme la plus parlante parmi : une expérience sur soi (60 s, sans toucher l’œil), une scène au comptoir de l’opticien, une analogie de la vie';
+  const patient = genre === 'comptoir' && typeof PATIENT === 'object' && PATIENT.nom ? ' Le patient de l’atelier : ' + PATIENT.nom + (PATIENT.portrait ? ' (' + PATIENT.portrait + ')' : '') + '.' : '';
   const consigne = 'MODE RENDS-LE CONCRET. Pour ' + sujet + ', propose ' + quoi + '.' + patient +
     '\nPoints clés à rendre concrets :\n' + l.flatMap(x => x.cle).map(k => '- ' + sansBalises(k)).join('\n') +
     '\nElle doit reproduire la même structure que l’idée (où c’est, dans quel ordre, quelle cause), pas seulement l’illustrer. 150 mots au plus. Termine par une ligne “Ce qui correspond :” qui relie chaque élément concret au terme du cours. Ce qui dépasse le cours est marqué “(hors cours)”.' +
-    (precision ? '\nPrécision de l’étudiant : ' + precision : '');
-  envoyer('Rends concret ' + sujet + (GENRE_CONCRET[genre] ? ' · ' + GENRE_CONCRET[genre][0].toLowerCase() : '') + (precision ? ' : ' + precision : ''), consigne);
+    (precision ? '\nPrécision de l’étudiant : ' + precision : '');
+  envoyer('Rends concret ' + sujet + (GENRE_CONCRET[genre] ? ' · ' + GENRE_CONCRET[genre][0].toLowerCase() : '') + (precision ? ' : ' + precision : ''), consigne);
 }
 
 /* ======================================================================
@@ -6858,19 +7000,19 @@ function rendreZone(){
     if(l.length){
       h += '<ol class="tu-stepper" aria-label="Progression du guide sur cet écran">' + l.map((p, i) => {
         const res = (st && st.res && st.res[p.id]) || '';
-        return '<li class="' + res + (ici && i === G.i ? ' ici' : '') + '" title="' + esc(p.titre) + (res ? ' · ' + RES_NOM[res] : '') + '"><span class="sr">' + esc(p.titre) + (res ? ' : ' + RES_NOM[res] : '') + '</span></li>';
+        return '<li class="' + res + (ici && i === G.i ? ' ici' : '') + '" title="' + esc(p.titre) + (res ? ' · ' + RES_NOM[res] : '') + '"><span class="sr">' + esc(p.titre) + (res ? ' : ' + RES_NOM[res] : '') + '</span></li>';
       }).join('') + '</ol>';
       if(ici) h += '<p class="tu-astuce">Pas ' + (G.i + 1) + ' / ' + l.length + ' · ' + esc(G.pas ? G.pas.titre : '') + '</p>';
       else if(G.fin && G.ecran === (ICI && ICI.id)){
         const s = suivantAvecPas(G.ecran);
-        h += '<div class="tu-zone-ctl"><button type="button" class="tu-btn" data-z="recap">Récap : 3 questions de mémoire</button>' + (s ? '<button type="button" class="tu-envoyer" data-z="suivant">Écran suivant →</button>' : '<button type="button" class="tu-envoyer" data-aller="cartes">Rappel du jour →</button>') + '</div>';
+        h += '<div class="tu-zone-ctl"><button type="button" class="tu-btn" data-z="recap">Récap : 3 questions de mémoire</button>' + (s ? '<button type="button" class="tu-envoyer" data-z="suivant">Écran suivant →</button>' : '<button type="button" class="tu-envoyer" data-aller="cartes">Rappel du jour →</button>') + '</div>';
       } else {
         const i = st ? Math.min(st.i || 0, l.length - 1) : 0, fini = !!st && st.i >= l.length;
         h += '<div class="tu-zone-ctl">' + (!api && TU.env ? '<button type="button" class="tu-envoyer" data-z="paquet-guide">Copier le paquet du guide</button>'
           : st && st.i && !fini ? '<button type="button" class="tu-envoyer" data-z="reprendre">Reprendre au pas ' + (i + 1) + '</button><button type="button" class="tu-btn" data-z="recommencer">Recommencer</button>'
           : '<button type="button" class="tu-envoyer" data-z="commencer">' + (fini ? 'Refaire le guide de cet écran' : 'Guide-moi sur cet écran') + '</button>') + '</div>';
       }
-    } else h += '<p class="tu-astuce">Cet écran n’a pas de pas à parcourir : ouvre un écran de leçon.</p>';
+    } else h += '<p class="tu-astuce">Cet écran n’a pas de pas à parcourir : ouvre un écran de leçon.</p>';
     if(ici && G.attente) r = '<button type="button" class="tu-btn" data-r="saispas">Je ne sais pas</button><button type="button" class="tu-btn" data-r="passe">Passer</button><button type="button" class="tu-btn" data-r="simple">Plus simple</button><button type="button" class="tu-btn" data-r="exemple">Un exemple</button><button type="button" class="tu-btn" data-r="repete">Répète</button>';
     else if(ici && G.suite) r = '<button type="button" class="tu-envoyer" data-r="continue">Continuer · pas ' + (G.i + 2) + ' →</button>';
   } else if(MODE === 'quiz'){
@@ -6934,7 +7076,7 @@ rapide.addEventListener('click', e => {
   const r = b.dataset.r;
   if(MODE === 'guide') commandeGuide(r);
   else if(MODE === 'quiz'){ if(r === 'stop'){ QZ.actif = false; QZ.attente = false; noteSysteme('Quiz arrêté.'); rendreZone(); } else repondreQuiz(q.value, r); }
-  else if(r === 'nouveau-depart'){ TB.texte = ''; TB.cle = ''; noteSysteme('Nouveau départ : explique depuis le début.'); rendreZone(); }
+  else if(r === 'nouveau-depart'){ TB.texte = ''; TB.cle = ''; noteSysteme('Nouveau départ : explique depuis le début.'); rendreZone(); }
 });
 function arreterModes(){
   pauseGuide(); G.fin = false;
@@ -6980,7 +7122,9 @@ q.addEventListener('input', () => {
 majModes();
 
 detecterMoteur();
-return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, guide, quiz, expliquer, json, evaluer, corriger, peutJSON:() => mode() === 'api'};
+return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, guide, quiz, expliquer, json, evaluer, corriger, peutJSON:() => mode() === 'api',
+  ecouter:f => ECOUTEURS.push(f), duo:t => { DUO = t || ''; }, relais, miroir, etatProposition, carteProposee, suivi, historique,
+  enRelais:() => !!RELAIS};
 })();
 
 /* ====== _commun/sablier.js ====== */
@@ -7229,12 +7373,15 @@ const raieOk = r => Object.prototype.hasOwnProperty.call(RAIES, r) ? r : 'F';
 const couleur = r => RAIES[raieOk(r)][1];
 const titreDe = id => { const e = ecran(id); return e ? e.titre : ''; };
 const nomDe = p => propre(p && p.nom, 24) || 'Quelqu’un';
+/* le texte d'un tour de tuteur garde ses retours à la ligne (markdown) */
+const propreTexte = (x, max) => typeof x === 'string' ? x.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, '').slice(0, max) : '';
+const aTuteur = () => typeof Tuteur !== 'undefined' && Tuteur.peutJSON();
 const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 
 const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', code:'', role:'', nom:'', raie:'F',
   etat:'repos',                              // repos · attente (hôte) · demande (invité) · lie
   part:'', pNom:'', pRaie:'F', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-  repere:{e:'', n:0, auto:false}, pret:0, desab:[], envois:{}, nonLus:0};
+  repere:{e:'', n:0, auto:false}, pret:0, desab:[], envois:{}, nonLus:0, pTuteur:'', pMiroir:null};
 
 /* ---------- le relais ---------- */
 let chargement = null;
@@ -7262,13 +7409,15 @@ async function connecter(){
 function moi(){
   /* l'hôte qui accepte s'affiche déjà « lie » : c'est le signal que l'invité attend pour confirmer */
   return {v:1, nom:S.nom, raie:S.raie, role:S.role, etat:S.accepte ? 'lie' : S.etat, avec:S.part || S.accepte || '', refus:S.refusUid, at:P,
-    ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto}, pret:S.pret, t:Date.now()};
+    ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto}, pret:S.pret,
+    tuteur:aTuteur() ? 'propre' : 'relais', t:Date.now()};
 }
 let tPres = null;
 function publier(){
   if(!S.refMoi) return;
   clearTimeout(tPres);
-  tPres = setTimeout(() => { S.F.set(S.refMoi, moi()).catch(() => toast('Le relais ne répond plus : vérifie ta connexion.')); }, 60);
+  /* update et non set : le miroir du tuteur (membres/<uid>/miroir) vit à côté de la présence */
+  tPres = setTimeout(() => { S.F.update(S.refMoi, moi()).catch(() => toast('Le relais ne répond plus : vérifie ta connexion.')); }, 60);
 }
 function sauverSeance(){
   try{
@@ -7294,10 +7443,11 @@ async function entrer(role, code, reprise){
 }
 async function quitter(){
   S.desab.forEach(f => { try{ f(); }catch(e){} }); S.desab = [];
+  if(MIR.actif || (typeof Tuteur !== 'undefined' && Tuteur.enRelais())){ MIR.actif = false; Tuteur.relais(null); Tuteur.suivi(null); Tuteur.duo(null); }
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', part:'', pNom:'', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-    repere:{e:'', n:0, auto:false}, pret:0, envois:{}, nonLus:0});
-  sauverSeance();
+    repere:{e:'', n:0, auto:false}, pret:0, envois:{}, nonLus:0, pTuteur:'', pMiroir:null});
+  sauverSeance(); majRail();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad();
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -7310,12 +7460,15 @@ function surMembres(m){
     if(S.pLa === null) S.pLa = !!p;                 // après un rechargement : on constate, sans annoncer
     else if(!p && S.pLa){ S.pLa = false; toast('« ' + S.pNom + ' » a quitté la séance.'); }
     else if(p && !S.pLa){ S.pLa = true; toast('« ' + S.pNom + ' » est de retour.'); }
-    if(!p){ majBarre(); return; }
+    if(!p){ majBarre(); majRelais(); return; }
     S.pEcran = typeof p.ecran === 'string' ? p.ecran : '';
     S.pPret = typeof p.pret === 'number' ? p.pret : 0;
+    S.pTuteur = p.tuteur === 'propre' ? 'propre' : p.tuteur === 'relais' ? 'relais' : '';
+    S.pMiroir = p.miroir && typeof p.miroir === 'object' ? p.miroir : null;
     accorderRepere(p);
     verifierPrets();
     majBarre();
+    majRelais();
     return;
   }
   if(S.role === 'hote') hoteVoit(autres); else if(S.role === 'invite') inviteVoit(autres);
@@ -7719,6 +7872,7 @@ function majBarre(){
   $('.cv-pret', barre).textContent = pret ? 'Prêt·e ✓' : 'Prêt·e';
   $('.cv-prets', barre).textContent = (pret || pPret) ? 'Toi ' + (pret ? '✓' : '…') + ' · ' + S.pNom + ' ' + (pPret ? '✓' : '…') : '';
   const bd = $('.cv-badge', barre); bd.hidden = !S.nonLus; bd.textContent = S.nonLus;
+  majRail();
 }
 
 /* ---------- le petit avis, en haut ---------- */
@@ -7799,6 +7953,101 @@ function surFlux(cle, m){
   S.F.remove(S.F.ref(S.db, S.base + '/flux/' + cle)).catch(() => {});      // reçu : l'effacement prévient l'autre
   if(m.kind === 'msg'){ const t = propre(m.data, 500); if(!t) return; bulle('lui', t); avertir('« ' + S.pNom + ' » : ' + (t.length > 80 ? t.slice(0, 80) + '…' : t)); }
   else if(m.kind === 'croquis'){ const d = lireCroquis(m.data); if(!d) return; bulle('lui', '', d); avertir('« ' + S.pNom + ' » t’envoie un croquis.'); }
+  else if(m.kind === 'question' || m.kind === 'question-etat'){
+    let d; try{ d = JSON.parse(m.data); }catch(e){ return; }
+    if(!d || typeof d.id !== 'string' || typeof Tuteur === 'undefined') return;
+    const pid = propre(d.id, 24);
+    if(m.kind === 'question'){
+      const texte = propreTexte(d.texte, 1000).trim(); if(!texte || !MIR.actif) return;
+      Tuteur.carteProposee(S.pNom, texte, etat => envoyer('question-etat', JSON.stringify({id:pid, etat}), null));
+      toast('« ' + S.pNom + ' » propose une question au tuteur.', 'Voir', () => Tuteur.ouvrir(true));
+    } else if(['envoyee', 'modifiee', 'ignoree'].includes(d.etat)) Tuteur.etatProposition(pid, d.etat);
+  }
+}
+
+/* ======================================================================
+   Le tuteur en relais (DESIGN-convergence.md §3.3). Qui a une IA garde
+   son tuteur ; qui n'en a pas suit celui de l'autre : un miroir en
+   lecture (membres/<uid>/miroir, écrit par celui qui sert), et ses
+   questions arrivent chez l'autre comme une carte, envoyée d'un geste.
+   ====================================================================== */
+const MIR = {actif:false, prive:false, ids:[], tFlux:{}, dernier:{}};
+const refMir = chemin => S.F.ref(S.db, S.base + '/membres/' + S.uid + '/miroir' + (chemin ? '/' + chemin : ''));
+function toursDe(o){
+  if(!o || typeof o !== 'object') return [];
+  return Object.entries(o).filter(([id, t]) => /^[A-Za-z0-9]{1,24}$/.test(id) && t && typeof t === 'object')
+    .map(([id, t]) => ({id, q:propreTexte(t.q, 2000), r:propreTexte(t.r, 12000), m:propre(t.m, 80), fini:!!t.fini, t:+t.t || 0}))
+    .sort((a, b) => a.t - b.t).slice(-12);
+}
+function majSuivi(){
+  Tuteur.suivi({nom:S.pNom, prive:MIR.prive, basculer:() => {
+    MIR.prive = !MIR.prive;
+    S.F.update(refMir(), {prive:MIR.prive}).catch(() => {});
+    majSuivi();
+  }});
+}
+function majRelais(){
+  if(typeof Tuteur === 'undefined') return;
+  const lie = S.etat === 'lie' && S.pLa;
+  /* servir : j'ai une IA, l'autre n'en a pas */
+  const servir = lie && S.pTuteur === 'relais' && aTuteur();
+  if(servir && !MIR.actif){
+    MIR.actif = true; MIR.ids = [];
+    const tours = {};
+    Tuteur.historique(6).forEach((h, i) => { const id = 'h' + i; tours[id] = {q:h.q.slice(0, 2000), r:h.r.slice(0, 12000), m:h.m, fini:true, t:i}; MIR.ids.push(id); });
+    S.F.set(refMir(), {actif:true, prive:MIR.prive, tours}).catch(() => {});
+    Tuteur.duo('Deux étudiants étudient ensemble : ' + S.nom + ' (qui t’écrit) et ' + S.pNom + '. Une question qui commence par « Question de ' + S.pNom + ' » vient de ' + S.pNom + ' : réponds-lui en l’appelant par son surnom.');
+    majSuivi();
+    toast('« ' + S.pNom + ' » n’a pas d’IA branchée : ton tuteur sert à vous deux. Ses questions t’arrivent comme des cartes.');
+  } else if(!servir && MIR.actif){
+    MIR.actif = false;
+    if(S.refMoi) S.F.remove(refMir()).catch(() => {});
+    Tuteur.duo(null); Tuteur.suivi(null);
+  }
+  /* suivre : je n'ai pas d'IA, l'autre en a une et la partage */
+  const m = S.pMiroir, suivre = lie && !aTuteur() && m && m.actif === true;
+  if(suivre){
+    if(!Tuteur.enRelais()) Tuteur.relais({hote:S.pNom, proposer:(id, texte, ecranId) => envoyer('question', JSON.stringify({id, texte, ecran:ecranId || ''}), null)});
+    Tuteur.miroir({prive:!!m.prive, tours:toursDe(m.tours)});
+  } else if(Tuteur.enRelais()) Tuteur.relais(null);
+}
+/* les tours du tuteur, recopiés pour l'autre au fil de l'eau (la réponse en cours, au plus trois fois par seconde) */
+function surTuteur(ev){
+  if(ev.type === 'moteur'){
+    const t = aTuteur() ? 'propre' : 'relais';
+    if(t !== S.monTuteur){ S.monTuteur = t; if(S.etat === 'lie'){ publier(); majRelais(); } }
+    return;
+  }
+  if(!MIR.actif || MIR.prive || !S.refMoi) return;
+  if(ev.type === 'debut'){
+    S.F.set(refMir('tours/' + ev.id), {q:String(ev.q || '').slice(0, 2000), r:'', m:'', fini:false, t:Date.now()}).catch(() => {});
+    MIR.ids.push(ev.id);
+    while(MIR.ids.length > 10) S.F.remove(refMir('tours/' + MIR.ids.shift())).catch(() => {});
+  } else if(ev.type === 'flux'){
+    MIR.dernier[ev.id] = ev.texte;
+    if(!MIR.tFlux[ev.id]) MIR.tFlux[ev.id] = setTimeout(() => {
+      MIR.tFlux[ev.id] = 0;
+      if(MIR.actif && !MIR.prive && MIR.ids.includes(ev.id)) S.F.set(refMir('tours/' + ev.id + '/r'), String(MIR.dernier[ev.id]).slice(0, 12000)).catch(() => {});
+    }, 350);
+  } else if(ev.type === 'fin'){
+    clearTimeout(MIR.tFlux[ev.id]); MIR.tFlux[ev.id] = 0; delete MIR.dernier[ev.id];
+    if(MIR.ids.includes(ev.id)) S.F.update(refMir('tours/' + ev.id), {r:String(ev.texte || (ev.erreur ? '*(pas de réponse)*' : '')).slice(0, 12000), m:ev.label || '', fini:true}).catch(() => {});
+  } else if(ev.type === 'efface'){
+    MIR.ids = []; S.F.set(refMir('tours'), null).catch(() => {});
+  }
+}
+
+/* ---------- dans le plan : le point de l'autre, et le repère ---------- */
+function majRail(){
+  $$('#fil button[data-aller]').forEach(b => {
+    if(b.hasAttribute('data-cv-lui')){ b.removeAttribute('data-cv-lui'); b.style.removeProperty('--cv-c'); b.removeAttribute('title'); }
+    b.removeAttribute('data-cv-repere');
+  });
+  if(S.etat !== 'lie') return;
+  const r = S.repere.e && $('#fil button[data-aller="' + S.repere.e + '"]');
+  if(r) r.setAttribute('data-cv-repere', '');
+  const l = S.pLa && S.pEcran && $('#fil button[data-aller="' + S.pEcran + '"]');
+  if(l){ l.setAttribute('data-cv-lui', ''); l.style.setProperty('--cv-c', couleur(S.pRaie)); l.title = S.pNom + ' est sur cet écran'; }
 }
 function avertir(t){
   if(panneau && !panneau.hidden) return;
@@ -7939,6 +8188,7 @@ function demarrer(){
     b.addEventListener('click', ouvrir);
   }
   CROCHETS.apresAller.push(() => { if(S.etat === 'lie'){ publier(); majBarre(); } });
+  if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
   if(dansClaude()) return;
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
   if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code) || !s.part) return;
