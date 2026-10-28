@@ -5875,8 +5875,8 @@ RT('tu-modele').addEventListener('change', e => {
 const CONFIG = {
   claude:{titre:'Brancher Claude avec une clé API', bouton:'Ajouter une clé API Claude', lien:'https://platform.claude.com/settings/keys', lienNom:'platform.claude.com/settings/keys', compte:'ton compte Claude',
     note:'L’API de Claude est payante à l’usage (crédits achetés d’avance sur platform.claude.com), à part de l’abonnement Claude ; seul Max inclut un crédit API mensuel. Une question coûte environ un dixième de cent avec Haiku, deux cents avec Sonnet, quatre avec Opus. Gratuit : une clé Gemini, ou le copier-coller vers claude.ai.', qui:'Anthropic'},
-  gemini:{titre:'Activer Gemini, gratuit', bouton:'Ajouter une clé Gemini gratuite', lien:'https://aistudio.google.com/apikey', lienNom:'aistudio.google.com/apikey', compte:'ton compte Google',
-    note:'Gratuit avec des limites par minute et par jour. Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel.', qui:'Google'},
+  gemini:{titre:'Activer Gemini, gratuit', bouton:'Ajouter une clé Gemini gratuite', lien:'https://aistudio.google.com/apikey', lienNom:'aistudio.google.com/apikey', compte:'ton compte Google personnel (pas celui du Collège)',
+    note:'Gratuit, sans carte : sans facturation, Google ne peut rien te facturer ; au-delà de la limite du jour, la clé refuse jusqu’au lendemain. Il faut avoir 18 ans (conditions de Google). Sur l’offre gratuite, Google peut se servir de ce que tu envoies pour améliorer ses produits : n’envoie rien de personnel. Un abonnement Google AI Pro ne s’applique pas aux clés ; il sert sur gemini.google.com, par le copier-coller.', qui:'Google'},
   chatgpt:{titre:'Brancher ChatGPT avec une clé OpenAI', bouton:'Ajouter une clé OpenAI', lien:'https://platform.openai.com/api-keys', lienNom:'platform.openai.com/api-keys', compte:'ton compte OpenAI',
     note:'L’API d’OpenAI est payante à l’usage, facturée à part de l’abonnement ChatGPT. Sans clé, le copier-coller vers chatgpt.com reste gratuit.', qui:'OpenAI'}
 };
@@ -6419,7 +6419,7 @@ const MSG_ERREUR = {
   empty_completion:'Pas de réponse. Reformule plus simplement.', prompt_too_large:'Trop de texte d’un coup : commence une nouvelle discussion.',
   sdk_indispo:'Impossible de charger la bibliothèque de Claude : vérifie ta connexion internet, puis réessaie.', reseau:'Pas de connexion avec Anthropic. Vérifie ta connexion internet, puis réessaie.'
 };
-function gererErreur(e, b){
+function gererErreur(e, b, question){
   const corps = b.querySelector('.tu-corps');
   const code = e && e.code;
   if(code === 'cancelled' || (e && e.name === 'AbortError')){ if(e.text) rendreReponse(b, e.text + '\n\n*(arrêté)*', true); else b.remove(); return; }
@@ -6436,6 +6436,13 @@ function gererErreur(e, b){
   }
   if(!msg) msg = 'La connexion a été interrompue. Réessaie.';
   corps.innerHTML = (e && e.text && code !== 'refused' ? mdTuteur(e.text) : '') + '<p class="tmsg erreur">' + esc(msg) + '</p>';
+  if(question && e && e.status === 429 && FOURN[e.f]){
+    const bs = H('<button type="button" class="tu-btn"></button>');
+    bs.textContent = 'Poser la question sur ' + FOURN[e.f].siteNom;
+    bs.title = 'Copie la question avec l’écran ; colle-la sur le site, puis colle la réponse ici';
+    bs.addEventListener('click', () => copierPourIA(question));
+    corps.appendChild(bs);
+  }
   if(code === 'not_granted'){
     const bt = H('<button type="button" class="tu-btn">Ouvrir les autorisations</button>');
     bt.addEventListener('click', async () => { try{ const p = await window.claude.use('permissions'); if(p) await p.manage(); }catch(err){ noteSysteme('Ouvre le menu Permissions de la page pour autoriser Claude.'); } });
@@ -6484,7 +6491,7 @@ async function executer(b, dernier, sel, tour){
     sauver();
     signaler({type:'fin', id, texte:sansAct(r.texte), label});
     return r.texte;
-  }catch(e){ gererErreur(e, b); signaler({type:'fin', id, texte:(e && e.text) || '', label:'', erreur:true}); return null; }
+  }catch(e){ gererErreur(e, b, tour.vu); signaler({type:'fin', id, texte:(e && e.text) || '', label:'', erreur:true}); return null; }
   finally{ etatEnvoi(false); TU.ctl = null; }
 }
 function sauver(){ memo.set(K('discussion'), JSON.stringify(TU.tours.slice(-30))); }
