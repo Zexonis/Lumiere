@@ -5796,6 +5796,18 @@ async function detecterMoteur(){
   initMicro();
   finDetection();
   if(memo.get(K('tuteur')) === '1' && !app.classList.contains('avec-notes')) ouvrirTuteur(true);
+  if(TU.env === 'fichier' && TU.claude.classe) rafraichirPermis();
+}
+/* les modèles qu'un code permet viennent du relais (un code vip en a plus qu'un code de classe) :
+   relus à chaque ouverture, sans frais, le relais répondant lui-même */
+async function rafraichirPermis(){
+  try{
+    const permis = await verifierCodeClasse(TU.claude.classe);
+    if(!permis.length) return;
+    TU.claude.permis = permis; ecrireCle('claude-permis', JSON.stringify(permis));
+    if(parClasse() && !permis.includes(TU.claude.modele)){ TU.claude.modele = permis[0]; memo.set(K('claude-modele'), TU.claude.modele); }
+    majMoteurUI();
+  }catch(e){}
 }
 
 /* ---------- l'en-tête : fournisseur, modèle, modèle réellement utilisé ---------- */
