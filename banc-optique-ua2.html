@@ -1269,6 +1269,49 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .tu-energie-cases i{position:relative;display:block;width:26px;height:8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
 .tu-energie-cases b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);box-shadow:0 0 6px var(--accent)}
 .tu-energie.vide .tu-energie-txt{color:var(--accent)}
+/* Convergence à plusieurs : la puce du groupe (une étoile, une branche par personne), les demandes, la liste du groupe */
+button.cv-duo{border:0;background:none;color:inherit;font:inherit;font-weight:700;padding:3px 6px;margin:-3px -6px;border-radius:9px;cursor:pointer}
+button.cv-duo:hover{background:var(--panel-2)}
+.cv-paire,.cv-foule{display:inline-flex;align-items:center;gap:6px}
+.cv-paire[hidden],.cv-foule[hidden]{display:none}
+.cv-etoile{width:22px;height:22px;flex:none;overflow:visible}
+.cv-etoile line{stroke-width:2.4;stroke-linecap:round;stroke-dasharray:7;animation:cv-rayon .6s ease-out both}
+.cv-etoile circle{fill:currentColor}
+@keyframes cv-rayon{from{stroke-dashoffset:7}}
+.cv-pt{display:block;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);flex:none}
+.cv-file{list-style:none;margin:0;padding:0;width:100%;display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
+.cv-file li{display:flex;align-items:center;gap:8px}
+.cv-fn{flex:1;min-width:0;overflow-wrap:anywhere;text-align:left;font-weight:700}
+.cv-voile .cv-fn{color:#F3F5FB}
+.cv-file .cv-btn{padding:5px 12px;font-size:13.5px}
+.cv-portes{position:fixed;z-index:309;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(420px,calc(100vw - 24px));display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25))}
+.cv-portes-t{margin:0;font-weight:700}
+.cv-portes .btn{font-size:13px;padding:4px 11px}
+.cv-portes .btn.plein{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.cv-portes .cv-actions{justify-content:flex-start}
+.cv-gpop{position:fixed;z-index:306;width:min(340px,calc(100vw - 24px));max-height:min(70vh,560px);overflow:auto;display:flex;flex-direction:column;gap:10px;padding:12px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25));font-size:14px}
+.cv-gpop .lib{margin:0;font:600 11.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.cv-gcode{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;color:var(--ink-2)}
+.cv-gcode b{font:700 17px var(--f-mono);letter-spacing:.12em;color:var(--ink)}
+.cv-gcode small{flex-basis:100%;color:var(--ink-3);font-size:12.5px}
+.cv-gpop .btn{font-size:13px;padding:4px 11px}
+.cv-gl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.cv-gl li{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 8px}
+.cv-gl li .cv-pt{align-self:center}
+.cv-gl small{color:var(--ink-3);font:600 11.5px var(--f-mono);letter-spacing:.02em}
+.cv-gl li.parti{opacity:.55}
+.cv-gsec{display:flex;flex-direction:column;gap:6px;padding-top:9px;border-top:1px solid var(--line)}
+.cv-gsec > p{margin:0;font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.cv-gsec small{color:var(--ink-3);font-size:12.5px}
+.cv-seg{display:flex;flex-wrap:wrap;gap:6px}
+.cv-seg .btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.cv-gpop .ctrl{display:flex;justify-content:flex-end}
+.cv-liste li.lui.foule{border-left:3px solid var(--c)}
+.fil button .cv-pts{position:absolute;inset:0;pointer-events:none}
+.fil button .cv-pts i{position:absolute;left:2.5px;width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px var(--panel)}
+.fil button .cv-pts i:nth-child(1){top:calc(50% - 12.5px)}
+.fil button .cv-pts i:nth-child(2){top:calc(50% + 6.5px)}
+@media (prefers-reduced-motion: reduce){ .cv-etoile line{animation:none} }
 </style>
 
 <div class="app" id="app">
@@ -8601,7 +8644,9 @@ function suivi(o){
   if(SUIVI){ SUIVI.remove(); SUIVI = null; }
   if(!o) return;
   SUIVI = H('<div class="tu-suivi"><span></span><button type="button" class="tu-btn"></button></div>');
-  SUIVI.querySelector('span').textContent = o.prive ? 'Conversation privée : « ' + o.nom + ' » ne la voit plus.' : '« ' + o.nom + ' » suit ta conversation.';
+  /* o.qui : les noms déjà entre guillemets (plusieurs personnes peuvent suivre le même tuteur) */
+  const qui = o.qui || '« ' + o.nom + ' »', pl = !!o.plusieurs;
+  SUIVI.querySelector('span').textContent = o.prive ? 'Conversation privée : ' + qui + (pl ? ' ne la voient plus.' : ' ne la voit plus.') : qui + (pl ? ' suivent ta conversation.' : ' suit ta conversation.');
   const bt = SUIVI.querySelector('button');
   bt.textContent = o.prive ? 'Partager à nouveau' : 'Conversation privée';
   bt.addEventListener('click', o.basculer);
@@ -9378,16 +9423,21 @@ const Sablier = (() => {
 
 /* ====== _commun/convergence.js ====== */
 /* ======================================================================
-   Convergence (DESIGN-convergence.md) : deux étudiants suivent l'atelier
-   ensemble, chacun sur son appareil, réunis par un code de séance.
-   Chacun se promène où il veut ; un repère commun marque l'étape du duo
-   (« Prêt·e à continuer », « Recentrer »). Messages et croquis passent
-   par la séance ; rien n'est gardé après elle.
+   Convergence (DESIGN-convergence.md) : des étudiants suivent l'atelier
+   ensemble, chacun sur son appareil, réunis par un code de séance : à
+   deux (le duo) ou à plusieurs (le groupe, jusqu'à MAX_GROUPE).
+   Chacun se promène où il veut ; un repère commun marque l'étape du
+   groupe (« Prêt·e à continuer », « Recentrer »). Messages et croquis
+   passent par la séance ; rien n'est gardé après elle.
    Hors de Claude seulement (site Lumière ou fichier) : le relais est
    Firebase (Realtime Database, connexion anonyme), chargé au premier
    clic. Une séance = /cv/<code> : membres/<uid> (la présence, effacée à
-   la déconnexion) et flux/<id> (messages et croquis, effacés par qui les
-   reçoit : l'effacement sert d'accusé de réception).
+   la déconnexion) et flux/<id> (messages et croquis). À deux, un message
+   va à l'autre, qui l'efface en le recevant (l'accusé de réception) ; à
+   plusieurs, il va au groupe (pour:'*') et son auteur l'efface au bout
+   d'une minute, ou en partant.
+   La porte : l'hôte accueille chaque nouveau venu (ou tous d'office) ;
+   s'il s'absente, le plus ancien du groupe la garde à sa place.
    ====================================================================== */
 const Convergence = (() => {
 const LUMIERE = 'https://zexonis.github.io/Lumiere/';
@@ -9401,6 +9451,9 @@ const RAIES = {C:['656,3', '#FF5A4A'], d:['587,6', '#FFD23F'], e:['546,1', '#9BF
 const NOMS = ['Photon', 'Prisme', 'Lumen', 'Iris', 'Halo', 'Zénith', 'Aurore', 'Spectre', 'Éclat', 'Quanta'];
 const ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const CLE_SEANCE = P + '-convergence';      // sessionStorage : la séance survit au rechargement de l'onglet
+/* une classe entière tient dans une séance (le forfait gratuit de Firebase : 100 connexions simultanées pour tout le projet) */
+const MAX_GROUPE = 32;
+const VIE_GROUPE = 60000;                   // un message au groupe reste une minute dans le relais
 const dansClaude = () => !!(window.claude && typeof window.claude.use === 'function');
 const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const propre = (x, max) => typeof x === 'string' ? x.replace(/[\u0000-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, ' ').trim().slice(0, max) : '';
@@ -9412,14 +9465,38 @@ const nomDe = p => propre(p && p.nom, 24) || 'Quelqu’un';
 const propreTexte = (x, max) => typeof x === 'string' ? x.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, '').slice(0, max) : '';
 const aTuteur = () => typeof Tuteur !== 'undefined' && Tuteur.peutJSON();
 /* ce que mon tuteur fait dans la séance : propre (une IA répond ici), copie (copier-coller, par exemple un abonnement Claude),
-   mien (copier-coller, sans relais voulu), relais (je suis celui de l'autre) ; S.choix vient de la puce « Tuteur » de la barre */
+   mien (copier-coller, sans relais voulu), relais (je suis celui de quelqu'un) ; S.choix vient de la puce « Tuteur » de la barre */
 function monTuteur(){ if(S.choix === 'suivre') return 'relais'; if(aTuteur()) return 'propre'; return S.choix === 'mien' ? 'mien' : 'copie'; }
 const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 
 const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', code:'', role:'', nom:'', raie:'F',
   etat:'repos',                              // repos · attente (hôte) · demande (invité) · lie
-  part:'', pNom:'', pRaie:'F', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-  repere:{e:'', n:0, auto:false}, pret:0, desab:[], envois:{}, nonLus:0, pTuteur:'', pMiroir:null, choix:'auto'};
+  membres:{},                                // uid → {nom, raie, role, depuis, la (true, false, ou null : pas encore constaté), ecran, pret, tuteur, suit, miroir, v, vu}
+  depuis:0,                                  // quand j'ai rejoint la convergence (l'ordre du groupe)
+  admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false, demandes:[], porte:'', vuN:0,
+  repere:{e:'', n:0, auto:false, par:''}, pret:0, desab:[], envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'',
+  decalage:0, entree:0};
+const maintenant = () => Date.now() + S.decalage;   // l'heure du relais
+
+/* ---------- le groupe : qui est là, et dans quel ordre ---------- */
+/* l'hôte d'abord, puis du plus ancien au plus récent ; le premier présent garde la porte et départage */
+const ordre = (a, b) => (a.role === 'hote' ? 0 : 1) - (b.role === 'hote' ? 0 : 1) || (a.depuis || 9e15) - (b.depuis || 9e15) || (a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0);
+const fiche = u => Object.assign({uid:u}, u === S.uid ? {role:S.role, depuis:S.depuis} : S.membres[u]);
+const presents = () => Object.keys(S.membres).filter(u => S.membres[u].la).map(fiche).sort(ordre).map(x => x.uid);
+const rang = () => presents().concat(S.uid).map(fiche).sort(ordre).map(x => x.uid);
+const estPilote = () => S.etat === 'lie' && rang()[0] === S.uid;
+const nomU = u => u === S.uid ? S.nom : S.membres[u] ? S.membres[u].nom : 'Quelqu’un';
+const raieU = u => u === S.uid ? S.raie : S.membres[u] ? S.membres[u].raie : 'F';
+const estLie = p => p.lie === true || (!(p.v >= 2) && p.etat === 'lie');
+/* l'autre du duo, même parti un moment : le plus récemment vu */
+function dernierVu(){ let m = ''; Object.keys(S.membres).forEach(u => { if(!m || (S.membres[u].vu || 0) > (S.membres[m].vu || 0)) m = u; }); return m; }
+function listeNoms(l){
+  l = l.map(n => '« ' + n + ' »');
+  if(l.length > 4) return l.slice(0, 3).join(', ') + ' et ' + (l.length - 3) + ' autres';
+  return l.length < 2 ? l.join('') : l.slice(0, -1).join(', ') + ' et ' + l[l.length - 1];
+}
+const MOTS = ['', '', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix'];
+const bravo = n => n <= 10 ? 'Bravo à vous ' + MOTS[n] + ' !' : 'Bravo à tout le groupe !';
 
 /* ---------- le relais ---------- */
 let chargement = null;
@@ -9445,35 +9522,47 @@ async function connecter(){
   S.uid = S.auth.currentUser.uid;
 }
 function moi(){
-  /* l'hôte qui accepte s'affiche déjà « lie » : c'est le signal que l'invité attend pour confirmer */
-  return {v:1, nom:S.nom, raie:S.raie, role:S.role, etat:S.accepte ? 'lie' : S.etat, avec:S.part || S.accepte || '', refus:S.refusUid, at:P,
-    ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto}, pret:S.pret,
-    tuteur:monTuteur(), t:Date.now()};
+  /* « etat:'lie' » dès qu'un accueil est en cours, et « avec » : le signal qu'attend un invité de la version à deux ; « lie » dit la vérité */
+  const accueil = Object.keys(S.admis).length > 0;
+  return {v:2, nom:S.nom, raie:S.raie, role:S.role, etat:S.etat === 'lie' || accueil ? 'lie' : S.etat, lie:S.etat === 'lie',
+    avec:S.avec, refus:S.refusUid, refuses:S.refuses, admis:S.admis, ouvert:S.ouvert, plein:S.plein, depuis:S.depuis, at:P,
+    ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto, par:S.repere.par || ''}, pret:S.pret,
+    tuteur:monTuteur(), suit:maCible(), t:Date.now()};
 }
 let tPres = null;
 function publier(){
   if(!S.refMoi) return;
   clearTimeout(tPres);
   /* update et non set : le miroir du tuteur (membres/<uid>/miroir) vit à côté de la présence */
-  tPres = setTimeout(() => { S.F.update(S.refMoi, moi()).catch(() => toast('Le relais ne répond plus : vérifie ta connexion.')); }, 60);
+  tPres = setTimeout(() => { if(S.refMoi) S.F.update(S.refMoi, moi()).catch(() => toast('Le relais ne répond plus : vérifie ta connexion.')); }, 60);
 }
 function sauverSeance(){
   try{
-    if(S.etat === 'lie') sessionStorage.setItem(CLE_SEANCE, JSON.stringify({code:S.code, role:S.role, nom:S.nom, raie:S.raie, part:S.part, pNom:S.pNom, pRaie:S.pRaie, repere:S.repere, pret:S.pret}));
-    else sessionStorage.removeItem(CLE_SEANCE);
+    if(S.etat === 'lie'){
+      const m = {};
+      Object.keys(S.membres).slice(-MAX_GROUPE * 2).forEach(u => { const x = S.membres[u]; m[u] = {nom:x.nom, raie:x.raie, role:x.role || 'invite', depuis:x.depuis || 0}; });
+      sessionStorage.setItem(CLE_SEANCE, JSON.stringify({v:2, code:S.code, role:S.role, nom:S.nom, raie:S.raie, depuis:S.depuis, membres:m,
+        ouvert:S.ouvert, choix:S.choix, cible:S.cible, repere:S.repere, pret:S.pret}));
+    } else sessionStorage.removeItem(CLE_SEANCE);
   }catch(e){}
 }
 
 async function entrer(role, code, reprise){
   S.role = role; S.code = code; S.base = 'cv/' + code.toLowerCase();
-  if(!reprise){ S.etat = role === 'hote' ? 'attente' : 'demande'; S.part = ''; S.repere = {e:'', n:0, auto:false}; S.pret = 0; }
+  if(!reprise){
+    S.etat = role === 'hote' ? 'attente' : 'demande'; S.membres = {}; S.repere = {e:'', n:0, auto:false, par:''}; S.pret = 0;
+    S.depuis = role === 'hote' ? Date.now() : 0;
+  }
   try{ await connecter(); }
   catch(e){ etatVoile(e && e.code === 'sdk' ? 'Impossible de charger le relais : vérifie ta connexion internet.' : 'Le relais refuse la connexion. Réessaie dans un moment.'); return false; }
   const F = S.F, db = S.db;
   S.refMoi = F.ref(db, S.base + '/membres/' + S.uid);
   try{ await F.onDisconnect(S.refMoi).remove(); await F.set(S.refMoi, moi()); }
   catch(e){ etatVoile('Le relais a refusé d’ouvrir la séance.'); S.refMoi = null; return false; }
+  /* les messages au groupe d'avant mon arrivée (ou d'avant un rechargement) ne me concernent pas */
+  S.entree = Date.now();
   const perdu = () => toast('La séance a été coupée par le relais. Quitte, puis recommence.');
+  S.desab.push(F.onValue(F.ref(db, '.info/serverTimeOffset'), s => { S.decalage = +s.val() || 0; }));
   S.desab.push(F.onValue(F.ref(db, S.base + '/membres'), s => surMembres(s.val() || {}), perdu));
   S.desab.push(F.onChildAdded(F.ref(db, S.base + '/flux'), s => surFlux(s.key, s.val()), perdu));
   S.desab.push(F.onChildRemoved(F.ref(db, S.base + '/flux'), s => surRetrait(s.key, s.val())));
@@ -9482,98 +9571,166 @@ async function entrer(role, code, reprise){
 async function quitter(){
   S.desab.forEach(f => { try{ f(); }catch(e){} }); S.desab = [];
   if(MIR.actif || (typeof Tuteur !== 'undefined' && Tuteur.enRelais())){ MIR.actif = false; Tuteur.relais(null); Tuteur.suivi(null); Tuteur.duo(null); }
+  Object.assign(MIR, {suiveurs:'', suit:''});
+  Object.keys(S.auGroupe).forEach(k => { clearTimeout(S.auGroupe[k]); if(S.F) S.F.remove(S.F.ref(S.db, S.base + '/flux/' + k)).catch(() => {}); });
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
-  Object.assign(S, {etat:'repos', role:'', code:'', base:'', part:'', pNom:'', pLa:false, pEcran:'', pPret:0, accepte:'', demandeur:'', hote:'', refuse:{}, refusUid:'',
-    repere:{e:'', n:0, auto:false}, pret:0, envois:{}, nonLus:0, pTuteur:'', pMiroir:null, choix:'auto'});
+  Object.assign(S, {etat:'repos', role:'', code:'', base:'', membres:{}, depuis:0, admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false,
+    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0});
   sauverSeance(); majRail();
-  Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad();
+  Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
 
 /* ---------- la poignée de main ---------- */
 function surMembres(m){
   const autres = Object.entries(m).filter(([u]) => u !== S.uid).map(([u, p]) => Object.assign({}, p && typeof p === 'object' ? p : {}, {uid:u}));
-  if(S.etat === 'lie'){
-    const p = autres.find(x => x.uid === S.part);
-    if(S.pLa === null) S.pLa = !!p;                 // après un rechargement : on constate, sans annoncer
-    else if(!p && S.pLa){ S.pLa = false; toast('« ' + S.pNom + ' » a quitté la séance.'); }
-    else if(p && !S.pLa){ S.pLa = true; toast('« ' + S.pNom + ' » est de retour.'); }
-    if(!p){ majBarre(); majRelais(); return; }
-    S.pEcran = typeof p.ecran === 'string' ? p.ecran : '';
-    S.pPret = typeof p.pret === 'number' ? p.pret : 0;
-    S.pTuteur = ['propre', 'copie', 'mien', 'relais'].includes(p.tuteur) ? p.tuteur : '';
-    S.pMiroir = p.miroir && typeof p.miroir === 'object' ? p.miroir : null;
-    accorderRepere(p);
-    verifierPrets();
-    majBarre();
-    majRelais();
-    return;
-  }
+  if(S.etat === 'lie'){ surGroupe(autres); return; }
   if(S.role === 'hote') hoteVoit(autres); else if(S.role === 'invite') inviteVoit(autres);
 }
-function hoteVoit(autres){
-  if(S.accepte){
-    const g = autres.find(x => x.uid === S.accepte);
-    if(!g){ S.accepte = ''; S.demandeur = ''; publier(); Rac.partir(); montrerDemande(null); etatVoile('L’autre personne est partie. En attente…'); return; }
-    if(g.etat === 'lie' && g.avec === S.uid) lier(g);
+/* la fiche d'un membre, d'après sa présence */
+function noter(p){
+  const x = S.membres[p.uid] || (S.membres[p.uid] = {la:false});
+  Object.assign(x, {nom:nomDe(p), raie:raieOk(p.raie), role:p.role === 'hote' ? 'hote' : 'invite', depuis:+p.depuis || 0, v:+p.v || 1,
+    ecran:typeof p.ecran === 'string' ? p.ecran : '', pret:typeof p.pret === 'number' ? p.pret : 0,
+    tuteur:['propre', 'copie', 'mien', 'relais'].includes(p.tuteur) ? p.tuteur : '', suit:typeof p.suit === 'string' ? p.suit : null,
+    miroir:p.miroir && typeof p.miroir === 'object' ? p.miroir : null, vu:Date.now()});
+  return x;
+}
+function surGroupe(autres){
+  const lies = autres.filter(p => estLie(p) && p.at === P), vus = {}, arrives = [];
+  lies.forEach(p => {
+    vus[p.uid] = true;
+    const avant = S.membres[p.uid] ? S.membres[p.uid].la : undefined, x = noter(p);
+    x.la = true;
+    if(avant === undefined) arrives.push(x.nom);           // null : après un rechargement, on constate sans annoncer
+    else if(avant === false) toast('« ' + x.nom + ' » est de retour.');
+  });
+  Object.keys(S.membres).forEach(u => {
+    if(vus[u]) return;
+    const x = S.membres[u];
+    if(x.la === true) toast('« ' + x.nom + ' » a quitté la séance.');
+    x.la = false;
+  });
+  if(arrives.length){
+    if(!voile) toast(listeNoms(arrives) + (arrives.length > 1 ? ' rejoignent' : ' rejoint') + ' la convergence. Vous êtes ' + (presents().length + 1) + '.');
+    sauverSeance();
+  }
+  lies.forEach(accorderRepere);
+  garderPorte(autres);
+  verifierPrets();
+  majBarre();
+  majRelais();
+}
+/* la porte, une fois lié : seul le premier du groupe accueille (l'hôte, ou le plus ancien s'il s'absente) */
+function garderPorte(autres){
+  const ici = {}; autres.forEach(p => { ici[p.uid] = p; });
+  let change = false;
+  /* l'accueil est fait : le nouveau venu est lié, ou il est reparti */
+  Object.keys(S.admis).forEach(u => { const p = ici[u]; if(!p || estLie(p)){ delete S.admis[u]; change = true; } });
+  if(!estPilote()){
+    if(S.plein){ S.plein = false; change = true; }
+    if(change) publier();
+    S.demandes = []; montrerDemandes([]);
     return;
   }
-  if(S.demandeur && !autres.some(x => x.uid === S.demandeur)){ S.demandeur = ''; Rac.partir(); montrerDemande(null); etatVoile('L’autre personne est partie. En attente…'); }
-  if(S.demandeur) return;
-  const d = autres.find(x => x.role === 'invite' && x.etat === 'demande' && !S.refuse[x.uid]);
-  if(!d) return;
-  if(d.at !== P){ etatVoile('« ' + nomDe(d) + ' » a ouvert un autre atelier : il faut le même des deux côtés.'); return; }
-  S.demandeur = d.uid; Rac.arriver(couleur(d.raie)); montrerDemande(d);
+  const plein = presents().length + 1 >= MAX_GROUPE;
+  if(plein !== S.plein){ S.plein = plein; change = true; }
+  let ds = plein ? [] : autres.filter(p => p.role === 'invite' && p.etat === 'demande' && p.at === P && !S.refuses[p.uid] && !S.admis[p.uid]);
+  if(S.ouvert && ds.length){ ds.forEach(d => { S.admis[d.uid] = 1; S.avec = d.uid; }); ds = []; change = true; }
+  if(change) publier();
+  S.demandes = ds;
+  montrerDemandes(ds);
+}
+function hoteVoit(autres){
+  const ici = {}; autres.forEach(p => { ici[p.uid] = p; });
+  /* un accueilli a confirmé : la convergence a lieu */
+  const conf = autres.filter(p => S.admis[p.uid] && estLie(p) && p.at === P);
+  if(conf.length){ lier(conf); return; }
+  let parti = false;
+  Object.keys(S.admis).forEach(u => { if(!ici[u]){ delete S.admis[u]; parti = true; } });
+  if(parti) publier();
+  const ds = autres.filter(p => p.role === 'invite' && p.etat === 'demande' && !S.refuses[p.uid]), bons = ds.filter(d => d.at === P);
+  Rac.synchro(bons.map(d => ({id:d.uid, c:couleur(d.raie)})));
+  const avant = S.demandes.length;
+  S.demandes = bons.filter(d => !S.admis[d.uid]);
+  montrerDemandes(S.demandes);
+  if(bons.length) return;
+  const ailleurs = ds.find(d => d.at !== P);
+  if(ailleurs) etatVoile('« ' + nomDe(ailleurs) + ' » a ouvert un autre atelier : il faut le même des deux côtés.');
+  else if(avant || parti) etatVoile('L’autre personne est partie. En attente…');
 }
 function inviteVoit(autres){
-  const h = autres.find(x => x.role === 'hote');
-  if(S.hote && !h){ S.hote = ''; Rac.partir(); etatVoile('L’hôte a fermé la séance.'); return; }
-  if(!h) return;
-  if(h.at !== P){ etatVoile('Cette séance est ouverte sur un autre atelier : ouvre le même que l’hôte.'); return; }
-  if(!S.hote){ S.hote = h.uid; Rac.arriver(couleur(h.raie)); etatVoile('Séance trouvée. On attend que « ' + nomDe(h) + ' » accepte…'); }
-  if(h.refus === S.uid){ etatVoile('« ' + nomDe(h) + ' » a refusé.'); return; }
-  if(h.etat === 'lie' && h.avec && h.avec !== S.uid){ etatVoile('Séance complète : « ' + nomDe(h) + ' » est déjà avec quelqu’un.'); return; }
-  if(h.etat === 'lie' && h.avec === S.uid) lier(h);
+  /* la porte : l'hôte, ou à défaut le plus ancien du groupe */
+  const cands = autres.filter(p => p.role === 'hote' || estLie(p)).sort(ordre), porte = cands[0];
+  if(!porte){ if(S.porte){ S.porte = ''; S.vuN = 0; Rac.synchro([]); etatVoile('L’hôte a fermé la séance.'); } return; }
+  if(porte.at !== P){ Rac.synchro([]); etatVoile('Cette séance est ouverte sur un autre atelier : ouvre le même que l’hôte.'); return; }
+  const memes = cands.filter(p => p.at === P), vrais = memes.filter(p => p.lie === true);
+  /* le groupe déjà réuni pousse au centre ; une seule personne arrive du bord, comme à deux */
+  Rac.synchro(memes.map(p => ({id:p.uid, c:couleur(p.raie), relie:p.lie === true && vrais.length >= 2})));
+  const neuf = S.porte !== porte.uid || S.vuN !== memes.length;
+  S.porte = porte.uid; S.vuN = memes.length;
+  if(memes.some(p => (p.admis && p.admis[S.uid]) || (p.etat === 'lie' && p.avec === S.uid))){ lier(memes); return; }
+  if(memes.some(p => (p.refuses && p.refuses[S.uid]) || p.refus === S.uid)){ etatVoile('« ' + nomDe(porte) + ' » a refusé.'); return; }
+  if(porte.plein){ etatVoile('Séance complète : ' + MAX_GROUPE + ' personnes y sont déjà.'); return; }
+  if(!(porte.v >= 2) && porte.etat === 'lie' && porte.avec && porte.avec !== S.uid){ etatVoile('Séance complète : « ' + nomDe(porte) + ' » est déjà avec quelqu’un.'); return; }
+  if(neuf) etatVoile(vrais.length >= 2 ? 'Séance trouvée : ' + vrais.length + ' personnes convergent déjà. On attend que « ' + nomDe(porte) + ' » t’accueille…'
+    : 'Séance trouvée. On attend que « ' + nomDe(porte) + ' » accepte…');
 }
-function accepter(d){
-  montrerDemande(null);
-  S.accepte = d.uid; publier();
-  etatVoile('Confirmation de « ' + nomDe(d) + ' »…');
+function accepter(ds){
+  ds.forEach(d => { S.admis[d.uid] = 1; S.avec = d.uid; });
+  publier();
+  S.demandes = S.demandes.filter(d => !S.admis[d.uid]);
+  montrerDemandes(S.demandes);
+  if(S.etat !== 'lie') etatVoile('Confirmation de ' + listeNoms(ds.map(nomDe)) + '…');
 }
 function refuser(d){
-  S.refuse[d.uid] = true; S.refusUid = d.uid; S.demandeur = ''; publier();
-  montrerDemande(null); Rac.partir(); etatVoile('Refusé. En attente de quelqu’un d’autre…');
+  S.refuses[d.uid] = 1; S.refusUid = d.uid; publier();
+  S.demandes = S.demandes.filter(x => x.uid !== d.uid);
+  montrerDemandes(S.demandes);
+  if(S.etat !== 'lie'){ Rac.retirer(d.uid); if(!S.demandes.length && !Object.keys(S.admis).length) etatVoile('Refusé. En attente de quelqu’un d’autre…'); }
 }
-/* la convergence n'a lieu que lorsque les deux pages l'ont confirmée */
-function lier(p, sansAnim){
-  if(S.etat === 'lie' && S.part === p.uid && !sansAnim) return;
-  S.etat = 'lie'; S.part = p.uid; S.accepte = ''; S.pNom = nomDe(p); S.pRaie = raieOk(p.raie); S.pLa = true;
-  S.pEcran = typeof p.ecran === 'string' ? p.ecran : '';
+function basculerPorte(ouvert){
+  S.ouvert = ouvert; publier(); sauverSeance(); majGpop();
+  toast(ouvert ? 'Porte ouverte : qui entre le code rejoint sans attendre.' : 'Sur demande : tu accueilles chaque nouveau venu.');
+}
+/* la convergence n'a lieu que lorsque les deux côtés l'ont confirmée ; ps : ceux qui la font avec moi */
+function lier(ps){
+  S.etat = 'lie'; if(!S.depuis) S.depuis = Date.now();
+  ps.forEach(p => { noter(p).la = true; });
+  if(S.role === 'invite'){ const a = ps.find(p => p.admis && p.admis[S.uid]) || ps.find(p => p.avec === S.uid) || ps[0]; S.avec = a ? a.uid : ''; }
+  else if(ps.length === 1) S.avec = ps[0].uid;
   if(!S.repere.n){
-    if(S.role === 'hote') S.repere = {e:ICI && !ICI.hors ? ICI.id : PARCOURS[0].id, n:1, auto:false};
-    else if(p.repere && ecran(p.repere.e)) S.repere = {e:p.repere.e, n:p.repere.n | 0, auto:false};
+    if(S.role === 'hote') S.repere = {e:ICI && !ICI.hors ? ICI.id : PARCOURS[0].id, n:1, auto:false, par:S.uid};
+    else ps.forEach(accorderRepere);
   }
   publier(); sauverSeance();
-  const fin = () => { fermerVoile(); setTimeout(() => Rac.arreter(), 950); montrerBarre(); };
-  if(sansAnim){ fin(); return; }
+  demandesVoile([]); demandesPage([]);
+  Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis)));
   etatVoile('Convergence…');
-  Rac.relier(() => { fin(); toast('Convergence établie avec « ' + S.pNom + ' ». Chacun va où il veut ; le repère garde votre étape.'); });
+  Rac.relier(() => {
+    fermerVoile(); setTimeout(() => Rac.arreter(), 950); montrerBarre();
+    /* le groupe tel qu'il est au bout de l'animation : d'autres accueillis ont pu confirmer entre-temps */
+    const la = presents(), l = la.length ? la : ps.map(p => p.uid);
+    toast((l.length <= 3 ? 'Convergence établie avec ' + listeNoms(l.map(nomU)) : 'Convergence établie : vous êtes ' + (l.length + 1)) + '. Chacun va où il veut ; le repère garde votre étape.');
+  });
 }
 
-/* ---------- le repère commun : le plus récent gagne, l'hôte départage ---------- */
+/* ---------- le repère commun : le plus récent gagne ; à égalité, le premier du groupe départage ---------- */
 function accorderRepere(p){
   const r = p.repere;
   if(!r || typeof r.n !== 'number' || typeof r.e !== 'string' || !ecran(r.e)) return;
-  const gagne = r.n > S.repere.n || (r.n === S.repere.n && r.e !== S.repere.e && p.role === 'hote');
+  const par = typeof r.par === 'string' && r.par ? r.par : p.uid, mien = S.repere.par || S.uid, ordreG = rang();
+  const cle = u => { const i = ordreG.indexOf(u); return i < 0 ? 1e6 : i; };
+  const gagne = r.n > S.repere.n || (r.n === S.repere.n && r.e !== S.repere.e && (cle(par) < cle(mien) || (cle(par) === cle(mien) && par < mien)));
   if(!gagne) return;
   const premier = !S.repere.n;                      // le premier repère de la séance arrive sans avis
-  S.repere = {e:r.e, n:r.n, auto:!!r.auto};
+  S.repere = {e:r.e, n:r.n, auto:!!r.auto, par};
   publier(); sauverSeance();
-  if(!premier) toast(r.auto ? 'Repère avancé : « ' + titreDe(r.e) + ' ».' : '« ' + S.pNom + ' » a placé le repère sur « ' + titreDe(r.e) + ' ».', ICI && ICI.id !== r.e ? 'Recentrer' : '', recentrer);
+  if(!premier) toast(r.auto ? 'Repère avancé : « ' + titreDe(r.e) + ' ».' : '« ' + nomU(par) + ' » a placé le repère sur « ' + titreDe(r.e) + ' ».', ICI && ICI.id !== r.e ? 'Recentrer' : '', recentrer);
 }
 function placerRepere(){
   if(!ICI || ICI.hors) return;
-  S.repere = {e:ICI.id, n:S.repere.n + 1, auto:false}; S.pret = 0;
+  S.repere = {e:ICI.id, n:S.repere.n + 1, auto:false, par:S.uid}; S.pret = 0;
   publier(); sauverSeance(); majBarre();
   toast('Repère placé sur « ' + ICI.titre + ' ».');
 }
@@ -9582,25 +9739,35 @@ function basculerPret(){
   S.pret = S.pret === S.repere.n ? 0 : S.repere.n;
   publier(); sauverSeance(); majBarre(); verifierPrets();
 }
-/* les deux sont prêts : seule la page de l'hôte avance le repère, pour que les deux pages s'accordent */
+/* tout le monde est prêt : seule la page du premier du groupe avance le repère, pour que toutes s'accordent */
 function verifierPrets(){
-  if(S.role !== 'hote' || !S.repere.n || S.pret !== S.repere.n || S.pPret !== S.repere.n) return;
+  if(!estPilote() || !S.repere.n || S.pret !== S.repere.n) return;
+  const la = presents();
+  if(!la.length || !la.every(u => S.membres[u].pret === S.repere.n)) return;
   const i = PARCOURS.findIndex(e => e.id === S.repere.e), suiv = PARCOURS[i + 1];
   S.pret = 0;
-  if(!suiv){ publier(); majBarre(); toast('Bout du parcours atteint ensemble. Bravo à vous deux !'); return; }
-  S.repere = {e:suiv.id, n:S.repere.n + 1, auto:true};
+  if(!suiv){ publier(); majBarre(); toast('Bout du parcours atteint ensemble. ' + bravo(la.length + 1)); return; }
+  S.repere = {e:suiv.id, n:S.repere.n + 1, auto:true, par:S.uid};
   publier(); sauverSeance(); majBarre();
   toast('Repère avancé : « ' + suiv.titre + ' ».', ICI && ICI.id !== suiv.id ? 'Recentrer' : '', recentrer);
 }
 
 /* ======================================================================
-   Les racines : deux arbres qui poussent l'un vers l'autre. Leurs nœuds
-   dérivent, de fines lignes les relient et se défont (le flux). Les
-   pointes gardent un écart tant que les deux pages n'ont pas confirmé.
+   Les racines : un arbre par personne, qui pousse vers le centre. À deux,
+   de la gauche et de la droite ; à plusieurs, chacun de son côté (le
+   haut, puis les diagonales…). Leurs nœuds dérivent, de fines lignes les
+   relient et se défont (le flux). Chaque pointe garde un écart tant que
+   la convergence n'est pas confirmée ; un groupe déjà réuni touche le
+   centre, et le nouveau venu le rejoint.
    ====================================================================== */
 const Rac = (() => {
-  let cv = null, ctx = null, W = 0, H0 = 0, dpr = 1, raf = 0, dernier = 0, arbres = [], etat = 'repos', lien = 0, pulse = -1, fini = null;
+  let cv = null, ctx = null, W = 0, H0 = 0, dpr = 1, raf = 0, dernier = 0, arbres = [], etat = 'repos', pulse = -1, fini = null;
   const hasard = (a, b) => a + Math.random() * (b - a);
+  const MAX_ARBRES = 24;
+  /* les directions d'arrivée (depuis le centre) : gauche, droite, le haut, puis les diagonales du haut, de plus en plus serrées ;
+     jamais d'en bas, où est la carte */
+  const PLACES = [Math.PI, 0];
+  for(let L = 1; PLACES.length < MAX_ARBRES; L++) for(let k = 1; k < 2 ** L && PLACES.length < MAX_ARBRES; k += 2) PLACES.push(Math.PI + k * Math.PI / 2 ** L);
   function taille(){
     const r = cv.getBoundingClientRect(), w0 = W, h0 = H0;
     W = r.width; H0 = r.height; dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -9609,29 +9776,42 @@ const Rac = (() => {
   }
   const centre = () => ({x:W / 2, y:H0 * 0.36});
   const ecart = () => Math.max(36, Math.min(W, H0) * 0.04);
+  /* où une racine entre : le rayon du centre dans sa direction, jusqu'au bord (un peu au-delà), décalé au hasard le long du bord */
+  function bord(a){
+    const C = centre(), dx = Math.cos(a), dy = Math.sin(a);
+    const tx = dx > 1e-6 ? (W + 12 - C.x) / dx : dx < -1e-6 ? (-12 - C.x) / dx : Infinity;
+    const ty = dy > 1e-6 ? (H0 + 12 - C.y) / dy : dy < -1e-6 ? (-12 - C.y) / dy : Infinity;
+    const t = Math.min(tx, ty), p = {x:C.x + dx * t, y:C.y + dy * t};
+    if(tx <= ty) p.y = Math.max(-12, Math.min(H0 + 12, p.y + hasard(-0.16, 0.16) * H0));
+    else p.x = Math.max(-12, Math.min(W + 12, p.x + hasard(-0.08, 0.08) * W));
+    return p;
+  }
   class Arbre {
-    constructor(cote, c){
-      this.cote = cote; this.c = c; this.seed = Math.random() * 100;
+    constructor(id, c, place){
+      this.id = id; this.c = c; this.place = place; this.a = PLACES[place]; this.seed = Math.random() * 100;
+      this.lien = 0; this.vise = 0;                 // 0 : la pointe garde l'écart ; 1 : elle touche le centre
       const C = centre();
-      this.o = {x:cote < 0 ? -12 : W + 12, y:C.y + hasard(-0.16, 0.16) * H0};
+      this.o = bord(this.a);
       this.branches = [{pts:[{x:this.o.x, y:this.o.y}], dir:Math.atan2(C.y - this.o.y, C.x - this.o.x), v:Math.max(60, W * 0.075), prof:0, long:0, max:Infinity, fini:false, prochain:hasard(30, 60), cote:1}];
       this.noeuds = [];
     }
     get pointe(){ const p = this.branches[0].pts; return p[p.length - 1]; }
     echelle(kx, ky){ this.o.x *= kx; this.o.y *= ky; this.branches.forEach(b => b.pts.forEach(p => { p.x *= kx; p.y *= ky; })); this.noeuds.forEach(n => { n.x *= kx; n.y *= ky; }); }
     pousser(dt, t){
-      const C = centre(), g = lien > 0 ? ecart() * (1 - lien) : ecart(), cible = {x:C.x - this.cote * g, y:C.y};
+      const C = centre(), g = ecart() * (1 - this.lien), cible = {x:C.x + Math.cos(this.a) * g, y:C.y + Math.sin(this.a) * g};
+      /* à plusieurs, chaque arbre se ramifie moins : le dessin reste léger */
+      const maxB = arbres.length <= 2 ? 46 : Math.max(10, Math.round(110 / arbres.length));
       this.branches.forEach((b, i) => {
         if(b.fini) return;
         const p = b.pts[b.pts.length - 1];
         if(i === 0){
           const dx = cible.x - p.x, dy = cible.y - p.y, d = Math.hypot(dx, dy);
           if(d < 2) return;
-          /* l'écart d'angle ramené dans ]-π, π] : la racine de droite vise près de ±π ; tout près du but, elle vise droit */
+          /* l'écart d'angle ramené dans ]-π, π] : une racine vise parfois près de ±π ; tout près du but, elle vise droit */
           const vise = Math.atan2(dy, dx), bruit = Math.sin(t * 0.0013 + this.seed) * 0.35 * Math.min(1, d / 220);
           let da = vise + bruit - b.dir; da = Math.atan2(Math.sin(da), Math.cos(da));
           b.dir += da * (d < 30 ? 1 : Math.min(1, dt * 0.004));
-          const pas = Math.min(d, b.v * dt / 1000 * (lien > 0 ? 3 : 1));
+          const pas = Math.min(d, b.v * dt / 1000 * (this.lien > 0 ? 3 : 1));
           b.pts.push({x:p.x + Math.cos(b.dir) * pas, y:p.y + Math.sin(b.dir) * pas}); b.long += pas;
         } else {
           b.dir += Math.sin(t * 0.002 + b.seed) * 0.02 + b.courbe * dt * 0.001;
@@ -9640,7 +9820,7 @@ const Rac = (() => {
           if(b.long >= b.max){ b.fini = true; this.noeuds.push(this.noeud(b.pts[b.pts.length - 1], 1.4)); }
         }
         if(b.pts.length > 2){ const a = b.pts[b.pts.length - 3], q = b.pts[b.pts.length - 1]; if(Math.hypot(q.x - a.x, q.y - a.y) < 3) b.pts.splice(b.pts.length - 2, 1); }
-        if(b.prof < 2 && b.long >= b.prochain && this.branches.length < 46){
+        if(b.prof < 2 && b.long >= b.prochain && this.branches.length < maxB){
           b.prochain += b.prof === 0 ? hasard(26, 52) : hasard(22, 40);
           b.cote = -b.cote;
           const q = b.pts[b.pts.length - 1];
@@ -9655,10 +9835,11 @@ const Rac = (() => {
   function dessiner(t){
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    const C = centre(), tf = reduit() ? 0 : t, g = ecart(), rot = tf * 0.00006, intens = 0.08 + 0.12 * (arbres.length > 1 ? 1 : 0) + 0.35 * lien;
-    /* le lieu de rencontre : deux cercles qui se croisent, un hexagramme qui tourne lentement */
+    const C = centre(), tf = reduit() ? 0 : t, g = ecart(), rot = tf * 0.00006, L = arbres.length ? arbres.reduce((s, a) => s + a.lien, 0) / arbres.length : 0;
+    const intens = 0.08 + 0.12 * (arbres.length > 1 ? 1 : 0) + 0.35 * L;
+    /* le lieu de rencontre : un cercle par personne (deux qui se croisent, à deux), un hexagramme qui tourne lentement */
     ctx.strokeStyle = 'rgba(243,245,251,' + (intens * 0.6) + ')'; ctx.lineWidth = 1;
-    [-g, g].forEach(dx => { ctx.beginPath(); ctx.arc(C.x + dx * 0.6, C.y, g * 2.6, 0, 6.283); ctx.stroke(); });
+    (arbres.length > 2 ? arbres.map(a => a.a) : [Math.PI, 0]).forEach(a => { ctx.beginPath(); ctx.arc(C.x + Math.cos(a) * g * 0.6, C.y + Math.sin(a) * g * 0.6, g * 2.6, 0, 6.283); ctx.stroke(); });
     for(let k = 0; k < 2; k++){
       ctx.beginPath();
       for(let i = 0; i <= 3; i++){ const a = rot + k * Math.PI / 3 + i * 2 * Math.PI / 3 - Math.PI / 2, x = C.x + Math.cos(a) * g * 2.1, y = C.y + Math.sin(a) * g * 2.1; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
@@ -9693,13 +9874,14 @@ const Rac = (() => {
       ctx.globalAlpha = 0.18; ctx.beginPath(); ctx.arc(n.x, n.y, n.r * (n.pointe ? 5 : 3), 0, 6.283); ctx.fill();
     });
     ctx.globalAlpha = 1;
-    /* l'attente : la pointe cherche (une onde) */
-    if(etat !== 'lie' && !reduit()) arbres.forEach(a => {
+    /* l'attente : la pointe qui garde l'écart cherche (une onde) */
+    if(!reduit()) arbres.forEach(a => {
+      if(a.lien >= 1) return;
       const p = a.pointe, k = (tf * 0.0006 + a.seed) % 1;
-      ctx.strokeStyle = a.c; ctx.globalAlpha = (1 - k) * 0.4; ctx.lineWidth = 1;
+      ctx.strokeStyle = a.c; ctx.globalAlpha = (1 - k) * 0.4 * (1 - a.lien); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(p.x, p.y, 6 + k * 34, 0, 6.283); ctx.stroke(); ctx.globalAlpha = 1;
     });
-    /* la convergence : un photon parcourt chaque racine, la jonction s'épanouit en prisme */
+    /* la convergence : un photon parcourt chaque racine, la jonction s'épanouit en prisme (à plusieurs, chacun y retrouve sa couleur) */
     if(pulse >= 0){
       arbres.forEach(a => {
         const pts = a.branches[0].pts, p = pts[Math.min(pts.length - 1, Math.floor(pulse * (pts.length - 1)))];
@@ -9710,6 +9892,13 @@ const Rac = (() => {
       const b = Math.max(0, (pulse - 0.85) / 0.15);
       if(b > 0){
         const s = 18 + b * 22;
+        if(arbres.length > 2){
+          ctx.lineWidth = 2;
+          arbres.forEach(a => {
+            ctx.strokeStyle = a.c; ctx.globalAlpha = b * 0.9;
+            ctx.beginPath(); ctx.moveTo(C.x + Math.cos(a.a) * s * 0.7, C.y + Math.sin(a.a) * s * 0.7); ctx.lineTo(C.x + Math.cos(a.a) * s * 2.2, C.y + Math.sin(a.a) * s * 2.2); ctx.stroke();
+          });
+        }
         ctx.globalAlpha = b; ctx.strokeStyle = '#F3F5FB'; ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(C.x, C.y - s); ctx.lineTo(C.x - s * 0.87, C.y + s * 0.5); ctx.lineTo(C.x + s * 0.87, C.y + s * 0.5); ctx.closePath(); ctx.stroke();
         const rg = ctx.createRadialGradient(C.x, C.y, 0, C.x, C.y, s * 3);
@@ -9723,32 +9912,49 @@ const Rac = (() => {
   function boucle(t){
     raf = 0;
     const dt = Math.min(50, t - (dernier || t)); dernier = t;
-    if(etat === 'lie'){
-      lien = Math.min(1, lien + dt / 900);
-      if(lien >= 1){ pulse = pulse < 0 ? 0 : Math.min(1, pulse + dt / 1500); if(pulse >= 1 && fini){ const f = fini; fini = null; setTimeout(f, 500); } }
+    arbres.forEach(a => { if(a.lien !== a.vise) a.lien = a.vise > a.lien ? Math.min(a.vise, a.lien + dt / 900) : Math.max(a.vise, a.lien - dt / 900); });
+    if(etat === 'lie' && arbres.every(a => a.lien >= 1)){
+      pulse = pulse < 0 ? 0 : Math.min(1, pulse + dt / 1500);
+      if(pulse >= 1 && fini){ const f = fini; fini = null; setTimeout(f, 500); }
     }
     if(!reduit()) arbres.forEach(a => a.pousser(dt, t));
     dessiner(t);
     if(etat !== 'repos') raf = requestAnimationFrame(boucle);
   }
-  /* mouvement réduit : la racine est dessinée d'un coup, déjà arrivée */
+  /* mouvement réduit (ou un groupe déjà réuni) : la racine est dessinée d'un coup, déjà arrivée */
   const pousserTout = (a, n) => { for(let k = 0; k < n; k++) a.pousser(16, k * 16); };
   function demarrer(canvas, c){
     cv = canvas; ctx = cv.getContext('2d');
-    taille(); arbres = [new Arbre(-1, c)]; etat = 'seul'; lien = 0; pulse = -1; dernier = 0; fini = null;
+    taille(); arbres = [new Arbre('moi', c, 0)]; etat = 'seul'; pulse = -1; dernier = 0; fini = null;
     if(reduit()) pousserTout(arbres[0], 1500);
     if(!raf) raf = requestAnimationFrame(boucle);
   }
-  function arriver(c){
-    if(!cv || arbres.length > 1) return;
-    const a = new Arbre(1, c); arbres.push(a); etat = 'deux';
-    if(reduit()) pousserTout(a, 1500);
+  function ajouter(id, c, relie){
+    if(!cv || etat === 'repos' || arbres.some(a => a.id === id)) return;
+    const prises = new Set(arbres.map(a => a.place)), place = PLACES.findIndex((x, i) => !prises.has(i));
+    if(place < 0) return;
+    const a = new Arbre(id, c, place);
+    arbres.push(a);
+    if(relie){ a.lien = a.vise = 1; pousserTout(a, 1500); }
+    else if(reduit()) pousserTout(a, 1500);
+    if(etat === 'lie') a.vise = 1;
   }
-  function partir(){ if(arbres.length > 1){ arbres.length = 1; etat = 'seul'; } }
+  function retirer(id){ if(id !== 'moi') arbres = arbres.filter(a => a.id !== id); }
+  function garder(ids){ const s = new Set(ids); arbres = arbres.filter(a => a.id === 'moi' || s.has(a.id)); }
+  /* les autres arbres d'après la liste [{id, c, relie}] : les nouveaux poussent, les partis s'effacent */
+  function synchro(l){
+    if(!cv || etat === 'repos') return;
+    garder(l.map(x => x.id));
+    l.forEach(x => {
+      const a = arbres.find(b => b.id === x.id);
+      if(!a) ajouter(x.id, x.c, x.relie);
+      else if(etat !== 'lie') a.vise = x.relie ? 1 : 0;
+    });
+  }
   function relier(apres){
     if(!cv){ apres(); return; }
-    etat = 'lie';
-    if(reduit()){ lien = 1; pulse = 1; arbres.forEach(a => pousserTout(a, 100)); setTimeout(apres, 600); }
+    etat = 'lie'; arbres.forEach(a => { a.vise = 1; });
+    if(reduit()){ arbres.forEach(a => { a.lien = 1; pousserTout(a, 100); }); pulse = 1; setTimeout(apres, 600); }
     else {
       fini = apres;
       /* un onglet en arrière-plan n'anime plus : la séance s'établit quand même */
@@ -9757,7 +9963,7 @@ const Rac = (() => {
   }
   function arreter(){ etat = 'repos'; cancelAnimationFrame(raf); raf = 0; arbres = []; fini = null; }
   window.addEventListener('resize', () => { if(etat !== 'repos' && cv) taille(); });
-  return {demarrer, arriver, partir, relier, arreter};
+  return {demarrer, ajouter, retirer, garder, synchro, relier, arreter, nombre:() => arbres.length};
 })();
 
 /* ---------- le voile : la page se floute, les racines poussent ---------- */
@@ -9778,7 +9984,7 @@ function ouvrir(){
     '<div class="cv-carte">' +
       '<p class="cv-lib" id="cv-titre">Convergence</p>' +
       '<div class="cv-choix">' +
-        '<p class="cv-intro">Étudiez à deux, chacun sur son appareil : un code vous relie. Chacun se promène où il veut ; un repère commun garde votre étape.</p>' +
+        '<p class="cv-intro">Étudiez à deux ou à plusieurs, chacun sur son appareil : un code vous relie. Chacun se promène où il veut ; un repère commun garde votre étape.</p>' +
         '<div class="cv-onglets" role="tablist" aria-label="Créer ou rejoindre"><button type="button" role="tab" data-o="creer" aria-selected="true">Créer une séance</button><button type="button" role="tab" data-o="rejoindre" aria-selected="false">Rejoindre</button></div>' +
         '<label class="cv-champ"><span>Ton surnom pour cette séance</span><input class="cv-nom" maxlength="24" autocomplete="off" spellcheck="false"></label>' +
         '<div class="cv-champ"><span id="cv-l-raie">Ta raie (ta couleur)</span><div class="cv-raies" role="group" aria-labelledby="cv-l-raie">' +
@@ -9822,25 +10028,67 @@ function ouvrir(){
     $('.cv-choix', v).hidden = true; $('.cv-go', v).hidden = true;
     v.classList.add('pousse');
     Rac.demarrer($('canvas', v), couleur(S.raie));
-    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à l’autre personne. Ta racine cherche la sienne.'); }
+    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à qui veut converger. Ta racine cherche les autres.'); }
     else etatVoile('Recherche de la séance…');
     const ok = await entrer(mode === 'creer' ? 'hote' : 'invite', code);
-    if(ok && mode !== 'creer') setTimeout(() => { if(voile === v && S.role === 'invite' && !S.hote) etatVoile('Toujours personne : vérifie le code, et que l’hôte a bien ouvert la séance sur ce même atelier.'); }, 9000);
+    if(ok && mode !== 'creer') setTimeout(() => { if(voile === v && S.role === 'invite' && !S.porte) etatVoile('Toujours personne : vérifie le code, et que l’hôte a bien ouvert la séance sur ce même atelier.'); }, 9000);
   });
   v.addEventListener('keydown', e => { if(e.key === 'Escape') quitter(); e.stopPropagation(); });
   setTimeout(() => $('.cv-go', v).focus({preventScroll:true}), 30);
 }
-function montrerDemande(d){
+
+/* ---------- les demandes : dans le voile tant que l'hôte attend, puis une petite carte sur la page ---------- */
+function montrerDemandes(ds){ if(voile && S.etat !== 'lie') demandesVoile(ds); else demandesPage(ds); }
+function ligneDemande(d, cls){
+  const li = H('<li><i class="cv-pt"></i><span class="cv-fn"></span><button type="button" class="' + cls + '">Refuser</button><button type="button" class="' + cls + ' plein">Converger</button></li>');
+  li.querySelector('i').style.setProperty('--c', couleur(d.raie));
+  li.querySelector('.cv-fn').textContent = '« ' + nomDe(d) + ' »';
+  li.children[2].addEventListener('click', () => refuser(d));
+  li.children[3].addEventListener('click', () => accepter([d]));
+  return li;
+}
+function demandesVoile(ds){
   const z = voile && $('.cv-demande', voile); if(!z) return;
-  z.hidden = !d; z.innerHTML = '';
-  if(!d) return;
-  const t = H('<p class="cv-qui"></p>'); t.textContent = '« ' + nomDe(d) + ' » veut converger';
-  const a = H('<div class="cv-actions"><button type="button" class="cv-btn">Refuser</button><button type="button" class="cv-btn plein">Converger</button></div>');
-  a.children[0].addEventListener('click', () => refuser(d));
-  a.children[1].addEventListener('click', () => accepter(d));
-  z.append(t, a);
-  etatVoile('Raie ' + raieOk(d.raie) + ' · ' + RAIES[raieOk(d.raie)][0] + ' nm');
-  a.children[1].focus({preventScroll:true});
+  const cle = ds.map(d => d.uid).join();
+  if(z.dataset.cle === cle) return;               // pas de nouveau dessin à chaque battement de présence
+  z.dataset.cle = cle;
+  z.hidden = !ds.length; z.innerHTML = '';
+  if(!ds.length) return;
+  if(ds.length === 1){
+    const d = ds[0];
+    const t = H('<p class="cv-qui"></p>'); t.textContent = '« ' + nomDe(d) + ' » veut converger';
+    const a = H('<div class="cv-actions"><button type="button" class="cv-btn">Refuser</button><button type="button" class="cv-btn plein">Converger</button></div>');
+    a.children[0].addEventListener('click', () => refuser(d));
+    a.children[1].addEventListener('click', () => accepter([d]));
+    z.append(t, a);
+    etatVoile('Raie ' + raieOk(d.raie) + ' · ' + RAIES[raieOk(d.raie)][0] + ' nm');
+    a.children[1].focus({preventScroll:true});
+    return;
+  }
+  const t = H('<p class="cv-qui"></p>'); t.textContent = ds.length + ' personnes veulent converger';
+  const l = H('<ul class="cv-file"></ul>'); ds.forEach(d => l.appendChild(ligneDemande(d, 'cv-btn')));
+  const a = H('<div class="cv-actions"><button type="button" class="cv-btn plein">Tout accueillir (' + ds.length + ')</button></div>');
+  a.firstChild.addEventListener('click', () => accepter(ds));
+  z.append(t, l, a);
+  etatVoile('Chaque racine est une personne qui arrive.');
+  a.firstChild.focus({preventScroll:true});
+}
+let portes = null;
+function demandesPage(ds){
+  if(!ds.length){ if(portes){ portes.remove(); portes = null; } return; }
+  const cle = ds.map(d => d.uid).join();
+  if(portes && portes.dataset.cle === cle) return;
+  if(!portes){ portes = H('<div class="cv-portes v2-hors-texte" role="region" aria-label="Demandes pour rejoindre la convergence"></div>'); document.body.appendChild(portes); }
+  portes.dataset.cle = cle; portes.innerHTML = '';
+  const t = H('<p class="cv-portes-t" aria-live="polite"></p>');
+  t.textContent = ds.length > 1 ? ds.length + ' personnes veulent rejoindre la convergence' : 'Quelqu’un veut rejoindre la convergence';
+  const l = H('<ul class="cv-file"></ul>'); ds.forEach(d => l.appendChild(ligneDemande(d, 'btn')));
+  const pied = H('<div class="cv-actions"></div>');
+  if(ds.length > 1){ const b = H('<button type="button" class="btn">Tout accueillir</button>'); b.addEventListener('click', () => accepter(ds)); pied.appendChild(b); }
+  const o = H('<button type="button" class="btn" title="Les prochains qui entrent le code rejoignent sans attendre ton accord">Accueillir d’office</button>');
+  o.addEventListener('click', () => { basculerPorte(true); accepter(ds); });
+  pied.appendChild(o);
+  portes.append(t, l, pied);
 }
 /* dans Claude, la page ne peut joindre aucun relais : Convergence vit sur le site */
 let popC = null;
@@ -9848,7 +10096,7 @@ function popClaude(){
   if(popC){ popC.remove(); popC = null; return; }
   const b = $('#btn-cv'), url = LUMIERE + (ATELIER.fichier || '') + '.html';
   popC = H('<div class="sablier-pop cv-pop v2-hors-texte" role="dialog" aria-label="Convergence">' +
-    '<p class="lib">Convergence</p><p class="legende">Étudier à deux, chacun sur son appareil, passe par un relais que Claude bloque ici. Ouvre cet atelier sur le site Lumière : la séance s’y crée avec un simple code.</p>' +
+    '<p class="lib">Convergence</p><p class="legende">Étudier à plusieurs, chacun sur son appareil, passe par un relais que Claude bloque ici. Ouvre cet atelier sur le site Lumière : la séance s’y crée avec un simple code.</p>' +
     '<div class="ctrl"><a class="btn" target="_blank" rel="noopener"></a><button type="button" class="btn">Fermer</button></div></div>');
   const a = $('a', popC); a.href = url; a.textContent = 'Ouvrir sur Lumière ↗';
   $('button', popC).addEventListener('click', () => { popC.remove(); popC = null; });
@@ -9859,16 +10107,19 @@ function popClaude(){
   popC.style.top = Math.round(r.bottom + 8) + 'px';
 }
 
-/* ---------- la barre du duo, sous la barre du haut ---------- */
+/* ---------- la barre, sous la barre du haut : à deux, le duo ; à plusieurs, une étoile d'une branche par personne ---------- */
 let barre = null;
 function montrerBarre(){
   if(!barre){
     barre = H('<div class="cv-barre" role="region" aria-label="Convergence">' +
-      '<span class="cv-duo"><i class="cv-moi"></i><span class="cv-fil" aria-hidden="true"></span><i class="cv-lui"></i><b class="cv-pnom"></b><small class="cv-ou"></small></span>' +
+      '<button type="button" class="cv-duo" data-a="groupe" aria-haspopup="dialog">' +
+        '<span class="cv-paire"><i class="cv-moi"></i><span class="cv-fil" aria-hidden="true"></span><i class="cv-lui"></i><b class="cv-pnom"></b><small class="cv-ou"></small></span>' +
+        '<span class="cv-foule" hidden><svg class="cv-etoile" viewBox="-12 -12 24 24" aria-hidden="true"></svg><b class="cv-nb"></b></span>' +
+      '</button>' +
       '<span class="cv-rep">Repère : <b class="cv-rep-t"></b></span>' +
       '<button type="button" class="btn cv-b" data-a="recentrer">Recentrer</button>' +
       '<button type="button" class="btn cv-b" data-a="placer" title="Placer le repère commun sur cet écran">Repère ici</button>' +
-      '<button type="button" class="btn cv-b cv-pret" data-a="pret" aria-pressed="false" title="Prêt·e à continuer : quand vous l’êtes tous les deux, le repère passe à l’écran suivant">Prêt·e</button>' +
+      '<button type="button" class="btn cv-b cv-pret" data-a="pret" aria-pressed="false">Prêt·e</button>' +
       '<span class="cv-prets" aria-live="polite"></span>' +
       '<span class="cv-espace"></span>' +
       '<button type="button" class="btn cv-b cv-tut" data-a="tuteur" aria-pressed="false">Tuteur</button>' +
@@ -9877,7 +10128,8 @@ function montrerBarre(){
       '<button type="button" class="btn cv-b" data-a="quitter">Quitter</button></div>');
     barre.addEventListener('click', e => {
       const b = e.target.closest('[data-a]'); if(!b) return;
-      ({recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page.')) quitter(); }})[b.dataset.a]();
+      ({groupe:() => ouvrirGpop(b), recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(),
+        quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page.')) quitter(); }})[b.dataset.a]();
     });
     const haut = $('.haut');
     if(haut) haut.appendChild(barre); else document.body.prepend(barre);
@@ -9892,26 +10144,115 @@ function cacherBarre(){
   const haut = $('.haut'); if(haut) haut.classList.remove('avec-cv');
   $('#btn-cv') && $('#btn-cv').classList.remove('lie');
 }
+/* l'étoile : une branche par personne, de sa couleur, qui se rejoignent au centre (moi en haut) */
+function etoile(us){
+  return us.map((u, k) => {
+    const a = -Math.PI / 2 + k * 2 * Math.PI / us.length, c = Math.cos(a), s = Math.sin(a);
+    return '<line x1="' + (c * 3).toFixed(2) + '" y1="' + (s * 3).toFixed(2) + '" x2="' + (c * 10).toFixed(2) + '" y2="' + (s * 10).toFixed(2) + '" stroke="' + couleur(raieU(u)) + '"/>';
+  }).join('') + '<circle r="2.4"/>';
+}
 function majBarre(){
   if(!barre || S.etat !== 'lie') return;
-  $('.cv-moi', barre).style.setProperty('--c', couleur(S.raie));
-  $('.cv-lui', barre).style.setProperty('--c', couleur(S.pRaie));
-  $('.cv-fil', barre).style.background = 'linear-gradient(90deg,' + couleur(S.raie) + ',' + couleur(S.pRaie) + ')';
-  $('.cv-pnom', barre).textContent = S.pNom;
-  const i = PARCOURS.findIndex(e => e.id === S.pEcran);
-  $('.cv-ou', barre).textContent = !S.pLa ? 'parti·e' : S.pEcran === (ICI && ICI.id) ? 'ici avec toi' : i >= 0 ? 'écran ' + (i + 1) : titreDe(S.pEcran) || '';
-  $('.cv-ou', barre).title = S.pLa && titreDe(S.pEcran) ? S.pNom + ' est sur « ' + titreDe(S.pEcran) + ' »' : '';
+  const la = presents(), grp = la.length >= 2, duo = $('.cv-duo', barre);
+  $('.cv-paire', barre).hidden = grp; $('.cv-foule', barre).hidden = !grp;
+  if(!grp){
+    const x = S.membres[la[0] || dernierVu()] || {nom:'…', raie:'F', la:false, ecran:''};
+    $('.cv-moi', barre).style.setProperty('--c', couleur(S.raie));
+    $('.cv-lui', barre).style.setProperty('--c', couleur(x.raie));
+    $('.cv-fil', barre).style.background = 'linear-gradient(90deg,' + couleur(S.raie) + ',' + couleur(x.raie) + ')';
+    $('.cv-pnom', barre).textContent = x.nom;
+    const i = PARCOURS.findIndex(e => e.id === x.ecran);
+    $('.cv-ou', barre).textContent = !x.la ? 'parti·e' : x.ecran === (ICI && ICI.id) ? 'ici avec toi' : i >= 0 ? 'écran ' + (i + 1) : titreDe(x.ecran) || '';
+    $('.cv-ou', barre).title = x.la && titreDe(x.ecran) ? x.nom + ' est sur « ' + titreDe(x.ecran) + ' »' : '';
+    duo.title = 'La séance : qui est là, et le code pour inviter quelqu’un d’autre';
+  } else {
+    const tous = [S.uid].concat(la), svg = $('.cv-etoile', barre), cle = tous.map(raieU).join('');
+    if(svg.dataset.cle !== cle){ svg.dataset.cle = cle; svg.innerHTML = etoile(tous); }
+    $('.cv-nb', barre).textContent = tous.length + ' en convergence';
+    duo.title = 'Le groupe : ' + tous.map(nomU).join(', ');
+  }
   const ir = PARCOURS.findIndex(e => e.id === S.repere.e);
   $('.cv-rep-t', barre).textContent = (ir >= 0 ? (ir + 1) + '. ' : '') + titreDe(S.repere.e);
   const ici = ICI && ICI.id === S.repere.e;
   $('[data-a="recentrer"]', barre).hidden = ici;
   $('[data-a="placer"]', barre).hidden = ici || !ICI || ICI.hors;
-  const pret = S.pret === S.repere.n && S.repere.n > 0, pPret = S.pPret === S.repere.n && S.repere.n > 0;
-  $('.cv-pret', barre).setAttribute('aria-pressed', String(pret));
-  $('.cv-pret', barre).textContent = pret ? 'Prêt·e ✓' : 'Prêt·e';
-  $('.cv-prets', barre).textContent = (pret || pPret) ? 'Toi ' + (pret ? '✓' : '…') + ' · ' + S.pNom + ' ' + (pPret ? '✓' : '…') : '';
+  const n = S.repere.n, pret = S.pret === n && n > 0, b = $('.cv-pret', barre);
+  b.setAttribute('aria-pressed', String(pret));
+  b.textContent = pret ? 'Prêt·e ✓' : 'Prêt·e';
+  b.title = 'Prêt·e à continuer : quand ' + (grp ? 'tout le monde l’est' : 'vous l’êtes tous les deux') + ', le repère passe à l’écran suivant';
+  if(!grp){
+    const u = la[0] || dernierVu(), x = S.membres[u], pPret = !!x && x.pret === n && n > 0;
+    $('.cv-prets', barre).textContent = (pret || pPret) ? 'Toi ' + (pret ? '✓' : '…') + ' · ' + nomU(u) + ' ' + (pPret ? '✓' : '…') : '';
+  } else {
+    const k = la.filter(u => S.membres[u].pret === n && n > 0).length + (pret ? 1 : 0);
+    $('.cv-prets', barre).textContent = k ? 'Prêt·e·s : ' + k + '/' + (la.length + 1) : '';
+  }
   const bd = $('.cv-badge', barre); bd.hidden = !S.nonLus; bd.textContent = S.nonLus;
-  majRail(); majPuceTuteur();
+  majRail(); majPuceTuteur(); majPanneau(); majGpop();
+}
+
+/* ---------- le groupe en détail : qui est où, le code pour inviter, la porte, le tuteur à suivre ---------- */
+let gpop = null, gpopH = '';
+function fermerGpop(){ if(gpop){ gpop.remove(); gpop = null; gpopH = ''; } }
+function ouvrirGpop(ancre){
+  if(gpop){ fermerGpop(); return; }
+  if(S.etat !== 'lie') return;
+  gpop = H('<div class="cv-gpop v2-hors-texte" role="dialog" aria-label="La séance"></div>');
+  document.body.appendChild(gpop);
+  gpop.addEventListener('click', e => {
+    const b = e.target.closest('[data-g]'); if(!b) return;
+    const g = b.dataset.g;
+    if(g === 'fermer') fermerGpop();
+    else if(g === 'demande') basculerPorte(false);
+    else if(g === 'office') basculerPorte(true);
+    else if(g === 'tuteur') suivreTuteur(b.dataset.u || '');
+    else if(g === 'copier'){
+      const c = S.code.slice(0, 3) + '-' + S.code.slice(3);
+      (navigator.clipboard ? navigator.clipboard.writeText(c) : Promise.reject()).then(() => toast('Code copié : ' + c + '.'), () => toast('Le code de la séance : ' + c + '.'));
+    }
+  });
+  gpop.addEventListener('keydown', e => { if(e.key === 'Escape'){ fermerGpop(); ancre && ancre.focus(); } e.stopPropagation(); });
+  majGpop();
+  const r = (ancre || barre).getBoundingClientRect(), pw = Math.min(340, window.innerWidth - 24);
+  gpop.style.left = Math.round(Math.min(Math.max(12, r.left), window.innerWidth - pw - 12)) + 'px';
+  gpop.style.top = Math.round(Math.min(r.bottom + 8, window.innerHeight - 160)) + 'px';
+  const f = $('button', gpop); f && f.focus({preventScroll:true});
+}
+function majGpop(){
+  if(!gpop) return;
+  if(S.etat !== 'lie'){ fermerGpop(); return; }
+  const la = presents(), tous = [S.uid].concat(la), pilote = rang()[0];
+  const partis = Object.keys(S.membres).filter(u => !S.membres[u].la).slice(0, 8);
+  const ou = u => {
+    if(u === S.uid) return 'toi';
+    const e = S.membres[u].ecran, i = PARCOURS.findIndex(x => x.id === e);
+    return e && e === (ICI && ICI.id) ? 'ici avec toi' : i >= 0 ? 'écran ' + (i + 1) : titreDe(e);
+  };
+  const pret = u => S.repere.n > 0 && (u === S.uid ? S.pret : S.membres[u].pret) === S.repere.n;
+  const tut = u => {
+    if(u === S.uid) return MIR.actif ? 'tuteur partagé' : MIR.suit ? 'suit ' + nomU(MIR.suit) : '';
+    const x = S.membres[u];
+    return x.suit === S.uid ? 'suit ton tuteur' : x.suit ? 'suit ' + nomU(x.suit) : '';
+  };
+  const ligne = (u, parti) => '<li' + (parti ? ' class="parti"' : '') + '><i class="cv-pt" style="--c:' + couleur(raieU(u)) + '"></i><b>' + esc(nomU(u)) + '</b><small>' +
+    esc(parti ? 'parti·e' : [ou(u), fiche(u).role === 'hote' ? 'hôte' : u === pilote ? 'accueille' : '', pret(u) ? 'prêt·e ✓' : '', tut(u)].filter(Boolean).join(' · ')) + '</small></li>';
+  let h = '<p class="lib">Convergence · ' + tous.length + '</p>' +
+    '<p class="cv-gcode">Code <b>' + esc(S.code.slice(0, 3) + '-' + S.code.slice(3)) + '</b><button type="button" class="btn" data-g="copier">Copier</button><small>pour inviter quelqu’un</small></p>' +
+    '<ul class="cv-gl">' + tous.map(u => ligne(u, false)).join('') + partis.map(u => ligne(u, true)).join('') + '</ul>';
+  if(estPilote()) h += '<div class="cv-gsec"><p>Nouveaux venus</p><div class="cv-seg">' +
+    '<button type="button" class="btn" data-g="demande" aria-pressed="' + !S.ouvert + '">Sur demande</button>' +
+    '<button type="button" class="btn" data-g="office" aria-pressed="' + S.ouvert + '">Accueillir d’office</button></div></div>';
+  if(typeof Tuteur !== 'undefined'){
+    const suivi = S.choix === 'suivre' ? S.cible : MIR.suit;
+    const choix = la.filter(u => libre(u) || u === suivi);
+    h += '<div class="cv-gsec"><p>Ton tuteur</p><div class="cv-seg">' +
+      '<button type="button" class="btn" data-g="tuteur" data-u="" aria-pressed="' + !suivi + '">Le mien</button>' +
+      choix.map(u => '<button type="button" class="btn" data-g="tuteur" data-u="' + esc(u) + '" aria-pressed="' + (u === suivi) + '">Suivre ' + esc(nomU(u)) + '</button>').join('') + '</div>' +
+      (choix.length ? '' : '<small>Personne n’a de tuteur libre à suivre pour l’instant.</small>') + '</div>';
+  }
+  h += '<div class="ctrl"><button type="button" class="btn" data-g="fermer">Fermer</button></div>';
+  if(h === gpopH) return;                          // rien n'a changé : on garde le focus
+  gpopH = h; gpop.innerHTML = h;
 }
 
 /* ---------- le petit avis, en haut ---------- */
@@ -9946,24 +10287,32 @@ function creerPanneau(){
     panneau.hidden = true;
   }
 }
+function majPanneau(){
+  if(!panneau || panneau.hidden) return;
+  const la = presents(), grp = la.length >= 2, n = nomU(la[0] || dernierVu());
+  $('.cv-avec', panneau).textContent = grp ? 'avec le groupe · ' + (la.length + 1) : 'avec ' + n;
+  $('#cv-msg').placeholder = grp ? 'Un message pour le groupe…' : 'Un message pour ' + n + '…';
+}
 function ouvrirPanneau(){
   creerPanneau();
   panneau.hidden = false;
-  $('.cv-avec', panneau).textContent = 'avec ' + S.pNom;
-  $('#cv-msg').placeholder = 'Un message pour ' + S.pNom + '…';
+  majPanneau();
   S.nonLus = 0; majBarre();
   $('#cv-msg').focus({preventScroll:true});
 }
 function fermerPanneau(){ if(panneau) panneau.hidden = true; }
 function basculerPanneau(){ if(panneau && !panneau.hidden) fermerPanneau(); else ouvrirPanneau(); }
-function bulle(qui, texte, croquis){
+/* de : l'auteur d'une bulle reçue (son nom, sa couleur) */
+function bulle(qui, texte, croquis, de){
   creerPanneau();
+  const nom = qui === 'moi' ? 'toi' : nomU(de), r = qui === 'moi' ? S.raie : raieU(de);
   const li = document.createElement('li'); li.className = qui;
-  const de = document.createElement('span'); de.className = 'cv-de'; de.textContent = qui === 'moi' ? 'toi' : S.pNom; li.appendChild(de);
+  if(qui !== 'moi' && presents().length >= 2){ li.classList.add('foule'); li.style.setProperty('--c', couleur(r)); }
+  const e0 = document.createElement('span'); e0.className = 'cv-de'; e0.textContent = nom; li.appendChild(e0);
   if(croquis){
     const b = H('<button type="button" class="cv-mini" aria-label="Agrandir le croquis"></button>');
-    b.innerHTML = svgCroquis(croquis, qui === 'moi' ? S.raie : S.pRaie);
-    b.addEventListener('click', () => voirCroquis(croquis, qui === 'moi' ? S.raie : S.pRaie));
+    b.innerHTML = svgCroquis(croquis, r);
+    b.addEventListener('click', () => voirCroquis(croquis, r));
     li.appendChild(b);
   } else li.appendChild(document.createTextNode(texte));
   if(qui === 'moi'){ const e = document.createElement('span'); e.className = 'cv-recu'; e.textContent = 'envoi…'; li.appendChild(e); }
@@ -9971,7 +10320,7 @@ function bulle(qui, texte, croquis){
     const n = H('<button type="button" class="cv-lien">＋ Mes notes</button>');
     n.addEventListener('click', () => {
       const id = ICI ? ICI.id : 'general', cur = texteNote(id).replace(/\s+$/, '');
-      setNote(id, (cur ? cur + '\n\n' : '') + '[' + S.pNom + '] ' + texte + '\n');
+      setNote(id, (cur ? cur + '\n\n' : '') + '[' + nom + '] ' + texte + '\n');
       rafraichirChampsNotes(); majTiroir(true);
       n.textContent = '✓ Ajouté aux notes'; n.disabled = true;
     });
@@ -9980,38 +10329,80 @@ function bulle(qui, texte, croquis){
   const l = $('#cv-liste'); l.appendChild(li); l.scrollTop = l.scrollHeight;
   return li;
 }
-function envoyer(kind, data, li){
-  if(!S.refMoi || !S.part){ marquer(li, 'non envoyé'); return; }
-  const r = S.F.push(S.F.ref(S.db, S.base + '/flux'), {de:S.uid, pour:S.part, kind, data, t:Date.now()});
+/* à qui : l'autre du duo (même parti un moment, le message l'attend), ou tout le groupe */
+function destinataire(){
+  const la = presents();
+  if(la.length >= 2) return '*';
+  if(la.length === 1) return la[0];
+  const ks = Object.keys(S.membres);
+  return ks.length === 1 ? ks[0] : '';
+}
+function envoyer(kind, data, li, pour){
+  pour = pour || destinataire();
+  if(!S.refMoi || !pour){ marquer(li, pour ? 'non envoyé' : 'personne n’est là'); return; }
+  const r = S.F.push(S.F.ref(S.db, S.base + '/flux'), {de:S.uid, pour, kind, data, t:maintenant()});
+  if(pour === '*'){
+    /* au groupe : personne ne l'efface en le lisant ; il part au bout d'une minute, ou quand je pars */
+    S.F.onDisconnect(r).remove().catch(() => {});
+    S.auGroupe[r.key] = setTimeout(() => { delete S.auGroupe[r.key]; S.F.remove(r).catch(() => {}); }, VIE_GROUPE);
+    r.then(() => marquer(li, 'envoyé au groupe ✓'), () => marquer(li, 'non envoyé'));
+    return;
+  }
   S.envois[r.key] = li;
   r.catch(() => marquer(li, 'non envoyé'));
 }
 function marquer(li, t){ const e = li && $('.cv-recu', li); if(e) e.textContent = t; }
 function surFlux(cle, m){
-  if(!m || typeof m !== 'object' || m.pour !== S.uid || m.de !== S.part) return;
-  S.F.remove(S.F.ref(S.db, S.base + '/flux/' + cle)).catch(() => {});      // reçu : l'effacement prévient l'autre
-  if(m.kind === 'msg'){ const t = propre(m.data, 500); if(!t) return; bulle('lui', t); avertir('« ' + S.pNom + ' » : ' + (t.length > 80 ? t.slice(0, 80) + '…' : t)); }
-  else if(m.kind === 'croquis'){ const d = lireCroquis(m.data); if(!d) return; bulle('lui', '', d); avertir('« ' + S.pNom + ' » t’envoie un croquis.'); }
-  else if(m.kind === 'question' || m.kind === 'question-etat'){
+  if(!m || typeof m !== 'object' || S.etat !== 'lie' || m.de === S.uid || !S.membres[m.de]) return;
+  if(m.pour === '*'){
+    if(S.vus[cle] || !(m.t >= S.entree + S.decalage - 5000)) return;
+    S.vus[cle] = 1;
+  } else if(m.pour === S.uid) S.F.remove(S.F.ref(S.db, S.base + '/flux/' + cle)).catch(() => {});      // reçu : l'effacement prévient l'autre
+  else return;
+  const nom = nomU(m.de), groupe = m.pour === '*';
+  if(m.kind === 'msg'){ const t = propre(m.data, 500); if(!t) return; bulle('lui', t, null, m.de); avertir('« ' + nom + ' » : ' + (t.length > 80 ? t.slice(0, 80) + '…' : t)); }
+  else if(m.kind === 'croquis'){ const d = lireCroquis(m.data); if(!d) return; bulle('lui', '', d, m.de); avertir('« ' + nom + (groupe ? ' » envoie un croquis au groupe.' : ' » t’envoie un croquis.')); }
+  else if(!groupe && (m.kind === 'question' || m.kind === 'question-etat')){
     let d; try{ d = JSON.parse(m.data); }catch(e){ return; }
     if(!d || typeof d.id !== 'string' || typeof Tuteur === 'undefined') return;
     const pid = propre(d.id, 24);
     if(m.kind === 'question'){
       const texte = propreTexte(d.texte, 1000).trim(); if(!texte || !MIR.actif) return;
-      Tuteur.carteProposee(S.pNom, texte, etat => envoyer('question-etat', JSON.stringify({id:pid, etat}), null));
-      toast('« ' + S.pNom + ' » propose une question au tuteur.', 'Voir', () => Tuteur.ouvrir(true));
+      Tuteur.carteProposee(nom, texte, etat => envoyer('question-etat', JSON.stringify({id:pid, etat}), null, m.de));
+      toast('« ' + nom + ' » propose une question au tuteur.', 'Voir', () => Tuteur.ouvrir(true));
     } else if(['envoyee', 'modifiee', 'ignoree'].includes(d.etat)) Tuteur.etatProposition(pid, d.etat);
   }
 }
 
 /* ======================================================================
    Le tuteur en relais (DESIGN-convergence.md §3.3). Qui a une IA garde
-   son tuteur ; qui n'en a pas suit celui de l'autre : un miroir en
+   son tuteur ; qui n'en a pas suit celui de quelqu'un : un miroir en
    lecture (membres/<uid>/miroir, écrit par celui qui sert), et ses
-   questions arrivent chez l'autre comme une carte, envoyée d'un geste.
+   questions arrivent chez lui comme une carte, envoyée d'un geste. À
+   plusieurs, un tuteur peut servir plusieurs personnes ; chacun choisit
+   qui suivre dans la liste du groupe.
    ====================================================================== */
-const MIR = {actif:false, prive:false, ids:[], tFlux:{}, dernier:{}};
+const MIR = {actif:false, prive:false, ids:[], tFlux:{}, dernier:{}, suiveurs:'', suit:''};
 const refMir = chemin => S.F.ref(S.db, S.base + '/membres/' + S.uid + '/miroir' + (chemin ? '/' + chemin : ''));
+/* un tuteur qu'on peut suivre : présent, qui répond (ou colle), et qui ne suit lui-même personne */
+function libre(u){ const x = S.membres[u]; return !!(x && x.la && x.tuteur && x.tuteur !== 'relais' && !x.suit); }
+/* qui je suis : celui que j'ai choisi ; sans IA et sans choix, le premier du groupe qui en a une */
+function maCible(){
+  if(S.etat !== 'lie') return '';
+  if(S.choix === 'suivre') return libre(S.cible) ? S.cible : '';
+  if(monTuteur() === 'copie') return presents().find(u => S.membres[u].tuteur === 'propre' && libre(u)) || '';
+  return '';
+}
+/* qui me suit (la version à deux ne dit pas qui elle suit : à deux, on le déduit comme avant) */
+function suiveurs(){
+  const moiT = monTuteur();
+  if(moiT === 'relais' || maCible()) return [];
+  return presents().filter(u => {
+    const x = S.membres[u];
+    if(x.suit !== null) return x.suit === S.uid;
+    return Object.keys(S.membres).length === 1 && (x.tuteur === 'relais' || (x.tuteur === 'copie' && moiT === 'propre'));
+  });
+}
 function toursDe(o){
   if(!o || typeof o !== 'object') return [];
   return Object.entries(o).filter(([id, t]) => /^[A-Za-z0-9]{1,24}$/.test(id) && t && typeof t === 'object')
@@ -10019,34 +10410,49 @@ function toursDe(o){
     .sort((a, b) => a.t - b.t).slice(-12);
 }
 function majSuivi(){
-  Tuteur.suivi({nom:S.pNom, prive:MIR.prive, basculer:() => {
+  const noms = MIR.suiveurs ? MIR.suiveurs.split(',').map(nomU) : [];
+  Tuteur.suivi({nom:noms.join(', '), qui:listeNoms(noms), plusieurs:noms.length > 1, prive:MIR.prive, basculer:() => {
     MIR.prive = !MIR.prive;
     S.F.update(refMir(), {prive:MIR.prive}).catch(() => {});
     majSuivi();
   }});
 }
+function texteDuo(sv){
+  const noms = sv.map(nomU), un = noms[0], n = presents().length + 1;
+  const fin = ' Une question qui commence par « Question de ' + un + ' » vient de ' + un + ' : réponds-lui en l’appelant par son surnom.';
+  return n <= 2 ? 'Deux étudiants étudient ensemble : ' + S.nom + ' (qui t’écrit) et ' + un + '.' + fin
+    : 'Un groupe de ' + n + ' étudiants étudie ensemble ; ' + S.nom + ' (qui t’écrit) partage ce tuteur avec ' + noms.join(', ') + '.' + fin;
+}
 function majRelais(){
   if(typeof Tuteur === 'undefined') return;
-  const lie = S.etat === 'lie' && S.pLa, moiT = monTuteur(), lui = S.pTuteur;
-  /* servir : l'autre a choisi de me suivre, ou n'a pas d'IA face à la mienne (en copier-coller, je colle chaque réponse) */
-  const servir = lie && moiT !== 'relais' && (lui === 'relais' || (lui === 'copie' && moiT === 'propre'));
-  if(servir && !MIR.actif){
-    MIR.actif = true; MIR.ids = [];
+  const lie = S.etat === 'lie';
+  /* ce que je publie (« suit ») a pu changer : un tuteur arrive, ou part */
+  const c = lie ? maCible() : '';
+  if(c !== MIR.suit){ if(Tuteur.enRelais()) Tuteur.relais(null); MIR.suit = c; publier(); }
+  /* servir : quelqu'un a choisi de me suivre, ou n'a pas d'IA face à la mienne (en copier-coller, je colle chaque réponse) */
+  const sv = lie ? suiveurs() : [], cle = sv.join();
+  if(sv.length && !MIR.actif){
+    MIR.actif = true; MIR.ids = []; MIR.suiveurs = '';
     const tours = {};
     Tuteur.historique(6).forEach((h, i) => { const id = 'h' + i; tours[id] = {q:h.q.slice(0, 2000), r:h.r.slice(0, 12000), m:h.m, fini:true, t:i}; MIR.ids.push(id); });
     S.F.set(refMir(), {actif:true, prive:MIR.prive, tours}).catch(() => {});
-    Tuteur.duo('Deux étudiants étudient ensemble : ' + S.nom + ' (qui t’écrit) et ' + S.pNom + '. Une question qui commence par « Question de ' + S.pNom + ' » vient de ' + S.pNom + ' : réponds-lui en l’appelant par son surnom.');
-    majSuivi();
-    toast('« ' + S.pNom + ' » suit maintenant ton tuteur : ses questions t’arrivent comme des cartes.' + (aTuteur() ? '' : ' En copier-coller, colle chaque réponse dans le panneau pour la partager.'));
-  } else if(!servir && MIR.actif){
-    MIR.actif = false;
+    const noms = listeNoms(sv.map(nomU)), pl = sv.length > 1;
+    toast(noms + (pl ? ' suivent' : ' suit') + ' maintenant ton tuteur : ' + (pl ? 'leurs' : 'ses') + ' questions t’arrivent comme des cartes.' + (aTuteur() ? '' : ' En copier-coller, colle chaque réponse dans le panneau pour la partager.'));
+  } else if(!sv.length && MIR.actif){
+    MIR.actif = false; MIR.suiveurs = '';
     if(S.refMoi) S.F.remove(refMir()).catch(() => {});
     Tuteur.duo(null); Tuteur.suivi(null);
   }
-  /* suivre : je l'ai choisi, ou je n'ai pas d'IA et l'autre en a une ; il faut que l'autre partage */
-  const m = S.pMiroir, suivre = lie && (moiT === 'relais' || (moiT === 'copie' && lui === 'propre')) && m && m.actif === true;
-  if(suivre){
-    if(!Tuteur.enRelais()) Tuteur.relais({hote:S.pNom, proposer:(id, texte, ecranId) => envoyer('question', JSON.stringify({id, texte, ecran:ecranId || ''}), null)});
+  if(MIR.actif && cle !== MIR.suiveurs){
+    const avant = MIR.suiveurs ? MIR.suiveurs.split(',') : [], neufs = sv.filter(u => !avant.includes(u));
+    if(avant.length && neufs.length) toast(listeNoms(neufs.map(nomU)) + (neufs.length > 1 ? ' suivent' : ' suit') + ' aussi ton tuteur.');
+    MIR.suiveurs = cle;
+    Tuteur.duo(texteDuo(sv)); majSuivi();
+  }
+  /* suivre : il faut que l'autre partage */
+  const x = c && S.membres[c], m = x && x.miroir;
+  if(c && m && m.actif === true){
+    if(!Tuteur.enRelais()) Tuteur.relais({hote:x.nom, proposer:(id, texte, ecranId) => envoyer('question', JSON.stringify({id, texte, ecran:ecranId || ''}), null, c)});
     Tuteur.miroir({prive:!!m.prive, tours:toursDe(m.tours)});
   } else if(Tuteur.enRelais()) Tuteur.relais(null);
   majPuceTuteur();
@@ -10054,25 +10460,30 @@ function majRelais(){
 /* la puce « Tuteur » de la barre : dit qui sert qui, et laisse choisir */
 function majPuceTuteur(){
   const b = barre && $('[data-a="tuteur"]', barre); if(!b || typeof Tuteur === 'undefined') return;
-  const lui = S.pTuteur;
+  const la = presents(), grp = la.length >= 2, sv = MIR.suiveurs ? MIR.suiveurs.split(',') : [], seul = la[0] || dernierVu();
   let t, titre;
-  if(MIR.actif){ t = 'Tuteur partagé ✓'; titre = '« ' + S.pNom + ' » suit ton tuteur. Clique pour l’ouvrir.'; }
-  else if(Tuteur.enRelais()){ t = 'Tuteur de ' + S.pNom; titre = 'Tu suis le tuteur de « ' + S.pNom + ' ». Clique pour reprendre le tien.'; }
-  else if(S.choix === 'suivre'){ t = 'Tuteur de ' + S.pNom + '…'; titre = 'En attente : « ' + S.pNom + ' » doit avoir un tuteur qui répond (une clé, ou le copier-coller). Clique pour annuler.'; }
-  else if(S.pLa && lui && lui !== 'relais'){ t = 'Suivre le tuteur de ' + S.pNom; titre = 'Ton panneau du tuteur montrera la conversation de « ' + S.pNom + ' », et tes questions lui seront proposées.'; }
-  else { t = 'Tuteur : chacun le sien'; titre = '« ' + S.pNom + ' » suit déjà ton tuteur, ou n’est pas là.'; }
+  if(MIR.actif){ t = 'Tuteur partagé ✓' + (sv.length > 1 ? ' · ' + sv.length : ''); titre = listeNoms(sv.map(nomU)) + (sv.length > 1 ? ' suivent' : ' suit') + ' ton tuteur. Clique pour l’ouvrir.'; }
+  else if(Tuteur.enRelais()){ t = 'Tuteur de ' + nomU(MIR.suit); titre = 'Tu suis le tuteur de « ' + nomU(MIR.suit) + ' ». Clique pour ' + (grp ? 'choisir.' : 'reprendre le tien.'); }
+  else if(S.choix === 'suivre'){ t = 'Tuteur de ' + nomU(S.cible) + '…'; titre = 'En attente : « ' + nomU(S.cible) + ' » doit avoir un tuteur qui répond (une clé, ou le copier-coller). Clique pour ' + (grp ? 'choisir.' : 'annuler.'); }
+  else if(grp && la.some(libre)){ t = 'Tuteur : suivre…'; titre = 'Suivre le tuteur de quelqu’un du groupe : ton panneau montrera sa conversation, et tes questions lui seront proposées.'; }
+  else if(!grp && la.length === 1 && libre(la[0])){ t = 'Suivre le tuteur de ' + nomU(la[0]); titre = 'Ton panneau du tuteur montrera la conversation de « ' + nomU(la[0]) + ' », et tes questions lui seront proposées.'; }
+  else { t = 'Tuteur : chacun le sien'; titre = grp ? 'Personne du groupe n’a de tuteur libre à suivre pour l’instant.' : '« ' + nomU(seul) + ' » suit déjà ton tuteur, ou n’est pas là.'; }
   b.textContent = t; b.title = titre;
   b.setAttribute('aria-pressed', String(MIR.actif || Tuteur.enRelais()));
 }
 function basculerTuteur(){
   if(MIR.actif){ Tuteur.ouvrir(true); return; }
-  if(Tuteur.enRelais() || S.choix === 'suivre') S.choix = 'mien';
-  else if(S.pLa && S.pTuteur && S.pTuteur !== 'relais') S.choix = 'suivre';
-  else return;
-  publier(); majRelais();
-  if(S.choix === 'suivre') Tuteur.ouvrir(true);
+  const la = presents();
+  if(la.length >= 2){ ouvrirGpop($('[data-a="tuteur"]', barre)); return; }    // à plusieurs, on choisit qui suivre dans la liste
+  if(Tuteur.enRelais() || S.choix === 'suivre') suivreTuteur('');
+  else if(la.length === 1 && libre(la[0])) suivreTuteur(la[0]);
 }
-/* les tours du tuteur, recopiés pour l'autre au fil de l'eau (la réponse en cours, au plus trois fois par seconde) */
+function suivreTuteur(u){
+  if(u){ S.choix = 'suivre'; S.cible = u; } else S.choix = 'mien';
+  publier(); majRelais(); sauverSeance(); majGpop();
+  if(u) Tuteur.ouvrir(true);
+}
+/* les tours du tuteur, recopiés pour ceux qui suivent au fil de l'eau (la réponse en cours, quelques fois par seconde) */
 function surTuteur(ev){
   if(ev.type === 'moteur'){
     const t = monTuteur();
@@ -10086,10 +10497,11 @@ function surTuteur(ev){
     while(MIR.ids.length > 10) S.F.remove(refMir('tours/' + MIR.ids.shift())).catch(() => {});
   } else if(ev.type === 'flux'){
     MIR.dernier[ev.id] = ev.texte;
+    /* tout le groupe reçoit la présence (le miroir en fait partie) : à plusieurs, moins souvent */
     if(!MIR.tFlux[ev.id]) MIR.tFlux[ev.id] = setTimeout(() => {
       MIR.tFlux[ev.id] = 0;
       if(MIR.actif && !MIR.prive && MIR.ids.includes(ev.id)) S.F.set(refMir('tours/' + ev.id + '/r'), String(MIR.dernier[ev.id]).slice(0, 12000)).catch(() => {});
-    }, 350);
+    }, presents().length >= 2 ? 600 : 350);
   } else if(ev.type === 'fin'){
     clearTimeout(MIR.tFlux[ev.id]); MIR.tFlux[ev.id] = 0; delete MIR.dernier[ev.id];
     if(MIR.ids.includes(ev.id)) S.F.update(refMir('tours/' + ev.id), {r:String(ev.texte || (ev.erreur ? '*(pas de réponse)*' : '')).slice(0, 12000), m:ev.label || '', fini:true}).catch(() => {});
@@ -10098,17 +10510,29 @@ function surTuteur(ev){
   }
 }
 
-/* ---------- dans le plan : le point de l'autre, et le repère ---------- */
+/* ---------- dans le plan : le point de chacun, et le repère ---------- */
 function majRail(){
   $$('#fil button[data-aller]').forEach(b => {
-    if(b.hasAttribute('data-cv-lui')){ b.removeAttribute('data-cv-lui'); b.style.removeProperty('--cv-c'); b.removeAttribute('title'); }
+    if(b.hasAttribute('data-cv-lui')){ b.removeAttribute('data-cv-lui'); b.style.removeProperty('--cv-c'); b.removeAttribute('title'); const s = $('.cv-pts', b); if(s) s.remove(); }
     b.removeAttribute('data-cv-repere');
   });
   if(S.etat !== 'lie') return;
   const r = S.repere.e && $('#fil button[data-aller="' + S.repere.e + '"]');
   if(r) r.setAttribute('data-cv-repere', '');
-  const l = S.pLa && S.pEcran && $('#fil button[data-aller="' + S.pEcran + '"]');
-  if(l){ l.setAttribute('data-cv-lui', ''); l.style.setProperty('--cv-c', couleur(S.pRaie)); l.title = S.pNom + ' est sur cet écran'; }
+  const par = {};
+  presents().forEach(u => { const e = S.membres[u].ecran; if(e) (par[e] = par[e] || []).push(u); });
+  Object.keys(par).forEach(e => {
+    const l = $('#fil button[data-aller="' + e + '"]'); if(!l) return;
+    const us = par[e];
+    l.setAttribute('data-cv-lui', ''); l.style.setProperty('--cv-c', couleur(raieU(us[0])));
+    l.title = us.length === 1 ? nomU(us[0]) + ' est sur cet écran' : us.map(nomU).join(', ') + ' sont sur cet écran';
+    /* deux autres points au plus, au-dessus et au-dessous du premier ; la bulle d'aide les nomme tous */
+    if(us.length > 1){
+      const s = H('<span class="cv-pts" aria-hidden="true"></span>');
+      us.slice(1, 3).forEach(u => { const i = document.createElement('i'); i.style.setProperty('--c', couleur(raieU(u))); s.appendChild(i); });
+      l.appendChild(s);
+    }
+  });
 }
 function avertir(t){
   if(panneau && !panneau.hidden) return;
@@ -10166,12 +10590,13 @@ function fermerPad(){ if(pad){ pad.remove(); pad = null; } }
 function ouvrirPad(fond){
   if(S.etat !== 'lie') return;
   fermerPad();
+  const la = presents(), pour = la.length >= 2 ? 'Envoyer au groupe' : 'Envoyer à ' + esc(nomU(la[0] || dernierVu()));
   pad = H('<div class="cv-pad v2-hors-texte" role="dialog" aria-modal="true" aria-label="Croquis">' +
     '<div class="cv-pad-outils" role="toolbar" aria-label="Outils du croquis">' +
       '<span class="cv-grp" role="group" aria-label="Épaisseur">' + LARG.map((l, i) => '<button type="button" data-l="' + i + '" aria-pressed="' + (i === 1) + '" aria-label="Trait ' + ['fin', 'moyen', 'épais'][i] + '"><i style="height:' + (2 + i * 3) + 'px"></i></button>').join('') + '</span>' +
       '<span class="cv-grp" role="group" aria-label="Couleur">' + ['ta raie', 'encre', 'couleur de l’atelier'].map((n, i) => '<button type="button" data-c="' + i + '" aria-pressed="' + (i === 0) + '" aria-label="' + n + '"><i class="cv-pastille" style="background:' + palette(S.raie)[i] + '"></i></button>').join('') + '</span>' +
       '<button type="button" data-o="gomme" aria-pressed="false" title="Gomme : touche un trait pour l’enlever">Gomme</button><button type="button" data-o="annuler" title="Annuler le dernier geste">Annuler</button><button type="button" data-o="effacer" title="Tout effacer">Effacer</button>' +
-      '<span class="cv-espace"></span><button type="button" class="btn" data-o="fermer">Fermer</button><button type="button" class="btn plein" data-o="envoyer">Envoyer à ' + esc(S.pNom) + '</button>' +
+      '<span class="cv-espace"></span><button type="button" class="btn" data-o="fermer">Fermer</button><button type="button" class="btn plein" data-o="envoyer">' + pour + '</button>' +
     '</div><canvas class="cv-toile" aria-label="Zone de dessin"></canvas><p class="cv-pad-etat" aria-live="polite"></p></div>');
   document.body.appendChild(pad);
   const p = pad, cvs = $('canvas', p), cx = cvs.getContext('2d');
@@ -10243,23 +10668,33 @@ function demarrer(){
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'btn btn-cv'; b.id = 'btn-cv';
     b.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span>Convergence</span>';
-    b.title = 'Convergence : étudier à deux, chacun sur son appareil';
+    b.title = 'Convergence : étudier à deux ou à plusieurs, chacun sur son appareil';
     b.setAttribute('aria-label', b.title);
     ($('#btn-sablier') || $('#btn-rappel') || notes).before(b);
     b.addEventListener('click', ouvrir);
   }
   CROCHETS.apresAller.push(() => { if(S.etat === 'lie'){ publier(); majBarre(); } });
+  document.addEventListener('pointerdown', e => { if(gpop && !gpop.contains(e.target) && !e.target.closest('.cv-duo, .cv-tut')) fermerGpop(); }, true);
   if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
   if(dansClaude()) return;
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
-  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code) || !s.part) return;
-  Object.assign(S, {nom:propre(s.nom, 24) || 'Photon', raie:raieOk(s.raie), etat:'lie', part:String(s.part), pNom:propre(s.pNom, 24) || 'Partenaire', pRaie:raieOk(s.pRaie),
-    repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false} : {e:'', n:0, auto:false}, pret:s.pret | 0});
-  S.pLa = null;
+  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)) return;
+  let ms = s.membres && typeof s.membres === 'object' ? s.membres : null;
+  if(!ms && typeof s.part === 'string' && s.part) ms = {[s.part]:{nom:s.pNom, raie:s.pRaie}};      // une séance de la version à deux
+  if(!ms || !Object.keys(ms).length) return;
+  S.membres = {};
+  Object.keys(ms).forEach(u => {
+    const m = ms[u] || {};
+    S.membres[u] = {nom:propre(m.nom, 24) || 'Partenaire', raie:raieOk(m.raie), role:m.role === 'hote' ? 'hote' : 'invite', depuis:+m.depuis || 0,
+      la:null, ecran:'', pret:0, tuteur:'', suit:null, miroir:null, v:2, vu:0};
+  });
+  Object.assign(S, {nom:propre(s.nom, 24) || 'Photon', raie:raieOk(s.raie), etat:'lie', depuis:+s.depuis || Date.now(), ouvert:!!s.ouvert,
+    choix:['auto', 'mien', 'suivre'].includes(s.choix) ? s.choix : 'auto', cible:typeof s.cible === 'string' ? s.cible : '',
+    repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false, par:typeof s.repere.par === 'string' ? s.repere.par : ''} : {e:'', n:0, auto:false, par:''}, pret:s.pret | 0});
   entrer(s.role === 'hote' ? 'hote' : 'invite', s.code, true).then(ok => { if(ok) montrerBarre(); else quitter(); });
 }
 
-return {demarrer, etat:() => S.etat};
+return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0};
 })();
 
 /* ====== _commun/demarrage.js ====== */
@@ -10376,7 +10811,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '4fbe58f51338';
+  const ICI = '765cf04d0d80';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
