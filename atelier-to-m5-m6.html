@@ -964,6 +964,15 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 /* Convergence dans le tuteur : qui suit, la question proposée, le miroir */
 .tu-suivi{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 0 6px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);font-size:13.5px;color:var(--ink)}
 .tu-suivi span{flex:1;min-width:0}
+/* l'interrupteur « Suivre » d'un invité qui a son propre tuteur ; à l'étroit, il passe sous le texte */
+.tu-choix span{flex:1 1 11em}
+.tu-switch{display:inline-flex;align-items:center;gap:8px;min-height:32px;border:0;background:none;padding:0 2px;font:600 13px var(--f-body);color:var(--ink);cursor:pointer}
+.tu-switch i{position:relative;flex:none;width:34px;height:20px;border-radius:10px;background:var(--ink-3);transition:background .15s}
+.tu-switch i::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--panel);transition:transform .15s}
+.tu-switch[aria-checked="true"] i{background:var(--accent)}
+.tu-switch[aria-checked="true"] i::after{transform:translateX(14px);background:var(--on-accent)}
+.tu-switch:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){.tu-switch i,.tu-switch i::after{transition:none}}
 .tu-proposee{border:1px solid var(--accent);border-radius:12px;background:var(--accent-soft);padding:8px 10px}
 .tu-prop-de{margin:0;font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .tu-prop-q{margin:4px 0 8px;white-space:pre-wrap}
@@ -7378,6 +7387,23 @@ function suivi(o){
   bt.addEventListener('click', o.basculer);
   RT('tu-bandeau').before(SUIVI);
 }
+/* chez un invité qui a son propre tuteur (le pass de la classe, ou une clé) : l'interrupteur pour suivre celui d'un
+   autre ; o = {nom, actif, attente, basculer}, ou null pour l'enlever. Gardé d'une mise à jour à l'autre (le focus reste) */
+let CHOIX = null, choixFn = null;
+function choixSuivi(o){
+  if(!o){ if(CHOIX){ CHOIX.remove(); CHOIX = null; } choixFn = null; return; }
+  if(!CHOIX){
+    CHOIX = H('<div class="tu-suivi tu-choix"><span></span><button type="button" class="tu-switch" role="switch"><i aria-hidden="true"></i><b></b></button></div>');
+    CHOIX.querySelector('button').addEventListener('click', () => { if(choixFn) choixFn(); });
+    RT('tu-bandeau').before(CHOIX);
+  }
+  choixFn = o.basculer;
+  CHOIX.querySelector('span').textContent = !o.actif ? 'Ton propre tuteur répond ici.'
+    : o.attente ? 'En attente du tuteur de « ' + o.nom + ' »…' : 'Tu suis le tuteur de « ' + o.nom + ' ».';
+  const b = CHOIX.querySelector('button');
+  b.setAttribute('aria-checked', String(!!o.actif));
+  b.querySelector('b').textContent = 'Suivre « ' + o.nom + ' »';
+}
 /* les derniers tours visibles, pour qu'un partenaire qui arrive ait le fil de la discussion */
 function historique(n){
   const l = [];
@@ -7929,7 +7955,7 @@ majModes();
 
 detecterMoteur();
 return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, guide, quiz, expliquer, json, evaluer, corriger, peutJSON:() => mode() === 'api',
-  ecouter:f => ECOUTEURS.push(f), duo:t => { DUO = t || ''; }, relais, miroir, etatProposition, carteProposee, suivi, historique,
+  ecouter:f => ECOUTEURS.push(f), duo:t => { DUO = t || ''; }, relais, miroir, etatProposition, carteProposee, suivi, choixSuivi, historique,
   enRelais:() => !!RELAIS};
 })();
 
@@ -8302,7 +8328,7 @@ async function quitter(){
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', membres:{}, depuis:0, admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false,
     demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0});
-  sauverSeance(); majRail();
+  sauverSeance(); majRail(); majChoixSuivi();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -8391,16 +8417,22 @@ function inviteVoit(autres){
   if(!porte){ if(S.porte){ S.porte = ''; S.vuN = 0; Rac.synchro([]); etatVoile('L’hôte a fermé la séance.'); } return; }
   if(porte.at !== P){ Rac.synchro([]); etatVoile('Cette séance est ouverte sur un autre atelier : ouvre le même que l’hôte.'); return; }
   const memes = cands.filter(p => p.at === P), vrais = memes.filter(p => p.lie === true);
-  /* le groupe déjà réuni pousse au centre ; une seule personne arrive du bord, comme à deux */
-  Rac.synchro(memes.map(p => ({id:p.uid, c:couleur(p.raie), relie:p.lie === true && vrais.length >= 2})));
-  const neuf = S.porte !== porte.uid || S.vuN !== memes.length;
-  S.porte = porte.uid; S.vuN = memes.length;
-  if(memes.some(p => (p.admis && p.admis[S.uid]) || (p.etat === 'lie' && p.avec === S.uid))){ lier(memes); return; }
+  /* les autres qui attendent à la porte en même temps que moi (ceux qu'elle a refusés repartent) */
+  const refuse = u => memes.some(p => (p.refuses && p.refuses[u]) || p.refus === u);
+  const aussi = autres.filter(p => p.role === 'invite' && p.etat === 'demande' && !estLie(p) && p.at === P && !refuse(p.uid));
+  /* le groupe déjà réuni pousse au centre ; chaque nouveau venu arrive du bord, comme à deux */
+  Rac.synchro(memes.map(p => ({id:p.uid, c:couleur(p.raie), relie:p.lie === true && vrais.length >= 2}))
+    .concat(aussi.map(p => ({id:p.uid, c:couleur(p.raie), relie:false}))));
+  const vu = memes.length + ':' + aussi.map(p => p.uid).join(), neuf = S.porte !== porte.uid || S.vuN !== vu;
+  S.porte = porte.uid; S.vuN = vu;
+  /* accueillis ensemble : chacun garde, dans sa convergence, les racines des autres accueillis avec lui */
+  if(memes.some(p => (p.admis && p.admis[S.uid]) || (p.etat === 'lie' && p.avec === S.uid))){ lier(memes, aussi.filter(p => memes.some(m => m.admis && m.admis[p.uid])).map(p => p.uid)); return; }
   if(memes.some(p => (p.refuses && p.refuses[S.uid]) || p.refus === S.uid)){ etatVoile('« ' + nomDe(porte) + ' » a refusé.'); return; }
   if(porte.plein){ etatVoile('Séance complète : ' + MAX_GROUPE + ' personnes y sont déjà.'); return; }
   if(!(porte.v >= 2) && porte.etat === 'lie' && porte.avec && porte.avec !== S.uid){ etatVoile('Séance complète : « ' + nomDe(porte) + ' » est déjà avec quelqu’un.'); return; }
-  if(neuf) etatVoile(vrais.length >= 2 ? 'Séance trouvée : ' + vrais.length + ' personnes convergent déjà. On attend que « ' + nomDe(porte) + ' » t’accueille…'
-    : 'Séance trouvée. On attend que « ' + nomDe(porte) + ' » accepte…');
+  const aussiT = aussi.length ? listeNoms(aussi.map(nomDe)) + (aussi.length > 1 ? ' attendent' : ' attend') + ' aussi. ' : '';
+  if(neuf) etatVoile(vrais.length >= 2 ? 'Séance trouvée : ' + vrais.length + ' personnes convergent déjà. ' + aussiT + 'On attend que « ' + nomDe(porte) + ' » t’accueille…'
+    : 'Séance trouvée. ' + aussiT + 'On attend que « ' + nomDe(porte) + ' » ' + (aussi.length ? 'vous accueille…' : 'accepte…'));
 }
 function accepter(ds){
   ds.forEach(d => { S.admis[d.uid] = 1; S.avec = d.uid; });
@@ -8419,8 +8451,9 @@ function basculerPorte(ouvert){
   S.ouvert = ouvert; publier(); sauverSeance(); majGpop();
   toast(ouvert ? 'Porte ouverte : qui entre le code rejoint sans attendre.' : 'Sur demande : tu accueilles chaque nouveau venu.');
 }
-/* la convergence n'a lieu que lorsque les deux côtés l'ont confirmée ; ps : ceux qui la font avec moi */
-function lier(ps){
+/* la convergence n'a lieu que lorsque les deux côtés l'ont confirmée ; ps : ceux qui la font avec moi ;
+   aussi : chez un invité, les autres accueillis en même temps (leurs racines convergent avec la sienne) */
+function lier(ps, aussi){
   S.etat = 'lie'; if(!S.depuis) S.depuis = Date.now();
   ps.forEach(p => { noter(p).la = true; });
   if(S.role === 'invite'){ const a = ps.find(p => p.admis && p.admis[S.uid]) || ps.find(p => p.avec === S.uid) || ps[0]; S.avec = a ? a.uid : ''; }
@@ -8431,7 +8464,7 @@ function lier(ps){
   }
   publier(); sauverSeance();
   demandesVoile([]); demandesPage([]);
-  Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis)));
+  Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis), aussi || []));
   etatVoile('Convergence…');
   Rac.relier(() => {
     fermerVoile(); setTimeout(() => Rac.arreter(), 950); montrerBarre();
@@ -9119,6 +9152,17 @@ function maCible(){
   if(monTuteur() === 'copie') return presents().find(u => S.membres[u].tuteur === 'propre' && libre(u)) || '';
   return '';
 }
+/* un invité qui a son propre tuteur (le pass de la classe, ou une clé) reste indépendant par défaut ; un interrupteur
+   le fait suivre l'hôte (à défaut, le premier du groupe qui a un tuteur libre). Sans IA, on suit d'office (maCible) */
+const avecInterrupteur = () => S.etat === 'lie' && S.role !== 'hote' && aTuteur();
+function cibleSuivi(){ return S.choix === 'suivre' ? S.cible : rang().find(u => u !== S.uid && libre(u)) || ''; }
+function majChoixSuivi(){
+  if(typeof Tuteur === 'undefined') return;
+  const c = avecInterrupteur() ? cibleSuivi() : '';
+  if(!c){ Tuteur.choixSuivi(null); return; }
+  const actif = S.choix === 'suivre';
+  Tuteur.choixSuivi({nom:nomU(c), actif, attente:actif && !Tuteur.enRelais(), basculer:() => suivreTuteur(actif ? '' : c)});
+}
 /* qui me suit (la version à deux ne dit pas qui elle suit : à deux, on le déduit comme avant) */
 function suiveurs(){
   const moiT = monTuteur();
@@ -9181,7 +9225,7 @@ function majRelais(){
     if(!Tuteur.enRelais()) Tuteur.relais({hote:x.nom, proposer:(id, texte, ecranId) => envoyer('question', JSON.stringify({id, texte, ecran:ecranId || ''}), null, c)});
     Tuteur.miroir({prive:!!m.prive, tours:toursDe(m.tours)});
   } else if(Tuteur.enRelais()) Tuteur.relais(null);
-  majPuceTuteur();
+  majPuceTuteur(); majChoixSuivi();
 }
 /* la puce « Tuteur » de la barre : dit qui sert qui, et laisse choisir */
 function majPuceTuteur(){
@@ -9189,8 +9233,9 @@ function majPuceTuteur(){
   const la = presents(), grp = la.length >= 2, sv = MIR.suiveurs ? MIR.suiveurs.split(',') : [], seul = la[0] || dernierVu();
   let t, titre;
   if(MIR.actif){ t = 'Tuteur partagé ✓' + (sv.length > 1 ? ' · ' + sv.length : ''); titre = listeNoms(sv.map(nomU)) + (sv.length > 1 ? ' suivent' : ' suit') + ' ton tuteur. Clique pour l’ouvrir.'; }
-  else if(Tuteur.enRelais()){ t = 'Tuteur de ' + nomU(MIR.suit); titre = 'Tu suis le tuteur de « ' + nomU(MIR.suit) + ' ». Clique pour ' + (grp ? 'choisir.' : 'reprendre le tien.'); }
-  else if(S.choix === 'suivre'){ t = 'Tuteur de ' + nomU(S.cible) + '…'; titre = 'En attente : « ' + nomU(S.cible) + ' » doit avoir un tuteur qui répond (une clé, ou le copier-coller). Clique pour ' + (grp ? 'choisir.' : 'annuler.'); }
+  else if(Tuteur.enRelais()){ t = 'Tuteur de ' + nomU(MIR.suit); titre = 'Tu suis le tuteur de « ' + nomU(MIR.suit) + ' ». Clique pour ' + (grp && !avecInterrupteur() ? 'choisir.' : 'reprendre le tien.'); }
+  else if(S.choix === 'suivre'){ t = 'Tuteur de ' + nomU(S.cible) + '…'; titre = 'En attente : « ' + nomU(S.cible) + ' » doit avoir un tuteur qui répond (une clé, ou le copier-coller). Clique pour ' + (grp && !avecInterrupteur() ? 'choisir.' : 'annuler.'); }
+  else if(avecInterrupteur() && cibleSuivi()){ t = 'Tuteur : le mien'; titre = 'Ton propre tuteur répond. Clique pour suivre celui de « ' + nomU(cibleSuivi()) + ' » : ton panneau montrera sa conversation, et tes questions lui seront proposées.'; }
   else if(grp && la.some(libre)){ t = 'Tuteur : suivre…'; titre = 'Suivre le tuteur de quelqu’un du groupe : ton panneau montrera sa conversation, et tes questions lui seront proposées.'; }
   else if(!grp && la.length === 1 && libre(la[0])){ t = 'Suivre le tuteur de ' + nomU(la[0]); titre = 'Ton panneau du tuteur montrera la conversation de « ' + nomU(la[0]) + ' », et tes questions lui seront proposées.'; }
   else { t = 'Tuteur : chacun le sien'; titre = grp ? 'Personne du groupe n’a de tuteur libre à suivre pour l’instant.' : '« ' + nomU(seul) + ' » suit déjà ton tuteur, ou n’est pas là.'; }
@@ -9199,6 +9244,9 @@ function majPuceTuteur(){
 }
 function basculerTuteur(){
   if(MIR.actif){ Tuteur.ouvrir(true); return; }
+  /* un invité qui a son propre tuteur : la puce est l'interrupteur (suivre un autre que l'hôte se choisit dans la liste du groupe) */
+  const c = avecInterrupteur() ? cibleSuivi() : '';
+  if(c){ suivreTuteur(S.choix === 'suivre' ? '' : c); return; }
   const la = presents();
   if(la.length >= 2){ ouvrirGpop($('[data-a="tuteur"]', barre)); return; }    // à plusieurs, on choisit qui suivre dans la liste
   if(Tuteur.enRelais() || S.choix === 'suivre') suivreTuteur('');
@@ -9537,7 +9585,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '135f9bf43156';
+  const ICI = 'f65cc5345b55';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
