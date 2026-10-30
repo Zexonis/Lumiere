@@ -1216,6 +1216,20 @@ body.tb-cote .cv-panneau{right:calc(min(48vw,860px) + 12px)}
 .px-jum{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
 @media (max-width:560px){ .atoi{padding:14px 12px 12px;margin-left:-4px;margin-right:-4px} .atoi-tete{grid-template-columns:1fr} .atoi-tag{grid-row:auto;justify-self:start} .px-rep input{width:7.5em} }
 @media (prefers-reduced-motion: reduce){ .atoi-serie.vient{animation:none} }
+
+/* ---------- L'essentiel (essentiel.js) : ce qui se replie, la ligne d'en-tête, la note au bas du texte ---------- */
+html.ess .ess-plie,html.ess .ess-src{display:none!important}
+html.ess .ess-replie:not(.ess-ouvert) > :not(.lib):not(h3):not(.ess-ouvrir){display:none!important}
+.ess-ouvrir{display:none}
+html.ess .ess-replie .ess-ouvrir{display:inline-flex;align-items:center;margin:4px 0 2px;border:1.5px solid var(--accent);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.ess-barre{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:12px;padding:8px 10px 8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2,var(--panel));font-size:13.5px;color:var(--ink-2)}
+.ess-mode{font-weight:800;color:var(--accent);letter-spacing:.02em}
+.ess-exam{padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink);font-weight:700}
+.ess-bascule{margin-left:auto;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.ess-bascule:hover{border-color:var(--accent)}
+.ess-bascule[hidden]{display:none}
+.ess-note{margin:18px 0 0;padding:10px 12px;border:1px dashed var(--line);border-radius:12px;font-size:14px;color:var(--ink-2)}
+@media (max-width:560px){ .ess-barre{font-size:13px} .ess-bascule{margin-left:0} }
 </style>
 <div class="app" id="app">
 
@@ -5525,6 +5539,148 @@ const Pas = (() => {
     eclairer, eteindre, proche, scoreEcran, placer:() => { if(ICI) placer(ICI); }};
 })();
 
+/* ====== _commun/essentiel.js ====== */
+/* ======================================================================
+   L'essentiel (learning-blueprint.md §1.2 ; la question du 30 oct. :
+   « peut-on comprendre sans être submergé ? »). Par défaut, un écran de
+   contenu montre son idée, son entrée concrète (Vis-le), son schéma
+   principal, ses points clés (les pas, suivis pour la maîtrise), ses
+   exemples résolus, ses pièges et « À toi ». Le reste (citations
+   d'appoint, explications de plus, tableaux, schémas secondaires, le
+   geste) se replie sur place : rien n'est supprimé, rien ne change de
+   rang dans la page (les ancres des coches et des pas tiennent), et
+   « Tout voir » le rend. Une ligne en tête d'écran dit ce que l'écran
+   demande (minutes de lecture, points clés, problèmes) et s'il est au
+   cœur de l'examen. Le tuteur lit toujours l'écran entier.
+   L'atelier décrit ses écrans dans ATELIER.essentiel :
+   {ecrans:[ids], texte, garder, plier, replier, replierTexte, sources, examen:[ids], vitesse}.
+   Il démarre après les autres modules : le geste et Vis-le sont posés quand il trie.
+   Sans cela, rien ne change.
+   ====================================================================== */
+const Essentiel = (() => {
+  const C = typeof ATELIER !== 'undefined' && ATELIER.essentiel ? ATELIER.essentiel : null;
+  const CLE = P + '-essentiel';
+  const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+  let actif = memo.get(CLE) !== '0';
+  const racine = () => document.documentElement;
+  const mots = el => el ? (el.textContent || '').split(/\s+/).filter(Boolean).length : 0;
+  const NATURES = [['blockquote.diapo', 'citations des diapos'], ['.table-wrap, table', 'tableau'], ['.paillasse', 'schéma'], ['ul, ol', 'liste'], ['p', 'explications'], ['aside.geste', 'geste']];
+  function nature(x){ const n = NATURES.find(([s]) => x.matches(s)); return n ? n[1] : 'compléments'; }
+
+  /* ---------- trier un écran : ce qui reste, ce qui se replie ---------- */
+  function classer(e){
+    if(!C || !e || !e.el || (Array.isArray(C.ecrans) && !C.ecrans.includes(e.id))) return;
+    const t = $(C.texte, e.el); if(!t) return;
+    e.el.classList.add('ess-ecran');
+    Array.from(t.children).forEach(x => {
+      if(x.classList.contains('v2-hors-texte')) return;
+      const garde = x.matches(C.garder) || !!x.querySelector(C.garder);
+      x.classList.toggle('ess-plie', !garde);
+    });
+    if(C.plier) $$(C.plier, e.el).forEach(x => x.classList.add('ess-plie'));
+    if(C.replier) $$(C.replier, e.el).forEach(replier);
+    /* les références de la distillation dans le sur-titre (« Distillation : I2 · D11–D13 », « Notes : § 8 ») : utiles à nous, pas à une première lecture */
+    if(C.sources) $$(C.sources, e.el).forEach(x => {
+      if($('.ess-src', x) || x.children.length) return;
+      const tx = x.textContent, m = /\s·\s(?:distillation|sources?|notes)\b/i.exec(tx); if(!m) return;
+      x.textContent = tx.slice(0, m.index);
+      const s = document.createElement('span'); s.className = 'ess-src'; s.textContent = tx.slice(m.index); x.appendChild(s);
+    });
+    note(e, t);
+    barre(e);
+  }
+  /* un bloc replié garde son étiquette et son titre ; un bouton l'ouvre sur place */
+  function replier(x){
+    x.classList.add('ess-replie');
+    if($('.ess-ouvrir', x)) return;
+    const b = H('<button type="button" class="ess-ouvrir" aria-expanded="false"></button>');
+    b.textContent = C.replierTexte || 'Ouvrir';
+    const h = $('h3', x); if(h) h.after(b); else x.prepend(b);
+    b.addEventListener('click', () => {
+      const o = !x.classList.contains('ess-ouvert');
+      x.classList.toggle('ess-ouvert', o); b.setAttribute('aria-expanded', String(o));
+      b.textContent = o ? 'Replier' : C.replierTexte || 'Ouvrir';
+    });
+  }
+  const plies = e => $$('.ess-plie', e.el).concat($$('.ess-replie', e.el));
+  /* les minutes : à la vitesse de lecture d'un texte technique (ATELIER.essentiel.vitesse mots/min) */
+  function minutes(e, ess){
+    const v = C.vitesse || 150, corps = $('.ch-corps', e.el);
+    let n = mots($('header', e.el)) - mots($('.ess-barre', e.el)) + mots($('aside.visle', e.el)) + mots(corps) - mots($('.atoi-place', e.el));
+    if(ess){
+      n -= $$('.ess-plie', e.el).reduce((s, x) => s + mots(x), 0);
+      $$('.ess-replie', e.el).forEach(x => { if(!x.classList.contains('ess-ouvert')) n += mots($('.lib', x)) + mots($('h3', x)); else n += mots(x); });
+    } else $$(C.replier || '.ess-rien', e.el).forEach(x => { n += mots(x); });
+    return Math.max(1, Math.round(n / v));
+  }
+  function dateExamen(){
+    try{ return new Date(ATELIER.examen + 'T12:00').toLocaleDateString('fr-CA', {day:'numeric', month:'short'}); }catch(err){ return ''; }
+  }
+  /* la ligne d'en-tête : ce que l'écran demande, et la bascule */
+  function barre(e){
+    if(!C || !e || !e.el.classList.contains('ess-ecran')) return;
+    const tete = $('header', e.el); if(!tete) return;
+    let b = $('.ess-barre', tete);
+    if(!b){
+      b = H('<div class="ess-barre v2-hors-texte"><span class="ess-mode"></span><span class="ess-info"></span><span class="ess-exam" hidden></span><button type="button" class="ess-bascule"></button></div>');
+      tete.appendChild(b);
+      $('.ess-bascule', b).addEventListener('click', basculer);
+    }
+    const n = plies(e).length, pas = typeof Pas !== 'undefined' ? Pas.liste(e.id).length : 0, atoi = !!$('.atoi', e.el);
+    $('.ess-mode', b).textContent = actif ? 'L’essentiel' : 'Tout l’écran';
+    $('.ess-info', b).textContent = '≈ ' + minutes(e, actif) + ' min de lecture' + (pas ? ' · ' + pas + ' points clés' : '') + (atoi ? ' · « À toi » : 5 problèmes au moins' : '');
+    const ex = $('.ess-exam', b), auCoeur = Array.isArray(C.examen) && C.examen.includes(e.id) && ATELIER.examen;
+    ex.hidden = !auCoeur; if(auCoeur) ex.textContent = 'au cœur de l’évaluation du ' + dateExamen();
+    const bt = $('.ess-bascule', b);
+    bt.textContent = actif ? (n ? 'Tout voir (+ ' + n + ')' : 'Tout voir') : 'Revenir à l’essentiel';
+    bt.setAttribute('aria-pressed', String(!actif));
+    bt.title = actif ? 'Afficher aussi ce qui est replié : citations d’appoint, tableaux, schémas secondaires, geste' : 'Ne garder que l’idée, les points clés, les exemples et la pratique';
+    bt.hidden = !n;
+  }
+  /* au bas du texte : ce qui est replié, en mots, et la même bascule */
+  function note(e, t){
+    let p = $('.ess-note', t);
+    const l = plies(e);
+    if(!l.length){ if(p) p.remove(); return; }
+    if(!p){
+      p = H('<p class="ess-note v2-hors-texte"><span></span> <button type="button" class="lien-btn"></button></p>');
+      t.appendChild(p);
+      $('button', p).addEventListener('click', () => { basculer(); p.scrollIntoView({block:'nearest'}); });
+    }
+    const natures = Array.from(new Set(l.map(nature)));
+    $('span', p).textContent = actif ? 'Replié pour l’essentiel : ' + natures.join(', ') + '.' : 'Tout est affiché.';
+    $('button', p).textContent = actif ? 'Tout voir' : 'Revenir à l’essentiel';
+  }
+  function appliquer(){
+    racine().classList.toggle('ess', !!C && actif);
+    if(typeof ICI !== 'undefined' && ICI){ barre(ICI); const t = C && $(C.texte, ICI.el); if(t) note(ICI, t); }
+  }
+  function basculer(){
+    actif = !actif; memo.set(CLE, actif ? '1' : '0');
+    appliquer();
+  }
+  /* le texte complet de l'écran, replis compris (pour le tuteur) ; innerText saute ce qui est caché */
+  function texteComplet(el){
+    const r = racine(), a = r.classList.contains('ess');
+    if(a) r.classList.remove('ess');
+    const ouverts = $$('.ess-replie:not(.ess-ouvert)', el); ouverts.forEach(x => x.classList.add('ess-ouvert'));
+    const t = el.innerText || '';
+    ouverts.forEach(x => x.classList.remove('ess-ouvert'));
+    if(a) r.classList.add('ess');
+    return t;
+  }
+
+  function demarrer(){
+    if(!C) return;
+    appliquer();
+    CROCHETS.apresInit.push(classer);
+    CROCHETS.rebati.push(classer);
+    /* à chaque visite aussi : un module peut avoir ajouté un bloc après le premier tri */
+    CROCHETS.apresAller.push(e => { if(e && e.init) classer(e); });
+  }
+  return {demarrer, texteComplet, actif:() => !!C && actif};
+})();
+
 /* ====== _commun/pratique.js ====== */
 /* ======================================================================
    La pratique (learning-blueprint.md §4 et §6).
@@ -5588,6 +5744,7 @@ const Pratique = (() => {
         (o.tuteur ? '<button type="button" class="lien-btn" data-a="tuteur">Demander au tuteur</button>' : '') +
         '<button type="button" class="btn px-jum" data-a="jumelle" hidden>Une jumelle, à toi</button></div>';
     el.appendChild(box);
+    if(o.fondu) $('[data-a="depart"]', box).hidden = true;      // à compléter : le plan arrive de toute façon
     $('.px-q', box).innerHTML = pb.q;        // le texte vient du générateur de l'atelier, jamais d'un tiers
     $('.px-u', box).textContent = pb.u;
     const inp = $('input', box), ret = $('.px-retour', box), zAide = $('.px-aide', box);
@@ -7390,7 +7547,8 @@ function reglages(){
 function contexte(sel){
   const sc = $('#scene').getBoundingClientRect(), haut = Math.max(0, sc.top);
   const visible = blocsDans({x:sc.left, y:haut, w:sc.width, h:window.innerHeight - haut}).join('\n');
-  const tout = ICI ? (ICI.el.innerText || '').replace(/\n{3,}/g, '\n\n') : '';
+  /* l'écran entier, même ce que « l'essentiel » replie */
+  const tout = ICI ? ((typeof Essentiel !== 'undefined' ? Essentiel.texteComplet(ICI.el) : ICI.el.innerText) || '').replace(/\n{3,}/g, '\n\n') : '';
   const notes = ICI ? texteNote(ICI.id).trim() : '';
   let s = 'CE QUE L’ÉTUDIANT REGARDE\n' + (ICI ? 'Écran : ' + ICI.titre + ' (' + ICI.partie + ', ' + numEcran() + ')' : '') +
     '\n\nRéglages et choix actuels de l’écran :\n' + (reglages() || '(aucun)') +
@@ -11320,7 +11478,7 @@ function demarrer(){
   };
 
   /* modules v2 */
-  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer();
+  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer(); Essentiel.demarrer();
 
   lierNotes(document);
   majIndicateurs();
@@ -11335,7 +11493,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'ea461adcb7f6';
+  const ICI = '6aec90962dc2';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
