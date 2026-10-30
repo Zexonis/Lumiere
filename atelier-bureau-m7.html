@@ -968,6 +968,73 @@ button.cv-duo:hover{background:var(--panel-2)}
 .fil button .cv-pts i:nth-child(1){top:calc(50% - 12.5px)}
 .fil button .cv-pts i:nth-child(2){top:calc(50% + 6.5px)}
 @media (prefers-reduced-motion: reduce){ .cv-etoile line{animation:none} }
+
+/* ---------- Coches et regard (marques.js) : ce qu'on a compris, et où regardent les autres de la séance ---------- */
+.btn-mq{display:inline-flex;align-items:center;gap:6px;--h:color-mix(in srgb,var(--c,#34C6FF) 38%,#0B1418)}
+.btn-mq svg{width:18px;height:18px;flex:none;margin:-2px -1px;overflow:visible}
+.btn-mq .n{min-width:1.4em;padding:0 5px;border-radius:999px;background:var(--panel-2);font:700 11.5px/1.5 var(--f-mono);color:var(--ink-3);text-align:center}
+.btn-mq .n[hidden]{display:none}
+.btn-mq[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 15%,var(--panel));color:var(--ink);font-weight:700}
+@media (max-width:760px){ .btn-mq span{display:none} }
+.mq-arme .scene,.mq-arme .ecran.actif,.mq-arme .ecran.actif *{cursor:var(--mq-curseur,crosshair)!important}
+.mq-arme .haut,.mq-arme .pied{cursor:auto}
+.mq-calque{position:absolute;left:0;top:0;width:0;height:0;z-index:15;pointer-events:none}
+.mq-coche{position:absolute;left:0;top:0;width:34px;height:34px;padding:0;margin:0;border:0;border-radius:50%;background:none;pointer-events:auto;cursor:default;
+  --h:color-mix(in srgb,var(--c) 38%,#0B1418)}
+.mq-coche[hidden]{display:none}
+button.mq-coche{cursor:pointer}
+.mq-coche svg{display:block;width:34px;height:34px;overflow:visible;transition:transform .15s ease,opacity .15s ease}
+.mq-coche path,.btn-mq path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mq-bord{stroke:var(--h);stroke-width:5.2;stroke-opacity:.85}
+.mq-trait{stroke:var(--c);stroke-width:2.8}
+button.mq-coche:hover svg,button.mq-coche:focus-visible svg{transform:scale(1.18);opacity:.7}
+.mq-coche.autre svg{opacity:.92}
+.mq-coche.neuve svg{animation:mq-pop .42s cubic-bezier(.3,1.5,.5,1) both}
+.mq-coche.neuve path{stroke-dasharray:22;animation:mq-trace .4s cubic-bezier(.45,.1,.3,1) .05s both}
+@keyframes mq-pop{from{transform:scale(.5);opacity:0}}
+@keyframes mq-trace{from{stroke-dashoffset:22}}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .mq-coche,:root:not([data-theme="light"]) .btn-mq{--h:rgba(0,0,0,.62)} }
+:root[data-theme="dark"] .mq-coche,:root[data-theme="dark"] .btn-mq{--h:rgba(0,0,0,.62)}
+/* les yeux : le long du bord droit, là où passe la barre de défilement ; au survol, le surnom */
+.mq-yeux{position:fixed;top:0;right:0;width:0;height:100%;z-index:26;pointer-events:none}
+.mq-oeil{position:absolute;top:0;right:2px;width:22px;height:14px;padding:0;margin:0;border:0;background:none;pointer-events:auto;cursor:pointer;opacity:.92;
+  transition:transform .5s cubic-bezier(.2,.75,.25,1),opacity .3s ease;
+  filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.3)) drop-shadow(0 0 4px color-mix(in srgb,var(--c) 50%,transparent))}
+.mq-oeil.vient{opacity:0}
+.mq-oeil svg{display:block;width:22px;height:14px;overflow:visible}
+.mq-blanc{fill:color-mix(in srgb,#FFFFFF 86%,var(--c));stroke:color-mix(in srgb,var(--c) 60%,#0B1418);stroke-width:1.2}
+.mq-iris{transition:transform .25s ease}
+.mq-iris circle:first-child{fill:var(--c)}
+.mq-pupille{fill:#0B1418}
+.mq-reflet{fill:#FFFFFF;opacity:.9}
+.mq-oeil[data-dir="bas"] .mq-iris{transform:translateY(1.3px)}
+.mq-oeil[data-dir="haut"] .mq-iris{transform:translateY(-1.3px)}
+.mq-pau{transform-box:fill-box;transform-origin:center;animation:mq-cligne 7s var(--d,0s) infinite}
+@keyframes mq-cligne{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.mq-oeil.ferme{opacity:.5}
+.mq-oeil.ferme .mq-pau{animation:none;transform:scaleY(.12)}
+.mq-oeil:hover,.mq-oeil:focus-visible{opacity:1}
+.mq-oeil::before{content:attr(data-nom);position:absolute;right:calc(100% + 6px);top:50%;transform:translateY(-50%);white-space:nowrap;padding:1px 8px;border-radius:999px;
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--c);font:600 12px/1.5 var(--f-body);opacity:0;pointer-events:none;transition:opacity .15s ease}
+.mq-oeil:hover::before,.mq-oeil:focus-visible::before{opacity:1}
+/* le petit mot du mode « Cocher » : en bas, au-dessus du bouton du tuteur sur un petit écran */
+.mq-aide{position:fixed;z-index:312;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;
+  width:max-content;max-width:min(560px,calc(100vw - 24px));padding:7px 8px 7px 14px;border-radius:16px;background:var(--panel);color:var(--ink);border:1px solid var(--line);
+  box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25));font-size:14px}
+.mq-aide[hidden]{display:none}
+.mq-aide .btn{font-size:13px;padding:4px 11px}
+.mq-teintes{display:inline-flex;gap:6px}
+.mq-teintes button{width:18px;height:18px;padding:0;border-radius:50%;border:2px solid var(--panel);background:var(--c);box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.mq-teintes button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c)}
+@media (max-width:899px){ .mq-aide{bottom:calc(84px + env(safe-area-inset-bottom,0px))} }
+/* au téléphone, la barre du haut tient sur une ligne : boutons plus serrés, le mot « Rappel » lu seulement par les lecteurs d'écran */
+@media (max-width:520px){
+  .haut{gap:6px}
+  .haut .btn{padding:6px 10px;flex:none;white-space:nowrap}
+  .btn-rappel .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .btn-rappel .n{margin-left:0}
+}
+@media (prefers-reduced-motion: reduce){ .mq-pau{animation:none} .mq-oeil,.mq-iris{transition:none} .mq-coche.neuve svg,.mq-coche.neuve path{animation:none} }
 </style>
 <div class="app" id="app">
 
@@ -4680,7 +4747,7 @@ const Rappel = (() => {
     if(notes && !$('#btn-rappel')){
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'btn btn-rappel'; b.id = 'btn-rappel'; b.dataset.aller = 'cartes';
-      b.innerHTML = '<span aria-hidden="true">↻</span> Rappel <span class="n">0</span>';
+      b.innerHTML = '<span aria-hidden="true">↻</span> <span class="mot">Rappel</span> <span class="n">0</span>';
       notes.before(b);
     }
     majBadge();
@@ -7199,6 +7266,400 @@ const Sablier = (() => {
   return {demarrer, commencerPause, etat:() => Object.assign({}, st)};
 })();
 
+/* ====== _commun/marques.js ====== */
+/* ======================================================================
+   Les coches et le regard (DESIGN-convergence.md §3.5).
+   Les coches : on coche ce qu'on a compris, n'importe où sur l'écran :
+   le bouton « Cocher » puis un clic, ou Maj + clic d'un coup ; un clic
+   sur sa coche la retire. Elles restent sur cet appareil (par atelier)
+   et, en convergence, le groupe les voit dans la couleur de chacun.
+   Le regard : en convergence, un petit œil par personne sur le même
+   écran, au bord de la barre de défilement, là où elle regarde.
+   L'ancrage tient sur toutes les largeurs d'écran : l'élément sous le
+   point (son chemin depuis l'écran et le début de son texte), la
+   position relative dans cet élément et, sur du texte, la lettre sous
+   le point : la coche reste sur le même mot quand la ligne se replie.
+   Convergence branche le partage (ecouter, partager, autres, couleur).
+   ====================================================================== */
+const Marques = (() => {
+  const CLE_COCHES = P + '-coches', CLE_ASTUCE = 'lumiere-coches-astuce';
+  const MAX = 200;
+  const TRAIT = 'M6 13.6l4.6 4.6L20.4 8';
+  const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+  const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const normer = s => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+  const frac = (d, l) => l > 0 ? Math.max(-1, Math.min(2, Math.round(d / l * 1e4) / 1e4)) : 0.5;
+  const svgCoche = '<svg viewBox="0 0 26 26" aria-hidden="true"><path class="mq-bord" d="' + TRAIT + '"/><path class="mq-trait" d="' + TRAIT + '"/></svg>';
+  let mien = '#34C6FF', teintes = null;      // ma couleur ; hors séance, les raies à choisir {liste, actuelle, choisir}
+  let coches = [];                           // les miennes : [{i, e, p, s, f, g, t}]
+  let autres = [];                           // le groupe : [{uid, nom, c, vue, coches}]
+  let ecoute = null, partage = false, arme = false, prise = false, pret = false;
+  const cache = new Map(), neuves = new Set(), connues = new Set(), vusUid = new Set();
+
+  /* ---------- ce qui arrive (du stockage ou du relais) n'est jamais sûr : on vérifie tout ---------- */
+  function liste(a){
+    if(Array.isArray(a)) return a;
+    if(a && typeof a === 'object') return Object.keys(a).filter(k => /^\d+$/.test(k)).sort((x, y) => x - y).map(k => a[k]);
+    return [];
+  }
+  function ancreOk(x){
+    if(!x || typeof x !== 'object' || typeof x.e !== 'string' || !ecran(x.e)) return null;
+    const p = liste(x.p), f = liste(x.f), g = liste(x.g);
+    const deux = a => a.length === 2 && a.every(n => typeof n === 'number' && isFinite(n) && n >= -1 && n <= 2);
+    if(p.length > 32 || !p.every(n => Number.isInteger(n) && n >= 0 && n < 5000) || !deux(f) || !deux(g)) return null;
+    const a = {e:x.e, p, s:typeof x.s === 'string' ? x.s.slice(0, 60) : '', f, g}, d = liste(x.d);
+    /* la lettre sous le point, quand il y en a une : son rang dans le texte du bloc, et l'écart du point en pixels */
+    if(Number.isInteger(x.c) && x.c >= 0 && x.c < 1e6 && d.length === 2 && d.every(n => Number.isInteger(n) && Math.abs(n) <= 80)){ a.c = x.c; a.d = d; }
+    return a;
+  }
+  const idOk = i => typeof i === 'string' && /^[a-z0-9]{1,16}$/i.test(i);
+  function lireVue(v){ const a = ancreOk(v); if(a) a.z = v.z ? 1 : 0; return a; }
+  function lireCoches(o){
+    if(!o || typeof o !== 'object') return [];
+    return Object.keys(o).filter(idOk).slice(0, MAX).map(i => { const a = ancreOk(o[i]); if(a) a.i = i; return a; }).filter(Boolean);
+  }
+  function lireLocal(){
+    const d = lireJSON(CLE_COCHES, null);
+    coches = d && Array.isArray(d.l) ? d.l.filter(c => c && idOk(c.i)).map(c => { const a = ancreOk(c); if(a){ a.i = c.i; a.t = +c.t || 0; } return a; }).filter(Boolean).slice(-MAX) : [];
+  }
+  const garder = () => memo.set(CLE_COCHES, JSON.stringify({v:1, l:coches}));
+
+  /* ---------- l'ancrage : l'élément sous le point, son chemin depuis l'écran, le début de son texte ---------- */
+  const racine = () => ICI && ICI.el;
+  /* les surlignages des annotations changent d'une personne à l'autre : ils ne comptent pas dans le chemin */
+  const enfants = el => Array.from(el.children).filter(c => !c.matches('mark.annot'));
+  const empreinte = el => el.tagName + ':' + normer(el.textContent);
+  function chemin(el, R){
+    const p = [];
+    while(el && el !== R){ const par = el.parentElement; if(!par) return null; const i = enfants(par).indexOf(el); if(i < 0) return null; p.unshift(i); el = par; }
+    return el === R ? p : null;
+  }
+  /* le bloc qui porte le point : un dessin entier, une image, sinon le premier parent qui n'est pas du texte en ligne */
+  const BOITE = /^(svg|img|canvas|video)$/i;
+  function bloc(el, R){
+    let s = el.closest('svg');
+    if(s){ let h; while((h = s.parentElement && s.parentElement.closest('svg'))) s = h; el = s; }
+    while(el && el !== R){
+      if(!el.matches('mark.annot')){
+        const d = getComputedStyle(el).display, r = el.getBoundingClientRect();
+        if((BOITE.test(el.tagName) || (d !== 'inline' && d !== 'contents')) && r.width >= 6 && r.height >= 6) return el;
+      }
+      el = el.parentElement;
+    }
+    return R;
+  }
+  /* sur du texte, la lettre sous le point : une ligne qui se replie autrement (un téléphone, un portable) garde la coche sur le même mot */
+  const textes = el => { const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), l = []; let n; while((n = w.nextNode())) l.push(n); return l; };
+  function caseLettre(n, o){
+    const L = n.nodeValue.length; if(!L) return null;
+    const k = Math.min(o, L - 1), rg = document.createRange();
+    rg.setStart(n, k); rg.setEnd(n, k + 1);
+    const r = rg.getClientRects()[0] || rg.getBoundingClientRect();
+    return r && (r.width || r.height) ? r : null;
+  }
+  function lettre(el, x, y){
+    let n = null, o = 0;
+    try{
+      if(document.caretPositionFromPoint){ const c = document.caretPositionFromPoint(x, y); if(c){ n = c.offsetNode; o = c.offset; } }
+      else if(document.caretRangeFromPoint){ const c = document.caretRangeFromPoint(x, y); if(c){ n = c.startContainer; o = c.startOffset; } }
+    }catch(e){ return null; }
+    if(!n || n.nodeType !== 3 || !el.contains(n)) return null;
+    const r = caseLettre(n, o);
+    if(!r || y < r.top - 4 || y > r.bottom + 4 || Math.abs(x - (r.left + r.right) / 2) > 40) return null;
+    let i = 0;
+    for(const t of textes(el)){ if(t === n) break; i += t.nodeValue.length; }
+    return {c:i + Math.min(o, n.nodeValue.length - 1), d:[Math.round(x - r.left), Math.round(y - (r.top + r.bottom) / 2)]};
+  }
+  function surLettre(el, a){
+    let i = a.c;
+    for(const t of textes(el)){
+      const L = t.nodeValue.length;
+      if(i < L){ const r = caseLettre(t, i); return r ? {x:r.left + a.d[0], y:(r.top + r.bottom) / 2 + a.d[1]} : null; }
+      i -= L;
+    }
+    return null;
+  }
+  function ancrer(x, y){
+    const R = racine(); if(!R) return null;
+    let el = bloc(document.elementsFromPoint(x, y).find(n => n !== R && R.contains(n)) || R, R), p = el === R ? [] : chemin(el, R);
+    if(!p){ el = R; p = []; }
+    const r = el.getBoundingClientRect(), rr = R.getBoundingClientRect();
+    const a = {e:ICI.id, p, s:el === R ? '' : empreinte(el), f:[frac(x - r.left, r.width), frac(y - r.top, r.height)], g:[frac(x - rr.left, rr.width), frac(y - rr.top, rr.height)]};
+    const l = el !== R && lettre(el, x, y);
+    if(l){ a.c = l.c; a.d = l.d; }
+    return a;
+  }
+  /* retrouver l'élément : par le chemin, et si son texte a changé (une liste mélangée, un écran rebâti), par son texte ;
+     meme : c'est bien le même texte (la lettre peut servir) */
+  function trouver(R, a){
+    if(!a.p.length) return {el:R, meme:false};
+    const k = a.p.join('.') + '|' + a.s, c = cache.get(k);
+    if(c && c.R === R && R.contains(c.el)) return c;
+    let el = R;
+    for(const i of a.p) el = el && enfants(el)[i];
+    let meme = !!el && !!a.s && empreinte(el) === a.s;
+    if(a.s && !meme){
+      const tag = a.s.slice(0, a.s.indexOf(':'));
+      const autre = /^[a-z][\w-]*$/i.test(tag) && Array.from(R.getElementsByTagName(tag)).find(n => empreinte(n) === a.s);
+      if(autre){ el = autre; meme = true; } else if(el && el.tagName !== tag) el = null;
+    }
+    const t = {R, el, meme};
+    if(el){ if(cache.size > 600) cache.clear(); cache.set(k, t); }
+    return t;
+  }
+  /* l'ancre → un point de la page ; null si son élément est caché (un pas replié, un détail fermé), sauf avec repli */
+  function point(a, repli){
+    const R = racine(); if(!R) return null;
+    const t = trouver(R, a);
+    let el = t.el, f = a.f;
+    if(el && t.meme && a.d){ const q = surLettre(el, a); if(q) return {x:q.x + window.scrollX, y:q.y + window.scrollY}; }
+    if(!el){ el = R; f = a.g; }
+    let r = el.getBoundingClientRect();
+    if(!r.width && !r.height){ if(!repli || el === R) return null; f = a.g; r = R.getBoundingClientRect(); }
+    return {x:r.left + window.scrollX + f[0] * r.width, y:r.top + window.scrollY + f[1] * r.height};
+  }
+
+  /* ---------- là où je regarde : le milieu de ce qui est visible sous la barre du haut ---------- */
+  const basBarre = () => { const h = $('.haut'); return h ? Math.max(0, Math.min(window.innerHeight / 2, h.getBoundingClientRect().bottom)) : 0; };
+  function maVue(){
+    const R = racine(); if(!R) return null;
+    const rr = R.getBoundingClientRect(), x = Math.max(4, Math.min(window.innerWidth - 4, rr.left + Math.min(rr.width, window.innerWidth) / 2));
+    const a = ancrer(x, (basBarre() + window.innerHeight) / 2);
+    if(a) a.z = document.hidden ? 1 : 0;
+    return a;
+  }
+  let tVue = 0, dVue = 0, cleVue = '';
+  function signalerVue(){
+    if(!partage || !ecoute) return;
+    clearTimeout(tVue);
+    tVue = setTimeout(() => {
+      dVue = Date.now();
+      const v = maVue(), k = JSON.stringify(v);
+      if(v && k !== cleVue){ cleVue = k; ecoute({type:'vue', vue:v}); }
+    }, Math.max(0, 250 - (Date.now() - dVue)));
+  }
+  function signalerCoches(){
+    if(!partage || !ecoute) return;
+    const o = {};
+    coches.forEach(c => { o[c.i] = {e:c.e, p:c.p, s:c.s, f:c.f, g:c.g}; if(c.d){ o[c.i].c = c.c; o[c.i].d = c.d; } });
+    ecoute({type:'coches', coches:o});
+  }
+
+  /* ---------- dessiner : les coches suivent la page, les yeux longent la barre de défilement ---------- */
+  let calque = null, yeux = null, raf = 0;
+  const vues = new Map(), oeils = new Map();
+  function dessiner(){ if(!raf) raf = requestAnimationFrame(() => { raf = 0; dessinerCoches(); dessinerYeux(); majBouton(); }); }
+  function creerCoche(x){
+    if(x.mien){
+      const b = H('<button type="button" class="mq-coche">' + svgCoche + '</button>');
+      b.title = 'Ta coche : clique pour la retirer';
+      b.setAttribute('aria-label', b.title);
+      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); retirer(x.c.i); });
+      return b;
+    }
+    const s = H('<span class="mq-coche autre" role="img">' + svgCoche + '</span>');
+    s.title = '« ' + x.nom + ' » a coché ici';
+    s.setAttribute('aria-label', 'Coche de « ' + x.nom + ' »');
+    return s;
+  }
+  function dessinerCoches(){
+    const ici = ICI && ICI.id, l = [];
+    coches.forEach(c => { if(c.e === ici) l.push({c, k:'m' + c.i, mien:true, coul:mien}); });
+    autres.forEach(o => o.coches.forEach(c => { if(c.e === ici) l.push({c, k:o.uid + ':' + c.i, mien:false, coul:o.c, nom:o.nom}); }));
+    if(!l.length && !vues.size) return;
+    if(!calque){ calque = H('<div class="mq-calque v2-hors-texte"></div>'); document.body.appendChild(calque); }
+    const garde = new Set();
+    l.forEach(x => {
+      garde.add(x.k);
+      let b = vues.get(x.k);
+      const p = point(x.c, false);
+      if(!p){ if(b) b.hidden = true; return; }
+      if(!b){
+        b = creerCoche(x); vues.set(x.k, b); calque.appendChild(b);
+        if(neuves.delete(x.k) && !reduit()){ b.classList.add('neuve'); setTimeout(() => b.classList.remove('neuve'), 700); }
+      }
+      b.hidden = false;
+      b.style.setProperty('--c', x.coul);
+      b.style.transform = 'translate(' + Math.round(p.x - 17) + 'px,' + Math.round(p.y - 17) + 'px)';
+    });
+    vues.forEach((b, k) => { if(!garde.has(k)){ b.remove(); vues.delete(k); } });
+  }
+  function creerOeil(o){
+    const b = H('<button type="button" class="mq-oeil"><svg viewBox="0 0 22 14" aria-hidden="true"><g class="mq-pau">' +
+      '<path class="mq-blanc" d="M1.5 7C5 2.2 17 2.2 20.5 7C17 11.8 5 11.8 1.5 7Z"/>' +
+      '<g class="mq-iris"><circle cx="11" cy="7" r="3.4"/><circle class="mq-pupille" cx="11" cy="7" r="1.45"/><circle class="mq-reflet" cx="12.2" cy="5.8" r=".75"/></g></g></svg></button>');
+    b.style.setProperty('--d', (-Math.random() * 7).toFixed(2) + 's');
+    b.addEventListener('click', () => {
+      const x = autres.find(a => a.uid === o.uid), p = x && x.vue && point(x.vue, true);
+      if(p) window.scrollTo({top:Math.max(0, p.y - (basBarre() + window.innerHeight) / 2), behavior:reduit() ? 'auto' : 'smooth'});
+    });
+    return b;
+  }
+  function dessinerYeux(){
+    const ici = ICI && ICI.id, vh = window.innerHeight, H0 = Math.max(1, document.documentElement.scrollHeight);
+    const l = racine() ? autres.filter(o => o.vue && o.vue.e === ici).map(o => { const p = point(o.vue, true); return p ? {o, y:Math.max(9, Math.min(vh - 9, p.y / H0 * vh))} : null; }).filter(Boolean) : [];
+    if(!l.length && !oeils.size) return;
+    if(!yeux){ yeux = H('<div class="mq-yeux v2-hors-texte" role="group" aria-label="Où regardent les autres"></div>'); document.body.appendChild(yeux); }
+    /* deux regards au même endroit : le second se range à gauche du premier */
+    l.sort((a, b) => a.y - b.y);
+    const pris = [];
+    l.forEach(x => { let s = 0; while(pris.some(q => q.s === s && Math.abs(q.y - x.y) < 15)) s++; x.s = s; pris.push(x); });
+    const garde = new Set();
+    l.forEach(({o, y, s}) => {
+      garde.add(o.uid);
+      let b = oeils.get(o.uid);
+      if(!b){ b = creerOeil(o); oeils.set(o.uid, b); yeux.appendChild(b); b.classList.add('vient'); requestAnimationFrame(() => requestAnimationFrame(() => b.classList.remove('vient'))); }
+      const avant = +b.dataset.y;
+      if(b.dataset.y && Math.abs(y - avant) > 3){ b.dataset.dir = y > avant ? 'bas' : 'haut'; clearTimeout(b._t); b._t = setTimeout(() => { b.dataset.dir = ''; }, 650); }
+      b.dataset.y = y;
+      b.style.setProperty('--c', o.c);
+      b.style.transform = 'translate(' + (-s * 23) + 'px,' + Math.round(y - 7) + 'px)';
+      b.classList.toggle('ferme', !!o.vue.z);
+      const t = o.vue.z ? '« ' + o.nom + ' » n’a plus la page sous les yeux' : 'Là où regarde « ' + o.nom + ' » : clique pour y aller';
+      if(b.getAttribute('aria-label') !== t){ b.setAttribute('aria-label', t); b.dataset.nom = o.vue.z ? o.nom + ' · ailleurs' : o.nom; }
+    });
+    oeils.forEach((b, u) => { if(!garde.has(u)){ b.remove(); oeils.delete(u); } });
+  }
+
+  /* ---------- poser, retirer ---------- */
+  function poser(x, y, viaBouton){
+    if(coches.length >= MAX){ aide('Déjà ' + MAX + ' coches dans cet atelier : retires-en quelques-unes.'); return; }
+    const a = ancrer(x, y); if(!a) return;
+    const c = Object.assign({i:Date.now().toString(36) + Math.random().toString(36).slice(2, 5), t:Date.now()}, a);
+    coches.push(c); garder(); neuves.add('m' + c.i);
+    signalerCoches(); dessiner();
+    if(viaBouton && memo.get(CLE_ASTUCE) !== '1'){ memo.set(CLE_ASTUCE, '1'); aide('Astuce : Maj + clic coche directement, sans le bouton.', {duree:6000}); }
+  }
+  function retirer(i){
+    const k = coches.findIndex(c => c.i === i); if(k < 0) return;
+    const [c] = coches.splice(k, 1);
+    garder(); signalerCoches(); dessiner();
+    aide('Coche retirée.', {action:'Annuler', fn:() => { if(!coches.some(x => x.i === c.i)){ coches.splice(Math.min(k, coches.length), 0, c); garder(); neuves.add('m' + c.i); signalerCoches(); dessiner(); } }});
+  }
+
+  /* ---------- le mode « Cocher » : un clic sur la page pose la coche ---------- */
+  const curseur = c => 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 26 26"><g fill="none" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="' + TRAIT + '" stroke="#0B1418" stroke-opacity=".75" stroke-width="5.2"/><path d="' + TRAIT + '" stroke="' + c + '" stroke-width="2.8"/></g></svg>') + '") 16 16, crosshair';
+  function armer(on){
+    arme = on;
+    document.documentElement.classList.toggle('mq-arme', on);
+    const b = $('#btn-mq'); if(b) b.setAttribute('aria-pressed', String(on));
+    if(on) aide('Clique là où tu veux cocher.', {teintes:true, duree:0, arme:true});
+    else if(pill && pill.dataset.arme) cacherAide();
+  }
+  const editable = t => !!t.closest('input, textarea, select, [contenteditable="true"]');
+  /* où une coche peut aller : l'écran, ou la marge de la scène à sa hauteur */
+  function zone(t, y){
+    const R = racine(); if(!R || !t || t.nodeType !== 1 || t.closest('.mq-calque, .mq-yeux, .mq-aide')) return false;
+    if(R.contains(t)) return true;
+    if(!t.closest('.scene') || t.closest('.haut, .pied, .v2-hors-texte')) return false;
+    const r = R.getBoundingClientRect(); return y >= r.top && y <= r.bottom;
+  }
+
+  /* ---------- le petit mot, en bas : le mode, l'astuce, « Annuler » ---------- */
+  let pill = null, tPill = 0;
+  function cacherAide(){ if(pill){ pill.hidden = true; delete pill.dataset.arme; } clearTimeout(tPill); }
+  function aide(texte, o = {}){
+    if(!pill){ pill = H('<div class="mq-aide v2-hors-texte" role="status" aria-live="polite"></div>'); document.body.appendChild(pill); }
+    pill.innerHTML = '';
+    const s = document.createElement('span'); s.textContent = texte; pill.appendChild(s);
+    if(o.teintes && teintes){
+      const g = H('<span class="mq-teintes" role="group" aria-label="La couleur de tes coches"></span>');
+      teintes.liste.forEach(t => {
+        const b = H('<button type="button"></button>');
+        b.style.setProperty('--c', t.c); b.title = t.nom; b.setAttribute('aria-label', t.nom); b.setAttribute('aria-pressed', String(t.r === teintes.actuelle));
+        b.addEventListener('click', () => { teintes.choisir(t.r); });
+        g.appendChild(b);
+      });
+      pill.appendChild(g);
+    }
+    if(o.arme){ const b = H('<button type="button" class="btn">Annuler</button>'); b.addEventListener('click', () => armer(false)); pill.appendChild(b); pill.dataset.arme = '1'; }
+    else delete pill.dataset.arme;
+    if(o.action){ const b = H('<button type="button" class="btn"></button>'); b.textContent = o.action; b.addEventListener('click', () => { o.fn(); cacherAide(); }); pill.appendChild(b); }
+    pill.hidden = false;
+    clearTimeout(tPill);
+    const d = o.duree === undefined ? (o.action ? 6000 : 3500) : o.duree;
+    if(d) tPill = setTimeout(cacherAide, d);
+  }
+
+  /* ---------- le bouton, dans la barre du haut ---------- */
+  let couleurPosee = '';
+  function majBouton(){
+    const b = $('#btn-mq'); if(!b) return;
+    const n = ICI ? coches.filter(c => c.e === ICI.id).length : 0, e = $('.n', b);
+    if(e.hidden !== !n) e.hidden = !n;
+    if(e.textContent !== String(n)) e.textContent = n;
+    if(couleurPosee !== mien){ couleurPosee = mien; b.style.setProperty('--c', mien); document.documentElement.style.setProperty('--mq-curseur', curseur(mien)); }
+  }
+
+  function demarrer(){
+    if(pret) return;
+    pret = true;
+    lireLocal();
+    const notes = $('#btn-notes');
+    if(notes && !$('#btn-mq')){
+      const b = H('<button type="button" class="btn btn-mq" id="btn-mq" aria-pressed="false">' + svgCoche + '<span>Cocher</span><b class="n" hidden></b></button>');
+      b.title = 'Cocher ce que tu as compris : clique ici, puis sur la page (ou Maj + clic, directement). Un clic sur ta coche la retire.';
+      b.setAttribute('aria-label', 'Cocher ce que tu as compris');
+      const cv = $('#btn-cv');
+      if(cv) cv.after(b); else ($('#btn-sablier') || $('#btn-rappel') || notes).before(b);
+      b.addEventListener('click', () => armer(!arme));
+    }
+    /* la prise : au pointeur (avant les gestes des schémas), la coche au clic qui suit */
+    document.addEventListener('pointerdown', e => {
+      prise = false;
+      if(e.button !== 0 || !(arme || e.shiftKey) || e.target.nodeType !== 1) return;
+      if(!arme && editable(e.target)) return;
+      if(!zone(e.target, e.clientY)){ if(arme && !e.target.closest('#btn-mq, .mq-aide')) armer(false); return; }
+      e.preventDefault(); e.stopPropagation(); prise = true;
+    }, true);
+    document.addEventListener('pointercancel', () => { prise = false; }, true);
+    ['mousedown', 'selectstart'].forEach(t => document.addEventListener(t, e => { if(prise){ e.preventDefault(); e.stopPropagation(); } }, true));
+    document.addEventListener('click', e => {
+      if(!prise) return;
+      prise = false;
+      e.preventDefault(); e.stopImmediatePropagation();
+      const viaBouton = arme;
+      if(arme) armer(false);
+      poser(e.clientX, e.clientY, viaBouton);
+    }, true);
+    document.addEventListener('keydown', e => { if(arme && e.key === 'Escape'){ e.stopPropagation(); armer(false); } }, true);
+    window.addEventListener('scroll', signalerVue, {passive:true});
+    window.addEventListener('resize', () => { dessiner(); signalerVue(); });
+    document.addEventListener('visibilitychange', signalerVue);
+    try{ new ResizeObserver(() => dessiner()).observe(document.body); }catch(e){}
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(dessiner, () => {});
+    CROCHETS.apresAller.push(() => {
+      if(arme) armer(false);
+      cache.clear(); dessiner(); signalerVue();
+      setTimeout(() => { dessiner(); signalerVue(); }, 420);      // l'écran entre en glissant
+    });
+    CROCHETS.rebati.push(() => { cache.clear(); setTimeout(dessiner, 40); });
+    CROCHETS.effacer.push(() => { coches = []; garder(); signalerCoches(); dessiner(); });
+    dessiner();
+  }
+
+  /* ---------- le branchement de Convergence ---------- */
+  function couleur(c, t){ mien = c; teintes = t || null; dessiner(); if(arme && pill && pill.dataset.arme) aide('Clique là où tu veux cocher.', {teintes:true, duree:0, arme:true}); }
+  function partager(on){
+    partage = on; cleVue = '';
+    if(on){ signalerCoches(); signalerVue(); }
+    else { autres = []; vusUid.clear(); connues.clear(); dessiner(); }
+  }
+  /* le groupe, à chaque battement de présence : les coches nouvelles d'une personne déjà là arrivent en se traçant */
+  function majAutres(l){
+    l.forEach(o => {
+      const nouveau = !vusUid.has(o.uid);
+      vusUid.add(o.uid);
+      o.coches.forEach(c => { const k = o.uid + ':' + c.i; if(!connues.has(k)){ connues.add(k); if(!nouveau) neuves.add(k); } });
+    });
+    autres = l;
+    dessiner();
+  }
+
+  return {demarrer, couleur, partager, autres:majAutres, ecouter:f => { ecoute = f; }, lireVue, lireCoches};
+})();
+
 /* ====== _commun/convergence.js ====== */
 /* ======================================================================
    Convergence (DESIGN-convergence.md) : des étudiants suivent l'atelier
@@ -7253,7 +7714,7 @@ const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', c
   depuis:0,                                  // quand j'ai rejoint la convergence (l'ordre du groupe)
   admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false, demandes:[], porte:'', vuN:0,
   repere:{e:'', n:0, auto:false, par:''}, pret:0, desab:[], envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'',
-  decalage:0, entree:0};
+  decalage:0, entree:0, sig:''};
 const maintenant = () => Date.now() + S.decalage;   // l'heure du relais
 
 /* ---------- le groupe : qui est là, et dans quel ordre ---------- */
@@ -7353,8 +7814,9 @@ async function quitter(){
   Object.keys(S.auGroupe).forEach(k => { clearTimeout(S.auGroupe[k]); if(S.F) S.F.remove(S.F.ref(S.db, S.base + '/flux/' + k)).catch(() => {}); });
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', membres:{}, depuis:0, admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false,
-    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0});
+    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:''});
   sauverSeance(); majRail(); majChoixSuivi();
+  if(typeof Marques !== 'undefined'){ Marques.partager(false); couleurMarques(); }
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -7362,8 +7824,21 @@ async function quitter(){
 /* ---------- la poignée de main ---------- */
 function surMembres(m){
   const autres = Object.entries(m).filter(([u]) => u !== S.uid).map(([u, p]) => Object.assign({}, p && typeof p === 'object' ? p : {}, {uid:u}));
-  if(S.etat === 'lie'){ surGroupe(autres); return; }
+  if(S.etat === 'lie'){
+    /* le regard change à chaque défilement : si rien d'autre n'a bougé, on ne redessine que les yeux et les coches */
+    const sig = autres.map(p => p.uid + '=' + signature(p)).join('\n');
+    if(sig !== S.sig){ S.sig = sig; surGroupe(autres); }
+    autres.forEach(lireMarques); majMarques();
+    return;
+  }
+  S.sig = '';
   if(S.role === 'hote') hoteVoit(autres); else if(S.role === 'invite') inviteVoit(autres);
+}
+/* une présence sans le regard, les coches ni le texte du miroir (sa longueur suffit à voir qu'il avance) */
+function signature(p){
+  const m = p.miroir && typeof p.miroir === 'object' ? p.miroir : null, t = m && m.tours && typeof m.tours === 'object' ? m.tours : {};
+  const o = Object.assign({}, p); delete o.vue; delete o.coches; delete o.miroir;
+  return JSON.stringify(o) + (m ? '|' + !!m.actif + !!m.prive + Object.keys(t).map(k => { const x = t[k] || {}; return k + ':' + String(x.q || '').length + ':' + String(x.r || '').length + (x.fini ? 'f' : '') + (x.m || ''); }).join() : '');
 }
 /* la fiche d'un membre, d'après sa présence */
 function noter(p){
@@ -7489,6 +7964,7 @@ function lier(ps, aussi){
     else ps.forEach(accorderRepere);
   }
   publier(); sauverSeance();
+  if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
   demandesVoile([]); demandesPage([]);
   Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis), aussi || []));
   etatVoile('Convergence…');
@@ -7752,7 +8228,12 @@ const Rac = (() => {
 })();
 
 /* ---------- le voile : la page se floute, les racines poussent ---------- */
-let voile = null, raie = Object.keys(RAIES)[Math.floor(Math.random() * 5)];
+const CLE_RAIE = 'lumiere-cv-raie';         // la couleur choisie : celle des coches aussi, d'une séance à l'autre
+let voile = null, raie = (r => typeof r === 'string' && Object.prototype.hasOwnProperty.call(RAIES, r) ? r : Object.keys(RAIES)[Math.floor(Math.random() * 5)])(memo.get(CLE_RAIE));
+const teintes = () => ({liste:Object.keys(RAIES).map(r => ({r, c:RAIES[r][1], nom:'Raie ' + r + ' · ' + RAIES[r][0] + ' nm'})), actuelle:raie, choisir:choisirRaie});
+function choisirRaie(r){ raie = raieOk(r); memo.set(CLE_RAIE, raie); if(S.etat !== 'lie') couleurMarques(); }
+/* en séance, mes coches ont la couleur de la séance ; hors séance, celle que je choisis */
+function couleurMarques(){ if(typeof Marques !== 'undefined') Marques.couleur(couleur(S.etat === 'lie' ? S.raie : raie), S.etat === 'lie' ? null : teintes()); }
 function etatVoile(t){ const e = voile && $('.cv-etat', voile); if(e) e.textContent = t; }
 function fermerVoile(){
   if(!voile) return;
@@ -7797,7 +8278,7 @@ function ouvrir(){
   });
   $('.cv-raies', v).addEventListener('click', e => {
     const b = e.target.closest('[data-r]'); if(!b) return;
-    raie = b.dataset.r; $$('.cv-raies [data-r]', v).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    choisirRaie(b.dataset.r); $$('.cv-raies [data-r]', v).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
   });
   $('.cv-code-in', v).addEventListener('input', e => { const c = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); e.target.value = c.length > 3 ? c.slice(0, 3) + '-' + c.slice(3) : c; });
   $('.cv-annuler', v).addEventListener('click', () => quitter());
@@ -8334,6 +8815,22 @@ function majRail(){
     }
   });
 }
+/* ---------- le regard et les coches des autres (marques.js), dans leur présence : membres/<uid>/vue et /coches ---------- */
+function lireMarques(p){
+  const x = S.membres[p.uid]; if(!x || typeof Marques === 'undefined') return;
+  x.vue = Marques.lireVue(p.vue);
+  const k = p.coches && typeof p.coches === 'object' ? Object.keys(p.coches).join() : '';
+  if(k !== x.cochesK){ x.cochesK = k; x.coches = Marques.lireCoches(p.coches); }
+}
+function majMarques(){
+  if(typeof Marques === 'undefined') return;
+  Marques.autres(S.etat === 'lie' ? presents().map(u => { const x = S.membres[u]; return {uid:u, nom:x.nom, c:couleur(x.raie), vue:x.vue || null, coches:x.coches || []}; }) : []);
+}
+function surMarque(ev){
+  if(S.etat !== 'lie' || !S.refMoi) return;
+  const vue = ev.type === 'vue';
+  S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + (vue ? '/vue' : '/coches')), vue ? ev.vue : ev.coches).catch(() => {});
+}
 function avertir(t){
   if(panneau && !panneau.hidden) return;
   S.nonLus++; majBarre();
@@ -8476,6 +8973,8 @@ function demarrer(){
   CROCHETS.apresAller.push(() => { if(S.etat === 'lie'){ publier(); majBarre(); } });
   document.addEventListener('pointerdown', e => { if(gpop && !gpop.contains(e.target) && !e.target.closest('.cv-duo, .cv-tut')) fermerGpop(); }, true);
   if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
+  if(!memo.get(CLE_RAIE)) memo.set(CLE_RAIE, raie);        // une couleur tirée au hasard reste : les coches la gardent
+  if(typeof Marques !== 'undefined'){ Marques.ecouter(surMarque); couleurMarques(); }
   if(dansClaude()) return;
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
   if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)) return;
@@ -8491,7 +8990,11 @@ function demarrer(){
   Object.assign(S, {nom:propre(s.nom, 24) || 'Photon', raie:raieOk(s.raie), etat:'lie', depuis:+s.depuis || Date.now(), ouvert:!!s.ouvert,
     choix:['auto', 'mien', 'suivre'].includes(s.choix) ? s.choix : 'auto', cible:typeof s.cible === 'string' ? s.cible : '',
     repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false, par:typeof s.repere.par === 'string' ? s.repere.par : ''} : {e:'', n:0, auto:false, par:''}, pret:s.pret | 0});
-  entrer(s.role === 'hote' ? 'hote' : 'invite', s.code, true).then(ok => { if(ok) montrerBarre(); else quitter(); });
+  entrer(s.role === 'hote' ? 'hote' : 'invite', s.code, true).then(ok => {
+    if(!ok){ quitter(); return; }
+    montrerBarre();
+    if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
+  });
 }
 
 return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0};
@@ -8596,7 +9099,7 @@ function demarrer(){
   };
 
   /* modules v2 */
-  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer();
+  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer();
 
   lierNotes(document);
   majIndicateurs();
@@ -8611,7 +9114,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'f65cc5345b55';
+  const ICI = '6425b53088ca';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
