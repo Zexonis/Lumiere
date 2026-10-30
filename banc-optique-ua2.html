@@ -1412,6 +1412,7 @@ body.tb-cote .cv-panneau{right:calc(min(48vw,860px) + 12px)}
 .tb-espace{flex:1}
 .tb-b,.tb-x{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13.5px;cursor:pointer;min-height:32px}
 .tb-b[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.tb-b.arme{border-color:var(--bad,#c0392b);color:var(--bad,#c0392b);font-weight:700}
 .tb-x{padding:5px 10px;font-weight:700}
 .tb-outils{display:flex;align-items:center;gap:8px;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel);overflow-x:auto;scrollbar-width:thin}
 .tb-grp{display:flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--line);border-radius:12px;background:var(--bg);flex:none}
@@ -1448,6 +1449,61 @@ body.tb-cote .cv-panneau{right:calc(min(48vw,860px) + 12px)}
   .tb-outils{gap:6px}
   .tb-grp button{min-width:30px;height:30px}
 }
+
+/* ---------- La pratique (pratique.js) : l'échelle des essais, et le bloc « À toi » après une formule ---------- */
+.atoi{margin:28px 0 8px;padding:18px 18px 14px;border:1.5px solid var(--accent);border-radius:16px;background:linear-gradient(180deg,var(--accent-soft),transparent 140px)}
+.atoi-tete{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:baseline;margin-bottom:12px}
+.atoi-tag{grid-row:span 2;align-self:center;padding:4px 10px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:800;font-size:13px;letter-spacing:.02em}
+.atoi h3{margin:0;font-size:19px}
+.atoi-but{margin:0;color:var(--ink-2);font-size:14px}
+.atoi-serie{grid-column:1 / -1;margin-top:8px;font-size:14px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.atoi-pts{display:inline-flex;gap:4px}
+.atoi-pts i{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--accent);display:block}
+.atoi-pts i.plein{background:var(--accent)}
+.atoi-ok{color:var(--ok,#2e8b57);font-weight:800}
+.atoi-serie.vient{animation:atoi-vient 1.4s ease}
+@keyframes atoi-vient{0%{transform:scale(1)}20%{transform:scale(1.04)}100%{transform:scale(1)}}
+.atoi-pq{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.atoi-pied{display:flex;justify-content:flex-end;margin-top:10px}
+.atoi-pied .btn.plein{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.px-tag{margin:0 0 6px;font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--accent)}
+.px-q{margin:0 0 12px;font-size:16px;line-height:1.5}
+.px-quest{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
+.px-quest[hidden],.px-fondu[hidden],.px-rep[hidden],.px-aide[hidden],.px-dem[hidden]{display:none}
+.px-qq{margin:0 0 6px;font-weight:700;font-size:14.5px}
+.px-choix{display:flex;flex-wrap:wrap;gap:6px}
+.px-choix button{border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:7px 11px;font:inherit;font-size:14px;cursor:pointer;text-align:left}
+.px-choix button:not(:disabled):hover{border-color:var(--accent)}
+.px-choix button.juste{border-color:var(--ok,#2e8b57);background:var(--ok-soft,rgba(46,139,87,.14));font-weight:700}
+.px-choix button.faux{border-color:var(--bad,#c0392b);background:var(--bad-soft,rgba(192,57,43,.12));text-decoration:line-through;opacity:.8}
+.px-choix button:disabled{cursor:default}
+.px-qr{margin:6px 0 0;font-size:14px;color:var(--bad,#c0392b)}
+.px-qr:empty{display:none}
+.px-etapes{margin:0;padding:0;list-style:none;counter-reset:pe;display:grid;gap:5px}
+.px-etapes li{counter-increment:pe;display:grid;grid-template-columns:24px minmax(0,1fr);gap:0 8px;font-size:14.5px;line-height:1.45}
+.px-etapes li::before{content:counter(pe);grid-row:span 2;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:12.5px}
+.px-etapes li b{font-weight:700}
+.px-etapes li span{font-family:var(--f-mono,monospace);font-size:13.5px;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.px-etapes li.a-toi span{color:var(--accent);font-weight:800}
+.px-fondu{margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--panel-2,var(--panel))}
+.px-rep{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.px-l{font-weight:700;font-size:14.5px}
+.px-rep input{width:9em;padding:7px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px;font-variant-numeric:tabular-nums}
+.px-rep input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.px-u{color:var(--ink-2);font-weight:700}
+.px-retour{margin:10px 0 0;font-size:15px;line-height:1.45}
+.px-retour:empty{display:none}
+.px-retour.ok{color:var(--ok,#2e8b57);font-weight:700}
+.px-retour.bad{color:var(--bad,#c0392b)}
+.px-aide,.px-dem{margin-top:10px;padding:10px 12px;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;background:var(--panel-2,var(--panel))}
+.px-aide p{margin:0 0 6px;font-size:14.5px}
+.px-concept{margin:8px 0 0;font-size:14.5px;line-height:1.5}
+.px-concept:empty{display:none}
+.px-act{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:12px;font-size:14px}
+.px-act [hidden]{display:none}
+.px-jum{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+@media (max-width:560px){ .atoi{padding:14px 12px 12px;margin-left:-4px;margin-right:-4px} .atoi-tete{grid-template-columns:1fr} .atoi-tag{grid-row:auto;justify-self:start} .px-rep input{width:7.5em} }
+@media (prefers-reduced-motion: reduce){ .atoi-serie.vient{animation:none} }
 </style>
 
 <div class="app" id="app">
@@ -4505,15 +4561,18 @@ function tirer(filtre, type, dernier){
   const autres = pool.filter(x => (x.g || x.p).id !== dernier);
   if (autres.length) pool = autres;
   const x = choisir(pool);
-  if (x.g){
-    const pb = x.g.f();
-    pb.id = x.g.id; pb.r = x.g.r; pb.sens = x.g.sens;
-    // un piège trop proche de la bonne réponse ne diagnostiquerait rien
-    pb.pieges = (pb.pieges || []).filter(p => isFinite(p.v) && Math.abs(p.v - pb.rep) > 2 * pb.tol + 1e-9);
-    return pb;
-  }
+  if (x.g) return tirerGen(x.g.id);
   const p = x.p;
   return { id: p.id, r: p.r, sens: 'pourquoi', q: p.q, choix: p.choix, ok: p.ok, dem: p.dem, concept: p.concept, deduit: !!p.deduit };
+}
+/* un problème d'un générateur précis (la jumelle d'un problème raté) ; chaque piège reçoit un id, pour le journal */
+function tirerGen(id){
+  const g = GEN.find(x => x.id === id), pb = g.f();
+  pb.id = g.id; pb.r = g.r; pb.sens = g.sens;
+  (pb.pieges || []).forEach((p, i) => { p.id = g.id + '.' + i; });
+  // un piège trop proche de la bonne réponse ne diagnostiquerait rien
+  pb.pieges = (pb.pieges || []).filter(p => isFinite(p.v) && Math.abs(p.v - pb.rep) > 2 * pb.tol + 1e-9);
+  return pb;
 }
 function lireNombre(t){
   const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/[a-zA-Zé]+$/, '');
@@ -4528,7 +4587,7 @@ function juger(pb, txt){
   if (v === null) return { etat: 'vide' };
   if (Math.abs(v - pb.rep) <= pb.tol || (pb.zeroOk && Math.abs(v) <= 0.011)) return { etat: 'ok', v };
   const p = pb.pieges.find(p => Math.abs(v - p.v) <= Math.max(pb.tol, Math.abs(p.v) * 0.002));
-  return { etat: 'faux', v, piege: p ? p.m : null };
+  return { etat: 'faux', v, piege: p ? p.m : null, pid: p ? p.id : null };
 }
 function repTxt(pb){
   if (pb.affiche) return pb.affiche;
@@ -4598,7 +4657,7 @@ GEN.push(
   { id: 'a-dir', r: 'r5', sens: 'direct', f(){
     const [R, d] = tirage(() => [choisir([-5, -4, -3, -2.5, -2, -1.5, -1, 1, 1.5, 2, 2.5, 3, 4]), choisir([20, 25, 33, 40, 50, 100])], ([R, d]) => 100 / d + R >= 0.2);
     const A = 100 / d + R;
-    return { q: `Un patient ${NOM_R(R)}, sans correction, regarde un objet à ${d} cm. Combien d’accommodation doit-il fournir ?`, u: 'D', rep: A, tol: d === 33 ? 0.035 : 0.011,
+    return { R, q: `Un patient ${NOM_R(R)}, sans correction, regarde un objet à ${d} cm. Combien d’accommodation doit-il fournir ?`, u: 'D', rep: A, tol: d === 33 ? 0.035 : 0.011,
       dem: ['A = 1 / d + R   (D20)', `d = ${d} cm = ${nm(d / 100)} m   → 1 / d = ${dpt(100 / d)}`, `R = ${dpt(R)}   (${R < 0 ? 'myope : négatif' : 'hypermétrope : positif'})`, `A = ${dpt(100 / d)} ${R < 0 ? MOINS : '+'} ${nf(Math.abs(R))} = ${dpt(A)} D`],
       concept: R < 0 ? 'Le myope a déjà trop de convergence : son erreur négative paie une partie de la demande. C’est pourquoi la myopie facilite la vision de près (D22).'
         : 'L’hypermétrope comble d’abord son manque de convergence, puis paie la demande de l’objet : il accommode plus que l’emmétrope (D20, D41).',
@@ -4609,7 +4668,7 @@ GEN.push(
   { id: 'a-inv', r: 'r5', sens: 'inverse', f(){
     const [R, d] = tirage(() => [choisir([-2, -1.5, -1, 1, 1.5, 2, 3, 4]), choisir([25, 40, 50, 100])], ([R, d]) => 100 / d + R >= 0.2);
     const A = 100 / d + R;
-    return { q: `Sans correction, un patient fournit ${dpt(A)} D d’accommodation pour voir net un objet à ${d} cm. Quelle est son erreur réfractive R ?`, u: 'D', rep: R, tol: 0.011,
+    return { R, q: `Sans correction, un patient fournit ${dpt(A)} D d’accommodation pour voir net un objet à ${d} cm. Quelle est son erreur réfractive R ?`, u: 'D', rep: R, tol: 0.011,
       dem: ['A = 1 / d + R   →   R = A − 1 / d', `1 / d = 1 / ${nm(d / 100)} = ${dpt(100 / d)}`, `R = ${dpt(A)} − ${nf(100 / d)} = ${dpt(R)} D   → ${R < 0 ? 'myope' : 'hypermétrope'}`],
       concept: 'La formule commune lue à l’envers : un œil qui fournit plus que la demande est hypermétrope ; moins, il est myope.',
       pieges: [{ v: 100 / d - A, m: 'Signe inversé : R = A − 1/d, pas 1/d − A.' }, { v: A + 100 / d, m: 'On retranche la demande de l’objet, on ne l’ajoute pas.' }] };
@@ -4617,7 +4676,7 @@ GEN.push(
   /* ---------- M7 ② ---------- */
   { id: 'pr-dir', r: 'r6', sens: 'direct', f(){
     const R = choisir([-5, -4.5, -4, -3, -2.5, -2, -1.5, -1.25, -1, 1, 2, 2.5, 4, 5]), pr = 100 / R, cote = pr < 0 ? 'devant' : 'derrière';
-    return { q: `Un patient ${NOM_R(R)}, l’œil au repos. Où est son punctum remotum ? Donne le Pr <b>signé</b>, en cm (convention du cours : devant l’œil = négatif).`, u: 'cm', rep: pr, tol: 0.51,
+    return { R, q: `Un patient ${NOM_R(R)}, l’œil au repos. Où est son punctum remotum ? Donne le Pr <b>signé</b>, en cm (convention du cours : devant l’œil = négatif).`, u: 'cm', rep: pr, tol: 0.51,
       affiche: `${pr > 0 ? '+' : ''}${cmTxt(pr)} cm, soit ${cmTxt(Math.abs(pr))} cm ${cote}`,
       dem: ['R = 1 / Pr   →   Pr = 1 / R   (D25, D37)', `Pr = 1 / ${par(dpt(R))} = ${sgm(1 / R)} m = ${cmTxt(pr)} cm`, pr < 0 ? 'négatif : devant l’œil, un point réel' : 'positif : derrière l’œil, un point virtuel'],
       concept: R < 0 ? 'Le myope voit net sans accommoder jusqu’à son Pr, devant lui ; au-delà, c’est flou (D23).'
@@ -4628,7 +4687,7 @@ GEN.push(
   { id: 'pr-inv', r: 'r6', sens: 'inverse', f(){
     const [cm, cote] = choisir([[20, 'devant'], [25, 'devant'], [40, 'devant'], [50, 'devant'], [80, 'devant'], [100, 'devant'], [200, 'devant'], [25, 'derrière'], [50, 'derrière'], [100, 'derrière']]);
     const prm = (cote === 'devant' ? -1 : 1) * cm / 100, R = 1 / prm;
-    return { q: `Le punctum remotum d’un patient est à ${cm} cm ${cote} ${cote === 'devant' ? 'lui' : 'l’œil'}. Quelle lentille cornéenne le corrige ?`, u: 'D', rep: R, tol: 0.011,
+    return { R, q: `Le punctum remotum d’un patient est à ${cm} cm ${cote} ${cote === 'devant' ? 'lui' : 'l’œil'}. Quelle lentille cornéenne le corrige ?`, u: 'D', rep: R, tol: 0.011,
       dem: ['R = 1 / Pr   (Pr signé, en mètres)', `Pr = ${cm} cm ${cote} = ${sgm(prm)} m   ← ${cote === 'devant' ? 'devant : négatif' : 'derrière : positif'}`, `R = 1 / ${par(sgm(prm))} = ${dpt(R)} D`],
       concept: cote === 'devant' ? 'Un Pr réel, devant : un myope. La lentille ramène ce point à l’infini (C2).' : 'Un Pr derrière l’œil, virtuel : un hypermétrope, corrigé par une lentille convexe (D37).',
       pieges: [{ v: -R, m: cote === 'devant' ? 'Signe : un Pr devant l’œil est négatif, donc la lentille aussi (un myope).' : 'Signe : un Pr derrière l’œil est positif (D37), donc la lentille aussi.' },
@@ -4638,7 +4697,7 @@ GEN.push(
   { id: 'pp-dir', r: 'r7', sens: 'direct', f(){
     const [R, Am, age] = tirage(() => { const R = choisir([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]); if (Math.random() < 0.5){ const age = choisir([10, 20, 30, 40]); return [R, amDe(age), age]; } return [R, choisir([3, 4, 6, 7, 8, 10]), null]; }, ([R, Am]) => Am - R >= 1);
     const pp = 100 / (Am - R);
-    return { q: `${age !== null ? `Patient de ${age} ans (Donders)` : `Amplitude d’accommodation : ${nf(Am)} D`}, ${NOM_R(R)}, sans correction. Où est son punctum proximum, en cm ?`, u: 'cm', rep: pp, tol: 0.51,
+    return { R, q: `${age !== null ? `Patient de ${age} ans (Donders)` : `Amplitude d’accommodation : ${nf(Am)} D`}, ${NOM_R(R)}, sans correction. Où est son punctum proximum, en cm ?`, u: 'cm', rep: pp, tol: 0.51,
       dem: ['1 / Pp = Am − R   (D28)'].concat(age !== null ? [`Am (Donders, ${age} ans) = ${nf(Am)}`] : []).concat([
         `1 / Pp = ${nf(Am)} ${moinsDe(R)} = ${nf(Am - R)} D   ← ${R < 0 ? 'la myopie se rajoute (D27)' : R > 0 ? 'l’hypermétropie se soustrait (D38)' : 'R = 0'}`,
         `Pp = 1 / ${nf(Am - R)} = ${nm(1 / (Am - R))} m = ${cmTxt(pp)} cm`]),
@@ -4651,7 +4710,7 @@ GEN.push(
   { id: 'pp-avec', r: 'r7', sens: 'inverse', f(){
     const [R, d] = tirage(() => [choisir([-3, -2, -1, 1, 2, 3]), choisir([20, 25, 50])], ([R, d]) => 100 / d - R >= 1);
     const Am = 100 / d, pp = 100 / (Am - R);
-    return { q: `Un patient porte des lunettes de ${dpt(R)}. Avec elles, il voit un objet à ${d} cm à condition d’accommoder au maximum. Où serait son Pp sans lunettes, en cm ?`, u: 'cm', rep: pp, tol: 0.51,
+    return { R, q: `Un patient porte des lunettes de ${dpt(R)}. Avec elles, il voit un objet à ${d} cm à condition d’accommoder au maximum. Où serait son Pp sans lunettes, en cm ?`, u: 'cm', rep: pp, tol: 0.51,
       dem: ['Avec ses lunettes, il est comme un emmétrope : Am = 1 / Pp(avec)', `Am = 1 / ${nm(d / 100)} = ${nf(Am)} D`, '1 / Pp = Am − R   (sans lunettes)', `1 / Pp = ${nf(Am)} ${moinsDe(R)} = ${nf(Am - R)} D   → Pp = ${cmTxt(pp)} cm`],
       concept: 'La démarche de Caroline (D29–D30, D39–D40) : le Pp avec lunettes donne l’amplitude, puis ③ donne le Pp sans lunettes.',
       pieges: [{ v: d, m: 'C’est le Pp AVEC lunettes. Sans elles, R compte : 1/Pp = Am − R.' }, { v: 100 / (Am + R), m: 'Signe de R inversé.' }] };
@@ -4659,7 +4718,7 @@ GEN.push(
   { id: 'pp-am', r: 'r7', sens: 'inverse', f(){
     const [S, R] = tirage(() => [choisir([4, 5, 8, 10]), choisir([-3, -2, -1, 1, 2])], ([S, R]) => S + R >= 1);
     const Am = S + R;
-    return { q: `Sans lunettes, un patient ${NOM_R(R)} voit net jusqu’à ${cmTxt(100 / S)} cm, pas plus près. Quelle est son amplitude d’accommodation ?`, u: 'D', rep: Am, tol: 0.011,
+    return { R, q: `Sans lunettes, un patient ${NOM_R(R)} voit net jusqu’à ${cmTxt(100 / S)} cm, pas plus près. Quelle est son amplitude d’accommodation ?`, u: 'D', rep: Am, tol: 0.011,
       dem: ['1 / Pp = Am − R   →   Am = 1 / Pp + R', `1 / Pp = 1 / ${nm(1 / S)} = ${nf(S)} D`, `Am = ${nf(S)} ${plusDe(R)} = ${nf(Am)} D`],
       concept: 'La racine ③ à l’envers, comme au n° 3 du corrigé : « Avec orthèse = +2.00 +4.00= +6.00 » (C5).',
       pieges: [{ v: S - R, m: 'Signe : Am = 1/Pp + R ; pour un myope, R est négatif.' }, { v: S, m: 'Tu as oublié R : c’est le Pp à l’œil nu.' }] };
@@ -4670,12 +4729,13 @@ GEN.push(
     const pb = probAdd(d, Am, null, `Patient ${NOM_R(R)}, corrigé de loin, amplitude ${nf(Am)} D, lecture à ${d} cm. Quelle addition, par la formule ?`);
     pb.dem.unshift(`Correction de loin en place (${dpt(R)}) : la demande de près est 1 / d, sans R   (D5)`);
     pb.pieges.push({ v: 100 / d + R - Am / 2, m: 'Tu as ajouté R à la demande : la formule suppose « la correction de loin en place » (D5), donc la demande est 1/d.' });
+    pb.R = R;
     return pb;
   } },
   /* ---------- M7 ⑤ ---------- */
   { id: 'pres', r: 'r9', sens: 'direct', f(){
     const R = choisir([-4, -3, -2.5, -1.5, -0.75, 0, 0.5, 1.25, 2, 3]), ad = choisir([0.75, 1, 1.25, 1.5, 2, 2.25, 2.5]), P = R + ad;
-    return { q: `Ordonnance : ${R ? dpt(R) : 'plano'} add ${dpt(ad)}. Quelle est la puissance des lunettes de lecture ?`, u: 'D', rep: P, tol: 0.011,
+    return { R, q: `Ordonnance : ${R ? dpt(R) : 'plano'} add ${dpt(ad)}. Quelle est la puissance des lunettes de lecture ?`, u: 'D', rep: P, tol: 0.011,
       affiche: Math.abs(P) < 1e-9 ? 'plano (0,00 D)' : undefined,
       dem: ['puissance de près = correction de loin + addition   (D6)', `${R ? dpt(R) : 'plano'} ${plusDe(ad)} = ${Math.abs(P) < 1e-9 ? 'plano' : dpt(P) + ' D'}`],
       concept: 'L’addition s’ajoute à la correction de loin : −3,00 add +2,50 donne −0,50, pas +2,50 (D9).',
@@ -4683,7 +4743,7 @@ GEN.push(
   } },
   { id: 'pres-add', r: 'r9', sens: 'inverse', f(){
     const R = choisir([-4, -3, -2.25, -1, 0.5, 1.5, 3]), ad = choisir([1, 1.25, 1.5, 2, 2.5]), P = R + ad;
-    return { q: `Rx de loin ${dpt(R)} ; lunettes de lecture ${Math.abs(P) < 1e-9 ? 'plano' : dpt(P)}. Quelle est l’addition ?`, u: 'D', rep: ad, tol: 0.011,
+    return { R, q: `Rx de loin ${dpt(R)} ; lunettes de lecture ${Math.abs(P) < 1e-9 ? 'plano' : dpt(P)}. Quelle est l’addition ?`, u: 'D', rep: ad, tol: 0.011,
       dem: ['près = loin + Add   →   Add = près − loin', `Add = ${Math.abs(P) < 1e-9 ? '0,00' : dpt(P)} ${moinsDe(R)} = ${dpt(ad)}`],
       concept: 'La racine ⑤ à l’envers. Une addition est toujours positive (M6 D56).',
       pieges: [{ v: P + R, m: 'Signe : Add = près − loin.' }, { v: -ad, m: 'Une addition est toujours positive.' }] };
@@ -4691,7 +4751,7 @@ GEN.push(
   { id: 'arthur', r: 'r9', sens: 'direct', f(){
     const [R, Am, d] = tirage(() => [choisir([-4, -3, -2, -1, 1, 2]), choisir([0.5, 1, 1.5, 2, 2.5]), choisir([40, 50])], ([R, Am, d]) => 100 / d - Am / 2 > 0.2);
     const ad = 100 / d - Am / 2, P = R + ad;
-    return { q: `Patient ${NOM_R(R)} OU, amplitude ${nf(Am)} D. À ${d} cm, en gardant la moitié de son amplitude en réserve, quelle puissance pour ses lunettes de lecture ?`, u: 'D', rep: P, tol: 0.011,
+    return { R, q: `Patient ${NOM_R(R)} OU, amplitude ${nf(Am)} D. À ${d} cm, en gardant la moitié de son amplitude en réserve, quelle puissance pour ses lunettes de lecture ?`, u: 'D', rep: P, tol: 0.011,
       affiche: Math.abs(P) < 1e-9 ? 'plano (0,00 D)' : undefined,
       dem: [`demande = 1 / ${nm(d / 100)} = ${dpt(100 / d)}   (correction de loin en place)`, `Add = ${dpt(100 / d)} − 0,5 × ${nf(Am)} = ${dpt(ad)}`, `lunettes de lecture = ${dpt(R)} ${plusDe(ad)} = ${Math.abs(P) < 1e-9 ? 'plano' : dpt(P) + ' D'}`],
       concept: 'Le n° 5 du devoir, généralisé : ④ donne l’addition, ⑤ la puissance de près (C7).',
@@ -4850,18 +4910,13 @@ function chapitreRacines(mod){
           det.open = true;
         });
       } else {
-        rep.innerHTML = `<label class="unite" for="ra-in">Réponse</label><input type="text" id="ra-in" inputmode="decimal" autocomplete="off"><span class="unite">${pb.u}</span><button type="button" class="verif">Vérifier</button>`;
-        const inp = rep.querySelector('input');
-        const verif = () => {
-          const j = juger(pb, inp.value);
-          if (j.etat === 'vide'){ ret.className = 'retour bad'; ret.textContent = 'Écris un nombre, par exemple +1,50.'; return; }
-          D.reponse = inp.value.trim() + ' ' + pb.u;
-          if (j.etat === 'ok') conclure(true, 'Juste : ' + repTxt(pb) + '.');
-          else conclure(false, (j.piege ? j.piege + ' ' : '') + 'Attendu : ' + repTxt(pb) + '.');
-          C.querySelector('.ra-suiv').focus();
-        };
-        rep.querySelector('.verif').addEventListener('click', verif);
-        inp.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); verif(); } });
+        /* l'échelle des essais (Pratique, learning-blueprint.md §4.3) : jamais la réponse au premier échec */
+        const z = document.createElement('div');
+        rep.replaceWith(z); C.querySelector('.q').remove(); det.remove(); ret.remove();
+        Pratique.exercice(z, pb, { kc: KC_GEN[pb.id], etapes: etapesDe(pb), resultat: resultatDe(pb), juger, repTxt,
+          reponse: t => { D.reponse = t; },
+          fin: r => { const net = r.premier && !r.aide; C.classList.toggle('juste', net); C.classList.toggle('faux', !r.premier); noter(net); if (r.resolu) C.querySelector('.ra-suiv').focus({ preventScroll: true }); },
+          jumelle: () => { D.pb = tirerGen(pb.id); D.reponse = null; D.compte = false; carte(); const i = C.querySelector('input'); if (i) i.focus(); } });
       }
       C.querySelector('.ra-suiv').addEventListener('click', () => { nouvelle(); const i = C.querySelector('input, .choix button'); if (i) i.focus(); });
       C.querySelector('.ra-tut').addEventListener('click', () => {
@@ -4892,6 +4947,67 @@ function chapitreRacines(mod){
 }
 
 /* ================= Chapitres ================= */
+/* ---------- « À toi » (learning-blueprint.md §4 ; analyse/opt-m07_kc.md) : après chaque formule du module 7, des
+   problèmes tout de suite, avec les quatre questions du prof (D48) avant les nombres. Le moteur est commun
+   (_commun/pratique.js) ; ici, ce qui est propre au Banc : les KC de l'analyse, le plan de chaque démarche, les
+   questions, et quels générateurs nourrissent quel chapitre. ---------- */
+const KC_GEN = { surf: 'O6.2', 'surf-r': 'O6.2', lunetier: 'O6.3', cornee: 'O6.4', kerato: 'O6.5', 'kerato-r': 'O6.5', focale: 'O6.7', 'focale-f': 'O6.7',
+  demande: 'O6.14', 'demande-d': 'O6.14', '1mm': 'O6.11', axe: 'O6.11', 'axe-L': 'O6.11', add: 'O6.17', 'add-age': 'O6.17', confort: 'O6.17', 'am-min': 'O6.17', am: 'O6.17',
+  'a-dir': 'O7.3', 'a-inv': 'O7.3', 'pr-dir': 'O7.4', 'pr-inv': 'O7.4', 'pp-dir': 'O7.6', 'pp-avec': 'O7.6', 'pp-am': 'O7.6', 'add-rx': 'O7.11', pres: 'O7.11', 'pres-add': 'O7.11', arthur: 'O7.11' };
+/* le plan de chaque démarche : un libellé par ligne de `dem` (ce que fait l'étape) */
+const ETAPES = {
+  'a-dir': ['La formule', 'd en mètres, puis 1/d', 'R, avec son signe', 'Additionner'],
+  'a-inv': ['Isoler R', '1/d, avec d en mètres', 'Soustraire ; le signe dit l’amétropie'],
+  'pr-dir': ['La formule, à l’envers', 'Inverser R : en mètres, puis en cm', 'Le signe dit le côté'],
+  'pr-inv': ['La formule', 'Le Pr signé, en mètres', 'Inverser'],
+  'pp-dir': pb => ['La formule'].concat(pb.dem.length === 4 ? ['Am, au tableau de Donders'] : []).concat(['Am − R, avec le signe de R', 'Inverser, puis en cm']),
+  'pp-avec': ['Corrigé, il est comme un emmétrope', 'L’amplitude : 1/Pp avec lunettes', 'Sans lunettes, R compte', 'Am − R, puis inverser'],
+  'pp-am': ['Isoler Am', '1/Pp, avec Pp en mètres', 'Ajouter R, avec son signe'],
+  'add-rx': pb => ['Correction en place : la demande, c’est 1/d', 'La formule de la demande', '1/d, avec d en mètres', 'La formule de l’addition', 'Retirer la moitié de Am', 'Négatif : aucune addition'].slice(0, pb.dem.length),
+  pres: ['La formule', 'Ajouter l’addition à la correction de loin'],
+  'pres-add': ['Isoler l’addition', 'Soustraire la correction de loin'],
+  arthur: ['La demande, 1/d (correction en place)', 'L’addition : retirer la moitié de Am', 'Près = loin + addition']
+};
+const etapesDe = pb => { const e = ETAPES[pb.id]; return typeof e === 'function' ? e(pb) : e || null; };
+/* la ligne de la démarche qui montre le résultat : d'ordinaire la dernière ; le Pr la donne avant de dire le côté,
+   et « aucune addition » ajoute une ligne après le calcul */
+const resultatDe = pb => pb.id === 'pr-dir' || pb.zeroOk ? pb.dem.length - 2 : pb.dem.length - 1;
+/* les quatre questions du prof (D48), avant les nombres : ① et ③ d'après le signe de R, ② la lecture de la formule
+   commune (« quelle racine ? ») ; la ④, « le résultat est-il plausible ? », vient avec la réponse */
+function quatreQuestions(pb){
+  const R = pb.R, cor = pb.r === 'r8' || pb.r === 'r9';
+  if (typeof R !== 'number') return null;
+  const p1 = { 'a-inv': 'Compare ce qu’il fournit à la demande 1/d : plus que la demande, il comble un manque (hypermétrope) ; moins, son erreur en paie une partie (myope).',
+    'pr-inv': 'Un Pr devant l’œil est réel : c’est un myope. Derrière, virtuel : un hypermétrope (D37).' }[pb.id]
+    || 'Regarde le signe de R : négatif, myope ; positif, hypermétrope ; nul, emmétrope (D20).';
+  return [
+    { q: '① Quelle amétropie ?', choix: ['myope (R < 0)', 'emmétrope (R = 0)', 'hypermétrope (R > 0)'], ok: R < 0 ? 0 : R === 0 ? 1 : 2, pourquoi: p1 },
+    { q: '② Quelle lecture de la formule commune ?', choix: ['à une distance donnée : A = 1/d + R', 'œil au repos (A = 0) : le Pr', 'accommodation maximale (A = Am) : le Pp', 'corrigé, de près : l’addition'],
+      ok: { r5: 0, r6: 1, r7: 2, r8: 3, r9: 3 }[pb.r], pourquoi: 'Que cherche-t-on ? Le Pr, c’est l’œil au repos ; le Pp, l’accommodation maximale ; correction en place, de près, c’est l’addition (D48).' },
+    { q: '③ Quel effet sur l’accommodation ?', choix: ['demande diminuée (myopie)', 'demande augmentée (hypermétropie)', 'aucun : emmétrope, ou correction en place'],
+      ok: cor || R === 0 ? 2 : R < 0 ? 0 : 1, pourquoi: cor ? 'La correction de loin est en place : l’œil est « comme un emmétrope » (C6).' : 'La myopie diminue la demande, l’hypermétropie l’augmente (D48).' }
+  ];
+}
+function tuteurCalcul(pb, rep){
+  ouvrirTuteur(true);
+  const brut = H('<div>' + pb.q + '</div>').textContent;
+  q.value = `Problème « À toi » (${KC_GEN[pb.id] || 'Banc'}) : “${brut}”${rep ? ` J’ai répondu ${rep}.` : ''} Aide-moi à trouver l’étape qui cloche, sans me donner la réponse tout de suite.`;
+  autoTaille(); q.focus();
+}
+const A_TOI = {
+  formule: { kc: 'O7.3', titre: 'La formule commune, à toi', racines: ['r5'], gens: [{ id: 'a-dir', pas: 'formule.1' }, { id: 'a-inv', inv: true, pas: 'formule.1' }] },
+  pr: { kc: 'O7.4', titre: 'Le punctum remotum, à toi', racines: ['r6'], gens: [{ id: 'pr-dir', pas: 'pr.4' }, { id: 'pr-inv', inv: true, pas: 'pr.5' }] },
+  pp: { kc: 'O7.6', titre: 'Le punctum proximum, à toi', racines: ['r7'], gens: [{ id: 'pp-dir', pas: 'pp.3' }, { id: 'pp-avec', inv: true, pas: 'pp.5' }, { id: 'pp-am', inv: true, pas: 'pp.5' }] },
+  correction: { kc: 'O7.11', titre: 'L’addition et les lunettes de lecture, à toi', racines: ['r8', 'r9'],
+    gens: [{ id: 'add-rx', pas: 'correction.2' }, { id: 'arthur', pas: 'correction.4' }, { id: 'pres', pas: 'correction.4' }, { id: 'pres-add', inv: true, pas: 'correction.4' }] }
+};
+function blocAToi(id, corps){
+  const a = A_TOI[id]; if (!a || typeof Pratique === 'undefined') return;
+  const z = document.createElement('div'); z.className = 'atoi-place'; corps.appendChild(z);
+  Pratique.bloc(z, Object.assign({}, a, { tirer: tirerGen, etapes: etapesDe, resultat: resultatDe, questions: quatreQuestions, juger, repTxt, tuteur: tuteurCalcul,
+    pourquoi: () => { const l = POURQUOI.filter(p => a.racines.includes(p.r)); return l.length ? choisir(l) : null; } }));
+}
+
 const REG = {
   lunetier: { preset: 'ex1', r1: 8, r2: 10, nV: 1.50, nAv: 1, nAr: 1 },
   cornee: { r1: 7.8, r2: 6.5, eau: false, aqueuxAir: false },
@@ -6269,6 +6385,7 @@ function batirChapitre(id){
   const c = CH_DE[id], e = ecran(id); if(!c || !e) return;
   const corps = $('.ch-corps', e.el); corps.innerHTML = '';
   c.build(corps);
+  blocAToi(id, corps);
 }
 Object.keys(CH_DE).forEach(id => { INIT[id] = () => batirChapitre(id); });
 /* « Ouvrir ce cas sur le banc » : le chapitre se refait avec les valeurs du cas, puis on y va */
@@ -6741,6 +6858,278 @@ const Pas = (() => {
   }
   return {demarrer, liste:id => PAR_ECRAN[id] || [], get:id => PAR_ID[id], element:id => ELS[id], niv, noter, NOMS,
     eclairer, eteindre, proche, scoreEcran, placer:() => { if(ICI) placer(ICI); }};
+})();
+
+/* ====== _commun/pratique.js ====== */
+/* ======================================================================
+   La pratique (learning-blueprint.md §4 et §6).
+   L'échelle des essais, pour tout problème chiffré : une erreur reconnue
+   a son message et on réessaie avec les mêmes nombres ; au 2e essai, la
+   première étape ; au 3e, la démarche entière, puis une jumelle à
+   résoudre. La réponse n'est jamais donnée au premier échec.
+   « À toi » : après une formule, des problèmes tout de suite. Le premier
+   est à compléter (le plan est donné, la dernière étape est à toi) ; les
+   suivants sont entiers. Avant les nombres, des questions de départ
+   (au Banc : les quatre questions du prof) qui s'effacent quand elles
+   sont sues. Le critère (blueprint §4.2) : trois de suite sans aide, au
+   moins cinq problèmes, dont un à l'envers quand la formule en a un.
+   Le journal (blueprint §6) garde, par connaissance (KC), les essais, les
+   réussites sans aide, les erreurs reconnues et la suite des premières
+   réponses (les courbes d'apprentissage). Tout vit dans ETAT.mesures,
+   synchronisé et exporté avec la progression.
+   L'atelier fournit ses problèmes {q, u, rep, dem, concept, pieges} et
+   juger, repTxt, tirer (voir le Banc d'optique, 31-widgets.js).
+   ====================================================================== */
+const Pratique = (() => {
+  const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+  const RONDS = '①②③④⑤⑥⑦⑧⑨';
+  const hasard = a => a[Math.floor(Math.random() * a.length)];
+  const mes = () => { if(!ETAT.mesures || typeof ETAT.mesures !== 'object') ETAT.mesures = {}; return ETAT.mesures; };
+  let nEx = 0;
+
+  /* ---------- le journal : par KC ; suite = 1 juste sans aide, a résolu avec aide, 0 non résolu ---------- */
+  function noter(kc, r){
+    if(!kc) return;
+    const m = mes(), j = m.journal && typeof m.journal === 'object' ? m.journal : (m.journal = {});
+    const k = j[kc] && typeof j[kc] === 'object' ? j[kc] : (j[kc] = {n:0, ok:0, aide:0, err:{}, suite:'', jours:{}});
+    const net = r.premier && !r.aide;
+    k.n++; if(net) k.ok++; else if(r.aide) k.aide++;
+    (r.err || []).forEach(e => { k.err[e] = (k.err[e] || 0) + 1; });
+    k.suite = (k.suite + (net ? '1' : r.resolu ? 'a' : '0')).slice(-200);
+    const d = jourLocal(), x = k.jours[d] || (k.jours[d] = [0, 0]);
+    x[0]++; if(net) x[1]++;
+    const js = Object.keys(k.jours).sort(); while(js.length > 60) delete k.jours[js.shift()];
+    toucherEtat();
+  }
+
+  /* ---------- un problème chiffré, avec l'échelle des essais ----------
+     o : {kc, etapes, questions, fondu, resultat, juger, repTxt, fin(r), reponse(txt), jumelle(), tuteur(pb, rep), tete}
+     resultat : le rang de la première ligne de la démarche qui montre le résultat (par défaut la dernière) ;
+     les aides s'arrêtent avant elle, et un problème « à compléter » la cache, avec tout ce qui suit */
+  function exercice(el, pb, o){
+    const id = 'px-' + (++nEx), lignes = pb.dem.map((t, i) => ({t, e:o.etapes && o.etapes[i] || ''}));
+    const r = {premier:false, aide:!!o.fondu, resolu:false, essais:0, err:[], fini:false, questions:!!(o.questions && o.questions.length), qBons:true, qFaites:false};
+    let derniere = '';
+    const res = Math.max(1, Math.min(lignes.length - 1, o.resultat == null ? lignes.length - 1 : o.resultat)), cache = lignes.length - res;
+    el.innerHTML = '';
+    const box = H('<div class="px"></div>');
+    box.innerHTML = (o.tete || '') + '<p class="px-q"></p><ol class="px-quest" hidden></ol><ol class="px-fondu px-etapes" hidden></ol>' +
+      '<div class="px-rep" hidden><label class="px-l" for="' + id + '">Réponse</label><input type="text" id="' + id + '" inputmode="decimal" autocomplete="off" spellcheck="false">' +
+        '<span class="px-u"></span><button type="button" class="btn px-ok">Vérifier</button></div>' +
+      '<p class="px-retour" aria-live="polite"></p><div class="px-aide" hidden></div>' +
+      '<div class="px-dem" hidden><ol class="px-etapes"></ol><p class="px-concept"></p></div>' +
+      '<div class="px-act"><button type="button" class="lien-btn" data-a="depart">Je ne sais pas par où commencer</button>' +
+        '<button type="button" class="lien-btn" data-a="dem">Voir la démarche</button>' +
+        (o.tuteur ? '<button type="button" class="lien-btn" data-a="tuteur">Demander au tuteur</button>' : '') +
+        '<button type="button" class="btn px-jum" data-a="jumelle" hidden>Une jumelle, à toi</button></div>';
+    el.appendChild(box);
+    $('.px-q', box).innerHTML = pb.q;        // le texte vient du générateur de l'atelier, jamais d'un tiers
+    $('.px-u', box).textContent = pb.u;
+    const inp = $('input', box), ret = $('.px-retour', box), zAide = $('.px-aide', box);
+    const dire = (t, genre) => { ret.className = 'px-retour' + (genre ? ' ' + genre : ''); ret.textContent = t; };
+    /* une liste d'étapes : le libellé (ce que fait l'étape), puis le calcul, ou « … » quand c'est à toi */
+    function etapesHTML(l, cache){
+      return l.map((x, i) => '<li' + (i >= l.length - cache ? ' class="a-toi"' : '') + '>' + (x.e ? '<b>' + esc(x.e) + '</b>' : '') +
+        '<span>' + (i >= l.length - cache ? '…' : esc(x.t)) + '</span></li>').join('');
+    }
+    function plan(){
+      if(lignes.some(x => x.e)) return '<p>Le plan, étape par étape. Laquelle as-tu faite autrement ?</p><ol class="px-etapes">' + lignes.map(x => '<li><b>' + esc(x.e) + '</b></li>').join('') + '</ol>';
+      return '<p>Repars de la formule :</p><ol class="px-etapes">' + etapesHTML(lignes.slice(0, 1), 0) + '</ol>';
+    }
+    function aide(h){ zAide.innerHTML = h; zAide.hidden = false; }
+    function montrerDem(){
+      $('.px-etapes', $('.px-dem', box)).innerHTML = etapesHTML(lignes, 0);
+      $('.px-concept', box).textContent = pb.concept || '';
+      $('.px-dem', box).hidden = false;
+    }
+    function bouclerActions(){ $('[data-a="depart"]', box).hidden = true; $('[data-a="dem"]', box).hidden = true; }
+    function finir(){
+      r.fini = true; inp.disabled = true; $('.px-ok', box).disabled = true; bouclerActions();
+      zAide.hidden = true;
+      noter(o.kc, r);
+      if(o.fin) o.fin(r);
+    }
+    function reussi(){
+      dire('Juste : ' + o.repTxt(pb) + '.' + (r.essais > 1 ? ' Trouvé au ' + r.essais + 'e essai.' : ''), 'ok');
+      montrerDem();
+      const c = $('.px-concept', box); if(pb.concept) c.textContent = (o.questions ? '④ Plausible ? ' : '') + pb.concept;
+      finir();
+    }
+    function reveler(t){
+      r.aide = true; dire(t, 'bad'); montrerDem();
+      if(o.jumelle) $('.px-jum', box).hidden = false;
+      finir();
+      if(o.jumelle) $('.px-jum', box).focus({preventScroll:true});
+    }
+    function verifier(){
+      if(r.fini) return;
+      const v = inp.value, j = o.juger(pb, v);
+      if(j.etat === 'vide'){ dire('Écris un nombre, par exemple +1,50.', 'bad'); return; }
+      r.essais++; derniere = v.trim() + ' ' + pb.u; if(o.reponse) o.reponse(derniere);
+      if(j.etat === 'ok'){ r.premier = r.essais === 1; r.resolu = true; reussi(); return; }
+      r.err.push(j.pid || pb.id + '.?');
+      if(r.essais === 1){
+        if(j.piege) dire(j.piege + ' Réessaie avec les mêmes nombres.', 'bad');
+        else { dire('Pas encore. Reprends le plan, étape par étape.', 'bad'); aide(plan()); }
+      } else if(r.essais === 2){
+        r.aide = true;
+        dire((j.piege ? j.piege + ' ' : 'Toujours pas. ') + 'Voici le début, avec tes nombres.', 'bad');
+        aide('<ol class="px-etapes">' + etapesHTML(lignes.slice(0, Math.min(2, res)), 0) + '</ol>');
+      } else { reveler('Voici la démarche entière. Attendu : ' + o.repTxt(pb) + '. Fais maintenant la jumelle, sans aide.'); return; }
+      inp.select();
+    }
+    function ouvrirReponse(){
+      $('.px-rep', box).hidden = false;
+      if(o.fondu){ const f = $('.px-fondu', box); f.innerHTML = etapesHTML(lignes, cache); f.hidden = false; $('[data-a="depart"]', box).hidden = true; }
+    }
+    /* les questions de départ : une à la fois ; une erreur a son explication, et la bonne réponse reste à trouver */
+    function questions(){
+      const ol = $('.px-quest', box), qs = o.questions;
+      ol.hidden = false;
+      let k = 0;
+      function poser(){
+        if(k >= qs.length){ r.qFaites = true; ouvrirReponse(); if(!r.fini) inp.focus({preventScroll:true}); return; }
+        const q = qs[k], li = H('<li><p class="px-qq"></p><div class="px-choix" role="group"></div><p class="px-qr" aria-live="polite"></p></li>');
+        $('.px-qq', li).textContent = q.q;
+        q.choix.forEach((c, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = c; b.dataset.i = i; $('.px-choix', li).appendChild(b); });
+        $('.px-choix', li).addEventListener('click', e => {
+          const b = e.target.closest('button'); if(!b || b.disabled || li.dataset.fait) return;
+          if(+b.dataset.i === q.ok){
+            b.classList.add('juste'); li.dataset.fait = '1';
+            $$('button', li).forEach(x => { x.disabled = true; });
+            $('.px-qr', li).textContent = '';
+            k++; poser();
+          } else {
+            b.classList.add('faux'); b.disabled = true;
+            r.qBons = false; r.aide = true; r.err.push(pb.id + '.q' + (k + 1));
+            $('.px-qr', li).textContent = q.pourquoi || 'Pas celle-là.';
+          }
+        });
+        ol.appendChild(li);
+        const b0 = $('.px-choix button', li); if(b0 && k) b0.focus({preventScroll:true});
+      }
+      poser();
+    }
+    $('.px-ok', box).addEventListener('click', verifier);
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); verifier(); } });
+    box.addEventListener('click', e => {
+      const b = e.target.closest('[data-a]'); if(!b) return;
+      const a = b.dataset.a;
+      if(a === 'dem' && !r.fini) reveler('Démarche ouverte : ce problème compte comme aidé. Fais la jumelle, sans aide.');
+      else if(a === 'depart' && !r.fini){
+        r.aide = true; b.hidden = true;
+        if(!$('.px-rep', box).hidden){ const f = $('.px-fondu', box); f.innerHTML = etapesHTML(lignes, Math.max(1, lignes.length - 1)); f.hidden = false; }
+        else aide(plan());
+      }
+      else if(a === 'jumelle' && o.jumelle) o.jumelle();
+      else if(a === 'tuteur' && o.tuteur) o.tuteur(pb, derniere);
+    });
+    if(r.questions) questions(); else ouvrirReponse();
+    return r;
+  }
+
+  /* ---------- « À toi » : le bloc d'une formule ----------
+     c : {kc, titre, gens:[{id, inv, pas}], tirer(id), etapes(pb), resultat(pb), questions(pb), pourquoi(), juger, repTxt, tuteur} */
+  const COURANT = {}, POURQUOI_DIT = {};
+  function etat(kc){
+    const m = mes(), a = m.atoi && typeof m.atoi === 'object' ? m.atoi : (m.atoi = {});
+    const s = a[kc] && typeof a[kc] === 'object' ? a[kc] : (a[kc] = {});
+    return Object.assign(s, {n:+s.n || 0, serie:Array.isArray(s.serie) ? s.serie : [], fondu:s.fondu === 0 ? 0 : 1, echecs:+s.echecs || 0,
+      qok:+s.qok || 0, reussi:typeof s.reussi === 'string' ? s.reussi : '', jours:Array.isArray(s.jours) ? s.jours : [], jumelle:typeof s.jumelle === 'string' ? s.jumelle : ''});
+  }
+  function bloc(el, c){
+    const sec = H('<section class="atoi"><header class="atoi-tete"><span class="atoi-tag">À toi</span><h3></h3>' +
+      '<p class="atoi-but"></p><div class="atoi-serie" aria-live="polite"></div></header><div class="atoi-ex"></div>' +
+      '<div class="atoi-pq" hidden></div><div class="atoi-pied"><button type="button" class="btn plein atoi-suiv" hidden>Problème suivant</button></div></section>');
+    $('h3', sec).textContent = c.titre;
+    const inv = c.gens.some(g => g.inv);
+    $('.atoi-but', sec).textContent = 'Le but : trois problèmes de suite justes du premier coup, sans aide' + (inv ? ', dont un à l’envers' : '') + '. Il en faut au moins cinq en tout.';
+    el.appendChild(sec);
+    const ex = $('.atoi-ex', sec), suiv = $('.atoi-suiv', sec);
+    function serie(){
+      const s = etat(c.kc), z = $('.atoi-serie', sec), n = Math.min(3, s.serie.length);
+      const pts = [0, 1, 2].map(i => '<i class="' + (i < n ? 'plein' : '') + '"></i>').join('');
+      if(s.reussi){
+        const d = (() => { try{ return new Date(s.reussi + 'T12:00').toLocaleDateString('fr-CA', {day:'numeric', month:'long'}); }catch(e){ return s.reussi; } })();
+        const autreJour = s.jours.some(j => j !== s.reussi);
+        z.innerHTML = '<span class="atoi-ok">✓ Réussi le ' + esc(d) + '</span> · ' + (autreJour ? 'maîtrisé : juste aussi un autre jour' : 'reviens un autre jour : un problème juste du premier coup le rendra maîtrisé');
+      } else z.innerHTML = '<span class="atoi-pts" aria-hidden="true">' + pts + '</span> Série : ' + s.serie.length + ' de suite sans aide · ' + s.n + ' problème' + (s.n > 1 ? 's' : '') + (inv && s.serie.length >= 2 && !s.serie.some(x => x.inv) ? ' · le prochain est à l’envers' : '');
+    }
+    function prochain(){
+      const s = etat(c.kc), avant = COURANT[c.kc];
+      let g = s.jumelle && c.gens.some(x => x.id === s.jumelle) ? s.jumelle : '';
+      s.jumelle = '';
+      if(!g){
+        const vInv = c.gens.filter(x => x.inv), dir = c.gens.filter(x => !x.inv);
+        let pool = inv && s.serie.length >= 2 && !s.serie.some(x => x.inv) ? vInv : s.fondu && dir.length ? dir : c.gens;
+        const autres = pool.filter(x => !avant || x.id !== avant.gen); if(autres.length) pool = autres;
+        g = hasard(pool).id;
+      }
+      const pb = c.tirer(g);
+      COURANT[c.kc] = {gen:g, pb, fondu:s.fondu && pb.dem.length > 1 ? 1 : 0, fini:false};
+      montrer();
+    }
+    function montrer(){
+      const cur = COURANT[c.kc], s = etat(c.kc), g = c.gens.find(x => x.id === cur.gen) || {};
+      suiv.hidden = !cur.fini; $('.atoi-pq', sec).hidden = true;
+      const tete = '<p class="px-tag">' + (cur.fondu ? 'À compléter : le plan est donné, la dernière étape est à toi' : g.inv ? 'À l’envers' : 'Problème entier') + '</p>';
+      exercice(ex, cur.pb, {kc:c.kc, etapes:c.etapes ? c.etapes(cur.pb) : null, resultat:c.resultat ? c.resultat(cur.pb) : null, questions:s.qok < 2 && c.questions ? c.questions(cur.pb) : null, fondu:cur.fondu,
+        juger:c.juger, repTxt:c.repTxt, tuteur:c.tuteur, tete, fin:fin,
+        jumelle:() => { etat(c.kc).jumelle = cur.gen; toucherEtat(); prochain(); }});
+      serie();
+    }
+    function fin(r){
+      const cur = COURANT[c.kc], s = etat(c.kc), g = c.gens.find(x => x.id === cur.gen) || {};
+      cur.fini = true; s.n++;
+      const net = r.premier && !r.aide;
+      if(r.questions) s.qok = r.qBons && r.qFaites ? s.qok + 1 : 0; else if(!net) s.qok = 0;
+      const pasDe = () => Array.from(new Set(c.gens.map(x => x.pas).filter(Boolean)));
+      if(cur.fondu){ if(r.premier) s.fondu = 0; }
+      else {
+        if(net){ s.serie = s.serie.concat({inv:!!g.inv}).slice(-10); s.echecs = 0; }
+        else { s.serie = []; s.echecs++; if(s.echecs >= 2){ s.fondu = 1; s.echecs = 0; } }
+        const j = jourLocal();
+        if(!s.reussi && s.serie.length >= 3 && s.n >= 5 && (!inv || s.serie.some(x => x.inv))){
+          s.reussi = j; s.jours = [j];
+          if(typeof Pas !== 'undefined') pasDe().forEach(p => Pas.noter(p, 'ok'));
+          r.criterion = true;
+        } else if(s.reussi && net && !s.jours.includes(j)){
+          s.jours = s.jours.concat(j).slice(-6);
+          if(typeof Pas !== 'undefined') pasDe().forEach(p => Pas.noter(p, 'ok'));
+        } else if(s.reussi && !r.premier && typeof Pas !== 'undefined') pasDe().forEach(p => Pas.noter(p, 'ko'));
+      }
+      toucherEtat();
+      serie();
+      if(r.criterion){ const z = $('.atoi-serie', sec); z.classList.add('vient'); setTimeout(() => z.classList.remove('vient'), 1600); }
+      /* une question « pourquoi », une fois par visite, après le premier problème juste sans aide */
+      if(net && !cur.fondu && c.pourquoi && !POURQUOI_DIT[c.kc]){ const q = c.pourquoi(); if(q){ POURQUOI_DIT[c.kc] = true; pourquoi(q); } }
+      suiv.hidden = false;
+      if(!$('.px-jum', ex) || $('.px-jum', ex).hidden) suiv.focus({preventScroll:true});
+    }
+    function pourquoi(q){
+      const z = $('.atoi-pq', sec);
+      z.innerHTML = '<p class="px-tag">Pourquoi ?</p><p class="px-qq"></p><div class="px-choix" role="group"></div><p class="px-qr" aria-live="polite"></p>';
+      $('.px-qq', z).textContent = q.q;
+      const ordre = q.choix.map((t, i) => i).sort(() => Math.random() - 0.5);
+      ordre.forEach(i => { const b = document.createElement('button'); b.type = 'button'; b.textContent = q.choix[i]; b.dataset.i = i; $('.px-choix', z).appendChild(b); });
+      $('.px-choix', z).addEventListener('click', e => {
+        const b = e.target.closest('button'); if(!b || z.dataset.fait) return;
+        z.dataset.fait = '1';
+        const ok = +b.dataset.i === q.ok;
+        b.classList.add(ok ? 'juste' : 'faux');
+        if(!ok) $$('button', z).forEach(x => { if(+x.dataset.i === q.ok) x.classList.add('juste'); });
+        $$('button', z).forEach(x => { x.disabled = true; });
+        $('.px-qr', z).textContent = (ok ? 'Juste. ' : 'La bonne réponse : ' + q.choix[q.ok] + '. ') + (q.concept || '');
+        noter(c.kc + ' · pourquoi', {premier:ok, aide:false, resolu:ok, err:ok ? [] : [q.id || 'pourquoi']});
+      });
+      z.hidden = false;
+    }
+    suiv.addEventListener('click', prochain);
+    const cur = COURANT[c.kc];
+    if(cur && !cur.fini) montrer(); else prochain();
+  }
+
+  return {exercice, bloc, noter};
 })();
 
 /* ====== _commun/rappel.js ====== */
@@ -10456,9 +10845,17 @@ const Tableau = (() => {
     avant.forEach(([i]) => oter(i)); sel = new Set();
     memoriser(avant, avant.map(([i]) => [i, null])); majOutils(); dessiner();
   }
+  /* confirmer dans la page, par un 2e clic dans les 4 s : les boîtes du navigateur (confirm) sont bloquées dans Claude */
+  function deuxFois(b, texte){
+    if(!b) return true;
+    if(b.dataset.arme === '1'){ clearTimeout(b._t); b.dataset.arme = ''; b.textContent = b.dataset.txt; b.classList.remove('arme'); return true; }
+    b.dataset.txt = b.textContent; b.dataset.arme = '1'; b.textContent = texte; b.classList.add('arme');
+    clearTimeout(b._t); b._t = setTimeout(() => { b.dataset.arme = ''; b.textContent = b.dataset.txt; b.classList.remove('arme'); }, 4000);
+    return false;
+  }
   function vider(){
     const m = elements(); if(!m.size || lectureSeule()) return;
-    if(!confirm(vue === 'groupe' ? 'Effacer tout le tableau du groupe, pour tout le monde ?' : 'Effacer tout ton tableau pour cet écran ?')) return;
+    if(!deuxFois($('[data-o="vider"]', ui.el), vue === 'groupe' ? 'Effacer pour tout le monde ?' : 'Vraiment tout effacer ?')) return;
     const avant = Array.from(m, ([i, it]) => [i, brut(it)]);
     if(vue === 'groupe' && ctx){ const u = {}; avant.forEach(([i]) => { u[i] = null; }); m.clear(); ctx.F.update(refEl(ecranVu), u).catch(refus); }
     else { m.clear(); sauver(); }
@@ -10655,6 +11052,7 @@ const Tableau = (() => {
       }
     } else if(vue === 'seance') qui.textContent = 'Copie gardée de la séance (lecture seule)';
     const cp = $('[data-o="copier"]', el), nM = local(ecranVu).moi.size;
+    clearTimeout(cp._t); cp.dataset.arme = ''; cp.classList.remove('arme');
     if(vue === 'groupe'){ cp.hidden = !G.size; cp.textContent = 'Copier dans mon tableau'; }
     else if(vue === 'seance'){ cp.hidden = false; cp.textContent = 'Copier dans mon tableau'; }
     else { cp.hidden = !ctx || !nM; cp.textContent = 'Partager au groupe'; }
@@ -10713,7 +11111,7 @@ const Tableau = (() => {
   function copier(){
     const src = Array.from(elements().values()); if(!src.length) return;
     const cible = vue === 'moi' && ctx ? 'groupe' : 'moi';
-    if(vue === 'moi' && !confirm('Partager les ' + src.length + ' éléments de ton tableau avec le groupe ?')) return;
+    if(vue === 'moi' && !deuxFois($('[data-o="copier"]', ui.el), 'Partager ' + src.length + ' élément' + (src.length > 1 ? 's' : '') + N + '?')) return;
     vue = cible;
     const avant = [], apres = [];
     src.forEach(o => { const it = copie(o); it.id = nouvelId(); it.de = moiDe(); if(poser(it) !== false){ avant.push([it.id, null]); apres.push([it.id, brut(it)]); } });
@@ -12272,7 +12670,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'da723d29c293';
+  const ICI = 'ea461adcb7f6';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
