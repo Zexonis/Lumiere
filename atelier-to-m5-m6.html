@@ -7434,9 +7434,10 @@ function carteProposee(nom, texte, repondre){
       /* en copier-coller (un abonnement Claude, par exemple), la question part dans le presse-papiers : ce clic est le geste qu'il faut */
       if(mode() === 'api') envoyer(ligne); else copierPourIA(ligne);
     } else if(b.dataset.p === 'modifier'){
+      /* reformulée, elle devient ma question : sans le nom, que les consignes du duo feraient appeler */
       d.remove(); repondre('modifiee');
       if(!app.classList.contains('avec-tuteur')) ouvrirTuteur(true);
-      q.value = ligne; autoTaille(); q.focus();
+      q.value = texte; autoTaille(); q.focus();
     } else { d.remove(); repondre('ignoree'); }
   });
   tfil.appendChild(d); defiler();
@@ -10088,7 +10089,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '6425b53088ca';
+  const ICI = '533a12cf4d62';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
