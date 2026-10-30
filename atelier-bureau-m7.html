@@ -1035,6 +1035,66 @@ button.mq-coche:hover svg,button.mq-coche:focus-visible svg{transform:scale(1.18
   .btn-rappel .n{margin-left:0}
 }
 @media (prefers-reduced-motion: reduce){ .mq-pau{animation:none} .mq-oeil,.mq-iris{transition:none} .mq-coche.neuve svg,.mq-coche.neuve path{animation:none} }
+/* les téléphones de 360 px (Android) : la barre du haut se resserre encore pour tenir sans défilement de côté */
+@media (max-width:420px){ .haut{gap:4px} .haut .btn{padding:6px 7px} }
+@media (max-width:375px){ .haut .btn{padding:6px 5px} }
+
+/* ---------- Le tableau (tableau.js) : un tableau blanc par écran ; plein écran, ou côte à côte sur un grand écran ---------- */
+.tb{position:fixed;inset:0;z-index:330;display:flex;flex-direction:column;background:var(--bg);color:var(--ink)}
+.tb[hidden]{display:none}
+.tb.cote{left:auto;width:min(48vw,860px);z-index:300;border-left:1px solid var(--line);box-shadow:-10px 0 30px -18px rgba(0,0,0,.45)}
+body.tb-cote{padding-right:min(48vw,860px)}
+body.tb-cote .mq-yeux{right:min(48vw,860px)}
+body.tb-cote .cv-panneau{right:calc(min(48vw,860px) + 12px)}
+.tb-tete{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:calc(8px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+.tb-nom{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
+.tb-ecran{color:var(--ink-2)}
+.tb-vues{display:flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.tb-vues:empty{display:none}
+.tb-vues button{border:0;background:none;color:var(--ink-2);border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer;min-height:28px}
+.tb-vues button[aria-selected="true"]{background:var(--accent-soft);color:var(--ink);font-weight:700}
+.tb-qui{font-size:13px;color:var(--ink-2)}
+.tb-membre{display:inline-flex;align-items:center;gap:4px;color:var(--ink)}
+.tb-membre::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.tb-espace{flex:1}
+.tb-b,.tb-x{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13.5px;cursor:pointer;min-height:32px}
+.tb-b[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.tb-x{padding:5px 10px;font-weight:700}
+.tb-outils{display:flex;align-items:center;gap:8px;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel);overflow-x:auto;scrollbar-width:thin}
+.tb-grp{display:flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--line);border-radius:12px;background:var(--bg);flex:none}
+.tb-grp[hidden]{display:none}
+.tb-grp button{display:grid;place-items:center;min-width:32px;height:32px;padding:0 6px;border:0;border-radius:9px;background:none;color:var(--ink);cursor:pointer;font:inherit;font-weight:700;line-height:1}
+.tb-grp button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tb-grp button[aria-pressed="true"]{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.tb-grp button:disabled{opacity:.35;cursor:default}
+.tb-grp button:not(:disabled):hover{background:var(--accent-soft)}
+.tb-grp [data-epais] i{display:block;border-radius:50%;background:currentColor}
+.tb-pastille{display:block;width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.18)}
+.tb-grp [data-c][aria-pressed="true"] .tb-pastille{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--ink)}
+.tb-pc{font-size:12px!important;font-weight:600!important;min-width:52px!important;font-variant-numeric:tabular-nums}
+.tb-vider{flex:none;margin-left:auto}
+.tb-zone{position:relative;flex:1;min-height:0;overflow:hidden}
+.tb-toile{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair;outline:none}
+.tb-toile:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+.tb-toile[data-outil="selection"]{cursor:default}
+.tb-toile[data-outil="texte"]{cursor:text}
+.tb-toile[data-outil="gomme"]{cursor:cell}
+.tb-toile[data-outil="main"],.tb-toile.main{cursor:grab}
+.tb-toile.saisi{cursor:grabbing}
+.tb-saisie{position:absolute;margin:0;padding:0 3px;border:1px dashed var(--accent);border-radius:4px;background:color-mix(in srgb,var(--bg) 82%,transparent);resize:none;overflow:hidden;white-space:pre;outline:none;min-width:40px}
+.tb-vide{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);margin:0;max-width:min(420px,80%);text-align:center;color:var(--ink-2);font-size:15px;line-height:1.45;pointer-events:none}
+.tb-vide[hidden]{display:none}
+.tb-etat{margin:0;padding:6px 12px calc(6px + env(safe-area-inset-bottom,0px));color:var(--ink-2);font-size:13.5px;min-height:1.6em;border-top:1px solid var(--line);background:var(--panel)}
+#btn-tableau{text-align:left}
+@media (max-width:999px){ .tb-large{display:none} }
+@media (max-width:560px){
+  .tb-tete{gap:6px}
+  .tb-nom{flex-basis:100%;order:-1}
+  .tb-ecran{font-size:13px}
+  .tb-b{padding:4px 9px;font-size:12.5px;min-height:30px}
+  .tb-outils{gap:6px}
+  .tb-grp button{min-width:30px;height:30px}
+}
 </style>
 <div class="app" id="app">
 
@@ -7661,6 +7721,829 @@ const Marques = (() => {
   return {demarrer, couleur, partager, autres:majAutres, ecouter:f => { ecoute = f; }, lireVue, lireCoches};
 })();
 
+/* ====== _commun/tableau.js ====== */
+/* ======================================================================
+   Le tableau (DESIGN-convergence.md §3.6) : un tableau blanc par écran,
+   où l'on dessine et écrit. Seul, c'est « Mon tableau », gardé sur cet
+   appareil ; en convergence, le groupe dessine sur le même tableau, en
+   direct, chacun dans sa couleur, et chaque appareil en garde une copie
+   (« Séance »). Des vecteurs dans un espace de 1000 unités de large :
+   cadré pareil sur un téléphone et sur un portable ; chacun zoome et se
+   déplace à son gré. Un élément = {de, k, d} : son auteur, sa sorte
+   (t : trait, x : texte) et ses données en JSON, vérifiées à l'arrivée.
+   Convergence branche le relais : seance (cv/<code>/tableau/<écran>),
+   membres (qui est au tableau), couleur, ecouter (ouvert, nouveautés).
+   ====================================================================== */
+const Tableau = (() => {
+  const CLE = P + '-tableaux', CLE_COTE = 'lumiere-tableau-cote';
+  const LARGE = 1000, BORNE = 20000, MAX_ELEMENTS = 1500, MAX_POINTS = 700, MAX_TEXTE = 500, MAX_D = 12000;
+  const EPAIS = [3, 7, 14], TAILLES = [22, 34, 54, 84], ZMIN = 0.08, ZMAX = 8;
+  const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+  const entier = (n, a, b) => Number.isInteger(n) && n >= a && n <= b;
+  const idOk = i => typeof i === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(i);
+  const couleurOk = c => typeof c === 'string' && /^(i|C|d|e|F|g)$/.test(c);
+  const propreTexte = s => String(s).replace(/\r\n?/g, '\n').replace(/[\u0000-\u0009\u000b-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, '').slice(0, MAX_TEXTE);
+  const borne = (x, a, b) => Math.max(a, Math.min(b, x));
+  /* les cinq raies de Convergence (elle les donne au démarrage) ; i = l'encre du thème */
+  let teintes = [{r:'C', c:'#FF5A4A', nom:'Raie C'}, {r:'d', c:'#FFD23F', nom:'Raie d'}, {r:'e', c:'#9BF25C', nom:'Raie e'}, {r:'F', c:'#34C6FF', nom:'Raie F'}, {r:'g', c:'#A385FF', nom:'Raie g'}];
+  let mienne = 'F';
+
+  /* ---------- un élément, d'où qu'il vienne (relais, mémoire, copie) : rien n'est sûr, tout est vérifié ---------- */
+  const mesure = document.createElement('canvas').getContext('2d');
+  let police = 'system-ui, sans-serif';
+  function lire(id, v){
+    if(!idOk(id) || !v || typeof v !== 'object' || typeof v.d !== 'string' || v.d.length > MAX_D) return null;
+    let d; try{ d = JSON.parse(v.d); }catch(e){ return null; }
+    if(!d || typeof d !== 'object') return null;
+    const c = couleurOk(d.c) ? d.c : 'i', de = typeof v.de === 'string' ? v.de.slice(0, 128) : '';
+    if(v.k === 't'){
+      const p = d.p;
+      if(!Array.isArray(p) || p.length < 2 || p.length > MAX_POINTS * 2 || p.length % 2 || !p.every(n => entier(n, -BORNE, BORNE)) || !entier(d.w, 1, 80)) return null;
+      return borner({id, de, k:'t', c, w:d.w, o:d.o ? 1 : 0, a:d.a ? 1 : 0, p});
+    }
+    if(v.k === 'x'){
+      if(typeof d.t !== 'string' || !entier(d.s, 8, 400) || !entier(d.x, -BORNE, BORNE) || !entier(d.y, -BORNE, BORNE)) return null;
+      const t = propreTexte(d.t);
+      return t.trim() ? borner({id, de, k:'x', c, s:d.s, x:d.x, y:d.y, t}) : null;
+    }
+    return null;
+  }
+  function brut(it){
+    const d = it.k === 't' ? {c:it.c, w:it.w, p:it.p} : {c:it.c, s:it.s, x:it.x, y:it.y, t:it.t};
+    if(it.k === 't'){ if(it.o) d.o = 1; if(it.a) d.a = 1; }
+    return {de:it.de, k:it.k, d:JSON.stringify(d)};
+  }
+  /* la boîte de l'élément, en unités du tableau (le texte se mesure dans la police de la page) */
+  function borner(it){
+    if(it.k === 't'){
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for(let i = 0; i < it.p.length; i += 2){ const x = it.p[i], y = it.p[i + 1]; if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
+      const m = it.w / 2 + (it.a ? Math.max(12, it.w * 3.4) : 0);
+      it.b = [x0 - m, y0 - m, x1 + m, y1 + m];
+    } else {
+      mesure.font = it.s + 'px ' + police;
+      it.l = it.t.split('\n');
+      const l = Math.max(it.s * 0.4, ...it.l.map(s => mesure.measureText(s).width));
+      it.b = [it.x, it.y, it.x + l, it.y + it.l.length * it.s * 1.25];
+    }
+    return it;
+  }
+  const copie = it => it.k === 't' ? Object.assign({}, it, {p:it.p.slice(), b:it.b.slice()}) : Object.assign({}, it, {b:it.b.slice()});
+
+  /* ---------- la mémoire de l'appareil : par écran, mon tableau et la copie de la dernière séance ---------- */
+  let L = {}, plein = false;
+  function carte(o, de){
+    const m = new Map();
+    if(o && typeof o === 'object') Object.keys(o).slice(0, MAX_ELEMENTS).forEach(i => { const it = lire(i, o[i]); if(it){ if(de) it.de = de; m.set(i, it); } });
+    return m;
+  }
+  function charger(){
+    const d = lireJSON(CLE, null), e = {};
+    if(d && d.v === 1 && d.e && typeof d.e === 'object') Object.keys(d.e).forEach(id => {
+      if(!/^[\w-]{1,40}$/.test(id) || !ecran(id)) return;
+      const x = d.e[id] || {}, s = x.seance && typeof x.seance === 'object' ? {t:+x.seance.t || 0, el:carte(x.seance.el)} : null;
+      e[id] = {moi:carte(x.moi, 'moi'), seance:s && s.el.size ? s : null};
+    });
+    L = e;
+  }
+  const local = id => L[id] || (L[id] = {moi:new Map(), seance:null});
+  const versObjet = m => { const o = {}; m.forEach((it, i) => { o[i] = brut(it); }); return o; };
+  let tSauver = null;
+  function sauver(){ clearTimeout(tSauver); tSauver = setTimeout(ecrireMemoire, 400); }
+  function ecrireMemoire(){
+    const o = {v:1, e:{}};
+    Object.keys(L).forEach(id => {
+      const x = L[id]; if(!x.moi.size && !x.seance) return;
+      o.e[id] = {moi:versObjet(x.moi)};
+      if(x.seance) o.e[id].seance = {t:x.seance.t, el:versObjet(x.seance.el)};
+    });
+    if(memo.set(CLE, JSON.stringify(o))){ plein = false; return; }
+    /* trop lourd pour le navigateur : les plus vieilles copies de séance partent d'abord */
+    const vieilles = Object.keys(o.e).filter(i => o.e[i].seance).sort((a, b) => o.e[a].seance.t - o.e[b].seance.t);
+    while(vieilles.length){
+      const i = vieilles.shift(); delete o.e[i].seance; if(L[i]) L[i].seance = null;
+      if(memo.set(CLE, JSON.stringify(o))){ etat('Mémoire du navigateur pleine : les plus anciennes copies de séance ont été retirées.'); return; }
+    }
+    if(!plein){ plein = true; etat('Ce tableau n’a pas pu être gardé dans le navigateur (mémoire pleine ou désactivée) : télécharge-le en image.'); }
+  }
+
+  /* ---------- la séance : le tableau du groupe pour l'écran où je suis ---------- */
+  let ctx = null, membres = [], ecoute = null;
+  const G = new Map(), connus = new Set();
+  let gEcran = '', desab = [], refusDit = false;
+  const signaler = type => { if(ecoute) try{ ecoute({type}); }catch(e){} };
+  const refEl = (e, id) => ctx.F.ref(ctx.db, ctx.base + '/tableau/' + e + (id ? '/' + id : ''));
+  function refus(err){
+    if(refusDit) return; refusDit = true;
+    etat(err && /permission/i.test(String(err.code || err.message || err))
+      ? 'Le relais refuse le tableau du groupe : ses règles ne sont pas encore à jour. Ton tableau à toi marche toujours.'
+      : 'Le tableau du groupe ne répond plus : vérifie ta connexion.');
+  }
+  function suivre(id){
+    if(!ctx || !id){ lacher(); return; }
+    if(gEcran === id && desab.length) return;
+    lacher(); gEcran = id;
+    const F = ctx.F, r = refEl(id);
+    const maj = s => { const it = lire(s.key, s.val()); if(it) G.set(s.key, it); else G.delete(s.key); arrive(); };
+    desab.push(F.onChildAdded(r, maj, refus), F.onChildChanged(r, maj), F.onChildRemoved(r, s => { G.delete(s.key); sel.delete(s.key); arrive(); }));
+  }
+  function lacher(){ garderMaintenant(); desab.forEach(f => { try{ f(); }catch(e){} }); desab = []; G.clear(); gEcran = ''; }
+  let tGarder = null, nAvant = 0;
+  /* chaque appareil garde la dernière version du tableau du groupe ; un tableau vidé n'efface pas la copie */
+  function garderMaintenant(){
+    clearTimeout(tGarder); tGarder = null;
+    if(!gEcran || !G.size) return;
+    local(gEcran).seance = {t:Date.now(), el:new Map(Array.from(G, ([i, it]) => [i, copie(it)]))};
+    sauver();
+  }
+  function arrive(){
+    if(ui && !ui.el.hidden && vue === 'groupe' && ecranVu === gEcran){ G.forEach((x, i) => connus.add(i)); dessiner(); }
+    const n = nonVus(); if(n !== nAvant){ nAvant = n; signaler('nouveau'); }
+    clearTimeout(tGarder); tGarder = setTimeout(garderMaintenant, 1500);
+  }
+  function nonVus(){ if(!ctx) return 0; let n = 0; G.forEach((it, i) => { if(it.de !== ctx.uid && !connus.has(i)) n++; }); return n; }
+  let tVite = 0, attente = null;
+  function envoyer(it){ if(ctx) ctx.F.set(refEl(ecranVu, it.id), brut(it)).catch(refus); }
+  /* le trait en cours part au groupe pendant qu'on le trace, au plus toutes les 120 ms */
+  function envoyerVite(it){
+    clearTimeout(attente);
+    const t = Date.now();
+    if(t - tVite >= 120){ tVite = t; envoyer(it); } else attente = setTimeout(() => { tVite = Date.now(); envoyer(it); }, 120 - (t - tVite));
+  }
+
+  /* ---------- la vue : quel tableau, et d'où on le regarde ---------- */
+  let ui = null, vue = 'moi', ecranVu = '', cote = memo.get(CLE_COTE) === '1';
+  let outil = 'stylo', coul = '', epais = 1, taille = 1;
+  let z = 1, ox = 0, oy = 0, cw = 0, ch = 0, dpr = 1, raf = 0;
+  const cadres = {}, piles = {};
+  let sel = new Set(), geste = null, cours = null, espace = false, saisie = null;
+  const pointeurs = new Map();
+  const lectureSeule = () => vue === 'seance';
+  const moiDe = () => vue === 'groupe' && ctx ? ctx.uid : 'moi';
+  const mien = it => vue !== 'groupe' || (ctx && it.de === ctx.uid);
+  function elements(){
+    if(vue === 'groupe') return G;
+    const x = local(ecranVu);
+    return vue === 'seance' ? (x.seance ? x.seance.el : new Map()) : x.moi;
+  }
+  const cleVue = () => vue + '|' + ecranVu;
+  const pile = () => piles[cleVue()] || (piles[cleVue()] = {annuler:[], refaire:[]});
+  const zFit = () => cw / (LARGE + 40);
+  const nouvelId = () => vue === 'groupe' && ctx ? ctx.F.push(refEl(ecranVu)).key : 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+  /* poser et ôter, dans le tableau affiché : le relais pour le groupe, la mémoire sinon ; l'écran suit tout de suite */
+  function poser(it){
+    if(lectureSeule()) return;
+    const m = elements();
+    if(!m.has(it.id) && m.size >= MAX_ELEMENTS){ etat('Le tableau est plein (' + MAX_ELEMENTS + ' éléments) : efface ce qui ne sert plus.'); return false; }
+    m.set(it.id, it);
+    if(vue === 'groupe') envoyer(it); else sauver();
+    return true;
+  }
+  function oter(id){
+    if(lectureSeule()) return;
+    const m = elements(); if(!m.delete(id)) return;
+    sel.delete(id);
+    if(vue === 'groupe'){ if(ctx) ctx.F.remove(refEl(ecranVu, id)).catch(refus); }
+    else sauver();
+  }
+  /* un geste à annuler : avant et après, élément par élément ([id, brut ou null]) */
+  function memoriser(avant, apres){ if(!avant.length) return; const p = pile(); p.annuler.push({avant, apres}); if(p.annuler.length > 100) p.annuler.shift(); p.refaire = []; majOutils(); }
+  function appliquer(l){
+    l.forEach(([id, b]) => {
+      if(!b){ oter(id); return; }
+      /* restauré par moi : dans le groupe, un élément est toujours écrit par son auteur (les règles du relais) */
+      const it = lire(id, b); if(it){ it.de = moiDe(); poser(it); }
+    });
+    dessiner();
+  }
+  function annuler(){ const p = pile(), g = p.annuler.pop(); if(!g) return; appliquer(g.avant); p.refaire.push(g); majOutils(); }
+  function retablir(){ const p = pile(), g = p.refaire.pop(); if(!g) return; appliquer(g.apres); p.annuler.push(g); majOutils(); }
+
+  /* ---------- les couleurs : celles des raies, assombries sur fond clair pour rester lisibles ---------- */
+  let sombre = true, encre = '#222', fond = '#fff', ligneC = '#ccc', accent = '#888';
+  const lum = hex => { const n = parseInt(hex.slice(1), 16), f = v => { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(n >> 16 & 255) + 0.7152 * f(n >> 8 & 255) + 0.0722 * f(n & 255); };
+  function lireTheme(){
+    const cs = getComputedStyle(document.documentElement), v = k => cs.getPropertyValue(k).trim();
+    encre = v('--ink') || '#222'; fond = v('--bg') || '#fff'; ligneC = v('--line') || '#ccc'; accent = v('--accent') || '#888';
+    mesure.fillStyle = '#000'; mesure.fillStyle = fond;
+    const h = mesure.fillStyle; sombre = /^#[0-9a-f]{6}$/i.test(h) ? lum(h) < 0.35 : true;
+    police = getComputedStyle(document.body).fontFamily || police;
+  }
+  function teinte(c){
+    if(c === 'i') return encre;
+    const t = teintes.find(x => x.r === c), hex = t ? t.c : '#888888';
+    if(sombre || !/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+    const L0 = lum(hex); if(L0 <= 0.3) return hex;
+    const k = borne(Math.sqrt(0.3 / L0), 0.4, 1), n = parseInt(hex.slice(1), 16);
+    return 'rgb(' + [n >> 16 & 255, n >> 8 & 255, n & 255].map(x => Math.round(x * k)).join(',') + ')';
+  }
+
+  /* ---------- le dessin ---------- */
+  function dessiner(){ if(!ui || ui.el.hidden || raf) return; raf = requestAnimationFrame(() => { raf = 0; peindre(); }); }
+  function tracer(cx, it){
+    const col = teinte(it.c);
+    if(it.k === 'x'){
+      cx.globalAlpha = 1; cx.fillStyle = col; cx.font = it.s + 'px ' + police; cx.textBaseline = 'top';
+      it.l.forEach((s, i) => cx.fillText(s, it.x, it.y + i * it.s * 1.25 + it.s * 0.1));
+      return;
+    }
+    const p = it.p;
+    cx.globalAlpha = it.o ? 0.32 : 1; cx.strokeStyle = col; cx.lineWidth = it.w; cx.lineCap = 'round'; cx.lineJoin = 'round';
+    cx.beginPath(); cx.moveTo(p[0], p[1]);
+    if(p.length === 2) cx.lineTo(p[0] + 0.1, p[1]); else for(let i = 2; i < p.length; i += 2) cx.lineTo(p[i], p[i + 1]);
+    cx.stroke();
+    if(it.a && p.length >= 4){
+      /* la pointe suit le dernier segment qui a une longueur */
+      const n = p.length, x = p[n - 2], y = p[n - 1];
+      let k = n - 4; while(k > 0 && p[k] === x && p[k + 1] === y) k -= 2;
+      const a = Math.atan2(y - p[k + 1], x - p[k]), h = Math.max(12, it.w * 3.4);
+      cx.beginPath(); cx.moveTo(x - h * Math.cos(a - 0.45), y - h * Math.sin(a - 0.45)); cx.lineTo(x, y); cx.lineTo(x - h * Math.cos(a + 0.45), y - h * Math.sin(a + 0.45)); cx.stroke();
+    }
+    cx.globalAlpha = 1;
+  }
+  function boite(ids){
+    const m = elements(); let b = null;
+    ids.forEach(i => { const it = m.get(i); if(!it) return; b = b ? [Math.min(b[0], it.b[0]), Math.min(b[1], it.b[1]), Math.max(b[2], it.b[2]), Math.max(b[3], it.b[3])] : it.b.slice(); });
+    return b;
+  }
+  function peindre(){
+    if(!ui) return;
+    const cx = ui.cx;
+    cx.setTransform(1, 0, 0, 1, 0, 0); cx.fillStyle = fond; cx.fillRect(0, 0, ui.cvs.width, ui.cvs.height);
+    cx.setTransform(dpr * z, 0, 0, dpr * z, -ox * dpr * z, -oy * dpr * z);
+    /* la grille de points, et les bords de la largeur commune (ce que tout le monde voit cadré pareil) */
+    const pas = z * 50 >= 14 ? 50 : 250, r = 1.1 / z, x0 = Math.floor(ox / pas) * pas, y0 = Math.floor(oy / pas) * pas;
+    cx.fillStyle = ligneC;
+    for(let x = x0; x < ox + cw / z; x += pas) for(let y = y0; y < oy + ch / z; y += pas){ cx.fillRect(x - r, y - r, r * 2, r * 2); }
+    cx.strokeStyle = ligneC; cx.lineWidth = 1 / z; cx.setLineDash([6 / z, 6 / z]);
+    cx.beginPath(); cx.moveTo(0, oy); cx.lineTo(0, oy + ch / z); cx.moveTo(LARGE, oy); cx.lineTo(LARGE, oy + ch / z); cx.stroke(); cx.setLineDash([]);
+    const cache = saisie && saisie.it.id;
+    elements().forEach((it, i) => { if((!cours || i !== cours.id) && i !== cache) tracer(cx, it); });
+    if(cours) tracer(cx, cours);
+    if(sel.size){
+      const b = boite(sel);
+      if(b){
+        cx.strokeStyle = accent; cx.lineWidth = 1.5 / z; cx.setLineDash([5 / z, 4 / z]);
+        cx.strokeRect(b[0] - 4 / z, b[1] - 4 / z, b[2] - b[0] + 8 / z, b[3] - b[1] + 8 / z); cx.setLineDash([]);
+        const h = 12 / z; cx.fillStyle = fond; cx.fillRect(b[2] + 4 / z - h / 2, b[3] + 4 / z - h / 2, h, h); cx.strokeRect(b[2] + 4 / z - h / 2, b[3] + 4 / z - h / 2, h, h);
+      }
+    }
+    if(geste && geste.type === 'cadre'){
+      const g = geste; cx.strokeStyle = accent; cx.lineWidth = 1 / z; cx.setLineDash([4 / z, 4 / z]);
+      cx.strokeRect(Math.min(g.x0, g.x1), Math.min(g.y0, g.y1), Math.abs(g.x1 - g.x0), Math.abs(g.y1 - g.y0)); cx.setLineDash([]);
+    }
+    const n = elements().size;
+    ui.vide.hidden = n > 0 || !!cours;
+    ui.cvs.setAttribute('aria-label', 'Tableau : ' + (n ? n + ' élément' + (n > 1 ? 's' : '') : 'vide'));
+  }
+
+  /* ---------- toucher un élément ---------- */
+  function distSeg(px, py, ax, ay, bx, by){
+    const dx = bx - ax, dy = by - ay, l = dx * dx + dy * dy;
+    const t = l ? borne(((px - ax) * dx + (py - ay) * dy) / l, 0, 1) : 0;
+    return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+  }
+  function touche(it, x, y, tol){
+    const b = it.b; if(x < b[0] - tol || x > b[2] + tol || y < b[1] - tol || y > b[3] + tol) return false;
+    if(it.k === 'x') return true;
+    const p = it.p, r = it.w / 2 + tol;
+    if(p.length === 2) return Math.hypot(p[0] - x, p[1] - y) <= r;
+    for(let i = 2; i < p.length; i += 2) if(distSeg(x, y, p[i - 2], p[i - 1], p[i], p[i + 1]) <= r) return true;
+    return false;
+  }
+  function dessus(x, y, filtre){
+    const l = Array.from(elements().values());
+    for(let i = l.length - 1; i >= 0; i--) if((!filtre || filtre(l[i])) && touche(l[i], x, y, 7 / z)) return l[i];
+    return null;
+  }
+  /* un trait allégé (Douglas-Peucker) : les points qui ne changent pas sa forme à cette échelle partent */
+  function alleger(p, eps){
+    const n = p.length / 2; if(n <= 2) return p;
+    const garde = new Uint8Array(n); garde[0] = garde[n - 1] = 1;
+    const pile2 = [[0, n - 1]];
+    while(pile2.length){
+      const [a, b] = pile2.pop(); let dm = 0, im = -1;
+      for(let i = a + 1; i < b; i++){ const d = distSeg(p[i * 2], p[i * 2 + 1], p[a * 2], p[a * 2 + 1], p[b * 2], p[b * 2 + 1]); if(d > dm){ dm = d; im = i; } }
+      if(dm > eps){ garde[im] = 1; pile2.push([a, im], [im, b]); }
+    }
+    const out = []; for(let i = 0; i < n; i++) if(garde[i]) out.push(p[i * 2], p[i * 2 + 1]);
+    return out;
+  }
+
+  /* ---------- les gestes sur la toile ---------- */
+  const monde = e => { const r = ui.cvs.getBoundingClientRect(); return [ox + (e.clientX - r.left) / z, oy + (e.clientY - r.top) / z]; };
+  const arrondi = ([x, y]) => [Math.round(borne(x, -BORNE, BORNE)), Math.round(borne(y, -BORNE, BORNE))];
+  function zoomer(f, sx, sy){
+    const wx = ox + sx / z, wy = oy + sy / z;
+    z = borne(z * f, ZMIN, ZMAX); ox = wx - sx / z; oy = wy - sy / z;
+    garderCadre(); majZoom(); dessiner();
+  }
+  function ajuster(){
+    const l = Array.from(elements().values());
+    let b = l.length ? boite(l.map(it => it.id)) : null;
+    if(!b){ z = zFit(); ox = -20; oy = -20; }
+    else {
+      const m = 40, bw = b[2] - b[0] + 2 * m, bh = b[3] - b[1] + 2 * m;
+      z = borne(Math.min(cw / bw, ch / bh, zFit() * 2), ZMIN, ZMAX);
+      ox = (b[0] + b[2]) / 2 - cw / z / 2; oy = (b[1] + b[3]) / 2 - ch / z / 2;
+    }
+    garderCadre(); majZoom(); dessiner();
+  }
+  const garderCadre = () => { cadres[cleVue()] = {z, ox, oy, cw}; };
+  function reprendreCadre(){
+    const c = cadres[cleVue()];
+    if(c && c.cw){ const k = cw / c.cw; z = borne(c.z * k, ZMIN, ZMAX); ox = c.ox; oy = c.oy; }
+    else { z = zFit(); ox = -20; oy = -20; }
+    majZoom();
+  }
+  function nouveauTrait(x, y){
+    const surligne = outil === 'surligneur';
+    cours = {id:nouvelId(), de:moiDe(), k:'t', c:coul || mienne, w:EPAIS[epais] * (surligne ? 3 : 1), o:surligne ? 1 : 0, a:outil === 'fleche' ? 1 : 0, p:[x, y]};
+    if(outil === 'ligne' || outil === 'fleche') cours.p.push(x, y);
+    borner(cours);
+  }
+  function finirTrait(){
+    const it = cours; cours = null; if(!it) return;
+    clearTimeout(attente);
+    if(it.a || outil === 'ligne'){ if(it.p.length < 4 || Math.hypot(it.p[2] - it.p[0], it.p[3] - it.p[1]) < 3){ if(vue === 'groupe' && ctx){ G.delete(it.id); ctx.F.remove(refEl(ecranVu, it.id)).catch(() => {}); } dessiner(); return; } }
+    else it.p = alleger(it.p, Math.max(0.6, 0.9 / z));
+    borner(it);
+    if(poser(it) !== false) memoriser([[it.id, null]], [[it.id, brut(it)]]);
+    dessiner();
+  }
+  function bas(e){
+    if(!ui || e.button === 2) return;
+    e.preventDefault();
+    try{ ui.cvs.setPointerCapture(e.pointerId); }catch(err){}
+    pointeurs.set(e.pointerId, [e.clientX, e.clientY]);
+    if(saisie){ fermerSaisie(true); if(outil === 'texte'){ pointeurs.delete(e.pointerId); return; } }
+    if(pointeurs.size === 2){
+      /* deux doigts : le geste en cours cède la place au pincement */
+      if(cours){ if(vue === 'groupe' && ctx){ G.delete(cours.id); ctx.F.remove(refEl(ecranVu, cours.id)).catch(() => {}); } cours = null; }
+      if(geste && geste.type === 'gomme' && geste.avant.length) memoriser(geste.avant, geste.avant.map(([i]) => [i, null]));
+      const [a, b] = Array.from(pointeurs.values());
+      geste = {type:'pince', d:Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, z, mx:(a[0] + b[0]) / 2, my:(a[1] + b[1]) / 2};
+      return;
+    }
+    if(pointeurs.size > 2) return;
+    const [x, y] = monde(e);
+    if(e.button === 1 || espace || outil === 'main' || lectureSeule()){ geste = {type:'vue', sx:e.clientX, sy:e.clientY, ox, oy}; ui.cvs.classList.add('saisi'); return; }
+    if(outil === 'stylo' || outil === 'surligneur' || outil === 'ligne' || outil === 'fleche'){
+      const [ix, iy] = arrondi([x, y]); nouveauTrait(ix, iy); geste = {type:'trait'};
+      if(vue === 'groupe') G.set(cours.id, cours);
+      dessiner(); return;
+    }
+    if(outil === 'gomme'){ geste = {type:'gomme', avant:[]}; gommer(x, y); return; }
+    if(outil === 'texte'){
+      const it = dessus(x, y, t => t.k === 'x' && mien(t));
+      ouvrirSaisie(it || {id:'', de:moiDe(), k:'x', c:coul || mienne, s:TAILLES[taille], x:Math.round(x), y:Math.round(y - TAILLES[taille] * 0.6), t:''});
+      pointeurs.delete(e.pointerId); return;
+    }
+    if(outil === 'selection'){
+      const b = sel.size ? boite(sel) : null, h = 12 / z;
+      if(b && Math.abs(x - (b[2] + 4 / z)) <= h && Math.abs(y - (b[3] + 4 / z)) <= h){ geste = {type:'echelle', b, orig:origines()}; return; }
+      const it = dessus(x, y);
+      if(it && mien(it)){
+        if(!sel.has(it.id)){ sel = new Set([it.id]); majOutils(); }
+        geste = {type:'deplacer', x, y, orig:origines(), bouge:false}; dessiner(); return;
+      }
+      if(b && x >= b[0] && x <= b[2] && y >= b[1] && y <= b[3]){ geste = {type:'deplacer', x, y, orig:origines(), bouge:false}; return; }
+      if(it) etat('Cet élément est à « ' + nomDe(it.de) + ' » : seule sa personne peut le déplacer ; la gomme peut l’enlever.');
+      sel = new Set(); majOutils();
+      geste = {type:'cadre', x0:x, y0:y, x1:x, y1:y}; dessiner();
+    }
+  }
+  function bouge(e){
+    if(!ui || !pointeurs.has(e.pointerId)) return;
+    pointeurs.set(e.pointerId, [e.clientX, e.clientY]);
+    if(!geste) return;
+    if(geste.type === 'pince'){
+      if(pointeurs.size < 2) return;
+      const [a, b] = Array.from(pointeurs.values()), r = ui.cvs.getBoundingClientRect();
+      const d = Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+      const wx = ox + (geste.mx - r.left) / z, wy = oy + (geste.my - r.top) / z;
+      z = borne(geste.z * d / geste.d, ZMIN, ZMAX);
+      ox = wx - (mx - r.left) / z; oy = wy - (my - r.top) / z;
+      geste.mx = mx; geste.my = my; geste.d = d; geste.z = z;
+      garderCadre(); majZoom(); dessiner(); return;
+    }
+    if(geste.type === 'vue'){ ox = geste.ox - (e.clientX - geste.sx) / z; oy = geste.oy - (e.clientY - geste.sy) / z; garderCadre(); dessiner(); return; }
+    const [x, y] = monde(e);
+    if(geste.type === 'trait' && cours){
+      const [ix, iy] = arrondi([x, y]), p = cours.p;
+      if(cours.a || outil === 'ligne'){
+        let fx = ix, fy = iy;
+        if(e.shiftKey){ const a = Math.round(Math.atan2(iy - p[1], ix - p[0]) / (Math.PI / 12)) * Math.PI / 12, l = Math.hypot(ix - p[0], iy - p[1]); fx = Math.round(p[0] + l * Math.cos(a)); fy = Math.round(p[1] + l * Math.sin(a)); }
+        p[2] = fx; p[3] = fy;
+      } else {
+        if(Math.hypot(ix - p[p.length - 2], iy - p[p.length - 1]) < Math.max(1.5, 2.5 / z)) return;
+        p.push(ix, iy);
+        /* un trait très long se poursuit dans un nouveau, pour rester sous la taille permise par le relais */
+        if(p.length >= MAX_POINTS * 2){ const o = outil; finirTrait(); outil = o; nouveauTrait(ix, iy); if(vue === 'groupe') G.set(cours.id, cours); }
+      }
+      borner(cours);
+      if(vue === 'groupe') envoyerVite(cours);
+      dessiner(); return;
+    }
+    if(geste.type === 'gomme'){ gommer(x, y); return; }
+    if(geste.type === 'cadre'){ geste.x1 = x; geste.y1 = y; dessiner(); return; }
+    if(geste.type === 'deplacer'){
+      const dx = Math.round(x - geste.x), dy = Math.round(y - geste.y);
+      if(!geste.bouge && Math.hypot(dx, dy) * z < 3) return;
+      geste.bouge = true; transformer(geste.orig, it => decaler(it, dx, dy)); return;
+    }
+    if(geste.type === 'echelle'){
+      const b = geste.b, w = b[2] - b[0] || 1, h = b[3] - b[1] || 1;
+      const f = borne(((x - b[0]) * w + (y - b[1]) * h) / (w * w + h * h), 0.1, 10);
+      transformer(geste.orig, it => agrandir(it, b[0], b[1], f));
+    }
+  }
+  function haut(e){
+    if(!ui) return;
+    pointeurs.delete(e.pointerId);
+    ui.cvs.classList.remove('saisi');
+    if(!geste) return;
+    const g = geste;
+    if(g.type === 'pince'){ if(pointeurs.size < 2) geste = null; return; }
+    geste = null;
+    if(g.type === 'trait') finirTrait();
+    else if(g.type === 'gomme'){ if(g.avant.length) memoriser(g.avant, g.avant.map(([i]) => [i, null])); }
+    else if(g.type === 'cadre'){
+      const x0 = Math.min(g.x0, g.x1), x1 = Math.max(g.x0, g.x1), y0 = Math.min(g.y0, g.y1), y1 = Math.max(g.y0, g.y1);
+      sel = new Set(); if(x1 - x0 > 2 / z || y1 - y0 > 2 / z) elements().forEach((it, i) => { if(mien(it) && it.b[0] <= x1 && it.b[2] >= x0 && it.b[1] <= y1 && it.b[3] >= y0) sel.add(i); });
+      majOutils(); dessiner();
+    } else if((g.type === 'deplacer' && g.bouge) || g.type === 'echelle'){
+      const m = elements(), avant = [], apres = [];
+      g.orig.forEach((o, i) => { const it = m.get(i); if(!it) return; avant.push([i, brut(o)]); apres.push([i, brut(it)]); poser(it); });
+      memoriser(avant, apres); dessiner();
+    }
+  }
+  function gommer(x, y){
+    let it; let n = 0;
+    while((it = dessus(x, y)) && n++ < 20){ geste.avant.push([it.id, brut(it)]); oter(it.id); }
+    if(n) dessiner();
+  }
+  const origines = () => { const m = elements(), o = new Map(); sel.forEach(i => { const it = m.get(i); if(it) o.set(i, copie(it)); }); return o; };
+  function transformer(orig, f){ const m = elements(); orig.forEach((o, i) => { if(m.has(i)) m.set(i, borner(f(copie(o)))); }); dessiner(); }
+  function decaler(it, dx, dy){
+    if(it.k === 'x'){ it.x = Math.round(borne(it.x + dx, -BORNE, BORNE)); it.y = Math.round(borne(it.y + dy, -BORNE, BORNE)); }
+    else it.p = it.p.map((v, i) => Math.round(borne(v + (i % 2 ? dy : dx), -BORNE, BORNE)));
+    return it;
+  }
+  function agrandir(it, ax, ay, f){
+    if(it.k === 'x'){ it.x = Math.round(ax + (it.x - ax) * f); it.y = Math.round(ay + (it.y - ay) * f); it.s = Math.round(borne(it.s * f, 8, 400)); }
+    else { it.p = it.p.map((v, i) => Math.round(borne(i % 2 ? ay + (v - ay) * f : ax + (v - ax) * f, -BORNE, BORNE))); it.w = Math.round(borne(it.w * f, 1, 80)); }
+    return it;
+  }
+  /* changer la couleur, l'épaisseur ou la taille de ce qui est sélectionné : un seul geste à annuler */
+  function changerSel(f){
+    const m = elements(), avant = [], apres = [];
+    sel.forEach(i => { const it = m.get(i); if(!it || !mien(it)) return; const n = f(copie(it)); if(!n) return; borner(n); avant.push([i, brut(it)]); apres.push([i, brut(n)]); poser(n); });
+    memoriser(avant, apres); dessiner();
+  }
+  function supprimerSel(){
+    const m = elements(), avant = [];
+    sel.forEach(i => { const it = m.get(i); if(it && mien(it)) avant.push([i, brut(it)]); });
+    avant.forEach(([i]) => oter(i)); sel = new Set();
+    memoriser(avant, avant.map(([i]) => [i, null])); majOutils(); dessiner();
+  }
+  function vider(){
+    const m = elements(); if(!m.size || lectureSeule()) return;
+    if(!confirm(vue === 'groupe' ? 'Effacer tout le tableau du groupe, pour tout le monde ?' : 'Effacer tout ton tableau pour cet écran ?')) return;
+    const avant = Array.from(m, ([i, it]) => [i, brut(it)]);
+    if(vue === 'groupe' && ctx){ const u = {}; avant.forEach(([i]) => { u[i] = null; }); m.clear(); ctx.F.update(refEl(ecranVu), u).catch(refus); }
+    else { m.clear(); sauver(); }
+    sel = new Set(); memoriser(avant, avant.map(([i]) => [i, null]));
+    etat('Tableau effacé. « Annuler » le remet.'); dessiner();
+  }
+
+  /* ---------- écrire du texte : une zone posée sur la toile, à l'échelle du tableau ---------- */
+  function ouvrirSaisie(it){
+    if(lectureSeule()) return;
+    saisie = {it:it.id ? copie(it) : it};
+    const t = ui.saisie;
+    t.value = it.t || ''; t.hidden = false;
+    t.style.color = teinte(it.c); t.style.fontFamily = police;
+    placerSaisie(); t.focus({preventScroll:true});
+    if(it.id) dessiner();
+  }
+  function placerSaisie(){
+    if(!saisie) return;
+    const it = saisie.it, t = ui.saisie, s = it.s * z;
+    t.style.left = ((it.x - ox) * z - 4) + 'px'; t.style.top = ((it.y - oy) * z - 2) + 'px';
+    t.style.fontSize = s + 'px'; t.style.lineHeight = '1.25';
+    mesure.font = s + 'px ' + police;
+    const l = Math.max(s * 2, ...t.value.split('\n').map(x => mesure.measureText(x + 'M').width));
+    t.style.width = Math.min(l + 12, cw - Math.max(0, (it.x - ox) * z)) + 'px';
+    t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px';
+  }
+  function fermerSaisie(garder){
+    if(!saisie) return;
+    const it = saisie.it, txt = propreTexte(ui.saisie.value); saisie = null;
+    ui.saisie.hidden = true; ui.saisie.value = '';
+    if(!garder){ dessiner(); return; }
+    const m = elements(), ancien = it.id ? m.get(it.id) : null;
+    if(!txt.trim()){
+      if(ancien){ oter(ancien.id); memoriser([[ancien.id, brut(ancien)]], [[ancien.id, null]]); }
+      dessiner(); return;
+    }
+    if(ancien && ancien.t === txt && ancien.s === it.s){ dessiner(); return; }
+    const n = borner(Object.assign({}, it, {id:it.id || nouvelId(), t:txt, de:moiDe()}));
+    if(poser(n) !== false) memoriser([[n.id, ancien ? brut(ancien) : null]], [[n.id, brut(n)]]);
+    dessiner();
+  }
+
+  /* ---------- le panneau ---------- */
+  const ICONES = {
+    selection:'<path d="M6 3.5l12.5 7.6-5.6 1.4-2.6 5.5z"/>',
+    stylo:'<path d="M4.5 19.5l1.1-4.2L16 4.9a2 2 0 0 1 2.9 0l.2.2a2 2 0 0 1 0 2.9L8.7 18.4z"/><path d="M14 7l3 3"/>',
+    surligneur:'<path d="M4 20h7"/><path d="M8.5 15.5l9-9 2.5 2.5-9 9H8.5z"/><path d="M8.5 15.5L7 19"/>',
+    ligne:'<path d="M5 19L19 5"/>',
+    fleche:'<path d="M5 19L19 5"/><path d="M10 5h9v9"/>',
+    texte:'<path d="M5.5 7V5h13v2"/><path d="M12 5v14"/><path d="M9 19h6"/>',
+    gomme:'<path d="M9 20h10"/><path d="M4.6 15.4l9.2-9.2a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H7.2z"/><path d="M9 11l4.5 4.5"/>',
+    main:'<path d="M12 3v18M3 12h18"/><path d="M9.5 5.5L12 3l2.5 2.5M9.5 18.5L12 21l2.5-2.5M5.5 9.5L3 12l2.5 2.5M18.5 9.5L21 12l-2.5 2.5"/>'
+  };
+  const OUTILS = [['selection', 'Sélection', 'V'], ['stylo', 'Stylo', 'P'], ['surligneur', 'Surligneur', 'S'], ['ligne', 'Ligne', 'L'], ['fleche', 'Flèche', 'F'], ['texte', 'Texte', 'T'], ['gomme', 'Gomme', 'E'], ['main', 'Déplacer la vue', 'M']];
+  const icone = k => '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONES[k] + '</svg>';
+  function construire(){
+    const el = H('<section class="tb v2-hors-texte" role="dialog" aria-modal="true" aria-labelledby="tb-titre" hidden>' +
+      '<header class="tb-tete">' +
+        '<div class="tb-nom"><b id="tb-titre">Tableau</b><span class="tb-ecran"></span></div>' +
+        '<div class="tb-vues" role="tablist" aria-label="Quel tableau"></div>' +
+        '<span class="tb-qui"></span><span class="tb-espace"></span>' +
+        '<button type="button" class="tb-b" data-o="copier" hidden></button>' +
+        '<button type="button" class="tb-b tb-large" data-o="cote" aria-pressed="false" title="Le tableau à droite, l’écran à gauche">Côte à côte</button>' +
+        '<button type="button" class="tb-b" data-o="image" title="Télécharger une image du tableau">Image</button>' +
+        '<button type="button" class="tb-x" data-o="fermer" aria-label="Fermer le tableau" title="Fermer (Échap)">✕</button>' +
+      '</header>' +
+      '<div class="tb-outils" role="toolbar" aria-label="Outils du tableau">' +
+        '<span class="tb-grp" data-g="outils">' + OUTILS.map(([k, n, t]) => '<button type="button" data-outil="' + k + '" aria-pressed="false" aria-label="' + n + '" title="' + n + ' (' + t + ')">' + icone(k) + '</button>').join('') + '</span>' +
+        '<span class="tb-grp" data-g="couleurs" role="group" aria-label="Couleur"></span>' +
+        '<span class="tb-grp" data-g="epais" role="group" aria-label="Épaisseur">' + EPAIS.map((w, i) => '<button type="button" data-epais="' + i + '" aria-pressed="false" aria-label="Trait ' + ['fin', 'moyen', 'épais'][i] + '" title="Trait ' + ['fin', 'moyen', 'épais'][i] + '"><i style="width:' + (4 + i * 4) + 'px;height:' + (4 + i * 4) + 'px"></i></button>').join('') + '</span>' +
+        '<span class="tb-grp" data-g="tailles" role="group" aria-label="Taille du texte">' + TAILLES.map((s, i) => '<button type="button" data-taille="' + i + '" aria-pressed="false" aria-label="Texte ' + ['petit', 'moyen', 'grand', 'titre'][i] + '" title="Texte ' + ['petit', 'moyen', 'grand', 'titre'][i] + '" style="font-size:' + (11 + i * 3) + 'px">A</button>').join('') + '</span>' +
+        '<span class="tb-grp" data-g="histoire"><button type="button" data-o="annuler" aria-label="Annuler" title="Annuler (Ctrl + Z)">↶</button><button type="button" data-o="retablir" aria-label="Rétablir" title="Rétablir (Ctrl + Maj + Z)">↷</button></span>' +
+        '<span class="tb-grp" data-g="zoom"><button type="button" data-o="moins" aria-label="Dézoomer" title="Dézoomer">−</button><button type="button" data-o="ajuster" class="tb-pc" title="Ajuster : tout le tableau dans la fenêtre">100 %</button><button type="button" data-o="plus" aria-label="Zoomer" title="Zoomer">+</button></span>' +
+        '<button type="button" class="tb-b tb-vider" data-o="vider">Tout effacer</button>' +
+      '</div>' +
+      '<div class="tb-zone"><canvas class="tb-toile" tabindex="0"></canvas>' +
+        '<textarea class="tb-saisie" rows="1" spellcheck="true" aria-label="Texte du tableau" hidden></textarea>' +
+        '<p class="tb-vide"></p></div>' +
+      '<p class="tb-etat" aria-live="polite"></p></section>');
+    document.body.appendChild(el);
+    const cvs = $('canvas', el);
+    ui = {el, cvs, cx:cvs.getContext('2d'), saisie:$('.tb-saisie', el), vide:$('.tb-vide', el), etat:$('.tb-etat', el)};
+    el.addEventListener('click', e => {
+      const b = e.target.closest('button'); if(!b || !el.contains(b)) return;
+      if(b.dataset.vue){ changerVue(b.dataset.vue); return; }
+      if(b.dataset.outil){ choisirOutil(b.dataset.outil); return; }
+      if(b.dataset.c){ coul = b.dataset.c; if(sel.size) changerSel(it => { it.c = coul; return it; }); majOutils(); return; }
+      if(b.dataset.epais){ epais = +b.dataset.epais; if(sel.size) changerSel(it => { if(it.k !== 't') return null; it.w = EPAIS[epais] * (it.o ? 3 : 1); return it; }); majOutils(); return; }
+      if(b.dataset.taille){ taille = +b.dataset.taille; if(sel.size) changerSel(it => { if(it.k !== 'x') return null; it.s = TAILLES[taille]; return it; }); if(saisie){ saisie.it.s = TAILLES[taille]; placerSaisie(); } majOutils(); return; }
+      const o = b.dataset.o, mil = () => [cw / 2, ch / 2];
+      if(o === 'fermer') fermer();
+      else if(o === 'annuler') annuler();
+      else if(o === 'retablir') retablir();
+      else if(o === 'plus') zoomer(1.25, ...mil());
+      else if(o === 'moins') zoomer(0.8, ...mil());
+      else if(o === 'ajuster') ajuster();
+      else if(o === 'vider') vider();
+      else if(o === 'image') image();
+      else if(o === 'copier') copier();
+      else if(o === 'cote'){ cote = !cote; memo.set(CLE_COTE, cote ? '1' : '0'); disposer(); }
+    });
+    cvs.addEventListener('pointerdown', bas);
+    cvs.addEventListener('pointermove', bouge);
+    cvs.addEventListener('pointerup', haut);
+    cvs.addEventListener('pointercancel', haut);
+    cvs.addEventListener('lostpointercapture', e => { if(pointeurs.has(e.pointerId)) haut(e); });
+    cvs.addEventListener('dblclick', e => {
+      if(lectureSeule()) return;
+      const [x, y] = monde(e), it = dessus(x, y, t => t.k === 'x' && mien(t));
+      if(it){ sel = new Set(); ouvrirSaisie(it); }
+    });
+    cvs.addEventListener('wheel', e => {
+      e.preventDefault();
+      const r = cvs.getBoundingClientRect();
+      if(e.ctrlKey || e.metaKey) zoomer(Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022)), e.clientX - r.left, e.clientY - r.top);
+      else { const k = e.deltaMode ? 30 : 1; ox += (e.shiftKey ? e.deltaY : e.deltaX) * k / z; oy += (e.shiftKey ? 0 : e.deltaY) * k / z; garderCadre(); dessiner(); }
+    }, {passive:false});
+    ui.saisie.addEventListener('input', placerSaisie);
+    ui.saisie.addEventListener('blur', () => fermerSaisie(true));
+    ui.saisie.addEventListener('keydown', e => {
+      if(e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey))){ e.preventDefault(); fermerSaisie(true); cvs.focus({preventScroll:true}); }
+      e.stopPropagation();
+    });
+    el.addEventListener('keydown', clavier);
+    el.addEventListener('keyup', e => { if(e.key === ' '){ espace = false; cvs.classList.remove('main'); } e.stopPropagation(); });
+    new ResizeObserver(() => { mesurer(); dessiner(); placerSaisie(); }).observe($('.tb-zone', el));
+  }
+  function clavier(e){
+    e.stopPropagation();
+    if(e.target === ui.saisie) return;
+    const k = e.key, mod = e.ctrlKey || e.metaKey;
+    if(k === 'Escape'){ e.preventDefault(); if(geste){ geste = null; cours = null; dessiner(); } else if(sel.size){ sel = new Set(); majOutils(); dessiner(); } else fermer(); return; }
+    if(e.target.closest && e.target.closest('button') && (k === 'Enter' || k === ' ')) return;
+    if(mod && (k === 'z' || k === 'Z')){ e.preventDefault(); if(e.shiftKey) retablir(); else annuler(); return; }
+    if(mod && (k === 'y' || k === 'Y')){ e.preventDefault(); retablir(); return; }
+    if((k === 'Delete' || k === 'Backspace') && sel.size){ e.preventDefault(); supprimerSel(); return; }
+    if(k === ' '){ e.preventDefault(); espace = true; ui.cvs.classList.add('main'); return; }
+    if(mod || e.altKey) return;
+    const o = OUTILS.find(x => x[2] === k.toUpperCase());
+    if(o){ e.preventDefault(); choisirOutil(o[0]); return; }
+    if(k === '+' || k === '='){ e.preventDefault(); zoomer(1.25, cw / 2, ch / 2); }
+    else if(k === '-'){ e.preventDefault(); zoomer(0.8, cw / 2, ch / 2); }
+    else if(k === '0'){ e.preventDefault(); ajuster(); }
+  }
+  function mesurer(){
+    if(!ui) return;
+    const r = ui.cvs.getBoundingClientRect(); if(!r.width || !r.height) return;
+    const avant = cw;
+    dpr = Math.min(2, window.devicePixelRatio || 1); cw = r.width; ch = r.height;
+    ui.cvs.width = Math.round(cw * dpr); ui.cvs.height = Math.round(ch * dpr);
+    /* la largeur change (téléphone tourné, côte à côte) : le zoom suit, pour garder le même cadrage */
+    if(avant && avant !== cw){ z = borne(z * cw / avant, ZMIN, ZMAX); garderCadre(); }
+    majZoom();
+  }
+  function choisirOutil(o){
+    if(lectureSeule() && o !== 'main') o = 'main';
+    if(saisie) fermerSaisie(true);
+    outil = o; if(o !== 'selection' && sel.size){ sel = new Set(); dessiner(); }
+    majOutils();
+  }
+  function majOutils(){
+    if(!ui) return;
+    const el = ui.el, ro = lectureSeule();
+    $$('[data-outil]', el).forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.outil === outil)); b.disabled = ro && b.dataset.outil !== 'main'; });
+    const c = coul || mienne;
+    $('[data-g="couleurs"]', el).innerHTML = teintes.map(t => ({r:t.r, nom:t.nom, c:t.c})).concat({r:'i', nom:'Encre', c:''}).map(t =>
+      '<button type="button" data-c="' + t.r + '" aria-pressed="' + (t.r === c) + '" aria-label="' + esc(t.nom) + '" title="' + esc(t.nom) + (t.r === mienne ? ' · ta couleur' : '') + '"' + (ro ? ' disabled' : '') + '><i class="tb-pastille" style="background:' + (t.r === 'i' ? 'var(--ink)' : teinte(t.r)) + '"></i></button>').join('');
+    const texte = outil === 'texte' || Array.from(sel).some(i => { const it = elements().get(i); return it && it.k === 'x'; });
+    const trait = ['stylo', 'surligneur', 'ligne', 'fleche'].includes(outil) || Array.from(sel).some(i => { const it = elements().get(i); return it && it.k === 't'; });
+    $('[data-g="tailles"]', el).hidden = !texte || ro; $('[data-g="epais"]', el).hidden = (!trait && texte) || ro;
+    $$('[data-epais]', el).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.epais === epais)));
+    $$('[data-taille]', el).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.taille === taille)));
+    const p = pile();
+    $('[data-o="annuler"]', el).disabled = ro || !p.annuler.length; $('[data-o="retablir"]', el).disabled = ro || !p.refaire.length;
+    $('[data-o="vider"]', el).hidden = ro;
+    ui.cvs.dataset.outil = ro ? 'main' : outil;
+  }
+  function majZoom(){ if(ui && cw) $('.tb-pc', ui.el).textContent = Math.round(z / zFit() * 100) + ' %'; if(saisie) placerSaisie(); }
+  function dateCourte(t){ try{ return new Date(t).toLocaleDateString('fr-CA', {day:'numeric', month:'short'}); }catch(e){ return ''; } }
+  function majTete(){
+    if(!ui) return;
+    const el = ui.el, e = ecran(ecranVu), x = L[ecranVu];
+    $('.tb-ecran', el).textContent = e ? ' · ' + e.titre : '';
+    const vues = (ctx ? [['groupe', 'Groupe']] : []).concat([['moi', 'Mon tableau']]).concat(!ctx && x && x.seance ? [['seance', 'Séance · ' + dateCourte(x.seance.t)]] : []);
+    $('.tb-vues', el).innerHTML = vues.length > 1 ? vues.map(([k, n]) => '<button type="button" role="tab" data-vue="' + k + '" aria-selected="' + (k === vue) + '">' + esc(n) + '</button>').join('') : '';
+    const qui = $('.tb-qui', el);
+    qui.innerHTML = '';
+    if(vue === 'groupe'){
+      const la = membres.filter(m => m.tab === ecranVu);
+      if(la.length){
+        qui.appendChild(document.createTextNode('Au tableau : '));
+        la.forEach((m, i) => { const s = document.createElement('span'); s.className = 'tb-membre'; s.style.setProperty('--c', m.c); s.textContent = m.nom; qui.appendChild(s); if(i < la.length - 1) qui.appendChild(document.createTextNode(' ')); });
+      }
+    } else if(vue === 'seance') qui.textContent = 'Copie gardée de la séance (lecture seule)';
+    const cp = $('[data-o="copier"]', el), nM = local(ecranVu).moi.size;
+    if(vue === 'groupe'){ cp.hidden = !G.size; cp.textContent = 'Copier dans mon tableau'; }
+    else if(vue === 'seance'){ cp.hidden = false; cp.textContent = 'Copier dans mon tableau'; }
+    else { cp.hidden = !ctx || !nM; cp.textContent = 'Partager au groupe'; }
+    $('[data-o="cote"]', el).setAttribute('aria-pressed', String(cote));
+    ui.vide.textContent = vue === 'groupe' ? 'Le tableau du groupe est vide. Dessine ou écris : tout le monde le voit en direct.'
+      : vue === 'moi' ? 'Ton tableau pour cet écran. Dessine, écris, fais tes schémas : il reste sur cet appareil.' : '';
+  }
+  function changerVue(v){
+    if(saisie) fermerSaisie(true);
+    vue = v; sel = new Set(); geste = null; cours = null;
+    if(v === 'groupe'){ suivre(ecranVu); G.forEach((x, i) => connus.add(i)); nAvant = nonVus(); signaler('nouveau'); }
+    if(lectureSeule()) outil = 'main'; else if(outil === 'main' && !espace) outil = 'stylo';
+    reprendreCadre(); majTete(); majOutils(); dessiner(); signaler('ouvert');
+  }
+  const large = () => window.innerWidth >= 1000;
+  function disposer(){
+    if(!ui) return;
+    const d = cote && large() && !ui.el.hidden;
+    ui.el.classList.toggle('cote', d);
+    ui.el.setAttribute('aria-modal', String(!d));
+    document.body.classList.toggle('tb-cote', d);
+    $('[data-o="cote"]', ui.el).setAttribute('aria-pressed', String(cote));
+    requestAnimationFrame(() => { mesurer(); dessiner(); });
+  }
+  function ouvrir(v){
+    if(!ICI) return;
+    if(!ui) construire();
+    lireTheme();
+    ecranVu = ICI.id;
+    vue = v === 'seance' || v === 'moi' ? v : ctx ? 'groupe' : 'moi';
+    if(vue === 'seance' && !(L[ecranVu] && L[ecranVu].seance)) vue = 'moi';
+    ui.el.hidden = false;
+    disposer(); mesurer(); changerVue(vue);
+    if(!cadres[cleVue()]) reprendreCadre();
+    ui.cvs.focus({preventScroll:true});
+  }
+  function fermer(){
+    if(!ui || ui.el.hidden) return;
+    if(saisie) fermerSaisie(true);
+    if(cours) finirTrait();
+    geste = null; pointeurs.clear(); espace = false;
+    ui.el.hidden = true; document.body.classList.remove('tb-cote');
+    signaler('ouvert');
+    const b = $('#btn-tableau'); if(b) b.focus({preventScroll:true});
+  }
+  /* l'écran change pendant que le tableau est ouvert (côte à côte) : il suit */
+  function suivreEcran(){
+    if(ctx && ICI) suivre(ICI.id);
+    if(!ui || ui.el.hidden || !ICI || ICI.id === ecranVu) { nAvant = nonVus(); signaler('nouveau'); return; }
+    if(saisie) fermerSaisie(true);
+    if(cours) finirTrait();
+    ecranVu = ICI.id;
+    if(vue === 'seance' && !(L[ecranVu] && L[ecranVu].seance)) vue = 'moi';
+    changerVue(vue);
+  }
+  function copier(){
+    const src = Array.from(elements().values()); if(!src.length) return;
+    const cible = vue === 'moi' && ctx ? 'groupe' : 'moi';
+    if(vue === 'moi' && !confirm('Partager les ' + src.length + ' éléments de ton tableau avec le groupe ?')) return;
+    vue = cible;
+    const avant = [], apres = [];
+    src.forEach(o => { const it = copie(o); it.id = nouvelId(); it.de = moiDe(); if(poser(it) !== false){ avant.push([it.id, null]); apres.push([it.id, brut(it)]); } });
+    memoriser(avant, apres);
+    changerVue(cible);
+    etat(cible === 'groupe' ? 'Ton tableau est maintenant aussi sur celui du groupe.' : 'Copié dans ton tableau : il est à toi, tu peux le modifier.');
+  }
+  async function image(){
+    const l = Array.from(elements().values()); if(!l.length){ etat('Le tableau est vide.'); return; }
+    const b = boite(l.map(it => it.id)), m = 30, bw = b[2] - b[0] + 2 * m, bh = b[3] - b[1] + 2 * m;
+    const k = Math.min(2, 2400 / bw, 8000 / bh), c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(bw * k)); c.height = Math.max(1, Math.round(bh * k));
+    const cx = c.getContext('2d');
+    cx.fillStyle = fond; cx.fillRect(0, 0, c.width, c.height);
+    cx.setTransform(k, 0, 0, k, -(b[0] - m) * k, -(b[1] - m) * k);
+    l.forEach(it => tracer(cx, it));
+    const blob = await new Promise(r => c.toBlob(r, 'image/png')); if(!blob){ etat('L’image n’a pas pu être faite.'); return; }
+    const nom = 'tableau-' + (ATELIER.fichier || P) + '-' + ecranVu + '-' + jourLocal() + '.png';
+    if(window.claude && typeof window.claude.use === 'function'){
+      let dl = null; try{ dl = await window.claude.use('downloads'); }catch(e){}
+      if(dl){ try{ await dl.save({filename:nom, data:blob}); etat('Image enregistrée : ' + nom); }catch(e){ etat(e && e.code === 'declined' ? 'Enregistrement annulé.' : 'L’enregistrement n’est pas disponible ici.'); } return; }
+      etat('L’enregistrement n’est pas disponible ici.'); return;
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nom;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    etat('Image téléchargée : ' + nom);
+  }
+  let tEtat = null;
+  function etat(t){ if(!ui) return; ui.etat.textContent = t; clearTimeout(tEtat); tEtat = setTimeout(() => { if(ui) ui.etat.textContent = ''; }, 7000); }
+  const nomDe = u => { const m = membres.find(x => x.uid === u); return m ? m.nom : 'quelqu’un d’autre'; };
+
+  /* ---------- démarrage, et ce que Convergence branche ---------- */
+  function demarrer(){
+    charger();
+    const theme = $('#theme');
+    if(theme && !$('#btn-tableau')){
+      const b = H('<button type="button" id="btn-tableau">▦ Tableau de l’écran</button>');
+      b.title = 'Un tableau blanc pour cet écran : dessiner, écrire ; en convergence, le groupe y travaille ensemble';
+      theme.before(b);
+      b.addEventListener('click', () => ouvrir());
+    }
+    CROCHETS.apresAller.push(suivreEcran);
+    CROCHETS.effacer.push(() => { L = {}; memo.set(CLE, JSON.stringify({v:1, e:{}})); Object.keys(piles).forEach(k => delete piles[k]); if(ui && !ui.el.hidden && vue !== 'groupe') changerVue(vue); });
+    window.addEventListener('resize', () => { if(ui && !ui.el.hidden) disposer(); });
+    window.addEventListener('pagehide', () => { garderMaintenant(); if(tSauver){ clearTimeout(tSauver); tSauver = null; ecrireMemoire(); } });
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+      lireTheme();
+      Object.values(L).forEach(x => { x.moi.forEach(borner); if(x.seance) x.seance.el.forEach(borner); }); G.forEach(borner); dessiner();
+    });
+    /* le thème change (bouton Thème, ou le système) : les couleurs suivent */
+    new MutationObserver(() => { lireTheme(); majOutils(); dessiner(); }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme', 'class']});
+    try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { lireTheme(); majOutils(); dessiner(); }); }catch(e){}
+  }
+  /* la séance : {F, db, base, uid} (Convergence), ou null en la quittant */
+  function seance(c){
+    const avant = !!ctx;
+    /* la même séance rebranchée (un nouvel accueilli) : rien ne bouge, surtout pas un trait en cours */
+    if(c && c.F && ctx && c.base === ctx.base && c.uid === ctx.uid){ ctx = c; if(ICI) suivre(ICI.id); return; }
+    ctx = c && c.F ? c : null;
+    lacher(); refusDit = false;
+    if(ctx && ICI) suivre(ICI.id);
+    if(!ctx){ membres = []; connus.clear(); nAvant = 0; }
+    if(ui && !ui.el.hidden){
+      if(!ctx && vue === 'groupe') vue = avant && L[ecranVu] && L[ecranVu].seance ? 'seance' : 'moi';
+      changerVue(ctx && avant ? vue : ctx ? 'groupe' : vue);
+    }
+  }
+  function membresMaj(l){ membres = Array.isArray(l) ? l : []; if(ui && !ui.el.hidden) majTete(); }
+  function couleur(r, liste){
+    if(Array.isArray(liste) && liste.length) teintes = liste.filter(t => t && couleurOk(t.r) && /^#[0-9a-f]{6}$/i.test(t.c));
+    if(couleurOk(r) && r !== 'i'){ if(!coul || coul === mienne) coul = r; mienne = r; }
+    majOutils(); dessiner();
+  }
+
+  return {demarrer, ouvrir, fermer, seance, membres:membresMaj, couleur, ecouter:f => { ecoute = f; }, nonVus,
+    ouvertSur:() => ui && !ui.el.hidden && vue === 'groupe' ? ecranVu : ''};
+})();
+
 /* ====== _commun/convergence.js ====== */
 /* ======================================================================
    Convergence (DESIGN-convergence.md) : des étudiants suivent l'atelier
@@ -7672,7 +8555,8 @@ const Marques = (() => {
    Hors de Claude seulement (site Lumière ou fichier) : le relais est
    Firebase (Realtime Database, connexion anonyme), chargé au premier
    clic. Une séance = /cv/<code> : membres/<uid> (la présence, effacée à
-   la déconnexion) et flux/<id> (messages et croquis). À deux, un message
+   la déconnexion), flux/<id> (messages et croquis) et tableau/<écran>/<id>
+   (le tableau du groupe, tableau.js). À deux, un message
    va à l'autre, qui l'efface en le recevant (l'accusé de réception) ; à
    plusieurs, il va au groupe (pour:'*') et son auteur l'efface au bout
    d'une minute, ou en partant.
@@ -7767,7 +8651,7 @@ function moi(){
   return {v:2, nom:S.nom, raie:S.raie, role:S.role, etat:S.etat === 'lie' || accueil ? 'lie' : S.etat, lie:S.etat === 'lie',
     avec:S.avec, refus:S.refusUid, refuses:S.refuses, admis:S.admis, ouvert:S.ouvert, plein:S.plein, depuis:S.depuis, at:P,
     ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto, par:S.repere.par || ''}, pret:S.pret,
-    tuteur:monTuteur(), suit:maCible(), t:Date.now()};
+    tuteur:monTuteur(), suit:maCible(), tab:typeof Tableau !== 'undefined' ? Tableau.ouvertSur() : '', t:Date.now()};
 }
 let tPres = null;
 function publier(){
@@ -7818,6 +8702,7 @@ async function quitter(){
     demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:''});
   sauverSeance(); majRail(); majChoixSuivi();
   if(typeof Marques !== 'undefined'){ Marques.partager(false); couleurMarques(); }
+  brancherTableau();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -7847,7 +8732,7 @@ function noter(p){
   Object.assign(x, {nom:nomDe(p), raie:raieOk(p.raie), role:p.role === 'hote' ? 'hote' : 'invite', depuis:+p.depuis || 0, v:+p.v || 1,
     ecran:typeof p.ecran === 'string' ? p.ecran : '', pret:typeof p.pret === 'number' ? p.pret : 0,
     tuteur:['propre', 'copie', 'mien', 'relais'].includes(p.tuteur) ? p.tuteur : '', suit:typeof p.suit === 'string' ? p.suit : null,
-    miroir:p.miroir && typeof p.miroir === 'object' ? p.miroir : null, vu:Date.now()});
+    miroir:p.miroir && typeof p.miroir === 'object' ? p.miroir : null, tab:typeof p.tab === 'string' ? p.tab.slice(0, 40) : '', vu:Date.now()});
   return x;
 }
 function surGroupe(autres){
@@ -7874,6 +8759,7 @@ function surGroupe(autres){
   verifierPrets();
   majBarre();
   majRelais();
+  majTableau();
 }
 /* la porte, une fois lié : seul le premier du groupe accueille (l'hôte, ou le plus ancien s'il s'absente) */
 function garderPorte(autres){
@@ -7966,6 +8852,7 @@ function lier(ps, aussi){
   }
   publier(); sauverSeance();
   if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
+  brancherTableau();
   demandesVoile([]); demandesPage([]);
   Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis), aussi || []));
   etatVoile('Convergence…');
@@ -8234,7 +9121,11 @@ let voile = null, raie = (r => typeof r === 'string' && Object.prototype.hasOwnP
 const teintes = () => ({liste:Object.keys(RAIES).map(r => ({r, c:RAIES[r][1], nom:'Raie ' + r + ' · ' + RAIES[r][0] + ' nm'})), actuelle:raie, choisir:choisirRaie});
 function choisirRaie(r){ raie = raieOk(r); memo.set(CLE_RAIE, raie); if(S.etat !== 'lie') couleurMarques(); }
 /* en séance, mes coches ont la couleur de la séance ; hors séance, celle que je choisis */
-function couleurMarques(){ if(typeof Marques !== 'undefined') Marques.couleur(couleur(S.etat === 'lie' ? S.raie : raie), S.etat === 'lie' ? null : teintes()); }
+function couleurMarques(){
+  if(typeof Marques !== 'undefined') Marques.couleur(couleur(S.etat === 'lie' ? S.raie : raie), S.etat === 'lie' ? null : teintes());
+  /* le tableau dessine dans la même couleur, et offre les cinq raies */
+  if(typeof Tableau !== 'undefined') Tableau.couleur(S.etat === 'lie' ? S.raie : raie, teintes().liste);
+}
 function etatVoile(t){ const e = voile && $('.cv-etat', voile); if(e) e.textContent = t; }
 function fermerVoile(){
   if(!voile) return;
@@ -8390,13 +9281,14 @@ function montrerBarre(){
       '<span class="cv-prets" aria-live="polite"></span>' +
       '<span class="cv-espace"></span>' +
       '<button type="button" class="btn cv-b cv-tut" data-a="tuteur" aria-pressed="false">Tuteur</button>' +
+      (typeof Tableau !== 'undefined' ? '<button type="button" class="btn cv-b" data-a="tableau" title="Le tableau du groupe pour cet écran : tout le monde y dessine et écrit, en direct">Tableau<span class="cv-badge" hidden></span></button>' : '') +
       '<button type="button" class="btn cv-b" data-a="messages">Messages<span class="cv-badge" hidden></span></button>' +
       '<button type="button" class="btn cv-b" data-a="croquis">Croquis</button>' +
       '<button type="button" class="btn cv-b" data-a="quitter">Quitter</button></div>');
     barre.addEventListener('click', e => {
       const b = e.target.closest('[data-a]'); if(!b) return;
-      ({groupe:() => ouvrirGpop(b), recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(),
-        quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page.')) quitter(); }})[b.dataset.a]();
+      ({groupe:() => ouvrirGpop(b), recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), tableau:() => Tableau.ouvrir('groupe'),
+        quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page. Le tableau du groupe reste en copie sur cet appareil (Tableau → Séance).')) quitter(); }})[b.dataset.a]();
     });
     const haut = $('.haut');
     if(haut) haut.appendChild(barre); else document.body.prepend(barre);
@@ -8454,7 +9346,12 @@ function majBarre(){
     const k = la.filter(u => S.membres[u].pret === n && n > 0).length + (pret ? 1 : 0);
     $('.cv-prets', barre).textContent = k ? 'Prêt·e·s : ' + k + '/' + (la.length + 1) : '';
   }
-  const bd = $('.cv-badge', barre); bd.hidden = !S.nonLus; bd.textContent = S.nonLus;
+  const bd = $('[data-a="messages"] .cv-badge', barre); bd.hidden = !S.nonLus; bd.textContent = S.nonLus;
+  const bt = $('[data-a="tableau"] .cv-badge', barre);
+  if(bt){
+    const n = Tableau.nonVus(); bt.hidden = !n; bt.textContent = n > 99 ? '99+' : n;
+    bt.parentNode.title = n ? n + ' ajout' + (n > 1 ? 's' : '') + ' au tableau du groupe pour cet écran' : 'Le tableau du groupe pour cet écran : tout le monde y dessine et écrit, en direct';
+  }
   majRail(); majPuceTuteur(); majPanneau(); majGpop();
 }
 
@@ -8832,6 +9729,16 @@ function surMarque(ev){
   const vue = ev.type === 'vue';
   S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + (vue ? '/vue' : '/coches')), vue ? ev.vue : ev.coches).catch(() => {});
 }
+/* ---------- le tableau du groupe (tableau.js) : le relais, et qui l'a ouvert sur quel écran ---------- */
+function brancherTableau(){
+  if(typeof Tableau === 'undefined') return;
+  Tableau.seance(S.etat === 'lie' && S.F && S.base ? {F:S.F, db:S.db, base:S.base, uid:S.uid} : null);
+  majTableau();
+}
+function majTableau(){
+  if(typeof Tableau === 'undefined') return;
+  Tableau.membres(S.etat === 'lie' ? presents().map(u => ({uid:u, nom:nomU(u), c:couleur(raieU(u)), tab:S.membres[u].tab || ''})) : []);
+}
 function avertir(t){
   if(panneau && !panneau.hidden) return;
   S.nonLus++; majBarre();
@@ -8976,6 +9883,7 @@ function demarrer(){
   if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
   if(!memo.get(CLE_RAIE)) memo.set(CLE_RAIE, raie);        // une couleur tirée au hasard reste : les coches la gardent
   if(typeof Marques !== 'undefined'){ Marques.ecouter(surMarque); couleurMarques(); }
+  if(typeof Tableau !== 'undefined') Tableau.ecouter(ev => { if(S.etat !== 'lie') return; if(ev.type === 'ouvert') publier(); else majBarre(); });
   if(dansClaude()) return;
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
   if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)) return;
@@ -8995,6 +9903,7 @@ function demarrer(){
     if(!ok){ quitter(); return; }
     montrerBarre();
     if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
+    brancherTableau();
   });
 }
 
@@ -9100,7 +10009,7 @@ function demarrer(){
   };
 
   /* modules v2 */
-  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer();
+  Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer();
 
   lierNotes(document);
   majIndicateurs();
@@ -9115,7 +10024,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '533a12cf4d62';
+  const ICI = 'da723d29c293';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
