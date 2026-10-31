@@ -858,6 +858,11 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .btn-cv{display:inline-flex;align-items:center;gap:7px}
 .btn-cv svg{width:22px;height:10px;flex:none;fill:currentColor;stroke:currentColor;stroke-width:1.6}
 .btn-cv.lie{border-color:var(--accent);background:var(--accent-soft)}
+.btn-cv.attente{border-color:var(--accent)}
+.btn-cv.attente::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;animation:cv-attente 1.6s ease-in-out infinite}
+@keyframes cv-attente{0%,100%{opacity:.25}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){ .btn-cv.attente::after{animation:none} }
+.cv-voile[hidden]{display:none}
 @media (max-width:760px){ .btn-cv span{display:none} }
 .haut.avec-cv{flex-wrap:wrap}
 .cv-barre{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:6px;padding:7px 10px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;background:var(--panel);font-size:14px}
@@ -11289,10 +11294,10 @@ const CLE_SEANCE = P + '-convergence';      // sessionStorage : la séance survi
 const MAX_GROUPE = 32;
 const VIE_GROUPE = 60000;                   // un message au groupe reste une minute dans le relais
 /* la balise (« je cherche un·e partenaire », dans le Discord de la classe) passe par le relais de la classe, qui garde
-   le webhook ; une par appareil toutes les 10 minutes. Tant qu'elle n'est pas ouverte à tous, seul un appareil qui a
-   ouvert une page avec #balise-essai la voit. */
+   le webhook ; une par appareil toutes les 10 minutes. Ouverte à tous depuis le 31 oct. (à false, seul un appareil qui a
+   ouvert une page avec #balise-essai la voit : pour essayer un changement avant de l'ouvrir). */
 const RELAIS_BALISE = 'https://lumiere-claude.lumiere-classe.workers.dev/balise';
-const BALISE_POUR_TOUS = false;
+const BALISE_POUR_TOUS = true;
 const CLE_BALISE = 'lumiere-balise-t', BALISE_ATTENTE = 600000;
 const dansClaude = () => !!(window.claude && typeof window.claude.use === 'function');
 const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11848,11 +11853,44 @@ function fermerVoile(){
   if(!voile) return;
   const v = voile; voile = null;
   v.classList.add('part'); setTimeout(() => v.remove(), reduit() ? 0 : 900);
+  majBoutonAttente();
+}
+/* l'hôte qui attend (après une balise, par exemple) retourne étudier : le voile se cache, la séance reste ouverte
+   et le bouton Convergence le dit ; le voile revient dès que quelqu'un demande à converger */
+const codeAffiche = () => S.code ? S.code.slice(0, 3) + '-' + S.code.slice(3) : '';
+function cacherVoile(){
+  if(!voile || voile.hidden || S.etat !== 'attente') return;
+  voile.hidden = true; Rac.arreter();
+  majBoutonAttente();
+  toast('Séance ' + codeAffiche() + ' ouverte. Étudie tranquille : Convergence revient dès que quelqu’un veut te rejoindre.');
+}
+function montrerVoile(){
+  if(!voile || !voile.hidden) return;
+  voile.hidden = false;
+  Rac.demarrer($('canvas', voile), couleur(S.raie));
+  Rac.synchro(S.demandes.map(d => ({id:d.uid, c:couleur(d.raie)})));
+  majBoutonAttente();
+}
+function majBoutonAttente(){
+  const b = $('#btn-cv'); if(!b) return;
+  const attend = !!(voile && voile.hidden);
+  b.classList.toggle('attente', attend);
+  b.title = attend ? 'Séance ' + codeAffiche() + ' ouverte : Convergence revient dès que quelqu’un veut te rejoindre. Clique pour y revenir.'
+    : 'Convergence : étudier à deux ou à plusieurs, chacun sur son appareil';
+  b.setAttribute('aria-label', b.title);
+}
+/* dans un autre onglet, le titre de la page appelle */
+let titreAvant = '';
+function appeler(){
+  if(!document.hidden || titreAvant) return;
+  titreAvant = document.title; document.title = '● Quelqu’un veut converger · ' + titreAvant;
+  const fin = () => { if(document.hidden) return; document.title = titreAvant; titreAvant = ''; document.removeEventListener('visibilitychange', fin); };
+  document.addEventListener('visibilitychange', fin);
 }
 function ouvrir(){
   if(S.etat === 'lie'){ ouvrirPanneau(); return; }
   if(dansClaude()){ popClaude(); return; }
-  if(voile) return;
+  if(voile){ montrerVoile(); return; }
   let nom = ''; try{ nom = sessionStorage.getItem(P + '-cv-nom') || ''; }catch(e){}
   voile = H('<div class="cv-voile v2-hors-texte" role="dialog" aria-modal="true" aria-labelledby="cv-titre">' +
     '<canvas aria-hidden="true"></canvas>' +
@@ -11872,7 +11910,7 @@ function ouvrir(){
       '<div class="cv-balise" hidden><button type="button" class="cv-btn">📡 Lancer une balise</button><small>Un message dans le Discord de la classe : ton surnom, cet atelier et un lien pour te rejoindre.</small></div>' +
       '<p class="cv-etat" aria-live="polite"></p>' +
       '<div class="cv-demande" hidden></div>' +
-      '<div class="cv-actions"><button type="button" class="cv-btn cv-annuler">Annuler</button><button type="button" class="cv-btn plein cv-go">Créer et attendre</button></div>' +
+      '<div class="cv-actions"><button type="button" class="cv-btn cv-annuler">Annuler</button><button type="button" class="cv-btn cv-etudier" hidden>Étudier en attendant</button><button type="button" class="cv-btn plein cv-go">Créer et attendre</button></div>' +
     '</div></div>');
   document.body.appendChild(voile);
   const v = voile, nomIn = $('.cv-nom', v);
@@ -11892,6 +11930,7 @@ function ouvrir(){
   });
   $('.cv-code-in', v).addEventListener('input', e => { const c = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); e.target.value = c.length > 3 ? c.slice(0, 3) + '-' + c.slice(3) : c; });
   $('.cv-annuler', v).addEventListener('click', () => quitter());
+  $('.cv-etudier', v).addEventListener('click', cacherVoile);
   $('.cv-balise button', v).addEventListener('click', e => lancerBalise(e.currentTarget, $('.cv-balise small', v)));
   $('.cv-go', v).addEventListener('click', async () => {
     S.nom = propre(nomIn.value, 24) || 'Photon'; S.raie = raie;
@@ -11905,12 +11944,13 @@ function ouvrir(){
     $('.cv-choix', v).hidden = true; $('.cv-go', v).hidden = true;
     v.classList.add('pousse');
     Rac.demarrer($('canvas', v), couleur(S.raie));
-    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à qui veut converger. Ta racine cherche les autres.'); $('.cv-balise', v).hidden = !balisePossible(); }
+    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à qui veut converger. Ta racine cherche les autres.'); $('.cv-balise', v).hidden = !balisePossible(); $('.cv-etudier', v).hidden = false; }
     else etatVoile('Recherche de la séance…');
     const ok = await entrer(mode === 'creer' ? 'hote' : 'invite', code);
     if(ok && mode !== 'creer') setTimeout(() => { if(voile === v && S.role === 'invite' && !S.porte) etatVoile('Toujours personne : vérifie le code, et que l’hôte a bien ouvert la séance sur ce même atelier.'); }, 9000);
   });
-  v.addEventListener('keydown', e => { if(e.key === 'Escape') quitter(); e.stopPropagation(); });
+  /* Échap : l'hôte qui attend retourne étudier (la séance reste ouverte) ; sinon on annule */
+  v.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(S.etat === 'attente' && S.role === 'hote') cacherVoile(); else quitter(); } e.stopPropagation(); });
   setTimeout(() => $('.cv-go', v).focus({preventScroll:true}), 30);
 }
 
@@ -11942,7 +11982,7 @@ async function lancerBalise(b, note){
     if(r.ok){
       memo.set(CLE_BALISE, String(Date.now()));
       b.textContent = '📡 Balise envoyée ✓';
-      dire('Balise envoyée ✓ Le Discord de la classe sait que tu cherches quelqu’un ; le lien mène directement à ta séance.');
+      dire('Balise envoyée ✓ Le Discord de la classe sait que tu cherches quelqu’un. Tu peux étudier en attendant : Convergence revient dès que quelqu’un veut te rejoindre.');
       return;
     }
     dire((j && j.error && j.error.message) || 'La balise n’est pas partie (' + r.status + ').');
@@ -11967,7 +12007,10 @@ function ouvrirRejoindre(code){
 }
 
 /* ---------- les demandes : dans le voile tant que l'hôte attend, puis une petite carte sur la page ---------- */
-function montrerDemandes(ds){ if(voile && S.etat !== 'lie') demandesVoile(ds); else demandesPage(ds); }
+function montrerDemandes(ds){
+  if(voile && S.etat !== 'lie'){ if(ds.length && voile.hidden){ montrerVoile(); appeler(); } demandesVoile(ds); }
+  else demandesPage(ds);
+}
 function ligneDemande(d, cls){
   const li = H('<li><i class="cv-pt"></i><span class="cv-fn"></span><button type="button" class="' + cls + '">Refuser</button><button type="button" class="' + cls + ' plein">Converger</button></li>');
   li.querySelector('i').style.setProperty('--c', couleur(d.raie));
@@ -12731,6 +12774,8 @@ return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
+    {d:'2026-10-31', p:['*'], t:'Tu as créé une séance Convergence et personne n’est encore là ? « Étudier en attendant » te ramène dans l’atelier. Convergence revient tout seul dès que quelqu’un veut te rejoindre.'},
     {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ce bouton « Quoi de neuf ? ». Il te montre ce qui a été ajouté et quand, avec un chiffre quand il y a du nouveau depuis ta dernière visite.'},
     {d:'2026-10-31', p:['*'], t:'Étudie l’Arène à plusieurs : pendant une séance Convergence, appuie sur « À plusieurs » dans l’Arène. Tout le monde a la même question, chacun répond seul, puis vous comparez vos réponses.'},
@@ -12954,7 +12999,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '7154ee0f49ae';
+  const ICI = 'fa7d88b5a89b';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
