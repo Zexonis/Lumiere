@@ -596,6 +596,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['opt-ua2', 'to-m56', 'adm-m07'], t:'Dans l’Arène, les problèmes avec des nombres se font aussi en quatre réponses au choix : calcule, puis touche ta réponse. Une mauvaise réponse te dit quelle erreur tu as faite. Pour qu’un problème soit acquis, tu écris le nombre toi-même une dernière fois, comme à l’examen.'},
+    {d:'2026-10-31', p:['anat-m6'], t:'Dans l’Arène, les planches se font en quatre réponses au choix : quelle structure est au repère A ? Pour t’entraîner à écrire les noms, « Les planches, de mémoire » reste sur l’écran des glandes.'},
+    {d:'2026-10-31', p:['*'], t:'Dans l’Arène, les longues séquences se font une étape à la fois : quelle étape vient juste après celle-ci ?'},
     {d:'2026-10-31', p:['*'], t:'L’Arène ne bloque plus rien : elle commence par les bases, mais tu peux choisir un module en haut de la carte (par exemple seulement le module 7), n’importe quel bloc, ou revoir un bloc déjà acquis.'},
     {d:'2026-10-31', p:['*'], t:'Dans l’Arène, tes bonnes réponses se voient tout de suite : la partie pâle des barres, c’est ce qui est « en route ». Une question devient acquise quand tu la réussis encore, une dizaine de questions plus tard.'},
     {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
@@ -716,7 +719,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'e08540765cbc';
+  const ICI = '1f300f2d61e6';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

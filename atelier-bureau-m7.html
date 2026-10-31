@@ -580,6 +580,8 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
 .cpt-grille select.bon{border-color:var(--ok);background:var(--ok-soft)}
 .cpt-grille select.faux{border-color:var(--bad);background:var(--bad-soft)}
 .cpt-format{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-3)}
+/* l'arène en tuiles : la consigne d'écriture ne sert pas quand on choisit */
+.ar-qq .atoi-format,.ar-qq .cpt-format{display:none}
 .cpt-classe{display:inline-block;margin:0 6px 4px 0}
 .px-rep input.cpt-champ-long{min-width:min(100%,260px);flex:1 1 220px}
 .cpt-fiche{margin:6px 0 0;padding-left:22px;font-size:14.5px}
@@ -1413,6 +1415,18 @@ body.ar-ouverte .tb.cote{z-index:335}
 .ar-tuile.juste{box-shadow:inset 0 0 0 3px #1E7B45,inset 0 -4px 0 rgba(0,0,0,.2)}
 @media (max-width:560px){ .ar-tuiles{grid-template-columns:1fr;gap:8px} .ar-tuile{min-height:52px;font-size:15px} }
 @media (prefers-reduced-motion: reduce){ .ar-tuile{transition:none} }
+/* les problèmes et les planches en tuiles : la figure au-dessus, le sous-titre d'une chaîne, l'erreur nommée, la confirmation écrite */
+.ar-avant{margin:0 0 10px}
+.ar-avant .fig{margin:0}
+.ar-q .ar-avant svg{display:block;max-height:min(40vh,380px);width:auto;max-width:100%;margin:0 auto}
+.ar-sous{display:block;margin-top:6px;font-size:.92em;font-weight:600;color:var(--ink-2)}
+.ar-erreur{margin:12px 0 0;padding:9px 12px;border-radius:12px;border-left:4px solid #C2410C;background:var(--bg);font-size:15px;line-height:1.5}
+.ar-confirme{margin:-4px 0 12px;padding:8px 12px;border-radius:12px;background:var(--bg);border:1px dashed var(--line);font-size:14.5px;line-height:1.45}
+.ar-q .ar-modele .px-etapes{margin:4px 0 6px;padding-left:20px}
+.ar-q .ar-modele .px-etapes li{margin:2px 0}
+.ar-q .ar-modele .px-etapes b{display:block;font-size:13.5px;color:var(--ink-2)}
+.ar-q .ar-modele .px-concept{margin:6px 0 0;font-size:14.5px;color:var(--ink-2)}
+@media (max-width:560px){ .ar-q .ar-avant svg{max-height:34vh} }
 </style>
 <div class="app" id="app">
 
@@ -5819,8 +5833,21 @@ const CroixAToi = (() => {
   /* ---------- l'arène : nombres frais, échelle des essais ; acquis à trois réussites (arene.js) ---------- */
   const ARENE_GENS = {torique:['croix-180', 'croix-090'], oblique:['croix-obl-plus', 'croix-obl-moins'], inverse:['inv-droite', 'inv-oblique']};
   const PAS_ARENE = {'croix-180':'torique.3', 'croix-090':'torique.5', 'croix-obl-plus':'oblique.2', 'croix-obl-moins':'oblique.3', 'inv-droite':'inverse.3', 'inv-oblique':'inverse.3'};
+  /* l'arène en tuiles (arene.js) : les erreurs nommées (sans « un bras », qui se verrait d'un coup d'œil), puis des
+     voisines ; Pratique.tuiles les fait toutes passer par juger : aucune n'est une seconde réponse juste */
+  function candidatsArene(pb){
+    if(pb.sens === 'inverse'){
+      const r = pb.rep, l = pb.pieges.map(p => ecrireRx(p.rx));
+      if(r.ds) return l.concat([r2(r.sph + 0.5), r2(r.sph - 0.5), r2(-r.sph)].map(v => ecrireRx({sph:v, cyl:0, axe:null, ds:true})));
+      return l.concat([{sph:r.sph, cyl:r2(r.cyl - 0.5), axe:r.axe}, {sph:r2(r.sph + 0.5), cyl:r.cyl, axe:r.axe}, {sph:r.sph, cyl:r.cyl, axe:autreMer(r.axe)}].map(x => ecrireRx(x)));
+    }
+    const S = pb.rx.sph, P = pb.ds ? S : pb.k.pM2, A = pb.ds ? 180 : pb.rx.axe, M = pb.ds ? 90 : pb.k.m2;
+    return pb.pieges.filter(p => p.id !== 'un-bras').map(p => croixTxt(p.paires))
+      .concat([[[S, A], [r2(P - 0.5), M]], [[S, A], [r2(P + 0.5), M]], [[r2(-S), A], [r2(-P), M]]].map(x => croixTxt(x)));
+  }
   function sources(id){
-    return (ARENE_GENS[id] || []).map(g => ({id:'g:' + g, type:'gen', gen:true, pas:PAS_ARENE[g],
+    return (ARENE_GENS[id] || []).map(g => ({id:'g:' + g, type:'gen', gen:true, pas:PAS_ARENE[g], confirmer:true,
+      tuiles(){ const pb = tirer(g), t = Pratique.tuiles(pb, {juger, repTxt, etapes:pb.etapes, candidats:candidatsArene(pb)}); return t && Object.assign(t, {kc:KC_GEN[g]}); },
       rendre(el, fini){
         const pb = tirer(g);
         Pratique.exercice(el, pb, {kc:KC_GEN[g], etapes:pb.etapes, resultat:pb.dem.length - 1, juger, repTxt, fin:r => fini(r.premier && !r.aide)});
@@ -7236,13 +7263,25 @@ const Comptoir = (() => {
   });
 
   /* ---------- 17. l'arène : nombres frais (trois réussites), problèmes à choix ---------- */
+  /* en tuiles (arene.js) : les erreurs nommées, puis des voisines (un jour, un an, 5 $ de plus ou de moins) ;
+     Pratique.tuiles les fait toutes passer par juger : aucune n'est une seconde réponse juste */
+  function candidatsArene(pb){
+    const r = pb.rep;
+    if(pb.forme === 'argent') return pb.pieges.map(x => x.v).concat([r + 500, r - 500, r + 1000, Math.round(r * 1.1), Math.round(r * 0.9)]).filter(v => v > 0).map(argent);
+    if(pb.forme === 'date') return pb.pieges.map(x => x.v).concat([plusJours(r, 1), plusJours(r, -1), plusMois(r, 12), plusMois(r, -12)]).map(fd);
+    if(pb.forme === 'date-code') return pb.pDates.map(x => fd(x.v) + ', ' + r.code).concat(pb.pCodes.map(x => fd(r.date) + ', ' + x.v),
+      [fd(plusJours(r.date, -1)) + ', ' + r.code, fd(plusJours(r.date, 1)) + ', ' + r.code]);
+    const jour = e => e.t === 'oui' ? 'oui, ' + (e.code || (CAT[pb.cat] && CAT[pb.cat].maj) || TOUS_CODES[0]) : e.t === 'non' ? 'non, pas avant le ' + fd(e.date) : 'non couvert';
+    return pb.pieges.map(x => jour(x.v)).concat(['non couvert'], TOUS_CODES.map(c => 'oui, ' + c), pb.N ? [jour({t:'non', date:pb.N}), jour({t:'non', date:plusJours(pb.N, 1)})] : []);
+  }
   const ARENE_GENS = {'cpt-factures':['c:tri'], 'cpt-escomptes':['esc-pct', 'esc-mon', 'esc-items', 'esc-sen', 'esc-inv', 'c:famille'], 'cpt-ohip':['grille'],
     'cpt-rdv':['rdv-date', 'rdv-jour', 'rdv-inv', 'c:codes'], 'cpt-assureur':['cov', 'deb', 'cov-inv', 'c:periode'], 'cpt-erreurs':['c:erreur'], 'cpt-comptoir':['svc', 'prod', 'c:appel']};
   function sources(id){
     return (ARENE_GENS[id] || []).map(g => {
       if(g === 'grille') return {id:'g:grille-ohip', type:'gen', gen:true, pas:'cpt-ohip.4', rendre(el, fini){ monterGrille(el, 'memoire', fini); }};
       if(g.indexOf('c:') === 0){ const t = g.slice(2); return {id:'g:' + t, type:'gen', gen:true, rendre(el, fini){ exerciceChoix(el, CHOIX[t](), {fin:r => fini(r.premier)}); }}; }
-      return {id:'g:' + g, type:'gen', gen:true, pas:(Object.values(BLOCS).map(B => B.gens.find(x => x.id === g)).find(Boolean) || {}).pas,
+      return {id:'g:' + g, type:'gen', gen:true, confirmer:true, pas:(Object.values(BLOCS).map(B => B.gens.find(x => x.id === g)).find(Boolean) || {}).pas,
+        tuiles(){ const pb = tirer(g), t = Pratique.tuiles(pb, {juger, repTxt, etapes:pb.etapes, candidats:candidatsArene(pb)}); return t && Object.assign(t, {kc:KC_GEN[g]}); },
         rendre(el, fini){
           const pb = tirer(g);
           if(typeof MutationObserver !== 'undefined') new MutationObserver(() => champs(el)).observe(el, {childList:true, subtree:true, characterData:true});
@@ -8013,6 +8052,31 @@ const Pratique = (() => {
     return r;
   }
 
+  /* ---------- un problème en quatre tuiles (l'arène, recipe §6.12) ----------
+     o : {juger, repTxt, etapes, candidats:[texte]} ; chaque candidat passe par juger : jamais une seconde réponse
+     juste, et une erreur nommée garde son message. Les erreurs nommées d'abord, puis les autres candidats.
+     Rend {q, bon, faux:[{t, m, pid}], modele, ref}, ou null (moins de trois erreurs : le problème reste à écrire) */
+  function tuiles(pb, o){
+    const bon = String(o.repTxt(pb) || '').trim();
+    if(!bon || o.juger(pb, bon).etat !== 'ok') return null;
+    const cle = t => t.toLowerCase().replace(/\s+/g, ' ');
+    const vus = new Set([cle(bon)]), nommes = [], autres = [];
+    (o.candidats || []).forEach(x => {
+      const t = String(x == null ? '' : x).trim(), k = cle(t);
+      if(!t || vus.has(k)) return; vus.add(k);
+      const j = o.juger(pb, t) || {};
+      if(j.etat !== 'faux') return;
+      (j.piege ? nommes : autres).push({t, m:j.piege || '', pid:j.pid || ''});
+    });
+    const melanger = a => { const b = a.slice(); for(let i = b.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+    const faux = melanger(nommes).slice(0, 3).concat(melanger(autres)).slice(0, 3);
+    if(faux.length < 3) return null;
+    const et = o.etapes || [];
+    const modele = '<ol class="px-etapes">' + (pb.dem || []).map((t, i) => '<li>' + (et[i] ? '<b>' + esc(et[i]) + '</b>' : '') + '<span>' + esc(t) + '</span></li>').join('') + '</ol>' +
+      (pb.concept ? '<p class="px-concept">' + esc(pb.concept) + '</p>' : '');
+    return {q:pb.q, bon, faux, modele, lib:'La démarche', ref:'réponse attendue : ' + bon + (pb.dem ? ' ; démarche : ' + pb.dem.join(' ; ') : '')};
+  }
+
   /* ---------- « À toi » : le bloc d'une formule ----------
      c : {kc, titre, gens:[{id, inv, pas}], tirer(id), etapes(pb), resultat(pb), questions(pb), pourquoi(), juger, repTxt, tuteur} */
   const COURANT = {}, POURQUOI_DIT = {};
@@ -8114,7 +8178,7 @@ const Pratique = (() => {
     if(cur && !cur.fini) montrer(); else prochain();
   }
 
-  return {exercice, bloc, noter};
+  return {exercice, bloc, noter, tuiles};
 })();
 
 /* ====== _commun/arene.js ====== */
@@ -8472,7 +8536,7 @@ const Arene = (() => {
   function demanderTuteur(){
     const c = R.courant, art = $('.ar-q', ui); if(!c || !c[0] || !art || !TUTEUR()) return;
     const it = c[0], ok = !!art._ok;
-    const debut = typeof it.rendre === 'function' ? 'Problème de l’arène, avec mes essais : « ' + (art._q || '') + ' ».'
+    const debut = $('.ar-ex', art) ? 'Problème de l’arène, avec mes essais : « ' + (art._q || '') + ' ».'
       : 'Question de l’arène : « ' + (art._q || '') + ' »' + (art._rep ? ' Ma réponse : « ' + art._rep + ' ».' : ' Je n’ai pas su répondre.');
     Tuteur.demander(debut + (ok ? ' C’était juste : explique-moi pourquoi en deux ou trois phrases, et ce qu’il faut retenir.'
       : ' Ce n’était pas juste : explique-moi simplement ce qui ne va pas, et ce qu’il faut retenir.'), pourLeTuteur(it, c[1], art, false));
@@ -8540,9 +8604,21 @@ const Arene = (() => {
       (R.bloc || R.revoir ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '') +
       (R.portee ? ' <button type="button" class="lien-btn" data-a="portee" data-p="">Tout l’atelier</button>' : '');
     const etapeTxt = acquis(it) ? 'révision' : s && s.serie ? (s.serie >= besoin(it) - 1 ? 'à confirmer de loin' : 'à reprendre') : s && s.n ? 'à reprendre' : 'nouvelle';
-    /* l'indice : pour les questions de l'arène ; les problèmes et les planches ont déjà leur échelle d'essais */
+    /* en groupe : les nombres frais viennent de la graine du meneur (les mêmes pour tous) */
+    const graine = f => groupe && GR.q.g ? avecGraine(GR.q.g, f) : f();
+    const c = it.carte || {};
+    /* le standard de l'arène (recipe §6.12, blueprint §4.7) : quatre tuiles à choisir, une réponse juste et trois
+       erreurs plausibles ; « ✎ Écrire » garde le rappel de mémoire. En groupe, la graine du meneur donne à tous le
+       même ordre et les mêmes nombres. Un problème chiffré (it.confirmer) se choisit en tuiles pour apprendre et
+       s'écrit pour confirmer : la réponse qui le rend acquis se tape, comme à l'examen écrit ; ratée, il revient en tuiles. */
+    const rendu = typeof it.rendre === 'function';
+    const confirmer = rendu && !!it.confirmer && !acquis(it) && !!s && (+s.serie || 0) >= besoin(it) - 1;
+    const o = rendu ? (typeof it.tuiles === 'function' && !ecrire() && !confirmer ? graine(() => tuilesDe(it)) : null)
+      : (!ecrire() || it.type === 'discrim' || it.type === 'qcm') ? graine(() => optionsDe(it, c)) : null;
+    /* l'indice : pour les questions de l'arène ; un problème à écrire ou une planche ont déjà leur échelle d'essais */
     const tete = '<p class="ar-type"><span>' + (TYPES[it.type] || 'Question') + ' · ' + etapeTxt + '</span>' +
-      (typeof it.rendre !== 'function' && TUTEUR() ? '<button type="button" class="lien-btn ar-indice" data-a="indice">Un indice</button>' : '') + '</p>' +
+      ((!rendu || o) && TUTEUR() ? '<button type="button" class="lien-btn ar-indice" data-a="indice">Un indice</button>' : '') + '</p>' +
+      (confirmer ? '<p class="ar-confirme">Pour confirmer ce problème, écris ta réponse cette fois : tu l’as trouvée en choisissant, montre que tu sais la produire.</p>' : '') +
       (groupe ? '<div class="ar-gr" aria-live="polite"></div>' : '');
     z.innerHTML = '';
     const art = H('<article class="ar-q"></article>'); z.appendChild(art);
@@ -8553,7 +8629,7 @@ const Arene = (() => {
       if(R.retour){ R.retour.i++; if(compte) R.retour.justes++; }
       else if(R.round){ R.round.i++; if(compte) R.round.justes++; }
       art._ok = ok;
-      if(typeof it.rendre === 'function'){ const ex = $('.ar-ex', art); art._q = ex ? (ex.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 1500) : ''; }
+      const ex = $('.ar-ex', art); if(ex) art._q = (ex.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 1500);
       const bi = $('.ar-indice', art); if(bi) bi.remove();
       majTete(); majCarte();
       if(groupe && enGroupeSur(it)){ GR.mien = {n:GR.q.n, l:1, ok:!!ok, a:aide ? 1 : 0, t:String(art._rep || '').slice(0, 200)}; publierAr(); }
@@ -8572,9 +8648,7 @@ const Arene = (() => {
       p.scrollIntoView({block:'nearest'});
       if(groupe){ majGroupeUI(); piloter(); }
     };
-    /* en groupe : les nombres frais viennent de la graine du meneur (les mêmes pour tous) ; une réponse se verrouille,
-       et la correction s'ouvre quand tout le monde a répondu */
-    const graine = f => groupe && GR.q.g ? avecGraine(GR.q.g, f) : f();
+    /* en groupe : une réponse se verrouille, et la correction s'ouvre quand tout le monde a répondu */
     const verrou = (rep, ok, afficher) => {
       if(!enGroupeSur(it)){ afficher(); return; }
       GR.mien = {n:GR.q.n, l:1, ok:typeof ok === 'boolean' ? ok : null, a:R.aide ? 1 : 0, t:String(rep || '').slice(0, 200)};
@@ -8583,14 +8657,9 @@ const Arene = (() => {
       const bi = $('.ar-indice', art); if(bi) bi.remove();
       publierAr(); majGroupeUI(); verifierAttente();
     };
-    if(typeof it.rendre === 'function'){ art.innerHTML = tete + '<div class="ar-ex"></div>'; graine(() => it.rendre($('.ar-ex', art), fini)); if(groupe) majGroupeUI(); return; }
-    const c = it.carte || {};
-    /* le standard de l'arène (recipe §6.12, blueprint §4.7) : quatre tuiles à choisir, une réponse juste et trois
-       erreurs plausibles ; « ✎ Écrire » garde le rappel de mémoire. En groupe, la graine du meneur donne à tous le
-       même ordre et les mêmes nombres. */
-    const o = (!ecrire() || it.type === 'discrim' || it.type === 'qcm') ? graine(() => optionsDe(it, c)) : null;
+    if(rendu && !o){ art.innerHTML = tete + '<div class="ar-ex"></div>'; graine(() => it.rendre($('.ar-ex', art), fini)); if(groupe) majGroupeUI(); return; }
     if(o){
-      art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-tuiles" role="group" aria-label="Choisis une réponse"></div>';
+      art.innerHTML = tete + (o.avant ? '<div class="ar-avant">' + o.avant + '</div>' : '') + '<h3 class="ar-qq"></h3><div class="ar-tuiles" role="group" aria-label="Choisis une réponse"></div>';
       $('.ar-qq', art).innerHTML = o.q;
       art._q = texte(o.q); art._ref = o.ref;
       const z = $('.ar-tuiles', art);
@@ -8610,7 +8679,10 @@ const Arene = (() => {
         verrou(art._rep, ok, () => {
           $$('.ar-tuile', art).forEach((x, j) => { x.classList.add(o.choix[j].bon ? 'juste' : 'pale'); });
           if(!ok){ bt.classList.remove('pale'); bt.classList.add('faux'); }
-          if(o.modele) art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p class="lib">La réponse</p>' + o.modele + '</div>');
+          /* une erreur nommée : son message, celui que l'atelier donne à la même erreur écrite */
+          if(!ok && o.choix[i].m) art.insertAdjacentHTML('beforeend', '<p class="ar-erreur">' + o.choix[i].m + '</p>');
+          if(o.modele) art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p class="lib">' + (o.lib || 'La réponse') + '</p>' + o.modele + '</div>');
+          if(o.kc && typeof Pratique !== 'undefined' && Pratique.noter) Pratique.noter(o.kc, {premier:ok, aide:R.aide, resolu:ok, err:ok ? [] : [o.choix[i].pid || it.id + '.tuile']});
           fini(ok);
         });
       };
@@ -8966,6 +9038,14 @@ const Arene = (() => {
     [v * 10, v / 10, -v, v * 1.25, v * 0.75, v + Math.pow(10, -dec) * 10].forEach(x => { const s = ecr(x); if(s !== bon && !l.includes(s) && !(unite === ' ans' && x < 0)) l.push(s); });
     return l.length >= 3 ? {bon, faux:melanger(l.slice(0, 5)).slice(0, 3)} : null;
   }
+  /* un problème ou une planche de l'atelier, en tuiles : it.tuiles() rend {q, bon, faux:[{t, m, pid}], modele, lib, ref,
+     avant, kc} ; m, le message de l'erreur nommée, s'affiche si on la choisit */
+  function tuilesDe(it){
+    let t = null; try{ t = it.tuiles(); }catch(e){ console.error(e); }
+    if(!t || !t.bon || !Array.isArray(t.faux) || t.faux.length < 3) return null;
+    const choix = melanger([{t:esc(t.bon), bon:true}].concat(t.faux.slice(0, 3).map(x => ({t:esc(x.t), bon:false, m:x.m || '', pid:x.pid || ''}))));
+    return {q:t.q, choix, modele:t.modele || '', lib:t.lib || '', ref:t.ref || 'réponse : ' + t.bon, avant:t.avant || '', kc:t.kc || ''};
+  }
   function optionsDe(it, c){
     if(it.type === 'discrim' || it.type === 'qcm'){
       const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
@@ -8987,13 +9067,22 @@ const Arene = (() => {
       return {q:g.q, choix:melangerChoix(n.bon, n.faux), modele:'<p><b>Réponse :</b> ' + g.r + '</p>' + (g.exp ? '<p>' + g.exp + '</p>' : ''), ref:'réponse attendue : ' + texte(g.r)};
     }
     if(it.type === 'chaine'){
-      const l = (c.items || []).map(court);
-      if(l.length < 3 || l.length > 6 || l.some(x => !x || x.length > 48)) return null;
-      const bon = l.join(' → '), faux = [];
-      for(let i = 0; i < l.length - 1 && faux.length < 3; i++){ const m = l.slice(); [m[i], m[i + 1]] = [m[i + 1], m[i]]; const s = m.join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
-      if(faux.length < 3){ const s = l.slice().reverse().join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
-      if(faux.length < 3) return null;
-      return {q:c.q, choix:melangerChoix(bon, faux), modele:'<ol>' + (c.items || []).map(x => '<li>' + x + '</li>').join('') + '</ol>', ref:'ordre juste : ' + bon};
+      const l = (c.items || []).map(court), modele = '<ol>' + (c.items || []).map(x => '<li>' + x + '</li>').join('') + '</ol>', ref = 'ordre juste : ' + l.join(' → ');
+      if(l.length < 3 || l.some(x => !x)) return null;
+      if(l.length <= 6 && l.every(x => x.length <= 48)){
+        const bon = l.join(' → '), faux = [];
+        for(let i = 0; i < l.length - 1 && faux.length < 3; i++){ const m = l.slice(); [m[i], m[i + 1]] = [m[i + 1], m[i]]; const s = m.join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+        if(faux.length < 3){ const s = l.slice().reverse().join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+        if(faux.length >= 3) return {q:c.q, choix:melangerChoix(bon, faux), modele, ref};
+      }
+      /* trop longue pour tenir entière dans une tuile : une étape à la fois, et les tuiles sont les étapes de la
+         chaîne elle-même. Cinq étapes et plus : laquelle vient juste après telle étape ? Moins : laquelle vient en n-ième ? */
+      if(l.length >= 5){
+        const i = Math.floor(Math.random() * (l.length - 1));
+        return {q:c.q + '<br><span class="ar-sous">Juste après « ' + esc(l[i]) + ' », quelle étape vient ?</span>', choix:melangerChoix(l[i + 1], melanger(l.filter((x, k) => k !== i && k !== i + 1))), modele, ref};
+      }
+      const i = Math.floor(Math.random() * l.length), rang = i === 0 ? 'en premier' : i === l.length - 1 ? 'en dernier' : 'en ' + (i + 1) + 'ᵉ';
+      return {q:c.q + '<br><span class="ar-sous">Quelle étape vient ' + rang + ' ?</span>', choix:melangerChoix(l[i], l.filter((x, k) => k !== i)), modele, ref};
     }
     return null;
   }
@@ -15567,6 +15656,9 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['opt-ua2', 'to-m56', 'adm-m07'], t:'Dans l’Arène, les problèmes avec des nombres se font aussi en quatre réponses au choix : calcule, puis touche ta réponse. Une mauvaise réponse te dit quelle erreur tu as faite. Pour qu’un problème soit acquis, tu écris le nombre toi-même une dernière fois, comme à l’examen.'},
+    {d:'2026-10-31', p:['anat-m6'], t:'Dans l’Arène, les planches se font en quatre réponses au choix : quelle structure est au repère A ? Pour t’entraîner à écrire les noms, « Les planches, de mémoire » reste sur l’écran des glandes.'},
+    {d:'2026-10-31', p:['*'], t:'Dans l’Arène, les longues séquences se font une étape à la fois : quelle étape vient juste après celle-ci ?'},
     {d:'2026-10-31', p:['*'], t:'L’Arène ne bloque plus rien : elle commence par les bases, mais tu peux choisir un module en haut de la carte (par exemple seulement le module 7), n’importe quel bloc, ou revoir un bloc déjà acquis.'},
     {d:'2026-10-31', p:['*'], t:'Dans l’Arène, tes bonnes réponses se voient tout de suite : la partie pâle des barres, c’est ce qui est « en route ». Une question devient acquise quand tu la réussis encore, une dizaine de questions plus tard.'},
     {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
@@ -15798,7 +15890,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'e08540765cbc';
+  const ICI = '1f300f2d61e6';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
