@@ -1598,6 +1598,25 @@ body.ar-ouverte{overflow:hidden}
 @media (max-width:899px){ .ar.avec-carte .ar-corps{grid-template-columns:minmax(0,1fr)} .ar.avec-carte .ar-scene{display:none} .ar-carte{border-right:0} }
 @media (max-width:560px){ .ar-tete{gap:6px 10px} .ar-titre{font-size:18px} .ar-seance{display:none} .ar-qq{font-size:16.5px} .ar-q{padding:14px 12px} .ar-scene{padding:14px 12px 30px} }
 @media (prefers-reduced-motion: reduce){ .ar-jauge i{transition:none} }
+/* le plan du bloc, l'indice, le point du cours plié, et le tuteur dans l'arène (30 oct.) */
+.ar-type{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.ar-type .ar-indice{margin-left:auto;text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:700}
+.ar-type .ar-indice:disabled{opacity:.75;cursor:default;text-decoration:none}
+.ar-plan{text-align:left;max-width:560px;margin:8px auto 10px;padding-left:22px;display:grid;gap:6px;line-height:1.45}
+.ar-plan-plus,.ar-plan-pourquoi{font-size:14px;color:var(--ink-2)}
+details.ar-cours > summary{cursor:pointer;font-weight:700}
+details.ar-cours[open] > summary{margin-bottom:4px}
+.ar-verdict.aide{color:var(--accent)}
+.ar-suite .ar-ctrl{margin-top:0;align-items:center}
+@media (min-width:900px){
+  body.ar-tuteur .ar{padding-right:calc(var(--ar-tw,400px) + 28px)}
+  body.ar-tuteur .tuteur{position:fixed;right:14px;top:calc(14px + env(safe-area-inset-top,0px));width:var(--ar-tw,400px);z-index:325}
+}
+@media (min-width:900px) and (max-width:1199px){
+  body.ar-tuteur .ar.avec-carte .ar-corps{grid-template-columns:minmax(0,1fr)}
+  body.ar-tuteur .ar.avec-carte .ar-carte{display:none}
+}
+@media (max-width:899px){ body.ar-tuteur .tuteur{z-index:325} }
 </style>
 
 <div class="app" id="app">
@@ -7511,7 +7530,7 @@ const Arene = (() => {
 
   /* ---------- la séance ---------- */
   const R = {sess:Date.now().toString(36), bloc:'', file:[], dernier:'', n:0, justes:0, depuisRev:0, courant:null,
-    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null};
+    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null, plans:new Set(), aide:false, repondu:false};
   const item = id => { for(const b of B.blocs){ const i = b.items.find(x => x.id === id); if(i) return [i, b]; } return [null, null]; };
   function revision(sauf){
     const pool = [];
@@ -7547,7 +7566,7 @@ const Arene = (() => {
     if(R.file.length){ const x = R.file.sort((p, q) => p.apres - q.apres).shift(); return item(x.id); }
     const i = b.items.find(x => !acquis(x)); return i ? [i, b] : [null, null];
   }
-  function enregistrer(it, ok){
+  function enregistrer(it, ok, aide){
     const s = etat(it.id), j = jourLocal(), avant = acquis(it);
     const ecart = s.sess === R.sess ? R.n - (+s.rang || 0) - 1 : Infinity;
     s.n++; s.sess = R.sess; s.rang = R.n;
@@ -7567,7 +7586,7 @@ const Arene = (() => {
     else if(!avant) R.acquisSeance.add(it.id);
     if(!acquis(it)) R.acquisSeance.delete(it.id);
     R.dernier = it.id; R.depuisRev++;
-    if(it.pas && typeof Pas !== 'undefined' && it.type !== 'gen') Pas.noter(it.pas, ok ? 'ok' : 'ko');
+    if(it.pas && typeof Pas !== 'undefined' && it.type !== 'gen' && !aide) Pas.noter(it.pas, ok ? 'ok' : 'ko');
     toucherEtat();
     return {vient:!avant && acquis(it), perdu:avant && !ok, attente:ok && !acquis(it) ? (s.serie >= besoin(it) - 1 ? 'long' : 'court') : ''};
   }
@@ -7619,7 +7638,9 @@ const Arene = (() => {
       const a = b.dataset.a;
       if(a === 'fermer') demanderFermer();
       else if(a === 'carte'){ const o = !ui.classList.contains('avec-carte'); ui.classList.toggle('avec-carte', o); b.setAttribute('aria-pressed', String(o)); }
-      else if(a === 'briefing') briefing();
+      else if(a === 'plan'){ const c = R.courant; if(c && c[1]) plan(c[1], suivant, false); }
+      else if(a === 'indice') indice();
+      else if(a === 'tuteur') demanderTuteur();
       else if(a === 'auto'){ R.bloc = ''; suivant(); }
       else if(a === 'round'){ if(lancerRound()) suivant(); }
     });
@@ -7661,15 +7682,71 @@ const Arene = (() => {
     suivant();
   }
   /* le point du cours derrière une question : le titre du pas et ses mots clés, et le chemin vers l'écran */
-  function pointDuCours(pasId){
+  function pointDuCours(pasId, plie){
     const p = pasId && Pas.get(pasId); if(!p) return '';
     const cle = Array.isArray(p.cle) ? p.cle : [];
-    return '<div class="ar-cours"><p class="lib">Le point du cours : ' + esc(p.titre) + '</p>' + (cle.length ? '<ul>' + cle.map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>' : '') +
-      '<button type="button" class="lien-btn" data-aller-ecran="' + esc(p.ecran) + '">Voir l’écran « ' + esc((ecran(p.ecran) || {}).titre || p.ecran) + ' » →</button></div>';
+    const corps = (cle.length ? '<ul>' + cle.map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>' : '') +
+      '<button type="button" class="lien-btn" data-aller-ecran="' + esc(p.ecran) + '">Voir l’écran « ' + esc((ecran(p.ecran) || {}).titre || p.ecran) + ' » →</button>';
+    return plie ? '<details class="ar-cours"><summary class="lib">Le point du cours : ' + esc(p.titre) + '</summary>' + corps + '</details>'
+      : '<div class="ar-cours"><p class="lib">Le point du cours : ' + esc(p.titre) + '</p>' + corps + '</div>';
   }
-  function briefing(){
-    const b = R.courant && R.courant[1]; if(!b) return;
-    annoncerHTML('<p class="lib">Briefing · ' + esc(b.titre) + '</p><ul>' + Pas.liste(b.id).map(p => '<li><b>' + esc(p.titre) + '</b>' + (Array.isArray(p.cle) && p.cle.length ? ' : ' + esc(p.cle.join(' · ')) : '') + '</li>').join('') + '</ul>');
+  const niveauTxt = b => B.pre ? 'Niveau ' + lettre(b.niveau) : lettre(B.niveaux.findIndex(l => l.includes(b)));
+  /* le plan du bloc, en y entrant (ou entre deux questions) : les questions qui viennent, jamais leurs réponses,
+     et le temps de lecture de l'écran pour qui préfère lire d'abord. Il oriente sans souffler : les titres et les
+     points clés des pas énoncent souvent la réponse ; ils ne s'affichent qu'après un essai (le point du cours). */
+  function plan(b, suite, entree){
+    R.plans.add(b.id);
+    const qs = Pas.liste(b.id).filter(p => p.verif && p.verif.q).map(p => p.verif.q);
+    const montrees = qs.slice(0, 8), reste = b.items.length - montrees.length;
+    const e = ecran(b.id), mots = e && e.el ? (e.el.textContent || '').split(/\s+/).filter(Boolean).length : 0;
+    const min = Math.max(1, Math.round(mots / 150));
+    $('.ar-ou', ui).innerHTML = '<span class="ar-niveau">' + niveauTxt(b) + '</span> <b>' + esc(b.titre) + '</b> · le plan du bloc';
+    carte('<p class="ar-fin-t ar-petit">' + esc(b.titre) + '</p><p>Ce que l’arène va te demander :</p>' +
+      (montrees.length ? '<ul class="ar-plan">' + montrees.map(q => '<li>' + esc(q) + '</li>').join('') + '</ul>' : '') +
+      (reste > 0 ? '<p class="ar-plan-plus">' + (montrees.length ? 'Et ' + reste + (reste > 1 ? ' autres éléments' : ' autre élément') : b.items.length + (b.items.length > 1 ? ' éléments' : ' élément')) + ' : cartes, choix ou problèmes du même écran.</p>' : '') +
+      '<p class="ar-plan-pourquoi">Les réponses viennent après chaque essai. Essayer d’abord, même sans savoir, prépare ta mémoire à retenir la réponse. Tu préfères lire avant ? L’écran se lit en ≈ ' + min + ' min.</p>',
+      [[entree ? 'Commencer' : 'Continuer', suite, true], ['Lire l’écran d’abord', () => { fermer(); aller(b.id); }]]);
+  }
+  /* le tuteur dans l'arène : à côté (bureau) ou par-dessus, en feuille (téléphone) */
+  const TUTEUR = () => typeof Tuteur !== 'undefined' && !!Tuteur && typeof Tuteur.demander === 'function';
+  let veille = null;
+  function avecTuteur(){
+    const t = $('.tuteur'), w = t ? Math.round(t.getBoundingClientRect().width) : 0;
+    document.body.style.setProperty('--ar-tw', (w > 200 ? w : 400) + 'px');
+    document.body.classList.add('ar-tuteur');
+    if(ui) ui.setAttribute('aria-modal', 'false');
+    const app = $('#app');
+    if(!veille && app){ veille = new MutationObserver(() => { if(!app.classList.contains('avec-tuteur')) sansTuteur(); }); veille.observe(app, {attributes:true, attributeFilter:['class']}); }
+  }
+  function sansTuteur(){ document.body.classList.remove('ar-tuteur'); if(ui) ui.setAttribute('aria-modal', 'true'); }
+  const texte = h => { const d = document.createElement('div'); d.innerHTML = String(h || ''); return (d.textContent || '').replace(/\s+/g, ' ').trim(); };
+  /* ce que le tuteur reçoit pour lui seul ; en mode copier-coller, le texte copié est visible : rien de la réponse n'y va avant l'essai */
+  function pourLeTuteur(it, b, art, avant){
+    const p = it.pas && Pas.get(it.pas);
+    if(avant && !(Tuteur.peutJSON && Tuteur.peutJSON())) return 'Question posée dans l’arène de l’atelier, bloc « ' + b.titre + ' ».';
+    return 'Pour toi seulement (ne la recopie pas ; sers-t’en pour guider ou corriger) : question posée dans l’arène de l’atelier, bloc « ' + b.titre + ' »' +
+      (p ? ' ; point du cours « ' + p.titre + ' »' + (Array.isArray(p.cle) && p.cle.length ? ' : ' + p.cle.join(' ; ') : '') : '') +
+      (art && art._ref ? ' ; ' + art._ref : '') + '.';
+  }
+  /* un indice, avant de répondre : le tuteur guide sans donner la réponse ; la question compte alors « avec aide » */
+  function indice(){
+    const c = R.courant, art = $('.ar-q', ui); if(!c || !c[0] || !art || R.repondu || !TUTEUR()) return;
+    R.aide = true;
+    const bt = $('.ar-indice', art); if(bt){ bt.disabled = true; bt.textContent = 'Indice demandé · elle comptera avec aide'; }
+    const brouillon = (($('textarea', art) || $('.ar-rep input', art) || {}).value || '').trim();
+    Tuteur.demander('Question de l’arène : « ' + (art._q || '') + ' »' + (brouillon ? ' Ce que j’ai pour l’instant : « ' + brouillon + ' ».' : '') +
+      ' Donne-moi un seul indice pour avancer, sans me donner la réponse.', pourLeTuteur(c[0], c[1], art, true));
+    avecTuteur();
+  }
+  /* après la réponse : comprendre pourquoi */
+  function demanderTuteur(){
+    const c = R.courant, art = $('.ar-q', ui); if(!c || !c[0] || !art || !TUTEUR()) return;
+    const it = c[0], ok = !!art._ok;
+    const debut = typeof it.rendre === 'function' ? 'Problème de l’arène, avec mes essais : « ' + (art._q || '') + ' ».'
+      : 'Question de l’arène : « ' + (art._q || '') + ' »' + (art._rep ? ' Ma réponse : « ' + art._rep + ' ».' : ' Je n’ai pas su répondre.');
+    Tuteur.demander(debut + (ok ? ' C’était juste : explique-moi pourquoi en deux ou trois phrases, et ce qu’il faut retenir.'
+      : ' Ce n’était pas juste : explique-moi simplement ce qui ne va pas, et ce qu’il faut retenir.'), pourLeTuteur(it, c[1], art, false));
+    avecTuteur();
   }
   /* une carte de passage (intro du retour, bilans) : un texte et des boutons */
   function carte(h, boutons){
@@ -7706,7 +7783,16 @@ const Arene = (() => {
         suite === 'fermer' ? [['Fermer l’arène', fermer, true], ['Continuer quand même', suivant]] : [['Continuer l’arène', suivant, true], ['Fermer', fermer]]);
       return;
     }
+    if(it && b && !R.retour && !R.round && !R.plans.has(b.id) && b.items.every(i => !lu(i.id))){
+      R.courant = [it, b]; majTete(); majCarte();
+      plan(b, () => montrer(it, b), true);
+      return;
+    }
+    montrer(it, b);
+  }
+  function montrer(it, b){
     R.courant = it ? [it, b] : null;
+    R.aide = false; R.repondu = false;
     majTete(); majCarte();
     const z = $('.ar-item', ui), ou = $('.ar-ou', ui);
     if(!it){
@@ -7717,24 +7803,33 @@ const Arene = (() => {
     }
     const s = lu(it.id), n = b.items.filter(acquis).length, mode = R.retour ? 'retour' : R.round ? 'round' : '';
     if(mode) ou.innerHTML = '<span class="ar-niveau">' + (mode === 'retour' ? '↺' : '★') + '</span> <b>' + (mode === 'retour' ? 'Le retour' : 'Dernier round') + '</b> · ' + ((mode === 'retour' ? R.retour.i : R.round.i) + 1) + ' / ' + (mode === 'retour' ? R.retour.file.length : R.round.file.length) + ' · <span class="ar-auto">' + esc(b.titre) + '</span>';
-    else ou.innerHTML = '<span class="ar-niveau">' + (B.pre ? 'Niveau ' + lettre(b.niveau) : lettre(B.niveaux.findIndex(l => l.includes(b)))) + '</span> <b>' + esc(b.titre) + '</b> · ' + n + ' / ' + b.items.length + ' acquis' +
+    else ou.innerHTML = '<span class="ar-niveau">' + niveauTxt(b) + '</span> <b>' + esc(b.titre) + '</b> · ' + n + ' / ' + b.items.length + ' acquis' +
       (n < b.items.length ? ' · ≈ ' + minutesRestantes(b) + ' min pour finir le bloc' : '') +
-      ' <button type="button" class="lien-btn" data-a="briefing">Briefing</button>' + (R.bloc ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '');
+      (R.bloc ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '');
     const etapeTxt = acquis(it) ? 'révision' : s && s.serie ? (s.serie >= besoin(it) - 1 ? 'à confirmer de loin' : 'à reprendre') : s && s.n ? 'à reprendre' : 'nouvelle';
-    const tete = '<p class="ar-type">' + (TYPES[it.type] || 'Question') + ' · ' + etapeTxt + '</p>';
+    /* l'indice : pour les questions de l'arène ; les problèmes et les planches ont déjà leur échelle d'essais */
+    const tete = '<p class="ar-type"><span>' + (TYPES[it.type] || 'Question') + ' · ' + etapeTxt + '</span>' +
+      (typeof it.rendre !== 'function' && TUTEUR() ? '<button type="button" class="lien-btn ar-indice" data-a="indice">Un indice</button>' : '') + '</p>';
     z.innerHTML = '';
     const art = H('<article class="ar-q"></article>'); z.appendChild(art);
     const fini = ok => {
-      const deja = acquis(it), r = enregistrer(it, ok);
-      if(R.retour){ R.retour.i++; if(ok) R.retour.justes++; }
-      else if(R.round){ R.round.i++; if(ok) R.round.justes++; }
+      R.repondu = true;
+      const aide = R.aide, compte = ok && !aide;
+      const deja = acquis(it), r = enregistrer(it, compte, aide);
+      if(R.retour){ R.retour.i++; if(compte) R.retour.justes++; }
+      else if(R.round){ R.round.i++; if(compte) R.round.justes++; }
+      art._ok = ok;
+      if(typeof it.rendre === 'function'){ const ex = $('.ar-ex', art); art._q = ex ? (ex.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 1500) : ''; }
+      const bi = $('.ar-indice', art); if(bi) bi.remove();
       majTete(); majCarte();
-      const p = H('<div class="ar-suite"><p class="ar-verdict"></p><button type="button" class="btn plein ar-suiv">Suivante →</button></div>');
-      $('.ar-verdict', p).textContent = ok
-        ? (deja ? (mode === 'retour' ? 'Retenu ✓ : il s’ancre ⚓' : 'Toujours là ✓') : r.vient ? 'Acquis ✓' : r.attente === 'long' ? 'Juste. Elle reviendra plus tard, de loin, pour confirmer.' : 'Juste. Elle revient bientôt.')
+      const p = H('<div class="ar-suite"><p class="ar-verdict"></p><div class="ar-ctrl"><button type="button" class="btn plein ar-suiv">Suivante →</button>' +
+        (TUTEUR() ? '<button type="button" class="btn btn-tuteur" data-a="tuteur">Demander au tuteur</button>' : '') +
+        '<button type="button" class="lien-btn" data-a="plan">Le plan du bloc</button></div></div>');
+      $('.ar-verdict', p).textContent = ok && aide ? 'Juste, avec un indice : elle revient dans trois questions, sans indice cette fois.'
+        : ok ? (deja ? (mode === 'retour' ? 'Retenu ✓ : il s’ancre ⚓' : 'Toujours là ✓') : r.vient ? 'Acquis ✓' : r.attente === 'long' ? 'Juste. Elle reviendra plus tard, de loin, pour confirmer.' : 'Juste. Elle revient bientôt.')
         : deja ? 'Oublié : il revient en jeu, dans trois questions.' : 'Raté : elle revient dans trois questions.';
-      $('.ar-verdict', p).className = 'ar-verdict ' + (ok ? 'ok' : 'bad');
-      if(!ok && it.pas) p.insertAdjacentHTML('afterbegin', pointDuCours(it.pas));
+      $('.ar-verdict', p).className = 'ar-verdict ' + (ok && aide ? 'aide' : ok ? 'ok' : 'bad');
+      if(it.pas) p.insertAdjacentHTML('afterbegin', pointDuCours(it.pas, compte));
       art.appendChild(p);
       $('.ar-suiv', p).addEventListener('click', suivant);
       $('.ar-suiv', p).focus({preventScroll:true});
@@ -7746,10 +7841,12 @@ const Arene = (() => {
       const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-choix"></div>';
       $('.ar-qq', art).innerHTML = it.type === 'qcm' ? esc(it.q) : c.q;
+      art._q = texte($('.ar-qq', art).innerHTML);
+      art._ref = 'bonne réponse : ' + texte(choix[bonne]) + ((it.type === 'qcm' ? it.r : c.r) ? ' (' + texte(it.type === 'qcm' ? it.r : c.r) + ')' : '');
       choix.forEach((t, i) => { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-c'; bt.innerHTML = t; bt.dataset.i = i; $('.ar-choix', art).appendChild(bt); });
       $('.ar-choix', art).addEventListener('click', e => {
         const bt = e.target.closest('.ar-c'); if(!bt || art.dataset.fait) return;
-        art.dataset.fait = '1';
+        art.dataset.fait = '1'; art._rep = texte(bt.innerHTML);
         const ok = +bt.dataset.i === bonne;
         $$('.ar-c', art).forEach(x => { x.disabled = true; if(+x.dataset.i === bonne) x.classList.add('juste'); });
         if(!ok) bt.classList.add('faux');
@@ -7766,13 +7863,14 @@ const Arene = (() => {
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-rep"><input type="text" inputmode="decimal" aria-label="Ta réponse" placeholder="Ta réponse"></div>' +
         '<div class="ar-ctrl"><button type="button" class="btn plein" data-v="ok">Vérifier</button><button type="button" class="btn" data-v="sais">Je ne sais pas</button></div>';
       $('.ar-qq', art).innerHTML = g.q;
+      art._q = texte(g.q); art._ref = 'réponse attendue : ' + texte(g.r) + (g.exp ? ' (' + texte(g.exp) + ')' : '');
       const inp = $('input', art);
       const corriger = sais => {
-        $('.ar-ctrl', art).hidden = true; inp.readOnly = true;
+        $('.ar-ctrl', art).hidden = true; inp.readOnly = true; art._rep = sais ? '' : inp.value.trim();
         const ok = !sais && Rappel.comparerNombres(inp.value, g.r, g.tol);
         art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p><b>Réponse :</b> ' + g.r + '</p>' + (g.exp ? '<p>' + g.exp + '</p>' : '') + '</div>');
         fini(ok);
-        if(!ok && !sais && inp.value.trim()){
+        if(!ok && !sais && inp.value.trim() && !R.aide){
           /* une autre écriture juste : l'étudiant corrige le verdict, l'élément est compté juste */
           const o = H('<p class="lib"><button type="button" class="lien-btn">J’avais juste, écrit autrement</button></p>');
           $('.ar-suite', art).before(o);
@@ -7801,10 +7899,11 @@ const Arene = (() => {
       (it.type === 'chaine' ? 'Écris la suite de mémoire, une étape par ligne…' : 'Ta réponse, de mémoire…') + '"></textarea></div>' +
       '<div class="ar-ctrl"><button type="button" class="btn plein" data-v="ok">Vérifier</button><button type="button" class="btn" data-v="sais">Je ne sais pas</button></div>';
     $('.ar-qq', art).innerHTML = q;
+    art._q = texte(q); art._ref = 'réponse modèle : ' + texte(modele) + (points.length ? ' ; points attendus : ' + points.map(texte).join(' ; ') : '');
     const ta = $('textarea', art);
     if(typeof voixBtn === 'function') $('.ar-rep', art).appendChild(voixBtn(ta));
     const corriger = sais => {
-      $('.ar-ctrl', art).hidden = true; ta.readOnly = true;
+      $('.ar-ctrl', art).hidden = true; ta.readOnly = true; art._rep = sais ? '' : ta.value.trim();
       const box = H('<div class="ar-corrige"><div class="ar-modele"></div></div>');
       $('.ar-modele', box).innerHTML = '<p class="lib">La réponse</p>' + modele;
       art.appendChild(box);
@@ -7851,7 +7950,7 @@ const Arene = (() => {
   }
   function fermer(){
     if(!ui || ui.hidden) return;
-    ui.hidden = true; document.body.classList.remove('ar-ouverte');
+    ui.hidden = true; document.body.classList.remove('ar-ouverte'); sansTuteur();
     if(!R.round) R.courant = R.courant && R.courant[0] && !acquis(R.courant[0]) ? R.courant : null;
     const b = $('#btn-arene'); if(b) b.focus({preventScroll:true});
   }
@@ -13428,7 +13527,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'c2e1601731e3';
+  const ICI = 'b9b793d28cbd';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
