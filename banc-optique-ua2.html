@@ -1587,8 +1587,9 @@ body.ar-ouverte{overflow:hidden}
 .ar-titre{font-family:var(--f-display,inherit);font-size:20px;letter-spacing:.01em}
 .ar-total{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-2)}
 .ar-pc{font-weight:800;font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums}
-.ar-jauge{width:min(220px,30vw);height:8px;border-radius:999px;background:var(--line);overflow:hidden}
-.ar-jauge i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .4s ease}
+.ar-jauge{display:flex;width:min(220px,30vw);height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.ar-jauge i{display:block;flex:none;height:100%;background:var(--accent);transition:width .4s ease}
+.ar-jauge b{display:block;flex:none;height:100%;background:var(--accent);opacity:.35;transition:width .4s ease}
 .ar-seance{font-size:13px;color:var(--ink-2)}
 .ar-espace{flex:1}
 .ar-b,.ar-x{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;min-height:34px}
@@ -1606,8 +1607,9 @@ body.ar-ouverte{overflow:hidden}
 .ar-bloc.fait .ar-bm{color:var(--ok,#2e8b57)}
 .ar-bt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ar-bm{grid-row:span 2;font-weight:800;font-size:12.5px;font-variant-numeric:tabular-nums}
-.ar-bp{height:4px;border-radius:999px;background:var(--line);overflow:hidden}
-.ar-bp i{display:block;height:100%;background:var(--accent)}
+.ar-bp{display:flex;height:4px;border-radius:999px;background:var(--line);overflow:hidden}
+.ar-bp i{display:block;flex:none;height:100%;background:var(--accent)}
+.ar-bp b{display:block;flex:none;height:100%;background:var(--accent);opacity:.35}
 .ar-bloc.fait .ar-bp i{background:var(--ok,#2e8b57)}
 .ar-legende{margin:10px 2px 0;font-size:12.5px;color:var(--ink-2);line-height:1.45}
 .ar-scene{overflow:auto;padding:20px max(16px,4vw) 40px}
@@ -1651,7 +1653,7 @@ body.ar-ouverte{overflow:hidden}
 .ar-ctrl.ar-centre{justify-content:center;margin-top:16px}
 @media (max-width:899px){ .ar.avec-carte .ar-corps{grid-template-columns:minmax(0,1fr)} .ar.avec-carte .ar-scene{display:none} .ar-carte{border-right:0} }
 @media (max-width:560px){ .ar-tete{gap:6px 10px} .ar-titre{font-size:18px} .ar-seance{display:none} .ar-qq{font-size:16.5px} .ar-q{padding:14px 12px} .ar-scene{padding:14px 12px 30px} }
-@media (prefers-reduced-motion: reduce){ .ar-jauge i{transition:none} }
+@media (prefers-reduced-motion: reduce){ .ar-jauge i,.ar-jauge b{transition:none} }
 /* le plan du bloc, l'indice, le point du cours plié, et le tuteur dans l'arène (30 oct.) */
 .ar-type{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
 .ar-type .ar-indice{margin-left:auto;text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:700}
@@ -7807,8 +7809,12 @@ const Arene = (() => {
   }
   const lettre = n => String.fromCharCode(65 + Math.min(25, n));
   const pc = b => b.items.length ? b.items.filter(acquis).length / b.items.length : 1;
+  /* en route : juste au moins une fois, pas encore confirmé de loin ; les barres le montrent en pâle, pour que
+     les premières réponses justes se voient (avant, rien ne bougeait avant la douzième question) */
+  const enRoute = it => { if(acquis(it)) return false; const s = lu(it.id); return !!s && (+s.serie || 0) > 0; };
+  const pcRoute = b => b.items.length ? b.items.filter(enRoute).length / b.items.length : 0;
   const ouvert = b => b.pre.every(p => pc(B.par[p]) >= SEUIL_OUVERT);
-  const total = () => { let a = 0, k = 0; B.blocs.forEach(b => b.items.forEach(i => { if(acquis(i)){ a++; if(ancre(i)) k++; } })); return {n:B.n, a, k, p:B.n ? a / B.n : 0}; };
+  const total = () => { let a = 0, k = 0, r = 0; B.blocs.forEach(b => b.items.forEach(i => { if(acquis(i)){ a++; if(ancre(i)) k++; } else if(enRoute(i)) r++; })); return {n:B.n, a, k, r, p:B.n ? a / B.n : 0, q:B.n ? r / B.n : 0}; };
   const ecartLong = () => Math.max(1, Math.min(LONG, B.n - 1));
   function frontiere(){ return B.blocs.find(b => pc(b) < 1 && ouvert(b)) || B.blocs.find(b => pc(b) < 1) || null; }
   /* ce qu'il reste à faire dans un bloc, en réponses, puis en minutes */
@@ -7913,7 +7919,7 @@ const Arene = (() => {
   function construireUI(){
     ui = H('<section class="ar v2-hors-texte" role="dialog" aria-modal="true" aria-labelledby="ar-titre" hidden>' +
       '<header class="ar-tete"><b id="ar-titre" class="ar-titre">Arène</b>' +
-        '<div class="ar-total"><span class="ar-pc">0 %</span><span class="ar-jauge" aria-hidden="true"><i></i></span><small class="ar-compte"></small></div>' +
+        '<div class="ar-total"><span class="ar-pc">0 %</span><span class="ar-jauge" aria-hidden="true"><i></i><b></b></span><small class="ar-compte"></small></div>' +
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
         '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
         '<button type="button" class="ar-b" data-a="round" hidden>Dernier round</button>' +
@@ -7954,8 +7960,9 @@ const Arene = (() => {
     const t = total();
     $('.ar-pc', ui).textContent = Math.floor(t.p * 100) + ' %';
     $('.ar-jauge i', ui).style.width = (t.p * 100).toFixed(1) + '%';
-    $('.ar-compte', ui).textContent = t.a + ' / ' + t.n + ' acquis' + (t.k ? ' · ' + t.k + ' ancrés ⚓' : '');
-    $('.ar-seance', ui).textContent = R.n ? 'Séance : ' + R.n + ' réponse' + (R.n > 1 ? 's' : '') + (R.acquisSeance.size ? ', ' + R.acquisSeance.size + ' acquis' : '') : '';
+    $('.ar-jauge b', ui).style.width = (t.q * 100).toFixed(1) + '%';
+    $('.ar-compte', ui).textContent = t.a + ' / ' + t.n + ' acquis' + (t.r ? ' · ' + t.r + ' en route' : '') + (t.k ? ' · ' + t.k + ' ancrés ⚓' : '');
+    $('.ar-seance', ui).textContent = R.n ? 'Séance : ' + R.n + ' réponse' + (R.n > 1 ? 's' : '') + ', ' + R.justes + ' juste' + (R.justes > 1 ? 's' : '') + (R.acquisSeance.size ? ', ' + R.acquisSeance.size + ' acquis' : '') : '';
     $('[data-a="round"]', ui).hidden = !!R.round || !!R.retour || R.acquisSeance.size < 3 || GR.actif;
     majBoutonGroupe();
     majBouton();
@@ -7964,10 +7971,10 @@ const Arene = (() => {
     const z = $('.ar-carte', ui), courant = R.courant && R.courant[1] ? R.courant[1].id : '';
     z.innerHTML = B.niveaux.map((l, k) => '<section class="ar-niv"><h3>' + (B.pre ? 'Niveau ' + lettre(l[0].niveau) : lettre(k) + ' · ' + esc(l[0].partie)) + '</h3>' +
       l.map(b => {
-        const p = pc(b), o = ouvert(b), fait = p === 1, tousAncres = fait && b.items.every(ancre);
+        const p = pc(b), q = pcRoute(b), o = ouvert(b), fait = p === 1, tousAncres = fait && b.items.every(ancre);
         return '<button type="button" class="ar-bloc' + (fait ? ' fait' : '') + (o ? '' : ' ferme') + (b.id === courant ? ' ici' : '') + '" data-bloc="' + b.id + '" title="' +
-          esc(b.titre + ' · ' + Math.round(p * 100) + ' % acquis' + (fait ? '' : ' · ≈ ' + minutesRestantes(b) + ' min pour finir') + (o ? '' : ' · s’appuie sur : ' + b.pre.filter(x => pc(B.par[x]) < SEUIL_OUVERT).map(x => B.par[x].titre).join(', '))) + '">' +
-          '<span class="ar-bt">' + esc(b.titre) + '</span><span class="ar-bp"><i style="width:' + Math.round(p * 100) + '%"></i></span>' +
+          esc(b.titre + ' · ' + Math.round(p * 100) + ' % acquis' + (q ? ' · ' + Math.round(q * 100) + ' % en route' : '') + (fait ? '' : ' · ≈ ' + minutesRestantes(b) + ' min pour finir') + (o ? '' : ' · s’appuie sur : ' + b.pre.filter(x => pc(B.par[x]) < SEUIL_OUVERT).map(x => B.par[x].titre).join(', '))) + '">' +
+          '<span class="ar-bt">' + esc(b.titre) + '</span><span class="ar-bp"><i style="width:' + Math.round(p * 100) + '%"></i><b style="width:' + Math.round(q * 100) + '%"></b></span>' +
           '<span class="ar-bm">' + (tousAncres ? '⚓' : fait ? '✓' : o ? Math.round(p * 100) + ' %' : '🔒') + '</span></button>';
       }).join('') + '</section>').join('') +
       '<p class="ar-legende">Un bloc s’ouvre quand ceux sur lesquels il s’appuie sont acquis à 70 %. ✓ : tout acquis · ⚓ : retenu aussi un autre jour. Rien ne se perd si tu t’arrêtes.</p>';
@@ -8131,7 +8138,7 @@ const Arene = (() => {
         (TUTEUR() ? '<button type="button" class="btn btn-tuteur" data-a="tuteur">Demander au tuteur</button>' : '') +
         (groupe ? '' : '<button type="button" class="lien-btn" data-a="plan">Le plan du bloc</button>') + '</div></div>');
       $('.ar-verdict', p).textContent = ok && aide ? 'Juste, avec un indice : elle revient dans trois questions, sans indice cette fois.'
-        : ok ? (deja ? (mode === 'retour' ? 'Retenu ✓ : il s’ancre ⚓' : 'Toujours là ✓') : r.vient ? 'Acquis ✓' : r.attente === 'long' ? 'Juste. Elle reviendra plus tard, de loin, pour confirmer.' : 'Juste. Elle revient bientôt.')
+        : ok ? (deja ? (mode === 'retour' ? 'Retenu ✓ : il s’ancre ⚓' : 'Toujours là ✓') : r.vient ? 'Acquis ✓' : r.attente === 'long' ? 'Juste : en route ✓ Elle reviendra de loin, dans une dizaine de questions ; juste encore, elle sera acquise.' : 'Juste : en route ✓ Elle revient bientôt, puis de loin pour confirmer.')
         : deja ? 'Oublié : il revient en jeu, dans trois questions.' : 'Raté : elle revient dans trois questions.';
       $('.ar-verdict', p).className = 'ar-verdict ' + (ok && aide ? 'aide' : ok ? 'ok' : 'bad');
       if(it.pas) p.insertAdjacentHTML('afterbegin', pointDuCours(it.pas, compte));
@@ -15136,6 +15143,7 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Dans l’Arène, tes bonnes réponses se voient tout de suite : la partie pâle des barres, c’est ce qui est « en route ». Une question devient acquise quand tu la réussis encore, une dizaine de questions plus tard.'},
     {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
     {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
@@ -15365,7 +15373,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'aec0b6ec4f1b';
+  const ICI = '382f9aba20fb';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
