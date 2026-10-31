@@ -1643,6 +1643,26 @@ details.ar-cours[open] > summary{margin-bottom:4px}
 .ar-gr-att{margin:10px 0 0;font-size:14px;color:var(--ink-2);font-style:italic}
 .ar-c.choisi{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 body.ar-ouverte .tb.cote{z-index:335}
+/* les quatre tuiles de l'arène (le standard : une juste, trois erreurs plausibles) */
+.ar-tuiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.ar-tuile{display:flex;align-items:flex-start;gap:10px;min-height:66px;padding:12px 14px;border:0;border-radius:14px;font:inherit;font-size:15.5px;line-height:1.42;
+  text-align:left;color:#0B0F1A;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2);transition:transform .08s ease,opacity .2s ease}
+.ar-tuile b{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:rgba(0,0,0,.16);font-size:13.5px;font-weight:800}
+.ar-tuile span{overflow-wrap:anywhere}
+.ar-tuile.t1{background:#FF7A6E}
+.ar-tuile.t2{background:#5CC8F5}
+.ar-tuile.t3{background:#FFD54F}
+.ar-tuile.t4{background:#A6E07A}
+.ar-tuile:not(:disabled):hover{transform:translateY(-2px)}
+.ar-tuile:not(:disabled):active{transform:translateY(1px)}
+.ar-tuile:focus-visible,.ar-tuile.choisi{outline:3px solid var(--ink);outline-offset:2px}
+.ar-tuile:disabled{cursor:default}
+.ar-tuile.pale{opacity:.32}
+.ar-tuile.juste span::after{content:"  ✓";font-weight:800}
+.ar-tuile.faux span::after{content:"  ✗";font-weight:800}
+.ar-tuile.juste{box-shadow:inset 0 0 0 3px #1E7B45,inset 0 -4px 0 rgba(0,0,0,.2)}
+@media (max-width:560px){ .ar-tuiles{grid-template-columns:1fr;gap:8px} .ar-tuile{min-height:52px;font-size:15px} }
+@media (prefers-reduced-motion: reduce){ .ar-tuile{transition:none} }
 </style>
 
 <div class="app" id="app">
@@ -2190,520 +2210,616 @@ const PAS = [
   {id:'fil.1', ecran:'fil', ancre:'Le module 6 applique la même formule à l’œil lui-même', titre:'Une formule, deux questions',
    cle:['la formule de puissance de l’UA1, appliquée à l’œil', 'de loin, au repos : l’œil a-t-il la bonne puissance ? (les amétropies)', 'de près : comment l’œil s’ajuste (accommodation, presbytie, addition)'],
    explique:'Pourquoi le module 6 commence-t-il par une formule de lentille avant de parler des amétropies ?',
-   verif:{q:'Quelles sont les deux questions que pose le module 6 ?', r:'Que se passe-t-il quand l’œil au repos n’a pas la bonne puissance (les amétropies), et comment l’œil voit de près, jusqu’à ce que l’âge lui enlève ce pouvoir (accommodation, presbytie, addition).', points:['l’œil au repos : les amétropies', 'de près : l’accommodation', 'l’âge : presbytie, addition']},
+   verif:{q:'Quelles sont les deux questions que pose le module 6 ?', r:'Que se passe-t-il quand l’œil au repos n’a pas la bonne puissance (les amétropies), et comment l’œil voit de près, jusqu’à ce que l’âge lui enlève ce pouvoir (accommodation, presbytie, addition).', points:['l’œil au repos : les amétropies', 'de près : l’accommodation', 'l’âge : presbytie, addition'],
+     qcm:{bon:'L’œil au repos qui n’a pas la bonne puissance (amétropies), et la vision de près que l’âge enlève', faux:['L’œil qui accommode de loin (amétropies), et la cornée qui s’aplatit avec l’âge', 'La formation de l’image sur la cornée, puis la longueur de l’œil qui raccourcit peu à peu avec l’âge', 'La presbytie de l’œil au repos, et l’astigmatisme qui apparaît avec l’âge']}},
    src:['M6 D3', 'M6 D19']},
   {id:'fil.2', ecran:'fil', ancre:'Voie 1 · de loin, l’œil au repos', titre:'Voie 1 : de loin',
    cle:['l’œil ≈ +60 D (cornée ≈ +40, cristallin ≈ +20)', 'emmétrope : le foyer tombe sur la rétine', 'amétrope : foyer devant ou derrière', 'deux causes : courbure cornéenne, longueur axiale'],
    explique:'Pourquoi la voie de loin se raisonne-t-elle l’œil au repos, sans accommodation ?',
-   verif:{q:'Récite la voie 1 du module 6, de loin, l’œil au repos.', r:'L’œil fait ≈ +60 D ; s’il concorde avec sa longueur, il est emmétrope (foyer sur la rétine) ; sinon il est amétrope (foyer devant ou derrière), à cause surtout de la courbure cornéenne ou de la longueur axiale.', points:['+60 D', 'emmétrope : sur la rétine', 'amétrope : devant ou derrière', 'cornée, longueur axiale']},
+   verif:{q:'Récite la voie 1 du module 6, de loin, l’œil au repos.', r:'L’œil fait ≈ +60 D ; s’il concorde avec sa longueur, il est emmétrope (foyer sur la rétine) ; sinon il est amétrope (foyer devant ou derrière), à cause surtout de la courbure cornéenne ou de la longueur axiale.', points:['+60 D', 'emmétrope : sur la rétine', 'amétrope : devant ou derrière', 'cornée, longueur axiale'],
+     qcm:{bon:'≈ +60 D ; si ça concorde avec sa longueur, foyer sur la rétine (emmétrope), sinon devant ou derrière (amétrope)', faux:['≈ +60 D ; au repos, l’œil accommode pour garder le foyer sur la rétine, sinon il est presbyte', '≈ +20 D ; si ça concorde avec sa longueur, foyer derrière la rétine (emmétrope), sinon devant la rétine (amétrope)', '≈ +60 D ; un œil long devient hypermétrope, un œil court myope, sans rôle de la cornée']}},
    src:['M6 D27', 'M6 D28', 'M6 D33']},
   {id:'fil.3', ecran:'fil', ancre:'Voie 2 · de près', titre:'Voie 2 : de près',
    cle:['objet rapproché : rayons divergents', 'sans changement, foyer derrière la rétine', 'le cristallin se bombe : l’accommodation', 'l’amplitude baisse avec l’âge (presbytie) ; l’addition comble le manque'],
    explique:'Comment l’âge peut-il rendre flou un livre qu’on lisait sans peine à 30 ans ?',
-   verif:{q:'Récite la voie 2 du module 6, de près, dans l’ordre.', r:'Objet rapproché, rayons divergents ; sans changement, foyer derrière la rétine ; le cristallin se bombe (accommodation) ; l’amplitude baisse avec l’âge (presbytie) ; l’addition comble ce qui manque.', points:['rayons divergents', 'foyer derrière la rétine', 'cristallin bombé', 'presbytie puis addition']},
+   verif:{q:'Récite la voie 2 du module 6, de près, dans l’ordre.', r:'Objet rapproché, rayons divergents ; sans changement, foyer derrière la rétine ; le cristallin se bombe (accommodation) ; l’amplitude baisse avec l’âge (presbytie) ; l’addition comble ce qui manque.', points:['rayons divergents', 'foyer derrière la rétine', 'cristallin bombé', 'presbytie puis addition'],
+     qcm:{bon:'Rayons divergents ; foyer derrière la rétine ; cristallin bombé ; amplitude qui baisse avec l’âge ; l’addition comble', faux:['Rayons divergents ; foyer devant la rétine ; cristallin aplati ; amplitude qui baisse avec l’âge ; l’addition comble', 'Rayons parallèles ; foyer derrière la rétine ; cornée bombée ; amplitude qui baisse avec l’âge ; l’addition comble', 'Rayons divergents ; foyer derrière la rétine ; cristallin bombé ; amplitude qui monte avec l’âge ; la myopie comble']}},
    src:['M6 D45', 'M6 D46', 'M6 D53', 'M6 D56']},
   {id:'fil.4', ecran:'fil', ancre:'Les cinq premières colonnes descendent de', titre:'Le tableau de Donders',
    cle:['de 1 à 20 ans : 18, 16, 14, 12, 10 (moins 2 D par colonne)', 'puis 25 ans 8,5 · 30 ans 7 · 40 ans 4,5 · 44 ans 4', '50 ans 2,5 · 60 ans 1 · 75 ans 0'],
    explique:'Pourquoi a-t-on besoin du tableau de Donders pour calculer une addition quand l’énoncé ne donne que l’âge ?',
-   verif:{q:'Donne l’amplitude de Donders à 10, 20, 40, 50 et 60 ans.', r:'14 D à 10 ans, 10 D à 20 ans, 4,5 D à 40 ans, 2,5 D à 50 ans, 1 D à 60 ans.', points:['10 ans : 14', '20 ans : 10', '40 ans : 4,5', '50 ans : 2,5 ; 60 ans : 1']},
+   verif:{q:'Donne l’amplitude de Donders à 10, 20, 40, 50 et 60 ans.', r:'14 D à 10 ans, 10 D à 20 ans, 4,5 D à 40 ans, 2,5 D à 50 ans, 1 D à 60 ans.', points:['10 ans : 14', '20 ans : 10', '40 ans : 4,5', '50 ans : 2,5 ; 60 ans : 1'],
+     qcm:{bon:'14 D, 10 D, 4,5 D, 2,5 D, 1 D', faux:['14 D, 10 D, 7 D, 4,5 D, 2,5 D', '14 D, 10 D, 4 D, 3 D, 1 D', '12 D, 8,5 D, 4,5 D, 2,5 D, 0 D']}},
    src:['M6 D54']},
 
   /* ---------- La formule du lunetier ---------- */
   {id:'lunetier.1', ecran:'lunetier', ancre:'On se souvient de la formule de l’UA1?', titre:'La puissance d’une surface',
    cle:['D = (nr − ni)/r', 'nr : indice du milieu réfracté (où la lumière entre)', 'ni : indice du milieu incident (d’où elle vient)', 'r en mètres'],
    explique:'Pourquoi une surface entre deux milieux de même indice ne dévierait-elle pas du tout la lumière ?',
-   verif:{q:'Écris la formule de puissance d’une surface et dis ce que représentent nr et ni.', r:'D = (nr − ni)/r : nr est l’indice du milieu réfracté (où la lumière entre), ni celui du milieu incident ; r en mètres.', points:['D = (nr − ni)/r', 'nr réfracté, ni incident', 'r en mètres']},
+   verif:{q:'Écris la formule de puissance d’une surface et dis ce que représentent nr et ni.', r:'D = (nr − ni)/r : nr est l’indice du milieu réfracté (où la lumière entre), ni celui du milieu incident ; r en mètres.', points:['D = (nr − ni)/r', 'nr réfracté, ni incident', 'r en mètres'],
+     qcm:{bon:'D = (nr − ni)/r : nr, milieu réfracté (où la lumière entre) ; ni, milieu incident ; r en mètres', faux:['D = (ni − nr)/r : nr, milieu réfracté (où la lumière entre) ; ni, milieu incident ; r en mètres', 'D = (nr − ni)/r : nr, milieu incident (d’où vient la lumière) ; ni, milieu réfracté ; r en mètres', 'D = (nr − ni) × r : nr, milieu réfracté (où la lumière entre) ; ni, milieu incident ; r en mm']}},
    src:['M6 D10', 'UA1 M4']},
   {id:'lunetier.2', ecran:'lunetier', ancre:'les deux indices ont seulement changé de place', titre:'D’où vient le moins',
    cle:['surface avant : (nᵥ − n avant)/r₁', 'surface arrière : (n arrière − nᵥ)/r₂', 'à la sortie du verre, les deux indices s’échangent : d’où le moins'],
    explique:'Pourquoi le second terme de la formule du lunetier se soustrait-il, même quand r₂ est positif ?',
-   verif:{q:'Écris la formule du lunetier et explique d’où vient son signe moins.', r:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂. À la sortie, la lumière passe du verre au milieu arrière : nr et ni changent de place, ce qui donne le moins.', points:['F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂', 'à la sortie, les indices s’échangent']},
+   verif:{q:'Écris la formule du lunetier et explique d’où vient son signe moins.', r:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂. À la sortie, la lumière passe du verre au milieu arrière : nr et ni changent de place, ce qui donne le moins.', points:['F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂', 'à la sortie, les indices s’échangent'],
+     qcm:{bon:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂ : à la sortie du verre, nr et ni changent de place', faux:['F = (nᵥ − n avant)/r₁ + (nᵥ − n arrière)/r₂ : les deux faces ajoutent toujours leur puissance', 'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂ : le moins vient de r₂, qui est toujours négatif', 'F = (n avant − nᵥ)/r₁ − (n arrière − nᵥ)/r₂ : les indices se lisent à rebours de la lumière']}},
    src:['M6 D11']},
   {id:'lunetier.3', ecran:'lunetier', ancre:'Les mesures à la droite sont considérées positives', titre:'Le signe de r',
    cle:['mesures à droite : positives ; à gauche : négatives', 'r > 0 : centre de courbure à droite de la surface', 'les rayons sont « signés selon la convention cartésienne »'],
    explique:'Comment le signe de r₂ change-t-il le second terme de la formule du lunetier ?',
-   verif:{q:'Quand le rayon r d’une surface est-il positif ?', r:'Quand son centre de courbure est à droite de la surface, dans le sens de la lumière : « Les mesures à la droite sont considérées positives (+) les mesures à la gauche sont considérées négatives. »', points:['centre de courbure à droite', 'à gauche : négatif']},
+   verif:{q:'Quand le rayon r d’une surface est-il positif ?', r:'Quand son centre de courbure est à droite de la surface, dans le sens de la lumière : « Les mesures à la droite sont considérées positives (+) les mesures à la gauche sont considérées négatives. »', points:['centre de courbure à droite', 'à gauche : négatif'],
+     qcm:{bon:'Quand son centre de courbure est à droite de la surface, dans le sens de la lumière', faux:['Quand son centre de courbure est à gauche de la surface, du côté d’où vient la lumière', 'Quand la surface est convexe vue de l’extérieur, quel que soit le sens de la lumière', 'Toujours pour la face avant d’un verre, jamais pour sa face arrière']}},
    src:['UA1 M4', 'M6 D11']},
   {id:'lunetier.4', ecran:'lunetier', ancre:'Une lentille convergente devient divergente uniquement parce que', titre:'Le milieu change la puissance',
    cle:['même verre, mêmes rayons', 'air devant : +1,25 D ; eau devant : −2,875 D', 'le saut d’indice de la face avant passe de 0,50 à 0,17', 'seule la contribution avant change'],
    explique:'Pourquoi mettre de l’eau devant le verre ne change-t-il que la contribution de la surface avant ?',
-   verif:{q:'Une lentille fait +1,25 D dans l’air. Avec de l’eau devant, que devient-elle, et pourquoi ?', r:'−2,875 D : elle devient divergente. « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. » ; avec l’eau, le saut de la face avant passe de 0,50 à 0,17.', points:['−2,875 D, divergente', 'saut d’indice avant plus petit', 'l’arrière ne change pas']},
+   verif:{q:'Une lentille fait +1,25 D dans l’air. Avec de l’eau devant, que devient-elle, et pourquoi ?', r:'−2,875 D : elle devient divergente. « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. » ; avec l’eau, le saut de la face avant passe de 0,50 à 0,17.', points:['−2,875 D, divergente', 'saut d’indice avant plus petit', 'l’arrière ne change pas'],
+     qcm:{bon:'−2,875 D, divergente : le saut d’indice de la face avant passe de 0,50 à 0,17', faux:['+1,25 D, inchangée : même verre et mêmes rayons, donc même puissance', '+0,42 D, plus faible : l’eau réduit d’un tiers la puissance des deux faces', '−2,875 D, divergente : le saut d’indice de la face arrière passe de 0,50 à 0,17']}},
    src:['M6 D12', 'M6 D13', 'M6 D14']},
   {id:'lunetier.5', ecran:'lunetier', ancre:'On peut avoir une forme ménisque', titre:'Les lunettes de natation',
    cle:['question du prof : quelle forme pour des lunettes de natation ?', 'réponse du deck, dans l’air : « On peut avoir une forme ménisque »', 'le cas de l’eau reste sans réponse : à vérifier en classe'],
    explique:'Pourquoi la forme d’un verre de natation pose-t-elle un problème que les lunettes ordinaires n’ont pas ?',
-   verif:{q:'Que répond le deck à la question des lunettes de natation, et qu’est-ce qui reste sans réponse ?', r:'Dans l’air, « On peut avoir une forme ménisque » ; le cas de la face dans l’eau n’est pas résolu par la diapo (une face avant plane est une piste <span class="deduit">déduit</span>).', points:['forme ménisque', 'le cas de l’eau reste à vérifier']},
+   verif:{q:'Que répond le deck à la question des lunettes de natation, et qu’est-ce qui reste sans réponse ?', r:'Dans l’air, « On peut avoir une forme ménisque » ; le cas de la face dans l’eau n’est pas résolu par la diapo (une face avant plane est une piste <span class="deduit">déduit</span>).', points:['forme ménisque', 'le cas de l’eau reste à vérifier'],
+     qcm:{bon:'Dans l’air, une forme ménisque ; le cas de la face dans l’eau reste à vérifier en classe', faux:['Dans l’eau, une forme ménisque ; le cas de la face dans l’air reste à vérifier en classe', 'Un verre plan des deux côtés ; la diapo règle aussi le cas de la face dans l’eau', 'Les mêmes verres que de loin : l’eau devant ne change pas leur puissance']}},
    src:['M6 D15']},
 
   /* ---------- La cornée ---------- */
   {id:'cornee.1', ecran:'cornee', ancre:'Air devant la cornée • humeur aqueuse derrière la cornée', titre:'Les milieux de la cornée',
    cle:['air devant : 1,000', 'cornée : 1,376', 'humeur aqueuse derrière : 1,336'],
    explique:'Pourquoi faut-il connaître le milieu derrière la cornée, et pas seulement l’air devant ?',
-   verif:{q:'Quels milieux, avec leurs indices, entourent la cornée ?', r:'L’air (1,000) devant, la cornée elle-même (1,376), l’humeur aqueuse (1,336) derrière.', points:['air 1,000', 'cornée 1,376', 'humeur aqueuse 1,336']},
+   verif:{q:'Quels milieux, avec leurs indices, entourent la cornée ?', r:'L’air (1,000) devant, la cornée elle-même (1,376), l’humeur aqueuse (1,336) derrière.', points:['air 1,000', 'cornée 1,376', 'humeur aqueuse 1,336'],
+     qcm:{bon:'L’air (1,000) devant, la cornée (1,376), l’humeur aqueuse (1,336) derrière', faux:['L’air (1,000) devant, la cornée (1,3375), l’humeur aqueuse (1,336) derrière', 'L’air (1,000) devant, la cornée (1,336), l’humeur aqueuse (1,376) derrière', 'L’eau (1,33) devant, la cornée (1,376), l’humeur vitrée (1,336) derrière']}},
    src:['M6 D16']},
   {id:'cornee.2', ecran:'cornee', ancre:'puissance cornéenne ≈ +42,06 D', titre:'La cornée en deux surfaces',
    cle:['F₁ = (1,376 − 1,000)/0,0078 = +48,21 D', 'F₂ = −(1,376 − 1,336)/0,0065 = −6,15 D', 'cornée ≈ +42,06 D (modèle mince)'],
    explique:'Comment la formule du lunetier s’applique-t-elle à la cornée, qui n’a pas d’air derrière elle ?',
-   verif:{q:'Calcule la puissance de la cornée : n = 1,376, r₁ = +7,8 mm, r₂ = +6,5 mm.', r:'F₁ = 0,376/0,0078 = +48,21 D ; F₂ = −0,040/0,0065 = −6,15 D ; F ≈ +42,06 D.', points:['+48,21', '−6,15', '+42,06']},
+   verif:{q:'Calcule la puissance de la cornée : n = 1,376, r₁ = +7,8 mm, r₂ = +6,5 mm.', r:'F₁ = 0,376/0,0078 = +48,21 D ; F₂ = −0,040/0,0065 = −6,15 D ; F ≈ +42,06 D.', points:['+48,21', '−6,15', '+42,06'],
+     qcm:{bon:'F₁ = +48,21 D ; F₂ = −6,15 D ; F ≈ +42,06 D', faux:['F₁ = +48,21 D ; F₂ = +6,15 D ; F ≈ +54,36 D', 'F₁ = +4,82 D ; F₂ = −0,62 D ; F ≈ +4,20 D', 'F₁ = +43,27 D ; F₂ = −6,15 D ; F ≈ +37,12 D']}},
    src:['M6 D16']},
   {id:'cornee.3', ecran:'cornee', ancre:'Le contraste qui explique tout', titre:'Le grand saut est devant',
    cle:['devant, l’écart d’indice vaut 0,376', 'derrière, seulement 0,040', 'la face postérieure ne retranche qu’environ 6 D'],
    explique:'Pourquoi la face antérieure de la cornée fait-elle presque tout le travail ?',
-   verif:{q:'Pourquoi la face postérieure de la cornée ne retranche-t-elle qu’environ 6 D ?', r:'Parce que le saut d’indice y est petit : 1,376 → 1,336, soit 0,040, contre 0,376 devant (air → cornée).', points:['saut de 0,040 derrière', 'saut de 0,376 devant']},
+   verif:{q:'Pourquoi la face postérieure de la cornée ne retranche-t-elle qu’environ 6 D ?', r:'Parce que le saut d’indice y est petit : 1,376 → 1,336, soit 0,040, contre 0,376 devant (air → cornée).', points:['saut de 0,040 derrière', 'saut de 0,376 devant'],
+     qcm:{bon:'Le saut d’indice y est petit : 1,376 → 1,336, soit 0,040, contre 0,376 devant', faux:['Son rayon est plus court : 6,5 mm contre 7,8 mm, et un rayon court dévie moins', 'Le cristallin, juste derrière, lui rend presque toute la puissance qu’elle retire', 'Le saut d’indice y vaut 0,376, mais la lumière y arrive déjà presque parallèle']}},
    src:['M6 D16']},
   {id:'cornee.4', ecran:'cornee', ancre:'mm s’écrit 0,0078 m', titre:'Les mm en mètres',
    cle:['7,8 mm = 0,0078 m', 'diviser par 1000, pas par 100', 'en mm, la réponse sort 1000 fois trop petite'],
    explique:'Comment repères-tu tout de suite qu’un rayon a été mal converti en voyant la puissance obtenue ?',
-   verif:{q:'Comment écrit-on 7,8 mm dans la formule, et quelle erreur est la plus probable ?', r:'0,0078 m (÷ 1000). L’erreur classique est 0,078 (÷ 100), qui donne une puissance dix fois trop petite.', points:['0,0078 m', 'diviser par 1000']},
+   verif:{q:'Comment écrit-on 7,8 mm dans la formule, et quelle erreur est la plus probable ?', r:'0,0078 m (÷ 1000). L’erreur classique est 0,078 (÷ 100), qui donne une puissance dix fois trop petite.', points:['0,0078 m', 'diviser par 1000'],
+     qcm:{bon:'0,0078 m (÷ 1000) ; l’erreur classique, 0,078 (÷ 100), donne une puissance dix fois trop petite', faux:['0,078 m (÷ 100) ; l’erreur classique, 0,0078 (÷ 1000), donne une puissance dix fois trop grande', '0,0078 m (÷ 1000) ; l’erreur classique, 0,078 (÷ 100), donne une puissance dix fois trop grande', '7,8 tel quel ; convertir en mètres est l’erreur classique, qui fausse la puissance']}},
    src:['M6 D16']},
   {id:'cornee.5', ecran:'cornee', ancre:'Ils sont tous justes ; ils ne décrivent pas la même chose', titre:'Quatre nombres, une cornée',
    cle:['+48,21 : face antérieure seule, vrai indice', '+42,06 : les deux surfaces', '≈ 43,25 : kératomètre, indice fictif 1,3375', '+40 : repère pédagogique du modèle à +60 D'],
    explique:'Pourquoi le kératomètre utilise-t-il un indice fictif de 1,3375 au lieu du vrai indice de la cornée ?',
-   verif:{q:'Que décrit chacun de ces nombres : +48,21, +42,06, 43,25 et +40 D ?', r:'+48,21 : la face antérieure seule ; +42,06 : la cornée entière ; 43,25 : la kératométrie (face antérieure, indice 1,3375) ; +40 : le repère pédagogique.', points:['face antérieure seule', 'cornée entière', 'kératométrie, 1,3375', 'repère pédagogique']},
+   verif:{q:'Que décrit chacun de ces nombres : +48,21, +42,06, 43,25 et +40 D ?', r:'+48,21 : la face antérieure seule ; +42,06 : la cornée entière ; 43,25 : la kératométrie (face antérieure, indice 1,3375) ; +40 : le repère pédagogique.', points:['face antérieure seule', 'cornée entière', 'kératométrie, 1,3375', 'repère pédagogique'],
+     qcm:{bon:'Face antérieure seule ; cornée entière ; kératométrie (indice 1,3375) ; repère pédagogique', faux:['Cornée entière ; face antérieure seule ; kératométrie (indice 1,3375) ; repère pédagogique', 'Face antérieure seule ; cornée entière ; repère pédagogique ; kératométrie (indice 1,3375)', 'Kératométrie (indice 1,3375) ; cornée entière ; face antérieure seule ; repère pédagogique']}},
    src:['M6 D16', 'M6 D27', 'M6 D34']},
   {id:'cornee.6', ecran:'cornee', ancre:'l’écart d’indice avant tombe à 0,046', titre:'Sous l’eau',
    cle:['sous l’eau, le saut avant tombe à 0,046', 'la cornée perd environ 42 D', 'les lunettes de natation remettent de l’air devant la cornée'],
    explique:'Pourquoi des lunettes de natation, même sans correction, rendent-elles la vue nette sous l’eau ?',
-   verif:{q:'Que perd la cornée quand on ouvre les yeux sous l’eau, et pourquoi ?', r:'Presque toute sa puissance, environ 42 D : l’eau (1,33) devant réduit le saut d’indice de la face avant à 0,046 <span class="deduit">déduit</span>.', points:['environ 42 D', 'saut avant 0,046']},
+   verif:{q:'Que perd la cornée quand on ouvre les yeux sous l’eau, et pourquoi ?', r:'Presque toute sa puissance, environ 42 D : l’eau (1,33) devant réduit le saut d’indice de la face avant à 0,046 <span class="deduit">déduit</span>.', points:['environ 42 D', 'saut avant 0,046'],
+     qcm:{bon:'Environ 42 D, presque toute sa puissance : l’eau devant réduit le saut avant à 0,046', faux:['Environ 6 D, sa face arrière : l’eau traverse la cornée et dilue l’humeur aqueuse', 'Presque rien : l’eau a presque l’indice de l’air, la cornée garde sa puissance', 'Environ 20 D, celle du cristallin : l’eau l’empêche de se bomber']}},
    src:['M6 D12', 'M6 D16']},
 
   /* ---------- Le modèle de l’œil ---------- */
   {id:'modele.1', ecran:'modele', ancre:'L’œil comporte deux éléments optiques convergents principaux', titre:'Deux éléments convergents',
    cle:['la cornée et le cristallin', 'plusieurs milieux transparents', 'dans l’ordre : film lacrymal, cornée, humeur aqueuse, cristallin, humeur vitrée'],
    explique:'Pourquoi le film lacrymal compte-t-il parmi les milieux traversés par la lumière ?',
-   verif:{q:'Quels sont les deux éléments convergents de l’œil et les milieux traversés, dans l’ordre ?', r:'La cornée et le cristallin ; la lumière traverse le film lacrymal, la cornée, l’humeur aqueuse, le cristallin et l’humeur vitrée.', points:['cornée et cristallin', 'film lacrymal → cornée → humeur aqueuse → cristallin → humeur vitrée']},
+   verif:{q:'Quels sont les deux éléments convergents de l’œil et les milieux traversés, dans l’ordre ?', r:'La cornée et le cristallin ; la lumière traverse le film lacrymal, la cornée, l’humeur aqueuse, le cristallin et l’humeur vitrée.', points:['cornée et cristallin', 'film lacrymal → cornée → humeur aqueuse → cristallin → humeur vitrée'],
+     qcm:{bon:'Cornée et cristallin ; film lacrymal, cornée, humeur aqueuse, cristallin, humeur vitrée', faux:['Cornée et cristallin ; film lacrymal, cornée, humeur vitrée, cristallin, humeur aqueuse', 'Cornée et rétine ; film lacrymal, cornée, humeur aqueuse, cristallin, humeur vitrée', 'Cristallin et pupille ; cornée, film lacrymal, humeur aqueuse, cristallin, humeur vitrée']}},
    src:['M6 D9', 'M6 D21', 'M6 D24']},
   {id:'modele.2', ecran:'modele', ancre:'il faut distinguer la longueur axiale anatomique', titre:'24 mm n’est pas 17 mm',
    cle:['24 mm : longueur axiale anatomique, cornée → rétine', '17 mm : focale du modèle simplifié, dans l’air', 'la focale se mesure depuis un plan principal optique'],
    explique:'Pourquoi n’inverse-t-on jamais 24 mm pour trouver la puissance de l’œil ?',
-   verif:{q:'Que représentent 24 mm et 17 mm, et lequel entre dans F = 1/f′ ?', r:'24 mm est la longueur anatomique de l’œil ; 17 mm est la focale du modèle simplifié dans l’air. Seul 17 mm va dans F = 1/f′.', points:['24 mm : longueur anatomique', '17 mm : focale dans l’air', 'seul 17 mm s’inverse']},
+   verif:{q:'Que représentent 24 mm et 17 mm, et lequel entre dans F = 1/f′ ?', r:'24 mm est la longueur anatomique de l’œil ; 17 mm est la focale du modèle simplifié dans l’air. Seul 17 mm va dans F = 1/f′.', points:['24 mm : longueur anatomique', '17 mm : focale dans l’air', 'seul 17 mm s’inverse'],
+     qcm:{bon:'24 mm : longueur anatomique ; 17 mm : focale du modèle dans l’air. Seul 17 mm va dans F = 1/f′', faux:['24 mm : longueur anatomique ; 17 mm : focale du modèle dans l’air. Seul 24 mm va dans F = 1/f′', '24 mm : focale du modèle dans l’air ; 17 mm : longueur anatomique. Seul 24 mm va dans F = 1/f′', '24 mm : longueur anatomique ; 17 mm : de l’arrière du cristallin à la rétine. Les deux vont dans F = 1/f′']}},
    src:['M6 D21', 'M6 D23', 'M6 D24']},
   {id:'modele.3', ecran:'modele', ancre:'Pour une lentille mince équivalente dans l’air de focale 17 mm', titre:'1/0,017 = +58,8 D',
    cle:['F = 1/f′, f′ en mètres', '17 mm = 0,017 m', 'F = 1/0,017 = +58,8 D, à peu près les +60 D de l’œil'],
    explique:'Pourquoi une focale plus longue donne-t-elle moins de dioptries ?',
-   verif:{q:'Réponds à la question du prof : une lentille mince équivalente dans l’air de focale 17 mm a quelle puissance ?', r:'F = 1/0,017 = +58,8 D, soit à peu près les +60 D de l’œil au repos.', points:['0,017 m', '+58,8 D']},
+   verif:{q:'Réponds à la question du prof : une lentille mince équivalente dans l’air de focale 17 mm a quelle puissance ?', r:'F = 1/0,017 = +58,8 D, soit à peu près les +60 D de l’œil au repos.', points:['0,017 m', '+58,8 D'],
+     qcm:{bon:'F = 1/0,017 = +58,8 D, à peu près les +60 D de l’œil', faux:['F = 1/17 = +0,06 D, une lentille presque sans puissance', 'F = 1/0,024 = +41,7 D, à peu près la puissance de la cornée', 'F = 1/0,17 = +5,9 D, à peu près un dixième de l’œil']}},
    src:['M6 D26', 'M6 D27']},
   {id:'modele.4', ecran:'modele', ancre:'L’œil au repos fait environ +60 D', titre:'+60 D : +40 et +20',
    cle:['œil au repos ≈ +60 D', 'cornée ≈ +40 D, environ 2/3', 'cristallin ≈ +20 D'],
    explique:'Pourquoi la cornée fait-elle environ deux fois plus de travail que le cristallin ?',
-   verif:{q:'Donne le repère pédagogique des puissances de l’œil au repos.', r:'≈ +60 D au total : cornée ≈ +40 D, cristallin ≈ +20 D.', points:['+60 D', 'cornée +40', 'cristallin +20']},
+   verif:{q:'Donne le repère pédagogique des puissances de l’œil au repos.', r:'≈ +60 D au total : cornée ≈ +40 D, cristallin ≈ +20 D.', points:['+60 D', 'cornée +40', 'cristallin +20'],
+     qcm:{bon:'≈ +60 D au total : cornée ≈ +40 D, cristallin ≈ +20 D', faux:['≈ +60 D au total : cornée ≈ +20 D, cristallin ≈ +40 D', '≈ +40 D au total : cornée ≈ +20 D, cristallin ≈ +20 D', '≈ +80 D au total : cornée ≈ +60 D, cristallin ≈ +20 D']}},
    src:['M6 D27']},
 
   /* ---------- Emmétrope et amétrope ---------- */
   {id:'ametropie.1', ecran:'ametropie', ancre:'se concentrent parfaitement sur la rétine sans accommodation', titre:'L’œil emmétrope',
    cle:['rayons d’un objet en distance', 'foyer sur la rétine sans accommodation', 'pas d’erreur de réfraction', 'point de distance à l’infini'],
    explique:'Pourquoi la définition précise-t-elle « sans accommodation » ?',
-   verif:{q:'Définis l’œil emmétrope.', r:'« L’œil est emmétrope lorsque les rayons de lumière d’un objet en distance se concentrent parfaitement sur la rétine sans accommodation. L’œil n’a pas d’erreur de réfraction. Son point de distance est à l’infini. »', points:['objet en distance', 'sur la rétine sans accommodation', 'point de distance à l’infini']},
+   verif:{q:'Définis l’œil emmétrope.', r:'« L’œil est emmétrope lorsque les rayons de lumière d’un objet en distance se concentrent parfaitement sur la rétine sans accommodation. L’œil n’a pas d’erreur de réfraction. Son point de distance est à l’infini. »', points:['objet en distance', 'sur la rétine sans accommodation', 'point de distance à l’infini'],
+     qcm:{bon:'Les rayons d’un objet en distance se concentrent sur la rétine sans accommodation ; point de distance à l’infini', faux:['Les rayons d’un objet en distance se concentrent sur la rétine en accommodant ; point de distance à 6 m', 'Les rayons d’un objet proche se concentrent sur la rétine sans accommodation ; point de distance à 40 cm', 'Les rayons d’un objet en distance se concentrent devant la rétine, au repos ; point de distance à l’infini']}},
    src:['M6 D28']},
   {id:'ametropie.2', ecran:'ametropie', ancre:'ne se focalisent pas sur la rétine', titre:'L’œil amétrope',
    cle:['au repos', 'les rayons venant de loin ne se focalisent pas sur la rétine', 'une correction optique peut rendre l’image nette'],
    explique:'Comment une simple lentille peut-elle rendre nette l’image d’un œil amétrope ?',
-   verif:{q:'Définis l’œil amétrope.', r:'« L’œil est amétrope quand, au repos, les rayons venant de loin ne se focalisent pas sur la rétine. Une correction optique peut permettre une image nette. »', points:['au repos', 'rayons de loin pas sur la rétine', 'correction optique']},
+   verif:{q:'Définis l’œil amétrope.', r:'« L’œil est amétrope quand, au repos, les rayons venant de loin ne se focalisent pas sur la rétine. Une correction optique peut permettre une image nette. »', points:['au repos', 'rayons de loin pas sur la rétine', 'correction optique'],
+     qcm:{bon:'Au repos, les rayons de loin ne se focalisent pas sur la rétine ; une correction optique peut rendre l’image nette', faux:['En accommodant, les rayons venant de près ne se focalisent pas sur la rétine ; seule une addition peut aider', 'Au repos, les rayons venant de loin se focalisent sur la rétine, mais l’image reste floue sans correction', 'Au repos, les rayons venant de loin ne se focalisent pas sur la rétine ; aucune correction optique n’y peut rien']}},
    src:['M6 D28']},
   {id:'ametropie.3', ecran:'ametropie', ancre:'Un œil jeune compense ses 3 D en bombant son cristallin', titre:'Net n’est pas emmétrope',
    cle:['le jeune hypermétrope accommode et voit net de loin', 'au repos, il reste hypermétrope', 'd’où « sans accommodation » et « au repos » dans les définitions'],
    explique:'Pourquoi un œil qui voit net de loin peut-il quand même être amétrope ?',
-   verif:{q:'Un jeune voit net de loin en accommodant 3 D. Est-il emmétrope ?', r:'Non : au repos, son foyer tombe derrière la rétine ; il est hypermétrope et compense en bombant son cristallin.', points:['non', 'hypermétrope au repos', 'il compense en accommodant']},
+   verif:{q:'Un jeune voit net de loin en accommodant 3 D. Est-il emmétrope ?', r:'Non : au repos, son foyer tombe derrière la rétine ; il est hypermétrope et compense en bombant son cristallin.', points:['non', 'hypermétrope au repos', 'il compense en accommodant'],
+     qcm:{bon:'Non : au repos, son foyer tombe derrière la rétine ; il est hypermétrope et compense en accommodant', faux:['Oui : il voit net de loin, donc son foyer est sur la rétine ; il est emmétrope', 'Non : au repos, son foyer tombe devant la rétine ; il est myope et il compense en accommodant fort', 'Oui : accommoder 3 D pour voir de loin est normal chez un jeune emmétrope']}},
    src:['M6 D28', 'M7 D41']},
   {id:'ametropie.4', ecran:'ametropie', ancre:'Le myope, lui, ne peut rien compenser', titre:'Le myope ne compense pas',
    cle:['accommoder ajoute de la puissance', 'le myope en a déjà trop', 'son foyer est déjà devant la rétine'],
    explique:'Pourquoi accommoder aide-t-il l’hypermétrope de loin, mais jamais le myope ?',
-   verif:{q:'Pourquoi un myope ne peut-il pas voir net de loin en accommodant ?', r:'Accommoder ajoute de la puissance ; le myope a déjà trop de convergence, son foyer est devant la rétine et irait encore plus en avant.', points:['accommoder ajoute de la puissance', 'trop de convergence déjà', 'foyer devant']},
+   verif:{q:'Pourquoi un myope ne peut-il pas voir net de loin en accommodant ?', r:'Accommoder ajoute de la puissance ; le myope a déjà trop de convergence, son foyer est devant la rétine et irait encore plus en avant.', points:['accommoder ajoute de la puissance', 'trop de convergence déjà', 'foyer devant'],
+     qcm:{bon:'Accommoder ajoute de la puissance ; le myope en a déjà trop, son foyer devant irait encore plus en avant', faux:['Accommoder retire de la puissance ; le myope en manque déjà, son foyer déjà derrière la rétine reculerait encore', 'Il le peut un instant, mais son cristallin se fatigue trop vite pour tenir de loin', 'Accommoder ne sert que de près ; de loin, les rayons parallèles ne peuvent pas être déviés']}},
    src:['M6 D30', 'M6 D46']},
   {id:'ametropie.5', ecran:'ametropie', ancre:'Si - = Myope (Rx corrige point devant la rétine)', titre:'Le signe sur l’ordonnance',
    cle:['− : myope, la Rx corrige un foyer devant la rétine', '+ : hypermétrope, foyer derrière la rétine', 'un verre négatif ramène le foyer du myope sur la rétine'],
    explique:'Comment le signe d’une Rx te dit-il où tombe le foyer de l’œil non corrigé ?',
-   verif:{q:'Une Rx est négative. Quelle amétropie, et où tombe le foyer sans correction ?', r:'Myope : le foyer tombe devant la rétine (« Si - = Myope »).', points:['myope', 'devant la rétine']},
+   verif:{q:'Une Rx est négative. Quelle amétropie, et où tombe le foyer sans correction ?', r:'Myope : le foyer tombe devant la rétine (« Si - = Myope »).', points:['myope', 'devant la rétine'],
+     qcm:{bon:'Myope : sans correction, le foyer tombe devant la rétine', faux:['Hypermétrope : sans correction, le foyer tombe derrière la rétine', 'Myope : sans correction, le foyer tombe derrière la rétine', 'Hypermétrope : sans correction, le foyer tombe devant la rétine']}},
    src:['Bureau M3', 'M6 D36', 'M6 D37']},
 
   /* ---------- Les deux causes ---------- */
   {id:'causes.1', ecran:'causes', ancre:'Deux causes importantes d’amétropie', titre:'Deux causes, plus une',
    cle:['la courbure cornéenne', 'la longueur axiale', 'la puissance du cristallin peut aussi intervenir'],
    explique:'Comment la courbure de la cornée et la longueur de l’œil peuvent-elles produire la même myopie ?',
-   verif:{q:'Quelles sont les deux causes importantes d’amétropie, et la troisième ?', r:'« la courbure cornéenne et la longueur axiale. La puissance du cristallin peut aussi intervenir. »', points:['courbure cornéenne', 'longueur axiale', 'cristallin']},
+   verif:{q:'Quelles sont les deux causes importantes d’amétropie, et la troisième ?', r:'« la courbure cornéenne et la longueur axiale. La puissance du cristallin peut aussi intervenir. »', points:['courbure cornéenne', 'longueur axiale', 'cristallin'],
+     qcm:{bon:'La courbure cornéenne et la longueur axiale ; le cristallin peut aussi intervenir', faux:['La courbure du cristallin et la longueur axiale ; la cornée peut aussi intervenir', 'La courbure cornéenne et la presbytie ; la longueur axiale peut aussi intervenir', 'La longueur axiale et l’âge du patient ; l’indice de l’humeur aqueuse peut aussi intervenir']}},
    src:['M6 D33']},
   {id:'causes.2', ecran:'causes', ancre:'Trop cambrée → myopie', titre:'Cambrée ou plate',
    cle:['trop cambrée → myopie (trop de convergence)', 'trop plate → hypermétropie (pas assez de convergence)', 'r est au dénominateur : rayon plus court, puissance plus forte'],
    explique:'Pourquoi une cornée plus cambrée, au rayon plus court, est-elle plus puissante ?',
-   verif:{q:'Une cornée devient plus plate. Quelle amétropie, et pourquoi ?', r:'De l’hypermétropie : une cornée plus plate a un rayon plus long, donc moins de puissance, « pas assez de convergence ».', points:['hypermétropie', 'rayon plus long, moins de puissance', 'pas assez de convergence']},
+   verif:{q:'Une cornée devient plus plate. Quelle amétropie, et pourquoi ?', r:'De l’hypermétropie : une cornée plus plate a un rayon plus long, donc moins de puissance, « pas assez de convergence ».', points:['hypermétropie', 'rayon plus long, moins de puissance', 'pas assez de convergence'],
+     qcm:{bon:'Hypermétropie : rayon plus long, donc moins de puissance, pas assez de convergence', faux:['Myopie : rayon plus long, donc plus de puissance, trop de convergence', 'Hypermétropie : rayon plus court, donc plus de puissance, trop de convergence', 'Astigmatisme : rayon plus long, donc deux foyers derrière la rétine']}},
    src:['M6 D34']},
   {id:'causes.3', ecran:'causes', ancre:'Non sphérique → astigmatisme', titre:'Deux rayons, deux foyers',
    cle:['cornée non sphérique : R1 ≠ R2', 'deux rayons → deux puissances', 'deux points focaux : astigmatisme'],
    explique:'Pourquoi deux rayons de courbure différents donnent-ils deux foyers ?',
-   verif:{q:'Qu’est-ce qui distingue l’astigmatisme de la myopie et de l’hypermétropie ?', r:'L’astigmatisme a deux points focaux (cornée non sphérique, R1 ≠ R2) ; la myopie et l’hypermétropie ont un seul foyer mal placé.', points:['deux points focaux', 'R1 ≠ R2', 'un seul foyer pour les autres']},
+   verif:{q:'Qu’est-ce qui distingue l’astigmatisme de la myopie et de l’hypermétropie ?', r:'L’astigmatisme a deux points focaux (cornée non sphérique, R1 ≠ R2) ; la myopie et l’hypermétropie ont un seul foyer mal placé.', points:['deux points focaux', 'R1 ≠ R2', 'un seul foyer pour les autres'],
+     qcm:{bon:'L’astigmatisme a deux points focaux (R1 ≠ R2) ; myopie et hypermétropie ont un seul foyer mal placé', faux:['L’astigmatisme a un seul foyer, plus flou (R1 = R2) ; myopie et hypermétropie en ont deux', 'L’astigmatisme vient d’un œil trop long ; myopie et hypermétropie, d’une cornée non sphérique', 'L’astigmatisme a un foyer sur la rétine, mais flou ; les autres ont un foyer devant ou derrière']}},
    src:['M6 D34', 'M6 D35']},
   {id:'causes.4', ecran:'causes', ancre:'une augmentation de 1 mm de la longueur axiale', titre:'1 mm ≈ 3,00 D',
    cle:['+1 mm ≈ 3,00 D de myopie en plus', 'si la puissance optique ne change pas', '24 → 25 mm : ≈ −3,00 ; 24 → 23 mm : ≈ +3,00'],
    explique:'Pourquoi un œil plus long devient-il myope, alors que sa puissance n’a pas changé ?',
-   verif:{q:'Un œil emmétrope de 24 mm s’allonge à 25 mm sans changer de puissance. Que devient-il ?', r:'Myope d’environ −3,00 D : 1 mm ≈ 3,00 D, et l’image tombe devant la rétine.', points:['myope', 'environ −3,00 D', 'image devant la rétine']},
+   verif:{q:'Un œil emmétrope de 24 mm s’allonge à 25 mm sans changer de puissance. Que devient-il ?', r:'Myope d’environ −3,00 D : 1 mm ≈ 3,00 D, et l’image tombe devant la rétine.', points:['myope', 'environ −3,00 D', 'image devant la rétine'],
+     qcm:{bon:'Myope d’environ −3,00 D : 1 mm ≈ 3,00 D, et l’image tombe devant la rétine', faux:['Hypermétrope d’environ +3,00 D : 1 mm ≈ 3,00 D, et l’image tombe derrière la rétine', 'Myope d’environ −1,00 D : 1 mm ≈ 1,00 D, et l’image tombe devant la rétine', 'Toujours emmétrope : sa puissance n’a pas changé, l’image reste sur la rétine']}},
    src:['M6 D36', 'M6 D37']},
   {id:'causes.5', ecran:'causes', ancre:'Une forte myopie axiale est associée à un risque accru', titre:'Le risque de la myopie axiale',
    cle:['forte myopie axiale : risque d’atteintes rétiniennes', 'examen du fond d’œil', 'OCT selon le cas'],
    explique:'Pourquoi l’opticien doit-il se soucier de la longueur d’un œil très myope, et pas seulement de sa Rx ?',
-   verif:{q:'À quoi une forte myopie axiale est-elle associée, et quel examen s’impose ?', r:'À un risque accru de certaines atteintes rétiniennes : d’où l’examen du fond d’œil et, selon le cas, l’OCT.', points:['atteintes rétiniennes', 'fond d’œil', 'OCT']},
+   verif:{q:'À quoi une forte myopie axiale est-elle associée, et quel examen s’impose ?', r:'À un risque accru de certaines atteintes rétiniennes : d’où l’examen du fond d’œil et, selon le cas, l’OCT.', points:['atteintes rétiniennes', 'fond d’œil', 'OCT'],
+     qcm:{bon:'À un risque accru de certaines atteintes rétiniennes : fond d’œil et, selon le cas, OCT', faux:['À un risque accru de presbytie précoce : addition dès 30 ans et, selon le cas, contrôle annuel', 'À un risque accru d’astigmatisme : kératométrie et, selon le cas, topographie', 'À une cornée trop cambrée : kératométrie et, selon le cas, lentilles rigides']}},
    src:['M6 D38']},
   {id:'causes.6', ecran:'causes', ancre:'La prescription et la courbure cornéenne ne suffisent pas', titre:'La longueur se mesure',
    cle:['ni la prescription ni la cornée ne donnent la longueur', 'échographie A', 'biométrie optique (IOLMaster), certains OCT'],
    explique:'Pourquoi une Rx de −3,00 ne te dit-elle pas si l’œil est trop long ou si sa cornée est trop cambrée ?',
-   verif:{q:'Comment connaît-on la longueur axiale d’un œil ?', r:'On la mesure : échographie A, biométrie optique (IOLMaster), certains dispositifs OCT. « La prescription et la courbure cornéenne ne suffisent pas à mesurer la longueur axiale. »', points:['échographie A', 'IOLMaster', 'pas la prescription']},
+   verif:{q:'Comment connaît-on la longueur axiale d’un œil ?', r:'On la mesure : échographie A, biométrie optique (IOLMaster), certains dispositifs OCT. « La prescription et la courbure cornéenne ne suffisent pas à mesurer la longueur axiale. »', points:['échographie A', 'IOLMaster', 'pas la prescription'],
+     qcm:{bon:'On la mesure : échographie A, IOLMaster, certains OCT ; la prescription ne la donne pas', faux:['On la déduit de la prescription : chaque −3,00 D ajoute 1 mm à un œil emmétrope de 24 mm', 'On la lit au kératomètre : la courbure cornéenne donne la longueur du globe', 'On la calcule depuis la puissance : 1/0,017 donne la longueur de l’œil, 17 mm']}},
    src:['M6 D38', 'M6 D39']},
 
   /* ---------- Vergence et accommodation ---------- */
   {id:'accommodation.1', ecran:'accommodation', ancre:'La vergence absolue d’un faisceau divergent diminue', titre:'La vergence fond avec la distance',
    cle:['les rayons d’une source ponctuelle divergent', 'la vergence diminue quand la source s’éloigne', '4 D à ¼ m, 1 D à 1 m, ½ D à 2 m'],
    explique:'Pourquoi un objet proche envoie-t-il des rayons plus ouverts qu’un objet lointain ?',
-   verif:{q:'Comment varie la vergence d’un faisceau divergent avec la distance de sa source ?', r:'Elle diminue quand la source s’éloigne : 4 D à ¼ m, 1 D à 1 m, ½ D à 2 m.', points:['diminue en s’éloignant', '4 D à ¼ m', '1 D à 1 m']},
+   verif:{q:'Comment varie la vergence d’un faisceau divergent avec la distance de sa source ?', r:'Elle diminue quand la source s’éloigne : 4 D à ¼ m, 1 D à 1 m, ½ D à 2 m.', points:['diminue en s’éloignant', '4 D à ¼ m', '1 D à 1 m'],
+     qcm:{bon:'Elle diminue quand la source s’éloigne : 4 D à ¼ m, 1 D à 1 m, ½ D à 2 m', faux:['Elle augmente quand la source s’éloigne : ¼ D à ¼ m, 1 D à 1 m, 2 D à 2 m', 'Elle ne dépend pas de la distance : 1 D à ¼ m, 1 D à 1 m, 1 D à 2 m', 'Elle baisse de 1 D par mètre : 4 D à ¼ m, 3 D à 1 m, 2 D à 2 m']}},
    src:['M6 D42', 'M6 D43']},
   {id:'accommodation.2', ecran:'accommodation', ancre:'Les objets à plus de 6 mètres ont des rayons presque parallèles', titre:'Au-delà de 6 m : parallèles',
    cle:['au-delà de 6 m, rayons considérés parallèles', '1/6 ≈ 0,17 D : vergence presque nulle', 'de loin, l’œil emmétrope n’accommode pas'],
    explique:'Pourquoi peut-on traiter un objet à 6 m comme s’il était à l’infini ?',
-   verif:{q:'Au-delà de quelle distance les rayons d’un objet sont-ils considérés parallèles ?', r:'Au-delà de 6 m : leur vergence, 1/6 ≈ 0,17 D, est presque nulle <span class="deduit">déduit</span>.', points:['6 m', 'vergence presque nulle']},
+   verif:{q:'Au-delà de quelle distance les rayons d’un objet sont-ils considérés parallèles ?', r:'Au-delà de 6 m : leur vergence, 1/6 ≈ 0,17 D, est presque nulle <span class="deduit">déduit</span>.', points:['6 m', 'vergence presque nulle'],
+     qcm:{bon:'Au-delà de 6 m : leur vergence, 1/6 ≈ 0,17 D, est presque nulle', faux:['Au-delà de 1 m : leur vergence, 1/1 = 1 D, est presque nulle', 'Au-delà de 40 cm : leur vergence, 1/0,40 = 2,50 D, est presque nulle', 'Au-delà de 2 m : leur vergence, 1/2 = 0,50 D, est presque nulle']}},
    src:['M6 D44', 'M6 D45']},
   {id:'accommodation.3', ecran:'accommodation', ancre:'verra le point focal derrière la rétine pour un objet rapproché', titre:'Sans changement : derrière',
    cle:['objet rapproché : rayons divergents', 'œil emmétrope sans modification : foyer derrière la rétine', 'il doit modifier son système optique'],
    explique:'Pourquoi des rayons divergents vont-ils se croiser plus loin que des rayons parallèles ?',
-   verif:{q:'Où tombe le foyer d’un objet rapproché dans un œil emmétrope qui ne change rien ?', r:'Derrière la rétine : « L’oeil emmétrope sans modification verra le point focal derrière la rétine pour un objet rapproché. »', points:['derrière la rétine', 'sans modification']},
+   verif:{q:'Où tombe le foyer d’un objet rapproché dans un œil emmétrope qui ne change rien ?', r:'Derrière la rétine : « L’oeil emmétrope sans modification verra le point focal derrière la rétine pour un objet rapproché. »', points:['derrière la rétine', 'sans modification'],
+     qcm:{bon:'Derrière la rétine : sans modification, l’œil emmétrope ne voit pas net de près', faux:['Devant la rétine : les rayons divergents se croisent plus tôt que les parallèles', 'Sur la rétine : l’œil emmétrope voit net à toute distance sans rien changer', 'Derrière la rétine, mais l’image reste nette tant que l’objet est à plus de 25 cm']}},
    src:['M6 D45', 'M6 D46']},
   {id:'accommodation.4', ecran:'accommodation', ancre:'le cristallin de l’oeil va se bomber', titre:'Le cristallin se bombe',
    cle:['muscle ciliaire contracté', 'fibres zonulaires relâchées', 'cristallin bombé : forte convergence, image sur la rétine'],
    explique:'Comment un muscle qui se contracte peut-il relâcher le cristallin ?',
-   verif:{q:'Pour voir de près, que font le muscle ciliaire, les fibres zonulaires et le cristallin ?', r:'Le muscle ciliaire se contracte, les fibres zonulaires se relâchent, le cristallin se bombe : la convergence devient forte. De loin, c’est l’inverse : relâché, tendues, aplati.', points:['muscle ciliaire contracté', 'zonules relâchées', 'cristallin bombé']},
+   verif:{q:'Pour voir de près, que font le muscle ciliaire, les fibres zonulaires et le cristallin ?', r:'Le muscle ciliaire se contracte, les fibres zonulaires se relâchent, le cristallin se bombe : la convergence devient forte. De loin, c’est l’inverse : relâché, tendues, aplati.', points:['muscle ciliaire contracté', 'zonules relâchées', 'cristallin bombé'],
+     qcm:{bon:'Muscle ciliaire contracté, fibres zonulaires relâchées, cristallin bombé : forte convergence', faux:['Muscle ciliaire relâché, fibres zonulaires tendues, cristallin aplati : forte convergence', 'Muscle ciliaire contracté, fibres zonulaires tendues, cristallin bombé : forte convergence', 'Muscle ciliaire relâché, fibres zonulaires contractées, cristallin bombé : forte convergence']}},
    src:['M6 D46', 'M6 D48']},
   {id:'accommodation.5', ecran:'accommodation', ancre:'L’accommodation est la capacité de l’œil à augmenter sa puissance optique', titre:'Définir l’accommodation',
    cle:['augmenter la puissance optique de l’œil', 'surtout en changeant la forme du cristallin', 'pour voir de près'],
    explique:'Pourquoi parle-t-on de « puissance » pour l’accommodation, et pas seulement de mise au point ?',
-   verif:{q:'Définis l’accommodation comme au module 6.', r:'« L’accommodation est la capacité de l’œil à augmenter sa puissance optique, principalement par une modification de la forme du cristallin, pour voir de près. »', points:['augmenter la puissance', 'forme du cristallin', 'voir de près']},
+   verif:{q:'Définis l’accommodation comme au module 6.', r:'« L’accommodation est la capacité de l’œil à augmenter sa puissance optique, principalement par une modification de la forme du cristallin, pour voir de près. »', points:['augmenter la puissance', 'forme du cristallin', 'voir de près'],
+     qcm:{bon:'La capacité de l’œil à augmenter sa puissance optique, surtout en changeant la forme du cristallin, pour voir de près', faux:['La capacité de l’œil à diminuer sa puissance optique, surtout en aplatissant la cornée, pour voir de loin', 'La capacité de l’œil à changer sa longueur axiale, surtout grâce à la contraction du muscle ciliaire, pour voir de près', 'La capacité de l’œil à augmenter sa puissance optique, surtout en bombant la cornée, pour voir de loin']}},
    src:['M6 D49']},
   {id:'accommodation.6', ecran:'accommodation', ancre:'La demande accommodative pour un objet rapproché se calcule', titre:'A = 1/d',
    cle:['A = 1/d, d en mètres', '40 cm → +2,50 D', '1 m → +1,00 D ; 4 m → +0,25 D'],
    explique:'Pourquoi la demande double-t-elle quand la distance diminue de moitié ?',
-   verif:{q:'Combien d’accommodation faut-il pour un objet à 40 cm, à 1 m, à 4 m ?', r:'A = 1/d : 1/0,40 = +2,50 D ; 1/1 = +1,00 D ; 1/4 = +0,25 D.', points:['A = 1/d en mètres', '+2,50', '+1,00 et +0,25']},
+   verif:{q:'Combien d’accommodation faut-il pour un objet à 40 cm, à 1 m, à 4 m ?', r:'A = 1/d : 1/0,40 = +2,50 D ; 1/1 = +1,00 D ; 1/4 = +0,25 D.', points:['A = 1/d en mètres', '+2,50', '+1,00 et +0,25'],
+     qcm:{bon:'+2,50 D ; +1,00 D ; +0,25 D', faux:['+0,40 D ; +1,00 D ; +4,00 D', '+4,00 D ; +1,00 D ; +0,25 D', '+25,00 D ; +10,00 D ; +2,50 D']}},
    src:['M6 D50', 'M6 D57']},
 
   /* ---------- Amplitude, Donders et presbytie ---------- */
   {id:'donders.1', ecran:'donders', ancre:'changement en dioptrie entre un œil au repos et son accommodation maximale', titre:'L’amplitude',
    cle:['un changement en dioptries', 'entre l’œil au repos et son accommodation maximale', 'elle varie entre les individus et baisse avec l’âge'],
    explique:'Pourquoi l’amplitude se mesure-t-elle en dioptries, comme une lentille ?',
-   verif:{q:'Définis l’amplitude d’accommodation.', r:'« L’amplitude d’accommodation est le changement en dioptrie entre un œil au repos et son accommodation maximale. »', points:['changement en dioptrie', 'au repos → accommodation maximale']},
+   verif:{q:'Définis l’amplitude d’accommodation.', r:'« L’amplitude d’accommodation est le changement en dioptrie entre un œil au repos et son accommodation maximale. »', points:['changement en dioptrie', 'au repos → accommodation maximale'],
+     qcm:{bon:'Le changement en dioptrie entre un œil au repos et son accommodation maximale', faux:['La moitié de l’accommodation maximale, celle qu’on peut tenir longtemps', 'La distance entre le point le plus proche et le point le plus éloigné vus nets', 'Le changement en dioptrie entre l’œil corrigé et l’œil sans correction']}},
    src:['M6 D53']},
   {id:'donders.2', ecran:'donders', ancre:'commence à donner des problèmes de vision de près vers la fin des années trente', titre:'La presbytie',
    cle:['très bien avant 20 ans', 'problèmes de près vers la fin des années trente', 'presque entièrement perdue à 60 ans et plus', 'cette perte s’appelle la presbytie'],
    explique:'Pourquoi la presbytie se remarque-t-elle d’abord en lisant, et pas en regardant au loin ?',
-   verif:{q:'Qu’est-ce que la presbytie, et à quel âge se fait-elle sentir ?', r:'La perte d’accommodation avec l’âge : problèmes de près vers la fin des années trente, accommodation presque perdue à 60 ans et plus.', points:['perte d’accommodation avec l’âge', 'fin des années trente', 'presque perdue à 60 ans']},
+   verif:{q:'Qu’est-ce que la presbytie, et à quel âge se fait-elle sentir ?', r:'La perte d’accommodation avec l’âge : problèmes de près vers la fin des années trente, accommodation presque perdue à 60 ans et plus.', points:['perte d’accommodation avec l’âge', 'fin des années trente', 'presque perdue à 60 ans'],
+     qcm:{bon:'La perte d’accommodation avec l’âge : gênante vers la fin des années trente, presque complète à 60 ans', faux:['Une hypermétropie qui apparaît avec l’âge : gênante vers 50 ans, complète à 75 ans', 'La perte d’accommodation avec l’âge : gênante dès 20 ans, presque complète à 40 ans', 'Une baisse de la vision de loin avec l’âge : gênante vers 45 ans, et corrigée ensuite par un verre négatif']}},
    src:['M6 D53']},
   {id:'donders.3', ecran:'donders', ancre:'environ la moitié de l’amplitude d’accommodation', titre:'La moitié pour durer',
    cle:['effort prolongé : environ la moitié de l’amplitude', 'l’autre moitié : la réserve accommodative', 'une règle pédagogique'],
    explique:'Pourquoi l’œil ne peut-il pas lire une heure en utilisant toute son amplitude ?',
-   verif:{q:'Quelle part de l’amplitude utilise-t-on pour un effort prolongé ?', r:'Environ la moitié, comme règle pédagogique ; l’autre moitié reste en « réserve accommodative ».', points:['la moitié', 'réserve accommodative']},
+   verif:{q:'Quelle part de l’amplitude utilise-t-on pour un effort prolongé ?', r:'Environ la moitié, comme règle pédagogique ; l’autre moitié reste en « réserve accommodative ».', points:['la moitié', 'réserve accommodative'],
+     qcm:{bon:'Environ la moitié, comme règle pédagogique ; l’autre moitié reste en réserve accommodative', faux:['Toute l’amplitude, comme règle pédagogique ; la réserve accommodative ne sert que pour voir de loin', 'Environ le quart ; les trois quarts restent en réserve accommodative', 'Environ les deux tiers ; le dernier tiers sert à la vision de loin']}},
    src:['M6 D54']},
   {id:'donders.4', ecran:'donders', ancre:'Là où elle passe sous la demande de lecture, l’œil travaille trop', titre:'Quand la moitié ne suffit plus',
    cle:['comparer ½ Am à la demande 1/d', 'à 40 cm : la moitié de Donders passe sous 2,50 D vers 38 ans', 'c’est la « fin des années trente » du deck'],
    explique:'Comment le tableau de Donders et la règle de la moitié expliquent-ils l’âge d’apparition de la presbytie ?',
-   verif:{q:'À 40 cm, vers quel âge la moitié de l’amplitude ne couvre-t-elle plus la demande ?', r:'Vers 38 ans : il faut Am ≥ 5 D pour que ½ Am couvre 2,50 D, et Donders passe sous 5 D entre 30 et 40 ans <span class="deduit">déduit</span>.', points:['vers 38 ans', '½ Am < 2,50 D']},
+   verif:{q:'À 40 cm, vers quel âge la moitié de l’amplitude ne couvre-t-elle plus la demande ?', r:'Vers 38 ans : il faut Am ≥ 5 D pour que ½ Am couvre 2,50 D, et Donders passe sous 5 D entre 30 et 40 ans <span class="deduit">déduit</span>.', points:['vers 38 ans', '½ Am < 2,50 D'],
+     qcm:{bon:'Vers 38 ans : il faut Am ≥ 5 D pour que ½ Am couvre 2,50 D', faux:['Vers 50 ans : il faut Am ≥ 2,50 D pour que Am couvre 2,50 D', 'Vers 30 ans : il faut Am ≥ 7 D pour que ½ Am couvre 3,50 D', 'Vers 44 ans : il faut Am ≥ 4 D pour que ½ Am couvre 2,00 D']}},
    src:['M6 D53', 'M6 D54']},
   {id:'donders.5', ecran:'donders', ancre:'Comparer la distance minimum confortable pour la lecture', titre:'La distance confortable',
    cle:['distance confortable = 1/(½ Am)', '10 ans : 1/7 = 14,3 cm', '20 ans : 20 cm ; 30 ans : 28,6 cm'],
    explique:'Pourquoi la distance de lecture confortable s’éloigne-t-elle avec l’âge ?',
-   verif:{q:'Quelle est la distance minimum confortable de lecture à 10, 20 et 30 ans ?', r:'1/(½ Am) : 10 ans 1/7 = 14,3 cm ; 20 ans 1/5 = 20 cm ; 30 ans 1/3,5 = 28,6 cm.', points:['1/(½ Am)', '14,3 cm', '20 cm et 28,6 cm']},
+   verif:{q:'Quelle est la distance minimum confortable de lecture à 10, 20 et 30 ans ?', r:'1/(½ Am) : 10 ans 1/7 = 14,3 cm ; 20 ans 1/5 = 20 cm ; 30 ans 1/3,5 = 28,6 cm.', points:['1/(½ Am)', '14,3 cm', '20 cm et 28,6 cm'],
+     qcm:{bon:'1/(½ Am) : 14,3 cm à 10 ans, 20 cm à 20 ans, 28,6 cm à 30 ans', faux:['1/Am : 7,1 cm à 10 ans, 10 cm à 20 ans, 14,3 cm à 30 ans', '½ × 1/Am : 3,6 cm à 10 ans, 5 cm à 20 ans, 7,1 cm à 30 ans', '1/(½ Am) : 28,6 cm à 10 ans, 20 cm à 20 ans, 14,3 cm à 30 ans']}},
    src:['M6 D55', 'M6 C9']},
   {id:'donders.6', ecran:'donders', ancre:'mal de cou et de dos', titre:'Les symptômes',
    cle:['vision floue, détails de près difficiles, délai pour voir de près', 'mal de tête, inconfort visuel', 'mal de cou et de dos, fatigue, besoin de plus de lumière'],
    explique:'Pourquoi un presbyte peut-il se plaindre d’un mal de cou plutôt que de sa vue ?',
-   verif:{q:'Nomme les symptômes de la presbytie.', r:'Vision floue et détails de près difficiles, délai pour voir de près, mal de tête, inconfort visuel, mal de cou et de dos, fatigue, besoin de plus de lumière.', points:['vision floue de près', 'mal de tête', 'mal de cou et de dos', 'fatigue, lumière']},
+   verif:{q:'Nomme les symptômes de la presbytie.', r:'Vision floue et détails de près difficiles, délai pour voir de près, mal de tête, inconfort visuel, mal de cou et de dos, fatigue, besoin de plus de lumière.', points:['vision floue de près', 'mal de tête', 'mal de cou et de dos', 'fatigue, lumière'],
+     qcm:{bon:'Vision floue de près, délai pour voir de près, mal de tête, mal de cou et de dos, fatigue, besoin de lumière', faux:['Vision floue de loin, halos la nuit, mal de tête, yeux secs, fatigue, besoin de moins de lumière', 'Vision double de près, douleur à l’œil, nausées, rougeur, fatigue, besoin de plus de lumière', 'Vision floue de loin, plisser les yeux pour lire les panneaux, mal de tête, fatigue, besoin de lumière']}},
    src:['M6 D62']},
 
   /* ---------- L’addition ---------- */
   {id:'addition.1', ecran:'addition', ancre:'L’addition est la puissance positive supplémentaire', titre:'Définir l’addition',
    cle:['une puissance positive supplémentaire', 'destinée à faciliter la vision de près', 'Addition = A − 0,5 (Am)'],
    explique:'Pourquoi l’addition est-elle toujours positive ?',
-   verif:{q:'Définis l’addition et donne sa formule.', r:'« L’addition est la puissance positive supplémentaire destinée à faciliter la vision de près. » Addition = A − 0,5 (Am), avec A = 1/d.', points:['puissance positive supplémentaire', 'vision de près', 'A − 0,5 Am']},
+   verif:{q:'Définis l’addition et donne sa formule.', r:'« L’addition est la puissance positive supplémentaire destinée à faciliter la vision de près. » Addition = A − 0,5 (Am), avec A = 1/d.', points:['puissance positive supplémentaire', 'vision de près', 'A − 0,5 Am'],
+     qcm:{bon:'La puissance positive supplémentaire pour faciliter la vision de près ; Addition = A − 0,5 Am', faux:['La puissance négative ajoutée pour faciliter la vision de loin ; Addition = A − 0,5 Am', 'La puissance positive supplémentaire pour faciliter la vision de près ; Addition = 0,5 A − Am', 'La puissance positive supplémentaire pour faciliter la vision de près ; Addition = A − Am']}},
    src:['M6 D56']},
   {id:'addition.2', ecran:'addition', ancre:'Si le résultat est négatif, aucune addition n’est indiquée', titre:'Négatif : aucune addition',
    cle:['résultat négatif : aucune addition', 'jamais une addition négative', 'la formule suppose la correction de loin adéquate'],
    explique:'Que veut dire, pour le patient, un calcul d’addition qui sort négatif ?',
-   verif:{q:'Lecture à 1 m, 40 ans (Am 4,5 D) : quelle addition ?', r:'A = 1,00 ; 1,00 − 0,5 × 4,5 = −1,25 : négatif, donc aucune addition (« aucune addition n’est indiquée par ce calcul simplifié »).', points:['−1,25', 'aucune addition']},
+   verif:{q:'Lecture à 1 m, 40 ans (Am 4,5 D) : quelle addition ?', r:'A = 1,00 ; 1,00 − 0,5 × 4,5 = −1,25 : négatif, donc aucune addition (« aucune addition n’est indiquée par ce calcul simplifié »).', points:['−1,25', 'aucune addition'],
+     qcm:{bon:'1,00 − 2,25 = −1,25 : négatif, donc aucune addition', faux:['1,00 − 2,25 = −1,25 : une addition de −1,25', '2,50 − 2,25 = +0,25 : une addition de +0,25', '1,00 − 4,50 = −3,50 : une addition de +3,50']}},
    src:['M6 D56', 'M6 C7']},
   {id:'addition.3', ecran:'addition', ancre:'il reste à l’œil A − Addition = 0,5 × Am', titre:'Pourquoi 0,5',
    cle:['avec l’addition, l’œil ne fournit plus que A − Addition', 'A − Addition = 0,5 Am', 'c’est la règle de l’effort prolongé'],
    explique:'Comment le 0,5 de la formule rejoint-il la règle de la moitié de l’amplitude ?',
-   verif:{q:'Pourquoi la formule de l’addition contient-elle 0,5 ?', r:'Avec l’addition en verre, l’œil fournit A − Addition = 0,5 Am : il travaille à la moitié de son amplitude, la règle de l’effort prolongé.', points:['A − Addition = 0,5 Am', 'moitié de l’amplitude', 'effort prolongé']},
+   verif:{q:'Pourquoi la formule de l’addition contient-elle 0,5 ?', r:'Avec l’addition en verre, l’œil fournit A − Addition = 0,5 Am : il travaille à la moitié de son amplitude, la règle de l’effort prolongé.', points:['A − Addition = 0,5 Am', 'moitié de l’amplitude', 'effort prolongé'],
+     qcm:{bon:'Avec l’addition, l’œil fournit A − Addition = 0,5 Am : la moitié de son amplitude, pour durer', faux:['Parce que l’addition se partage entre les deux yeux : 0,5 pour chaque œil', 'Avec l’addition, l’œil fournit A − Addition = 0,5 A : la moitié de la demande, pour durer longtemps', 'Parce que l’amplitude baisse de moitié entre 40 et 50 ans, d’après Donders']}},
    src:['M6 D54', 'M6 D56']},
   {id:'addition.4', ecran:'addition', ancre:'l’addition ne dépasse jamais A', titre:'Un plafond : A',
    cle:['l’addition ne dépasse jamais A', 'à 40 cm, jamais plus de +2,50', 'maximum quand Am = 0 (75 ans)'],
    explique:'Pourquoi une addition de +3,00 pour lire à 40 cm serait-elle trop forte selon la formule ?',
-   verif:{q:'À 40 cm, quelle est l’addition maximale par la formule, et quand l’atteint-on ?', r:'+2,50 D : quand il ne reste plus d’amplitude (Am = 0, 75 ans), l’addition fournit toute la demande 1/0,40.', points:['+2,50', 'Am = 0']},
+   verif:{q:'À 40 cm, quelle est l’addition maximale par la formule, et quand l’atteint-on ?', r:'+2,50 D : quand il ne reste plus d’amplitude (Am = 0, 75 ans), l’addition fournit toute la demande 1/0,40.', points:['+2,50', 'Am = 0'],
+     qcm:{bon:'+2,50 D, quand il ne reste plus d’amplitude (Am = 0, vers 75 ans)', faux:['+3,00 D, quand il ne reste plus d’amplitude (Am = 0, vers 60 ans)', '+2,50 D, dès que l’amplitude tombe sous 2,50 D (vers 50 ans)', 'Aucun plafond : l’addition monte de 0,25 D tous les cinq ans']}},
    src:['M6 D56', 'M6 D60']},
   {id:'addition.5', ecran:'addition', ancre:'si l’énoncé donne une distance et une amplitude, applique la formule', titre:'Formule ou tableau',
    cle:['le tableau « Addition attendue » donne l’addition par tranche d’âge', 'à 40 cm, il dépasse la formule de 0,25 à 0,50 D entre 40 et 54 ans', 'distance et amplitude données : la formule ; lequel prime : à vérifier en classe'],
    explique:'Pourquoi le tableau et la formule ne donnent-ils pas la même addition à 45 ans ?',
-   verif:{q:'L’énoncé donne une distance de lecture et une amplitude. Utilises-tu le tableau ou la formule ?', r:'La formule, Addition = A − 0,5 Am, à la distance donnée ; le tableau ne connaît que l’âge. Lequel l’examen attend quand tout est donné reste à vérifier en classe.', points:['la formule', 'le tableau : seulement l’âge', 'à vérifier en classe']},
+   verif:{q:'L’énoncé donne une distance de lecture et une amplitude. Utilises-tu le tableau ou la formule ?', r:'La formule, Addition = A − 0,5 Am, à la distance donnée ; le tableau ne connaît que l’âge. Lequel l’examen attend quand tout est donné reste à vérifier en classe.', points:['la formule', 'le tableau : seulement l’âge', 'à vérifier en classe'],
+     qcm:{bon:'La formule, Addition = A − 0,5 Am, à la distance donnée ; le tableau ne connaît que l’âge', faux:['Le tableau d’addition attendue, toujours : la formule ne sert que sans l’âge', 'Le tableau de Donders seul : l’amplitude donnée dans l’énoncé ne compte pas', 'La formule, mais avec l’amplitude entière : Addition = A − Am, à la distance donnée par l’énoncé']}},
    src:['M6 D56', 'M6 D63']},
   {id:'addition.6', ecran:'addition', ancre:'L’ADD de l’ordonnance est l’addition calculée ici', titre:'L’ADD de l’ordonnance',
    cle:['l’ADD de l’ordonnance est l’addition', 'presbytie : une addition, en général la même pour les deux yeux', 'chez un enfant, l’ADD n’est pas de la presbytie'],
    explique:'Pourquoi l’addition est-elle en général la même pour les deux yeux ?',
-   verif:{q:'Sur une ordonnance, comment repère-t-on la presbytie ?', r:'Par une addition en vision de près (ADD), en général la même pour les deux yeux ; chez un enfant, l’ADD n’est pas de la presbytie.', points:['addition en vision de près', 'même pour les deux yeux', 'pas chez l’enfant']},
+   verif:{q:'Sur une ordonnance, comment repère-t-on la presbytie ?', r:'Par une addition en vision de près (ADD), en général la même pour les deux yeux ; chez un enfant, l’ADD n’est pas de la presbytie.', points:['addition en vision de près', 'même pour les deux yeux', 'pas chez l’enfant'],
+     qcm:{bon:'Par une addition en vision de près (ADD), en général la même pour les deux yeux', faux:['Par un cylindre et un axe, en général différents pour les deux yeux', 'Par une sphère positive en vision de loin, en général plus forte à l’œil dominant', 'Par une addition en vision de loin (ADD), différente pour chaque œil']}},
    src:['Bureau M3']},
 
   /* ---------- Les exercices du module 6 ---------- */
   {id:'exercices.1', ecran:'exercices', ancre:'Rayons en mètres : cm ÷ 100, mm ÷ 1000.', titre:'Méthode : une lentille',
    cle:['rayons en mètres : cm ÷ 100, mm ÷ 1000', 'chaque surface : (nr − ni)/r, avec le signe de r', 'additionner les contributions'],
    explique:'Pourquoi convertir les rayons avant tout autre calcul ?',
-   verif:{q:'Donne les trois étapes pour calculer la puissance d’un verre à deux surfaces.', r:'Rayons en mètres ; chaque surface (nr − ni)/r avec le signe de r ; additionner.', points:['en mètres', '(nr − ni)/r par surface', 'additionner']},
+   verif:{q:'Donne les trois étapes pour calculer la puissance d’un verre à deux surfaces.', r:'Rayons en mètres ; chaque surface (nr − ni)/r avec le signe de r ; additionner.', points:['en mètres', '(nr − ni)/r par surface', 'additionner'],
+     qcm:{bon:'Rayons en mètres ; chaque surface (nr − ni)/r avec le signe de r ; additionner les contributions', faux:['Rayons en millimètres ; chaque surface (nr − ni)/r sans signe ; additionner les contributions', 'Rayons en mètres ; chaque surface (nr − ni) × r avec le signe de r ; multiplier les contributions', 'Additionner les rayons ; les convertir en mètres ; diviser l’indice du verre par ce total']}},
    src:['M6 D11', 'M6 D16']},
   {id:'exercices.2', ecran:'exercices', ancre:'A − 0,5 Am. Négatif : aucune addition.', titre:'Méthode : l’addition',
    cle:['A = 1/d', 'Am donnée, ou lue dans Donders si l’énoncé donne l’âge', 'Addition = A − 0,5 Am ; négatif : aucune addition'],
    explique:'Pourquoi faut-il lire l’énoncé deux fois avant de choisir d’où vient Am ?',
-   verif:{q:'Lecture à 25 cm, Am = 1,50 D : quelle addition ?', r:'A = 1/0,25 = 4,00 ; 0,5 × 1,50 = 0,75 ; Addition = 4,00 − 0,75 = +3,25.', points:['A = 4,00', '0,75', '+3,25']},
+   verif:{q:'Lecture à 25 cm, Am = 1,50 D : quelle addition ?', r:'A = 1/0,25 = 4,00 ; 0,5 × 1,50 = 0,75 ; Addition = 4,00 − 0,75 = +3,25.', points:['A = 4,00', '0,75', '+3,25'],
+     qcm:{bon:'A = 4,00 ; 0,5 × 1,50 = 0,75 ; Addition = +3,25', faux:['A = 4,00 ; Am entière, 1,50 ; Addition = +2,50', 'A = 4,00 ; 0,5 × 4,00 = 2,00 ; Addition = +0,50', 'A = 0,25 ; 0,5 × 1,50 = 0,75 ; aucune addition']}},
    src:['M6 D56', 'M6 C8']},
 
   /* ---------- Les racines du module 6 ---------- */
   {id:'racines.1', ecran:'racines', ancre:'Tout le calcul du module pousse sur quatre équations', titre:'Quatre équations',
    cle:['① D = (nr − ni)/r : la puissance d’une surface', '② F = 1/f′ et A = 1/d : dioptries = 1/mètres', '③ excès = F œil − F requise : le bilan de loin (déduit)', '④ Addition = A − 0,5 Am : le bilan de près'],
    explique:'Pourquoi ① et ② fabriquent-elles des puissances, alors que ③ et ④ comparent ?',
-   verif:{q:'Quelles sont les quatre équations du module 6 ?', r:'① D = (nr − ni)/r ; ② F = 1/f′ et A = 1/d ; ③ excès = F œil − F requise (mise en équation <span class="deduit">déduit</span>) ; ④ Addition = A − 0,5 (Am).', points:['D = (nr − ni)/r', 'F = 1/f′, A = 1/d', 'excès de loin', 'Addition = A − 0,5 Am']},
+   verif:{q:'Quelles sont les quatre équations du module 6 ?', r:'① D = (nr − ni)/r ; ② F = 1/f′ et A = 1/d ; ③ excès = F œil − F requise (mise en équation <span class="deduit">déduit</span>) ; ④ Addition = A − 0,5 (Am).', points:['D = (nr − ni)/r', 'F = 1/f′, A = 1/d', 'excès de loin', 'Addition = A − 0,5 Am'],
+     qcm:{bon:'D = (nr − ni)/r ; F = 1/f′ et A = 1/d ; excès = F œil − F requise ; Addition = A − 0,5 Am', faux:['D = (nr − ni)/r ; F = 1/f′ et A = 1/d + R ; R = 1/Pr ; 1/Pp = Am − R', 'D = (nr − ni)/r ; F = 1/f′ et A = 1/d ; excès = F requise − F œil ; Addition = A − Am', 'D = (nr − ni) × r ; F = f′ et A = d ; excès = F œil − F requise ; Addition = A − 0,5 Am']}},
    src:['M6 D11', 'M6 D27', 'M6 D56']},
   {id:'racines.2', ecran:'racines', ancre:'Une dioptrie est l’inverse d’une distance en mètres', titre:'Dans les deux sens',
    cle:['F = 1/f′ ; A = 1/d', 'à l’envers : f = 1/F', 'ex. : ½ Am = 7 D à 10 ans → 1/7 ≈ 14 cm'],
    explique:'Comment la même équation sert-elle à trouver une puissance ou une distance ?',
-   verif:{q:'Un enfant de 10 ans garde 7 D pour un effort prolongé. À quelle distance lit-il confortablement ?', r:'f = 1/F = 1/7 = 0,143 m, soit ≈ 14 cm.', points:['1/7', '≈ 14 cm']},
+   verif:{q:'Un enfant de 10 ans garde 7 D pour un effort prolongé. À quelle distance lit-il confortablement ?', r:'f = 1/F = 1/7 = 0,143 m, soit ≈ 14 cm.', points:['1/7', '≈ 14 cm'],
+     qcm:{bon:'f = 1/F = 1/7 = 0,143 m, soit ≈ 14 cm', faux:['f = 1/14 = 0,071 m, soit ≈ 7 cm', 'f = 1/7 = 0,143 cm, soit ≈ 1,4 mm', 'f = 1/7 = 0,7 m, soit ≈ 70 cm']}},
    src:['M6 C9']},
 
   /* ---------- Le fil du module 7 ---------- */
   {id:'fil7.1', ecran:'fil7', ancre:'Une seule formule répond à tout', titre:'Une formule, deux lectures',
    cle:['A = 1/d + R : la demande, plus l’erreur', 'au repos (A = 0) : R = 1/Pr, le punctum remotum', 'au maximum (A = Am) : 1/Pp = Am − R, le punctum proximum'],
    explique:'Pourquoi le Pr et le Pp sortent-ils de la même formule ?',
-   verif:{q:'Quelle formule du module 7 donne le Pr et le Pp, et comment ?', r:'A = 1/d + R : avec A = 0 (repos), R = 1/Pr ; avec A = Am (maximum), 1/Pp = Am − R <span class="deduit">déduit</span>.', points:['A = 1/d + R', 'A = 0 : Pr', 'A = Am : Pp']},
+   verif:{q:'Quelle formule du module 7 donne le Pr et le Pp, et comment ?', r:'A = 1/d + R : avec A = 0 (repos), R = 1/Pr ; avec A = Am (maximum), 1/Pp = Am − R <span class="deduit">déduit</span>.', points:['A = 1/d + R', 'A = 0 : Pr', 'A = Am : Pp'],
+     qcm:{bon:'A = 1/d + R : avec A = 0 (repos), R = 1/Pr ; avec A = Am (maximum), 1/Pp = Am − R', faux:['A = 1/d + R : avec A = Am (maximum), R = 1/Pr ; avec A = 0 (repos), 1/Pp = Am − R', 'A = 1/d − R : avec A = 0 (repos), R = 1/Pr ; avec A = ½ Am, 1/Pp = ½ Am − R', 'A = 1/d : avec A = 0 (repos), Pr = 1/d ; avec A = Am (maximum), Pp = Am + R']}},
    src:['M7 D20', 'M7 D28', 'M7 D48']},
   {id:'fil7.2', ecran:'fil7', ancre:'Toujours vérifier la logique physique du résultat', titre:'Quatre questions avant le calcul',
    cle:['Quelle amétropie ? (−, 0, +)', 'Quel point recherche-t-on ? (Pr au repos, Pp au maximum)', 'Quel effet sur l’accommodation ?', 'Le résultat est-il plausible ?'],
    explique:'Comment la quatrième question t’aide-t-elle à repérer une erreur de signe ?',
-   verif:{q:'Quelles sont les quatre questions du prof avant un calcul ?', r:'« Quelle amétropie? », « Quel point recherche-t-on? », « Quel effet sur l’accommodation? », « Le résultat est-il plausible? »', points:['quelle amétropie', 'quel point', 'quel effet sur l’accommodation', 'plausible']},
+   verif:{q:'Quelles sont les quatre questions du prof avant un calcul ?', r:'« Quelle amétropie? », « Quel point recherche-t-on? », « Quel effet sur l’accommodation? », « Le résultat est-il plausible? »', points:['quelle amétropie', 'quel point', 'quel effet sur l’accommodation', 'plausible'],
+     qcm:{bon:'Quelle amétropie, quel point on cherche, quel effet sur l’accommodation, si le résultat est plausible', faux:['Quelle formule, quelle unité, quel arrondi, si le résultat a bien deux décimales', 'Quel âge, quelle amplitude de Donders, quelle addition, si le patient lit à 40 cm', 'Quelle amétropie, quelle lentille choisir, quelle distance verre–œil, si le Pp est bien écrit en dioptries']}},
    src:['M7 D48']},
   {id:'fil7.3', ecran:'fil7', ancre:'Retenir : on signe le Pr, pas les autres', titre:'On signe le Pr',
    cle:['R a le signe de la correction de loin', 'Pr signé : devant l’œil négatif, derrière positif', 'd et Pp s’écrivent positifs devant l’œil'],
    explique:'Pourquoi a-t-on besoin d’un signe pour le Pr, mais pas pour le Pp ?',
-   verif:{q:'Quelles distances du module 7 sont signées, et lesquelles restent positives ?', r:'Le Pr est signé (devant = négatif, derrière = positif) ; d et Pp s’écrivent positifs devant l’œil.', points:['Pr signé', 'devant négatif', 'd et Pp positifs']},
+   verif:{q:'Quelles distances du module 7 sont signées, et lesquelles restent positives ?', r:'Le Pr est signé (devant = négatif, derrière = positif) ; d et Pp s’écrivent positifs devant l’œil.', points:['Pr signé', 'devant négatif', 'd et Pp positifs'],
+     qcm:{bon:'Le Pr est signé (devant négatif, derrière positif) ; d et Pp s’écrivent positifs devant l’œil', faux:['Le Pp est signé (devant négatif, derrière positif) ; d et Pr s’écrivent positifs devant l’œil', 'Toutes sont signées : d, Pr et Pp s’écrivent négatifs devant l’œil', 'Le Pr est signé (devant positif, derrière négatif) ; d et Pp s’écrivent positifs devant l’œil']}},
    src:['M7 D20', 'M7 D24', 'M7 D28', 'M7 D37']},
   {id:'fil7.4', ecran:'fil7', ancre:'A change de sens', titre:'A change de sens',
    cle:['M6 : A = 1/d, la demande', 'M7 : A = 1/d + R, l’effort d’un œil non corrigé', 'les deux sont égaux pour un œil emmétrope ou corrigé'],
    explique:'Pourquoi le A du module 6 et celui du module 7 coïncident-ils pour un œil corrigé ?',
-   verif:{q:'Que veut dire A au module 6, et au module 7 ?', r:'M6 : la demande de l’objet, 1/d. M7 : l’accommodation nécessaire à un œil non corrigé, 1/d + R. Égaux si R = 0 (emmétrope ou corrigé).', points:['M6 : 1/d', 'M7 : 1/d + R', 'égaux si R = 0']},
+   verif:{q:'Que veut dire A au module 6, et au module 7 ?', r:'M6 : la demande de l’objet, 1/d. M7 : l’accommodation nécessaire à un œil non corrigé, 1/d + R. Égaux si R = 0 (emmétrope ou corrigé).', points:['M6 : 1/d', 'M7 : 1/d + R', 'égaux si R = 0'],
+     qcm:{bon:'M6 : la demande 1/d ; M7 : l’accommodation d’un œil non corrigé, 1/d + R ; égaux si R = 0', faux:['M6 : l’amplitude Am ; M7 : la demande 1/d ; égaux pour un œil presbyte', 'M6 : la demande 1/d ; M7 : l’addition 1/d − 0,5 Am ; égaux si Am = 0', 'M6 : l’accommodation d’un œil non corrigé, 1/d + R ; M7 : la demande 1/d ; égaux pour un œil myope']}},
    src:['M6 D50', 'M7 D20']},
 
   /* ---------- La formule commune ---------- */
   {id:'formule.1', ecran:'formule', ancre:'l’erreur réfractive modifie l’effort accommodatif', titre:'A = 1/d + R',
    cle:['A = 1/d + R', 'd en mètres, positive', 'R < 0 : myopie ; R = 0 : emmétropie ; R > 0 : hypermétropie'],
    explique:'Pourquoi une erreur réfractive change-t-elle l’effort, à distance égale ?',
-   verif:{q:'Écris la formule commune et le signe de R pour chaque amétropie.', r:'A = 1/d + R ; R < 0 : myopie, R = 0 : emmétropie, R > 0 : hypermétropie.', points:['A = 1/d + R', 'R < 0 myopie', 'R > 0 hypermétropie']},
+   verif:{q:'Écris la formule commune et le signe de R pour chaque amétropie.', r:'A = 1/d + R ; R < 0 : myopie, R = 0 : emmétropie, R > 0 : hypermétropie.', points:['A = 1/d + R', 'R < 0 myopie', 'R > 0 hypermétropie'],
+     qcm:{bon:'A = 1/d + R ; R négatif : myopie, R nul : emmétropie, R positif : hypermétropie', faux:['A = 1/d + R ; R positif : myopie, R nul : emmétropie, R négatif : hypermétropie', 'A = 1/d − R ; R négatif : myopie, R nul : emmétropie, R positif : hypermétropie', 'A = d + R ; R négatif : myopie, R nul : emmétropie, R positif : hypermétropie']}},
    src:['M7 D20']},
   {id:'formule.2', ecran:'formule', ancre:'le myope de −3,00 se corrige avec −3,00 D', titre:'R, c’est la correction de loin',
    cle:['R a le signe de la correction de loin', 'myope −3,00 : R = −3,00', 'hypermétrope +3,00 : R = +3,00'],
    explique:'Pourquoi la myopie, qui est un excès de convergence, s’écrit-elle avec un R négatif ?',
-   verif:{q:'Un patient porte −3,00 pour voir de loin. Que vaut R dans A = 1/d + R ?', r:'R = −3,00 : R a le signe de la correction de loin.', points:['R = −3,00', 'signe de la correction de loin']},
+   verif:{q:'Un patient porte −3,00 pour voir de loin. Que vaut R dans A = 1/d + R ?', r:'R = −3,00 : R a le signe de la correction de loin.', points:['R = −3,00', 'signe de la correction de loin'],
+     qcm:{bon:'R = −3,00 : R a le signe de la correction de loin', faux:['R = +3,00 : la myopie est un excès de convergence, donc positive', 'R = −1,50 : la moitié de la correction, comme pour l’addition', 'R = −0,33 : R est l’inverse de la correction de loin']}},
    src:['M7 D21']},
   {id:'formule.3', ecran:'formule', ancre:'Si A < 0, la vision nette n’est pas possible', titre:'A négatif : flou',
    cle:['A < 0 : vision nette impossible par accommodation', 'l’objet est au-delà du Pr du myope', 'modèle simplifié sans distance verre–œil'],
    explique:'Pourquoi l’œil ne peut-il pas fournir une accommodation négative ?',
-   verif:{q:'Que signifie un A négatif dans A = 1/d + R ?', r:'« Si A < 0, la vision nette n’est pas possible par accommodation seule » : l’objet est plus loin que le Pr du myope.', points:['vision nette impossible', 'au-delà du Pr']},
+   verif:{q:'Que signifie un A négatif dans A = 1/d + R ?', r:'« Si A < 0, la vision nette n’est pas possible par accommodation seule » : l’objet est plus loin que le Pr du myope.', points:['vision nette impossible', 'au-delà du Pr'],
+     qcm:{bon:'Vision nette impossible par accommodation seule : l’objet est plus loin que le Pr du myope', faux:['L’œil relâche son accommodation : il voit net sans effort, comme au repos', 'Vision nette impossible par accommodation seule : l’objet est plus près que le Pp de l’hypermétrope', 'Le patient a besoin d’une addition négative de ce montant pour voir net']}},
    src:['M7 D20', 'M7 D21', 'M7 D22']},
   {id:'formule.4', ecran:'formule', ancre:'L’emmétrope fournit 4 D ; le myope de −3,00, seulement 1 D', titre:'La myopie facilite le près',
    cle:['à 25 cm, la demande est 4 D pour tous', 'myope −3,00 : A = 4 − 3 = 1 D', 'son excès de convergence paie le reste'],
    explique:'Pourquoi un myope presbyte peut-il souvent lire sans lunettes ?',
-   verif:{q:'À 25 cm, combien accommodent l’emmétrope, le myope −3,00 et l’hypermétrope +3,00 ?', r:'Emmétrope 4 D ; myope 4 − 3 = 1 D ; hypermétrope 4 + 3 = 7 D.', points:['4 D', '1 D', '7 D']},
+   verif:{q:'À 25 cm, combien accommodent l’emmétrope, le myope −3,00 et l’hypermétrope +3,00 ?', r:'Emmétrope 4 D ; myope 4 − 3 = 1 D ; hypermétrope 4 + 3 = 7 D.', points:['4 D', '1 D', '7 D'],
+     qcm:{bon:'Emmétrope 4 D ; myope 4 − 3 = 1 D ; hypermétrope 4 + 3 = 7 D', faux:['Emmétrope 4 D ; myope 4 + 3 = 7 D ; hypermétrope 4 − 3 = 1 D', 'Emmétrope 4 D ; myope 4 D ; hypermétrope 4 D, la même demande', 'Emmétrope 0,25 D ; myope −2,75 D ; hypermétrope 3,25 D']}},
    src:['M7 D21', 'M7 D22']},
   {id:'formule.5', ecran:'formule', ancre:'Non. Son Pr est à 20 cm', titre:'Le myope −5,00 à 40 cm',
    cle:['A = 2,50 − 5,00 = −2,50 < 0', 'son Pr est à 20 cm', 'à 40 cm, il faudrait une accommodation négative'],
    explique:'Pourquoi rapprocher le livre aide-t-il ce myope, alors qu’il accommode alors davantage ?',
-   verif:{q:'Un myope de −5,00 voit-il net à 40 cm sans lunettes ?', r:'Non : A = 2,50 − 5,00 < 0. « Son Pr est à 20 cm; à 40 cm, il faudrait une accommodation négative. »', points:['non', 'A < 0', 'Pr à 20 cm']},
+   verif:{q:'Un myope de −5,00 voit-il net à 40 cm sans lunettes ?', r:'Non : A = 2,50 − 5,00 < 0. « Son Pr est à 20 cm; à 40 cm, il faudrait une accommodation négative. »', points:['non', 'A < 0', 'Pr à 20 cm'],
+     qcm:{bon:'Non : A = 2,50 − 5,00, négatif ; son Pr est à 20 cm, il faudrait une accommodation négative', faux:['Oui : A = 2,50 − 5,00 = −2,50 ; il relâche simplement son accommodation et voit net à 40 cm', 'Oui : A = 2,50 + 5,00 = 7,50, il accommode fort mais voit net', 'Non : A = 2,50 + 5,00 = 7,50, il n’a pas assez d’amplitude']}},
    src:['M7 D22']},
   {id:'formule.6', ecran:'formule', ancre:'Piège : au module 6, A était la demande', titre:'Pour l’addition : 1/d',
    cle:['A = 1/d + R : l’effort de l’œil non corrigé', 'pour l’addition, la correction de loin est en place', 'on revient à la demande 1/d, sans R'],
    explique:'Pourquoi mettre le A du module 7 dans la formule de l’addition donnerait-il une mauvaise addition ?',
-   verif:{q:'Pour calculer l’addition d’un myope −3,00 à 40 cm, quelle demande utilises-tu ?', r:'1/0,40 = 2,50 D, sans R : l’addition se calcule « avec la correction de loin en place ».', points:['2,50 D', 'sans R', 'correction de loin en place']},
+   verif:{q:'Pour calculer l’addition d’un myope −3,00 à 40 cm, quelle demande utilises-tu ?', r:'1/0,40 = 2,50 D, sans R : l’addition se calcule « avec la correction de loin en place ».', points:['2,50 D', 'sans R', 'correction de loin en place'],
+     qcm:{bon:'1/0,40 = 2,50 D, sans R : l’addition se calcule avec la correction de loin en place', faux:['1/0,40 − 3,00 = −0,50 D : la demande du module 7, avec R', '1/0,40 + 3,00 = 5,50 D : la myopie non corrigée s’ajoute toujours à la demande de près', '1/0,40 − 1,50 = 1,00 D : on retire la moitié de la myopie']}},
    src:['M7 D5']},
 
   /* ---------- Le punctum remotum ---------- */
   {id:'pr.1', ecran:'pr', ancre:'Point objet le plus éloigné que l’oeil peut voir clairement', titre:'Le Pr',
    cle:['punctum remotum = Pr', 'le point le plus éloigné vu clairement', 'œil au repos : A = 0'],
    explique:'Pourquoi le Pr se définit-il l’œil au repos ?',
-   verif:{q:'Définis le punctum remotum.', r:'« Point objet le plus éloigné que l’oeil peut voir clairement (œil au repos) ».', points:['le plus éloigné', 'œil au repos']},
+   verif:{q:'Définis le punctum remotum.', r:'« Point objet le plus éloigné que l’oeil peut voir clairement (œil au repos) ».', points:['le plus éloigné', 'œil au repos'],
+     qcm:{bon:'Le point objet le plus éloigné que l’œil peut voir clairement, l’œil au repos', faux:['Le point objet le plus proche que l’œil peut voir clairement, en accommodant au maximum', 'Le point objet le plus éloigné que l’œil peut voir clairement, en accommodant au maximum', 'Le point le plus éloigné où l’œil peut lire longtemps, avec la moitié de son amplitude']}},
    src:['M7 D11']},
   {id:'pr.2', ecran:'pr', ancre:'Pour le sujet emmétrope son Pr est à l’infini', titre:'Trois yeux, trois Pr',
    cle:['emmétrope : Pr à l’infini', 'myope : Pr à une distance déterminée, devant', 'hypermétrope : Pr derrière l’œil'],
    explique:'Pourquoi le Pr de l’emmétrope est-il à l’infini ?',
-   verif:{q:'Où est le Pr d’un emmétrope, d’un myope et d’un hypermétrope ?', r:'Emmétrope : à l’infini ; myope : devant l’œil, à une distance déterminée ; hypermétrope : derrière l’œil.', points:['infini', 'devant', 'derrière']},
+   verif:{q:'Où est le Pr d’un emmétrope, d’un myope et d’un hypermétrope ?', r:'Emmétrope : à l’infini ; myope : devant l’œil, à une distance déterminée ; hypermétrope : derrière l’œil.', points:['infini', 'devant', 'derrière'],
+     qcm:{bon:'Emmétrope : à l’infini ; myope : devant l’œil, à une distance déterminée ; hypermétrope : derrière l’œil', faux:['Emmétrope : à l’infini ; myope : derrière l’œil ; hypermétrope : devant l’œil, à une distance déterminée', 'Emmétrope : à 6 m ; myope : devant l’œil, à une distance déterminée ; hypermétrope : à l’infini', 'Emmétrope : sur la rétine ; myope : devant la rétine ; hypermétrope : derrière la rétine']}},
    src:['M7 D11', 'M7 D13']},
   {id:'pr.3', ecran:'pr', ancre:'Plus le punctum remotum est rapproché de l’oeil', titre:'Le Pr du myope',
    cle:['un point objet réel, devant l’œil', 'de quelques mètres à quelques centimètres', 'plus la myopie est forte, plus le Pr est près : |Pr| = 1/|R|'],
    explique:'Pourquoi un myope fort voit-il flou presque tout ce qui l’entoure ?',
-   verif:{q:'Comment le Pr d’un myope change-t-il quand sa myopie augmente ?', r:'Il se rapproche de l’œil : |Pr| = 1/|R| (−1,00 → 1 m ; −4,00 → 25 cm), et le loin devient plus flou.', points:['il se rapproche', '|Pr| = 1/|R|']},
+   verif:{q:'Comment le Pr d’un myope change-t-il quand sa myopie augmente ?', r:'Il se rapproche de l’œil : |Pr| = 1/|R| (−1,00 → 1 m ; −4,00 → 25 cm), et le loin devient plus flou.', points:['il se rapproche', '|Pr| = 1/|R|'],
+     qcm:{bon:'Il se rapproche de l’œil : |Pr| = 1/|R|, et le loin devient plus flou', faux:['Il s’éloigne de l’œil : |Pr| = |R|, et le loin devient plus flou', 'Il passe derrière l’œil : le Pr devient positif, comme chez l’hypermétrope', 'Il ne bouge pas : seul le Pp se rapproche quand la myopie augmente']}},
    src:['M7 D23']},
   {id:'pr.4', ecran:'pr', ancre:'Souvenez-vous que les valeurs à gauche de l’oeil sont négatives', titre:'Le Pr est signé',
    cle:['à gauche (devant) : négatif', 'à droite (derrière) : positif', 'hypermétrope : Pr derrière, virtuel ; au repos, il ne voit rien net'],
    explique:'Pourquoi le Pr d’un hypermétrope ne peut-il être qu’un point virtuel ?',
-   verif:{q:'Un Pr à 25 cm derrière l’œil : quel signe, et quel type d’œil ?', r:'Positif, +0,25 m : un hypermétrope, Pr virtuel derrière l’œil.', points:['positif', 'hypermétrope', 'virtuel']},
+   verif:{q:'Un Pr à 25 cm derrière l’œil : quel signe, et quel type d’œil ?', r:'Positif, +0,25 m : un hypermétrope, Pr virtuel derrière l’œil.', points:['positif', 'hypermétrope', 'virtuel'],
+     qcm:{bon:'Positif, +0,25 m : un hypermétrope, avec un Pr virtuel derrière l’œil', faux:['Négatif, −0,25 m : un myope, avec un Pr réel derrière l’œil', 'Positif, +0,25 m : un myope, avec un Pr réel derrière l’œil', 'Négatif, −0,25 m : un hypermétrope, avec un Pr virtuel derrière l’œil']}},
    src:['M7 D21', 'M7 D37']},
   {id:'pr.5', ecran:'pr', ancre:'La lentille cornéenne vaut R = 1/Pr', titre:'La lentille = 1/Pr',
    cle:['lentille cornéenne = R = 1/Pr', 'elle ramène le Pr à l’infini', 'Phil, Pr 50 cm devant : 1/−0,50 = −2,00 D'],
    explique:'Pourquoi la lentille qui corrige vaut-elle exactement l’inverse du Pr ?',
-   verif:{q:'Le Pr de Phil est à 50 cm devant lui. Quelle lentille cornéenne le corrige ?', r:'Pr = −0,50 m ; R = 1/(−0,50) = −2,00 D.', points:['−0,50 m', '−2,00 D']},
+   verif:{q:'Le Pr de Phil est à 50 cm devant lui. Quelle lentille cornéenne le corrige ?', r:'Pr = −0,50 m ; R = 1/(−0,50) = −2,00 D.', points:['−0,50 m', '−2,00 D'],
+     qcm:{bon:'Pr = −0,50 m ; R = 1/(−0,50) = −2,00 D', faux:['Pr = +0,50 m ; R = 1/0,50 = +2,00 D', 'Pr = −50 cm ; R = 1/(−50) = −0,02 D', 'Pr = −0,50 m ; R = Pr = −0,50 D']}},
    src:['M7 C2', 'M7 D25']},
   {id:'pr.6', ecran:'pr', ancre:'oublier le moins donne une lentille d’hypermétrope', titre:'Le piège du signe',
    cle:['le corrigé garde le signe du Pr', '« -22.2 cm, donc 22.2 cm devant »', 'sans le moins, on obtient une lentille positive : fausse'],
    explique:'Comment la question « Quelle amétropie? » attrape-t-elle cette erreur de signe ?',
-   verif:{q:'Lentilles de −4,50 D : où est le Pr, avec son signe ?', r:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant l’œil.', points:['−0,222 m', '22,2 cm devant']},
+   verif:{q:'Lentilles de −4,50 D : où est le Pr, avec son signe ?', r:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant l’œil.', points:['−0,222 m', '22,2 cm devant'],
+     qcm:{bon:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant l’œil', faux:['Pr = 1/4,50 = +0,222 m : 22,2 cm derrière l’œil', 'Pr = −4,50 m : 450 cm devant l’œil', 'Pr = 1/(−4,50) = −0,222 m : 2,22 cm devant l’œil']}},
    src:['M7 C3']},
 
   /* ---------- Le punctum proximum ---------- */
   {id:'pp.1', ecran:'pp', ancre:'Point objet le plus près que l’oeil peut voir avec accommodation maximale', titre:'Le Pp',
    cle:['punctum proximum = Pp', 'le point le plus près vu net', 'avec accommodation maximale, même un instant'],
    explique:'Pourquoi le Pp ne peut-il pas servir de distance de lecture prolongée ?',
-   verif:{q:'Définis le punctum proximum.', r:'« Point objet le plus près que l’oeil peut voir avec accommodation maximale (même si c’est juste pour quelques instant) » <span class="sic">(sic)</span>.', points:['le plus près', 'accommodation maximale', 'quelques instants']},
+   verif:{q:'Définis le punctum proximum.', r:'« Point objet le plus près que l’oeil peut voir avec accommodation maximale (même si c’est juste pour quelques instant) » <span class="sic">(sic)</span>.', points:['le plus près', 'accommodation maximale', 'quelques instants'],
+     qcm:{bon:'Le point objet le plus près que l’œil peut voir avec accommodation maximale, même un instant', faux:['Le point objet le plus près que l’œil peut voir au repos, sans accommoder', 'Le point objet le plus près que l’œil peut voir longtemps, avec la moitié de son amplitude', 'Le point objet le plus éloigné que l’œil peut voir avec accommodation maximale']}},
    src:['M7 D11']},
   {id:'pp.2', ecran:'pp', ancre:'Le Pp prend toute l’amplitude, pas la moitié', titre:'Toute l’amplitude',
    cle:['le Pp utilise toute l’amplitude', 'la moitié sert à l’effort prolongé, donc à l’addition', 'Pp : un instant ; ½ Am : longtemps'],
    explique:'Pourquoi le Pp et l’addition n’utilisent-ils pas la même part de l’amplitude ?',
-   verif:{q:'Le Pp se calcule-t-il avec toute l’amplitude ou avec la moitié ?', r:'Toute l’amplitude : c’est l’« accommodation maximale ». La moitié ne sert qu’à l’addition (effort prolongé).', points:['toute l’amplitude', 'la moitié : l’addition']},
+   verif:{q:'Le Pp se calcule-t-il avec toute l’amplitude ou avec la moitié ?', r:'Toute l’amplitude : c’est l’« accommodation maximale ». La moitié ne sert qu’à l’addition (effort prolongé).', points:['toute l’amplitude', 'la moitié : l’addition'],
+     qcm:{bon:'Toute l’amplitude : c’est l’accommodation maximale ; la moitié ne sert qu’à l’addition', faux:['La moitié : c’est la réserve accommodative ; toute l’amplitude sert à l’addition', 'La moitié, comme pour la distance de lecture confortable', 'Toute l’amplitude chez l’emmétrope, mais la moitié chez l’amétrope']}},
    src:['M7 D11', 'M7 D5']},
   {id:'pp.3', ecran:'pp', ancre:'Règle commune : 1 / Pp = Am − R', titre:'1/Pp = Am − R',
    cle:['1/Pp = Am − R, Pp en mètres', 'Am = 6 : emmétrope 16,7 cm, myope −3 11,1 cm, hypermétrope +3 33,3 cm', 'si Am ≤ R (hypermétrope) : aucun Pp réel sans correction'],
    explique:'Pourquoi un hypermétrope dont l’hypermétropie dépasse l’amplitude ne voit-il rien net de près ?',
-   verif:{q:'Am = 6 D. Calcule le Pp d’un emmétrope, d’un myope −3,00 et d’un hypermétrope +3,00.', r:'1/6 = 16,7 cm ; 6 + 3 = 9 → 11,1 cm ; 6 − 3 = 3 → 33,3 cm.', points:['16,7 cm', '11,1 cm', '33,3 cm']},
+   verif:{q:'Am = 6 D. Calcule le Pp d’un emmétrope, d’un myope −3,00 et d’un hypermétrope +3,00.', r:'1/6 = 16,7 cm ; 6 + 3 = 9 → 11,1 cm ; 6 − 3 = 3 → 33,3 cm.', points:['16,7 cm', '11,1 cm', '33,3 cm'],
+     qcm:{bon:'16,7 cm ; 11,1 cm ; 33,3 cm', faux:['16,7 cm ; 33,3 cm ; 11,1 cm', '6,0 cm ; 9,0 cm ; 3,0 cm', '16,7 cm ; 16,7 cm ; 16,7 cm']}},
    src:['M7 D28']},
   {id:'pp.4', ecran:'pp', ancre:'le montant de myopie se rajoute à son accommodation', titre:'Se rajoute, se soustrait',
    cle:['myope : la myopie se rajoute à l’amplitude → Pp plus près', 'hypermétrope : l’hypermétropie se soustrait → Pp plus loin', 'à amplitude égale : Pp myope < emmétrope < hypermétrope'],
    explique:'Pourquoi la myopie rapproche-t-elle le Pp ?',
-   verif:{q:'10 ans, Am 14 : Pp d’un myope −5,00, puis d’un hypermétrope +5,00 ?', r:'Myope : 14 + 5 = 19 D → 1/19 = 5,3 cm. Hypermétrope : 14 − 5 = 9 D → 1/9 = 11,1 cm.', points:['19 D → 5,3 cm', '9 D → 11,1 cm']},
+   verif:{q:'10 ans, Am 14 : Pp d’un myope −5,00, puis d’un hypermétrope +5,00 ?', r:'Myope : 14 + 5 = 19 D → 1/19 = 5,3 cm. Hypermétrope : 14 − 5 = 9 D → 1/9 = 11,1 cm.', points:['19 D → 5,3 cm', '9 D → 11,1 cm'],
+     qcm:{bon:'Myope : 14 + 5 = 19 D → 5,3 cm ; hypermétrope : 14 − 5 = 9 D → 11,1 cm', faux:['Myope : 14 − 5 = 9 D → 11,1 cm ; hypermétrope : 14 + 5 = 19 D → 5,3 cm', 'Myope : 14 + 5 = 19 D → 19 cm ; hypermétrope : 14 − 5 = 9 D → 9 cm', 'Myope : 7 + 5 = 12 D → 8,3 cm ; hypermétrope : 7 − 5 = 2 D → 50 cm']}},
    src:['M7 D27', 'M7 D38']},
   {id:'pp.5', ecran:'pp', ancre:'Corrigée, elle est comme une emmétrope', titre:'Retrouver l’amplitude',
    cle:['avec ses lunettes, l’œil est comme un emmétrope : Am = 1/Pp', 'Caroline : 1/0,25 = 4 D', 'sans lunettes : 1/Pp = 4 + 2 = 6 → 16,7 cm'],
    explique:'Pourquoi peut-on lire l’amplitude directement sur un Pp mesuré avec les lunettes ?',
-   verif:{q:'Caroline, myope −2,00, voit à 25 cm avec ses lunettes en accommodant au maximum. Son amplitude, puis son Pp sans lunettes ?', r:'Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 + 2 = 6 → 16,7 cm.', points:['Am = 4 D', '16,7 cm']},
+   verif:{q:'Caroline, myope −2,00, voit à 25 cm avec ses lunettes en accommodant au maximum. Son amplitude, puis son Pp sans lunettes ?', r:'Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 + 2 = 6 → 16,7 cm.', points:['Am = 4 D', '16,7 cm'],
+     qcm:{bon:'Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 + 2 = 6 → 16,7 cm', faux:['Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 − 2 = 2 → 50 cm', 'Am = 1/0,25 + 2 = 6 D ; sans lunettes, 1/Pp = 6 + 2 = 8 → 12,5 cm', 'Am = 2 × 1/0,25 = 8 D ; sans lunettes, 1/Pp = 8 + 2 = 10 → 10 cm']}},
    src:['M7 D29', 'M7 D30']},
   {id:'pp.6', ecran:'pp', ancre:'C’est 1/Pp qui vaut 19 D', titre:'Le Pp n’est pas en dioptries',
    cle:['les diapos écrivent parfois « Pp= 14 + 5=19D »', 'c’est 1/Pp qui vaut 19 D', 'le Pp vaut 1/19 m = 5,3 cm'],
    explique:'Comment vérifies-tu, avec l’unité, que ta réponse est bien un Pp ?',
-   verif:{q:'Un calcul donne « 19 D ». Est-ce le Pp ?', r:'Non : 19 D est 1/Pp. Le Pp vaut 1/19 m = 5,3 cm.', points:['19 D = 1/Pp', 'Pp = 5,3 cm']},
+   verif:{q:'Un calcul donne « 19 D ». Est-ce le Pp ?', r:'Non : 19 D est 1/Pp. Le Pp vaut 1/19 m = 5,3 cm.', points:['19 D = 1/Pp', 'Pp = 5,3 cm'],
+     qcm:{bon:'Non : 19 D est 1/Pp ; le Pp vaut 1/19 m = 5,3 cm', faux:['Oui : le Pp s’exprime en dioptries, comme la lentille', 'Non : 19 D est l’amplitude ; le Pp vaut 19 cm', 'Non : 19 D est 1/Pp ; le Pp vaut 1/19 cm = 0,05 cm']}},
    src:['M7 D27', 'M7 D28']},
 
   /* ---------- Le piège de l’hypermétropie ---------- */
   {id:'piege.1', ecran:'piege', ancre:'pour compenser son hypermétropie, même en regardant au loin', titre:'Il accommode même au loin',
    cle:['sans correction, l’hypermétrope accommode même au loin', 'au loin : A = R', 'cela réduit l’accommodation disponible de près'],
    explique:'Pourquoi ce qu’un hypermétrope dépense au loin lui manque-t-il de près ?',
-   verif:{q:'Combien un hypermétrope de +3,00 non corrigé accommode-t-il pour voir au loin ?', r:'3 D : au loin, A = 0 + R = +3,00. Cela réduit l’accommodation qui reste pour le près.', points:['3 D', 'A = R au loin', 'moins pour le près']},
+   verif:{q:'Combien un hypermétrope de +3,00 non corrigé accommode-t-il pour voir au loin ?', r:'3 D : au loin, A = 0 + R = +3,00. Cela réduit l’accommodation qui reste pour le près.', points:['3 D', 'A = R au loin', 'moins pour le près'],
+     qcm:{bon:'3 D : au loin, A = 0 + R = +3,00 ; il en reste moins pour le près', faux:['0 D : au loin, l’œil est au repos, quelle que soit l’amétropie', '3 D : au loin, A = 0 + R = +3,00 ; il gagne de la réserve pour le près', '1,5 D : au loin, il n’utilise que la moitié de R']}},
    src:['M7 D41', 'M7 D45']},
   {id:'piege.2', ecran:'piege', ancre:'Un enfant hypermétrope peut masquer son erreur réfractive', titre:'Masquée par l’accommodation',
    cle:['un enfant hypermétrope masque son erreur par une accommodation importante', 'il garde une bonne acuité', 'mais il fournit un effort accommodatif'],
    explique:'Pourquoi un dépistage d’acuité peut-il manquer l’hypermétropie d’un enfant ?',
-   verif:{q:'Comment un enfant hypermétrope peut-il avoir une bonne acuité ?', r:'Il masque son erreur par une accommodation importante : bonne acuité, mais au prix d’un effort accommodatif.', points:['il accommode beaucoup', 'bonne acuité', 'effort']},
+   verif:{q:'Comment un enfant hypermétrope peut-il avoir une bonne acuité ?', r:'Il masque son erreur par une accommodation importante : bonne acuité, mais au prix d’un effort accommodatif.', points:['il accommode beaucoup', 'bonne acuité', 'effort'],
+     qcm:{bon:'Il masque son erreur par une accommodation importante : bonne acuité, mais au prix d’un effort', faux:['Son hypermétropie disparaît toute seule pendant l’enfance et ne revient qu’avec la presbytie', 'Son œil est assez long pour compenser : son foyer tombe sur la rétine au repos', 'Il masque son erreur en plissant les yeux, sans aucun effort d’accommodation']}},
    src:['M7 D42']},
   {id:'piege.3', ecran:'piege', ancre:'20 ans, +4,00, Am 10 : 4 D au loin', titre:'Le cas de la D43',
    cle:['20 ans, +4,00, Am 10 : moitié = 5 D', 'loin 4 D, 50 cm 6 D, 33 cm ≈ 7 D, 25 cm 8 D', 'tout est net, mais en effort dès 50 cm'],
    explique:'Pourquoi ce patient voit-il tout net mais se fatigue-t-il de près ?',
-   verif:{q:'20 ans, +4,00 non corrigé, Am 10 : combien accommode-t-il à 50 cm, et est-ce tenable ?', r:'1/0,50 + 4 = 6 D : plus que la moitié de son amplitude (5 D), donc en effort.', points:['6 D', 'moitié = 5 D', 'en effort']},
+   verif:{q:'20 ans, +4,00 non corrigé, Am 10 : combien accommode-t-il à 50 cm, et est-ce tenable ?', r:'1/0,50 + 4 = 6 D : plus que la moitié de son amplitude (5 D), donc en effort.', points:['6 D', 'moitié = 5 D', 'en effort'],
+     qcm:{bon:'1/0,50 + 4 = 6 D : plus que la moitié de son amplitude (5 D), donc en effort', faux:['1/0,50 = 2 D : bien moins que la moitié de son amplitude (5 D), donc sans effort', '1/0,50 − 4 = −2 D : il voit net sans accommoder', '1/0,50 + 4 = 6 D : moins que son amplitude (10 D), donc tenable longtemps']}},
    src:['M7 D43']},
   {id:'piege.4', ecran:'piege', ancre:'L’effort accommodatif soutenu peut s’accompagner de fatigue visuelle', titre:'20/20 et des symptômes',
    cle:['20/20 sans correction ne veut pas dire absence de symptômes', 'effort accommodatif soutenu', 'fatigue visuelle, céphalées'],
    explique:'Pourquoi une bonne acuité ne prouve-t-elle pas qu’un œil travaille sans effort ?',
-   verif:{q:'Pourquoi un hypermétrope qui voit 20/20 peut-il avoir des symptômes ?', r:'Il compense avec son accommodation ; « L’effort accommodatif soutenu peut s’accompagner de fatigue visuelle ou de céphalées. »', points:['il compense en accommodant', 'fatigue visuelle', 'céphalées']},
+   verif:{q:'Pourquoi un hypermétrope qui voit 20/20 peut-il avoir des symptômes ?', r:'Il compense avec son accommodation ; « L’effort accommodatif soutenu peut s’accompagner de fatigue visuelle ou de céphalées. »', points:['il compense en accommodant', 'fatigue visuelle', 'céphalées'],
+     qcm:{bon:'Il compense avec son accommodation ; cet effort soutenu peut donner fatigue visuelle ou céphalées', faux:['Ses symptômes ne viennent pas des yeux : voir 20/20 prouve à lui seul qu’il n’a besoin d’aucune correction', 'Il compense en plissant les yeux ; la sécheresse oculaire donne fatigue et céphalées', 'Son Pr est à l’infini ; ses céphalées viennent d’une myopie cachée']}},
    src:['M7 D43']},
   {id:'piege.5', ecran:'piege', ancre:'La cycloplégie permet de relâcher l’accommodation', titre:'La cycloplégie',
    cle:['la cycloplégie relâche l’accommodation', 'elle révèle l’hypermétropie totale', 'sous cycloplégie, l’hypermétrope voit flou au loin'],
    explique:'Pourquoi faut-il bloquer l’accommodation pour mesurer toute l’hypermétropie ?',
-   verif:{q:'À quoi sert la cycloplégie ?', r:'« La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale. »', points:['relâcher l’accommodation', 'révéler l’hypermétropie totale']},
+   verif:{q:'À quoi sert la cycloplégie ?', r:'« La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale. »', points:['relâcher l’accommodation', 'révéler l’hypermétropie totale'],
+     qcm:{bon:'Relâcher l’accommodation pour mieux révéler l’hypermétropie totale', faux:['Bloquer la pupille pour mieux révéler la myopie totale', 'Stimuler l’accommodation pour mesurer l’amplitude maximale', 'Relâcher l’accommodation pour mesurer la presbytie avant 40 ans']}},
    src:['M7 D42']},
   {id:'piege.6', ecran:'piege', ancre:'avec une plus grande réserve accommodative pour la vision de près', titre:'Corrigé, il récupère sa réserve',
    cle:['corrigé par une lentille positive : loin net sans effort', 'plus grande réserve accommodative de près', 'dire « compensation accommodative », pas forcément « latente »'],
    explique:'Comment la correction de loin d’un hypermétrope l’aide-t-elle aussi à lire ?',
-   verif:{q:'Que gagne un hypermétrope corrigé avec une lentille positive ?', r:'Une vision de loin nette sans accommoder, et « une plus grande réserve accommodative pour la vision de près ».', points:['loin net', 'plus grande réserve accommodative']},
+   verif:{q:'Que gagne un hypermétrope corrigé avec une lentille positive ?', r:'Une vision de loin nette sans accommoder, et « une plus grande réserve accommodative pour la vision de près ».', points:['loin net', 'plus grande réserve accommodative'],
+     qcm:{bon:'Une vision de loin nette sans accommoder, et une plus grande réserve accommodative pour le près', faux:['Une vision de loin nette en accommodant moins, mais une réserve plus petite pour le près', 'Une vision de près nette sans addition, mais une vision de loin plus floue', 'La fin de son hypermétropie latente, et une amplitude qui double']}},
    src:['M7 D44', 'M7 C5']},
 
   /* ---------- Myopie, hypermétropie et leurs lentilles ---------- */
   {id:'lentilles.1', ecran:'lentilles', ancre:'où il y a erreurs de réfractions', titre:'L’amétropie',
    cle:['une condition de l’œil avec des erreurs de réfraction', 'souvent d’origine congénitale', 'trois formes : hypermétropie, myopie, astigmatisme ; la presbytie n’en est pas une'],
    explique:'Pourquoi la presbytie n’est-elle pas une amétropie au sens strict ?',
-   verif:{q:'Quelles sont les trois formes d’amétropie, et pourquoi la presbytie n’en fait-elle pas partie ?', r:'Hypermétropie, myopie, astigmatisme. La presbytie est une perte d’amplitude avec l’âge : « Ce n’est pas une amétropie au sens strict. »', points:['hypermétropie, myopie, astigmatisme', 'presbytie : perte d’amplitude', 'pas une amétropie au sens strict']},
+   verif:{q:'Quelles sont les trois formes d’amétropie, et pourquoi la presbytie n’en fait-elle pas partie ?', r:'Hypermétropie, myopie, astigmatisme. La presbytie est une perte d’amplitude avec l’âge : « Ce n’est pas une amétropie au sens strict. »', points:['hypermétropie, myopie, astigmatisme', 'presbytie : perte d’amplitude', 'pas une amétropie au sens strict'],
+     qcm:{bon:'Hypermétropie, myopie, astigmatisme ; la presbytie est une perte d’amplitude, pas une amétropie au sens strict', faux:['Hypermétropie, myopie, presbytie ; l’astigmatisme est une déformation, pas une amétropie au sens strict', 'Myopie, hypermétropie, presbytie ; elles viennent toutes d’un œil trop long ou trop court', 'Hypermétropie, myopie, astigmatisme ; la presbytie en fait partie, comme une hypermétropie de l’âge']}},
    src:['M7 D15', 'M7 D4']},
   {id:'lentilles.2', ecran:'lentilles', ancre:'globe trop long par rapport à la puissance optique', titre:'Myopie : deux mécanismes',
    cle:['axiale : globe trop long pour sa puissance ; la rétine est derrière le foyer', 'de courbure : puissance trop élevée, cornée plus cambrée'],
    explique:'Comment deux yeux de longueurs différentes peuvent-ils avoir la même myopie ?',
-   verif:{q:'Donne les deux mécanismes de la myopie.', r:'Axiale : « globe trop long par rapport à la puissance optique de l’œil » ; de courbure : « puissance trop élevée, par exemple lorsque la cornée est plus cambrée ».', points:['globe trop long', 'puissance trop élevée, cornée cambrée']},
+   verif:{q:'Donne les deux mécanismes de la myopie.', r:'Axiale : « globe trop long par rapport à la puissance optique de l’œil » ; de courbure : « puissance trop élevée, par exemple lorsque la cornée est plus cambrée ».', points:['globe trop long', 'puissance trop élevée, cornée cambrée'],
+     qcm:{bon:'Axiale : globe trop long pour sa puissance ; de courbure : puissance trop élevée, cornée plus cambrée', faux:['Axiale : globe trop court pour sa puissance ; de courbure : puissance trop faible, cornée plus plate', 'Axiale : globe trop long pour sa puissance ; de courbure : puissance trop faible, cornée plus plate', 'Axiale : focale trop longue pour le globe ; de courbure : cristallin trop plat']}},
    src:['M7 D18']},
   {id:'lentilles.3', ecran:'lentilles', ancre:'œil trop court par rapport à sa puissance optique', titre:'Hypermétropie : deux mécanismes',
    cle:['axiale : œil trop court ; la rétine est devant le foyer', 'de courbure : puissance trop faible, cornée plus plate'],
    explique:'Dans l’hypermétropie axiale, pourquoi dit-on que la rétine est devant le foyer ?',
-   verif:{q:'Donne les deux mécanismes de l’hypermétropie.', r:'Axiale : « œil trop court par rapport à sa puissance optique » ; de courbure : « puissance trop faible, par exemple lorsque la cornée est plus plate ».', points:['œil trop court', 'puissance trop faible, cornée plate']},
+   verif:{q:'Donne les deux mécanismes de l’hypermétropie.', r:'Axiale : « œil trop court par rapport à sa puissance optique » ; de courbure : « puissance trop faible, par exemple lorsque la cornée est plus plate ».', points:['œil trop court', 'puissance trop faible, cornée plate'],
+     qcm:{bon:'Axiale : œil trop court pour sa puissance ; de courbure : puissance trop faible, cornée plus plate', faux:['Axiale : œil trop long pour sa puissance ; de courbure : puissance trop élevée, cornée plus cambrée', 'Axiale : œil trop court pour sa puissance ; de courbure : puissance trop élevée, cornée plus cambrée', 'Axiale : œil trop long pour sa puissance ; de courbure : puissance trop faible, cornée plus plate']}},
    src:['M7 D35']},
   {id:'lentilles.4', ecran:'lentilles', ancre:'Ne pas confondre longueur axiale du globe et longueur focale optique', titre:'Longueur ≠ focale',
    cle:['un œil allongé n’a pas nécessairement une focale plus longue', 'longueur axiale du globe ≠ longueur focale optique', 'au module 6 : 24 mm de long, 17 mm de focale'],
    explique:'Pourquoi un œil plus long devient-il myope, et non pas moins puissant ?',
-   verif:{q:'Un œil allongé a-t-il nécessairement une longueur focale plus longue ?', r:'Non : « Un œil allongé n’a pas nécessairement une longueur focale plus longue. » Il ne faut pas confondre la longueur du globe et la focale optique.', points:['non', 'longueur axiale ≠ focale']},
+   verif:{q:'Un œil allongé a-t-il nécessairement une longueur focale plus longue ?', r:'Non : « Un œil allongé n’a pas nécessairement une longueur focale plus longue. » Il ne faut pas confondre la longueur du globe et la focale optique.', points:['non', 'longueur axiale ≠ focale'],
+     qcm:{bon:'Non : pas nécessairement ; il ne faut pas confondre longueur du globe et focale optique', faux:['Oui : un œil allongé a une focale plus longue, d’où sa moindre puissance', 'Oui : longueur axiale du globe et longueur focale optique sont une seule et même grandeur', 'Non : il a toujours une focale plus courte, ce qui le rend hypermétrope']}},
    src:['M7 D18', 'M7 D35']},
   {id:'lentilles.5', ecran:'lentilles', ancre:'l’excès de convergence chez les myopes', titre:'La lentille concave',
    cle:['concave, divergente, signe −', 'corrige l’excès de convergence du myope', 'plus mince au centre qu’au bord ; image virtuelle'],
    explique:'Pourquoi une lentille qui fait diverger la lumière corrige-t-elle le myope ?',
-   verif:{q:'Décris la lentille qui corrige la myopie.', r:'Concave (divergente, −) : elle corrige « l’excès de convergence chez les myopes » ; plus mince au centre qu’au bord ; image virtuelle.', points:['concave, −', 'excès de convergence', 'mince au centre']},
+   verif:{q:'Décris la lentille qui corrige la myopie.', r:'Concave (divergente, −) : elle corrige « l’excès de convergence chez les myopes » ; plus mince au centre qu’au bord ; image virtuelle.', points:['concave, −', 'excès de convergence', 'mince au centre'],
+     qcm:{bon:'Concave, divergente (−) : corrige l’excès de convergence ; plus mince au centre ; image virtuelle', faux:['Convexe, convergente (+) : corrige le manque de convergence ; plus mince au bord ; image réelle', 'Concave, divergente (−) : corrige l’excès de convergence ; plus mince au bord ; image renversée', 'Concave, convergente (+) : corrige le manque de convergence ; plus mince au centre ; image virtuelle']}},
    src:['M7 D19']},
   {id:'lentilles.6', ecran:'lentilles', ancre:'le manque de convergences chez les hypermétropes', titre:'La lentille convexe',
    cle:['convexe, convergente, signe +', 'corrige le manque de convergence de l’hypermétrope', 'plus mince au bord qu’au centre ; image réelle'],
    explique:'Pourquoi le verre d’un fort hypermétrope est-il épais au centre ?',
-   verif:{q:'Décris la lentille qui corrige l’hypermétropie.', r:'Convexe (convergente, +) : elle corrige « le manque de convergences chez les hypermétropes » <span class="sic">(sic)</span> ; plus mince au bord qu’au centre ; « Une image réelle est formée. »', points:['convexe, +', 'manque de convergence', 'mince au bord']},
+   verif:{q:'Décris la lentille qui corrige l’hypermétropie.', r:'Convexe (convergente, +) : elle corrige « le manque de convergences chez les hypermétropes » <span class="sic">(sic)</span> ; plus mince au bord qu’au centre ; « Une image réelle est formée. »', points:['convexe, +', 'manque de convergence', 'mince au bord'],
+     qcm:{bon:'Convexe, convergente (+) : corrige le manque de convergence ; plus mince au bord ; image réelle', faux:['Concave, divergente (−) : corrige l’excès de convergence ; plus mince au centre ; image virtuelle', 'Convexe, convergente (+) : corrige le manque de convergence ; plus mince au centre ; image réelle', 'Convexe, divergente (−) : corrige l’excès de convergence ; plus mince au bord ; image virtuelle']}},
    src:['M7 D36']},
 
   /* ---------- Corriger, puis l’addition ---------- */
   {id:'correction.1', ecran:'correction', ancre:'Avec l’orthèse, Marie devient comme un emmétrope', titre:'Corrigé : comme un emmétrope',
    cle:['avec sa correction, R = 0', 'Pr à l’infini, Pp = 1/Am', 'Marie, Am 7, +2,00 : Pp 20 cm sans, 14,3 cm avec'],
    explique:'Pourquoi la correction d’un hypermétrope rapproche-t-elle son Pp ?',
-   verif:{q:'Marie : Am 7, lc +2,00. Où est son Pp sans, puis avec ses lentilles ?', r:'Sans : 1/Pp = 7 − 2 = 5 → 20 cm. Avec : comme un emmétrope, 1/Pp = 7 → 14,3 cm.', points:['20 cm', '14,3 cm', 'comme un emmétrope']},
+   verif:{q:'Marie : Am 7, lc +2,00. Où est son Pp sans, puis avec ses lentilles ?', r:'Sans : 1/Pp = 7 − 2 = 5 → 20 cm. Avec : comme un emmétrope, 1/Pp = 7 → 14,3 cm.', points:['20 cm', '14,3 cm', 'comme un emmétrope'],
+     qcm:{bon:'Sans : 1/Pp = 7 − 2 = 5 → 20 cm ; avec, comme un emmétrope : 1/Pp = 7 → 14,3 cm', faux:['Sans : 1/Pp = 7 + 2 = 9 → 11,1 cm ; avec : 1/Pp = 7 → 14,3 cm', 'Sans : 1/Pp = 7 − 2 = 5 → 20 cm ; avec ses lentilles, R compte toujours : 5 → 20 cm', 'Sans : 1/Pp = 7 → 14,3 cm ; avec : 1/Pp = 7 + 2 = 9 → 11,1 cm']}},
    src:['M7 C6']},
   {id:'correction.2', ecran:'correction', ancre:'Add = demande de près − 0,5 × amplitude', titre:'L’addition, correction en place',
    cle:['Add = 1/d − 0,5 Am', 'demande = 1/distance de travail, avec la correction de loin en place', 'R n’entre pas dans la demande'],
    explique:'Pourquoi R disparaît-il du calcul de l’addition ?',
-   verif:{q:'Écris la formule de l’addition du module 7 et dis pourquoi R n’y entre pas.', r:'Add = 1/d − 0,5 × Am ; la demande se prend « avec la correction de loin en place » : la correction s’occupe de R.', points:['1/d − 0,5 Am', 'correction de loin en place', 'sans R']},
+   verif:{q:'Écris la formule de l’addition du module 7 et dis pourquoi R n’y entre pas.', r:'Add = 1/d − 0,5 × Am ; la demande se prend « avec la correction de loin en place » : la correction s’occupe de R.', points:['1/d − 0,5 Am', 'correction de loin en place', 'sans R'],
+     qcm:{bon:'Add = 1/d − 0,5 × Am ; la demande se prend correction de loin en place, qui s’occupe de R', faux:['Add = 1/d + R − 0,5 × Am ; R s’ajoute à la demande, comme dans A = 1/d + R', 'Add = 1/d − Am ; R disparaît parce que l’amplitude le compense', 'Add = 1/d − 0,5 × Am ; R n’y entre pas parce que seuls les emmétropes deviennent presbytes']}},
    src:['M7 D5']},
   {id:'correction.3', ecran:'correction', ancre:'Il s’agit d’un point de départ, non d’une prescription universelle', titre:'Un point de départ',
    cle:['calcul négatif : pas d’addition', 'la règle donne un point de départ', 'pas une prescription universelle'],
    explique:'Pourquoi le prof présente-t-il la formule comme un point de départ ?',
-   verif:{q:'Que dit le prof quand le calcul de l’addition est négatif, et comment présente-t-il la règle ?', r:'« Si le calcul est négatif : pas d’addition nécessaire selon cette règle. Il s’agit d’un point de départ, non d’une prescription universelle. »', points:['pas d’addition', 'point de départ']},
+   verif:{q:'Que dit le prof quand le calcul de l’addition est négatif, et comment présente-t-il la règle ?', r:'« Si le calcul est négatif : pas d’addition nécessaire selon cette règle. Il s’agit d’un point de départ, non d’une prescription universelle. »', points:['pas d’addition', 'point de départ'],
+     qcm:{bon:'Pas d’addition nécessaire selon cette règle ; c’est un point de départ, non une prescription universelle', faux:['Une addition négative du même montant ; c’est une prescription universelle, à appliquer telle quelle', 'Refaire le calcul avec toute l’amplitude ; la règle est une prescription universelle', 'Pas d’addition nécessaire ; la règle donne la prescription finale, sans autre examen']}},
    src:['M7 D5']},
   {id:'correction.4', ecran:'correction', ancre:'on ajoute l’addition à sa correction de loin', titre:'Près = loin + add',
    cle:['lunettes de lecture = correction de loin + addition', 'plano add +2,50 → +2,50', '−3,00 add +2,50 → −0,50 ; +3,00 add +2,50 → +5,50'],
    explique:'Pourquoi les lunettes de lecture d’un myope peuvent-elles rester négatives ?',
-   verif:{q:'OD +3,00, OS +2,50, add +2,50 : quelles lunettes de lecture ?', r:'OD +3,00 + 2,50 = +5,50 ; OS +2,50 + 2,50 = +5,00.', points:['OD +5,50', 'OS +5,00']},
+   verif:{q:'OD +3,00, OS +2,50, add +2,50 : quelles lunettes de lecture ?', r:'OD +3,00 + 2,50 = +5,50 ; OS +2,50 + 2,50 = +5,00.', points:['OD +5,50', 'OS +5,00'],
+     qcm:{bon:'OD +5,50 ; OS +5,00', faux:['OD +2,50 ; OS +2,50', 'OD +0,50 ; OS plano', 'OD +3,00 ; OS +2,50']}},
    src:['M7 D6', 'M7 D7', 'M7 D9', 'M7 D10']},
   {id:'correction.5', ecran:'correction', ancre:'la puissance de près n’est pas l’addition seule', titre:'Le piège de l’add seule',
    cle:['la puissance de près n’est pas l’addition seule', 'myope −3,00, add +2,50 : il lit avec −0,50', 'Arthur : −3,00 + 1,50 = −1,50'],
    explique:'Pourquoi donner seulement l’addition comme lunettes de lecture serait-il faux pour un amétrope ?',
-   verif:{q:'Arthur : −3,00 OU, add +1,50. Quelles lunettes de lecture ?', r:'−3,00 + 1,50 = −1,50 D : « pour faire des lunettes de lectures on additionne -3.00 et +1.50 ».', points:['−1,50 D', 'loin + add']},
+   verif:{q:'Arthur : −3,00 OU, add +1,50. Quelles lunettes de lecture ?', r:'−3,00 + 1,50 = −1,50 D : « pour faire des lunettes de lectures on additionne -3.00 et +1.50 ».', points:['−1,50 D', 'loin + add'],
+     qcm:{bon:'−3,00 + 1,50 = −1,50 D', faux:['3,00 + 1,50 = +4,50 D', '+1,50 D, l’addition seule', '−3,00 − 1,50 = −4,50 D']}},
    src:['M7 C7', 'M7 D9']},
   {id:'correction.6', ecran:'correction', ancre:'les rayons ressortent parallèles et l’œil n’accommode plus', titre:'+2,50 à 40 cm',
    cle:['à 40 cm, la demande est 1/0,40 = 2,50 D', 'une add de +2,50 fournit toute la demande', 'les rayons ressortent parallèles : l’œil n’accommode plus'],
    explique:'Pourquoi une addition égale à 1/d laisse-t-elle l’œil au repos ?',
-   verif:{q:'Que fait une addition de +2,50 pour un objet à 40 cm ?', r:'Elle fournit toute la demande, 1/0,40 = 2,50 D : les rayons ressortent parallèles et l’œil n’accommode plus.', points:['toute la demande', 'rayons parallèles', 'plus d’accommodation']},
+   verif:{q:'Que fait une addition de +2,50 pour un objet à 40 cm ?', r:'Elle fournit toute la demande, 1/0,40 = 2,50 D : les rayons ressortent parallèles et l’œil n’accommode plus.', points:['toute la demande', 'rayons parallèles', 'plus d’accommodation'],
+     qcm:{bon:'Elle fournit toute la demande, 2,50 D : les rayons ressortent parallèles, l’œil n’accommode plus', faux:['Elle fournit la moitié de la demande : l’œil accommode encore 1,25 D', 'Elle double la demande, 5,00 D : l’œil doit relâcher son accommodation', 'Elle corrige la myopie de loin : les rayons ressortent divergents, et l’œil doit accommoder davantage']}},
    src:['M7 D6']},
 
   /* ---------- Les exercices du module 7 ---------- */
   {id:'exercices7.1', ecran:'exercices7', ancre:'Pr : œil au repos, R = 1/Pr. Pp : accommodation maximale', titre:'Méthode : quel point ?',
    cle:['Pr : œil au repos, R = 1/Pr', 'Pp : accommodation maximale, 1/Pp = Am − R', 'R : le signe de l’amétropie (−, 0, +)'],
    explique:'Pourquoi faut-il décider quel point on cherche avant de choisir la formule ?',
-   verif:{q:'N° 2 du devoir : lentilles de −4,50 D. À combien de cm devant le patient est son Pr ?', r:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant.', points:['1/(−4,50)', '22,2 cm devant']},
+   verif:{q:'N° 2 du devoir : lentilles de −4,50 D. À combien de cm devant le patient est son Pr ?', r:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant.', points:['1/(−4,50)', '22,2 cm devant'],
+     qcm:{bon:'Pr = 1/(−4,50) = −0,222 m : 22,2 cm devant', faux:['Pr = 1/4,50 = +0,222 m : 22,2 cm derrière', 'Pr = −4,50 m : 450 cm devant', 'Pr = 1/(−4,50) = −0,222 m : 2,22 cm devant']}},
    src:['M7 D48', 'M7 C3']},
   {id:'exercices7.2', ecran:'exercices7', ancre:'Add = 1/d − 0,5 Am, sans R.', titre:'Méthode : l’addition',
    cle:['Add = 1/d − 0,5 Am, sans R', 'lunettes de lecture = loin + add', 'Arthur : +1,50, puis −1,50'],
    explique:'Pourquoi l’addition d’Arthur ne dépend-elle pas de sa myopie, alors que ses lunettes de lecture en dépendent ?',
-   verif:{q:'N° 5 : Arthur, Am 2,00, −3,00 OU, lecture à 40 cm. Son addition et ses lunettes de lecture ?', r:'Add = 2,50 − 0,5 × 2,00 = +1,50 ; lunettes de lecture −3,00 + 1,50 = −1,50 D.', points:['+1,50', '−1,50 D']},
+   verif:{q:'N° 5 : Arthur, Am 2,00, −3,00 OU, lecture à 40 cm. Son addition et ses lunettes de lecture ?', r:'Add = 2,50 − 0,5 × 2,00 = +1,50 ; lunettes de lecture −3,00 + 1,50 = −1,50 D.', points:['+1,50', '−1,50 D'],
+     qcm:{bon:'Add = 2,50 − 0,5 × 2,00 = +1,50 ; lunettes de lecture −3,00 + 1,50 = −1,50 D', faux:['Add = 2,50 − 0,5 × 2,00 = +1,50 ; lunettes de lecture +1,50 D, l’add seule', 'Add = (2,50 − 3,00) − 0,5 × 2,00 = −1,50 ; aucune addition', 'Add = 2,50 − 2,00 = +0,50 ; lunettes de lecture −3,00 + 0,50 = −2,50 D']}},
    src:['M7 D49', 'M7 C7']},
 
   /* ---------- Les racines du module 7 ---------- */
   {id:'racines7.1', ecran:'racines7', ancre:'Tout le calcul du module sort d’une équation', titre:'Une équation, cinq lectures',
    cle:['① A = 1/d + R', '② au repos : R = 1/Pr', '③ au maximum : 1/Pp = Am − R', '④ Add = 1/d − 0,5 Am ; ⑤ près = loin + Add'],
    explique:'Pourquoi ④ et ⑤ n’ont-elles plus besoin de R dans la demande ?',
-   verif:{q:'Écris les cinq équations du module 7.', r:'① A = 1/d + R ; ② R = 1/Pr ; ③ 1/Pp = Am − R ; ④ Add = 1/d − 0,5 Am ; ⑤ près = loin + Add.', points:['A = 1/d + R', 'R = 1/Pr', '1/Pp = Am − R', 'Add et près = loin + Add']},
+   verif:{q:'Écris les cinq équations du module 7.', r:'① A = 1/d + R ; ② R = 1/Pr ; ③ 1/Pp = Am − R ; ④ Add = 1/d − 0,5 Am ; ⑤ près = loin + Add.', points:['A = 1/d + R', 'R = 1/Pr', '1/Pp = Am − R', 'Add et près = loin + Add'],
+     qcm:{bon:'A = 1/d + R ; R = 1/Pr ; 1/Pp = Am − R ; Add = 1/d − 0,5 Am ; près = loin + Add', faux:['A = 1/d + R ; R = 1/Pp ; 1/Pr = Am − R ; Add = 1/d − 0,5 Am ; près = loin + Add', 'A = 1/d − R ; R = 1/Pr ; 1/Pp = Am + R ; Add = 1/d − 0,5 Am ; près = Add', 'A = 1/d + R ; R = Pr ; Pp = Am − R ; Add = 1/d − Am ; près = loin − Add']}},
    src:['M7 D20', 'M7 D28', 'M7 D5', 'M7 D6']},
   {id:'racines7.2', ecran:'racines7', ancre:'Le Pr, c’est l’œil au repos : A = 0 dans ①', titre:'② et ③ sortent de ①',
    cle:['A = 0 dans ① : le Pr, R = 1/Pr', 'A = Am dans ① : le Pp, 1/Pp = Am − R', 'les diapos écrivent « D=1/Pr » : la forme R = 1/Pr est déduite'],
    explique:'Comment passer de A = 1/d + R à R = 1/Pr en posant A = 0 ?',
-   verif:{q:'Comment ② et ③ sortent-elles de ① ?', r:'Avec A = 0 (repos), l’objet net le plus loin est au Pr : R = 1/Pr. Avec A = Am (maximum), l’objet est au Pp : 1/Pp = Am − R <span class="deduit">déduit</span>.', points:['A = 0 : Pr', 'A = Am : Pp']},
+   verif:{q:'Comment ② et ③ sortent-elles de ① ?', r:'Avec A = 0 (repos), l’objet net le plus loin est au Pr : R = 1/Pr. Avec A = Am (maximum), l’objet est au Pp : 1/Pp = Am − R <span class="deduit">déduit</span>.', points:['A = 0 : Pr', 'A = Am : Pp'],
+     qcm:{bon:'Avec A = 0 (repos), l’objet est au Pr : R = 1/Pr ; avec A = Am (maximum), au Pp : 1/Pp = Am − R', faux:['Avec A = Am (maximum), l’objet est au Pr : R = 1/Pr ; avec A = 0 (repos), au Pp : 1/Pp = Am − R', 'Avec R = 0, l’objet est au Pr : A = 1/Pr ; avec d = 0, au Pp : 1/Pp = Am − R', 'Avec A = ½ Am, l’objet est au Pp : 1/Pp = ½ Am − R ; avec A = 0, au Pr : Pr = R']}},
    src:['M7 D25', 'M7 D37', 'M7 D48']}
 ];
 
@@ -2711,17 +2827,20 @@ const CARTES2 = [
   /* ---------- fil (M6) ---------- */
   {id:'c-fil-01', type:'libre', pas:['fil.4'], q:'Récite le tableau de Donders, de 1 à 75 ans.',
    r:'1 an 18 · 5 ans 16 · 10 ans 14 · 15 ans 12 · 20 ans 10 · 25 ans 8,5 · 30 ans 7 · 40 ans 4,5 · 44 ans 4 · 50 ans 2,5 · 60 ans 1 · 75 ans 0 <span class="src">M6 D54</span>',
-   points:['18, 16, 14, 12, 10 de 1 à 20 ans', '8,5 et 7 à 25 et 30 ans', '4,5 et 4 à 40 et 44 ans', '2,5, 1, 0 à 50, 60, 75 ans'], src:['M6 D54']},
+   points:['18, 16, 14, 12, 10 de 1 à 20 ans', '8,5 et 7 à 25 et 30 ans', '4,5 et 4 à 40 et 44 ans', '2,5, 1, 0 à 50, 60, 75 ans'],
+   qcm:{bon:'18 · 16 · 14 · 12 · 10 · 8,5 · 7 · 4,5 · 4 · 2,5 · 1 · 0', faux:['18 · 16 · 14 · 12 · 10 · 8 · 6 · 4 · 3 · 2 · 1 · 0', '18 · 16 · 14 · 12 · 10 · 8,5 · 7 · 4,5 · 4 · 3 · 1 · 0', '16 · 14 · 12 · 10 · 8,5 · 7 · 4,5 · 4 · 2,5 · 1 · 0,5 · 0']}, src:['M6 D54']},
   {id:'c-fil-02', type:'chaine', pas:['fil.3', 'accommodation.3'], q:'La voie de près du module 6 : remets les étapes dans l’ordre.',
    items:['objet rapproché : rayons divergents', 'foyer derrière la rétine, sans changement de l’œil', 'le cristallin se bombe : l’accommodation', 'l’amplitude baisse avec l’âge : la presbytie', 'l’addition comble ce qui manque'], src:['M6 D45', 'M6 D46', 'M6 D53', 'M6 D56']},
 
   /* ---------- lunetier ---------- */
   {id:'c-lunetier-01', type:'libre', pas:['lunetier.2'], q:'Écris la formule du lunetier.',
    r:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂, rayons en mètres, « signés selon la convention cartésienne » <span class="src">M6 D11</span>',
-   points:['(nᵥ − n avant)/r₁', 'moins (nᵥ − n arrière)/r₂', 'rayons en mètres, signés'], src:['M6 D11']},
+   points:['(nᵥ − n avant)/r₁', 'moins (nᵥ − n arrière)/r₂', 'rayons en mètres, signés'],
+   qcm:{bon:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂, rayons en mètres et signés', faux:['F = (nᵥ − n avant)/r₁ + (nᵥ − n arrière)/r₂, rayons en mètres et signés', 'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂, rayons en mm, toujours positifs', 'F = (n avant − nᵥ)/r₁ − (n arrière − nᵥ)/r₂, rayons en mètres et signés']}, src:['M6 D11']},
   {id:'c-lunetier-02', type:'libre', pas:['lunetier.4'], q:'Complète la phrase du prof : « La contribution d’une surface dépend de […] »',
    r:'« … la différence d’indice de part et d’autre de cette surface. » <span class="src">M6 D14</span>',
-   points:['la différence d’indice', 'de part et d’autre de la surface'], src:['M6 D14']},
+   points:['la différence d’indice', 'de part et d’autre de la surface'],
+   qcm:{bon:'La différence d’indice de part et d’autre de cette surface', faux:['L’indice du verre seul, quel que soit le milieu autour', 'La courbure de cette surface seule, quel que soit le milieu', 'L’épaisseur du verre au centre de cette surface']}, src:['M6 D14']},
   {id:'c-lunetier-03', type:'calcul', pas:['lunetier.2', 'lunetier.3'], q:'Un verre tiré au hasard, de l’air des deux côtés : quelle est sa puissance ?',
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -2732,8 +2851,13 @@ const CARTES2 = [
      let r2;
      do { r2 = pick(rs) * (Math.random() < 0.3 ? -1 : 1); } while (r2 === r1);
      const F1 = (n - 1) / (r1 / 100), F2 = -(n - 1) / (r2 / 100), F = F1 + F2;
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : le moins oublié, n au lieu de n − 1, la face arrière oubliée, le signe ; secours : cm gardés, × 10 */
+     const ecr = x => Math.abs(x) < 0.005 ? '' : f3(x) + ' D';
+     const faux = trois(ecr(F), melange([F1 - F2, n / (r1 / 100) - n / (r2 / 100), F1, -F]).concat([F / 100, F * 10]), ecr);
      return {q:'Verre d’indice ' + n.toFixed(2).replace('.', ',') + ', r₁ = ' + sd(r1, 0) + ' cm, r₂ = ' + sd(r2, 0) + ' cm, de l’air des deux côtés. Quelle est sa puissance F, en D ?',
-             r:f3(F) + ' D (F₁ = ' + f3(F1) + ' ; F₂ = ' + f3(F2) + ')', tol:0.01};
+             r:f3(F) + ' D (F₁ = ' + f3(F1) + ' ; F₂ = ' + f3(F2) + ')', faux, tol:0.01};
    }, src:['M6 D11']},
   {id:'c-lunetier-04', type:'discrim', pas:['lunetier.4'], q:'Même verre (n 1,50, r₁ +8 cm, r₂ +10 cm), mais de l’eau devant au lieu de l’air. La lentille…',
    choix:['devient divergente : −2,875 D', 'reste convergente, un peu plus faible', 'ne change pas : le verre est le même'], bonne:0,
@@ -2746,15 +2870,21 @@ const CARTES2 = [
      const sd = (x, d) => (x > 1e-9 ? '+' : x < -1e-9 ? '−' : '') + Math.abs(x).toFixed(d).replace('.', ',');
      const r1 = (70 + Math.floor(Math.random() * 17)) / 10, r2 = (60 + Math.floor(Math.random() * 13)) / 10;
      const F1 = 0.376 / (r1 / 1000), F2 = -0.040 / (r2 / 1000);
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : le moins oublié, la face arrière oubliée, mm ÷ 100, r₁ et r₂ échangés ; secours : le signe, F₂ seule */
+     const ecr = x => sd(x, 2) + ' D';
+     const faux = trois(ecr(F1 + F2), melange([F1 - F2, F1, (F1 + F2) / 10, 0.376 / (r2 / 1000) - 0.040 / (r1 / 1000)]).concat([-(F1 + F2), F2]), ecr);
      return {q:'Cornée : n = 1,376, air (1,000) devant, humeur aqueuse (1,336) derrière, r₁ = +' + v(r1, 1) + ' mm, r₂ = +' + v(r2, 1) + ' mm. Puissance de la cornée, en D ?',
-             r:sd(F1 + F2, 2) + ' D (F₁ = 0,376 / ' + v(r1 / 1000, 4) + ' = ' + sd(F1, 2) + ' ; F₂ = −0,040 / ' + v(r2 / 1000, 4) + ' = ' + sd(F2, 2) + ')', tol:0.05};
+             r:sd(F1 + F2, 2) + ' D (F₁ = 0,376 / ' + v(r1 / 1000, 4) + ' = ' + sd(F1, 2) + ' ; F₂ = −0,040 / ' + v(r2 / 1000, 4) + ' = ' + sd(F2, 2) + ')', faux, tol:0.05};
    }, src:['M6 D16']},
   {id:'c-cornee-02', type:'discrim', pas:['cornee.5'], q:'On te demande la puissance de la cornée lue au kératomètre pour r = 7,8 mm. Tu réponds…',
    choix:['≈ 43,25 D', '+42,06 D', '+48,21 D', '+40 D'], bonne:0,
    r:'Le kératomètre lit la face antérieure avec l’indice fictif 1,3375 : ≈ 43,25 D. +42,06 : les deux surfaces ; +48,21 : face antérieure, vrai indice ; +40 : repère pédagogique.', src:['M6 D16', 'M6 D27', 'M6 D34']},
   {id:'c-cornee-03', type:'libre', pas:['cornee.3'], q:'Pourquoi la face antérieure de la cornée fait-elle l’essentiel de son travail ?',
    r:'Le saut d’indice y est grand : 0,376 (air → cornée), contre 0,040 derrière (cornée → humeur aqueuse). D’où +48,21 contre −6,15 D <span class="src">M6 D16</span>.',
-   points:['0,376 devant', '0,040 derrière', '+48,21 contre −6,15'], src:['M6 D16']},
+   points:['0,376 devant', '0,040 derrière', '+48,21 contre −6,15'],
+   qcm:{bon:'Le saut d’indice y est grand : 0,376 (air → cornée) contre 0,040 derrière ; +48,21 contre −6,15 D', faux:['Son rayon est plus long : 7,8 mm contre 6,5 mm derrière, et un rayon long dévie plus', 'Le saut d’indice y est petit : 0,040 contre 0,376 derrière ; c’est la face arrière qui compte le plus', 'Elle touche l’air et les larmes ; le cristallin derrière fait le reste, environ +40 D']}, src:['M6 D16']},
 
   /* ---------- modele ---------- */
   {id:'c-modele-01', type:'chaine', pas:['modele.1'], q:'Les milieux que traverse la lumière dans l’œil, dans l’ordre.',
@@ -2764,12 +2894,14 @@ const CARTES2 = [
    r:'24 mm est la longueur anatomique, cornée → rétine ; seule la focale de 17 mm s’inverse : 1/0,017 = +58,8 D.', src:['M6 D23', 'M6 D24', 'M6 D27']},
   {id:'c-modele-03', type:'libre', pas:['modele.4', 'modele.3'], q:'Le repère pédagogique des puissances de l’œil, et sa puissance dans le modèle simplifié ?',
    r:'≈ +60 D au repos : cornée ≈ +40 D, cristallin ≈ +20 D ; le modèle simplifié donne 1/0,017 = +58,8 D <span class="src">M6 D27</span>.',
-   points:['+60 D', 'cornée +40, cristallin +20', '+58,8 D'], src:['M6 D27']},
+   points:['+60 D', 'cornée +40, cristallin +20', '+58,8 D'],
+   qcm:{bon:'≈ +60 D : cornée ≈ +40 D, cristallin ≈ +20 D ; le modèle simplifié donne 1/0,017 = +58,8 D', faux:['≈ +60 D : cornée ≈ +20 D, cristallin ≈ +40 D ; le modèle simplifié donne 1/0,017 = +58,8 D', '≈ +60 D : cornée ≈ +40 D, cristallin ≈ +20 D ; le modèle simplifié donne 1/0,024 = +41,7 D', '≈ +42 D : la cornée seule, le cristallin n’agit qu’en accommodant ; 1/0,017 = +58,8 D']}, src:['M6 D27']},
 
   /* ---------- ametropie ---------- */
   {id:'c-ametropie-01', type:'libre', pas:['ametropie.1'], q:'Définis l’œil emmétrope.',
    r:'« L’œil est emmétrope lorsque les rayons de lumière d’un objet en distance se concentrent parfaitement sur la rétine sans accommodation. L’œil n’a pas d’erreur de réfraction. Son point de distance est à l’infini. » <span class="src">M6 D28</span>',
-   points:['objet en distance', 'sur la rétine sans accommodation', 'pas d’erreur de réfraction', 'point de distance à l’infini'], src:['M6 D28']},
+   points:['objet en distance', 'sur la rétine sans accommodation', 'pas d’erreur de réfraction', 'point de distance à l’infini'],
+   qcm:{bon:'Rayons de loin concentrés sur la rétine sans accommodation ; aucune erreur de réfraction ; point de distance à l’infini', faux:['Rayons de loin concentrés sur la rétine en accommodant ; aucune erreur de réfraction ; point de distance à 6 m', 'Rayons de près concentrés sur la rétine sans accommodation ; aucune erreur de réfraction ; point de distance à 25 cm', 'Rayons de loin concentrés devant la rétine au repos ; une légère erreur de réfraction ; point de distance à l’infini']}, src:['M6 D28']},
   {id:'c-ametropie-02', type:'discrim', pas:['ametropie.3'], q:'Un jeune voit net de loin, mais seulement en accommodant 3 D. Il est…',
    choix:['hypermétrope', 'emmétrope', 'myope'], bonne:0,
    r:'Au repos, son foyer tombe derrière la rétine : il est hypermétrope. L’emmétrope voit net de loin « sans accommodation ».', src:['M6 D28']},
@@ -2779,12 +2911,14 @@ const CARTES2 = [
   {id:'c-ametropie-04', type:'application', pas:['ametropie.4', 'ametropie.5'],
    q:'Josée Bélanger (OD −2,00) enlève ses lunettes et regarde le numéro de l’autobus au bout de la rue. Elle plisse les yeux et “force” pour le lire. Où tombe le foyer, et forcer peut-il l’aider ?',
    r:'Devant la rétine : sa Rx est négative, elle est myope. Accommoder ajoute de la puissance et pousserait le foyer encore plus en avant : ça ne l’aide pas.',
-   points:['devant la rétine', 'myope', 'accommoder n’aide pas'], src:['M6 D30', 'Bureau M3']},
+   points:['devant la rétine', 'myope', 'accommoder n’aide pas'],
+   qcm:{bon:'Devant la rétine (myope) ; accommoder ajoute de la puissance et pousse le foyer plus en avant : ça n’aide pas', faux:['Derrière la rétine (hypermétrope) ; en accommodant fort, elle ramène le foyer jusque sur la rétine et lit le numéro', 'Devant la rétine (myope) ; en accommodant fort, elle recule le foyer jusqu’à la rétine', 'Sur la rétine ; le flou vient de sa presbytie, que l’accommodation ne compense plus']}, src:['M6 D30', 'Bureau M3']},
 
   /* ---------- causes ---------- */
   {id:'c-causes-01', type:'libre', pas:['causes.1'], q:'Quelles sont les causes d’amétropie selon le deck ?',
    r:'« Deux causes importantes d’amétropie : la courbure cornéenne et la longueur axiale. La puissance du cristallin peut aussi intervenir. » <span class="src">M6 D33</span>',
-   points:['courbure cornéenne', 'longueur axiale', 'le cristallin peut aussi intervenir'], src:['M6 D33']},
+   points:['courbure cornéenne', 'longueur axiale', 'le cristallin peut aussi intervenir'],
+   qcm:{bon:'Deux causes importantes : la courbure cornéenne et la longueur axiale ; le cristallin peut aussi intervenir', faux:['Deux causes importantes : la longueur axiale et l’âge ; la cornée peut aussi intervenir', 'Deux causes importantes : la courbure du cristallin et la pupille ; la cornée peut aussi intervenir', 'Deux causes importantes : l’indice de la cornée et l’humeur vitrée ; la longueur peut aussi intervenir']}, src:['M6 D33']},
   {id:'c-causes-02', type:'calcul', pas:['causes.4'], q:'Un œil emmétrope de 24 mm change de longueur sans changer de puissance : quelle correction, avec son signe ?',
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -2800,14 +2934,16 @@ const CARTES2 = [
    r:'Cause cornéenne : la courbure change la puissance ; cause axiale : la longueur déplace la rétine. La courbure se lit en kératométrie, la longueur se mesure (échographie A, IOLMaster, OCT).', src:['M6 D33', 'M6 D34', 'M6 D38']},
   {id:'c-causes-04', type:'libre', pas:['causes.6', 'causes.5'], q:'Comment mesure-t-on la longueur axiale, et pourquoi la mesurer chez un fort myope ?',
    r:'Échographie A, biométrie optique (IOLMaster), certains dispositifs OCT ; autrefois la rotation du globe, « non standard, imprécise ». La prescription ne la donne pas. Une forte myopie axiale augmente le risque d’atteintes rétiniennes : fond d’œil et, selon le cas, OCT <span class="src">M6 D38</span>.',
-   points:['échographie A', 'IOLMaster, OCT', 'pas la prescription', 'risque rétinien : fond d’œil'], src:['M6 D38']},
+   points:['échographie A', 'IOLMaster, OCT', 'pas la prescription', 'risque rétinien : fond d’œil'],
+   qcm:{bon:'Échographie A, IOLMaster ou certains OCT, pas la prescription ; forte myopie axiale : risque rétinien, fond d’œil', faux:['Par la prescription, 1 mm pour chaque −3,00 D ; forte myopie axiale : risque d’astigmatisme, d’où la kératométrie', 'Au kératomètre, par la courbure cornéenne ; forte myopie axiale : presbytie précoce, addition', 'Échographie A, IOLMaster ou certains OCT ; forte myopie axiale : aucun risque, seule la Rx compte']}, src:['M6 D38']},
   {id:'c-causes-05', type:'geste', pas:['causes.4', 'causes.2'], geste:'g-longueur',
    q:'Refais l’œil entre le pouce et l’index : 24 mm, puis 25 mm, puis 23 mm, en disant l’amétropie et la correction de chacun.', src:['M6 D36', 'M6 D37']},
 
   /* ---------- accommodation ---------- */
   {id:'c-accommodation-01', type:'libre', pas:['accommodation.5'], q:'Définis l’accommodation (module 6).',
    r:'« L’accommodation est la capacité de l’œil à augmenter sa puissance optique, principalement par une modification de la forme du cristallin, pour voir de près. » <span class="src">M6 D49</span>',
-   points:['augmenter la puissance optique', 'forme du cristallin', 'voir de près'], src:['M6 D49']},
+   points:['augmenter la puissance optique', 'forme du cristallin', 'voir de près'],
+   qcm:{bon:'La capacité de l’œil à augmenter sa puissance optique, surtout par la forme du cristallin, pour voir de près', faux:['La capacité de l’œil à augmenter sa puissance optique, surtout par la courbure de la cornée, pour voir de loin', 'La capacité de l’œil à diminuer sa puissance optique, surtout par la forme du cristallin, pour voir de près', 'La capacité de l’œil à allonger son globe, surtout par le muscle ciliaire, pour voir de près']}, src:['M6 D49']},
   {id:'c-accommodation-02', type:'chaine', pas:['accommodation.3', 'accommodation.4'], q:'Un objet se rapproche de l’œil : remets la chaîne de l’accommodation dans l’ordre.',
    items:['les rayons arrivent divergents', 'sans changement, le foyer passe derrière la rétine', 'le muscle ciliaire se contracte', 'les fibres zonulaires se relâchent', 'le cristallin se bombe : l’image revient sur la rétine'], src:['M6 D46', 'M6 D48']},
   {id:'c-accommodation-03', type:'discrim', pas:['accommodation.4'], q:'Vision de loin : le muscle ciliaire, les fibres zonulaires et le cristallin sont…',
@@ -2817,12 +2953,20 @@ const CARTES2 = [
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
      const v = (x, d) => x.toFixed(d).replace('.', ',');
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
      if (Math.random() < 0.6) {
        const d = pick([20, 25, 40, 50, 80, 100, 125, 200, 400]), A = 100 / d;
-       return {q:'Quelle demande accommodative crée un objet à ' + d + ' cm, en D ?', r:'+' + v(A, 2) + ' D (1 / ' + v(d / 100, 2) + ' m)', tol:0.01};
+       /* tuiles (Arène) : la distance au lieu de son inverse, les cm gardés, mm (÷ 1000) ; secours : ÷ 10, le double */
+       const ecr = x => x < 0.005 ? '' : '+' + v(x, 2) + ' D';
+       const faux = trois(ecr(A), melange([d / 100, 1 / d, 1000 / d]).concat([10 / d, 2 * A]), ecr);
+       return {q:'Quelle demande accommodative crée un objet à ' + d + ' cm, en D ?', r:'+' + v(A, 2) + ' D (1 / ' + v(d / 100, 2) + ' m)', faux, tol:0.01};
      }
      const A = pick([0.5, 1, 1.25, 2, 2.5, 4, 5]), d = 100 / A;
-     return {q:'Un objet demande +' + v(A, 2) + ' D d’accommodation. À combien de cm est-il ?', r:v(d, 0) + ' cm (1 / ' + v(A, 2) + ' = ' + v(d / 100, 2) + ' m)', tol:0.5};
+     /* tuiles (Arène) : multiplier au lieu de diviser, la moitié, un facteur 10 ; secours : l’autre facteur 10, le double */
+     const ecr = x => x < 5 ? '' : v(x, 0) + ' cm', dix = melange([d * 10, d / 10]);
+     const faux = trois(ecr(d), melange([100 * A, 50 / A, dix[0]]).concat([dix[1], 2 * d]), ecr);
+     return {q:'Un objet demande +' + v(A, 2) + ' D d’accommodation. À combien de cm est-il ?', r:v(d, 0) + ' cm (1 / ' + v(A, 2) + ' = ' + v(d / 100, 2) + ' m)', faux, tol:0.5};
    }, src:['M6 D50', 'M6 D57', 'M6 C9']},
   {id:'c-accommodation-05', type:'geste', pas:['accommodation.4'], geste:'g-cristallin',
    q:'Refais le cristallin avec tes mains : vision de loin, puis vision de près, en nommant le muscle ciliaire, les fibres zonulaires et le cristallin.', src:['M6 D48']},
@@ -2830,22 +2974,31 @@ const CARTES2 = [
   /* ---------- donders ---------- */
   {id:'c-donders-01', type:'libre', pas:['donders.3'], q:'Quelle part de son amplitude l’œil utilise-t-il pour un effort prolongé ?',
    r:'« Pour un effort prolongé, on utilise généralement, comme règle pédagogique, environ la moitié de l’amplitude d’accommodation. L’autre moitié est conservée comme réserve accommodative. » <span class="src">M6 D54</span>',
-   points:['environ la moitié', 'règle pédagogique', 'l’autre moitié : réserve accommodative'], src:['M6 D54']},
+   points:['environ la moitié', 'règle pédagogique', 'l’autre moitié : réserve accommodative'],
+   qcm:{bon:'Environ la moitié, comme règle pédagogique ; l’autre moitié est gardée comme réserve accommodative', faux:['Toute son amplitude, comme règle pédagogique ; la réserve accommodative est l’addition', 'Environ le tiers, comme règle pédagogique ; les deux tiers restent en réserve accommodative', 'Environ la moitié de la demande 1/d ; l’amplitude entière reste en réserve accommodative']}, src:['M6 D54']},
   {id:'c-donders-02', type:'calcul', pas:['donders.5', 'fil.4'], q:'Distance minimum confortable de lecture, d’après l’âge (tableau de Donders).',
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
      const v = (x, d) => x.toFixed(d).replace('.', ',');
      const T = [[1, 18], [5, 16], [10, 14], [15, 12], [20, 10], [25, 8.5], [30, 7], [40, 4.5], [44, 4], [50, 2.5], [60, 1]];
      const [age, Am] = pick(T), demi = Am / 2, cm = 100 / demi;
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : l’amplitude entière, une ligne voisine du tableau, la distance divisée par deux ; secours : le double */
+     const i = T.findIndex(t => t[0] === age), voisins = [T[i - 1], T[i + 1]].filter(Boolean).map(t => 200 / t[1]);
+     const ecr = x => v(x, 1) + ' cm';
+     const faux = trois(ecr(cm), melange([100 / Am, 50 / Am].concat(voisins)).concat([400 / Am]), ecr);
      return {q:'Une personne emmétrope de ' + age + (age > 1 ? ' ans' : ' an') + ' (tableau de Donders) : quelle est sa distance minimum confortable de lecture, en cm ?',
-             r:v(cm, 1) + ' cm (Am = ' + v(Am, 1) + ' ; ½ Am = ' + v(demi, 2) + ' D ; 1 / ' + v(demi, 2) + ')', tol:0.15};
+             r:v(cm, 1) + ' cm (Am = ' + v(Am, 1) + ' ; ½ Am = ' + v(demi, 2) + ' D ; 1 / ' + v(demi, 2) + ')', faux, tol:0.15};
    }, src:['M6 D54', 'M6 C9']},
   {id:'c-donders-03', type:'libre', pas:['donders.2'], q:'Qu’est-ce que la presbytie, et quand se fait-elle sentir ?',
    r:'« Cette perte d’accommodation s’appelle la presbytie. » L’accommodation fonctionne très bien avant 20 ans, donne des problèmes de près vers la fin des années trente, et est presque entièrement perdue à 60 ans et plus <span class="src">M6 D53</span>.',
-   points:['perte d’accommodation avec l’âge', 'vers la fin des années trente', 'presque perdue à 60 ans'], src:['M6 D53']},
+   points:['perte d’accommodation avec l’âge', 'vers la fin des années trente', 'presque perdue à 60 ans'],
+   qcm:{bon:'La perte d’accommodation avec l’âge : gênante de près vers la fin des années trente, presque perdue à 60 ans', faux:['Une hypermétropie due à l’âge : gênante de près vers 50 ans, complète à 75 ans', 'La perte d’accommodation avec l’âge : gênante de près dès le début de la vingtaine, presque entièrement perdue à 40 ans', 'Une baisse de la vision de loin avec l’âge : gênante vers 40 ans, presque perdue à 60 ans']}, src:['M6 D53']},
   {id:'c-donders-04', type:'libre', pas:['donders.6'], q:'Les symptômes de la presbytie ?',
    r:'Vision floue et détails de près difficiles, délai pour voir de près, mal de tête, inconfort visuel, mal de cou et de dos, fatigue, besoin de plus de lumière ; ils dépendent de « l’amplitude restante, de la distance de travail et des besoins visuels » <span class="src">M6 D62</span>.',
-   points:['flou de près, délai', 'mal de tête, inconfort', 'mal de cou et de dos', 'fatigue, besoin de lumière'], src:['M6 D62']},
+   points:['flou de près, délai', 'mal de tête, inconfort', 'mal de cou et de dos', 'fatigue, besoin de lumière'],
+   qcm:{bon:'Flou de près, détails difficiles, délai de mise au point, mal de tête, mal de cou et de dos, fatigue, besoin de lumière', faux:['Flou de loin la nuit, halos autour des phares, mal de tête, yeux rouges, fatigue, besoin de moins de lumière', 'Vision double de près, douleur oculaire, larmoiement, nausées, fatigue, besoin de plus de lumière', 'Flou de loin, plisser les yeux pour lire les panneaux, mal de tête, fatigue, besoin de s’approcher tout près de la télévision']}, src:['M6 D62']},
   {id:'c-donders-05', type:'discrim', pas:['donders.3', 'donders.5'], q:'À 10 ans (Am 14), le plus près qu’on lit confortablement, pendant longtemps, c’est…',
    choix:['≈ 14 cm : 1/7', '≈ 7 cm : 1/14'], bonne:0,
    r:'Un effort prolongé n’utilise que la moitié de l’amplitude : 1/7 ≈ 14 cm ; 1/14 ≈ 7,1 cm (amplitude complète) ne tient qu’un instant.', src:['M6 C9']},
@@ -2853,7 +3006,8 @@ const CARTES2 = [
   /* ---------- addition ---------- */
   {id:'c-addition-01', type:'libre', pas:['addition.1'], q:'Définis l’addition.',
    r:'« L’addition est la puissance positive supplémentaire destinée à faciliter la vision de près. » Addition = A − 0,5 (Am) <span class="src">M6 D56</span>',
-   points:['puissance positive supplémentaire', 'faciliter la vision de près', 'A − 0,5 Am'], src:['M6 D56']},
+   points:['puissance positive supplémentaire', 'faciliter la vision de près', 'A − 0,5 Am'],
+   qcm:{bon:'La puissance positive supplémentaire destinée à faciliter la vision de près ; Addition = A − 0,5 (Am)', faux:['La puissance négative retirée pour faciliter la vision de loin ; Addition = A − 0,5 (Am)', 'La puissance positive supplémentaire destinée à corriger la myopie ; Addition = A − Am', 'La puissance positive supplémentaire destinée à faciliter la vision de près ; Addition = 0,5 (A) − Am']}, src:['M6 D56']},
   {id:'c-addition-02', type:'calcul', pas:['addition.3', 'exercices.2'], q:'Addition par la formule, d’après l’âge (tableau de Donders) et la distance de lecture.',
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -2861,8 +3015,14 @@ const CARTES2 = [
      const T = [[40, 4.5], [44, 4], [50, 2.5], [60, 1], [75, 0]];
      let age, Am, d, A, add;
      do { [age, Am] = pick(T); d = pick([25, 40, 50, 100]); A = 100 / d; add = A - Am / 2; } while (add < 0.004);
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : l’amplitude entière, la demande seule, le signe, la moitié de A, une ligne voisine du tableau ; secours : cm gardés, la ligne voisine avec le signe, le double */
+     const i = T.findIndex(t => t[0] === age), demis = [T[i - 1], T[i + 1]].filter(Boolean).map(t => t[1] / 2);
+     const ecr = x => Math.abs(x) < 0.005 ? '0,00 D' : (x > 0 ? '+' : '−') + v(Math.abs(x), 2) + ' D';
+     const faux = trois(ecr(add), melange([A - Am, A, A + Am / 2, A / 2].concat(demis.map(h => A - h))).concat([1 / d - Am / 2], demis.map(h => A + h), [2 * A]), ecr);
      return {q:'Patient emmétrope de ' + age + (age > 1 ? ' ans' : ' an') + ' (tableau de Donders), lecture à ' + d + ' cm. Quelle addition par la formule ?',
-             r:'+' + v(add, 2) + ' D (A = 1 / ' + v(d / 100, 2) + ' = ' + v(A, 2) + ' ; Am = ' + v(Am, 1) + ' ; ' + v(A, 2) + ' − ' + v(Am / 2, 2) + ')', tol:0.01};
+             r:'+' + v(add, 2) + ' D (A = 1 / ' + v(d / 100, 2) + ' = ' + v(A, 2) + ' ; Am = ' + v(Am, 1) + ' ; ' + v(A, 2) + ' − ' + v(Am / 2, 2) + ')', faux, tol:0.01};
    }, src:['M6 D54', 'M6 D56']},
   {id:'c-addition-03', type:'calcul', pas:['addition.3', 'addition.2'], q:'Addition avec une amplitude donnée, ou l’amplitude retrouvée depuis l’addition.',
    gen:() => {
@@ -2870,33 +3030,46 @@ const CARTES2 = [
      const v = (x, d) => x.toFixed(d).replace('.', ',');
      let Am, d, A, add;
      do { Am = pick([0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]); d = pick([25, 40, 50]); A = 100 / d; add = A - Am / 2; } while (add < 0.004);
-     if (Math.random() < 0.65)
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     if (Math.random() < 0.65) {
+       /* tuiles (Arène) : l’amplitude entière, la demande seule, le signe, la moitié de Am seule ; secours : cm gardés, la moitié de A */
+       const ecr = x => Math.abs(x) < 0.005 ? '0,00 D' : (x > 0 ? '+' : '−') + v(Math.abs(x), 2) + ' D';
+       const faux = trois(ecr(add), melange([A - Am, A, A + Am / 2, Am / 2]).concat([1 / d - Am / 2, A / 2]), ecr);
        return {q:'Lecture à ' + d + ' cm, amplitude d’accommodation ' + v(Am, 2) + ' D. Quelle addition ?',
-               r:'+' + v(add, 2) + ' D (A = ' + v(A, 2) + ' ; ' + v(A, 2) + ' − 0,5 × ' + v(Am, 2) + ')', tol:0.01};
+               r:'+' + v(add, 2) + ' D (A = ' + v(A, 2) + ' ; ' + v(A, 2) + ' − 0,5 × ' + v(Am, 2) + ')', faux, tol:0.01};
+     }
+     /* tuiles (Arène) : le × 2 oublié, le signe, la somme, deux fois l’addition ; secours : le double, le quart */
+     const ecr = x => v(x, 2) + ' D';
+     const faux = trois(ecr(Am), melange([A - add, 2 * (A + add), A + add, 2 * add]).concat([2 * Am, Am / 4]), ecr);
      return {q:'À ' + d + ' cm, la formule donne une addition de +' + v(add, 2) + ' D. Quelle est l’amplitude d’accommodation du patient ?',
-             r:v(Am, 2) + ' D (Am = 2 × ' + v(A, 2) + ' − 2 × ' + v(add, 2) + ')', tol:0.01};
+             r:v(Am, 2) + ' D (Am = 2 × ' + v(A, 2) + ' − 2 × ' + v(add, 2) + ')', faux, tol:0.01};
    }, src:['M6 D56', 'M6 C6', 'M6 C8']},
   {id:'c-addition-04', type:'discrim', pas:['addition.1', 'addition.3'], q:'Dans la formule de l’addition, que représente A ?',
    choix:['ce que l’objet exige : 1/d', 'ce que l’œil peut donner : son amplitude', 'ce que les lunettes ajoutent'], bonne:0,
    r:'A : la demande, 1/d ; Am : ce que l’œil peut donner (Donders) ; l’addition : ce que les lunettes ajoutent.', src:['M6 D50', 'M6 D54', 'M6 D56']},
   {id:'c-addition-05', type:'libre', pas:['addition.2'], q:'Le calcul de l’addition sort négatif. Que réponds-tu ?',
    r:'Aucune addition : « Si le résultat est négatif, aucune addition n’est indiquée par ce calcul simplifié. On suppose la correction de loin adéquate. » <span class="src">M6 D56</span>',
-   points:['aucune addition', 'jamais une addition négative', 'correction de loin adéquate'], src:['M6 D56']},
+   points:['aucune addition', 'jamais une addition négative', 'correction de loin adéquate'],
+   qcm:{bon:'Aucune addition n’est indiquée ; on suppose la correction de loin adéquate', faux:['Une addition négative du même montant, pour relâcher l’accommodation de près', 'Une addition de +0,25, le minimum prescrit quand le calcul sort négatif', 'Refaire le calcul avec toute l’amplitude jusqu’à obtenir un résultat positif']}, src:['M6 D56']},
   {id:'c-addition-06', type:'application', pas:['addition.3', 'donders.3'],
    q:'Josée Bélanger, 50 ans, porte ses lunettes de loin (−2,00) et corrige des cahiers à 40 cm. Quelle addition par la formule, et quelle part de son amplitude son œil fournit-il une fois l’addition posée ?',
    r:'A = 1/0,40 = 2,50 ; Am (Donders, 50 ans) = 2,5 ; Addition = 2,50 − 1,25 = +1,25. Son œil fournit alors 1,25 D, la moitié de son amplitude.',
-   points:['A = 2,50', 'Am = 2,5', '+1,25', 'la moitié de son amplitude'], src:['M6 D54', 'M6 D56']},
+   points:['A = 2,50', 'Am = 2,5', '+1,25', 'la moitié de son amplitude'],
+   qcm:{bon:'A = 2,50 ; Am = 2,5 ; Addition = 2,50 − 1,25 = +1,25 ; son œil fournit 1,25 D, la moitié de son amplitude', faux:['A = 2,50 − 2,00 = 0,50 ; Am = 2,5 ; aucune addition, sa myopie suffit', 'A = 2,50 ; Am = 2,5 ; Addition = 2,50 − 2,50 = 0 ; son œil fournit toute son amplitude', 'A = 2,50 ; Am = 3,0 ; Addition = 2,50 − 1,50 = +1,00 ; son œil fournit 1,50 D, soit la moitié de son amplitude']}, src:['M6 D54', 'M6 D56']},
 
   /* ---------- exercices (M6) ---------- */
   {id:'c-exercices-01', type:'application', pas:['exercices.2'],
    q:'Exercice du corrigé : distance de lecture 40 cm, amplitude d’accommodation du patient 2,00 D. Quelle force faut-il pour lire (addition de près) ?',
    r:'A = 1/0,40 = +2,50 ; Addition = 2,50 − 0,5 × 2,00 = +1,50 : ses réserves d’accommodation ne suffisent pas.',
-   points:['A = +2,50', '0,5 × 2,00 = 1,00', '+1,50'], src:['M6 C6']},
+   points:['A = +2,50', '0,5 × 2,00 = 1,00', '+1,50'],
+   qcm:{bon:'A = +2,50 ; 0,5 × 2,00 = 1,00 ; Addition = +1,50', faux:['A = +2,50 ; Am entière, 2,00 ; Addition = +0,50', 'A = +2,50 ; 0,5 × 2,50 = 1,25 ; Addition = +0,75', 'A = +0,40 ; 0,5 × 2,00 = 1,00 ; aucune addition']}, src:['M6 C6']},
 
   /* ---------- racines (M6) ---------- */
   {id:'c-racines-01', type:'application', pas:['racines.1', 'lunetier.1'],
    q:'La racine ① à l’envers : une surface d’indice 1,60 doit donner +7,50 D dans l’air. Quel rayon de courbure lui faut-il, en cm ?',
-   r:'r = (nr − ni)/D = 0,60/7,50 = 0,08 m = 8 cm.', points:['r = (nr − ni)/D', '0,08 m', '8 cm'], src:['UA1 M4', 'M6 D10']},
+   r:'r = (nr − ni)/D = 0,60/7,50 = 0,08 m = 8 cm.', points:['r = (nr − ni)/D', '0,08 m', '8 cm'],
+   qcm:{bon:'r = (nr − ni)/D = 0,60/7,50 = 0,08 m = 8 cm', faux:['r = D/(nr − ni) = 7,50/0,60 = 12,5 cm', 'r = 1,60/7,50 = 0,213 m = 21,3 cm', 'r = 0,60/7,50 = 0,08 m = 0,8 cm']}, src:['UA1 M4', 'M6 D10']},
 
   /* ---------- fil7 ---------- */
   {id:'c-fil7-01', type:'chaine', pas:['fil7.2'], q:'Les quatre questions du prof avant un calcul de Pr ou de Pp, dans l’ordre.',
@@ -2914,8 +3087,13 @@ const CARTES2 = [
      let d, R, A;
      do { d = pick([25, 40, 50, 100]); R = (Math.floor(Math.random() * 33) - 16) / 4; A = 100 / d + R; } while (Math.abs(R) < 1e-9 || A < -1e-9);
      const nom = R < 0 ? 'Un myope de ' : 'Un hypermétrope de ';
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : R oublié (le A du module 6), le signe de R, la demande oubliée ; secours : le signe, cm gardés */
+     const ecr = x => (Math.abs(x) < 1e-9 ? '0,00' : sd(x, 2)) + ' D';
+     const faux = trois(ecr(A), melange([100 / d, 100 / d - R, R]).concat([-A, R + 1 / d]), ecr);
      return {q:nom + sd(R, 2) + ' D, sans correction, regarde un objet à ' + d + ' cm. Combien doit-il accommoder, en D ?',
-             r:(Math.abs(A) < 1e-9 ? '0,00' : sd(A, 2)) + ' D (A = ' + v(100 / d, 2) + (R < 0 ? ' − ' : ' + ') + v(Math.abs(R), 2) + ')', tol:0.01};
+             r:(Math.abs(A) < 1e-9 ? '0,00' : sd(A, 2)) + ' D (A = ' + v(100 / d, 2) + (R < 0 ? ' − ' : ' + ') + v(Math.abs(R), 2) + ')', faux, tol:0.01};
    }, src:['M7 D20']},
   {id:'c-formule-02', type:'discrim', pas:['formule.4'], q:'Sans lunettes, devant le même livre à 25 cm, qui accommode le plus ?',
    choix:['l’hypermétrope +3,00', 'l’emmétrope', 'le myope −3,00'], bonne:0,
@@ -2923,12 +3101,14 @@ const CARTES2 = [
   {id:'c-formule-03', type:'application', pas:['formule.4', 'formule.3'],
    q:'Josée Bélanger (−2,00 OU) enlève ses lunettes pour corriger un cahier à 40 cm. Combien accommode-t-elle ? Et si elle tient le cahier à 60 cm ?',
    r:'À 40 cm : A = 2,50 − 2,00 = 0,50 D. À 60 cm : A = 1,67 − 2,00 < 0 : flou, le cahier est au-delà de son Pr (50 cm).',
-   points:['0,50 D à 40 cm', 'négatif à 60 cm : flou', 'Pr à 50 cm'], src:['M7 D20', 'M7 D22']},
+   points:['0,50 D à 40 cm', 'négatif à 60 cm : flou', 'Pr à 50 cm'],
+   qcm:{bon:'À 40 cm, A = 2,50 − 2,00 = 0,50 D ; à 60 cm, A négatif : flou, au-delà de son Pr (50 cm)', faux:['À 40 cm, A = 2,50 + 2,00 = 4,50 D ; à 60 cm, A = 1,67 + 2,00 = 3,67 D, net', 'À 40 cm, A = 2,50 D ; à 60 cm, A = 1,67 D : la myopie ne change pas l’effort', 'À 40 cm, A = 2,50 − 2,00 = 0,50 D ; à 60 cm, A = −0,33 D : elle relâche et voit net']}, src:['M7 D20', 'M7 D22']},
 
   /* ---------- pr ---------- */
   {id:'c-pr-01', type:'libre', pas:['pr.1', 'pr.2'], q:'Définis le punctum remotum et donne sa place pour les trois yeux.',
    r:'« Point objet le plus éloigné que l’oeil peut voir clairement (œil au repos) » ; dM, la distance maximale de vision distincte. Emmétrope : à l’infini ; myope : devant ; hypermétrope : derrière l’œil <span class="src">M7 D11</span>.',
-   points:['le plus éloigné, œil au repos', 'emmétrope : infini', 'myope : devant', 'hypermétrope : derrière'], src:['M7 D11']},
+   points:['le plus éloigné, œil au repos', 'emmétrope : infini', 'myope : devant', 'hypermétrope : derrière'],
+   qcm:{bon:'Le point le plus éloigné vu clairement, œil au repos ; emmétrope : infini ; myope : devant ; hypermétrope : derrière', faux:['Le point le plus proche vu clairement, en accommodant au maximum ; emmétrope : 25 cm ; myope : devant ; hypermétrope : derrière', 'Le point le plus éloigné vu clairement, œil au repos ; emmétrope : infini ; myope : derrière ; hypermétrope : devant', 'Le point le plus éloigné vu clairement, en accommodant ; emmétrope : 6 m ; myope : devant ; hypermétrope : infini']}, src:['M7 D11']},
   {id:'c-pr-02', type:'calcul', pas:['pr.5', 'pr.4'], q:'R = 1/Pr : la correction depuis un Pr tiré au hasard.',
    gen:() => {
      const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -2937,8 +3117,13 @@ const CARTES2 = [
      const devant = Math.random() < 0.7;
      const cm = devant ? pick([20, 25, 40, 50, 80, 100, 200]) : pick([20, 25, 40, 50, 100]);
      const Pr = (devant ? -1 : 1) * cm / 100, R = 1 / Pr;
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : le signe perdu, le Pr non inversé (avec ou sans son signe), mm (× 10), cm gardés */
+     const ecr = x => Math.abs(x) < 0.01 ? '' : sd(x, 2) + ' D';
+     const faux = trois(ecr(R), melange([-R, Pr, -Pr, R * 10, R / 100]), ecr);
      return {q:'Le Pr d’un œil est à ' + cm + ' cm ' + (devant ? 'devant' : 'derrière') + ' lui. Quelle lentille cornéenne le corrige, en D, avec son signe ?',
-             r:sd(R, 2) + ' D (Pr = ' + sd(Pr, 2) + ' m ; R = 1/Pr)', tol:0.01};
+             r:sd(R, 2) + ' D (Pr = ' + sd(Pr, 2) + ' m ; R = 1/Pr)', faux, tol:0.01};
    }, src:['M7 D25', 'M7 D37', 'M7 C2']},
   {id:'c-pr-03', type:'calcul', pas:['pr.3', 'pr.6'], q:'Pr = 1/R : où est le Pr d’un œil tiré au hasard ?',
    gen:() => {
@@ -2960,7 +3145,8 @@ const CARTES2 = [
   /* ---------- pp ---------- */
   {id:'c-pp-01', type:'libre', pas:['pp.1'], q:'Définis le punctum proximum.',
    r:'« Point objet le plus près que l’oeil peut voir avec accommodation maximale (même si c’est juste pour quelques instant) » <span class="sic">(sic)</span> ; dm, la distance minimale de vision distincte, qui « varie avec l’âge du sujet » <span class="src">M7 D11</span>.',
-   points:['le plus près', 'accommodation maximale', 'un instant seulement'], src:['M7 D11']},
+   points:['le plus près', 'accommodation maximale', 'un instant seulement'],
+   qcm:{bon:'Le point objet le plus près que l’œil voit avec accommodation maximale, même pour quelques instants', faux:['Le point objet le plus près que l’œil voit longtemps, avec la moitié de son amplitude', 'Le point objet le plus éloigné que l’œil voit avec accommodation maximale, même pour quelques instants', 'Le point objet le plus près que l’œil voit au repos, sans aucune accommodation']}, src:['M7 D11']},
   {id:'c-pp-02', type:'discrim', pas:['pp.1', 'pr.1'], q:'Le point le plus proche que l’œil voit net en accommodant au maximum, c’est…',
    choix:['le Pp (punctum proximum)', 'le Pr (punctum remotum)'], bonne:0,
    r:'Pr : œil au repos (A = 0), R = 1/Pr. Pp : accommodation maximale (A = Am), 1/Pp = Am − R.', src:['M7 D11', 'M7 D48']},
@@ -2973,10 +3159,18 @@ const CARTES2 = [
      let Am, R, S;
      do { Am = pick([2, 2.5, 3, 4, 6, 7, 10, 14]); R = pick([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]); S = Am - R; } while (S < 0.5);
      const cm = 100 / S;
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : 1/Pp pris pour le Pp, R oublié, le signe de R, la moitié de Am ; secours : × 10, m pris pour des cm, le double */
+     const ecr = x => x > 0.05 && isFinite(x) ? v(x, 1) + ' cm' : '';
+     const prim = [S, R !== 0 ? 100 / Am : 0];
+     if (Am + R >= 0.5) prim.push(100 / (Am + R));
+     if (Am / 2 - R >= 0.5) prim.push(100 / (Am / 2 - R));
+     const faux = trois(ecr(cm), melange(prim).concat([1000 / S, 1 / S, 200 / S]), ecr);
      const qui = R < 0 ? 'myope de ' + sd(R, 2) : R > 0 ? 'hypermétrope de ' + sd(R, 2) : 'emmétrope';
      const calc = R < 0 ? c(Am) + ' + ' + c(-R) : R > 0 ? c(Am) + ' − ' + c(R) : c(Am);
      return {q:'Un œil ' + qui + ', sans correction, a une amplitude de ' + c(Am) + ' D. Où est son Pp, en cm devant l’œil ?',
-             r:v(cm, 1) + ' cm (1/Pp = ' + (R === 0 ? '' : calc + ' = ') + c(S) + ' D ; Pp = 1 / ' + c(S) + ' m)', tol:0.15};
+             r:v(cm, 1) + ' cm (1/Pp = ' + (R === 0 ? '' : calc + ' = ') + c(S) + ' D ; Pp = 1 / ' + c(S) + ' m)', faux, tol:0.15};
    }, src:['M7 D27', 'M7 D28', 'M7 D38']},
   {id:'c-pp-04', type:'discrim', pas:['pp.2'], q:'Pour calculer le Pp, tu prends…',
    choix:['toute l’amplitude', 'la moitié de l’amplitude'], bonne:0,
@@ -2986,16 +3180,19 @@ const CARTES2 = [
   {id:'c-pp-06', type:'application', pas:['pp.5', 'pp.3'],
    q:'Caroline porte des lunettes de +2,00. Avec elles, elle voit net jusqu’à 25 cm en accommodant au maximum. Quelle est son amplitude, et où est son Pp sans lunettes ?',
    r:'Corrigée, elle est comme une emmétrope : Am = 1/0,25 = 4 D. Sans lunettes : 1/Pp = 4 − 2 = 2 D → 50 cm.',
-   points:['Am = 4 D', '4 − 2 = 2 D', '50 cm'], src:['M7 D39', 'M7 D40']},
+   points:['Am = 4 D', '4 − 2 = 2 D', '50 cm'],
+   qcm:{bon:'Corrigée, comme une emmétrope : Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 − 2 = 2 D → 50 cm', faux:['Am = 1/0,25 = 4 D ; sans lunettes, 1/Pp = 4 + 2 = 6 D → 16,7 cm', 'Am = 1/0,25 + 2 = 6 D ; sans lunettes, 1/Pp = 6 − 2 = 4 D → 25 cm', 'Am = 0,5 × 1/0,25 = 2 D, la moitié ; sans lunettes, 1/Pp = 2 − 2 = 0 : aucun Pp réel devant l’œil']}, src:['M7 D39', 'M7 D40']},
 
   /* ---------- piege ---------- */
   {id:'c-piege-01', type:'libre', pas:['piege.5'], q:'À quoi sert la cycloplégie ?',
    r:'« La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale. » <span class="src">M7 D42</span>',
-   points:['relâcher l’accommodation', 'révéler l’hypermétropie totale'], src:['M7 D42']},
+   points:['relâcher l’accommodation', 'révéler l’hypermétropie totale'],
+   qcm:{bon:'Relâcher l’accommodation afin de mieux révéler l’hypermétropie totale', faux:['Contracter le muscle ciliaire afin de mesurer l’amplitude maximale', 'Relâcher l’accommodation afin de mieux révéler la myopie totale', 'Bloquer la presbytie afin de retarder le besoin d’une addition']}, src:['M7 D42']},
   {id:'c-piege-02', type:'application', pas:['piege.3', 'piege.2'],
    q:'Un garçon de 10 ans (Am 14), hypermétrope de +4,00, non corrigé, lit à 25 cm. Combien accommode-t-il, et peut-il tenir longtemps ?',
    r:'A = 1/0,25 + 4 = 8 D. La moitié de 14 vaut 7 D : il dépasse la moitié de son amplitude, donc il lit en effort (fatigue, céphalées possibles).',
-   points:['8 D', 'moitié = 7 D', 'en effort'], src:['M7 D42', 'M7 D43']},
+   points:['8 D', 'moitié = 7 D', 'en effort'],
+   qcm:{bon:'A = 4 + 4 = 8 D ; c’est plus que la moitié de 14 (7 D) : il lit en effort, fatigue possible', faux:['A = 4 D ; c’est moins que la moitié de 14 (7 D) : il lit sans effort', 'A = 4 − 4 = 0 D ; il lit sans accommoder, sans aucune fatigue', 'A = 4 + 4 = 8 D ; c’est moins que son amplitude entière (14 D) : il lit longtemps sans effort']}, src:['M7 D42', 'M7 D43']},
   {id:'c-piege-03', type:'discrim', pas:['piege.1', 'piege.6'], q:'Un hypermétrope de +3,00 regarde au loin. Qui fournit les 3 D, sans correction puis avec sa lentille + ?',
    choix:['sans : son accommodation ; avec : la lentille', 'sans : la lentille ; avec : son accommodation', 'dans les deux cas : son accommodation'], bonne:0,
    r:'Sans correction, l’œil paie R (compensation accommodative : net, mais en effort) ; corrigé, la lentille paie R et l’œil garde sa réserve pour le près.', src:['M7 D41', 'M7 D44']},
@@ -3009,7 +3206,8 @@ const CARTES2 = [
    r:'Concave : mince au centre, divergente, −, image virtuelle, pour le myope. Convexe : mince au bord, convergente, +, pour l’hypermétrope.', src:['M7 D19', 'M7 D36']},
   {id:'c-lentilles-03', type:'libre', pas:['lentilles.1'], q:'La presbytie est-elle une amétropie ?',
    r:'Non : « Ce n’est pas une amétropie au sens strict. » La presbytie est « la diminution progressive de l’amplitude d’accommodation avec l’âge » <span class="src">M7 D4</span>.',
-   points:['non', 'perte d’amplitude avec l’âge'], src:['M7 D4']},
+   points:['non', 'perte d’amplitude avec l’âge'],
+   qcm:{bon:'Non : ce n’est pas une amétropie au sens strict, mais la perte d’amplitude avec l’âge', faux:['Oui : c’est une hypermétropie qui apparaît avec l’âge', 'Oui : c’est une myopie de près, que corrige l’addition', 'Non : c’est une erreur de réfraction de loin, qui apparaît vers 40 ans chez la plupart des gens']}, src:['M7 D4']},
 
   /* ---------- correction ---------- */
   {id:'c-correction-01', type:'calcul', pas:['correction.4', 'correction.5'], q:'Lunettes de lecture = correction de loin + addition, avec une Rx tirée au hasard.',
@@ -3018,8 +3216,13 @@ const CARTES2 = [
      const sd = (x, d) => (x > 1e-9 ? '+' : x < -1e-9 ? '−' : '') + Math.abs(x).toFixed(d).replace('.', ',');
      let loin, add, pres;
      do { loin = (Math.floor(Math.random() * 41) - 24) / 4; add = (3 + Math.floor(Math.random() * 8)) / 4; pres = loin + add; } while (Math.abs(loin) < 1e-9 || Math.abs(pres) < 1e-9);
+     const melange = a => a.map(x => [Math.random(), x]).sort((p, s) => p[0] - s[0]).map(p => p[1]);
+     const trois = (bon, l, ecr) => { const f = []; l.forEach(x => { const t = ecr(x); if (t && t !== bon && !f.includes(t) && f.length < 3) f.push(t); }); return f; };
+     /* tuiles (Arène) : l’add seule, l’add retranchée, la correction de loin seule, le signe de loin perdu ; secours : le signe */
+     const ecr = x => sd(x, 2) + ' D';
+     const faux = trois(ecr(pres), melange([add, loin - add, loin, Math.abs(loin) + add]).concat([-pres, add - loin]), ecr);
      return {q:'Correction de loin ' + sd(loin, 2) + ', add +' + v(add, 2) + '. Quelle est la puissance des lunettes de lecture ?',
-             r:sd(pres, 2) + ' D (' + sd(loin, 2) + ' + ' + v(add, 2) + ')', tol:0.01};
+             r:sd(pres, 2) + ' D (' + sd(loin, 2) + ' + ' + v(add, 2) + ')', faux, tol:0.01};
    }, src:['M7 D6', 'M7 D9', 'M7 D10', 'M7 C7']},
   {id:'c-correction-02', type:'calcul', pas:['correction.2', 'correction.4'], q:'À 40 cm : l’addition, puis les lunettes de lecture, avec des données tirées au hasard.',
    gen:() => {
@@ -3043,7 +3246,8 @@ const CARTES2 = [
   {id:'c-exercices7-01', type:'application', pas:['exercices7.1', 'pp.5'],
    q:'N° 3 du devoir : un hypermétrope reçoit des lentilles cornéennes de +4,00 ; à l’œil nu, son Pp est à 50 cm. Où est son Pr, et quelle est sa distance minimale de vision distincte avec ses lentilles ?',
    r:'Pr = 1/4,00 = 0,25 m : 25 cm derrière l’œil. Am = 1/0,50 + 4 = 6 D ; avec l’orthèse, comme un emmétrope : 1/6 = 16,7 cm.',
-   points:['25 cm derrière', 'Am = 6 D', '16,7 cm'], src:['M7 D49', 'M7 C5']},
+   points:['25 cm derrière', 'Am = 6 D', '16,7 cm'],
+   qcm:{bon:'Pr = 1/4,00 = 25 cm derrière l’œil ; Am = 2 + 4 = 6 D ; avec ses lentilles, 1/6 = 16,7 cm', faux:['Pr = 1/4,00 = 25 cm devant l’œil ; Am = 2 + 4 = 6 D ; avec ses lentilles, 1/6 = 16,7 cm', 'Pr = 25 cm derrière l’œil ; Am = 2 − 4 = −2 D ; avec ses lentilles, aucun Pp réel', 'Pr = 25 cm derrière l’œil ; Am = 1/0,50 = 2 D ; avec ses lentilles, 1/2 = 50 cm']}, src:['M7 D49', 'M7 C5']},
 
   /* ---------- racines7 ---------- */
   {id:'c-racines7-01', type:'chaine', pas:['racines7.2', 'racines7.1'], q:'De la formule commune aux deux points : remets les lectures de ① dans l’ordre du cours.',
@@ -3051,7 +3255,8 @@ const CARTES2 = [
   {id:'c-racines7-02', type:'application', pas:['racines7.1', 'correction.4'],
    q:'Josée Bélanger, 50 ans (Donders : Am 2,5), myope de −2,00 OU. Sans lunettes, entre quelles distances voit-elle net ? Et quelles lunettes de lecture pour 40 cm ?',
    r:'Pr = 1/(−2,00) = −0,50 m : 50 cm devant. Pp : 1/Pp = 2,5 + 2 = 4,5 D → 22,2 cm. Elle voit net de 22,2 à 50 cm. Add = 2,50 − 1,25 = +1,25 ; lunettes de lecture : −2,00 + 1,25 = −0,75 D.',
-   points:['Pr 50 cm devant', 'Pp 22,2 cm', 'Add +1,25', 'lunettes −0,75'], src:['M7 D11', 'M7 D28', 'M7 D5', 'M7 D6']}
+   points:['Pr 50 cm devant', 'Pp 22,2 cm', 'Add +1,25', 'lunettes −0,75'],
+   qcm:{bon:'Net de 22,2 à 50 cm sans lunettes ; Add = 2,50 − 1,25 = +1,25 ; lunettes de lecture −0,75 D', faux:['Net de 22,2 cm à l’infini sans lunettes ; Add = +1,25 ; lunettes de lecture +1,25 D', 'Net de 50 cm à l’infini sans lunettes ; Add = 2,50 − 2,50 = 0 ; lunettes de lecture −2,00 D', 'Net de 30,8 à 50 cm sans lunettes ; Add = 2,50 − 1,25 = +1,25 ; lunettes de lecture −3,25 D']}, src:['M7 D11', 'M7 D28', 'M7 D5', 'M7 D6']}
 ];
 
 const VISLE = {
@@ -7517,7 +7722,7 @@ const Arene = (() => {
     PARCOURS.forEach((e, rang) => {
       const items = [];
       Pas.liste(e.id).forEach(p => {
-        if(p.verif && p.verif.q) items.push({id:'p:' + p.id, type:'pas', pas:p.id, q:p.verif.q, r:p.verif.r || '', points:Array.isArray(p.verif.points) ? p.verif.points : []});
+        if(p.verif && p.verif.q) items.push({id:'p:' + p.id, type:'pas', pas:p.id, q:p.verif.q, r:p.verif.r || '', points:Array.isArray(p.verif.points) ? p.verif.points : [], qcm:p.verif.qcm || null});
       });
       cartes.forEach(c => {
         if(!c || c.type === 'geste' || c.type === 'schema' || !Array.isArray(c.pas) || !c.pas.length) return;
@@ -7655,6 +7860,7 @@ const Arene = (() => {
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
         '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
         '<button type="button" class="ar-b" data-a="round" hidden>Dernier round</button>' +
+        '<button type="button" class="ar-b" data-a="ecrire" aria-pressed="false" title="Répondre en écrivant de mémoire, au lieu de choisir parmi quatre réponses">✎ Écrire</button>' +
         '<button type="button" class="ar-b" data-a="carte" aria-pressed="false">Carte</button>' +
         '<button type="button" class="ar-x" data-a="fermer" aria-label="Fermer l’arène" title="Fermer (Échap)">✕</button></header>' +
       '<div class="ar-corps"><nav class="ar-carte" aria-label="Les blocs, du niveau A au sommet"></nav>' +
@@ -7665,6 +7871,11 @@ const Arene = (() => {
       if(b.dataset.bloc){ choisirBloc(b.dataset.bloc); return; }
       const a = b.dataset.a;
       if(a === 'fermer') demanderFermer();
+      else if(a === 'ecrire'){
+        const o = !ecrire(); try{ localStorage.setItem(CLE_ECRIRE, o ? '1' : '0'); }catch(e){}
+        b.setAttribute('aria-pressed', String(o));
+        if(R.courant && R.courant[0] && !R.repondu) montrer(R.courant[0], R.courant[1]);
+      }
       else if(a === 'carte'){ const o = !ui.classList.contains('avec-carte'); ui.classList.toggle('avec-carte', o); b.setAttribute('aria-pressed', String(o)); }
       else if(a === 'plan'){ const c = R.courant; if(c && c[1]) plan(c[1], suivant, false); }
       else if(a === 'indice') indice();
@@ -7679,6 +7890,7 @@ const Arene = (() => {
       if(e.key === 'Escape'){ e.preventDefault(); demanderFermer(); return; }
       e.stopPropagation();
     });
+    $('[data-a="ecrire"]', ui).setAttribute('aria-pressed', String(ecrire()));
     if(window.innerWidth >= 900){ ui.classList.add('avec-carte'); $('[data-a="carte"]', ui).setAttribute('aria-pressed', 'true'); }
   }
   function majTete(){
@@ -7885,6 +8097,44 @@ const Arene = (() => {
     };
     if(typeof it.rendre === 'function'){ art.innerHTML = tete + '<div class="ar-ex"></div>'; graine(() => it.rendre($('.ar-ex', art), fini)); if(groupe) majGroupeUI(); return; }
     const c = it.carte || {};
+    /* le standard de l'arène (recipe §6.12, blueprint §4.7) : quatre tuiles à choisir, une réponse juste et trois
+       erreurs plausibles ; « ✎ Écrire » garde le rappel de mémoire. En groupe, la graine du meneur donne à tous le
+       même ordre et les mêmes nombres. */
+    const o = (!ecrire() || it.type === 'discrim' || it.type === 'qcm') ? graine(() => optionsDe(it, c)) : null;
+    if(o){
+      art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-tuiles" role="group" aria-label="Choisis une réponse"></div>';
+      $('.ar-qq', art).innerHTML = o.q;
+      art._q = texte(o.q); art._ref = o.ref;
+      const z = $('.ar-tuiles', art);
+      o.choix.forEach((x, i) => {
+        const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-tuile t' + (i + 1); bt.dataset.i = i;
+        bt.innerHTML = '<b aria-hidden="true">' + 'ABCD'[i] + '</b><span></span>'; $('span', bt).innerHTML = x.t;
+        z.appendChild(bt);
+      });
+      if(groupe) majGroupeUI();
+      const choisir = i => {
+        if(art.dataset.fait || !o.choix[i]) return;
+        art.dataset.fait = '1';
+        const bt = $$('.ar-tuile', art)[i], ok = !!o.choix[i].bon;
+        art._rep = texte(o.choix[i].t);
+        $$('.ar-tuile', art).forEach(x => { x.disabled = true; });
+        bt.classList.add('choisi');
+        verrou(art._rep, ok, () => {
+          $$('.ar-tuile', art).forEach((x, j) => { x.classList.add(o.choix[j].bon ? 'juste' : 'pale'); });
+          if(!ok){ bt.classList.remove('pale'); bt.classList.add('faux'); }
+          if(o.modele) art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p class="lib">La réponse</p>' + o.modele + '</div>');
+          fini(ok);
+        });
+      };
+      z.addEventListener('click', e => { const bt = e.target.closest('.ar-tuile'); if(bt) choisir(+bt.dataset.i); });
+      art.addEventListener('keydown', e => {
+        if(e.ctrlKey || e.metaKey || e.altKey) return;
+        const k = '1234'.indexOf(e.key) >= 0 ? '1234'.indexOf(e.key) : 'abcd'.indexOf(String(e.key).toLowerCase());
+        if(k >= 0 && k < o.choix.length && !art.dataset.fait){ e.preventDefault(); choisir(k); }
+      });
+      const b0 = $('.ar-tuile', art); if(b0) b0.focus({preventScroll:true});
+      return;
+    }
     if(it.type === 'discrim' || it.type === 'qcm'){
       const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-choix"></div>';
@@ -8180,6 +8430,84 @@ const Arene = (() => {
     if(typeof Tableau === 'undefined') return;
     const c = R.courant; if(c && c[0]){ const p = c[0].pas && Pas.get(c[0].pas); aller(p ? p.ecran : c[1].id); }
     Tableau.ouvrir('groupe');
+  }
+
+  /* ---------- les quatre tuiles : d'où viennent les choix ---------- */
+  const CLE_ECRIRE = 'lumiere-arene-ecrire';
+  const ecrire = () => { try{ return localStorage.getItem(CLE_ECRIRE) === '1'; }catch(e){ return false; } };
+  /* une réponse affichée en tuile : sans sources ni (sic), qui la trahiraient (les erreurs n'en ont pas) */
+  const sansSources = h => String(h || '').replace(/<span class=.(?:src|sic).>[\s\S]*?<\/span>/g, '');
+  const court = h => texte(sansSources(h));
+  const melangerChoix = (bon, faux) => melanger([{t:esc(bon), bon:true}].concat(faux.slice(0, 3).map(x => ({t:esc(x), bon:false}))));
+  /* la réponse juste d'une question de mémoire, telle qu'elle s'affiche en tuile */
+  function bonDe(it){
+    const c = it.carte || {}, src = it.type === 'pas' ? it.qcm : c.qcm;
+    if(src && typeof src.bon === 'string' && src.bon.trim()) return src.bon.trim();
+    return court(it.type === 'pas' ? esc(it.r) : c.r || '');
+  }
+  /* sans jeu écrit : les réponses des questions voisines (même écran, puis même partie), de longueur proche */
+  function voisines(it, bon, n, deja){
+    const [, b] = item(it.id); if(!b) return [];
+    const prises = new Set([bon].concat(deja));
+    const prendre = blocs => {
+      const l = [];
+      blocs.forEach(x => x.items.forEach(j => {
+        if(j === it || !['pas', 'libre', 'application'].includes(j.type)) return;
+        const t = bonDe(j); if(t && !prises.has(t) && t.length <= 260) l.push(t);
+      }));
+      return melanger(l).sort((u, v) => Math.abs(u.length - bon.length) - Math.abs(v.length - bon.length)).slice(0, n);
+    };
+    let l = prendre([b]);
+    if(l.length < n){ l.forEach(x => prises.add(x)); l = l.concat(prendre(B.blocs.filter(x => x !== b && x.partie === b.partie)).slice(0, n - l.length)); }
+    return l;
+  }
+  /* une réponse chiffrée : « 42,72 D » ; sans erreurs écrites, celles qu'on fait souvent (×10, ÷10, signe, ±25 %) */
+  function nombres(g){
+    const tete = court(g.r).split(' (')[0].trim();
+    if(Array.isArray(g.faux)){
+      const f = g.faux.map(x => court(String(x))).filter((x, i, a) => x && x !== tete && a.indexOf(x) === i);
+      return f.length >= 3 ? {bon:tete, faux:f.slice(0, 3)} : null;
+    }
+    const m = tete.match(/^([−-]?)(\d+)(?:([.,])(\d+))?\s*([A-Za-z°%$€]{0,4})$/);
+    if(!m) return null;
+    const signe = m[1] ? -1 : 1, dec = m[4] ? m[4].length : 0, sep = m[3] || ',', unite = m[5] ? (/^[°%]$/.test(m[5]) ? m[5] : ' ' + m[5]) : '';
+    const v = signe * parseFloat(m[2] + '.' + (m[4] || '0'));
+    if(!isFinite(v) || v === 0) return null;
+    const ecr = x => { const s = Math.abs(x).toFixed(dec).replace('.', sep); return (x < 0 ? '−' : '') + s + unite; };
+    const bon = ecr(v), l = [];
+    [v * 10, v / 10, -v, v * 1.25, v * 0.75, v + Math.pow(10, -dec) * 10].forEach(x => { const s = ecr(x); if(s !== bon && !l.includes(s) && !(unite === ' ans' && x < 0)) l.push(s); });
+    return l.length >= 3 ? {bon, faux:melanger(l.slice(0, 5)).slice(0, 3)} : null;
+  }
+  function optionsDe(it, c){
+    if(it.type === 'discrim' || it.type === 'qcm'){
+      const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
+      if(!Array.isArray(choix) || choix.length < 2 || !choix[bonne]) return null;
+      return {q:it.type === 'qcm' ? esc(it.q) : c.q, choix:choix.map((x, i) => ({t:it.type === 'qcm' ? esc(x) : x, bon:i === bonne})),
+        modele:it.type === 'qcm' ? esc(it.r || '') : c.r || '', ref:'bonne réponse : ' + texte(choix[bonne])};
+    }
+    if(it.type === 'pas' || it.type === 'libre' || it.type === 'application'){
+      const src = it.type === 'pas' ? it.qcm : c.qcm, r = it.type === 'pas' ? esc(it.r) : c.r || '', bon = bonDe(it);
+      let faux = src && Array.isArray(src.faux) ? src.faux.map(x => String(x).trim()).filter(x => x && x !== bon) : [];
+      if(faux.length < 3) faux = faux.concat(voisines(it, bon, 3 - faux.length, faux));
+      if(!bon || faux.length < 3) return null;
+      return {q:it.type === 'pas' ? esc(it.q) : c.q, choix:melangerChoix(bon, faux), modele:r, ref:'réponse : ' + court(r)};
+    }
+    if(it.type === 'calcul' && typeof c.gen === 'function'){
+      let g = null; try{ g = c.gen(); }catch(e){ console.error(e); }
+      if(!g || !g.r) return null;
+      const n = nombres(g); if(!n) return null;
+      return {q:g.q, choix:melangerChoix(n.bon, n.faux), modele:'<p><b>Réponse :</b> ' + g.r + '</p>' + (g.exp ? '<p>' + g.exp + '</p>' : ''), ref:'réponse attendue : ' + texte(g.r)};
+    }
+    if(it.type === 'chaine'){
+      const l = (c.items || []).map(court);
+      if(l.length < 3 || l.length > 6 || l.some(x => !x || x.length > 48)) return null;
+      const bon = l.join(' → '), faux = [];
+      for(let i = 0; i < l.length - 1 && faux.length < 3; i++){ const m = l.slice(); [m[i], m[i + 1]] = [m[i + 1], m[i]]; const s = m.join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+      if(faux.length < 3){ const s = l.slice().reverse().join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+      if(faux.length < 3) return null;
+      return {q:c.q, choix:melangerChoix(bon, faux), modele:'<ol>' + (c.items || []).map(x => '<li>' + x + '</li>').join('') + '</ol>', ref:'ordre juste : ' + bon};
+    }
+    return null;
   }
 
   /* ---------- ouvrir, fermer, le bouton ---------- */
@@ -13819,6 +14147,7 @@ return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
     {d:'2026-10-31', p:['*'], t:'Tu as créé une séance Convergence et personne n’est encore là ? « Étudier en attendant » te ramène dans l’atelier. Convergence revient tout seul dès que quelqu’un veut te rejoindre.'},
     {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
@@ -14044,7 +14373,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'fa7d88b5a89b';
+  const ICI = '4df3048d9290';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

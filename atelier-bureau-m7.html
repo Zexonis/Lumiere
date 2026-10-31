@@ -1342,6 +1342,26 @@ details.ar-cours[open] > summary{margin-bottom:4px}
 .ar-gr-att{margin:10px 0 0;font-size:14px;color:var(--ink-2);font-style:italic}
 .ar-c.choisi{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 body.ar-ouverte .tb.cote{z-index:335}
+/* les quatre tuiles de l'arène (le standard : une juste, trois erreurs plausibles) */
+.ar-tuiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.ar-tuile{display:flex;align-items:flex-start;gap:10px;min-height:66px;padding:12px 14px;border:0;border-radius:14px;font:inherit;font-size:15.5px;line-height:1.42;
+  text-align:left;color:#0B0F1A;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2);transition:transform .08s ease,opacity .2s ease}
+.ar-tuile b{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:rgba(0,0,0,.16);font-size:13.5px;font-weight:800}
+.ar-tuile span{overflow-wrap:anywhere}
+.ar-tuile.t1{background:#FF7A6E}
+.ar-tuile.t2{background:#5CC8F5}
+.ar-tuile.t3{background:#FFD54F}
+.ar-tuile.t4{background:#A6E07A}
+.ar-tuile:not(:disabled):hover{transform:translateY(-2px)}
+.ar-tuile:not(:disabled):active{transform:translateY(1px)}
+.ar-tuile:focus-visible,.ar-tuile.choisi{outline:3px solid var(--ink);outline-offset:2px}
+.ar-tuile:disabled{cursor:default}
+.ar-tuile.pale{opacity:.32}
+.ar-tuile.juste span::after{content:"  ✓";font-weight:800}
+.ar-tuile.faux span::after{content:"  ✗";font-weight:800}
+.ar-tuile.juste{box-shadow:inset 0 0 0 3px #1E7B45,inset 0 -4px 0 rgba(0,0,0,.2)}
+@media (max-width:560px){ .ar-tuiles{grid-template-columns:1fr;gap:8px} .ar-tuile{min-height:52px;font-size:15px} }
+@media (prefers-reduced-motion: reduce){ .ar-tuile{transition:none} }
 </style>
 <div class="app" id="app">
 
@@ -2896,424 +2916,548 @@ const PAS = [
   {id:'pourquoi.1', ecran:'pourquoi', ancre:'La croix traduit trois nombres en deux puissances', titre:'Trois nombres, deux puissances',
    cle:['relier la Rx à l’œil du patient', 'trois nombres : SPH, CYL, AXE', 'deux puissances sur deux méridiens'],
    explique:'Comment trois nombres (sphère, cylindre, axe) peuvent-ils devenir seulement deux puissances sur la croix ?',
-   verif:{q:'Que fait la croix optique avec les trois nombres d’une Rx de loin ?', r:'Elle les traduit en deux puissances, posées sur deux méridiens principaux à angle droit.', points:['deux puissances', 'deux méridiens', 'SPH, CYL, AXE']},
+   verif:{q:'Que fait la croix optique avec les trois nombres d’une Rx de loin ?', r:'Elle les traduit en deux puissances, posées sur deux méridiens principaux à angle droit.', points:['deux puissances', 'deux méridiens', 'SPH, CYL, AXE'],
+     qcm:{bon:'Elle les traduit en deux puissances, sur deux méridiens principaux à angle droit', faux:['Elle les place sur trois méridiens : un pour la sphère, un pour le cylindre, un pour l’axe', 'Elle garde la sphère seule et laisse le cylindre et l’axe hors de la croix', 'Elle les additionne en une seule puissance, posée sur le méridien de l’axe']}},
    src:['7.1-d1', '7.1-d3']},
   {id:'pourquoi.2', ecran:'pourquoi', ancre:'de l’ordonnance en vision de loin (VL)', titre:'La Rx de loin seulement',
    cle:['la correction de vision de loin (VL)', 'sphère, cylindre et axe', 'deux méridiens principaux'],
    explique:'Pourquoi l’axe doit-il figurer sur la croix, alors qu’il n’est pas une puissance ?',
-   verif:{q:'Quelle correction la croix optique montre-t-elle, et avec quels éléments de la Rx ?', r:'La correction de vision de loin : la sphère, le cylindre et l’axe, sur deux méridiens principaux.', points:['vision de loin', 'sphère, cylindre, axe', 'deux méridiens']},
+   verif:{q:'Quelle correction la croix optique montre-t-elle, et avec quels éléments de la Rx ?', r:'La correction de vision de loin : la sphère, le cylindre et l’axe, sur deux méridiens principaux.', points:['vision de loin', 'sphère, cylindre, axe', 'deux méridiens'],
+     qcm:{bon:'La vision de loin : la sphère, le cylindre et l’axe, sur deux méridiens principaux', faux:['La vision de près : la sphère, le cylindre et l’addition, sur deux méridiens', 'La vision de loin : la sphère, le cylindre, l’axe et le prisme, sur trois méridiens', 'La Rx complète : sphère, cylindre, axe, prisme et addition, sur deux méridiens']}},
    qcm:'La croix optique montre la correction', src:['7.1-d3', '7.1-d5']},
   {id:'pourquoi.3', ecran:'pourquoi', ancre:'Exclus (sic) Prisme', titre:'Ni prisme, ni addition',
    cle:['le prisme n’y va pas', 'l’addition n’y va pas', 'pour eux, on ne dessine « RIEN! »'],
    explique:'Pourquoi une croix faite pour partager SPH/CYL/AXE n’a-t-elle aucune place pour le prisme ou l’addition ?',
-   verif:{q:'La Rx porte un prisme et une addition. Que dessines-tu sur la croix pour eux ?', r:'Rien : « RIEN! ». La croix ne partage que la sphère, le cylindre et l’axe.', points:['rien', 'prisme', 'addition']},
+   verif:{q:'La Rx porte un prisme et une addition. Que dessines-tu sur la croix pour eux ?', r:'Rien : « RIEN! ». La croix ne partage que la sphère, le cylindre et l’axe.', points:['rien', 'prisme', 'addition'],
+     qcm:{bon:'Rien : la croix ne porte que la sphère, le cylindre et l’axe', faux:['L’addition sur le 2e méridien et le prisme sur le méridien de l’axe', 'L’addition ajoutée à chaque bras, et le prisme noté au centre', 'Un troisième bras pour le prisme, et l’addition écrite à côté']}},
    qcm:'La Rx a un prisme de 2Δ', src:['7.1-d5', '7.3-d37', '7.3-d38']},
   {id:'pourquoi.4', ecran:'pourquoi', ancre:'CECI EST DICTÉ PAR RX', titre:'C’est la Rx qui dit l’œil',
    cle:['la croix ne précise pas OD/OS', 'c’est la Rx qui le dit', 'une croix seule : « Inconnu dans ce scénario »'],
    explique:'Pourquoi deux croix identiques pourraient-elles appartenir à l’OD d’un patient et à l’OS d’un autre ?',
-   verif:{q:'On te tend une croix +2.50 / +2.50, sans Rx. De quel œil s’agit-il ?', r:'On ne peut pas le savoir : « Inconnu dans ce scénario ». La croix ne précise pas OD/OS ; c’est la Rx qui le dit.', points:['on ne peut pas le savoir', 'la Rx dit l’œil']},
+   verif:{q:'On te tend une croix +2.50 / +2.50, sans Rx. De quel œil s’agit-il ?', r:'On ne peut pas le savoir : « Inconnu dans ce scénario ». La croix ne précise pas OD/OS ; c’est la Rx qui le dit.', points:['on ne peut pas le savoir', 'la Rx dit l’œil'],
+     qcm:{bon:'On ne peut pas le savoir : la croix ne précise pas OD/OS, c’est la Rx qui le dit', faux:['L’OD : une croix donnée seule est toujours celle de l’œil droit', 'On le lit sur l’axe : un bras horizontal à 180 désigne l’OD', 'L’OS : deux bras égaux et positifs désignent l’œil gauche']}},
    qcm:'Comment sait-on qu', src:['7.1-d24', '7.1-d31', '7.1-d32']},
   {id:'pourquoi.5', ecran:'pourquoi', ancre:'sont généralement perpendiculaires les uns aux autres', titre:'Deux méridiens à 90°',
    cle:['œil sphérique : un point focal, Rx SPH seulement', 'œil torique : deux points focaux, Rx SPH/CYL/AXE', 'méridiens principaux à 90° l’un de l’autre'],
    explique:'Pourquoi un œil torique a-t-il besoin de deux méridiens sur la croix ?',
-   verif:{q:'Combien de points focaux a un œil torique, et quel angle sépare ses méridiens principaux ?', r:'Deux points focaux ; ses méridiens principaux sont généralement perpendiculaires, à 90° l’un de l’autre.', points:['deux points focaux', '90°']},
+   verif:{q:'Combien de points focaux a un œil torique, et quel angle sépare ses méridiens principaux ?', r:'Deux points focaux ; ses méridiens principaux sont généralement perpendiculaires, à 90° l’un de l’autre.', points:['deux points focaux', '90°'],
+     qcm:{bon:'Deux points focaux ; ses méridiens principaux sont à 90° l’un de l’autre', faux:['Un seul point focal ; ses méridiens principaux sont à 90° l’un de l’autre', 'Deux points focaux ; ses méridiens principaux sont à 45° l’un de l’autre', 'Trois points focaux, un pour la sphère, un pour le cylindre, un pour l’axe']}},
    src:['UA1']},
 
   /* ---------- L’échelle des degrés ---------- */
   {id:'echelle.1', ecran:'echelle', ancre:'180 à gauche, 090 en haut, 0 à droite', titre:'Les repères du verre',
    cle:['verre vu de face', '180 à gauche, 090 en haut, 0 à droite', '135 en haut à gauche, 045 en haut à droite', 'mêmes repères sur les deux verres'],
    explique:'Comment retrouves-tu la place du méridien 160 en partant de 180 et de 135 ?',
-   verif:{q:'Sur un verre vu de face, où sont 180, 090, 0, 135 et 045 ?', r:'180 à gauche, 090 en haut, 0 à droite ; 135 en haut à gauche, 045 en haut à droite, sur les deux verres.', points:['180 à gauche', '090 en haut', '0 à droite', '135 en haut à gauche']},
+   verif:{q:'Sur un verre vu de face, où sont 180, 090, 0, 135 et 045 ?', r:'180 à gauche, 090 en haut, 0 à droite ; 135 en haut à gauche, 045 en haut à droite, sur les deux verres.', points:['180 à gauche', '090 en haut', '0 à droite', '135 en haut à gauche'],
+     qcm:{bon:'180 à gauche, 090 en haut, 0 à droite ; 135 en haut à gauche, 045 en haut à droite', faux:['180 à droite, 090 en haut, 0 à gauche ; 135 en haut à droite, 045 en haut à gauche', '180 à gauche, 090 en haut, 0 à droite ; 135 en haut à droite, 045 en haut à gauche', '180 à gauche, 090 en haut, 0 à droite ; 135 en bas à gauche, 045 en bas à droite']}},
    qcm:'Le méridien 135 monte vers', src:['7.1-d8', '7.1-d9', '7.1-d10', '7.1-d23']},
   {id:'echelle.2', ecran:'echelle', ancre:'ses deux bouts portent le même degré', titre:'Une ligne, deux bouts',
    cle:['un méridien est une ligne entière', 'il passe par le centre', 'ses deux bouts portent le même degré'],
    explique:'Pourquoi le bout bas, à droite, d’une ligne à 160 porte-t-il lui aussi le nombre 160 ?',
-   verif:{q:'Qu’est-ce qu’un méridien sur la croix, et que portent ses deux bouts ?', r:'Une ligne entière qui passe par le centre ; ses deux bouts portent le même degré.', points:['ligne', 'centre', 'même degré']},
+   verif:{q:'Qu’est-ce qu’un méridien sur la croix, et que portent ses deux bouts ?', r:'Une ligne entière qui passe par le centre ; ses deux bouts portent le même degré.', points:['ligne', 'centre', 'même degré'],
+     qcm:{bon:'Une ligne entière qui passe par le centre ; ses deux bouts portent le même degré', faux:['Une ligne entière qui passe par le centre ; son bout bas porte le degré plus 180', 'Une ligne entière qui passe par le centre ; son bout bas porte 180 moins le degré', 'Un rayon qui part du centre vers le bord ; seul son bout extérieur porte un degré']}},
    qcm:'Le méridien 160 est', src:['7.1-d23']},
   {id:'echelle.3', ecran:'echelle', ancre:'son œil droit (OD) est à ta gauche', titre:'L’OD à gauche du dessin',
    cle:['lunettes dessinées vues de face', 'en face du patient, son OD est à ta gauche', '180 à gauche sur les deux verres'],
    explique:'Pourquoi l’œil droit du patient se retrouve-t-il à ta gauche quand tu dessines ses lunettes ?',
-   verif:{q:'Sur un dessin de lunettes vues de face, de quel côté est l’OD ?', r:'À gauche du dessin : en face du patient, son œil droit est à ta gauche. L’OS est à droite.', points:['à gauche', 'en face du patient']},
+   verif:{q:'Sur un dessin de lunettes vues de face, de quel côté est l’OD ?', r:'À gauche du dessin : en face du patient, son œil droit est à ta gauche. L’OS est à droite.', points:['à gauche', 'en face du patient'],
+     qcm:{bon:'À gauche du dessin : en face du patient, son œil droit est à ta gauche', faux:['À droite du dessin : l’œil droit du patient est toujours dessiné à droite', 'À droite du dessin : on dessine comme si on portait soi-même les lunettes', 'Au choix : le dessin ne fixe pas le côté, seule la Rx dit lequel est l’OD']}},
    qcm:'Sur un dessin de lunettes vues de face', src:['7.1-d9', '7.1-d34']},
   {id:'echelle.4', ecran:'echelle', ancre:'0 et 180 sont le même méridien', titre:'0 et 180 : une seule ligne',
    cle:['0 et 180 : la même ligne horizontale', 'on écrit 180', 'l’axe va de 001 à 180'],
    explique:'Pourquoi la plage des axes s’arrête-t-elle à 180 au lieu de faire le tour complet ?',
-   verif:{q:'Une Rx est écrite à axe 0. Quel nombre mets-tu sur la croix, et pourquoi ?', r:'180 : 0 et 180 sont le même méridien, et « L’axe du cylindre est toujours compris entre 001 et 180 degrés. »', points:['180', 'même méridien', 'entre 001 et 180']},
+   verif:{q:'Une Rx est écrite à axe 0. Quel nombre mets-tu sur la croix, et pourquoi ?', r:'180 : 0 et 180 sont le même méridien, et « L’axe du cylindre est toujours compris entre 001 et 180 degrés. »', points:['180', 'même méridien', 'entre 001 et 180'],
+     qcm:{bon:'180 : 0 et 180 sont le même méridien, et l’axe va de 001 à 180', faux:['0 : on garde le nombre que la Rx écrit pour l’axe, sans le changer', '090 : un axe écrit 0 se pose sur le méridien vertical', '000 : un axe s’écrit toujours avec trois chiffres, même à zéro']}},
    src:['UA1', '7.1-d9']},
 
   /* ---------- La croix sphérique ---------- */
   {id:'spherique.1', ecran:'spherique', ancre:'même force dans tous les méridiens de la croix', titre:'Même force partout',
    cle:['Rx sans cylindre, écrite DS (ex. -1.00 DS)', 'la même force sur tous les méridiens', 'même à 135 et 045'],
    explique:'Comment la règle ② (SPH + CYL) donne-t-elle la même valeur partout quand le cylindre vaut zéro ?',
-   verif:{q:'Rx -1.00 DS : que portent les méridiens 180, 090, 135 et 045 ?', r:'-1.00 chacun : « Pouvoir Sphérique = même force dans tous les méridiens de la croix ».', points:['-1.00 partout', 'même force']},
+   verif:{q:'Rx -1.00 DS : que portent les méridiens 180, 090, 135 et 045 ?', r:'-1.00 chacun : « Pouvoir Sphérique = même force dans tous les méridiens de la croix ».', points:['-1.00 partout', 'même force'],
+     qcm:{bon:'-1.00 chacun : la même force dans tous les méridiens de la croix', faux:['-1.00 sur 180 seulement ; les autres méridiens sont Plano', '-1.00 sur 180 et sur 090 ; Plano sur 135 et sur 045', '-1.00 sur 180 et sur 090 ; -0.50 sur 135 et sur 045']}},
    qcm:'Croix de -6.50 DS', src:['7.1-d21', '7.1-d22', '7.1-d23']},
   {id:'spherique.2', ecran:'spherique', ancre:'Cette force sera soit MYOPE ou HYPERMÉTROPE', titre:'Une force, un foyer',
    cle:['deux méridiens de même force', 'cette force est myope (−) ou hypermétrope (+)', 'un seul point focal'],
    explique:'Pourquoi deux méridiens de même force ne donnent-ils qu’un seul point focal ?',
-   verif:{q:'Une croix porte -1.00 sur ses deux bras. Combien de points focaux, et quelle amétropie ?', r:'Un seul point focal ; la force est négative : myope sphérique, foyer devant la rétine.', points:['un', 'myope sphérique', 'devant']},
+   verif:{q:'Une croix porte -1.00 sur ses deux bras. Combien de points focaux, et quelle amétropie ?', r:'Un seul point focal ; la force est négative : myope sphérique, foyer devant la rétine.', points:['un', 'myope sphérique', 'devant'],
+     qcm:{bon:'Un seul point focal, devant la rétine : myope sphérique', faux:['Un seul point focal, derrière la rétine : hypermétrope sphérique', 'Deux points focaux, devant la rétine : astigmatisme myope composé', 'Un seul point focal, derrière la rétine : myope sphérique']}},
    qcm:'Croix -1.00 / -1.00', src:['7.1-d41', '7.1-d50']},
   {id:'spherique.3', ecran:'spherique', ancre:'OD -3.50 partout, OS -2.75 partout', titre:'Une croix par œil',
    cle:['chaque croix porte la sphère de son œil', 'OD -3.50 sur ses deux bras', 'OS -2.75 sur ses deux bras'],
    explique:'Pourquoi les deux croix d’une même paire de lunettes peuvent-elles porter des valeurs différentes ?',
-   verif:{q:'Rx OD -3.50, OS -2.75 : écris les deux croix.', r:'OD : -3.50 sur 180 et sur 090. OS : -2.75 sur 180 et sur 090.', points:['OD -3.50 sur les deux bras', 'OS -2.75 sur les deux bras']},
+   verif:{q:'Rx OD -3.50, OS -2.75 : écris les deux croix.', r:'OD : -3.50 sur 180 et sur 090. OS : -2.75 sur 180 et sur 090.', points:['OD -3.50 sur les deux bras', 'OS -2.75 sur les deux bras'],
+     qcm:{bon:'OD : -3.50 sur 180 et sur 090 ; OS : -2.75 sur 180 et sur 090', faux:['OD : -2.75 sur 180 et sur 090 ; OS : -3.50 sur 180 et sur 090', 'OD : -3.50 sur 180, Plano sur 090 ; OS : -2.75 sur 180, Plano sur 090', 'OD : -3.50 sur 180 et -2.75 sur 090 ; OS : la même croix que l’OD']}},
    src:['7.1-d33', '7.1-d37']},
 
   /* ---------- La croix torique (① ② ③) ---------- */
   {id:'torique.1', ecran:'torique', ancre:'2 méridiens = 2 forces', titre:'Deux méridiens, deux forces',
    cle:['Rx avec astigmatisme (un cylindre)', '2 méridiens = 2 forces', 'trois règles : ①, ②, ③'],
    explique:'Pourquoi un cylindre qui n’est pas zéro donne-t-il deux forces différentes sur la croix ?',
-   verif:{q:'Qu’est-ce qui distingue une croix torique d’une croix sphérique ?', r:'La croix torique porte deux forces différentes sur ses deux méridiens (Rx avec astigmatisme) ; la sphérique, la même force partout.', points:['deux forces différentes', 'astigmatisme']},
+   verif:{q:'Qu’est-ce qui distingue une croix torique d’une croix sphérique ?', r:'La croix torique porte deux forces différentes sur ses deux méridiens (Rx avec astigmatisme) ; la sphérique, la même force partout.', points:['deux forces différentes', 'astigmatisme'],
+     qcm:{bon:'La torique porte deux forces différentes (astigmatisme) ; la sphérique, la même force partout', faux:['La torique porte le cylindre seul ; la sphérique porte la sphère seule', 'La torique a trois bras (sphère, cylindre, axe) ; la sphérique en a deux', 'La torique porte deux forces égales ; la sphérique, une force sur un seul bras']}},
    src:['7.2-d32']},
   {id:'torique.2', ecran:'torique', ancre:'La sphère va sur le méridien de l’axe', titre:'① La sphère sur l’axe',
    cle:['la sphère va sur le méridien de l’axe', 'P(axe) = SPH', 'un cylindre n’a pas de puissance sur son axe'],
    explique:'Pourquoi le méridien de l’axe ne reçoit-il que la sphère, sans le cylindre ?',
-   verif:{q:'Dans une Rx torique, quelle valeur va sur le méridien de l’axe, et pourquoi ?', r:'La sphère seule : le cylindre n’a pas de puissance sur son axe.', points:['la sphère', 'pas de puissance sur l’axe']},
+   verif:{q:'Dans une Rx torique, quelle valeur va sur le méridien de l’axe, et pourquoi ?', r:'La sphère seule : le cylindre n’a pas de puissance sur son axe.', points:['la sphère', 'pas de puissance sur l’axe'],
+     qcm:{bon:'La sphère seule : le cylindre n’a pas de puissance sur son axe', faux:['SPH + CYL : le cylindre agit surtout le long de son axe', 'Le cylindre seul : l’axe est la direction où agit le cylindre', 'Plano : le méridien de l’axe n’a aucune puissance']}},
    qcm:'“+1.50 -0.50 x 090”. Sur quel bras va +1.50', src:['7.2-d16', '7.2-d17', 'TO 5.1-d11']},
   {id:'torique.3', ecran:'torique', ancre:'Force du 2e méridien', titre:'② SPH + CYL sur le 2e',
    cle:['le 2e méridien porte SPH + CYL', 'OD -1.00 -0.50 x 180 : -1.50 sur 090'],
    explique:'Pourquoi le 2e méridien reçoit-il la sphère en plus du cylindre ?',
-   verif:{q:'Que porte le 2e méridien d’une croix torique ? Donne-le pour OD -1.00 -0.50 x 180.', r:'SPH + CYL : (-1.00) + (-0.50) = -1.50, posé sur 090.', points:['SPH + CYL', '-1.50', '090']},
+   verif:{q:'Que porte le 2e méridien d’une croix torique ? Donne-le pour OD -1.00 -0.50 x 180.', r:'SPH + CYL : (-1.00) + (-0.50) = -1.50, posé sur 090.', points:['SPH + CYL', '-1.50', '090'],
+     qcm:{bon:'SPH + CYL : (-1.00) + (-0.50) = -1.50, sur 090', faux:['Le cylindre seul : -0.50, sur 090', 'SPH − CYL : (-1.00) − (-0.50) = -0.50, sur 090', 'SPH + CYL : (-1.00) + (-0.50) = -1.50, sur 180']}},
    qcm:'“OS -3.00 -1.25 x 180”. Quelle valeur', src:['7.2-d18', '7.2-d19', '7.2-d21']},
   {id:'torique.4', ecran:'torique', ancre:'Le 2e méridien est à angle droit', titre:'③ Le 2e méridien à 90°',
    cle:['le 2e méridien est à angle droit de l’axe', 'axe ± 090', 'axe 180 → 2e à 090 ; axe 090 → 2e à 180'],
    explique:'Pourquoi suffit-il de connaître l’axe pour savoir où poser SPH + CYL ?',
-   verif:{q:'L’axe est 090 : sur quel méridien va SPH + CYL ?', r:'Sur 180 : le 2e méridien est à angle droit de l’axe (± 090).', points:['180', 'angle droit']},
+   verif:{q:'L’axe est 090 : sur quel méridien va SPH + CYL ?', r:'Sur 180 : le 2e méridien est à angle droit de l’axe (± 090).', points:['180', 'angle droit'],
+     qcm:{bon:'Sur 180 : le 2e méridien est à angle droit de l’axe', faux:['Sur 000 : on retire 090 à l’axe, et 090 − 090 = 000', 'Sur 090 : SPH + CYL va sur le méridien de l’axe', 'Sur 045 : le 2e méridien est à mi-chemin de l’axe']}},
    src:['7.3-d15', '7.2-d29']},
   {id:'torique.5', ecran:'torique', ancre:'Sa sphère, -2.00, va donc sur le bras', titre:'Le piège de l’OS à 090',
    cle:['OS -2.00 -0.75 x 090 : l’axe est 090', '-2.00 sur le bras vertical', '-2.75 sur 180'],
    explique:'Pourquoi la sphère de l’OS ne va-t-elle pas sur le 180, comme celle de l’OD ?',
-   verif:{q:'OS -2.00 -0.75 x 090 : quelle valeur sur le bras vertical, laquelle sur le 180 ?', r:'L’axe est 090 : -2.00 (la sphère) sur le bras vertical ; (-2.00) + (-0.75) = -2.75 sur 180.', points:['-2.00 sur 090', '-2.75 sur 180']},
+   verif:{q:'OS -2.00 -0.75 x 090 : quelle valeur sur le bras vertical, laquelle sur le 180 ?', r:'L’axe est 090 : -2.00 (la sphère) sur le bras vertical ; (-2.00) + (-0.75) = -2.75 sur 180.', points:['-2.00 sur 090', '-2.75 sur 180'],
+     qcm:{bon:'Bras vertical : -2.00 (la sphère) ; 180 : -2.75', faux:['Bras vertical : -2.75 ; 180 : -2.00 (la sphère)', 'Bras vertical : -2.00 (la sphère) ; 180 : -1.25', 'Bras vertical : -2.00 (la sphère) ; 180 : -0.75']}},
    src:['7.2-d11', '7.2-d23', '7.2-d27', '7.2-d28']},
 
   /* ---------- Additionner des négatifs (②) ---------- */
   {id:'negatifs.1', ecran:'negatifs', ancre:'(-5.00) + (-1.50) = -6.50', titre:'Deux négatifs s’additionnent',
    cle:['② est une addition', 'deux négatifs : on additionne les nombres et on garde le moins', '(-1.00) + (-0.50) = -1.50'],
    explique:'Comment fais-tu (-5.00) + (-1.50) sans te tromper de signe ?',
-   verif:{q:'Calcule (-3.25) + (-2.00), puis dis la règle que tu as suivie.', r:'-5.25 : deux négatifs, on additionne les nombres et on garde le signe moins.', points:['-5.25', 'on garde le moins']},
+   verif:{q:'Calcule (-3.25) + (-2.00), puis dis la règle que tu as suivie.', r:'-5.25 : deux négatifs, on additionne les nombres et on garde le signe moins.', points:['-5.25', 'on garde le moins'],
+     qcm:{bon:'-5.25 : deux négatifs, on additionne les nombres et on garde le moins', faux:['-1.25 : deux négatifs, on soustrait le plus petit nombre du plus grand', '+5.25 : deux négatifs donnent un positif, comme en multiplication', '+1.25 : on soustrait les nombres, et deux moins font un plus']}},
    qcm:'-10.75 + (-2.00) = ?', src:['7.2-d19', '7.3-d22']},
   {id:'negatifs.2', ecran:'negatifs', ancre:'Un cylindre négatif fait toujours', titre:'Le cylindre fait descendre',
    cle:['un cylindre négatif fait toujours descendre', 'le 2e méridien est plus négatif (ou moins positif) que la sphère', 'on peut passer sous zéro'],
    explique:'Pourquoi, avec un cylindre négatif, le 2e méridien ne peut-il jamais dépasser la sphère ?',
-   verif:{q:'Sphère +0.25, cylindre -0.75 : le 2e méridien est-il au-dessus ou au-dessous de la sphère ? Calcule-le.', r:'Au-dessous : on recule de 0.75, on passe sous zéro et on arrive à -0.50 <span class="deduit">déduit</span>.', points:['au-dessous', '-0.50']},
+   verif:{q:'Sphère +0.25, cylindre -0.75 : le 2e méridien est-il au-dessus ou au-dessous de la sphère ? Calcule-le.', r:'Au-dessous : on recule de 0.75, on passe sous zéro et on arrive à -0.50 <span class="deduit">déduit</span>.', points:['au-dessous', '-0.50'],
+     qcm:{bon:'Au-dessous : on recule de 0.75, on passe sous zéro et on arrive à -0.50', faux:['Au-dessus : on avance de 0.75 et on arrive à +1.00', 'Au-dessus : le signe se perd en passant zéro, et on arrive à +0.50', 'Au-dessous : on recule de 0.75 et on arrive à -1.00']}},
    qcm:'+0.25 + (-0.75) = ?', src:['7.2-d30']},
   {id:'negatifs.3', ecran:'negatifs', ancre:'le méridien vaut', titre:'Quand ça s’annule : Plano',
    cle:['la sphère et le cylindre s’annulent', 'le méridien vaut Plano', '+2.00 + (-2.00) = Plano'],
    explique:'Que veut dire un méridien Plano pour l’œil du patient, le long de ce méridien ?',
-   verif:{q:'+1.25 -1.25 x 180 : que vaut le 2e méridien, et comment l’écris-tu ?', r:'+1.25 + (-1.25) = 0, écrit Plano, sur 090.', points:['Plano', '090']},
+   verif:{q:'+1.25 -1.25 x 180 : que vaut le 2e méridien, et comment l’écris-tu ?', r:'+1.25 + (-1.25) = 0, écrit Plano, sur 090.', points:['Plano', '090'],
+     qcm:{bon:'+1.25 + (-1.25) = 0, écrit Plano, sur 090', faux:['+1.25 − (-1.25) = +2.50, sur 090', '+1.25 + (-1.25) = 0, écrit Plano, sur 180', '+1.25 + (-1.25) = -2.50, sur 090']}},
    src:['7.3-d30', '7.2-d30']},
 
   /* ---------- Axe oblique : ± 090 (③) ---------- */
   {id:'oblique.1', ecran:'oblique', ancre:'la croix peut tourner, ses bras restent perpendiculaires', titre:'La croix tourne',
    cle:['« ANGLE DROIT = 90° »', 'la croix peut tourner, ses bras restent perpendiculaires', '① et ② ne changent pas'],
    explique:'Pourquoi un axe oblique ne change-t-il rien aux étapes ① et ② ?',
-   verif:{q:'-5.00 -1.50 x 160 : où va -5.00, et quelle valeur porte le 2e méridien ?', r:'-5.00 va sur 160 (l’axe) ; le 2e méridien porte (-5.00) + (-1.50) = -6.50.', points:['-5.00 sur 160', '-6.50']},
+   verif:{q:'-5.00 -1.50 x 160 : où va -5.00, et quelle valeur porte le 2e méridien ?', r:'-5.00 va sur 160 (l’axe) ; le 2e méridien porte (-5.00) + (-1.50) = -6.50.', points:['-5.00 sur 160', '-6.50'],
+     qcm:{bon:'-5.00 sur 160 (l’axe) ; le 2e méridien porte -6.50', faux:['-5.00 sur 180 ; le 2e méridien porte -6.50', '-5.00 sur 160 (l’axe) ; le 2e méridien porte -3.50', '-5.00 sur 070 ; le méridien de l’axe porte -6.50']}},
    qcm:'« -5.00 -1.50 x 160 » : -5.00 va sur', src:['7.3-d14', '7.3-d20', '7.3-d22']},
   {id:'oblique.2', ecran:'oblique', ancre:'on ajoute 090 ; axe au-delà de 090', titre:'Axe ± 090',
    cle:['axe jusqu’à 090 : on ajoute 090', 'axe au-delà de 090 : on retire 090', 'on reste entre 001 et 180'],
    explique:'Pourquoi le choix entre + 090 et − 090 dépend-il de l’axe ?',
-   verif:{q:'Calcule le 2e méridien pour l’axe 160, puis pour l’axe 040.', r:'160 − 090 = 070 ; 040 + 090 = 130.', points:['070', '130']},
+   verif:{q:'Calcule le 2e méridien pour l’axe 160, puis pour l’axe 040.', r:'160 − 090 = 070 ; 040 + 090 = 130.', points:['070', '130'],
+     qcm:{bon:'160 − 090 = 070 ; 040 + 090 = 130', faux:['160 + 090 = 250 ; 040 + 090 = 130', '180 − 160 = 020 ; 180 − 040 = 140', '160 − 090 = 070 ; 090 − 040 = 050']}},
    qcm:'Le 2e méridien d', src:['7.3-d15', '7.3-d26', 'UA1']},
   {id:'oblique.3', ecran:'oblique', ancre:'160 + 090 = 250', titre:'Le piège du 250',
    cle:['160 + 090 = 250 : ce n’est pas un méridien', 'au-delà de 090, on soustrait'],
    explique:'Pourquoi 250 ne peut-il pas être un méridien de la croix ?',
-   verif:{q:'Un élève écrit 250 pour le 2e méridien d’une Rx à axe 160. Corrige-le.', r:'250 sort de la plage 001-180 : au-delà de 090, on soustrait, 160 − 090 = 070.', points:['070', 'on soustrait', '001-180']},
+   verif:{q:'Un élève écrit 250 pour le 2e méridien d’une Rx à axe 160. Corrige-le.', r:'250 sort de la plage 001-180 : au-delà de 090, on soustrait, 160 − 090 = 070.', points:['070', 'on soustrait', '001-180'],
+     qcm:{bon:'250 sort de la plage 001-180 : au-delà de 090, on soustrait, 160 − 090 = 070', faux:['250 est juste : on ajoute toujours 090 à l’axe pour trouver le 2e méridien', '250 sort de la plage 001-180 : on écrit donc 180, la limite de la plage', '250 sort de la plage : le 2e méridien reste sur l’axe, à 160']}},
    qcm:'« -3.25 -2.25 x 100 » : le 2e méridien', src:['7.3-d26', 'UA1']},
 
   /* ---------- Option A, option B ---------- */
   {id:'options.1', ecran:'options', ancre:'dessiner les vrais méridiens, en oblique', titre:'Option A : les vrais méridiens',
    cle:['les vrais méridiens, tracés en oblique', 'le degré en haut de la ligne', 'la valeur au bout bas'],
    explique:'Pourquoi l’option A montre-t-elle mieux où passent vraiment les méridiens sur le verre ?',
-   verif:{q:'En option A, comment dessines-tu -5.00 -1.50 x 160 ?', r:'Une ligne à 160 (degré en haut à gauche, -5.00 au bout bas à droite) et une ligne à 070 (degré en haut à droite, -6.50 au bout bas à gauche).', points:['ligne à 160', 'ligne à 070', 'valeur au bout bas']},
+   verif:{q:'En option A, comment dessines-tu -5.00 -1.50 x 160 ?', r:'Une ligne à 160 (degré en haut à gauche, -5.00 au bout bas à droite) et une ligne à 070 (degré en haut à droite, -6.50 au bout bas à gauche).', points:['ligne à 160', 'ligne à 070', 'valeur au bout bas'],
+     qcm:{bon:'Deux lignes obliques, 160 et 070 : le degré en haut, -5.00 et -6.50 au bout bas', faux:['Une croix droite : 160 sur le bras horizontal, 070 sur le bras vertical', 'Une ligne à 160 qui monte vers la droite, une à 070 qui monte vers la gauche', 'Deux lignes obliques, 160 et 070 : la valeur en haut, à côté du degré']}},
    qcm:'En option A, où la prof pose-t-elle -6.50', src:['7.3-d15', '7.3-d28']},
   {id:'options.2', ecran:'options', ancre:'garder une croix droite et étiqueter ses bras', titre:'Option B : la croix droite',
    cle:['une croix droite aux bras étiquetés', 'horizontal : l’axe le plus près de 180 ou 0', 'vertical : l’axe le plus près de 090', 'le degré à un bout, la valeur à l’autre'],
    explique:'Comment décides-tu quel méridien prend le bras horizontal en option B ?',
-   verif:{q:'En option B, quel méridien va sur le bras horizontal, et lequel sur le vertical ?', r:'Le méridien le plus près de 180 ou 0 va à l’horizontale ; le plus près de 090, à la verticale.', points:['le plus près de 180 ou 0', 'horizontal', 'le plus près de 090']},
+   verif:{q:'En option B, quel méridien va sur le bras horizontal, et lequel sur le vertical ?', r:'Le méridien le plus près de 180 ou 0 va à l’horizontale ; le plus près de 090, à la verticale.', points:['le plus près de 180 ou 0', 'horizontal', 'le plus près de 090'],
+     qcm:{bon:'Le plus près de 180 ou 0 à l’horizontale ; le plus près de 090 à la verticale', faux:['L’axe toujours à l’horizontale ; le 2e méridien toujours à la verticale', 'Le plus près de 180 à l’horizontale (0 ne compte pas) ; l’autre à la verticale', 'Le plus près de 090 à l’horizontale ; le plus près de 180 ou 0 à la verticale']}},
    qcm:'“-4.00 -1.00 x 030”, option B', src:['7.3-d16', '7.3-d17', '7.3-d28']},
   {id:'options.3', ecran:'options', ancre:'sont à égale distance de 180 (ou 0) et de 090', titre:'045 et 135 : à vérifier',
    cle:['045 et 135 sont à égale distance des deux bras', 'la règle de 7.3-d17 ne tranche pas', 'à 135, la prof trace des lignes en diagonale'],
    explique:'Pourquoi la règle de l’option B ne peut-elle pas choisir de bras pour un axe à 045 ?',
-   verif:{q:'Rx à axe 135 : quel bras prend l’axe en option B ?', r:'La règle ne tranche pas : 135 est à 45° de 180 et de 090. À vérifier en classe ; l’option A évite la question.', points:['ne tranche pas', 'à égale distance', 'à vérifier en classe']},
+   verif:{q:'Rx à axe 135 : quel bras prend l’axe en option B ?', r:'La règle ne tranche pas : 135 est à 45° de 180 et de 090. À vérifier en classe ; l’option A évite la question.', points:['ne tranche pas', 'à égale distance', 'à vérifier en classe'],
+     qcm:{bon:'La règle ne tranche pas : 135 est à 45° de 180 et de 090', faux:['Le bras horizontal : 135 est plus près de 180 que de 090', 'Le bras vertical : 135 est plus près de 090 que de 180', 'Le bras horizontal : l’axe prend toujours le bras horizontal']}},
    src:['7.3-d17', '7.3-d30']},
 
   /* ---------- Où tombent les foyers (⑤) ---------- */
   {id:'foyers.1', ecran:'foyers', ancre:'Chaque méridien a son point focal', titre:'Un foyer par méridien',
    cle:['chaque méridien a son point focal', 'le signe de sa puissance dit où il tombe', 'œil non corrigé'],
    explique:'Pourquoi une croix torique donne-t-elle deux points focaux, et une croix sphérique un seul ?',
-   verif:{q:'Combien de points focaux lit-on sur une croix torique, et qu’est-ce qui place chacun ?', r:'Deux, un par méridien ; le signe de sa puissance dit où il tombe quand l’œil n’est pas corrigé.', points:['deux', 'un par méridien', 'le signe']},
+   verif:{q:'Combien de points focaux lit-on sur une croix torique, et qu’est-ce qui place chacun ?', r:'Deux, un par méridien ; le signe de sa puissance dit où il tombe quand l’œil n’est pas corrigé.', points:['deux', 'un par méridien', 'le signe'],
+     qcm:{bon:'Deux, un par méridien ; le signe de sa puissance dit où il tombe', faux:['Un seul ; le signe de la sphère dit où il tombe', 'Deux, un par méridien ; le degré du méridien dit où il tombe', 'Trois, un par nombre de la Rx ; l’axe dit où ils tombent']}},
    qcm:'« +6.50 -1.00 x 160 » : où sont les foyers', src:['7.3-d32', '7.3-d35']},
   {id:'foyers.2', ecran:'foyers', ancre:'Rappel: Myope Sphérique', titre:'Moins devant, plus derrière',
    cle:['négatif (myope) : devant la rétine', 'positif (hypermétrope) : derrière la rétine', 'un méridien négatif d’une croix torique se lit pareil <span class="deduit">déduit</span>'],
    explique:'Comment passes-tu du signe d’un méridien au nom de l’amétropie, puis à la place de son foyer ?',
-   verif:{q:'Un méridien porte -2.00, un autre +1.50. Où tombe chaque foyer sans correction ?', r:'-2.00 (myope) : devant la rétine ; +1.50 (hypermétrope) : derrière la rétine.', points:['-2.00 devant', '+1.50 derrière']},
+   verif:{q:'Un méridien porte -2.00, un autre +1.50. Où tombe chaque foyer sans correction ?', r:'-2.00 (myope) : devant la rétine ; +1.50 (hypermétrope) : derrière la rétine.', points:['-2.00 devant', '+1.50 derrière'],
+     qcm:{bon:'-2.00 (myope) : devant la rétine ; +1.50 (hypermétrope) : derrière', faux:['-2.00 (myope) : derrière la rétine ; +1.50 (hypermétrope) : devant', '-2.00 (hypermétrope) : devant la rétine ; +1.50 (myope) : derrière', '-2.00 et +1.50 : tous deux sur la rétine, l’un annule l’autre']}},
    qcm:'Un méridien a son foyer derrière la rétine', src:['7.1-d50', '7.3-d32']},
   {id:'foyers.3', ecran:'foyers', ancre:'Hyper. = A l’arrière de la rétine', titre:'Plano : sur la rétine',
    cle:['Plano = emmétrope = sur la rétine', '+2.00 = hyper. = à l’arrière de la rétine'],
    explique:'Pourquoi un méridien Plano n’a-t-il besoin d’aucune correction ?',
-   verif:{q:'+2.00 -2.00 x 135 : où tombent les deux foyers sans correction ?', r:'+2.00 sur 135 : derrière la rétine ; Plano sur 045 : sur la rétine.', points:['derrière', 'sur la rétine', 'Plano sur 045']},
+   verif:{q:'+2.00 -2.00 x 135 : où tombent les deux foyers sans correction ?', r:'+2.00 sur 135 : derrière la rétine ; Plano sur 045 : sur la rétine.', points:['derrière', 'sur la rétine', 'Plano sur 045'],
+     qcm:{bon:'+2.00 sur 135 : derrière la rétine ; Plano sur 045 : sur la rétine', faux:['+2.00 sur 135 : devant la rétine ; Plano sur 045 : sur la rétine', '+2.00 sur 135 : derrière la rétine ; -2.00 sur 045 : devant la rétine', '+2.00 sur 135 : derrière la rétine ; Plano sur 045 : aucun foyer']}},
    src:['7.3-d30', '7.3-d32']},
   {id:'foyers.4', ecran:'foyers', ancre:'OD: UN POINT FOCAUX', titre:'Corrigé : sur la rétine',
    cle:['l’œil corrigé par sa Rx', 'ses foyers tombent sur la rétine', 'la question dit toujours : sans ou avec correction'],
    explique:'Pourquoi la Rx ramène-t-elle chaque foyer sur la rétine ?',
-   verif:{q:'Le patient porte sa correction. Où sont ses foyers ?', r:'Sur la rétine : « OD: UN POINT FOCAUX <span class="sic">(sic)</span> SUR LA RÉTINE ».', points:['sur la rétine', 'corrigé']},
+   verif:{q:'Le patient porte sa correction. Où sont ses foyers ?', r:'Sur la rétine : « OD: UN POINT FOCAUX <span class="sic">(sic)</span> SUR LA RÉTINE ».', points:['sur la rétine', 'corrigé'],
+     qcm:{bon:'Sur la rétine : sa correction ramène chaque foyer sur la rétine', faux:['Au même endroit qu’avant : la correction ne déplace pas les foyers', 'Devant la rétine s’il est myope, derrière s’il est hypermétrope', 'Derrière la rétine : la correction pousse chaque foyer vers l’arrière']}},
    src:['7.1-d40', '7.1-d41']},
 
   /* ---------- Les cinq types d’astigmatisme (⑥) ---------- */
   {id:'types.1', ecran:'types', ancre:'en forme de cylindre négatif', titre:'Deux signes, un type',
    cle:['les deux signes de la croix nomment l’astigmatisme', 'le type se lit sur la Rx en cylindre négatif'],
    explique:'Pourquoi faut-il les deux méridiens, et pas seulement la sphère, pour nommer l’astigmatisme ?',
-   verif:{q:'Sur quoi te bases-tu pour nommer le type d’astigmatisme ?', r:'Sur les signes des deux méridiens de la croix, la Rx étant en forme de cylindre négatif.', points:['deux méridiens', 'signes', 'cylindre négatif']},
+   verif:{q:'Sur quoi te bases-tu pour nommer le type d’astigmatisme ?', r:'Sur les signes des deux méridiens de la croix, la Rx étant en forme de cylindre négatif.', points:['deux méridiens', 'signes', 'cylindre négatif'],
+     qcm:{bon:'Sur les signes des deux méridiens, la Rx étant en cylindre négatif', faux:['Sur le signe de la sphère seule, comme pour le nom de la Rx', 'Sur le signe du cylindre seul, la Rx étant en cylindre négatif', 'Sur la valeur du cylindre : au-delà de -1.00, il est composé']}},
    src:['UA1']},
   {id:'types.2', ecran:'types', ancre:'myopie a un méridien et emmétropie', titre:'Simple : un méridien Plano',
    cle:['un méridien Plano (emmétrope)', 'l’autre négatif : myope simple', 'l’autre positif : hypermétrope simple'],
    explique:'Pourquoi parle-t-on d’astigmatisme simple quand un des deux foyers est déjà sur la rétine ?',
-   verif:{q:'Une croix porte Plano sur 180 et -1.25 sur 090. Quel type ?', r:'Astigmatisme myope simple : un méridien emmétrope (Plano), l’autre myope.', points:['myope simple', 'un Plano', 'l’autre négatif']},
+   verif:{q:'Une croix porte Plano sur 180 et -1.25 sur 090. Quel type ?', r:'Astigmatisme myope simple : un méridien emmétrope (Plano), l’autre myope.', points:['myope simple', 'un Plano', 'l’autre négatif'],
+     qcm:{bon:'Astigmatisme myope simple : un méridien Plano, l’autre myope', faux:['Astigmatisme myope composé : deux foyers devant la rétine', 'Astigmatisme mixte : un méridien Plano, l’autre négatif', 'Astigmatisme hypermétrope simple : un méridien Plano, l’autre négatif']}},
    qcm:'“Plano -1.25 x 180” : quel type', src:['UA1', '7.3-d32']},
   {id:'types.3', ecran:'types', ancre:'focaux du même type d’amétropie = composé', titre:'Composé : même signe',
    cle:['deux méridiens du même signe', 'de forces différentes', 'deux foyers du même côté de la rétine'],
    explique:'Pourquoi -1.00 / -1.50 est-il un astigmatisme composé et non une Rx sphérique ?',
-   verif:{q:'Une croix porte +6.50 et +5.50. Quel type, et où sont les foyers sans correction ?', r:'Astigmatisme hypermétrope composé : deux méridiens positifs différents, deux foyers derrière la rétine.', points:['hypermétrope composé', 'deux derrière']},
+   verif:{q:'Une croix porte +6.50 et +5.50. Quel type, et où sont les foyers sans correction ?', r:'Astigmatisme hypermétrope composé : deux méridiens positifs différents, deux foyers derrière la rétine.', points:['hypermétrope composé', 'deux derrière'],
+     qcm:{bon:'Astigmatisme hypermétrope composé : deux foyers derrière la rétine', faux:['Astigmatisme hypermétrope simple : un foyer derrière, un sur la rétine', 'Astigmatisme mixte : un foyer derrière, un devant la rétine', 'Astigmatisme hypermétrope composé : deux foyers devant la rétine']}},
    src:['UA1', '7.3-d35']},
   {id:'types.4', ecran:'types', ancre:'1xmyope et 1x hypermétrope', titre:'Mixte : un de chaque signe',
    cle:['un méridien positif, un négatif', 'un foyer derrière, un devant la rétine'],
    explique:'Pourquoi un astigmatisme mixte place-t-il ses deux foyers de part et d’autre de la rétine ?',
-   verif:{q:'+0.50 -1.50 x 060 : quels méridiens, et quel type ?', r:'+0.50 sur 060 et -1.00 sur 150 : un positif, un négatif, donc astigmatisme mixte.', points:['+0.50 sur 060', '-1.00 sur 150', 'mixte']},
+   verif:{q:'+0.50 -1.50 x 060 : quels méridiens, et quel type ?', r:'+0.50 sur 060 et -1.00 sur 150 : un positif, un négatif, donc astigmatisme mixte.', points:['+0.50 sur 060', '-1.00 sur 150', 'mixte'],
+     qcm:{bon:'+0.50 sur 060 et -1.00 sur 150 : un positif, un négatif, mixte', faux:['+0.50 sur 060 et -1.00 sur 150 : hypermétrope, par le signe de la sphère', '+0.50 sur 060 et +2.00 sur 150 : deux positifs, hypermétrope composé', '+0.50 sur 060 et -1.50 sur 150 : un positif, un négatif, mixte']}},
    qcm:'“+0.50 -1.50 x 060” : quel type', src:['UA1']},
   {id:'types.5', ecran:'types', ancre:'le type suit les deux méridiens', titre:'Le nom n’est pas le type',
    cle:['le nom de la Rx suit le signe de la sphère', 'le type suit les deux méridiens', '+2.50 -3.75 x 090 : nom hypermétrope, type mixte (à vérifier en classe)'],
    explique:'Comment +2.50 -3.75 x 090 peut-il se nommer “hypermétrope” tout en étant un astigmatisme mixte ?',
-   verif:{q:'+2.00 -2.00 x 135 : quel nom la prof donne-t-elle à la Rx, et quel type d’astigmatisme ?', r:'« rx: Hypermétrope Torique; » (par le signe de la sphère) et « Astigmatisme Hypermétrope Simple » (par les deux méridiens).', points:['Hypermétrope Torique', 'hypermétrope simple', 'sphère / deux méridiens']},
+   verif:{q:'+2.00 -2.00 x 135 : quel nom la prof donne-t-elle à la Rx, et quel type d’astigmatisme ?', r:'« rx: Hypermétrope Torique; » (par le signe de la sphère) et « Astigmatisme Hypermétrope Simple » (par les deux méridiens).', points:['Hypermétrope Torique', 'hypermétrope simple', 'sphère / deux méridiens'],
+     qcm:{bon:'Nom : hypermétrope torique (la sphère) ; type : astigmatisme hypermétrope simple', faux:['Nom : hypermétrope torique (la sphère) ; type : astigmatisme hypermétrope composé', 'Nom : hypermétrope torique (la sphère) ; type : astigmatisme mixte', 'Nom : myope torique (le cylindre) ; type : astigmatisme myope simple']}},
    src:['7.3-d32', '7.3-d35', 'UA1']},
 
   /* ---------- L’analyse inverse (⑦) ---------- */
   {id:'inverse.1', ecran:'inverse', ancre:'on te donne la croix, tu retrouves la Rx', titre:'Lire la croix à rebours',
    cle:['la croix est donnée', 'on retrouve la Rx', 'puis l’amétropie et les points focaux'],
    explique:'Comment les règles ① et ②, lues à l’envers, te ramènent-elles de la croix à la Rx ?',
-   verif:{q:'En analyse inverse, que cherches-tu à partir de la croix ?', r:'La Rx, l’amétropie et les points focaux sans correction.', points:['la Rx', 'l’amétropie', 'les points focaux']},
+   verif:{q:'En analyse inverse, que cherches-tu à partir de la croix ?', r:'La Rx, l’amétropie et les points focaux sans correction.', points:['la Rx', 'l’amétropie', 'les points focaux'],
+     qcm:{bon:'La Rx, l’amétropie et les points focaux sans correction', faux:['L’œil (OD ou OS), puis l’addition et le prisme de la Rx', 'La Rx de près, en ajoutant l’addition que la croix n’a pas', 'Les points focaux avec correction, sans retrouver la Rx']}},
    src:['7.1-d43', '7.1-d44', '7.1-d45', '7.1-d46']},
   {id:'inverse.2', ecran:'inverse', ancre:'Deux bras égaux : la Rx est sphérique', titre:'Deux bras égaux : DS',
    cle:['deux bras égaux : Rx sphérique (DS)', '+2.00 / +2.00 → +2.00 DS', 'un seul foyer'],
    explique:'Pourquoi deux bras égaux veulent-ils dire qu’il n’y a pas de cylindre ?',
-   verif:{q:'Croix +4.00 / +4.00 : Rx, amétropie et point focal sans correction ?', r:'+4.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine <span class="deduit">déduit</span>.', points:['+4.00 DS', 'hypermétrope sphérique', 'derrière la rétine']},
+   verif:{q:'Croix +4.00 / +4.00 : Rx, amétropie et point focal sans correction ?', r:'+4.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine <span class="deduit">déduit</span>.', points:['+4.00 DS', 'hypermétrope sphérique', 'derrière la rétine'],
+     qcm:{bon:'+4.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine', faux:['+4.00 +4.00 x 180 ; hypermétrope composé ; deux foyers derrière', '+4.00 DS ; myope sphérique ; un foyer devant la rétine', '+8.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine']}},
    qcm:'Croix -6.50 / -6.50', src:['7.1-d43', '7.1-d47']},
   {id:'inverse.3', ecran:'inverse', ancre:'est le méridien le plus positif', titre:'Le plus positif : la sphère',
    cle:['la sphère = le méridien le plus positif', 'l’axe = le degré de ce méridien', 'CYL = l’autre − la sphère (négatif)'],
    explique:'Pourquoi, en cylindre négatif, la sphère est-elle forcément le méridien le plus positif ?',
-   verif:{q:'Croix : +1.00 sur 180, -0.50 sur 090. Écris la Rx en cylindre négatif.', r:'+1.00 -1.50 x 180 : le plus positif (+1.00) donne la sphère et l’axe ; CYL = (-0.50) − (+1.00) = -1.50 <span class="deduit">déduit</span>.', points:['+1.00', '-1.50', 'x 180']},
+   verif:{q:'Croix : +1.00 sur 180, -0.50 sur 090. Écris la Rx en cylindre négatif.', r:'+1.00 -1.50 x 180 : le plus positif (+1.00) donne la sphère et l’axe ; CYL = (-0.50) − (+1.00) = -1.50 <span class="deduit">déduit</span>.', points:['+1.00', '-1.50', 'x 180'],
+     qcm:{bon:'+1.00 -1.50 x 180 : le plus positif donne la sphère et l’axe', faux:['+1.00 -0.50 x 180 : l’autre méridien donne le cylindre', '-0.50 +1.50 x 090 : le plus négatif donne la sphère et l’axe', '+1.00 -1.50 x 090 : l’axe est le degré de l’autre méridien']}},
    qcm:'Croix : -0.75 à 045, -2.25 à 135', src:['UA1']},
 
   /* ---------- Les 20 exercices du cours ---------- */
   {id:'exercices.1', ecran:'exercices', ancre:'dix Rx chacun, sans corrigé', titre:'La routine d’un exercice',
    cle:['① la sphère sur l’axe', '② SPH + CYL', '③ le 2e méridien, axe ± 090', '⑥ le type, puis le bras de l’option B'],
    explique:'Pourquoi les vingt exercices se résolvent-ils avec les mêmes règles, quel que soit l’axe ?',
-   verif:{q:'Fais l’exercice 7.3-d36, n° 1 : -1.75 -1.50 x 040.', r:'-1.75 sur 040 ; (-1.75) + (-1.50) = -3.25 sur 130 (040 + 090) ; astigmatisme myope composé ; option B : 040 à l’horizontale <span class="deduit">déduit</span>.', points:['-1.75 sur 040', '-3.25 sur 130', 'myope composé', 'horizontal']},
+   verif:{q:'Fais l’exercice 7.3-d36, n° 1 : -1.75 -1.50 x 040.', r:'-1.75 sur 040 ; (-1.75) + (-1.50) = -3.25 sur 130 (040 + 090) ; astigmatisme myope composé ; option B : 040 à l’horizontale <span class="deduit">déduit</span>.', points:['-1.75 sur 040', '-3.25 sur 130', 'myope composé', 'horizontal'],
+     qcm:{bon:'-1.75 sur 040, -3.25 sur 130 ; myope composé ; 040 à l’horizontale', faux:['-1.75 sur 040, -3.25 sur 130 ; myope composé ; 040 à la verticale', '-1.75 sur 040, -0.25 sur 130 ; myope simple ; 040 à l’horizontale', '-1.75 sur 180, -3.25 sur 090 ; myope composé ; 180 à l’horizontale']}},
    src:['7.2-d30', '7.3-d36']},
   {id:'exercices.2', ecran:'exercices', ancre:'la prof demande aussi les points focaux', titre:'L’analyse avancée',
    cle:['les points focaux sans correction', 'l’amétropie', 'le type d’astigmatisme'],
    explique:'Pourquoi la prof garde-t-elle les croix au tableau avant de poser ces questions ?',
-   verif:{q:'Une fois la croix dessinée, quelles questions la prof ajoute-t-elle ?', r:'Où sont les points focaux sans correction, quelle est l’amétropie, quel est le type d’astigmatisme.', points:['points focaux', 'amétropie', 'type d’astigmatisme']},
+   verif:{q:'Une fois la croix dessinée, quelles questions la prof ajoute-t-elle ?', r:'Où sont les points focaux sans correction, quelle est l’amétropie, quel est le type d’astigmatisme.', points:['points focaux', 'amétropie', 'type d’astigmatisme'],
+     qcm:{bon:'Les points focaux sans correction, l’amétropie et le type d’astigmatisme', faux:['L’œil de la croix (OD ou OS), l’addition et le prisme', 'La Rx en cylindre positif et la Rx de près, avec l’addition', 'La distance de lecture, l’addition et la puissance de près']}},
    src:['7.2-d30', '7.2-d31']},
 
   /* ---------- Au comptoir (module 5) · Deux factures, six étapes (B5.1, B5.2, B5.7, B5.8) ---------- */
   {id:'cpt-factures.1', ecran:'cpt-factures', ancre:'Une visite fait deux factures', titre:'Deux factures',
    cle:['une facture pour les services', 'une pour les produits', 'services : tests, examens, ajustements', 'produits : contactologie, lunetterie, basse vision'],
    explique:'Pourquoi le bureau sépare-t-il l’examen et la lunette en deux factures, plutôt que d’en faire une seule pour la visite ?',
-   verif:{q:'Une visite comprend un examen et une lunette. Combien de factures, et lesquelles ?', r:'Deux : « Deux factures sont créé, une pour les services et une pour les produits » (sic) ; l’examen sur la facture de service, la lunette sur la facture de produit.', points:['deux factures', 'service : l’examen', 'produit : la lunette']},
+   verif:{q:'Une visite comprend un examen et une lunette. Combien de factures, et lesquelles ?', r:'Deux : « Deux factures sont créé, une pour les services et une pour les produits » (sic) ; l’examen sur la facture de service, la lunette sur la facture de produit.', points:['deux factures', 'service : l’examen', 'produit : la lunette'],
+     qcm:{bon:'Deux : l’examen sur la facture de service, la lunette sur la facture de produit', faux:['Une seule : l’examen et la lunette sur la même facture de la visite', 'Deux : l’examen et la monture sur l’une, les lentilles sur l’autre', 'Trois : une pour l’examen, une pour la monture, une pour les verres']}},
    qcm:'L\'ajustement de verres de contact va sur', src:['4.1-d4', '4.1-d6']},
   {id:'cpt-factures.2', ecran:'cpt-factures', ancre:'Chaque facture se calcule seule', titre:'Frais − escompte, sans taxe',
    cle:['facture = frais − escompte', 'chaque facture séparément', 'pas de taxe sur un service ou un produit médical'],
    explique:'Comment une facture de service et une facture de produit peuvent-elles avoir chacune leur propre escompte ?',
-   verif:{q:'Comment se calcule une facture, et y ajoute-t-on une taxe ?', r:'« Facture = Frais - Escompte », facture par facture ; pas de taxe : « ATTN: Les taxes ne sont pas applicable si c’est un service ou produit médicale » (sic).', points:['frais − escompte', 'pas de taxe']},
+   verif:{q:'Comment se calcule une facture, et y ajoute-t-on une taxe ?', r:'« Facture = Frais - Escompte », facture par facture ; pas de taxe : « ATTN: Les taxes ne sont pas applicable si c’est un service ou produit médicale » (sic).', points:['frais − escompte', 'pas de taxe'],
+     qcm:{bon:'Frais − escompte, facture par facture ; pas de taxe sur un service ou produit médical', faux:['Frais − escompte, puis on ajoute la taxe sur la facture de produit', 'Frais + taxe − escompte, sur une seule facture pour la visite', 'Frais − escompte, puis la taxe sur le total des deux factures']}},
    qcm:'Une lunette de 450', src:['4.1-d7']},
   {id:'cpt-factures.3', ecran:'cpt-factures', ancre:'Le prix se dit avant', titre:'Le prix se dit avant',
    cle:['service : à la prise de rendez-vous', 'produit : après la consultation, avant la prise de mesure', 'consentement éclairé'],
    explique:'Pourquoi le prix d’un produit se donne-t-il avant de prendre les mesures, et pas à la livraison ?',
-   verif:{q:'Quand annonce-t-on le prix d’un service, et celui d’un produit ?', r:'« Service: Généralement lors de la prise de rdv » ; « Produit: Généralement suite à la consultation mais avant la prise de mesure. » ; « Consentement éclairé! »', points:['service : à la prise de rendez-vous', 'produit : avant la prise de mesure']},
+   verif:{q:'Quand annonce-t-on le prix d’un service, et celui d’un produit ?', r:'« Service: Généralement lors de la prise de rdv » ; « Produit: Généralement suite à la consultation mais avant la prise de mesure. » ; « Consentement éclairé! »', points:['service : à la prise de rendez-vous', 'produit : avant la prise de mesure'],
+     qcm:{bon:'Service : à la prise de rendez-vous ; produit : après la consultation, avant les mesures', faux:['Service : après l’examen ; produit : à la livraison des lunettes', 'Service : à la prise de rendez-vous ; produit : une fois les mesures prises', 'Service et produit : ensemble, à la caisse, à la fin de la visite']}},
    src:['4.1-d9']},
   {id:'cpt-factures.4', ecran:'cpt-factures', ancre:'Pourquoi cinq étapes pour un produit', titre:'Six étapes, ou cinq',
    cle:['frais, escompte, facture', 'OHIP (service seulement)', 'assureur', 'ce que le patient débourse'],
    explique:'Pourquoi la facture de produit n’a-t-elle que cinq étapes, et laquelle manque ?',
-   verif:{q:'Donne les six étapes de la facture de service, et dis laquelle manque pour un produit.', r:'Le frais ; l’escompte ; la facture (frais – escompte) ; OHIP ; l’assureur ; ce que le patient débourse. Pour un produit, pas d’étape OHIP : « Grande différence est que les Assurance-santé provincial de l’Ontario ne couvre pas pour des produits » (sic).', points:['frais, escompte, facture', 'OHIP', 'assureur', 'patient', 'pas d’OHIP pour un produit']},
+   verif:{q:'Donne les six étapes de la facture de service, et dis laquelle manque pour un produit.', r:'Le frais ; l’escompte ; la facture (frais – escompte) ; OHIP ; l’assureur ; ce que le patient débourse. Pour un produit, pas d’étape OHIP : « Grande différence est que les Assurance-santé provincial de l’Ontario ne couvre pas pour des produits » (sic).', points:['frais, escompte, facture', 'OHIP', 'assureur', 'patient', 'pas d’OHIP pour un produit'],
+     qcm:{bon:'Frais, escompte, facture, OHIP, assureur, patient ; un produit n’a pas l’étape OHIP', faux:['Frais, escompte, facture, OHIP, assureur, patient ; un produit n’a pas l’étape escompte', 'Frais, escompte, facture, assureur, OHIP, patient ; un produit n’a pas l’étape assureur', 'Frais, taxe, escompte, facture, OHIP, patient ; un produit n’a pas l’étape OHIP']}},
    qcm:'Combien d\'étapes compte la facture de produit', src:['EF p2']},
   {id:'cpt-factures.5', ecran:'cpt-factures', ancre:'Le total de la visite', titre:'Qui paie, et le total',
    cle:['service : OHIP, tiers, assurance privée, patient', 'produit : les mêmes, sans OHIP', 'total = services + produits'],
    explique:'Pourquoi le total d’une visite s’obtient-il en additionnant deux factures déjà escomptées ?',
-   verif:{q:'Dans quel ordre vérifie-t-on les payeurs d’un service, et comment obtient-on le total de la visite ?', r:'OHIP, payeurs tiers, assurance privée, patient (un produit : sans OHIP). Le total : « Px va payer un total de: Services + Produits ».', points:['OHIP d’abord', 'puis tiers, assurance, patient', 'services + produits']},
+   verif:{q:'Dans quel ordre vérifie-t-on les payeurs d’un service, et comment obtient-on le total de la visite ?', r:'OHIP, payeurs tiers, assurance privée, patient (un produit : sans OHIP). Le total : « Px va payer un total de: Services + Produits ».', points:['OHIP d’abord', 'puis tiers, assurance, patient', 'services + produits'],
+     qcm:{bon:'OHIP, payeurs tiers, assurance privée, patient ; total = services + produits', faux:['Assurance privée, OHIP, payeurs tiers, patient ; total = services + produits', 'OHIP, payeurs tiers, assurance privée, patient ; total = les deux frais, sans escompte', 'Payeurs tiers, OHIP, patient, assurance privée ; total = la facture de service']}},
    src:['4.1-d3', '4.1-d14']},
 
   /* ---------- Les escomptes (B5.3 à B5.6) ---------- */
   {id:'cpt-escomptes.1', ecran:'cpt-escomptes', ancre:'Trois sortes d\'escomptes', titre:'Trois sortes d’escomptes',
    cle:['rabais items : un item gratuit', 'rabais en pourcentage', 'rabais monétaire : un montant fixe'],
    explique:'Pourquoi une monture gratuite est-elle un escompte, alors qu’aucun pourcentage n’est appliqué ?',
-   verif:{q:'Nomme les trois types d’escompte, avec un exemple de chacun.', r:'« Rabais items » (monture gratuite, chez Visio), « Rabais en pourcentage (ex: 10%) » (50 % sur les lentilles, chez Vizo), « Rabais monétaire (ex: 50$) » (100 $ sur la lunette, chez ABC).', points:['rabais items', 'rabais en pourcentage', 'rabais monétaire']},
+   verif:{q:'Nomme les trois types d’escompte, avec un exemple de chacun.', r:'« Rabais items » (monture gratuite, chez Visio), « Rabais en pourcentage (ex: 10%) » (50 % sur les lentilles, chez Vizo), « Rabais monétaire (ex: 50$) » (100 $ sur la lunette, chez ABC).', points:['rabais items', 'rabais en pourcentage', 'rabais monétaire'],
+     qcm:{bon:'Items (monture gratuite), pourcentage (50 % sur les lentilles), monétaire (100 $ de rabais)', faux:['Items (monture gratuite), pourcentage (50 % sur les lentilles), taxe (aucune taxe médicale)', 'Sénior (10 %), étudiant (20 %), famille (le prix fixé par le comité)', 'Pourcentage (10 %), monétaire (50 $ de rabais), OHIP (l’examen couvert)']}},
    qcm:'“100 $ de rabais sur les lunettes” est un', src:['4.1-d8', '4.1-d13']},
   {id:'cpt-escomptes.2', ecran:'cpt-escomptes', ancre:'L\'escompte ne touche que les items que la promotion nomme', titre:'Seulement les items nommés',
    cle:['l’escompte touche les items que la promotion nomme', 'si sa condition est remplie', 'Vizo : 50 % de 150 $, pas de 550 $'],
    explique:'Pourquoi, chez Vizo, 50 % de rabais sur les lentilles ne fait-il baisser la facture que de 75 $ ?',
-   verif:{q:'« Promotion: 50% rabais sur les lentilles ophtalmique avec achat de monture » : monture 400 $, lentilles 150 $. La facture de produit ?', r:'550 − (0.50 × 150) = 550 − 75 = 475 $ : l’escompte ne touche que les lentilles.', points:['0.50 × 150 = 75', '475 $']},
+   verif:{q:'« Promotion: 50% rabais sur les lentilles ophtalmique avec achat de monture » : monture 400 $, lentilles 150 $. La facture de produit ?', r:'550 − (0.50 × 150) = 550 − 75 = 475 $ : l’escompte ne touche que les lentilles.', points:['0.50 × 150 = 75', '475 $'],
+     qcm:{bon:'550 − (0.50 × 150) = 475 $ : l’escompte ne touche que les lentilles', faux:['550 − (0.50 × 550) = 275 $ : l’escompte touche toute la lunette', '0.50 × 150 = 75 $ : la facture est le montant de l’escompte', '550 − (0.05 × 150) = 542.50 $ : 50 % s’écrit 0.05']}},
    src:['4.1-d15', '4.1-d19']},
   {id:'cpt-escomptes.3', ecran:'cpt-escomptes', ancre:'L\'étudiant en administration de La Cité a les mêmes prix', titre:'Les prix de Lumiris',
    cle:['examen 205 $ → 110 $', 'partiel 115 $ → 60 $', 'lunette −25 %', 'verres de contact −15 %'],
    explique:'Pourquoi l’examen à 110 $ est-il un rabais monétaire, et la lunette un rabais en pourcentage ?',
-   verif:{q:'Les prix de Lumiris : examen, examen partiel, lunette, verres de contact ?', r:'Examen 110 $ (au lieu de 205 $) ; partiel 60 $ (au lieu de 115 $) ; lunette −25 % ; verres de contact −15 %.', points:['110 $', '60 $', '−25 %', '−15 %']},
+   verif:{q:'Les prix de Lumiris : examen, examen partiel, lunette, verres de contact ?', r:'Examen 110 $ (au lieu de 205 $) ; partiel 60 $ (au lieu de 115 $) ; lunette −25 % ; verres de contact −15 %.', points:['110 $', '60 $', '−25 %', '−15 %'],
+     qcm:{bon:'Examen 110 $ ; partiel 60 $ ; lunette −25 % ; verres de contact −15 %', faux:['Examen 110 $ ; partiel 60 $ ; lunette −15 % ; verres de contact −25 %', 'Examen 95 $ ; partiel 55 $ ; lunette −25 % ; verres de contact −15 %', 'Examen 205 $ ; partiel 115 $ ; lunette −25 % ; verres de contact −15 %']}},
    qcm:'Chez Lumiris, des verres de contact à 300', src:['LUM', '4.1-d40', '4.2-d26']},
   {id:'cpt-escomptes.4', ecran:'cpt-escomptes', ancre:'Les services, sans demande', titre:'L’escompte famille',
    cle:['services : 110 $ et 60 $, sans demande', 'produits : une demande au comité', 'le prix coûtant n’est jamais calculé au comptoir'],
    explique:'Pourquoi ne peut-on jamais calculer au comptoir le prix d’une lunette avec l’escompte famille ?',
-   verif:{q:'Une étudiante AOpto-Opti fait son examen et achète une lunette chez Lumiris. Que fais-tu pour chaque facture ?', r:'Service : 110 $, sans demande. Produit : le formulaire, car « Escompte exige une demande auprès du Comité de la réussite étudiante AOpto-Opti » ; on approuve ensuite l’estimation du comité.', points:['110 $ sans demande', 'formulaire au comité', 'pas de calcul au comptoir']},
+   verif:{q:'Une étudiante AOpto-Opti fait son examen et achète une lunette chez Lumiris. Que fais-tu pour chaque facture ?', r:'Service : 110 $, sans demande. Produit : le formulaire, car « Escompte exige une demande auprès du Comité de la réussite étudiante AOpto-Opti » ; on approuve ensuite l’estimation du comité.', points:['110 $ sans demande', 'formulaire au comité', 'pas de calcul au comptoir'],
+     qcm:{bon:'Examen : 110 $, sans demande ; lunette : le formulaire au comité, puis son estimation', faux:['Examen : 110 $, sans demande ; lunette : prix coûtant + 15 %, calculé au comptoir', 'Examen : le formulaire au comité ; lunette : −25 %, le prix de Lumiris', 'Examen : 205 $, sans escompte ; lunette : −25 %, comme tout client de Lumiris']}},
    qcm:'Une étudiante AOpto-Opti achète une lunette', src:['FAM', '4.1-d51']},
   {id:'cpt-escomptes.5', ecran:'cpt-escomptes', ancre:'des exercices s\'applique à 69 et 74 ans', titre:'À qui la promotion s’applique',
    cle:['rabais sénior : 69 et 74 ans dans les exercices', 'pas pour un enfant', 'l’âge de départ n’est pas dans le cours'],
    explique:'Pourquoi faut-il regarder le patient, et pas seulement la promotion, avant d’appliquer un escompte ?',
-   verif:{q:'Promotion du bureau : rabais sénior de 10 %. Une enfant de 5 ans fait son examen à 150 $. Sa facture ?', r:'150 $ : « Aucun escompte… c’est un enfant ».', points:['150 $', 'pas de rabais sénior pour un enfant']},
+   verif:{q:'Promotion du bureau : rabais sénior de 10 %. Une enfant de 5 ans fait son examen à 150 $. Sa facture ?', r:'150 $ : « Aucun escompte… c’est un enfant ».', points:['150 $', 'pas de rabais sénior pour un enfant'],
+     qcm:{bon:'150 $ : aucun escompte, le rabais sénior n’est pas pour un enfant', faux:['135 $ : le rabais de 10 % s’applique à tout patient du bureau', '15 $ : la facture est le montant du rabais de 10 %', '148.50 $ : le rabais de 10 % s’écrit 0.01']}},
    src:['EFR-s1', 'EFR-s7']},
 
   /* ---------- OHIP : qui, tous les combien (B5.8 à B5.11, B5.13) ---------- */
   {id:'cpt-ohip.1', ecran:'cpt-ohip', ancre:'OHIP paie des services, jamais des produits', titre:'OHIP : des services',
    cle:['OHIP couvre des services en santé oculaire', 'jamais des produits', 'même pas les lunettes d’un enfant'],
    explique:'Pourquoi un enfant couvert pour son examen paie-t-il quand même ses lunettes ?',
-   verif:{q:'Un enfant de 8 ans : OHIP paie-t-il son examen ? ses lunettes ?', r:'L’examen oui (0-19 ans) ; les lunettes non : OHIP ne couvre pas les produits.', points:['examen : oui', 'lunettes : non']},
+   verif:{q:'Un enfant de 8 ans : OHIP paie-t-il son examen ? ses lunettes ?', r:'L’examen oui (0-19 ans) ; les lunettes non : OHIP ne couvre pas les produits.', points:['examen : oui', 'lunettes : non'],
+     qcm:{bon:'L’examen oui (0-19 ans) ; les lunettes non, OHIP ne couvre pas les produits', faux:['L’examen et les lunettes : OHIP couvre tout pour les 0-19 ans', 'Ni l’un ni l’autre : OHIP ne couvre que les 65 ans et plus', 'Les lunettes seulement ; l’examen va à l’assurance privée']}},
    qcm:'Les lunettes d\'un enfant de 8 ans', src:['4.2-d6', 'EF p2']},
   {id:'cpt-ohip.2', ecran:'cpt-ohip', ancre:'L\'âge se prend le jour de l\'examen', titre:'L’âge, le jour de l’examen',
    cle:['l’âge le jour de l’examen', 'en années complètes', 'l’anniversaire est-il passé ?'],
    explique:'Comment un anniversaire entre l’appel et l’examen peut-il changer la couverture ?',
-   verif:{q:'DDN 30 nov. 1961, en santé ; il appelle le 20 nov. 2026 pour un examen le 4 déc. 2026. Quel âge compte, et est-il couvert ?', r:'65 ans, le jour de l’examen (« (px à 69 en date de l’examen) ») : 65 ans et plus, en santé, couvert sous V406 (calcul déduit).', points:['65 ans', 'le jour de l’examen', 'V406']},
+   verif:{q:'DDN 30 nov. 1961, en santé ; il appelle le 20 nov. 2026 pour un examen le 4 déc. 2026. Quel âge compte, et est-il couvert ?', r:'65 ans, le jour de l’examen (« (px à 69 en date de l’examen) ») : 65 ans et plus, en santé, couvert sous V406 (calcul déduit).', points:['65 ans', 'le jour de l’examen', 'V406'],
+     qcm:{bon:'65 ans, le jour de l’examen : 65 ans et plus en santé, couvert sous V406', faux:['64 ans, le jour de l’appel : 20-64 ans en santé, pas couvert', '65 ans, le jour de l’examen : couvert sous V407, le code des 65 ans et plus', '64 ans, le jour de l’examen : son anniversaire n’est pas encore passé']}},
    src:['EFR-s1']},
   {id:'cpt-ohip.3', ecran:'cpt-ohip', ancre:'Une condition médicale admissible change la catégorie', titre:'Sept catégories',
    cle:['0-19 ; 20-64 en santé ; 20-64 avec condition', 'POSPH/ODSP ; OW', '65 et plus ; 65 et plus avec condition'],
    explique:'Pourquoi deux patients de 55 ans peuvent-ils être dans deux catégories différentes ?',
-   verif:{q:'Nomme les sept catégories OHIP.', r:'0-19 ans ; 20-64 ans en santé ; 20-64 ans avec une condition médicale admissible ; 20-64 ans POSPH/ODSP ; 20-64 ans Ontario au travail (OW) ; 65 ans et plus ; 65 ans et plus avec condition.', points:['0-19', 'les trois 20-64 + POSPH/ODSP et OW', 'les deux 65 et plus']},
+   verif:{q:'Nomme les sept catégories OHIP.', r:'0-19 ans ; 20-64 ans en santé ; 20-64 ans avec une condition médicale admissible ; 20-64 ans POSPH/ODSP ; 20-64 ans Ontario au travail (OW) ; 65 ans et plus ; 65 ans et plus avec condition.', points:['0-19', 'les trois 20-64 + POSPH/ODSP et OW', 'les deux 65 et plus'],
+     qcm:{bon:'0-19 ; 20-64 en santé, avec condition, POSPH/ODSP, OW ; 65 et plus, en santé ou avec condition', faux:['0-17 ; 18-64 en santé, avec condition, POSPH/ODSP, OW ; 65 et plus, en santé ou avec condition', '0-19 ; 20-64 en santé, avec condition ; 65 et plus, en santé, avec condition, POSPH/ODSP, OW', '0-19 ; 20-59 en santé, avec condition, POSPH/ODSP, OW ; 60 et plus, en santé ou avec condition']}},
    src:['ASO p1', '4.2-d6']},
   {id:'cpt-ohip.4', ecran:'cpt-ohip', ancre:'Les fréquences ne sont pas sur l\'aide-mémoire', titre:'Les fréquences, de mémoire',
    cle:['12 mois : 0-19, et avec une condition', '18 mois : 65 et plus en santé', '24 mois : POSPH/ODSP et OW', 'aucune : 20-64 en santé'],
    explique:'Pourquoi un 65 ans et plus avec une condition revient-il plus souvent qu’un 65 ans et plus en santé ?',
-   verif:{q:'Donne la fréquence de l’examen majeur pour chaque catégorie.', r:'12 mois : 0-19, 20-64 avec condition, 65 et plus avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP et OW ; aucune : 20-64 en santé.', points:['12 mois', '18 mois', '24 mois', 'aucune : 20-64 en santé']},
+   verif:{q:'Donne la fréquence de l’examen majeur pour chaque catégorie.', r:'12 mois : 0-19, 20-64 avec condition, 65 et plus avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP et OW ; aucune : 20-64 en santé.', points:['12 mois', '18 mois', '24 mois', 'aucune : 20-64 en santé'],
+     qcm:{bon:'12 mois : 0-19 et avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP, OW ; aucune : 20-64 en santé', faux:['12 mois : 0-19, avec condition et 65 et plus ; 24 mois : POSPH/ODSP, OW ; aucune : 20-64 en santé', '12 mois : 0-19 et avec condition ; 18 mois : POSPH/ODSP, OW ; 24 mois : 65 et plus en santé ; aucune : 20-64 en santé', '24 mois : 0-19 et avec condition ; 18 mois : 65 et plus en santé ; 12 mois : POSPH/ODSP, OW ; aucune : 20-64 en santé']}},
    qcm:'Un patient de 70 ans, en santé', src:['4.2-d6', 'ASO p1']},
   {id:'cpt-ohip.5', ecran:'cpt-ohip', ancre:'Un « Examen complet » est majeur', titre:'Majeur ET, mineur OU',
    cle:['majeur : réfraction ET santé oculaire', 'mineur : l’une OU l’autre', 'complet = majeur ; partiel, suivi = mineur'],
    explique:'Pourquoi un suivi de cataracte n’utilise-t-il pas le même code qu’un examen complet ?',
-   verif:{q:'Qu’est-ce qui distingue un examen majeur d’un examen mineur ?', r:'Majeur : « la réfraction pour la vision ET la vérification de la santé oculaire des yeux » ; mineur : l’une OU l’autre. Complet = majeur ; partiel ou suivi = mineur.', points:['ET', 'OU', 'suivi = mineur']},
+   verif:{q:'Qu’est-ce qui distingue un examen majeur d’un examen mineur ?', r:'Majeur : « la réfraction pour la vision ET la vérification de la santé oculaire des yeux » ; mineur : l’une OU l’autre. Complet = majeur ; partiel ou suivi = mineur.', points:['ET', 'OU', 'suivi = mineur'],
+     qcm:{bon:'Majeur : la réfraction ET la santé oculaire ; mineur : l’une OU l’autre ; un suivi est mineur', faux:['Majeur : la réfraction OU la santé oculaire ; mineur : un suivi, sans réfraction', 'Majeur : la réfraction ET la santé oculaire ; mineur : l’une OU l’autre ; un suivi est majeur', 'Majeur : un patient avec une condition ; mineur : un patient en santé']}},
    qcm:'Un examen qui ne vérifie que la santé oculaire', src:['ASO p1', 'ASO p2', 'EFR-s8']},
   {id:'cpt-ohip.6', ecran:'cpt-ohip', ancre:'La règle : une seule caractéristique', titre:'Une seule chose change',
    cle:['19/20 ans', '64/65 ans', 'en santé / avec condition', 'en santé / POSPH/ODSP'],
    explique:'Pourquoi un patient peut-il passer de “pas couvert” à “couvert tous les 18 mois” en un seul jour ?',
-   verif:{q:'Même patient, en santé : il a 64 ans le 29 nov. 2026 et 65 ans le 30 nov. 2026. Quelle différence pour OHIP ?', r:'À 64 ans : pas couvert (20-64 en santé) ; à 65 ans : couvert tous les 18 mois, V406.', points:['64 : pas couvert', '65 : 18 mois, V406']},
+   verif:{q:'Même patient, en santé : il a 64 ans le 29 nov. 2026 et 65 ans le 30 nov. 2026. Quelle différence pour OHIP ?', r:'À 64 ans : pas couvert (20-64 en santé) ; à 65 ans : couvert tous les 18 mois, V406.', points:['64 : pas couvert', '65 : 18 mois, V406'],
+     qcm:{bon:'À 64 ans : pas couvert ; à 65 ans : couvert tous les 18 mois, sous V406', faux:['À 64 ans : pas couvert ; à 65 ans : couvert tous les 12 mois, sous V406', 'Aucune : en santé, il n’est couvert ni à 64 ans ni à 65 ans', 'Aucune : à 64 et à 65 ans, couvert tous les 18 mois, sous V406']}},
    src:['4.2-d6', 'EFR-s1']},
 
   /* ---------- Le rendez-vous (B5.12, B5.14 à B5.17) ---------- */
   {id:'cpt-rdv.1', ecran:'cpt-rdv', ancre:'La prochaine date admissible = le dernier examen majeur', titre:'Dernier + fréquence + 1 jour',
    cle:['le dernier examen majeur', '+ la fréquence', '+ 1 jour', 'ce jour-là ou après : permis'],
    explique:'Pourquoi le jour anniversaire du dernier examen est-il encore trop tôt ?',
-   verif:{q:'Une fille de 13 ans ; dernier examen majeur le 18 juin 2016. À partir de quand, et sous quel code ?', r:'18 juin 2016 + 12 mois + 1 jour = 19 juin 2017 : « V404 si examen le 19 juin 2017 ou après ».', points:['19 juin 2017', 'V404', '+ 1 jour']},
+   verif:{q:'Une fille de 13 ans ; dernier examen majeur le 18 juin 2016. À partir de quand, et sous quel code ?', r:'18 juin 2016 + 12 mois + 1 jour = 19 juin 2017 : « V404 si examen le 19 juin 2017 ou après ».', points:['19 juin 2017', 'V404', '+ 1 jour'],
+     qcm:{bon:'Le 19 juin 2017 ou après, sous V404 : 12 mois + 1 jour', faux:['Le 18 juin 2017 ou après, sous V404 : 12 mois pile', 'Le 19 juin 2017 ou après, sous V402 : 12 mois + 1 jour', 'Le 19 déc. 2017 ou après, sous V404 : 18 mois + 1 jour']}},
    qcm:'POSPH/ODSP ; dernier examen le 22 juil. 2017', src:['4.2-d6', '4.2-d14', 'EO-6']},
   {id:'cpt-rdv.2', ecran:'cpt-rdv', ancre:'Avant toute prise de rendez-vous', titre:'Vérifier avant de réserver',
    cle:['vérifier avant de réserver', 'sinon deux semaines avant', 'la carte, le code de version, le mot de passe du site clinique', 'deux codes en retour'],
    explique:'Pourquoi vérifier l’admissibilité avant de donner le rendez-vous, plutôt que le jour même ?',
-   verif:{q:'Quand fait-on la vérification d’admissibilité, et que faut-il pour la faire ?', r:'Avant la prise de rendez-vous, sinon deux semaines avant ; il faut la carte OHIP (numéro et code de version) et le mot de passe du site clinique ; elle renvoie un code d’admissibilité et un code de vérification.', points:['avant le rendez-vous', 'carte et code de version', 'mot de passe du site', 'deux codes']},
+   verif:{q:'Quand fait-on la vérification d’admissibilité, et que faut-il pour la faire ?', r:'Avant la prise de rendez-vous, sinon deux semaines avant ; il faut la carte OHIP (numéro et code de version) et le mot de passe du site clinique ; elle renvoie un code d’admissibilité et un code de vérification.', points:['avant le rendez-vous', 'carte et code de version', 'mot de passe du site', 'deux codes'],
+     qcm:{bon:'Avant de réserver (sinon deux semaines avant), avec la carte, son code de version et le mot de passe du site', faux:['Après l’examen, avec le numéro de la carte seulement, juste avant de facturer', 'Le jour du rendez-vous, avec la carte, son code de version et le mot de passe du site', 'Avant de réserver, avec le numéro de la carte seulement, sans code de version']}},
    src:['ASO p3']},
   {id:'cpt-rdv.3', ecran:'cpt-rdv', ancre:'Puis le code : la ligne de sa catégorie', titre:'Le code de service',
    cle:['la ligne de sa catégorie', 'la colonne majeur ou mineur', 'les codes sont sur l’aide-mémoire'],
    explique:'Pourquoi un diabétique de 66 ans et un aîné en santé n’ont-ils pas le même code pour un examen complet ?',
-   verif:{q:'Examen complet, 66 ans, diabétique : quel code ? Et un suivi pour lui ?', r:'V407 (« Oui, V407 ») ; un suivi : V415.', points:['V407', 'V415 pour le suivi']},
+   verif:{q:'Examen complet, 66 ans, diabétique : quel code ? Et un suivi pour lui ?', r:'V407 (« Oui, V407 ») ; un suivi : V415.', points:['V407', 'V415 pour le suivi'],
+     qcm:{bon:'V407 pour l’examen complet ; V415 pour un suivi', faux:['V406 pour l’examen complet ; V415 pour un suivi', 'V409 pour l’examen complet ; V408 pour un suivi', 'V415 pour l’examen complet ; V407 pour un suivi']}},
    src:['ASO p2', 'AM', 'EO-3']},
   {id:'cpt-rdv.4', ecran:'cpt-rdv', ancre:'Les codes reçus, et ce qu\'on fait', titre:'Les codes reçus',
    cle:['101 : valide ; 201 : trop tôt', '50-59 : carte valide (52, 55 : aviser)', '05 : confirmer le numéro', '201 : la date du dernier examen, puis une nouvelle vérification'],
    explique:'Pourquoi 52 veut-il dire de réserver quand même, alors qu’il annonce un problème de carte ?',
-   verif:{q:'La vérification renvoie 101-52, puis, pour un autre patient, 201-51. Que fais-tu chaque fois ?', r:'101-52 : on réserve, et on avise le patient que sa carte expire bientôt. 201-51 : on note la date du dernier examen, on calcule la prochaine date et on refait la vérification avec cette date.', points:['52 : réserver et aviser', '201 : la date du dernier examen', 'nouvelle vérification']},
+   verif:{q:'La vérification renvoie 101-52, puis, pour un autre patient, 201-51. Que fais-tu chaque fois ?', r:'101-52 : on réserve, et on avise le patient que sa carte expire bientôt. 201-51 : on note la date du dernier examen, on calcule la prochaine date et on refait la vérification avec cette date.', points:['52 : réserver et aviser', '201 : la date du dernier examen', 'nouvelle vérification'],
+     qcm:{bon:'101-52 : réserver et aviser que la carte expire ; 201-51 : noter le dernier examen et revérifier', faux:['101-52 : refuser, la carte est invalide ; 201-51 : noter le dernier examen et revérifier', '101-52 : réserver sans rien dire ; 201-51 : réserver plus tard, à une date au hasard', '101-52 : réserver et aviser que la carte expire ; 201-51 : réserver quand même ce jour-là']}},
    qcm:'55 ans, diabétique, un suivi', src:['ASO p3', 'EO-4']},
   {id:'cpt-rdv.5', ecran:'cpt-rdv', ancre:'le docteur doit soumettre, avec le numéro OHIP', titre:'La soumission',
    cle:['numéro OHIP + code de service + code diagnostique', 'le docteur identifie le diagnostic', 'l’assistant ou l’opticien fait souvent la soumission'],
    explique:'Pourquoi le code diagnostique ne peut-il pas être choisi au comptoir ?',
-   verif:{q:'Que contient une soumission à OHIP, et qui choisit le code diagnostique ?', r:'Le numéro OHIP, un code de service et un code diagnostique (ex. V409_250) ; le diagnostic : « ATTN: doit être identifié par le docteur ».', points:['code de service + diagnostique', 'le docteur']},
+   verif:{q:'Que contient une soumission à OHIP, et qui choisit le code diagnostique ?', r:'Le numéro OHIP, un code de service et un code diagnostique (ex. V409_250) ; le diagnostic : « ATTN: doit être identifié par le docteur ».', points:['code de service + diagnostique', 'le docteur'],
+     qcm:{bon:'Le numéro OHIP, un code de service et un code diagnostique ; le docteur choisit le diagnostic', faux:['Le numéro OHIP, un code de service et un code diagnostique ; l’opticien choisit le diagnostic', 'Le numéro OHIP et le code de service seulement ; le patient donne son diagnostic', 'Le numéro OHIP, le code de version et la facture ; l’assistant choisit le diagnostic']}},
    qcm:'Qui choisit le code diagnostique', src:['ASO p4']},
 
   /* ---------- L'assureur (B5.18 à B5.22) ---------- */
   {id:'cpt-assureur.1', ecran:'cpt-assureur', ancre:'Couverture = la plus petite de trois valeurs', titre:'Trois valeurs, la plus petite',
    cle:['facture × %', 'le maximum', 'le solde (le maximum − ce qui est déjà remboursé)'],
    explique:'Pourquoi le solde peut-il limiter le remboursement même quand facture × % est sous le maximum ?',
-   verif:{q:'Plan 80 %, maximum 250 $, 150 $ déjà remboursés ; facture 200 $. Combien l’assureur paie-t-il ?', r:'200 × 0.80 = 160 $ ; le maximum (250 $) ne limite pas ; le solde, 250 − 150 = 100 $, limite : 100 $.', points:['160 $', 'solde 100 $', 'couverture 100 $']},
+   verif:{q:'Plan 80 %, maximum 250 $, 150 $ déjà remboursés ; facture 200 $. Combien l’assureur paie-t-il ?', r:'200 × 0.80 = 160 $ ; le maximum (250 $) ne limite pas ; le solde, 250 − 150 = 100 $, limite : 100 $.', points:['160 $', 'solde 100 $', 'couverture 100 $'],
+     qcm:{bon:'100 $ : 200 × 0.80 = 160 $, mais il ne reste que 250 − 150 = 100 $', faux:['160 $ : 200 × 0.80 = 160 $, sous le maximum de 250 $', '200 $ : la facture est sous le maximum, il la paie toute', '50 $ : 200 − 150 = 50 $, ce qui reste de la facture']}},
    qcm:'Facture 184', src:['4.2-d24', '4.2-d28', '4.2-d32']},
   {id:'cpt-assureur.2', ecran:'cpt-assureur', ancre:'Le patient paie la facture moins la couverture', titre:'Le patient : facture − couverture',
    cle:['déboursé = facture − couverture', 'pas « le reste du pourcentage » quand le maximum limite', '0 si OHIP couvre le service'],
    explique:'Pourquoi le patient paie-t-il plus que 20 % de sa facture quand l’assureur atteint son maximum ?',
-   verif:{q:'Facture 700 $, 60 %, maximum 250 $. Couverture et déboursé ?', r:'700 × 0.60 = 420 $, mais le maximum : 250 $ ; le patient paie 700 − 250 = 450 $.', points:['250 $', '450 $']},
+   verif:{q:'Facture 700 $, 60 %, maximum 250 $. Couverture et déboursé ?', r:'700 × 0.60 = 420 $, mais le maximum : 250 $ ; le patient paie 700 − 250 = 450 $.', points:['250 $', '450 $'],
+     qcm:{bon:'Couverture 250 $ (le maximum) ; le patient paie 700 − 250 = 450 $', faux:['Couverture 420 $ ; le patient paie 700 − 420 = 280 $', 'Couverture 250 $ (le maximum) ; le patient paie 700 × 0.40 = 280 $', 'Couverture 250 $ (le maximum) ; le patient paie 420 − 250 = 170 $']}},
    qcm:'Facture 700', src:['4.2-d25', 'EFR-s4', 'EFR-s6']},
   {id:'cpt-assureur.3', ecran:'cpt-assureur', ancre:'Deux maximums, deux soldes', titre:'Le plan AE',
    cle:['services : 80 %, max 80 $', 'produits : 80 %, max 250 $', 'chaque 24 mois'],
    explique:'Pourquoi un examen et une lunette réclamés le même jour au plan AE ne se partagent-ils pas un maximum ?',
-   verif:{q:'Le plan AE : que couvre-t-il pour un service, pour un produit ?', r:'Service : 80 %, maximum 80 $, chaque 24 mois ; produit : 80 %, maximum 250 $, chaque 24 mois. Deux maximums séparés.', points:['80 %, max 80 $', '80 %, max 250 $', 'deux maximums']},
+   verif:{q:'Le plan AE : que couvre-t-il pour un service, pour un produit ?', r:'Service : 80 %, maximum 80 $, chaque 24 mois ; produit : 80 %, maximum 250 $, chaque 24 mois. Deux maximums séparés.', points:['80 %, max 80 $', '80 %, max 250 $', 'deux maximums'],
+     qcm:{bon:'Service : 80 %, max 80 $ ; produit : 80 %, max 250 $ ; chaque 24 mois, deux maximums', faux:['Service et produit : 80 %, un seul maximum de 250 $ en tout, chaque 24 mois', 'Service : 80 %, max 250 $ ; produit : 80 %, max 80 $ ; chaque 24 mois', 'Service : 80 %, max 80 $ ; produit : 80 %, max 250 $ ; chaque 12 mois']}},
    src:['4.2-d23', '4.2-d15']},
   {id:'cpt-assureur.4', ecran:'cpt-assureur', ancre:'Tous les exercices du cours lisent la période mobile', titre:'Cycle ou période mobile',
    cle:['cycle défini : aux dates de l’assureur', 'période mobile : dernière soumission + période + 1 jour', 'trop tôt : l’assureur ne paie rien'],
    explique:'Pourquoi deux soumissions à un jour d’écart peuvent-elles passer dans un cycle défini, mais pas dans une période mobile ?',
-   verif:{q:'Période mobile de 24 mois ; dernière soumission le 2 nov. 2018. Prochaine soumission permise ?', r:'« Soumission 3 novembre 2020 » : 24 mois + 1 jour.', points:['3 nov. 2020', '24 mois + 1 jour']},
+   verif:{q:'Période mobile de 24 mois ; dernière soumission le 2 nov. 2018. Prochaine soumission permise ?', r:'« Soumission 3 novembre 2020 » : 24 mois + 1 jour.', points:['3 nov. 2020', '24 mois + 1 jour'],
+     qcm:{bon:'Le 3 nov. 2020 : 24 mois + 1 jour après la dernière soumission', faux:['Le 2 nov. 2020 : 24 mois pile après la dernière soumission', 'Le 1er janv. 2020 : le début du nouveau cycle de l’assureur', 'Le 3 nov. 2019 : 12 mois + 1 jour après la dernière soumission']}},
    qcm:'Plan mobile de 24 mois', src:['4.2-d14']},
   {id:'cpt-assureur.5', ecran:'cpt-assureur', ancre:'responsable de s’informer des détails de son plans', titre:'Qui explique l’assurance',
    cle:['le patient s’informe de son plan', 'pas au professionnel d’expliquer les bénéfices', 'le bureau facture directement ou remet une copie'],
    explique:'Pourquoi l’opticien dit-il au patient de vérifier son plan plutôt que de lui expliquer ses bénéfices ?',
-   verif:{q:'À qui revient-il d’expliquer les bénéfices d’une assurance, et que fait le bureau avec la facture ?', r:'Pas au professionnel : le patient est responsable de s’informer de son plan. Le bureau facture directement, ou remet une copie de chaque facture au patient, qui la soumet.', points:['le patient s’informe', 'facture directe ou copie']},
+   verif:{q:'À qui revient-il d’expliquer les bénéfices d’une assurance, et que fait le bureau avec la facture ?', r:'Pas au professionnel : le patient est responsable de s’informer de son plan. Le bureau facture directement, ou remet une copie de chaque facture au patient, qui la soumet.', points:['le patient s’informe', 'facture directe ou copie'],
+     qcm:{bon:'Au patient de s’informer ; le bureau facture directement ou remet une copie au patient', faux:['À l’opticien d’expliquer le plan ; le bureau garde les factures jusqu’au remboursement', 'À l’opticien d’expliquer le plan ; le patient soumet toujours lui-même, sans copie', 'Au patient de s’informer ; OHIP transmet ensuite chaque facture à l’assureur']}},
    src:['4.2-d12', '4.2-d13', '4.1-d55']},
 
   /* ---------- Trouve l'erreur ---------- */
   {id:'cpt-erreurs.1', ecran:'cpt-erreurs', ancre:'la première ligne qui ne donne pas ton résultat', titre:'La première étape fausse',
    cle:['refaire chaque étape avec les données', 'dans l’ordre de la méthode', 'la première ligne qui s’écarte est l’erreur'],
    explique:'Pourquoi les lignes après une erreur sont-elles fausses aussi, sans être des erreurs à elles seules ?',
-   verif:{q:'Comment trouves-tu l’étape fausse d’une facture remplie par un collègue ?', r:'Je refais chaque étape avec les données du cas, dans l’ordre ; la première ligne qui ne donne pas mon résultat est l’erreur ; les suivantes la reprennent.', points:['refaire chaque étape', 'dans l’ordre', 'la première qui s’écarte']},
+   verif:{q:'Comment trouves-tu l’étape fausse d’une facture remplie par un collègue ?', r:'Je refais chaque étape avec les données du cas, dans l’ordre ; la première ligne qui ne donne pas mon résultat est l’erreur ; les suivantes la reprennent.', points:['refaire chaque étape', 'dans l’ordre', 'la première qui s’écarte'],
+     qcm:{bon:'Je refais chaque étape dans l’ordre ; la première ligne qui s’écarte de mon résultat est l’erreur', faux:['Je compare le total au mien ; s’ils diffèrent, la dernière ligne est l’erreur', 'Je refais chaque étape ; chaque ligne qui s’écarte de mon résultat est une erreur', 'Je cherche le plus gros montant : c’est lui qui signale l’étape fausse']}},
    qcm:'Un collègue écrit “12 janv', src:['EF p2']},
   {id:'cpt-erreurs.2', ecran:'cpt-erreurs', ancre:'Les erreurs qui reviennent le plus', titre:'Les erreurs classiques',
    cle:['l’escompte sur toute la facture', 'le + 1 jour oublié', 'l’âge pris le jour de l’appel', 'le maximum oublié', 'l’assureur quand OHIP couvre'],
    explique:'Pourquoi ces erreurs donnent-elles des montants qui ont l’air plausibles ?',
-   verif:{q:'Nomme trois erreurs classiques d’une facture et la règle que chacune oublie.', r:'L’escompte sur toute la facture (il ne touche que les items nommés) ; le + 1 jour oublié (dernier + fréquence + 1 jour) ; le maximum oublié (couverture = la plus petite des trois valeurs) ; l’assureur réclamé quand OHIP couvre ; l’âge pris le jour de l’appel.', points:['escompte sur tout', '+ 1 jour', 'maximum', 'OHIP couvre', 'âge']},
+   verif:{q:'Nomme trois erreurs classiques d’une facture et la règle que chacune oublie.', r:'L’escompte sur toute la facture (il ne touche que les items nommés) ; le + 1 jour oublié (dernier + fréquence + 1 jour) ; le maximum oublié (couverture = la plus petite des trois valeurs) ; l’assureur réclamé quand OHIP couvre ; l’âge pris le jour de l’appel.', points:['escompte sur tout', '+ 1 jour', 'maximum', 'OHIP couvre', 'âge'],
+     qcm:{bon:'L’escompte sur tout (items nommés), le + 1 jour oublié, le maximum oublié (plafond)', faux:['La taxe oubliée, le rabais sénior refusé à un enfant, OHIP sur l’examen d’un enfant', 'L’escompte sur les items nommés, le + 1 jour ajouté, la couverture plafonnée au maximum', 'Le prix dit avant les mesures, l’âge pris le jour de l’examen, deux factures par visite']}},
    qcm:'Frais 150', src:['4.1-d19', '4.2-d6', '4.2-d24', 'EFR-s1']},
 
   /* ---------- Des cas complets (B5.23 à B5.25) ---------- */
   {id:'cpt-comptoir.1', ecran:'cpt-comptoir', ancre:'Les problèmes montent d\'une classe', titre:'Des classes de tâches',
    cle:['du cas simple au cas complet', 'service : six étapes ; produit : cinq', 'un problème sur trois à l’envers'],
    explique:'Pourquoi commencer par des cas où OHIP couvre tout, avant ceux où l’assureur atteint son maximum ?',
-   verif:{q:'Quels exercices l’UA2 annonce-t-elle pour cette matière ?', r:'« -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » ; leur forme n’est pas annoncée.', points:['gestion de rendez-vous', 'gestion financière', 'forme non annoncée']},
+   verif:{q:'Quels exercices l’UA2 annonce-t-elle pour cette matière ?', r:'« -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » ; leur forme n’est pas annoncée.', points:['gestion de rendez-vous', 'gestion financière', 'forme non annoncée'],
+     qcm:{bon:'Des exercices de gestion de rendez-vous et de gestion financière, de forme non annoncée', faux:['Des exercices de gestion financière seulement, en QCM sur eCité', 'Un examen pratique à la caisse de Lumiris, avec un vrai patient', 'Des exercices de gestion de rendez-vous seulement, faits à l’oral']}},
    src:['TC']},
   {id:'cpt-comptoir.2', ecran:'cpt-comptoir', ancre:'Examen complet le 7 déc. 2021 ; DDN 4 févr. 1952', titre:'La facture de service, de bout en bout',
    cle:['frais, escompte, facture', 'OHIP : âge, catégorie, date, code', 'l’assureur, s’il reste quelque chose', 'le patient'],
    explique:'Pourquoi, dans l’exercice 1, l’escompte calculé à l’étape 3 ne change-t-il rien à ce que paie le patient ?',
-   verif:{q:'Exercice 1 : 69 ans, examen 150 $ avec rabais sénior 10 %, couvert par OHIP. Que paie le patient ?', r:'Rien : la facture est de 135 $, mais « 0$ car couvert par OHIP » ; l’assureur, « Oui, mais pas applicable car couvert par OHIP ».', points:['135 $ de facture', '0 $ pour le patient', 'assureur non applicable']},
+   verif:{q:'Exercice 1 : 69 ans, examen 150 $ avec rabais sénior 10 %, couvert par OHIP. Que paie le patient ?', r:'Rien : la facture est de 135 $, mais « 0$ car couvert par OHIP » ; l’assureur, « Oui, mais pas applicable car couvert par OHIP ».', points:['135 $ de facture', '0 $ pour le patient', 'assureur non applicable'],
+     qcm:{bon:'Rien : la facture est de 135 $, mais OHIP la couvre ; l’assureur ne s’applique pas', faux:['27 $ : l’assureur paie 80 % des 135 $, et le patient le reste', '135 $ : le patient paie la facture, après le rabais sénior de 10 %', '150 $ : OHIP ne s’applique pas quand il y a une promotion']}},
    qcm:'Un patient de 61 ans en santé', src:['EFR-s1']},
   {id:'cpt-comptoir.3', ecran:'cpt-comptoir', ancre:'le maximum est atteint (exercices 3 et 6)', titre:'La facture de produit, de bout en bout',
    cle:['frais, escompte, facture', 'pas d’étape OHIP', 'l’assureur : %, maximum, période', 'le patient'],
    explique:'Pourquoi le patient de l’exercice 6 paie-t-il 450 $ et pas 280 $ ?',
-   verif:{q:'Exercice 6 : deux lunettes 550 $ et 300 $, la 2e à 50 % ; assurance 60 %, maximum 250 $, permise. Que paie le patient ?', r:'550 + 150 = 700 $ ; 700 × 0.60 = 420 $, maximum 250 $ ; le patient paie 700 − 250 = 450 $.', points:['700 $', '250 $', '450 $']},
+   verif:{q:'Exercice 6 : deux lunettes 550 $ et 300 $, la 2e à 50 % ; assurance 60 %, maximum 250 $, permise. Que paie le patient ?', r:'550 + 150 = 700 $ ; 700 × 0.60 = 420 $, maximum 250 $ ; le patient paie 700 − 250 = 450 $.', points:['700 $', '250 $', '450 $'],
+     qcm:{bon:'450 $ : facture 700 $, et l’assureur paie son maximum de 250 $', faux:['280 $ : facture 700 $, et l’assureur paie 700 × 0.60 = 420 $', '170 $ : 420 − 250, la part au-dessus du maximum de l’assureur', '175 $ : facture 425 $ (50 % sur les deux paires), moins 250 $']}},
    qcm:'Un enfant de 7 ans', src:['EFR-s5', 'EFR-s6', 'EFR-s10']},
   {id:'cpt-comptoir.4', ecran:'cpt-comptoir', ancre:'Au téléphone · le rendez-vous de bout en bout', titre:'Le rendez-vous de bout en bout',
    cle:['admissible le jour demandé ?', 'sinon, à partir de quand', 'le code', 'les codes reçus, et ce qu’on dit au patient'],
    explique:'Pourquoi une réponse « non » au téléphone doit-elle toujours venir avec une date ou une option ?',
-   verif:{q:'Une patiente de 25 ans, en santé ; la vérification renvoie 20. Que lui dis-tu ?', r:'OHIP ne la couvre pas : « Patient peut vérifier avec son assurance privée » ; « Patient peut choisir de payer pour l’examen ».', points:['pas couverte', 'assurance privée', 'ou payer']},
+   verif:{q:'Une patiente de 25 ans, en santé ; la vérification renvoie 20. Que lui dis-tu ?', r:'OHIP ne la couvre pas : « Patient peut vérifier avec son assurance privée » ; « Patient peut choisir de payer pour l’examen ».', points:['pas couverte', 'assurance privée', 'ou payer'],
+     qcm:{bon:'OHIP ne la couvre pas : elle peut vérifier son assurance privée, ou payer l’examen', faux:['Elle est couverte : le code 20 veut dire une carte valide, on réserve', 'Elle est couverte tous les 24 mois : on réserve sous V450', 'OHIP ne la couvre pas : on ne peut pas lui donner de rendez-vous']}},
    src:['EO-2', 'EO-5', 'EO-7']}
 ];
+
+/* ---------- Les quatre tuiles de l'Arène (learning-blueprint.md §4.7 ; recette §6.12) ----------
+   Chaque verif des PAS et chaque carte libre ou application porte qcm:{bon, faux} : une réponse courte, fidèle à r,
+   et trois erreurs prises dans les idées fausses des cartes KC (analyse/adm-m07_kc.md ; UA1 analyse/adm-m05_kc.md §P4).
+   Les cartes « calcul » rendent faux:[…] avec leur problème, au format de la tête de r (avant toute parenthèse).
+   Vérifié par outils/verif_qcm.js. */
+/* trois réponses fausses, dans l'ordre de la liste : sans la bonne réponse, sans doublon (insécables comprises) */
+const QCM_TROIS = (r, l) => {
+  const n = x => String(x).replace(/\s+/g, ' ').trim(), vus = new Set([n(r)]), out = [];
+  l.forEach(x => { if(x && out.length < 3 && !vus.has(n(x))){ vus.add(n(x)); out.push(x); } });
+  return out;
+};
+/* les cartes « calcul » du comptoir : la carte de Comptoir.carte (31-widgets.js), refaite ici pour garder le problème
+   tiré. Ses réponses fausses : les erreurs nommées du problème (pb.pieges, pb.pDates, pb.pCodes), puis, s'il en manque,
+   d'autres erreurs de la même bibliothèque (§P4) : taxe-ajoutee, pourcentage-decimal, un payeur oublié. */
+const QCM_COMPTOIR = type => {
+  const C = Comptoir, e = t => typeof esc === 'function' ? esc(t) : String(t), pc = (c, p) => c * p / 100;
+  if(type === 'date'){
+    const pb = C.rdvDate(), ch = d => String(d.j).padStart(2, '0') + '/' + String(d.m).padStart(2, '0') + '/' + d.a;
+    const N = ch(pb.rep.date), V = pb.rep.code, r = N + ' ' + V, Dt = pb.pDates.map(x => ch(x.v));
+    /* le code le plus proche d'abord : la colonne mineur, ou la ligne voisine (code-ligne, condition-oubliee) */
+    const PROCHE = {'0-19':'V402', '20-64-cond':'V408', '20-64-posph':'V451', '20-64-ow':'V450', '65+':'V415', '65+-cond':'V406'};
+    const K = [PROCHE[pb.cat]].concat(pb.pCodes.map(x => x.v)).filter(c => c && c !== V);
+    return {q:e(pb.texte) + ' Écris la date en chiffres (jj/mm/aaaa), puis le code.', r, tol:0, exp:e(pb.dem.join(' ; ')),
+      faux:QCM_TROIS(r, [Dt[0] && Dt[0] + ' ' + V, N + ' ' + K[0], Dt[1] && Dt[1] + ' ' + V, Dt[0] && Dt[0] + ' ' + K[0], N + ' ' + K[1], Dt[2] && Dt[2] + ' ' + V])};
+  }
+  /* un problème qui n'offre pas trois erreurs typiques est retiré, comme tirer() retire les cas qui ne tombent pas
+     juste (vers 1 facture de service sur 11 : le patient paie tout le frais, sans assurance ni escompte) */
+  for(let k = 0; ; k++){
+    const pb = C.tirer(type === 'esc' ? ['esc-pct', 'esc-mon', 'esc-items', 'esc-svc'][Math.floor(Math.random() * 4)] : type === 'cov' || type === 'deb' ? type : 'svc');
+    const R = pb.rep, plus = [];
+    if(type === 'esc') plus.push(pc(R, 113));                                                             // taxe-ajoutee (la TVH)
+    else if(type === 'cov') plus.push(pc(pb.c.F, pb.c.pl.p / 10), pb.c.pl.max, pb.c.F);                    // pourcentage-decimal ; le maximum ; toute la facture
+    else if(type === 'deb') plus.push(pb.c.F - R, pb.c.F - pc(pb.c.F, pb.c.pl.p / 10), pb.c.F, pc(R, 113));  // la couverture ; pourcentage-decimal ; l'assureur oublié ; la taxe
+    else {                                                                                                // les payeurs oubliés ; le frais ; la taxe
+      const f = C.calc(pb.s, ''), p = pb.s.plan ? pb.s.plan.p : 0;
+      plus.push(f.facture, pb.s.exFrais, f.facture - pc(f.facture, p), pc(f.facture, 113));
+    }
+    const r = C.argent(R), l = pb.pieges.map(x => x.v).concat(plus).filter(v => v != null && isFinite(v) && v >= 0);
+    const faux = QCM_TROIS(r, l.map(v => C.argent(Math.round(v))));
+    if(faux.length === 3 || k >= 24) return {q:e(pb.texte), r, tol:0.005, exp:e(pb.dem.join(' ; ')), faux};
+  }
+};
 
 const CARTES2 = [
   /* ---------- pourquoi ---------- */
   {id:'c-pourquoi-01', type:'libre', pas:['pourquoi.2'], q:'Que représente la croix optique ?',
-   r:'Elle « représente les puissance <span class="sic">(sic)</span> de l’ordonnance en vision de loin (VL) » <span class="src">7.1-d3</span>', points:['les puissances de la Rx', 'vision de loin (VL)'], src:['7.1-d3']},
+   r:'Elle « représente les puissance <span class="sic">(sic)</span> de l’ordonnance en vision de loin (VL) » <span class="src">7.1-d3</span>', points:['les puissances de la Rx', 'vision de loin (VL)'], src:['7.1-d3'],
+   qcm:{bon:'Les puissances de l’ordonnance en vision de loin (VL)', faux:['Les puissances de l’ordonnance en vision de près (VP)', 'Le prisme et l’addition de l’ordonnance, sur deux bras', 'La courbure de la cornée du patient, méridien par méridien']}},
   {id:'c-pourquoi-02', type:'libre', pas:['pourquoi.2'], q:'Qu’inclut-elle ?',
-   r:'« Inclus <span class="sic">(sic)</span> sphère, cylindre et axe » ; « Inclus <span class="sic">(sic)</span> deux méridiens principaux » <span class="src">7.1-d3</span>', points:['sphère, cylindre, axe', 'deux méridiens principaux'], src:['7.1-d3']},
+   r:'« Inclus <span class="sic">(sic)</span> sphère, cylindre et axe » ; « Inclus <span class="sic">(sic)</span> deux méridiens principaux » <span class="src">7.1-d3</span>', points:['sphère, cylindre, axe', 'deux méridiens principaux'], src:['7.1-d3'],
+   qcm:{bon:'La sphère, le cylindre et l’axe, sur deux méridiens principaux', faux:['La sphère, le cylindre, l’axe et l’addition, sur deux méridiens', 'La sphère, le cylindre, l’axe et le prisme, sur trois méridiens', 'Le cylindre et l’axe seulement, sur un méridien principal']}},
   {id:'c-pourquoi-03', type:'libre', pas:['pourquoi.3'], q:'Qu’exclut-elle ?',
-   r:'« Exclus <span class="sic">(sic)</span> Prisme » ; « Exclus <span class="sic">(sic)</span> Pouvoir d’Addition » <span class="src">7.1-d5</span>', points:['le prisme', 'l’addition'], src:['7.1-d5']},
+   r:'« Exclus <span class="sic">(sic)</span> Prisme » ; « Exclus <span class="sic">(sic)</span> Pouvoir d’Addition » <span class="src">7.1-d5</span>', points:['le prisme', 'l’addition'], src:['7.1-d5'],
+   qcm:{bon:'Le prisme et le pouvoir d’addition', faux:['Le cylindre et l’axe d’astigmatisme', 'L’addition seulement ; le prisme y va', 'La sphère, quand la Rx a un cylindre']}},
   {id:'c-pourquoi-04', type:'libre', pas:['pourquoi.3'], q:'Prisme ou addition dans la Rx : que dessine-t-on ?',
-   r:'« RIEN! » <span class="src">7.3-d38</span>', points:['rien', 'la croix ne partage que SPH/CYL/AXE'], src:['7.3-d38']},
+   r:'« RIEN! » <span class="src">7.3-d38</span>', points:['rien', 'la croix ne partage que SPH/CYL/AXE'], src:['7.3-d38'],
+   qcm:{bon:'Rien : la croix ne porte que la sphère, le cylindre et l’axe', faux:['L’addition sur chaque bras, et le prisme au centre', 'Un troisième bras pour le prisme ou pour l’addition', 'L’addition sur le 2e méridien, le prisme sur l’axe']}},
   {id:'c-pourquoi-05', type:'libre', pas:['pourquoi.4'], q:'La croix dit-elle de quel œil il s’agit ?',
-   r:'Non : « ATTN: LA CROIX OPTIQUE NE PRÉCISE PAS OD/OS, CECI EST DICTÉ PAR RX » <span class="src">7.1-d24</span>', points:['non', 'c’est la Rx qui le dit'], src:['7.1-d24']},
+   r:'Non : « ATTN: LA CROIX OPTIQUE NE PRÉCISE PAS OD/OS, CECI EST DICTÉ PAR RX » <span class="src">7.1-d24</span>', points:['non', 'c’est la Rx qui le dit'], src:['7.1-d24'],
+   qcm:{bon:'Non : la croix ne précise pas OD/OS, c’est la Rx qui le dit', faux:['Oui : par son axe, un bras à 180 désigne l’OD', 'Oui : par sa place sur la page, à gauche c’est l’OS', 'Oui : par le signe de ses valeurs, le moins désigne l’OS']}},
   {id:'c-pourquoi-06', type:'chaine', pas:['pourquoi.2', 'pourquoi.3'], q:'De la Rx complète à la croix : remets les étapes dans l’ordre.',
    items:['la Rx complète', 'garder SPH, CYL, AXE (ni prisme, ni addition)', 'deux méridiens', 'une croix par œil'], src:['7.1-d3', '7.1-d5']},
   {id:'c-pourquoi-07', type:'application', pas:['torique.3', 'pourquoi.3'],
    q:'Diane Lévesque te tend sa Rx : OD -1.75 -0.75 x 170, OS -2.00 -1.00 x 015, add +1.75. Elle demande où sera l’addition sur la croix de son OD. Que lui réponds-tu, et que dessines-tu ?',
-   r:'L’addition ne va pas sur la croix (« Exclus <span class="sic">(sic)</span> Pouvoir d’Addition ») ; la croix de l’OD porte -1.75 sur 170 et -2.50 sur 080.', points:['l’addition n’y va pas', '-1.75 sur 170', '-2.50 sur 080'], src:['7.1-d5']},
+   r:'L’addition ne va pas sur la croix (« Exclus <span class="sic">(sic)</span> Pouvoir d’Addition ») ; la croix de l’OD porte -1.75 sur 170 et -2.50 sur 080.', points:['l’addition n’y va pas', '-1.75 sur 170', '-2.50 sur 080'], src:['7.1-d5'],
+   qcm:{bon:'Nulle part : l’addition n’y va pas ; l’OD porte -1.75 sur 170 et -2.50 sur 080', faux:['Ajoutée à chaque bras : l’OD porte Plano sur 170 et -0.75 sur 080', 'Nulle part : l’addition n’y va pas ; l’OD porte -1.75 sur 170 et -2.50 sur 260', 'Sur le 2e méridien : l’OD porte -1.75 sur 170 et +1.75 sur 080']}},
 
   /* ---------- echelle ---------- */
   {id:'c-echelle-01', type:'libre', pas:['echelle.1'], q:'Où sont 180, 090 et 0 ?',
-   r:'180 à gauche, 090 en haut, 0 à droite, sur les deux verres vus de face <span class="src">7.1-d8 à d10</span>', points:['180 à gauche', '090 en haut', '0 à droite'], src:['7.1-d8', '7.1-d10']},
+   r:'180 à gauche, 090 en haut, 0 à droite, sur les deux verres vus de face <span class="src">7.1-d8 à d10</span>', points:['180 à gauche', '090 en haut', '0 à droite'], src:['7.1-d8', '7.1-d10'],
+   qcm:{bon:'180 à gauche, 090 en haut, 0 à droite, sur les deux verres', faux:['180 à droite, 090 en haut, 0 à gauche, sur les deux verres', '180 à gauche sur l’OD, à droite sur l’OS ; 090 en haut', '180 en haut, 090 à droite, 0 en bas, sur les deux verres']}},
   {id:'c-echelle-02', type:'libre', pas:['echelle.1', 'echelle.2'], q:'Où sont 135 et 045 ?',
-   r:'135 en haut à gauche, 045 en haut à droite <span class="src">7.1-d23</span>. Chaque méridien porte le même degré à ses deux bouts.', points:['135 en haut à gauche', '045 en haut à droite'], src:['7.1-d23']},
+   r:'135 en haut à gauche, 045 en haut à droite <span class="src">7.1-d23</span>. Chaque méridien porte le même degré à ses deux bouts.', points:['135 en haut à gauche', '045 en haut à droite'], src:['7.1-d23'],
+   qcm:{bon:'135 en haut à gauche, 045 en haut à droite', faux:['135 en haut à droite, 045 en haut à gauche', '135 en bas à gauche, 045 en bas à droite', '135 à gauche, 045 à droite, sur la ligne horizontale']}},
   {id:'c-echelle-03', type:'libre', pas:['echelle.3'], q:'Lunettes dessinées vues de face : où est l’OD ?',
-   r:'À gauche du dessin, l’OS à droite <span class="src">7.1-d34</span>.', points:['à gauche', 'l’OS à droite'], src:['7.1-d34']},
+   r:'À gauche du dessin, l’OS à droite <span class="src">7.1-d34</span>.', points:['à gauche', 'l’OS à droite'], src:['7.1-d34'],
+   qcm:{bon:'À gauche du dessin, l’OS à droite', faux:['À droite du dessin, l’OS à gauche', 'À droite : du côté de la main droite de l’opticien', 'Où l’on veut : seule la Rx dit lequel est l’OD']}},
   {id:'c-echelle-04', type:'chaine', pas:['echelle.1'], q:'Sur un verre vu de face, nomme les repères de gauche à droite en passant par le haut.',
    items:['180', '135', '090', '045', '0'], src:['7.1-d9', '7.1-d23']},
   {id:'c-echelle-05', type:'geste', pas:['echelle.1', 'echelle.3'], geste:'g-verre-face',
@@ -3321,28 +3465,37 @@ const CARTES2 = [
 
   /* ---------- spherique ---------- */
   {id:'c-spherique-01', type:'libre', pas:['spherique.1'], q:'Rx sphérique : quelle force sur les méridiens ?',
-   r:'« Pouvoir Sphérique = même force dans tous les méridiens de la croix » <span class="src">7.1-d22</span>', points:['la même force', 'tous les méridiens'], src:['7.1-d22']},
+   r:'« Pouvoir Sphérique = même force dans tous les méridiens de la croix » <span class="src">7.1-d22</span>', points:['la même force', 'tous les méridiens'], src:['7.1-d22'],
+   qcm:{bon:'La même force dans tous les méridiens de la croix', faux:['La force sur 180 seulement ; les autres méridiens sont Plano', 'La force sur 180 et 090 seulement ; Plano sur les obliques', 'Deux forces différentes, une sur 180 et une sur 090']}},
   {id:'c-spherique-02', type:'libre', pas:['spherique.1'], q:'Comment s’écrit une Rx sphérique ?',
-   r:'« -1.00 DS » <span class="src">7.1-d21</span> ; sur un bras, « -1.00 D » au début du cours, puis le nombre seul.', points:['DS', 'ex. -1.00 DS'], src:['7.1-d21']},
+   r:'« -1.00 DS » <span class="src">7.1-d21</span> ; sur un bras, « -1.00 D » au début du cours, puis le nombre seul.', points:['DS', 'ex. -1.00 DS'], src:['7.1-d21'],
+   qcm:{bon:'Avec DS après la sphère, par exemple -1.00 DS', faux:['Avec l’axe 180, par exemple -1.00 x 180', 'Avec DC après la sphère, par exemple -1.00 DC', 'Avec un cylindre Plano, par exemple -1.00 Plano x 180']}},
   {id:'c-spherique-03', type:'discrim', pas:['spherique.1', 'torique.1'], q:'Une croix porte -2.00 sur 180 et -2.00 sur 090. Elle est…',
    choix:['sphérique', 'torique'], bonne:0, r:'Même force sur les deux méridiens : sphérique (-2.00 DS) ; une croix torique porte deux forces différentes.', src:['7.1-d22', '7.2-d32']},
   {id:'c-spherique-04', type:'application', pas:['spherique.3', 'echelle.3'],
    q:'Rx du cours : OD -1.00, OS -2.00 (7.1-d12). Dessine les deux croix sur des lunettes vues de face : que porte chaque bras, et de quel côté est chaque croix ?',
-   r:'À gauche, l’OD : -1.00 sur 180 et sur 090. À droite, l’OS : -2.00 sur ses deux bras.', points:['OD à gauche', '-1.00 sur les deux bras', 'OS -2.00 sur les deux bras'], src:['7.1-d12', '7.1-d20', '7.1-d34']},
+   r:'À gauche, l’OD : -1.00 sur 180 et sur 090. À droite, l’OS : -2.00 sur ses deux bras.', points:['OD à gauche', '-1.00 sur les deux bras', 'OS -2.00 sur les deux bras'], src:['7.1-d12', '7.1-d20', '7.1-d34'],
+   qcm:{bon:'À gauche, l’OD : -1.00 sur ses deux bras ; à droite, l’OS : -2.00 sur ses deux bras', faux:['À droite, l’OD : -1.00 sur ses deux bras ; à gauche, l’OS : -2.00 sur ses deux bras', 'À gauche, l’OD : -1.00 sur 180, Plano sur 090 ; à droite, l’OS : -2.00 sur 180, Plano sur 090', 'À gauche, l’OD : -1.00 sur 180, -2.00 sur 090 ; à droite, l’OS : la même croix']}},
 
   /* ---------- torique ---------- */
   {id:'c-torique-01', type:'libre', pas:['torique.2'], q:'① Sur quel méridien va la sphère ?',
-   r:'Sur le méridien de l’axe : une flèche va de « -1.00 » à « 180 » <span class="src">7.2-d16, d17</span>.', points:['le méridien de l’axe', 'P(axe) = SPH'], src:['7.2-d16', '7.2-d17']},
+   r:'Sur le méridien de l’axe : une flèche va de « -1.00 » à « 180 » <span class="src">7.2-d16, d17</span>.', points:['le méridien de l’axe', 'P(axe) = SPH'], src:['7.2-d16', '7.2-d17'],
+   qcm:{bon:'Sur le méridien de l’axe de la Rx', faux:['Sur le méridien 180, quel que soit l’axe', 'Sur le méridien à 90° de l’axe', 'Sur les deux méridiens à la fois']}},
   {id:'c-torique-02', type:'libre', pas:['torique.3'], q:'② Que porte le 2e méridien ?',
-   r:'« SPH + CYL = Force du 2e méridien » <span class="src">7.2-d18</span>', points:['SPH + CYL', 'le 2e méridien'], src:['7.2-d18']},
+   r:'« SPH + CYL = Force du 2e méridien » <span class="src">7.2-d18</span>', points:['SPH + CYL', 'le 2e méridien'], src:['7.2-d18'],
+   qcm:{bon:'SPH + CYL, la sphère plus le cylindre', faux:['Le CYL seul, sans la sphère', 'SPH − CYL, la sphère moins le cylindre', 'La SPH seule, comme le méridien de l’axe']}},
   {id:'c-torique-03', type:'libre', pas:['torique.4'], q:'③ Où est le 2e méridien ?',
-   r:'À angle droit de l’axe : « +/- 090 (Angle Droit) » <span class="src">7.3-d15</span>', points:['à angle droit', 'axe ± 090'], src:['7.3-d15']},
+   r:'À angle droit de l’axe : « +/- 090 (Angle Droit) » <span class="src">7.3-d15</span>', points:['à angle droit', 'axe ± 090'], src:['7.3-d15'],
+   qcm:{bon:'À angle droit de l’axe : axe ± 090', faux:['Sur l’axe lui-même : le même degré', 'À 45° de l’axe : axe ± 045', 'Toujours à 090, quel que soit l’axe']}},
   {id:'c-torique-04', type:'libre', pas:['torique.3'], q:'Croix de OD -1.00 -0.50 x 180 ?',
-   r:'-1.00 sur 180 ; « (-1.00) + (-0.50) = -1.50 » sur 090 <span class="src">7.2-d19 à d21</span>', points:['-1.00 sur 180', '-1.50 sur 090'], src:['7.2-d19', '7.2-d21']},
+   r:'-1.00 sur 180 ; « (-1.00) + (-0.50) = -1.50 » sur 090 <span class="src">7.2-d19 à d21</span>', points:['-1.00 sur 180', '-1.50 sur 090'], src:['7.2-d19', '7.2-d21'],
+   qcm:{bon:'-1.00 sur 180 ; -1.50 sur 090', faux:['-1.50 sur 180 ; -1.00 sur 090', '-1.00 sur 180 ; -0.50 sur 090', '-1.00 sur 180 ; -1.00 sur 090']}},
   {id:'c-torique-05', type:'libre', pas:['torique.5'], q:'Croix de OS -2.00 -0.75 x 090 ?',
-   r:'-2.00 sur 090 ; « SPH + CYL = (-2.00) + (-0.75) = -2.75 » sur 180 <span class="src">7.2-d27 à d29</span>', points:['-2.00 sur 090', '-2.75 sur 180'], src:['7.2-d27', '7.2-d29']},
+   r:'-2.00 sur 090 ; « SPH + CYL = (-2.00) + (-0.75) = -2.75 » sur 180 <span class="src">7.2-d27 à d29</span>', points:['-2.00 sur 090', '-2.75 sur 180'], src:['7.2-d27', '7.2-d29'],
+   qcm:{bon:'-2.00 sur 090 ; -2.75 sur 180', faux:['-2.00 sur 180 ; -2.75 sur 090', '-2.00 sur 090 ; -1.25 sur 180', '-2.00 sur 090 ; -2.75 sur 000']}},
   {id:'c-torique-06', type:'libre', pas:['torique.1'], q:'La croix torique en une ligne ?',
-   r:'« Croix Optique TORIQUE = Rx avec astigmatisme = 2 méridiens = 2 forces » <span class="src">7.2-d32</span>', points:['Rx avec astigmatisme', '2 méridiens = 2 forces'], src:['7.2-d32']},
+   r:'« Croix Optique TORIQUE = Rx avec astigmatisme = 2 méridiens = 2 forces » <span class="src">7.2-d32</span>', points:['Rx avec astigmatisme', '2 méridiens = 2 forces'], src:['7.2-d32'],
+   qcm:{bon:'Rx avec astigmatisme = 2 méridiens = 2 forces', faux:['Rx sans astigmatisme = 1 méridien = 1 force', 'Rx avec astigmatisme = 2 méridiens = 1 même force', 'Rx avec prisme = 3 méridiens = 3 forces']}},
   {id:'c-torique-07', type:'chaine', pas:['torique.2', 'torique.3', 'torique.4'], q:'Construis une croix torique : remets les étapes dans l’ordre.',
    items:['lire la Rx : SPH, CYL, AXE', 'poser la sphère au bout du bras de l’axe', 'additionner SPH + CYL', 'poser le résultat sur le bras à 90°'], src:['7.2-d16', '7.2-d18', '7.3-d15']},
   {id:'c-torique-08', type:'discrim', pas:['torique.2', 'torique.3'], q:'OD -1.00 -0.50 x 180 : quel méridien porte -1.50 ?',
@@ -3355,8 +3508,13 @@ const CARTES2 = [
      const q4 = (lo, hi) => Math.round((lo + 0.25 * Math.floor(Math.random() * (Math.round((hi - lo) / 0.25) + 1))) * 100) / 100;
      const sph = q4(-8, 6), cyl = -q4(0.25, 4), axe = Math.random() < 0.5 ? 180 : 90;
      const m2 = axe <= 90 ? axe + 90 : axe - 90, p2 = Math.round((sph + cyl) * 100) / 100;
+     const r = f(sph) + ' sur ' + a3(axe) + ', ' + f(p2) + ' sur ' + a3(m2), S = f(sph), P = f(p2);
+     const T = (a, x, b, y) => a + ' sur ' + x + ', ' + b + ' sur ' + y;
+     /* les tuiles (CroixAToi.ERREURS) : sph-sur-180, soustrait, zero-180 ; puis bras-inverses, cyl-seul, sph-partout */
+     const faux = QCM_TROIS(r, [axe === 90 && T(S, '180', P, '090'), T(S, a3(axe), f(Math.round((sph - cyl) * 100) / 100), a3(m2)),
+       axe === 90 && T(S, '090', P, '000'), T(S, a3(m2), P, a3(axe)), T(S, a3(axe), f(cyl), a3(m2)), T(S, a3(axe), S, a3(m2))]);
      return {q:'Croix de ' + f(sph) + ' ' + f(cyl) + ' x ' + a3(axe) + ' : quelle valeur va sur chaque méridien ?',
-             r:f(sph) + ' sur ' + a3(axe) + ', ' + f(p2) + ' sur ' + a3(m2), tol:0};
+             r, tol:0, faux};
    }, src:['7.2-d16', '7.2-d18', '7.3-d15']},
   {id:'c-torique-10', type:'geste', pas:['torique.2', 'torique.3', 'torique.4'], geste:'g-croix-bras',
    q:'Fais la croix des avant-bras pour OS -2.00 -0.75 x 090, puis pour -5.00 -1.50 x 160, en disant la valeur de chaque bras.', src:['7.2-d29', '7.3-d28']},
@@ -3371,24 +3529,32 @@ const CARTES2 = [
      let sph;
      do { sph = Math.random() < 0.15 ? -cyl : q4(-10, 7); } while (Math.abs(sph) < 1e-9);
      const res = Math.round((sph + cyl) * 100) / 100;
-     return {q:'(' + f(sph) + ') + (' + f(cyl) + ') = ?', r:f(res), tol:0};
+     const c2 = x => Math.round(x * 100) / 100, r = f(res);
+     /* les tuiles (adm-m07_kc.md B7.8) : le cylindre soustrait, le signe perdu, les deux ; puis le cylindre seul, la sphère seule */
+     const faux = QCM_TROIS(r, [f(c2(sph - cyl)), f(-res), f(c2(cyl - sph)), f(cyl), f(sph), f(c2(res + 0.25)), f(c2(res - 0.25))]);
+     return {q:'(' + f(sph) + ') + (' + f(cyl) + ') = ?', r, tol:0, faux};
    }, src:['7.2-d19', '7.3-d22', '7.3-d30']},
   {id:'c-negatifs-02', type:'geste', pas:['negatifs.2', 'negatifs.3'], geste:'g-cylindre-recule',
    q:'Sur ta règle, fais (+0.25) + (-0.75), puis (+2.00) + (-2.00), avec le doigt, en disant chaque valeur.', src:['7.2-d30', '7.3-d30']},
   {id:'c-negatifs-03', type:'application', pas:['negatifs.3'],
    q:'Exercice 7.2-d30, n° 10 : +1.25 -1.25 x 180. Que vaut le 2e méridien, et où va-t-il ?',
-   r:'(+1.25) + (-1.25) = Plano, sur 090. Un méridien Plano, l’autre positif : astigmatisme hypermétrope simple <span class="deduit">déduit</span>.', points:['Plano', 'sur 090', 'hypermétrope simple'], src:['7.2-d30']},
+   r:'(+1.25) + (-1.25) = Plano, sur 090. Un méridien Plano, l’autre positif : astigmatisme hypermétrope simple <span class="deduit">déduit</span>.', points:['Plano', 'sur 090', 'hypermétrope simple'], src:['7.2-d30'],
+   qcm:{bon:'Plano, sur 090 : un méridien Plano, l’autre positif, hypermétrope simple', faux:['+2.50, sur 090 : deux méridiens positifs, hypermétrope composé', '-1.25, sur 090 : un positif, un négatif, astigmatisme mixte', 'Plano, sur 180 : le même méridien que l’axe, hypermétrope simple']}},
 
   /* ---------- oblique ---------- */
   {id:'c-oblique-01', type:'libre', pas:['oblique.2'], q:'Axe 160 : où est le 2e méridien ?',
-   r:'« 160 - 090 = 070 » <span class="src">7.3-d26</span>', points:['070', '160 − 090'], src:['7.3-d26']},
+   r:'« 160 - 090 = 070 » <span class="src">7.3-d26</span>', points:['070', '160 − 090'], src:['7.3-d26'],
+   qcm:{bon:'À 070 : 160 − 090 = 070', faux:['À 250 : 160 + 090 = 250', 'À 020 : 180 − 160 = 020', 'À 160 : le même degré que l’axe']}},
   {id:'c-oblique-02', type:'libre', pas:['oblique.3'], q:'Pourquoi soustraire 090 à 160 ?',
-   r:'160 + 090 = 250 n’est pas un méridien : « L’axe du cylindre est toujours compris entre 001 et 180 degrés. » (UA1) <span class="deduit">déduit</span>', points:['250 n’est pas un méridien', 'entre 001 et 180'], src:['UA1']},
+   r:'160 + 090 = 250 n’est pas un méridien : « L’axe du cylindre est toujours compris entre 001 et 180 degrés. » (UA1) <span class="deduit">déduit</span>', points:['250 n’est pas un méridien', 'entre 001 et 180'], src:['UA1'],
+   qcm:{bon:'160 + 090 = 250 n’est pas un méridien : l’axe va de 001 à 180', faux:['Parce que le 2e méridien est toujours plus petit que l’axe', 'Parce qu’un cylindre négatif fait reculer l’axe de 090', 'Parce que 160 est oblique : on soustrait toujours pour un axe oblique']}},
   {id:'c-oblique-03', type:'libre', pas:['oblique.1'], q:'Croix de -5.00 -1.50 x 160 ?',
-   r:'-5.00 sur 160 ; « 2e méridien = SPH + CYL = (-5.00) + (-1.50) = -6.50 » sur 070 <span class="src">7.3-d21 à d28</span>', points:['-5.00 sur 160', '-6.50 sur 070'], src:['7.3-d21', '7.3-d28']},
+   r:'-5.00 sur 160 ; « 2e méridien = SPH + CYL = (-5.00) + (-1.50) = -6.50 » sur 070 <span class="src">7.3-d21 à d28</span>', points:['-5.00 sur 160', '-6.50 sur 070'], src:['7.3-d21', '7.3-d28'],
+   qcm:{bon:'-5.00 sur 160 ; -6.50 sur 070', faux:['-5.00 sur 160 ; -6.50 sur 250', '-5.00 sur 180 ; -6.50 sur 090', '-5.00 sur 160 ; -3.50 sur 070']}},
   {id:'c-oblique-04', type:'application', pas:['oblique.2', 'oblique.3'],
    q:'Diane regarde la croix de son OD, -1.75 -0.75 x 170, et demande pourquoi le 2e trait n’est pas à 260. Construis la croix et explique.',
-   r:'-1.75 sur 170 ; 170 est au-delà de 090, donc 170 − 090 = 080 ; (-1.75) + (-0.75) = -2.50 sur 080. 260 sort de la plage 001-180.', points:['-1.75 sur 170', '080', '-2.50', '001-180'], src:['7.3-d26', 'UA1']},
+   r:'-1.75 sur 170 ; 170 est au-delà de 090, donc 170 − 090 = 080 ; (-1.75) + (-0.75) = -2.50 sur 080. 260 sort de la plage 001-180.', points:['-1.75 sur 170', '080', '-2.50', '001-180'], src:['7.3-d26', 'UA1'],
+   qcm:{bon:'-1.75 sur 170, -2.50 sur 080 : au-delà de 090, on retire 090 ; 260 sort de la plage', faux:['-1.75 sur 170, -2.50 sur 260 : on ajoute toujours 090 à l’axe', '-1.75 sur 170, -2.50 sur 010 : le 2e méridien est 180 − 170 = 010', '-1.75 sur 170, -1.00 sur 080 : au-delà de 090, on soustrait le cylindre']}},
   {id:'c-oblique-05', type:'calcul', pas:['oblique.1', 'oblique.2'],
    q:'Croix d’une Rx à axe oblique tirée au hasard : le 2e méridien et les deux valeurs.',
    gen:() => {
@@ -3399,34 +3565,47 @@ const CARTES2 = [
      let axe;
      do { axe = 1 + Math.floor(Math.random() * 179); } while (axe === 90);
      const m2 = axe <= 90 ? axe + 90 : axe - 90, p2 = Math.round((sph + cyl) * 100) / 100;
+     const r = f(sph) + ' sur ' + a3(axe) + ', ' + f(p2) + ' sur ' + a3(m2), S = f(sph), P = f(p2);
+     const T = (a, x, b, y) => a + ' sur ' + x + ', ' + b + ' sur ' + y;
+     /* les tuiles (CroixAToi.ERREURS) : 250, soustrait, sph-sur-180 ; puis bras-inverses, cyl-seul, meme-meridien */
+     const faux = QCM_TROIS(r, [axe > 90 && T(S, a3(axe), P, String(axe + 90)), T(S, a3(axe), f(Math.round((sph - cyl) * 100) / 100), a3(m2)),
+       T(S, '180', P, '090'), T(S, a3(m2), P, a3(axe)), T(S, a3(axe), f(cyl), a3(m2)), T(S, a3(axe), P, a3(axe))]);
      return {q:'Croix de ' + f(sph) + ' ' + f(cyl) + ' x ' + a3(axe) + ' : à quel degré est le 2e méridien, et quelle valeur va sur chaque méridien ?',
-             r:f(sph) + ' sur ' + a3(axe) + ', ' + f(p2) + ' sur ' + a3(m2), tol:0};
+             r, tol:0, faux};
    }, src:['7.3-d15', '7.3-d22', '7.3-d26']},
 
   /* ---------- options ---------- */
   {id:'c-options-01', type:'libre', pas:['options.1'], q:'L’option A ?',
-   r:'Dessiner les vrais méridiens, en oblique : le degré en haut de la ligne, la valeur au bout bas <span class="src">7.3-d15, d28</span>', points:['les vrais méridiens, en oblique', 'le degré en haut', 'la valeur au bout bas'], src:['7.3-d15', '7.3-d28']},
+   r:'Dessiner les vrais méridiens, en oblique : le degré en haut de la ligne, la valeur au bout bas <span class="src">7.3-d15, d28</span>', points:['les vrais méridiens, en oblique', 'le degré en haut', 'la valeur au bout bas'], src:['7.3-d15', '7.3-d28'],
+   qcm:{bon:'Les vrais méridiens en oblique : le degré en haut, la valeur au bout bas', faux:['Une croix droite aux bras étiquetés : le degré à un bout, la valeur à l’autre', 'Les vrais méridiens en oblique : la valeur en haut, le degré au bout bas', 'Une seule ligne, celle de l’axe, avec la sphère et le cylindre']}},
   {id:'c-options-02', type:'libre', pas:['options.2'], q:'L’option B : quel méridien à l’horizontale ?',
-   r:'« (axe le plus près de 180 ou 0) » ; à la verticale : « (axe le plus près de 090) » <span class="src">7.3-d17</span>', points:['le plus près de 180 ou 0', 'vertical : le plus près de 090'], src:['7.3-d17']},
+   r:'« (axe le plus près de 180 ou 0) » ; à la verticale : « (axe le plus près de 090) » <span class="src">7.3-d17</span>', points:['le plus près de 180 ou 0', 'vertical : le plus près de 090'], src:['7.3-d17'],
+   qcm:{bon:'Le plus près de 180 ou 0 ; le plus près de 090 va à la verticale', faux:['Toujours l’axe de la Rx ; le 2e méridien va à la verticale', 'Le plus près de 090 ; le plus près de 180 ou 0 va à la verticale', 'Le plus près de 180 (0 ne compte pas) ; l’autre va à la verticale']}},
   {id:'c-options-03', type:'libre', pas:['options.3'], q:'Option B, axe 045 ou 135 ?',
-   r:'La règle ne tranche pas : ces axes sont à égale distance des deux bras. À vérifier en classe.', points:['ne tranche pas', 'à égale distance', 'à vérifier en classe'], src:['7.3-d17']},
+   r:'La règle ne tranche pas : ces axes sont à égale distance des deux bras. À vérifier en classe.', points:['ne tranche pas', 'à égale distance', 'à vérifier en classe'], src:['7.3-d17'],
+   qcm:{bon:'La règle ne tranche pas : ils sont à égale distance des deux bras', faux:['Le bras horizontal : 045 et 135 sont plus près de 180 ou 0', 'Le bras vertical : 045 et 135 sont plus près de 090', '045 à l’horizontale et 135 à la verticale, selon leur côté']}},
   {id:'c-options-04', type:'discrim', pas:['options.1', 'options.2'], q:'Une croix droite dont le bras horizontal est étiqueté 160 et le vertical 070 : c’est…',
    choix:['l’option A', 'l’option B'], bonne:1, r:'Option A : les vrais méridiens, tracés en oblique ; option B : une croix droite aux bras étiquetés.', src:['7.3-d15', '7.3-d28']},
   {id:'c-options-05', type:'application', pas:['options.2'],
    q:'Tu dessines l’OS de Diane, -2.00 -1.00 x 015, en option B. Quel méridien va sur le bras horizontal, et que porte chaque bras ?',
-   r:'015 est à 15° de 0 et à 75° de 090 : 015 à l’horizontale, avec -2.00 ; 105 à la verticale, avec (-2.00) + (-1.00) = -3.00 <span class="deduit">déduit</span>.', points:['015 à l’horizontale', '-2.00', '105 à la verticale', '-3.00'], src:['7.3-d17']},
+   r:'015 est à 15° de 0 et à 75° de 090 : 015 à l’horizontale, avec -2.00 ; 105 à la verticale, avec (-2.00) + (-1.00) = -3.00 <span class="deduit">déduit</span>.', points:['015 à l’horizontale', '-2.00', '105 à la verticale', '-3.00'], src:['7.3-d17'],
+   qcm:{bon:'015 à l’horizontale avec -2.00 ; 105 à la verticale avec -3.00', faux:['105 à l’horizontale avec -3.00 ; 015 à la verticale avec -2.00', '015 à l’horizontale avec -2.00 ; 105 à la verticale avec -1.00', '015 à l’horizontale avec -3.00 ; 105 à la verticale avec -2.00']}},
   {id:'c-options-06', type:'geste', pas:['options.2', 'options.3'], geste:'g-option-b',
    q:'Avec la croix des avant-bras, redresse les axes 160, 065 et 045 en option B, en disant le bras choisi.', src:['7.3-d17']},
 
   /* ---------- foyers ---------- */
   {id:'c-foyers-01', type:'libre', pas:['foyers.2'], q:'Myope sphérique : où est le foyer ?',
-   r:'« Rappel: Myope Sphérique = 1 points focaux <span class="sic">(sic)</span> devant la rétine » <span class="src">7.1-d50</span>', points:['un foyer', 'devant la rétine'], src:['7.1-d50']},
+   r:'« Rappel: Myope Sphérique = 1 points focaux <span class="sic">(sic)</span> devant la rétine » <span class="src">7.1-d50</span>', points:['un foyer', 'devant la rétine'], src:['7.1-d50'],
+   qcm:{bon:'Un seul foyer, devant la rétine', faux:['Un seul foyer, derrière la rétine', 'Deux foyers, devant la rétine', 'Un seul foyer, sur la rétine']}},
   {id:'c-foyers-02', type:'libre', pas:['foyers.2'], q:'Hypermétrope sphérique ?',
-   r:'« Rappel: Hypermétrope Sphérique = 1 points focaux <span class="sic">(sic)</span> derrière la rétine » <span class="src">7.1-d50</span>', points:['un foyer', 'derrière la rétine'], src:['7.1-d50']},
+   r:'« Rappel: Hypermétrope Sphérique = 1 points focaux <span class="sic">(sic)</span> derrière la rétine » <span class="src">7.1-d50</span>', points:['un foyer', 'derrière la rétine'], src:['7.1-d50'],
+   qcm:{bon:'Un seul foyer, derrière la rétine', faux:['Un seul foyer, devant la rétine', 'Deux foyers, derrière la rétine', 'Un seul foyer, sur la rétine']}},
   {id:'c-foyers-03', type:'libre', pas:['foyers.3'], q:'Un méridien Plano ?',
-   r:'« Plano = Emmetrope <span class="sic">(sic)</span> = Sur la rétine » <span class="src">7.3-d32</span>', points:['emmétrope', 'sur la rétine'], src:['7.3-d32']},
+   r:'« Plano = Emmetrope <span class="sic">(sic)</span> = Sur la rétine » <span class="src">7.3-d32</span>', points:['emmétrope', 'sur la rétine'], src:['7.3-d32'],
+   qcm:{bon:'Emmétrope : son foyer est sur la rétine', faux:['Myope : son foyer est devant la rétine', 'Hypermétrope : son foyer est derrière la rétine', 'Sans foyer : un méridien Plano n’en a pas']}},
   {id:'c-foyers-04', type:'libre', pas:['foyers.4'], q:'L’œil corrigé : où sont les foyers ?',
-   r:'Sur la rétine : « OD: UN POINT FOCAUX <span class="sic">(sic)</span> SUR LA RÉTINE » <span class="src">7.1-d41</span>', points:['sur la rétine', 'corrigé par sa Rx'], src:['7.1-d41']},
+   r:'Sur la rétine : « OD: UN POINT FOCAUX <span class="sic">(sic)</span> SUR LA RÉTINE » <span class="src">7.1-d41</span>', points:['sur la rétine', 'corrigé par sa Rx'], src:['7.1-d41'],
+   qcm:{bon:'Sur la rétine : la correction les y ramène', faux:['Au même endroit : la correction ne les déplace pas', 'Devant la rétine : la correction les avance', 'Derrière la rétine : la correction les recule']}},
   {id:'c-foyers-05', type:'discrim', pas:['foyers.4', 'foyers.1'], q:'+6.50 -1.00 x 160, et le patient porte sa correction : où sont ses foyers ?',
    choix:['deux derrière la rétine', 'sur la rétine'], bonne:1, r:'Sans correction : deux derrière la rétine ; avec sa correction : sur la rétine. Lis toujours lequel la question demande.', src:['7.3-d35', '7.1-d41']},
   {id:'c-foyers-06', type:'geste', pas:['foyers.2', 'foyers.3'], geste:'g-foyers-main',
@@ -3434,17 +3613,23 @@ const CARTES2 = [
 
   /* ---------- types ---------- */
   {id:'c-types-01', type:'libre', pas:['types.5'], q:'+2.00 -2.00 x 135 : nom et type ?',
-   r:'« rx: Hypermétrope Torique; » ; « Astigmatisme Hypermétrope Simple » <span class="src">7.3-d32</span>', points:['Hypermétrope Torique', 'astigmatisme hypermétrope simple'], src:['7.3-d32']},
+   r:'« rx: Hypermétrope Torique; » ; « Astigmatisme Hypermétrope Simple » <span class="src">7.3-d32</span>', points:['Hypermétrope Torique', 'astigmatisme hypermétrope simple'], src:['7.3-d32'],
+   qcm:{bon:'Hypermétrope torique ; astigmatisme hypermétrope simple', faux:['Hypermétrope torique ; astigmatisme hypermétrope composé', 'Hypermétrope torique ; astigmatisme mixte', 'Myope torique ; astigmatisme myope simple']}},
   {id:'c-types-02', type:'libre', pas:['types.3', 'foyers.1'], q:'+6.50 -1.00 x 160 : foyers et type ?',
-   r:'« 2 points en arrière de la rétine » ; « Astigmatisme Hypermétrope Composé » <span class="src">7.3-d35</span>', points:['deux derrière la rétine', 'hypermétrope composé'], src:['7.3-d35']},
+   r:'« 2 points en arrière de la rétine » ; « Astigmatisme Hypermétrope Composé » <span class="src">7.3-d35</span>', points:['deux derrière la rétine', 'hypermétrope composé'], src:['7.3-d35'],
+   qcm:{bon:'Deux foyers derrière la rétine ; astigmatisme hypermétrope composé', faux:['Deux foyers devant la rétine ; astigmatisme myope composé', 'Un derrière, un sur la rétine ; astigmatisme hypermétrope simple', 'Un derrière, un devant la rétine ; astigmatisme mixte']}},
   {id:'c-types-03', type:'libre', pas:['types.3'], q:'Composé ?',
-   r:'« 2 point <span class="sic">(sic)</span> focaux du même type d’amétropie = composé » (UA1)', points:['deux foyers', 'le même type d’amétropie'], src:['UA1']},
+   r:'« 2 point <span class="sic">(sic)</span> focaux du même type d’amétropie = composé » (UA1)', points:['deux foyers', 'le même type d’amétropie'], src:['UA1'],
+   qcm:{bon:'Deux foyers du même type d’amétropie, du même côté de la rétine', faux:['Deux foyers de types opposés, un de chaque côté de la rétine', 'Un foyer sur la rétine, l’autre devant ou derrière elle', 'Un seul foyer, avec un cylindre ajouté à la sphère']}},
   {id:'c-types-04', type:'libre', pas:['types.4'], q:'Mixte ?',
-   r:'« Deux points focaux, 1xmyope et 1x hypermétrope = Mixte » (UA1)', points:['un méridien myope', 'un méridien hypermétrope'], src:['UA1']},
+   r:'« Deux points focaux, 1xmyope et 1x hypermétrope = Mixte » (UA1)', points:['un méridien myope', 'un méridien hypermétrope'], src:['UA1'],
+   qcm:{bon:'Deux foyers : un myope (devant), un hypermétrope (derrière la rétine)', faux:['Deux foyers myopes de forces différentes, devant la rétine', 'Deux foyers : un sur la rétine, un devant ou derrière elle', 'Deux foyers : un myope, un hypermétrope, tous deux devant la rétine']}},
   {id:'c-types-05', type:'libre', pas:['types.2'], q:'Simple ?',
-   r:'« myopie a un méridien et emmétropie à l’autre » ; « hypermétropie a un méridien et emmétropie à l’autre » (UA1)', points:['un méridien emmétrope (Plano)', 'l’autre myope ou hypermétrope'], src:['UA1']},
+   r:'« myopie a un méridien et emmétropie à l’autre » ; « hypermétropie a un méridien et emmétropie à l’autre » (UA1)', points:['un méridien emmétrope (Plano)', 'l’autre myope ou hypermétrope'], src:['UA1'],
+   qcm:{bon:'Un méridien emmétrope (Plano), l’autre myope ou hypermétrope', faux:['Deux méridiens du même signe, de forces différentes', 'Un méridien myope, l’autre hypermétrope', 'Les deux méridiens Plano : aucune amétropie à corriger']}},
   {id:'c-types-06', type:'libre', pas:['types.1'], q:'Sur quelle forme de Rx lit-on le type ?',
-   r:'« Les types d’ordonnance optique sont déterminés lorsque celle-ci est en forme de cylindre négatif. » (UA1)', points:['cylindre négatif', 'avant de nommer le type'], src:['UA1']},
+   r:'« Les types d’ordonnance optique sont déterminés lorsque celle-ci est en forme de cylindre négatif. » (UA1)', points:['cylindre négatif', 'avant de nommer le type'], src:['UA1'],
+   qcm:{bon:'En forme de cylindre négatif', faux:['En forme de cylindre positif', 'En forme sphérique, écrite DS', 'En forme de vision de près, avec l’addition']}},
   {id:'c-types-07', type:'chaine', pas:['foyers.1', 'types.1'], q:'Lire une croix : de la croix au type, dans l’ordre.',
    items:['le signe de chaque méridien', 'la place de chaque foyer (devant, sur ou derrière la rétine)', 'le type d’astigmatisme'], src:['7.1-d50', '7.3-d32', 'UA1']},
   {id:'c-types-08', type:'discrim', pas:['types.2', 'types.3', 'types.4'], q:'Croix : +0.25 sur 090, -0.50 sur 180 (exercice 7.2-d30, n° 6). Quel type ?',
@@ -3456,7 +3641,8 @@ const CARTES2 = [
 
   /* ---------- inverse ---------- */
   {id:'c-inverse-01', type:'libre', pas:['inverse.2'], q:'Analyse inverse : croix +2.00 / +2.00 ?',
-   r:'+2.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine <span class="src">7.1-d43</span> <span class="deduit">déduit</span>', points:['+2.00 DS', 'hypermétrope sphérique', 'un foyer derrière la rétine'], src:['7.1-d43']},
+   r:'+2.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine <span class="src">7.1-d43</span> <span class="deduit">déduit</span>', points:['+2.00 DS', 'hypermétrope sphérique', 'un foyer derrière la rétine'], src:['7.1-d43'],
+   qcm:{bon:'+2.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine', faux:['+2.00 +2.00 x 180 ; hypermétrope composé ; deux foyers derrière', '+2.00 DS ; myope sphérique ; un foyer devant la rétine', '+4.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine']}},
   {id:'c-inverse-02', type:'chaine', pas:['inverse.3'], q:'Analyse inverse d’une croix torique : remets les étapes dans l’ordre.',
    items:['repérer le méridien le plus positif', 'il donne la sphère, et son degré donne l’axe', 'CYL = l’autre − la sphère', 'écrire la Rx en cylindre négatif'], src:['UA1']},
   {id:'c-inverse-03', type:'calcul', pas:['inverse.3'],
@@ -3469,14 +3655,18 @@ const CARTES2 = [
      const m2 = axe <= 90 ? axe + 90 : axe - 90, p2 = Math.round((sph + cyl) * 100) / 100;
      const axeDabord = Math.random() < 0.5;
      const a = axeDabord ? [sph, axe] : [p2, m2], b = axeDabord ? [p2, m2] : [sph, axe];
+     const r = f(sph) + ' ' + f(cyl) + ' x ' + a3(axe), X = (s, c, x) => f(s) + ' ' + f(c) + ' x ' + a3(x);
+     /* les tuiles (CroixAToi.ERREURS, analyse inverse) : axe-autre, cyl-egal-meridien, cyl-positif ; puis cyl-signe */
+     const faux = QCM_TROIS(r, [X(sph, cyl, m2), Math.abs(p2) > 1e-9 && X(sph, p2, axe), X(p2, -cyl, m2), X(sph, -cyl, axe)]);
      return {q:'Une croix porte ' + f(a[0]) + ' sur ' + a3(a[1]) + ' et ' + f(b[0]) + ' sur ' + a3(b[1]) + '. Écris la Rx en cylindre négatif.',
-             r:f(sph) + ' ' + f(cyl) + ' x ' + a3(axe), tol:0};
+             r, tol:0, faux};
    }, src:['UA1']},
 
   /* ---------- exercices ---------- */
   {id:'c-exercices-01', type:'application', pas:['exercices.1'],
    q:'Exercice 7.3-d36, n° 8 : +7.75 -1.00 x 138. Donne la croix, le type et le bras de l’axe en option B.',
-   r:'+7.75 sur 138 ; 138 − 090 = 048 ; (+7.75) + (-1.00) = +6.75 sur 048 ; astigmatisme hypermétrope composé ; 138 est à 42° de 180 et à 48° de 090 : bras horizontal <span class="deduit">déduit</span>.', points:['+7.75 sur 138', '+6.75 sur 048', 'hypermétrope composé', 'bras horizontal'], src:['7.3-d36']},
+   r:'+7.75 sur 138 ; 138 − 090 = 048 ; (+7.75) + (-1.00) = +6.75 sur 048 ; astigmatisme hypermétrope composé ; 138 est à 42° de 180 et à 48° de 090 : bras horizontal <span class="deduit">déduit</span>.', points:['+7.75 sur 138', '+6.75 sur 048', 'hypermétrope composé', 'bras horizontal'], src:['7.3-d36'],
+   qcm:{bon:'+7.75 sur 138, +6.75 sur 048 ; hypermétrope composé ; 138 à l’horizontale', faux:['+7.75 sur 138, +6.75 sur 228 ; hypermétrope composé ; 138 à la verticale', '+7.75 sur 138, +6.75 sur 048 ; hypermétrope simple ; 138 à la verticale', '+7.75 sur 138, +8.75 sur 048 ; hypermétrope composé ; 138 à l’horizontale']}},
   {id:'c-exercices-02', type:'discrim', pas:['exercices.1', 'types.2', 'types.3'],
    q:'+1.25 -1.25 x 180 (7.2-d30, n° 10) et +1.25 -1.00 x 177 (7.3-d36, n° 10) : lequel est un astigmatisme hypermétrope simple ?',
    choix:['+1.25 -1.25 x 180', '+1.25 -1.00 x 177'], bonne:0,
@@ -3484,28 +3674,34 @@ const CARTES2 = [
 
   /* ---------- Au comptoir (module 5) : cartes ; les calculs tirent leurs nombres du moteur (31-widgets.js, Comptoir) ---------- */
   {id:'c-cpt-fac-01', type:'libre', pas:['cpt-factures.1'], q:'Une visite : combien de factures ?',
-   r:'Deux : « Deux factures sont créé, une pour les services et une pour les produits » <span class="sic">(sic)</span> <span class="src">4.1-d6</span>', points:['deux', 'services', 'produits'], src:['4.1-d6']},
+   r:'Deux : « Deux factures sont créé, une pour les services et une pour les produits » <span class="sic">(sic)</span> <span class="src">4.1-d6</span>', points:['deux', 'services', 'produits'], src:['4.1-d6'],
+   qcm:{bon:'Deux : une pour les services, une pour les produits', faux:['Une seule : les services et les produits ensemble', 'Trois : l’examen, la monture et les lentilles', 'Deux : une pour OHIP, une pour l’assureur']}},
   {id:'c-cpt-fac-02', type:'discrim', pas:['cpt-factures.1'], q:'L’ajustement de verres de contact va sur la facture…',
    choix:['de service', 'de produit'], bonne:0, r:'Un service : « AJUSTEMENTS EN LENTILLES CORNÉENNES » ; les verres de contact eux-mêmes sont un produit, « CONTACTOLOGIE » (4.1-d4).', src:['4.1-d4']},
   {id:'c-cpt-fac-03', type:'libre', pas:['cpt-factures.2'], q:'Une taxe sur une lunette ou un examen ?',
-   r:'Non : « ATTN: Les taxes ne sont pas applicable si c’est un service ou produit médicale » <span class="sic">(sic)</span> <span class="src">4.1-d7</span>', points:['pas de taxe', 'service ou produit médical'], src:['4.1-d7']},
+   r:'Non : « ATTN: Les taxes ne sont pas applicable si c’est un service ou produit médicale » <span class="sic">(sic)</span> <span class="src">4.1-d7</span>', points:['pas de taxe', 'service ou produit médical'], src:['4.1-d7'],
+   qcm:{bon:'Non : pas de taxe sur un service ou un produit médical', faux:['Oui : la taxe s’ajoute sur la lunette, pas sur l’examen', 'Oui : la taxe s’ajoute aux deux factures, après l’escompte', 'Oui : sur l’examen seulement, quand OHIP ne le couvre pas']}},
   {id:'c-cpt-fac-04', type:'chaine', pas:['cpt-factures.4'], q:'Les six étapes de la facture de service, dans l’ordre.',
    items:['« Quel est le frais? »', '« Est-ce qu’il y a un escompte? »', '« Calcul de la facture (frais – escompte) »', '« Est-ce couvert par OHIP? Si oui, facturez OHIP directement. »', '« Est-ce couvert par un assureur? Si oui, calculez la couverture. »', '« Une fois tout considéré, combien sera déboursé par le patient? »'], src:['EF p2']},
   {id:'c-cpt-fac-05', type:'discrim', pas:['cpt-factures.4', 'cpt-ohip.1'], q:'La facture de produit d’un enfant de 8 ans a-t-elle une étape OHIP ?',
    choix:['oui : il a moins de 20 ans', 'non : OHIP ne couvre pas les produits'], bonne:1, r:'« Grande différence est que les Assurance-santé provincial de l’Ontario ne couvre pas pour des produits » <span class="sic">(sic)</span> (EF p2) : cinq étapes, sans OHIP.', src:['EF p2']},
   {id:'c-cpt-fac-06', type:'libre', pas:['cpt-factures.3'], q:'Quand dit-on le prix d’un service ? d’un produit ?',
-   r:'« Service: Généralement lors de la prise de rdv » ; « Produit: Généralement suite à la consultation mais avant la prise de mesure. » <span class="src">4.1-d9</span>', points:['service : à la prise de rendez-vous', 'produit : avant la prise de mesure'], src:['4.1-d9']},
+   r:'« Service: Généralement lors de la prise de rdv » ; « Produit: Généralement suite à la consultation mais avant la prise de mesure. » <span class="src">4.1-d9</span>', points:['service : à la prise de rendez-vous', 'produit : avant la prise de mesure'], src:['4.1-d9'],
+   qcm:{bon:'Service : à la prise de rendez-vous ; produit : après la consultation, avant les mesures', faux:['Service : à la fin de l’examen ; produit : quand la commande arrive', 'Service : à la prise de rendez-vous ; produit : une fois les mesures prises', 'Service : après la consultation ; produit : à la prise de rendez-vous']}},
   {id:'c-cpt-fac-07', type:'libre', pas:['cpt-factures.5'], q:'Le total payé pour la visite ?',
-   r:'« Px va payer un total de: Services + Produits » <span class="src">4.1-d14</span> : les deux factures, chacune après son escompte.', points:['services + produits', 'après les escomptes'], src:['4.1-d14']},
+   r:'« Px va payer un total de: Services + Produits » <span class="src">4.1-d14</span> : les deux factures, chacune après son escompte.', points:['services + produits', 'après les escomptes'], src:['4.1-d14'],
+   qcm:{bon:'Services + produits : les deux factures, chacune après son escompte', faux:['Services + produits, puis on retire les escomptes une 2e fois du total', 'Services + produits avant les escomptes, puis un seul escompte sur le total', 'La facture de produit seulement : l’examen se paie à part']}},
 
   {id:'c-cpt-esc-01', type:'libre', pas:['cpt-escomptes.1'], q:'Les trois types d’escompte ?',
-   r:'« Rabais items », « Rabais en pourcentage (ex: 10%) », « Rabais monétaire (ex: 50$) » <span class="src">4.1-d8</span>', points:['items', 'pourcentage', 'monétaire'], src:['4.1-d8']},
+   r:'« Rabais items », « Rabais en pourcentage (ex: 10%) », « Rabais monétaire (ex: 50$) » <span class="src">4.1-d8</span>', points:['items', 'pourcentage', 'monétaire'], src:['4.1-d8'],
+   qcm:{bon:'Rabais items, rabais en pourcentage, rabais monétaire', faux:['Rabais sénior, rabais étudiant, rabais famille', 'Rabais items, rabais en pourcentage, rabais de taxe', 'Rabais en pourcentage, rabais monétaire, rabais OHIP']}},
   {id:'c-cpt-esc-02', type:'discrim', pas:['cpt-escomptes.1', 'cpt-escomptes.2'], q:'Sur une lunette de 600 $, lequel baisse le plus la facture : “100 $ de rabais” ou “15 % de rabais” ?',
    choix:['100 $ : un rabais monétaire', '15 % : 90 $'], bonne:0, r:'Un rabais monétaire retire un montant fixe ; un pourcentage dépend du prix : 600 × 0.15 = 90 $.', src:['4.1-d8']},
   {id:'c-cpt-esc-03', type:'calcul', pas:['cpt-escomptes.2'], q:'Une facture après escompte, avec des nombres tirés au hasard.',
-   gen:() => Comptoir.carte('esc'), src:['4.1-d7', '4.1-d19']},
+   gen:() => QCM_COMPTOIR('esc'), src:['4.1-d7', '4.1-d19']},
   {id:'c-cpt-esc-04', type:'libre', pas:['cpt-escomptes.3'], q:'Les quatre nombres de Lumiris ?',
-   r:'Examen 110 $ (au lieu de 205 $) ; partiel 60 $ (au lieu de 115 $) ; lunette −25 % ; verres de contact −15 % <span class="src">LUM</span>', points:['110 $', '60 $', '−25 %', '−15 %'], src:['LUM']},
+   r:'Examen 110 $ (au lieu de 205 $) ; partiel 60 $ (au lieu de 115 $) ; lunette −25 % ; verres de contact −15 % <span class="src">LUM</span>', points:['110 $', '60 $', '−25 %', '−15 %'], src:['LUM'],
+   qcm:{bon:'Examen 110 $ ; partiel 60 $ ; lunette −25 % ; verres de contact −15 %', faux:['Examen 110 $ ; partiel 60 $ ; lunette −25 % ; verres de contact −25 %', 'Examen 60 $ ; partiel 110 $ ; lunette −25 % ; verres de contact −15 %', 'Examen 205 $ ; partiel 115 $ ; lunette −25 % ; verres de contact −15 %']}},
   {id:'c-cpt-esc-05', type:'discrim', pas:['cpt-escomptes.4'], q:'Qui a l’escompte famille AOpto-Opti chez Lumiris ?',
    choix:['un étudiant en administration de La Cité', 'une étudiante AOpto-Opti', 'un étudiant-opticien pendant son stage à Lumiris'], bonne:1,
    r:'L’étudiant en administration a les prix de Lumiris seulement (4.1-d44 à d48) ; l’étudiant-opticien en stage ne peut pas être patient : « ATTN: Un.e étudiant-opticien.ne ne peut pas être à la fois patient et stagiaire. »', src:['FAM', '4.1-d44']},
@@ -3513,10 +3709,12 @@ const CARTES2 = [
    choix:['135 $', '150 $'], bonne:1, r:'« Aucun escompte… c’est un enfant » (EFR-s7) : 150 $.', src:['EFR-s7']},
   {id:'c-cpt-esc-07', type:'application', pas:['cpt-escomptes.2'],
    q:'Chez Vizo, la promotion devient “50 % sur la monture” : monture 400 $, lentilles 150 $, examen 195 $. Facture de produit, puis total payé ?',
-   r:'550 − (0.50 × 400) = 350 $ ; total 195 + 350 = 545 $ (recalculé par l’atelier).', points:['350 $', '545 $'], src:['4.1-d15']},
+   r:'550 − (0.50 × 400) = 350 $ ; total 195 + 350 = 545 $ (recalculé par l’atelier).', points:['350 $', '545 $'], src:['4.1-d15'],
+   qcm:{bon:'Produit : 550 − (0.50 × 400) = 350 $ ; total 195 + 350 = 545 $', faux:['Produit : 550 − (0.50 × 550) = 275 $ ; total 195 + 275 = 470 $', 'Produit : 550 − (0.50 × 150) = 475 $ ; total 195 + 475 = 670 $', 'Produit : 0.50 × 400 = 200 $ ; total 195 + 200 = 395 $']}},
 
   {id:'c-cpt-ohip-01', type:'libre', pas:['cpt-ohip.4'], q:'Les fréquences de l’examen majeur, par catégorie ?',
-   r:'12 mois : 0-19 ans, 20-64 avec condition, 65 et plus avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP et OW ; aucune : 20-64 en santé <span class="src">4.2-d6 ; ASO p1</span>', points:['12 mois', '18 mois', '24 mois', 'aucune : 20-64 en santé'], src:['4.2-d6', 'ASO p1']},
+   r:'12 mois : 0-19 ans, 20-64 avec condition, 65 et plus avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP et OW ; aucune : 20-64 en santé <span class="src">4.2-d6 ; ASO p1</span>', points:['12 mois', '18 mois', '24 mois', 'aucune : 20-64 en santé'], src:['4.2-d6', 'ASO p1'],
+   qcm:{bon:'12 mois : 0-19 et avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP, OW ; aucune : 20-64 en santé', faux:['12 mois : 0-19 et avec condition ; 18 mois : 65 et plus en santé ; 24 mois : POSPH/ODSP, OW et 20-64 en santé', '12 mois : 0-19 ; 18 mois : 65 et plus, avec ou sans condition ; 24 mois : POSPH/ODSP, OW ; aucune : 20-64 en santé', '12 mois : 0-19 et avec condition ; 18 mois : POSPH/ODSP, OW ; 24 mois : 65 et plus en santé ; aucune : 20-64 en santé']}},
   {id:'c-cpt-ohip-02', type:'discrim', pas:['cpt-ohip.2', 'cpt-ohip.6'], q:'En santé, DDN 10 mars 2006 : examen le 9 mars 2026, puis le 10 mars 2026 ?',
    choix:['couvert le 9 (19 ans), pas le 10 (20 ans)', 'couvert les deux jours', 'pas couvert les deux jours'], bonne:0,
    r:'Le 9 mars : 19 ans, 0-19, V404 ; le 10 mars : 20 ans, en santé, pas couvert (calcul de l’atelier, déduit).', src:['EFR-s1', '4.2-d6']},
@@ -3528,63 +3726,76 @@ const CARTES2 = [
   {id:'c-cpt-ohip-05', type:'discrim', pas:['cpt-ohip.3'], q:'Deux patients de 55 ans : l’un en santé, l’autre diabétique. Examen complet ?',
    choix:['les deux couverts', 'seulement le diabétique : V409', 'aucun des deux'], bonne:1, r:'Le diabète est une condition admissible : 20-64 avec condition, tous les 12 mois, V409 ; en santé, pas couvert (ASO p1, p2).', src:['ASO p1', 'ASO p2']},
   {id:'c-cpt-ohip-06', type:'libre', pas:['cpt-ohip.2'], q:'Quel âge compte pour la catégorie OHIP ?',
-   r:'L’âge le jour de l’examen : « (px à 69 en date de l’examen) » <span class="src">EFR-s1</span>', points:['le jour de l’examen', 'années complètes'], src:['EFR-s1']},
+   r:'L’âge le jour de l’examen : « (px à 69 en date de l’examen) » <span class="src">EFR-s1</span>', points:['le jour de l’examen', 'années complètes'], src:['EFR-s1'],
+   qcm:{bon:'L’âge le jour de l’examen, en années complètes', faux:['L’âge le jour de l’appel pour le rendez-vous', 'L’âge atteint dans l’année de l’examen, anniversaire ou non', 'L’âge au dernier examen majeur couvert par OHIP']}},
   {id:'c-cpt-ohip-07', type:'discrim', pas:['cpt-ohip.3'], q:'33 ans, en santé, ou 33 ans, POSPH/ODSP : lequel est couvert ?',
    choix:['le patient en santé', 'le patient POSPH/ODSP, tous les 24 mois', 'aucun des deux'], bonne:1, r:'POSPH/ODSP : un examen majeur tous les 24 mois, V450 ; 20-64 en santé : pas couvert.', src:['ASO p1', '4.2-d6']},
 
   {id:'c-cpt-rdv-01', type:'libre', pas:['cpt-rdv.1'], q:'La prochaine date admissible ?',
-   r:'Le dernier examen majeur + la fréquence + 1 jour : « (1 ans + 1 jour) », « (18 mois +1 jour) », « (2 ans + 1 jour) » <span class="src">4.2-d6</span>', points:['dernier examen', '+ fréquence', '+ 1 jour'], src:['4.2-d6']},
+   r:'Le dernier examen majeur + la fréquence + 1 jour : « (1 ans + 1 jour) », « (18 mois +1 jour) », « (2 ans + 1 jour) » <span class="src">4.2-d6</span>', points:['dernier examen', '+ fréquence', '+ 1 jour'], src:['4.2-d6'],
+   qcm:{bon:'Le dernier examen majeur + la fréquence + 1 jour', faux:['Le dernier examen majeur + la fréquence, le jour anniversaire', 'La date de l’appel + la fréquence + 1 jour', 'Le dernier examen majeur + 12 mois, quelle que soit la catégorie']}},
   {id:'c-cpt-rdv-02', type:'discrim', pas:['cpt-rdv.1'], q:'0-19 ans, dernier examen le 15 mars 2025 : un examen le 15 mars 2026 ? le 16 mars 2026 ?',
    choix:['trop tôt le 15, permis le 16', 'permis les deux jours', 'trop tôt les deux jours'], bonne:0, r:'15 mars 2025 + 12 mois + 1 jour = 16 mars 2026 : la veille est trop tôt (201), le jour même est permis.', src:['4.2-d6', 'EO-6']},
   {id:'c-cpt-rdv-03', type:'calcul', pas:['cpt-rdv.1', 'cpt-rdv.3'], q:'La prochaine date admissible et le code, avec un patient tiré au hasard.',
-   gen:() => Comptoir.carte('date'), src:['4.2-d6', 'ASO p2']},
+   gen:() => QCM_COMPTOIR('date'), src:['4.2-d6', 'ASO p2']},
   {id:'c-cpt-rdv-04', type:'chaine', pas:['cpt-rdv.2'], q:'La vérification d’admissibilité, dans l’ordre.',
    items:['avant de réserver (sinon deux semaines avant)', 'la carte : le numéro et le code de version', 'le mot de passe du site clinique', 'lire le code d’admissibilité et le code de vérification', 'agir : réserver, aviser, ou vérifier de nouveau'], src:['ASO p3']},
   {id:'c-cpt-rdv-05', type:'discrim', pas:['cpt-rdv.4'], q:'Code de vérification 52 ou 60 : lequel veut dire que la carte est valide ?',
    choix:['52', '60'], bonne:0, r:'« 50-59 Carte Valide et détenteur Éligible » ; « 60-89 Carte Invalide et détenteur éligible » (ASO p3).', src:['ASO p3']},
   {id:'c-cpt-rdv-06', type:'libre', pas:['cpt-rdv.4'], q:'Code 201 : que fait-on ?',
-   r:'« Doit écouter attentivement la date du dernier examen pour confirmer la prochaine admissibilité et procéder à une deuxième vérification avec une nouvelle date » <span class="src">ASO p3</span>', points:['la date du dernier examen', 'une deuxième vérification', 'une nouvelle date'], src:['ASO p3']},
+   r:'« Doit écouter attentivement la date du dernier examen pour confirmer la prochaine admissibilité et procéder à une deuxième vérification avec une nouvelle date » <span class="src">ASO p3</span>', points:['la date du dernier examen', 'une deuxième vérification', 'une nouvelle date'], src:['ASO p3'],
+   qcm:{bon:'On note la date du dernier examen, puis on refait la vérification avec une nouvelle date', faux:['On réserve quand même : 201 veut dire que la carte est valide', 'On refuse le patient : 201 veut dire qu’il n’est pas couvert', 'On réserve à une date au hasard, un an plus tard, sans revérifier']}},
   {id:'c-cpt-rdv-07', type:'libre', pas:['cpt-rdv.3'], q:'Examen complet, 66 ans, diabétique : le code ?',
-   r:'« Oui, V407 » <span class="src">EO-3</span> ; un suivi serait V415.', points:['V407'], src:['EO-3']},
+   r:'« Oui, V407 » <span class="src">EO-3</span> ; un suivi serait V415.', points:['V407'], src:['EO-3'],
+   qcm:{bon:'V407 ; un suivi serait V415', faux:['V406 ; un suivi serait V415', 'V409 ; un suivi serait V408', 'V415 ; un suivi serait V407']}},
   {id:'c-cpt-rdv-08', type:'libre', pas:['cpt-rdv.5'], q:'Qui identifie le code diagnostique ?',
-   r:'Le docteur : « ATTN: doit être identifié par le docteur » <span class="src">ASO p4</span>', points:['le docteur'], src:['ASO p4']},
+   r:'Le docteur : « ATTN: doit être identifié par le docteur » <span class="src">ASO p4</span>', points:['le docteur'], src:['ASO p4'],
+   qcm:{bon:'Le docteur, qui pose le diagnostic', faux:['L’opticien, qui fait la soumission', 'L’assistant, à la vérification OHIP', 'Le patient, qui connaît sa condition']}},
   {id:'c-cpt-rdv-09', type:'application', pas:['cpt-rdv.1', 'cpt-rdv.3'],
    q:'POSPH/ODSP, 33 ans ; dernier examen le 22 sept. 2019 ; il veut un examen le 17 août 2020. Que lui réponds-tu ?',
-   r:'Pas avant le 23 sept. 2021 : « ODSP éligible au 2ans, donc prochain V450 est 23 septembre 2021 » (EO-13).', points:['non, trop tôt', '23 sept. 2021', 'V450'], src:['EO-13']},
+   r:'Pas avant le 23 sept. 2021 : « ODSP éligible au 2ans, donc prochain V450 est 23 septembre 2021 » (EO-13).', points:['non, trop tôt', '23 sept. 2021', 'V450'], src:['EO-13'],
+   qcm:{bon:'Non, trop tôt : pas avant le 23 sept. 2021, sous V450 (24 mois + 1 jour)', faux:['Non, trop tôt : pas avant le 23 sept. 2020, sous V450 (12 mois + 1 jour)', 'Non, trop tôt : pas avant le 22 sept. 2021, sous V450 (24 mois pile)', 'Non, trop tôt : pas avant le 23 mars 2021, sous V450 (18 mois + 1 jour)']}},
 
   {id:'c-cpt-ass-01', type:'libre', pas:['cpt-assureur.5'], q:'Que paie l’assurance privée ?',
-   r:'« Couverture d’assurance paie les frais médicaux qui ne sont pas couverts par le programme de soins provincial. » <span class="src">4.2-d11</span> : services et produits.', points:['ce qu’OHIP ne couvre pas', 'services et produits'], src:['4.2-d11']},
+   r:'« Couverture d’assurance paie les frais médicaux qui ne sont pas couverts par le programme de soins provincial. » <span class="src">4.2-d11</span> : services et produits.', points:['ce qu’OHIP ne couvre pas', 'services et produits'], src:['4.2-d11'],
+   qcm:{bon:'Les frais médicaux qu’OHIP ne couvre pas : services et produits', faux:['Les produits seulement : OHIP paie tous les services', 'Les services seulement : les produits restent au patient', 'Tout, avant OHIP : l’assureur est le premier payeur']}},
   {id:'c-cpt-ass-02', type:'calcul', pas:['cpt-assureur.1'], q:'La couverture de l’assureur, avec des nombres tirés au hasard.',
-   gen:() => Comptoir.carte('cov'), src:['4.2-d24', '4.2-d28']},
+   gen:() => QCM_COMPTOIR('cov'), src:['4.2-d24', '4.2-d28']},
   {id:'c-cpt-ass-03', type:'calcul', pas:['cpt-assureur.2'], q:'Ce que le patient débourse, avec des nombres tirés au hasard.',
-   gen:() => Comptoir.carte('deb'), src:['4.2-d25', 'EFR-s4']},
+   gen:() => QCM_COMPTOIR('deb'), src:['4.2-d25', 'EFR-s4']},
   {id:'c-cpt-ass-04', type:'discrim', pas:['cpt-assureur.4'], q:'Une soumission le 31 déc. 2019 et une autre le 1er janv. 2020 passent toutes les deux. Le plan couvre…',
    choix:['en cycle défini', 'en période mobile'], bonne:0, r:'Un cycle défini se remet à zéro aux dates de l’assureur ; en période mobile, il faut 24 mois + 1 jour depuis la dernière soumission (4.2-d14).', src:['4.2-d14']},
   {id:'c-cpt-ass-05', type:'discrim', pas:['cpt-assureur.1'], q:'Plan 80 %, maximum 250 $, 150 $ déjà remboursés ; facture 200 $. L’assureur paie…',
    choix:['100 $ : le solde', '160 $ : 80 % de la facture', '200 $'], bonne:0, r:'200 × 0.80 = 160 $, sous le maximum ; mais il ne reste que 250 − 150 = 100 $ (comme 4.2-d28).', src:['4.2-d28']},
   {id:'c-cpt-ass-06', type:'libre', pas:['cpt-assureur.3'], q:'Le plan AE ?',
-   r:'« Plan Assurance AE: couvre 80% (max 80$) chaque 24 mois; si pas déjà soumis » (services) ; « Plan Assurance AE: couvre 80% (max 250$) chaque 24 mois; si jamais soumis » (produits) <span class="src">4.2-d23</span>', points:['80 %', 'max 80 $ services', 'max 250 $ produits', '24 mois'], src:['4.2-d23']},
+   r:'« Plan Assurance AE: couvre 80% (max 80$) chaque 24 mois; si pas déjà soumis » (services) ; « Plan Assurance AE: couvre 80% (max 250$) chaque 24 mois; si jamais soumis » (produits) <span class="src">4.2-d23</span>', points:['80 %', 'max 80 $ services', 'max 250 $ produits', '24 mois'], src:['4.2-d23'],
+   qcm:{bon:'80 % chaque 24 mois : max 80 $ pour les services, max 250 $ pour les produits', faux:['80 % chaque 24 mois : un seul maximum de 250 $ pour tout', '80 % chaque 24 mois : max 250 $ pour les services, max 80 $ pour les produits', '80 % chaque 12 mois : max 80 $ pour les services, max 250 $ pour les produits']}},
   {id:'c-cpt-ass-07', type:'libre', pas:['cpt-assureur.5'], q:'Qui explique les bénéfices de l’assurance au patient ?',
-   r:'Pas le professionnel : « Important de toujours informer son patient qu’il est responsable de s’informer des détails de son plans » <span class="sic">(sic)</span> <span class="src">4.2-d12</span>', points:['le patient s’informe', 'pas le professionnel'], src:['4.2-d12']},
+   r:'Pas le professionnel : « Important de toujours informer son patient qu’il est responsable de s’informer des détails de son plans » <span class="sic">(sic)</span> <span class="src">4.2-d12</span>', points:['le patient s’informe', 'pas le professionnel'], src:['4.2-d12'],
+   qcm:{bon:'Personne au bureau : le patient est responsable de s’informer de son plan', faux:['L’opticien, au moment de présenter le prix du produit', 'L’optométriste, pendant l’examen de la vue du patient', 'L’assistant, en faisant la vérification OHIP']}},
   {id:'c-cpt-ass-08', type:'discrim', pas:['cpt-assureur.3'], q:'Plan AE, jamais utilisé : un examen et une lunette le même jour se partagent-ils un maximum ?',
    choix:['non : 80 $ pour l’examen, 250 $ pour la lunette', 'oui : 250 $ en tout'], bonne:0, r:'Deux lignes, deux maximums : « couvre 80% (max 80$) » et « couvre 80% (max 250$) » (4.2-d23).', src:['4.2-d23']},
 
   {id:'c-cpt-err-01', type:'libre', pas:['cpt-erreurs.1'], q:'Comment trouver l’étape fausse d’une facture ?',
-   r:'Refaire chaque étape avec les données, dans l’ordre de la méthode : la première ligne qui s’écarte est l’erreur ; les suivantes la reprennent.', points:['refaire chaque étape', 'dans l’ordre', 'la première qui s’écarte'], src:['EF p2']},
+   r:'Refaire chaque étape avec les données, dans l’ordre de la méthode : la première ligne qui s’écarte est l’erreur ; les suivantes la reprennent.', points:['refaire chaque étape', 'dans l’ordre', 'la première qui s’écarte'], src:['EF p2'],
+   qcm:{bon:'Refaire chaque étape dans l’ordre : la première ligne qui s’écarte est l’erreur', faux:['Comparer les totaux : s’ils diffèrent, la dernière ligne est l’erreur', 'Refaire chaque étape : toutes les lignes qui s’écartent sont des erreurs', 'Partir de la fin : la dernière ligne qui s’écarte est l’erreur']}},
   {id:'c-cpt-err-02', type:'application', pas:['cpt-erreurs.2'],
    q:'Un collègue écrit : facture 135 $, assurance 80 % (maximum 80 $), “135 × 0.80 = 108 $ ; le patient paie 27 $”. Corrige-le.',
-   r:'Le maximum limite : l’assureur paie 80 $, et le patient 135 − 80 = 55 $ (« max est de 80$ », 4.2-d24).', points:['80 $', '55 $', 'le maximum'], src:['4.2-d24']},
+   r:'Le maximum limite : l’assureur paie 80 $, et le patient 135 − 80 = 55 $ (« max est de 80$ », 4.2-d24).', points:['80 $', '55 $', 'le maximum'], src:['4.2-d24'],
+   qcm:{bon:'Le maximum limite : l’assureur paie 80 $, et le patient 135 − 80 = 55 $', faux:['Rien à corriger : 135 × 0.80 = 108 $, et le patient paie 27 $', 'Le maximum limite : l’assureur paie 80 $, et le patient 135 × 0.20 = 27 $', 'Le maximum limite : l’assureur paie 80 $, et le patient 108 − 80 = 28 $']}},
 
   {id:'c-cpt-cpt-01', type:'calcul', pas:['cpt-comptoir.2'], q:'Une facture de service complète, tirée au hasard : ce que le patient débourse.',
-   gen:() => Comptoir.carte('facture'), src:['EF p2']},
+   gen:() => QCM_COMPTOIR('facture'), src:['EF p2']},
   {id:'c-cpt-cpt-02', type:'chaine', pas:['cpt-comptoir.3'], q:'Les cinq étapes de la facture de produit, dans l’ordre.',
    items:['« Quel est le frais? »', '« Est-ce qu’il y a un escompte? »', '« Calcul de la facture (frais – escompte) »', '« Est-ce couvert par un assureur? Si oui, calculez la couverture. »', '« Une fois tout considéré, combien sera déboursé par le patient? »'], src:['EF p2']},
   {id:'c-cpt-cpt-03', type:'application', pas:['cpt-comptoir.2'],
    q:'Exercice 7 : examen le 8 déc. 2021 ; DDN 12 juil. 2016 ; examen 150 $, rabais sénior 10 % ; dernier examen le 12 nov. 2020. Les étapes 2, 4 et 6 ?',
-   r:'Étape 2 : « Aucun escompte… c’est un enfant » ; étape 4 : 0-19 ans, 12 nov. 2020 + 12 mois + 1 jour = 13 nov. 2021 : couvert (V404, déduit) ; étape 6 : 0 $.', points:['pas de rabais', 'couvert depuis le 13 nov. 2021', '0 $'], src:['EFR-s7']},
+   r:'Étape 2 : « Aucun escompte… c’est un enfant » ; étape 4 : 0-19 ans, 12 nov. 2020 + 12 mois + 1 jour = 13 nov. 2021 : couvert (V404, déduit) ; étape 6 : 0 $.', points:['pas de rabais', 'couvert depuis le 13 nov. 2021', '0 $'], src:['EFR-s7'],
+   qcm:{bon:'2 : aucun escompte (un enfant) ; 4 : couvert depuis le 13 nov. 2021 ; 6 : 0 $', faux:['2 : rabais sénior, 135 $ ; 4 : couvert depuis le 13 nov. 2021 ; 6 : 0 $', '2 : aucun escompte (un enfant) ; 4 : couvert depuis le 12 nov. 2021 ; 6 : 0 $', '2 : aucun escompte (un enfant) ; 4 : trop tôt, pas avant le 13 nov. 2022 ; 6 : 150 $']}},
   {id:'c-cpt-cpt-04', type:'application', pas:['cpt-comptoir.4'],
    q:'Un patient de 25 ans, en santé, appelle le 5 oct. 2018 ; la vérification renvoie le code 20. Que lui dis-tu ?',
-   r:'OHIP ne le couvre pas : « Patient peut vérifier avec son assurance privée » ; « Patient peut choisir de payer pour l’examen » (EO-7).', points:['pas couvert', 'assurance privée', 'payer l’examen'], src:['EO-7']}
+   r:'OHIP ne le couvre pas : « Patient peut vérifier avec son assurance privée » ; « Patient peut choisir de payer pour l’examen » (EO-7).', points:['pas couvert', 'assurance privée', 'payer l’examen'], src:['EO-7'],
+   qcm:{bon:'OHIP ne le couvre pas : il peut vérifier son assurance privée, ou payer l’examen', faux:['OHIP le couvre : le code 20 confirme une carte valide, on réserve', 'OHIP ne le couvre pas : on refuse le rendez-vous, sans autre option', 'OHIP le couvre si sa carte est renouvelée : il doit appeler le ministère']}}
 ];
 
 const VISLE = {
@@ -7922,7 +8133,7 @@ const Arene = (() => {
     PARCOURS.forEach((e, rang) => {
       const items = [];
       Pas.liste(e.id).forEach(p => {
-        if(p.verif && p.verif.q) items.push({id:'p:' + p.id, type:'pas', pas:p.id, q:p.verif.q, r:p.verif.r || '', points:Array.isArray(p.verif.points) ? p.verif.points : []});
+        if(p.verif && p.verif.q) items.push({id:'p:' + p.id, type:'pas', pas:p.id, q:p.verif.q, r:p.verif.r || '', points:Array.isArray(p.verif.points) ? p.verif.points : [], qcm:p.verif.qcm || null});
       });
       cartes.forEach(c => {
         if(!c || c.type === 'geste' || c.type === 'schema' || !Array.isArray(c.pas) || !c.pas.length) return;
@@ -8060,6 +8271,7 @@ const Arene = (() => {
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
         '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
         '<button type="button" class="ar-b" data-a="round" hidden>Dernier round</button>' +
+        '<button type="button" class="ar-b" data-a="ecrire" aria-pressed="false" title="Répondre en écrivant de mémoire, au lieu de choisir parmi quatre réponses">✎ Écrire</button>' +
         '<button type="button" class="ar-b" data-a="carte" aria-pressed="false">Carte</button>' +
         '<button type="button" class="ar-x" data-a="fermer" aria-label="Fermer l’arène" title="Fermer (Échap)">✕</button></header>' +
       '<div class="ar-corps"><nav class="ar-carte" aria-label="Les blocs, du niveau A au sommet"></nav>' +
@@ -8070,6 +8282,11 @@ const Arene = (() => {
       if(b.dataset.bloc){ choisirBloc(b.dataset.bloc); return; }
       const a = b.dataset.a;
       if(a === 'fermer') demanderFermer();
+      else if(a === 'ecrire'){
+        const o = !ecrire(); try{ localStorage.setItem(CLE_ECRIRE, o ? '1' : '0'); }catch(e){}
+        b.setAttribute('aria-pressed', String(o));
+        if(R.courant && R.courant[0] && !R.repondu) montrer(R.courant[0], R.courant[1]);
+      }
       else if(a === 'carte'){ const o = !ui.classList.contains('avec-carte'); ui.classList.toggle('avec-carte', o); b.setAttribute('aria-pressed', String(o)); }
       else if(a === 'plan'){ const c = R.courant; if(c && c[1]) plan(c[1], suivant, false); }
       else if(a === 'indice') indice();
@@ -8084,6 +8301,7 @@ const Arene = (() => {
       if(e.key === 'Escape'){ e.preventDefault(); demanderFermer(); return; }
       e.stopPropagation();
     });
+    $('[data-a="ecrire"]', ui).setAttribute('aria-pressed', String(ecrire()));
     if(window.innerWidth >= 900){ ui.classList.add('avec-carte'); $('[data-a="carte"]', ui).setAttribute('aria-pressed', 'true'); }
   }
   function majTete(){
@@ -8290,6 +8508,44 @@ const Arene = (() => {
     };
     if(typeof it.rendre === 'function'){ art.innerHTML = tete + '<div class="ar-ex"></div>'; graine(() => it.rendre($('.ar-ex', art), fini)); if(groupe) majGroupeUI(); return; }
     const c = it.carte || {};
+    /* le standard de l'arène (recipe §6.12, blueprint §4.7) : quatre tuiles à choisir, une réponse juste et trois
+       erreurs plausibles ; « ✎ Écrire » garde le rappel de mémoire. En groupe, la graine du meneur donne à tous le
+       même ordre et les mêmes nombres. */
+    const o = (!ecrire() || it.type === 'discrim' || it.type === 'qcm') ? graine(() => optionsDe(it, c)) : null;
+    if(o){
+      art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-tuiles" role="group" aria-label="Choisis une réponse"></div>';
+      $('.ar-qq', art).innerHTML = o.q;
+      art._q = texte(o.q); art._ref = o.ref;
+      const z = $('.ar-tuiles', art);
+      o.choix.forEach((x, i) => {
+        const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-tuile t' + (i + 1); bt.dataset.i = i;
+        bt.innerHTML = '<b aria-hidden="true">' + 'ABCD'[i] + '</b><span></span>'; $('span', bt).innerHTML = x.t;
+        z.appendChild(bt);
+      });
+      if(groupe) majGroupeUI();
+      const choisir = i => {
+        if(art.dataset.fait || !o.choix[i]) return;
+        art.dataset.fait = '1';
+        const bt = $$('.ar-tuile', art)[i], ok = !!o.choix[i].bon;
+        art._rep = texte(o.choix[i].t);
+        $$('.ar-tuile', art).forEach(x => { x.disabled = true; });
+        bt.classList.add('choisi');
+        verrou(art._rep, ok, () => {
+          $$('.ar-tuile', art).forEach((x, j) => { x.classList.add(o.choix[j].bon ? 'juste' : 'pale'); });
+          if(!ok){ bt.classList.remove('pale'); bt.classList.add('faux'); }
+          if(o.modele) art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p class="lib">La réponse</p>' + o.modele + '</div>');
+          fini(ok);
+        });
+      };
+      z.addEventListener('click', e => { const bt = e.target.closest('.ar-tuile'); if(bt) choisir(+bt.dataset.i); });
+      art.addEventListener('keydown', e => {
+        if(e.ctrlKey || e.metaKey || e.altKey) return;
+        const k = '1234'.indexOf(e.key) >= 0 ? '1234'.indexOf(e.key) : 'abcd'.indexOf(String(e.key).toLowerCase());
+        if(k >= 0 && k < o.choix.length && !art.dataset.fait){ e.preventDefault(); choisir(k); }
+      });
+      const b0 = $('.ar-tuile', art); if(b0) b0.focus({preventScroll:true});
+      return;
+    }
     if(it.type === 'discrim' || it.type === 'qcm'){
       const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-choix"></div>';
@@ -8585,6 +8841,84 @@ const Arene = (() => {
     if(typeof Tableau === 'undefined') return;
     const c = R.courant; if(c && c[0]){ const p = c[0].pas && Pas.get(c[0].pas); aller(p ? p.ecran : c[1].id); }
     Tableau.ouvrir('groupe');
+  }
+
+  /* ---------- les quatre tuiles : d'où viennent les choix ---------- */
+  const CLE_ECRIRE = 'lumiere-arene-ecrire';
+  const ecrire = () => { try{ return localStorage.getItem(CLE_ECRIRE) === '1'; }catch(e){ return false; } };
+  /* une réponse affichée en tuile : sans sources ni (sic), qui la trahiraient (les erreurs n'en ont pas) */
+  const sansSources = h => String(h || '').replace(/<span class=.(?:src|sic).>[\s\S]*?<\/span>/g, '');
+  const court = h => texte(sansSources(h));
+  const melangerChoix = (bon, faux) => melanger([{t:esc(bon), bon:true}].concat(faux.slice(0, 3).map(x => ({t:esc(x), bon:false}))));
+  /* la réponse juste d'une question de mémoire, telle qu'elle s'affiche en tuile */
+  function bonDe(it){
+    const c = it.carte || {}, src = it.type === 'pas' ? it.qcm : c.qcm;
+    if(src && typeof src.bon === 'string' && src.bon.trim()) return src.bon.trim();
+    return court(it.type === 'pas' ? esc(it.r) : c.r || '');
+  }
+  /* sans jeu écrit : les réponses des questions voisines (même écran, puis même partie), de longueur proche */
+  function voisines(it, bon, n, deja){
+    const [, b] = item(it.id); if(!b) return [];
+    const prises = new Set([bon].concat(deja));
+    const prendre = blocs => {
+      const l = [];
+      blocs.forEach(x => x.items.forEach(j => {
+        if(j === it || !['pas', 'libre', 'application'].includes(j.type)) return;
+        const t = bonDe(j); if(t && !prises.has(t) && t.length <= 260) l.push(t);
+      }));
+      return melanger(l).sort((u, v) => Math.abs(u.length - bon.length) - Math.abs(v.length - bon.length)).slice(0, n);
+    };
+    let l = prendre([b]);
+    if(l.length < n){ l.forEach(x => prises.add(x)); l = l.concat(prendre(B.blocs.filter(x => x !== b && x.partie === b.partie)).slice(0, n - l.length)); }
+    return l;
+  }
+  /* une réponse chiffrée : « 42,72 D » ; sans erreurs écrites, celles qu'on fait souvent (×10, ÷10, signe, ±25 %) */
+  function nombres(g){
+    const tete = court(g.r).split(' (')[0].trim();
+    if(Array.isArray(g.faux)){
+      const f = g.faux.map(x => court(String(x))).filter((x, i, a) => x && x !== tete && a.indexOf(x) === i);
+      return f.length >= 3 ? {bon:tete, faux:f.slice(0, 3)} : null;
+    }
+    const m = tete.match(/^([−-]?)(\d+)(?:([.,])(\d+))?\s*([A-Za-z°%$€]{0,4})$/);
+    if(!m) return null;
+    const signe = m[1] ? -1 : 1, dec = m[4] ? m[4].length : 0, sep = m[3] || ',', unite = m[5] ? (/^[°%]$/.test(m[5]) ? m[5] : ' ' + m[5]) : '';
+    const v = signe * parseFloat(m[2] + '.' + (m[4] || '0'));
+    if(!isFinite(v) || v === 0) return null;
+    const ecr = x => { const s = Math.abs(x).toFixed(dec).replace('.', sep); return (x < 0 ? '−' : '') + s + unite; };
+    const bon = ecr(v), l = [];
+    [v * 10, v / 10, -v, v * 1.25, v * 0.75, v + Math.pow(10, -dec) * 10].forEach(x => { const s = ecr(x); if(s !== bon && !l.includes(s) && !(unite === ' ans' && x < 0)) l.push(s); });
+    return l.length >= 3 ? {bon, faux:melanger(l.slice(0, 5)).slice(0, 3)} : null;
+  }
+  function optionsDe(it, c){
+    if(it.type === 'discrim' || it.type === 'qcm'){
+      const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
+      if(!Array.isArray(choix) || choix.length < 2 || !choix[bonne]) return null;
+      return {q:it.type === 'qcm' ? esc(it.q) : c.q, choix:choix.map((x, i) => ({t:it.type === 'qcm' ? esc(x) : x, bon:i === bonne})),
+        modele:it.type === 'qcm' ? esc(it.r || '') : c.r || '', ref:'bonne réponse : ' + texte(choix[bonne])};
+    }
+    if(it.type === 'pas' || it.type === 'libre' || it.type === 'application'){
+      const src = it.type === 'pas' ? it.qcm : c.qcm, r = it.type === 'pas' ? esc(it.r) : c.r || '', bon = bonDe(it);
+      let faux = src && Array.isArray(src.faux) ? src.faux.map(x => String(x).trim()).filter(x => x && x !== bon) : [];
+      if(faux.length < 3) faux = faux.concat(voisines(it, bon, 3 - faux.length, faux));
+      if(!bon || faux.length < 3) return null;
+      return {q:it.type === 'pas' ? esc(it.q) : c.q, choix:melangerChoix(bon, faux), modele:r, ref:'réponse : ' + court(r)};
+    }
+    if(it.type === 'calcul' && typeof c.gen === 'function'){
+      let g = null; try{ g = c.gen(); }catch(e){ console.error(e); }
+      if(!g || !g.r) return null;
+      const n = nombres(g); if(!n) return null;
+      return {q:g.q, choix:melangerChoix(n.bon, n.faux), modele:'<p><b>Réponse :</b> ' + g.r + '</p>' + (g.exp ? '<p>' + g.exp + '</p>' : ''), ref:'réponse attendue : ' + texte(g.r)};
+    }
+    if(it.type === 'chaine'){
+      const l = (c.items || []).map(court);
+      if(l.length < 3 || l.length > 6 || l.some(x => !x || x.length > 48)) return null;
+      const bon = l.join(' → '), faux = [];
+      for(let i = 0; i < l.length - 1 && faux.length < 3; i++){ const m = l.slice(); [m[i], m[i + 1]] = [m[i + 1], m[i]]; const s = m.join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+      if(faux.length < 3){ const s = l.slice().reverse().join(' → '); if(s !== bon && !faux.includes(s)) faux.push(s); }
+      if(faux.length < 3) return null;
+      return {q:c.q, choix:melangerChoix(bon, faux), modele:'<ol>' + (c.items || []).map(x => '<li>' + x + '</li>').join('') + '</ol>', ref:'ordre juste : ' + bon};
+    }
+    return null;
   }
 
   /* ---------- ouvrir, fermer, le bouton ---------- */
@@ -14224,6 +14558,7 @@ return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
     {d:'2026-10-31', p:['*'], t:'Tu as créé une séance Convergence et personne n’est encore là ? « Étudier en attendant » te ramène dans l’atelier. Convergence revient tout seul dès que quelqu’un veut te rejoindre.'},
     {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
@@ -14449,7 +14784,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'fa7d88b5a89b';
+  const ICI = '4df3048d9290';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

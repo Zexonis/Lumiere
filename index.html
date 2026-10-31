@@ -596,6 +596,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
     {d:'2026-10-31', p:['*'], t:'Tu as créé une séance Convergence et personne n’est encore là ? « Étudier en attendant » te ramène dans l’atelier. Convergence revient tout seul dès que quelqu’un veut te rejoindre.'},
     {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
@@ -711,7 +712,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'fa7d88b5a89b';
+  const ICI = '4df3048d9290';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
