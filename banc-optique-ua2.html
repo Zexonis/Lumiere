@@ -3323,7 +3323,10 @@ function etatPropre(e){
    en ouvrant la page, ce qui ne doit rien écraser. Seul ce que l'étudiant a fait compte. */
 function etatVierge(e){
   const vide = k => !Object.keys(e[k] || {}).length;
-  return !e.compris.length && !e.verifie.length && ['fiches', 'questions', 'cartes', 'rappel', 'predictions', 'gestes', 'mesures'].every(vide) &&
+  /* les mesures (arène, « À toi », journal, étiquettes) peuvent naître à l'affichage, compteurs à zéro :
+     seul un essai fait (un n > 0 quelque part) en est une vraie */
+  const essai = o => !!o && typeof o === 'object' && (+o.n > 0 || Object.values(o).some(essai));
+  return !e.compris.length && !e.verifie.length && ['fiches', 'questions', 'cartes', 'rappel', 'predictions', 'gestes'].every(vide) && !essai(e.mesures) &&
     !Object.values(e.maitrise || {}).some(m => m && m.n >= 2);
 }
 const etatGagne = (autre, local) => !!autre && (autre.m > (local.m || '') || (etatVierge(local) && !etatVierge(autre)));
@@ -7449,7 +7452,8 @@ const Arene = (() => {
     if(!a.items || typeof a.items !== 'object') a.items = {};
     return a;
   }
-  const lu = id => { const s = memoire().items[id]; return s && typeof s === 'object' ? s : null; };
+  /* lire sans rien créer : une page ouverte n'est pas une progression (moteur.js, etatVierge) */
+  const lu = id => { const a = ETAT.mesures && ETAT.mesures.arene, s = a && a.items && typeof a.items === 'object' ? a.items[id] : null; return s && typeof s === 'object' ? s : null; };
   function etat(id){
     const it = memoire().items;
     const s = it[id] && typeof it[id] === 'object' ? it[id] : (it[id] = {});
@@ -13424,7 +13428,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'a48d7850324d';
+  const ICI = 'c2e1601731e3';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

@@ -1537,15 +1537,7 @@ body.ar-ouverte{overflow:hidden}
     </tbody>
   </table></div>
 
-  <div class="bloc">
-    <p class="lib">Entraîne-toi · un calcul à la fois</p>
-    <div class="exo">
-      <p class="compteur-exo" id="fx-compte">0 réussi</p>
-      <p class="enonce" id="fx-enonce">—</p>
-      <div class="ligne-champ"><input class="champ" id="fx-rep" inputmode="decimal" autocomplete="off" placeholder="ex. 43,27" aria-label="Ta réponse"><button type="button" class="btn plein" id="fx-verif">Vérifier</button><button type="button" class="btn" id="fx-autre">Autre calcul</button><button type="button" class="btn btn-tuteur" id="fx-piste">Demander une piste</button></div>
-      <p class="retour" id="fx-retour" aria-live="polite"></p>
-    </div>
-  </div>
+  <div class="atoi-place" id="atoi-formule"></div>
 
   <div class="piege"><b>Le piège d'unité.</b> 8,0 mm = 0,0080 m. Avec 8,0 au lieu de 0,0080, on trouve 0,04 D : aucune cornée n'a cette puissance.</div>
 
@@ -1623,6 +1615,8 @@ body.ar-ouverte{overflow:hidden}
     </div>
   </div>
 
+  <div class="atoi-place" id="atoi-meridiens"></div>
+
   <div class="verif">
     <h3>Vérifie-toi</h3>
     <p class="lib">trois questions</p>
@@ -1680,8 +1674,10 @@ body.ar-ouverte{overflow:hidden}
     </div>
   </details>
 
+  <div class="atoi-place" id="atoi-optosys"></div>
+
   <div class="bloc">
-    <p class="lib">Entraîne-toi · écris chaque cornée comme dans Optosys</p>
+    <p class="lib">Les exercices du cours · 5.2 et AK5 · écris chaque cornée comme dans Optosys</p>
     <div class="exo">
       <p class="compteur-exo" id="ox-compte"></p>
       <p class="enonce" id="ox-enonce">—</p>
@@ -3268,7 +3264,8 @@ const CARTES2 = [
    gen:() => {
      const p = m => String(m).padStart(3, '0');
      const c = n => n.toFixed(2).replace('.', ',');
-     const h = [180, 175, 170, 165, 5, 10, 15][Math.floor(Math.random() * 7)];
+     /* 180 seulement : pour 165–175 et 5–15, « horizontal d'abord » n'est pas réglé par le cours (analyse/to-profil.md, question 2) */
+     const h = 180;
      const ve = h <= 90 ? h + 90 : h - 90;
      const kh = Math.round(160 + Math.random() * 24) / 4;
      let kv = Math.round(160 + Math.random() * 24) / 4;
@@ -3640,7 +3637,10 @@ function etatPropre(e){
    en ouvrant la page, ce qui ne doit rien écraser. Seul ce que l'étudiant a fait compte. */
 function etatVierge(e){
   const vide = k => !Object.keys(e[k] || {}).length;
-  return !e.compris.length && !e.verifie.length && ['fiches', 'questions', 'cartes', 'rappel', 'predictions', 'gestes', 'mesures'].every(vide) &&
+  /* les mesures (arène, « À toi », journal, étiquettes) peuvent naître à l'affichage, compteurs à zéro :
+     seul un essai fait (un n > 0 quelque part) en est une vraie */
+  const essai = o => !!o && typeof o === 'object' && (+o.n > 0 || Object.values(o).some(essai));
+  return !e.compris.length && !e.verifie.length && ['fiches', 'questions', 'cartes', 'rappel', 'predictions', 'gestes'].every(vide) && !essai(e.mesures) &&
     !Object.values(e.maitrise || {}).some(m => m && m.n >= 2);
 }
 const etatGagne = (autre, local) => !!autre && (autre.m > (local.m || '') || (etatVierge(local) && !etatVierge(autre)));
@@ -4278,11 +4278,11 @@ const autre = m => normMer(m <= 90 ? m + 90 : m - 90);
 /* orientation d'un méridien : oblique selon 5.1-d36 ; le partage horizontal / vertical est déduit (À vérifier) */
 function orient(m){ m = normMer(m); if((m >= 30 && m <= 60) || (m >= 120 && m <= 150)) return 'oblique'; return (m > 60 && m < 120) ? 'vertical' : 'horizontal'; }
 function classeAstig(mC, ast){
-  if(ast < 0.01) return {t:'Sphérique : pas d’astigmatisme cornéen', s:'Deux K égaux : ② donne 0.'};
+  if(ast < 0.01) return {t:'Sphérique : pas d’astigmatisme cornéen', s:'Deux K égaux : ② donne 0.'};
   const o = orient(mC);
-  if(o === 'vertical') return {t:'Avec la règle', s:'Méridien vertical cambré : « courbure plus forte selon le méridien vertical » (CM5).'};
-  if(o === 'horizontal') return {t:'Contre la règle', s:'Méridien horizontal cambré : « courbure plus forte selon le méridien horizontal » (CM5).'};
-  return {t:'Oblique', s:'« Cylindre oblique: 30-60 degrés ou 120-150 degrés » (5.1-d36).'};
+  if(o === 'vertical') return {t:'Avec la règle', s:'Méridien vertical cambré : « courbure plus forte selon le méridien vertical » (CM5).'};
+  if(o === 'horizontal') return {t:'Contre la règle', s:'Méridien horizontal cambré : « courbure plus forte selon le méridien horizontal » (CM5).'};
+  return {t:'Oblique', s:'« Cylindre oblique: 30-60 degrés ou 120-150 degrés » (5.1-d36).'};
 }
 /* écriture Optosys d'une cornée {mer: K} */
 function ecrireOptosys(m1, k1, m2, k2){
@@ -4341,12 +4341,12 @@ INIT.miroir = root => {
     h += '<circle cx="336" cy="115" r="92" class="d-doux" stroke-width="1.5"/><circle cx="336" cy="115" r="62" class="d-accf" opacity=".18"/><circle cx="336" cy="115" r="22" class="d-plein"/>';
     h += '<circle cx="336" cy="115" r="' + rr.toFixed(1) + '" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".95"/><circle cx="336" cy="115" r="' + rr.toFixed(1) + '" class="d-acc" stroke-width="1.5"/>';
     [0, 90, 180, 270].forEach(d => { const x = 336 + rr * Math.cos(d * Math.PI / 180), y = 115 + rr * Math.sin(d * Math.PI / 180); h += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.5" fill="#FFFFFF" stroke="#5A3EA6" stroke-width="1.5"/>'; });
-    h += '<text x="246" y="222" class="d-txt2">de face : le reflet des mires</text>';
+    h += '<text x="246" y="222" class="d-txt2">de face : le reflet des mires</text>';
     svg.innerHTML = h;
     $('#miroir-r-out').textContent = virg(r) + ' mm';
     $('#miroir-taille').textContent = Math.round(100 * r / 7.8) + ' %';
     $('#miroir-d').textContent = virg(337.5 / r) + ' D';
-    $('#miroir-txt').textContent = r < 7.6 ? 'Cornée plus bombée : le reflet rapetisse, la puissance monte.' : r > 8.0 ? 'Cornée plus plate : le reflet grandit, la puissance baisse.' : 'Cornée moyenne : autour de 43 D. Le reflet est à 100 % pour 7,80 mm.';
+    $('#miroir-txt').textContent = r < 7.6 ? 'Cornée plus bombée : le reflet rapetisse, la puissance monte.' : r > 8.0 ? 'Cornée plus plate : le reflet grandit, la puissance baisse.' : 'Cornée moyenne : autour de 43 D. Le reflet est à 100 % pour 7,80 mm.';
   }
   inp.addEventListener('input', rendre);
   rendre();
@@ -4363,13 +4363,13 @@ INIT.formule = root => {
     let D, txt;
     if(mode === 'r'){
       const r = +$('#f-r').value; $('#f-r-out').textContent = virg(r) + ' mm';
-      if(piege){ D = 0.3375 / r; txt = 'r = ' + virg(r) + ' (mm laissés tels quels)<br>D = 0,3375 / ' + virg(r) + ' = <b style="color:var(--bad)">' + virg(D, 3) + ' D</b> : impossible.'; }
+      if(piege){ D = 0.3375 / r; txt = 'r = ' + virg(r) + ' (mm laissés tels quels)<br>D = 0,3375 / ' + virg(r) + ' = <b style="color:var(--bad)">' + virg(D, 3) + ' D</b> : impossible.'; }
       else { D = 337.5 / r; txt = 'r = ' + virg(r) + ' mm = ' + virg(r / 1000, 5) + ' m<br>D = 0,3375 / ' + virg(r / 1000, 5) + ' = <b>' + virg(D) + ' D</b>'; }
       $('#f-res-lib').textContent = 'Puissance'; $('#f-res').innerHTML = virg(D, piege ? 3 : 2) + '<small>D</small>';
     } else {
       D = +$('#f-d').value; $('#f-d-out').textContent = virg(D) + ' D';
       const r = 337.5 / D;
-      if(piege){ txt = 'r = 0,3375 / ' + virg(D) + ' = ' + virg(r / 1000, 6) + ' m : c’est en mètres. Oublier de multiplier par 1000 donne <b style="color:var(--bad)">' + virg(r / 1000, 4) + ' mm</b>.'; }
+      if(piege){ txt = 'r = 0,3375 / ' + virg(D) + ' = ' + virg(r / 1000, 6) + ' m : c’est en mètres. Oublier de multiplier par 1000 donne <b style="color:var(--bad)">' + virg(r / 1000, 4) + ' mm</b>.'; }
       else txt = 'r = 0,3375 / ' + virg(D) + ' = ' + virg(r / 1000, 6) + ' m = <b>' + virg(r) + ' mm</b>';
       $('#f-res-lib').textContent = 'Rayon'; $('#f-res').innerHTML = virg(r) + '<small>mm</small>';
     }
@@ -4381,33 +4381,8 @@ INIT.formule = root => {
   $('#f-mode').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if(!b) return; mode = b.dataset.m; $$('[data-m]', $('#f-mode')).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false')); rendre(); });
   ['f-r', 'f-d', 'f-piege'].forEach(id => $('#' + id).addEventListener('input', rendre));
   rendre();
-  /* exercices */
-  let ex = null, reussis = 0;
-  function nouveau(){
-    if(Math.random() < 0.5){ const r = 7.2 + Math.round(Math.random() * 28) * 0.05; ex = {t:'r', v:r, rep:337.5 / r}; $('#fx-enonce').innerHTML = 'Une cornée a un rayon de <b>' + virg(r) + ' mm</b>. Quelle est sa puissance, en D ?'; }
-    else { const D = 39 + Math.round(Math.random() * 34) * 0.25; ex = {t:'d', v:D, rep:337.5 / D}; $('#fx-enonce').innerHTML = 'Une cornée mesure <b>' + virg(D) + ' D</b>. Quel est son rayon, en mm ?'; }
-    $('#fx-rep').value = ''; $('#fx-rep').className = 'champ'; dire($('#fx-retour'), '');
-  }
-  function verifier(){
-    const v = lisNombre($('#fx-rep').value); if(isNaN(v)){ dire($('#fx-retour'), 'Écris un nombre, par exemple 43,27.', 'bad'); return; }
-    const tol = ex.t === 'r' ? 0.06 : 0.015, ok = Math.abs(v - ex.rep) <= tol;
-    $('#fx-rep').className = 'champ ' + (ok ? 'bon' : 'faux');
-    const calc = ex.t === 'r' ? '0,3375 / ' + virg(ex.v / 1000, 5) + ' = ' + virg(ex.rep) + ' D' : '0,3375 / ' + virg(ex.v) + ' = ' + virg(ex.rep / 1000, 6) + ' m = ' + virg(ex.rep) + ' mm';
-    let msg = (ok ? 'Oui. ' : 'Non. ') + calc + '.';
-    if(!ok && ex.t === 'r' && Math.abs(v - 0.3375 / ex.v) < 0.01) msg = 'Non : tu as gardé les millimètres. ' + calc + '.';
-    if(!ok && ex.t === 'd' && Math.abs(v - ex.rep / 1000) < 0.001) msg = 'Presque : c’est la réponse en mètres. ' + calc + '.';
-    if(ok){ reussis++; $('#fx-compte').textContent = reussis + ' réussi' + (reussis > 1 ? 's' : ''); }
-    dire($('#fx-retour'), msg, ok ? 'ok' : 'bad');
-  }
-  $('#fx-verif').addEventListener('click', verifier);
-  $('#fx-rep').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); verifier(); } });
-  $('#fx-autre').addEventListener('click', nouveau);
-  $('#fx-piste').addEventListener('click', () => {
-    const v = $('#fx-rep').value.trim(), att = ex.t === 'r' ? virg(ex.rep) + ' D' : virg(ex.rep) + ' mm';
-    Tuteur.demander('Je bloque sur ce calcul : “' + $('#fx-enonce').textContent + '”' + (v ? ' J’ai trouvé ' + v + '.' : '') + ' Donne-moi une piste, pas la réponse.',
-      'Réponse attendue, pour toi seulement : ' + att + ' (avec ① D = 0,3375 / r, r en mètres).');
-  });
-  nouveau();
+  /* l'ancien exercice (un calcul à la fois, la réponse au premier échec) est devenu « À toi » : mêmes tirages, voir GEN_TO */
+  blocsAToi('formule', $('#atoi-formule'));
 };
 
 /* ---------- méridiens ② ③ ---------- */
@@ -4417,28 +4392,29 @@ INIT.meridiens = root => {
     $('#m-ang-out').textContent = mC + '°'; $('#m-kp-out').textContent = virg(kp) + ' D'; $('#m-ast-out').textContent = virg(ast) + ' D';
     dessinerCadran($('#cadran-svg'), ast > 0 ? [{m:mP, role:'p', lib:kp.toFixed(2) + ' @' + mP}, {m:mC, role:'c', lib:kc.toFixed(2) + ' @' + mC}] : [{m:mC, role:null, lib:kp.toFixed(2)}, {m:mP, role:null, lib:kp.toFixed(2)}]);
     const ecr = ecrireOptosys(mP, kp, mC, kc);
-    $('#m-calc').innerHTML = 'K cambré = ' + virg(kp) + ' + ' + virg(ast) + ' = <b>' + virg(kc) + ' D</b> @ ' + mC + '<br>③ méridien plat = ' + mC + (mC <= 90 ? ' + 90' : ' − 90') + ' = <b>' + mP + '</b><br>Optosys : <b>' + ecr.join('</b> ou <b>') + '</b>';
+    $('#m-calc').innerHTML = 'K cambré = ' + virg(kp) + ' + ' + virg(ast) + ' = <b>' + virg(kc) + ' D</b> @ ' + mC + '<br>③ méridien plat = ' + mC + (mC <= 90 ? ' + 90' : ' − 90') + ' = <b>' + mP + '</b><br>Optosys : <b>' + ecr.join('</b> ou <b>') + '</b>';
     const c = classeAstig(mC, ast);
     $('#m-classe').textContent = c.t;
     $('#m-classe-src').innerHTML = c.s + (c.t === 'Avec la règle' || c.t === 'Contre la règle' ? ' Le partage des angles hors oblique est ' + DED + '.' : '');
   }
   ['m-ang', 'm-kp', 'm-ast'].forEach(id => $('#' + id).addEventListener('input', rendre));
   rendre();
+  blocsAToi('meridiens', $('#atoi-meridiens'));
 };
 
 /* ---------- Optosys ---------- */
 INIT.optosys = root => {
-  $('#op-ex').innerHTML = OP_EXEMPLES.map(x => '<button type="button" class="puce" data-x="' + esc(x) + '">« ' + esc(x) + ' »</button>').join('');
+  $('#op-ex').innerHTML = OP_EXEMPLES.map(x => '<button type="button" class="puce" data-x="' + esc(x) + '">« ' + esc(x) + ' »</button>').join('');
   function decoder(){
     const L = lireOptosys($('#op-champ').value), out = $('#op-sortie');
-    if(!L){ dire($('#op-err'), 'Format attendu : valeur x valeur @ méridien, par exemple 42.00x44.00@090.', 'bad'); out.innerHTML = ''; dessinerCadran($('#op-svg'), []); return; }
+    if(!L){ dire($('#op-err'), 'Format attendu : valeur x valeur @ méridien, par exemple 42.00x44.00@090.', 'bad'); out.innerHTML = ''; dessinerCadran($('#op-svg'), []); return; }
     dire($('#op-err'), '');
     const ast = Math.abs(L.v2 - L.v1), cambre2 = L.v2 >= L.v1;
     const mC = cambre2 ? L.m2 : L.m1, mP = cambre2 ? L.m1 : L.m2, kC = Math.max(L.v1, L.v2), kP = Math.min(L.v1, L.v2);
     dessinerCadran($('#op-svg'), ast ? [{m:mP, role:'p', lib:kP.toFixed(2) + ' @' + mP}, {m:mC, role:'c', lib:kC.toFixed(2) + ' @' + mC}] : [{m:L.m1, role:null, lib:L.v1.toFixed(2)}, {m:L.m2, role:null, lib:L.v2.toFixed(2)}]);
     const o1 = orient(L.m1), o2 = orient(L.m2), c = classeAstig(mC, ast);
     let ordre;
-    if(o1 === 'oblique' && o2 === 'oblique') ordre = 'Méridiens obliques : les deux écritures sont justes (« 41x42@135  ou 42x41@045 », 5.2-R3).';
+    if(o1 === 'oblique' && o2 === 'oblique') ordre = 'Méridiens obliques : les deux écritures sont justes (« 41x42@135  ou 42x41@045 », 5.2-R3).';
     else if(o1 === 'horizontal') ordre = '✓ Le méridien horizontal (' + L.m1 + ') est écrit en premier.';
     else ordre = '⚠ Ici le méridien vertical (' + L.m1 + ') vient en premier. Optosys écrirait plutôt <b>' + esc(ecrireOptosys(L.m1, L.v1, L.m2, L.v2)[0]) + '</b>.';
     out.innerHTML = '<div class="decode">' +
@@ -4462,17 +4438,17 @@ INIT.optosys = root => {
   }
   function verifier(){
     const X = OX[i], L = lireOptosys($('#ox-rep').value), ret = $('#ox-retour'), champ = $('#ox-rep');
-    if(!L){ dire(ret, 'Format attendu : valeur x valeur @ méridien, par exemple 42.00x44.00@090.', 'bad'); return; }
+    if(!L){ dire(ret, 'Format attendu : valeur x valeur @ méridien, par exemple 42.00x44.00@090.', 'bad'); return; }
     const att = {}; Object.keys(X.m).forEach(k => att[normMer(+k)] = X.m[k]);
     const meme = (m, v) => att[m] !== undefined && Math.abs(att[m] - v) < 0.001;
     let ok = false, msg;
     if(meme(L.m1, L.v1) && meme(L.m2, L.v2)){
       const o1 = orient(L.m1), o2 = orient(L.m2);
-      if(o1 === 'vertical' && o2 !== 'oblique') msg = 'La cornée est bien décrite, mais Optosys veut le méridien horizontal en premier (5.1-d36). Réponse : ' + X.r + '.';
-      else { ok = true; msg = 'Oui. ' + (X.r.includes(' ou ') ? 'Les deux écritures sont justes : ' + X.r + '.' : 'Réponse : ' + X.r + '.'); }
-    } else if(meme(L.m1, L.v2) && meme(L.m2, L.v1)) msg = 'Les valeurs ne sont pas aux bons méridiens : le @ donne le méridien de la 2e valeur. Réponse : ' + X.r + '.';
-    else if(att[L.m1] === undefined || att[L.m2] === undefined) msg = 'Les méridiens ne correspondent pas : ③, l’autre méridien est à 90° de celui du @. Réponse : ' + X.r + '.';
-    else msg = 'Vérifie les valeurs. Réponse : ' + X.r + '.';
+      if(o1 === 'vertical' && o2 !== 'oblique') msg = 'La cornée est bien décrite, mais Optosys veut le méridien horizontal en premier (5.1-d36). Réponse : ' + X.r + '.';
+      else { ok = true; msg = 'Oui. ' + (X.r.includes(' ou ') ? 'Les deux écritures sont justes : ' + X.r + '.' : 'Réponse : ' + X.r + '.'); }
+    } else if(meme(L.m1, L.v2) && meme(L.m2, L.v1)) msg = 'Les valeurs ne sont pas aux bons méridiens : le @ donne le méridien de la 2e valeur. Réponse : ' + X.r + '.';
+    else if(att[L.m1] === undefined || att[L.m2] === undefined) msg = 'Les méridiens ne correspondent pas : ③, l’autre méridien est à 90° de celui du @. Réponse : ' + X.r + '.';
+    else msg = 'Vérifie les valeurs. Réponse : ' + X.r + '.';
     champ.className = 'champ optosys-champ ' + (ok ? 'bon' : 'faux');
     if(ok) faits.add(i);
     dire(ret, esc(msg), ok ? 'ok' : 'bad');
@@ -4481,16 +4457,17 @@ INIT.optosys = root => {
   $('#ox-verif').addEventListener('click', verifier);
   $('#ox-piste').addEventListener('click', () => {
     const X = OX[i], v = $('#ox-rep').value.trim(), e = document.createElement('div'); e.innerHTML = X.e;
-    Tuteur.demander('Je bloque sur cet exercice Optosys : ' + e.textContent + (v ? ' Ma réponse : ' + v + '.' : '') + ' Donne-moi une piste, pas la réponse.',
-      'Réponse attendue, pour toi seulement : ' + X.r + (X.ded ? ' (déduite : la fiche AK5 n’a pas de corrigé)' : '') + '.');
+    Tuteur.demander('Je bloque sur cet exercice Optosys : ' + e.textContent + (v ? ' Ma réponse : ' + v + '.' : '') + ' Donne-moi une piste, pas la réponse.',
+      'Réponse attendue, pour toi seulement : ' + X.r + (X.ded ? ' (déduite : la fiche AK5 n’a pas de corrigé)' : '') + '.');
   });
   $('#ox-rep').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); verifier(); } });
   $('#ox-suiv').addEventListener('click', () => {
     const fin = i === OX.length - 1;
     i = (i + 1) % OX.length; poser();
-    if(fin) dire($('#ox-retour'), 'Série terminée : ' + faits.size + ' sur ' + OX.length + ' réussis. On recommence au début.', faits.size === OX.length ? 'ok' : '');
+    if(fin) dire($('#ox-retour'), 'Série terminée : ' + faits.size + ' sur ' + OX.length + ' réussis. On recommence au début.', faits.size === OX.length ? 'ok' : '');
   });
   poser();
+  blocsAToi('optosys', $('#atoi-optosys'));
 };
 
 /* ---------- zone lue (kératomètre / topographe) ---------- */
@@ -4501,10 +4478,10 @@ INIT.instruments = root => {
     const k = 7.5;
     let h = '<circle cx="110" cy="110" r="' + (6 * k * 1.7).toFixed(1) + '" class="d-doux" stroke-width="1.5"/>';
     if(z === 'k') h += '<circle cx="110" cy="110" r="' + (1.5 * k * 1.7).toFixed(1) + '" class="d-accf" opacity=".55"/><text x="110" y="200" text-anchor="middle" class="d-txt">2-3 mm au centre</text>';
-    else h += '<circle cx="110" cy="110" r="' + (6 * k * 1.7 - 2).toFixed(1) + '" class="d-accf" opacity=".35"/><text x="110" y="214" text-anchor="middle" class="d-txt">11 à 14 mm : toute la cornée</text>';
+    else h += '<circle cx="110" cy="110" r="' + (6 * k * 1.7 - 2).toFixed(1) + '" class="d-accf" opacity=".35"/><text x="110" y="214" text-anchor="middle" class="d-txt">11 à 14 mm : toute la cornée</text>';
     h += '<circle cx="110" cy="110" r="3" class="d-plein"/>';
     svg.innerHTML = h;
-    $('#zone-txt').innerHTML = z === 'k' ? 'Le kératomètre lit « 2-3mm au centre » <span class="src">5.3-d4</span> : deux K, rien sur la périphérie.' : 'Le topographe permet « une évaluation de la surface totale de la cornée (11mm-14mm) » <span class="src">5.3-d4</span>.';
+    $('#zone-txt').innerHTML = z === 'k' ? 'Le kératomètre lit « 2-3mm au centre » <span class="src">5.3-d4</span> : deux K, rien sur la périphérie.' : 'Le topographe permet « une évaluation de la surface totale de la cornée (11mm-14mm) » <span class="src">5.3-d4</span>.';
   }
   $('#zone-puces').addEventListener('click', e => { const b = e.target.closest('[data-z]'); if(b) rendre(b.dataset.z); });
   rendre('k');
@@ -4581,8 +4558,8 @@ function simK(fn){
   return {kc:best, mc:mC, kp:moy(mP), mp:mP};
 }
 function lireMotif(p, K){
-  if(p.cone >= 2) return 'Irrégulier / asymétrique : zone de cambrure localisée';
-  if(K.kc - K.kp < 0.5) return 'Concentrique : pas d’astigmatisme apparent';
+  if(p.cone >= 2) return 'Irrégulier / asymétrique : zone de cambrure localisée';
+  if(K.kc - K.kp < 0.5) return 'Concentrique : pas d’astigmatisme apparent';
   const o = orient(K.mc);
   return o === 'vertical' ? 'Régulier, avec la règle' : o === 'horizontal' ? 'Régulier, contre la règle' : 'Régulier, oblique';
 }
@@ -4594,7 +4571,7 @@ INIT.carte = root => {
   let geo = null, tRendu = null, point = null;
   function majLecture(){
     if(!point){ $('#t-lecture').textContent = 'Touche la carte pour lire la puissance.'; return; }
-    $('#t-lecture').textContent = 'Ici : ' + virg(puissance(p, point.x, point.y)) + ' D · ' + (point.mm < 0.15 ? 'au centre' : 'à ' + virg(point.mm, 1) + ' mm du centre, méridien ' + point.ang + '°');
+    $('#t-lecture').textContent = 'Ici : ' + virg(puissance(p, point.x, point.y)) + ' D · ' + (point.mm < 0.15 ? 'au centre' : 'à ' + virg(point.mm, 1) + ' mm du centre, méridien ' + point.ang + '°');
   }
   function rendre(){
     p.ast = +$('#t-ast').value; p.ang = +$('#t-ang').value; p.cone = +$('#t-cone').value;
@@ -4603,9 +4580,9 @@ INIT.carte = root => {
     const K = simK(fn), dK = K.kc - K.kp;
     geo = dessinerCarte(cv, fn, couleurD, {reperes:true, zoneK:$('#t-zone').checked, k:dK >= 0.25 ? K : null});
     $('#t-simk').innerHTML = dK < 0.01
-      ? 'K du kératomètre (zone de 3 mm)<br>Les deux K sont égaux : ' + K.kc.toFixed(2) + ' D<br>② ΔK = 0.00 D : aucun méridien plus cambré'
+      ? 'K du kératomètre (zone de 3 mm)<br>Les deux K sont égaux : ' + K.kc.toFixed(2) + ' D<br>② ΔK = 0.00 D : aucun méridien plus cambré'
       : 'K du kératomètre (zone de 3 mm)<br><span class="c">K cambré ' + K.kc.toFixed(2) + ' D @ ' + K.mc + '</span> · <span class="p">K plat ' + K.kp.toFixed(2) + ' D @ ' + K.mp + '</span><br>② ΔK = ' + dK.toFixed(2) + ' D' +
-        (dK >= 0.25 ? '<br><span style="color:var(--ink-3)">Sur la carte : trait plein = méridien cambré, pointillé = méridien plat.</span>' : '');
+        (dK >= 0.25 ? '<br><span style="color:var(--ink-3)">Sur la carte : trait plein = méridien cambré, pointillé = méridien plat.</span>' : '');
     $('#t-classe').textContent = lireMotif(p, K);
     majLecture();
   }
@@ -4643,10 +4620,10 @@ INIT.mysteres = root => {
   let carte = null, choix = {motif:null, mer:null}, faites = 0, justes = 0, verifiee = false;
   const R = (a, b) => a + Math.random() * (b - a);
   const REP = {
-    conc:{mer:'aucun', t:'« Non, pas d’astigmatisme cornéen apparent significatif — motif concentrique et régulier » ; « aucun méridien distinct plus cambré ou plus plat »'},
-    avec:{mer:'90', t:'« Oui — régulier, avec la règle : courbure plus forte selon le méridien vertical »'},
-    contre:{mer:'180', t:'« Oui — régulier, contre la règle : courbure plus forte selon le méridien horizontal »'},
-    irr:{mer:'aucun', t:'« Oui, motif irrégulier / asymétrique, zone de cambrure localisée » ; « direction dominante non fiable ou indéterminable sur ce schéma irrégulier »'}
+    conc:{mer:'aucun', t:'« Non, pas d’astigmatisme cornéen apparent significatif — motif concentrique et régulier » ; « aucun méridien distinct plus cambré ou plus plat »'},
+    avec:{mer:'90', t:'« Oui — régulier, avec la règle : courbure plus forte selon le méridien vertical »'},
+    contre:{mer:'180', t:'« Oui — régulier, contre la règle : courbure plus forte selon le méridien horizontal »'},
+    irr:{mer:'aucun', t:'« Oui, motif irrégulier / asymétrique, zone de cambrure localisée » ; « direction dominante non fiable ou indéterminable sur ce schéma irrégulier »'}
   };
   function tirer(){
     const k = ['conc', 'avec', 'contre', 'irr'][Math.floor(Math.random() * 4)];
@@ -4678,7 +4655,7 @@ INIT.mysteres = root => {
     $$('#cm-mer .puce').forEach(b => { b.setAttribute('aria-pressed', 'false'); if(b.dataset.v === rep.mer) b.classList.add('bon'); else if(b.dataset.v === choix.mer) b.classList.add('faux'); });
     faites++; if(ok1 && ok2) justes++;
     $('#cm-score').textContent = justes + ' sur ' + faites + ' entièrement justes';
-    dire($('#cm-retour'), (ok1 && ok2 ? 'Oui. ' : 'Pas tout à fait. ') + 'Le corrigé dirait : ' + rep.t + ' <span class="src">CM5</span>', ok1 && ok2 ? 'ok' : 'bad');
+    dire($('#cm-retour'), (ok1 && ok2 ? 'Oui. ' : 'Pas tout à fait. ') + 'Le corrigé dirait : ' + rep.t + ' <span class="src">CM5</span>', ok1 && ok2 ? 'ok' : 'bad');
   });
   $('#cm-suiv').addEventListener('click', tirer);
   tirer();
@@ -4718,7 +4695,7 @@ INIT.chirurgie = root => {
     if(M.f0) h += rayons(M.f0, 'd-trait2', true);
     h += rayons(M.f1, 'd-camb', false);
     h += '<circle cx="' + M.f1 + '" cy="110" r="4" class="d-cambf"/>';
-    h += '<text x="10" y="210" class="d-txt2">' + (M.f1 < 340 ? 'foyer « in front of the retina »' : 'foyer « on the retina »') + '</text>';
+    h += '<text x="10" y="210" class="d-txt2">' + (M.f1 < 340 ? 'foyer « in front of the retina »' : 'foyer « on the retina »') + '</text>';
     svg.innerHTML = h;
     $('#ch-r').textContent = virg(r1) + ' mm';
     $('#ch-d').textContent = virg(d1) + ' D';
@@ -4776,7 +4753,7 @@ INIT.keratocone = root => {
   $('#kc-p').addEventListener('input', rendre);
   rendre();
   const box = $('#kc-couches');
-  box.innerHTML = COUCHES_K.map(c => '<button type="button" class="couche-b' + (c.id === 'str' ? ' stroma' : '') + '" data-c="' + c.id + '" aria-pressed="false"><span>' + esc(c.t) + '</span><small>« ' + esc(c.fig) + ' »</small></button>').join('');
+  box.innerHTML = COUCHES_K.map(c => '<button type="button" class="couche-b' + (c.id === 'str' ? ' stroma' : '') + '" data-c="' + c.id + '" aria-pressed="false"><span>' + esc(c.t) + '</span><small>« ' + esc(c.fig) + ' »</small></button>').join('');
   box.addEventListener('click', e => {
     const b = e.target.closest('[data-c]'); if(!b) return;
     $$('[data-c]', box).forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
@@ -4795,7 +4772,7 @@ INIT.depistage = root => {
     b.classList.add(ok ? 'bon' : 'faux');
     const r = $('.retour', l);
     r.className = 'retour ' + (ok ? 'ok' : 'bad');
-    r.innerHTML = (ok ? 'Oui. ' : 'Non. ') + (T.e || (T.v === 'sym' ? 'Le patient le dit : symptôme ' + S('6.1-d13') + '.' : 'On l’observe ou on le mesure : signe ' + S('6.1-d14') + '.'));
+    r.innerHTML = (ok ? 'Oui. ' : 'Non. ') + (T.e || (T.v === 'sym' ? 'Le patient le dit : symptôme ' + S('6.1-d13') + '.' : 'On l’observe ou on le mesure : signe ' + S('6.1-d14') + '.'));
   });
   let k = 0;
   const zone = $('#cas-kc');
@@ -4818,7 +4795,7 @@ INIT.traitements = root => {
       h += '<path d="M10 ' + y + ' C 50 ' + (y - 6) + ', 90 ' + (y + 6) + ', 130 ' + y + ' S 190 ' + (y - 6) + ', 210 ' + y + '" class="d-trait" stroke-width="2.2"/>';
       if(on && i < 4) for(let x = 26; x < 210; x += 26) h += '<line x1="' + x + '" y1="' + (y + 2) + '" x2="' + (x + 6) + '" y2="' + (y + 18) + '" class="d-acc" stroke-width="2.5"/>';
     }
-    h += '<text x="10" y="116" class="d-txt2">' + (on ? '« After cross-linking (Stronger) »' : '« Before cross-linking (weaker) »') + '</text>';
+    h += '<text x="10" y="116" class="d-txt2">' + (on ? '« After cross-linking (Stronger) »' : '« Before cross-linking (weaker) »') + '</text>';
     svg.innerHTML = h;
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     btn.textContent = on ? 'Revenir à avant' : 'Appliquer riboflavine + UV';
@@ -4874,19 +4851,19 @@ INIT.verres = root => {
     h += '<circle cx="140" cy="' + gy.toFixed(1) + '" r="9" fill="none" class="d-camb" stroke-width="3"/><circle cx="140" cy="' + gy.toFixed(1) + '" r="2.5" class="d-cambf"/>';
     svg.innerHTML = h;
     $('#v-force').textContent = signe(force(type, y)) + ' D · ' + zoneNom(type, y);
-    $('#v-fiche').innerHTML = '<h4>' + esc(V.t) + '</h4><dl><dt>Le verre</dt><dd>' + V.d + '</dd><dt>Pour qui</dt><dd>' + V.qui + '</dd><dt>Exemple</dt><dd>sphère +1,00' + (V.add ? ', addition +' + virg(V.add) + ' (en bas : ' + signe(1 + V.add) + ')' : '') + '</dd><dt>Source</dt><dd>' + S(V.src) + '</dd></dl>';
+    $('#v-fiche').innerHTML = '<h4>' + esc(V.t) + '</h4><dl><dt>Le verre</dt><dd>' + V.d + '</dd><dt>Pour qui</dt><dd>' + V.qui + '</dd><dt>Exemple</dt><dd>sphère +1,00' + (V.add ? ', addition +' + virg(V.add) + ' (en bas : ' + signe(1 + V.add) + ')' : '') + '</dd><dt>Source</dt><dd>' + S(V.src) + '</dd></dl>';
   }
   $('#v-types').addEventListener('click', e => { const b = e.target.closest('[data-v]'); if(b){ type = b.dataset.v; rendre(); } });
   $('#v-regard').addEventListener('input', rendre);
   rendre();
   function age(){
     const a = +$('#v-age').value; $('#v-age-out').textContent = a + ' ans';
-    const L = ['<b>Simple vision</b> : « n’importe quel âge ».'];
+    const L = ['<b>Simple vision</b> : « n’importe quel âge ».'];
     if(a < 20) L.push('Le cours ne propose pas de verre à addition avant 20 ans ' + DED + '.');
-    if(a >= 20 && a <= 38) L.push('<b>Anti-fatigue</b> possible : « 20-38 ans pour difficultés d’accommodation ».');
-    if(a >= 38) L.push('<b>Progressifs</b> : « 38 ans+ pour presbytie ».');
-    if(a >= 52) L.push('<b>Dégressifs</b> possibles, s’il a « des difficultés ergonomiques avec les progressifs » ou si « les lunettes simples vision ne répondent plus aux besoins ».');
-    if(a === 38) L.push('<span class="deduit">frontière</span> 38 ans est dans les deux plages : à vérifier en classe (comme SC6-c04).');
+    if(a >= 20 && a <= 38) L.push('<b>Anti-fatigue</b> possible : « 20-38 ans pour difficultés d’accommodation ».');
+    if(a >= 38) L.push('<b>Progressifs</b> : « 38 ans+ pour presbytie ».');
+    if(a >= 52) L.push('<b>Dégressifs</b> possibles, s’il a « des difficultés ergonomiques avec les progressifs » ou si « les lunettes simples vision ne répondent plus aux besoins ».');
+    if(a === 38) L.push('<span class="deduit">frontière</span> 38 ans est dans les deux plages : à vérifier en classe (comme SC6-c04).');
     $('#v-age-txt').innerHTML = '<ul style="margin:0;padding-left:20px">' + L.map(x => '<li>' + x + '</li>').join('') + '</ul><p class="legende">' + S('6.2-d10') + '</p>';
   }
   $('#v-age').addEventListener('input', age);
@@ -4910,7 +4887,7 @@ INIT.rx = root => {
   function rendre(){
     const R = lireRx($('#rx-champ').value), tab = $('#rx-table');
     const age = +$('#rx-age').value; $('#rx-age-out').textContent = age + ' ans';
-    if(!R){ dire($('#rx-err'), 'Format attendu : OD +1.00-1.00x180 add +0.75 (le cylindre et l’addition sont facultatifs).', 'bad'); tab.innerHTML = ''; $('#rx-verdict').innerHTML = ''; return; }
+    if(!R){ dire($('#rx-err'), 'Format attendu : OD +1.00-1.00x180 add +0.75 (le cylindre et l’addition sont facultatifs).', 'bad'); tab.innerHTML = ''; $('#rx-verdict').innerHTML = ''; return; }
     dire($('#rx-err'), '');
     const cyl = R.c !== null ? signe(R.c) + ' x' + P3(R.a) : 'sph';
     const bas = R.add ? signe(R.s + R.add) + (R.c !== null ? ' ' + signe(R.c) + ' x' + P3(R.a) : ' sph') : '—';
@@ -4919,19 +4896,19 @@ INIT.rx = root => {
       .map(([k, v]) => '<div class="mesure"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>').join('');
     $$('[data-u]', $('#rx-usage')).forEach(b => b.setAttribute('aria-pressed', b.dataset.u === usage ? 'true' : 'false'));
     let v;
-    if(!R.add) v = '<b>Une seule force : simple vision.</b> « Une force dans la lentille » ' + S('6.2-d3') + '. L’usage reste à noter : de loin, de près ou en tout temps.';
+    if(!R.add) v = '<b>Une seule force : simple vision.</b> « Une force dans la lentille » ' + S('6.2-d3') + '. L’usage reste à noter : de loin, de près ou en tout temps.';
     else if(usage === 'lecture'){
-      v = '<b>Dégressif.</b> « Dans ce cas il s’agit d’un verre dégressif (intermédiaire et vision de près) » ' + S('6.2-d15') + '. Le haut du verre (' + signe(R.s) + ') est alors la puissance intermédiaire ' + DED + '.';
-      if(age < 52) v += ' Attention : 6.2-d10 destine les dégressifs aux « presbytes avancés 52ans ' + SIC + ' et plus » ; à ' + age + ' ans, à vérifier avec l’optométriste.';
+      v = '<b>Dégressif.</b> « Dans ce cas il s’agit d’un verre dégressif (intermédiaire et vision de près) » ' + S('6.2-d15') + '. Le haut du verre (' + signe(R.s) + ') est alors la puissance intermédiaire ' + DED + '.';
+      if(age < 52) v += ' Attention : 6.2-d10 destine les dégressifs aux « presbytes avancés 52ans ' + SIC + ' et plus » ; à ' + age + ' ans, à vérifier avec l’optométriste.';
     }
     else {
-      v = '« Dans ce cas il s’agit d’un verre anti-fatigue ou progressifs (vision de loin et vision de près) » ' + S('6.2-d16') + '. ';
-      if(age < 20) v += 'À ' + age + ' ans, sous la plage « Anti-fatigue: 20-38 ans » : le cours ne propose pas de verre à addition à cet âge. <b>À vérifier</b> ' + DED + '.';
-      else if(R.add > 1.0) v += 'L’addition +' + virg(R.add) + ' dépasse la plage anti-fatigue « (0.50D à 1.00D) » : <b>progressifs</b> ' + DED + '.';
-      else if(R.add < 0.5) v += 'L’addition +' + virg(R.add) + ' est sous la plage anti-fatigue « (0.50D à 1.00D) » : le cours ne dit pas quoi en faire. <b>À vérifier</b>.';
-      else if(age < 38) v += 'À ' + age + ' ans, avec une addition dans « (0.50D à 1.00D) » : <b>anti-fatigue</b> ' + DED + ' de 6.2-d6 et d10.';
-      else if(age === 38) v += 'À 38 ans, les deux plages se touchent : <b>à vérifier</b> (comme SC6-c04).';
-      else v += 'À ' + age + ' ans (« 38 ans+ pour presbytie ») : <b>progressifs</b> ' + DED + '.';
+      v = '« Dans ce cas il s’agit d’un verre anti-fatigue ou progressifs (vision de loin et vision de près) » ' + S('6.2-d16') + '. ';
+      if(age < 20) v += 'À ' + age + ' ans, sous la plage « Anti-fatigue: 20-38 ans » : le cours ne propose pas de verre à addition à cet âge. <b>À vérifier</b> ' + DED + '.';
+      else if(R.add > 1.0) v += 'L’addition +' + virg(R.add) + ' dépasse la plage anti-fatigue « (0.50D à 1.00D) » : <b>progressifs</b> ' + DED + '.';
+      else if(R.add < 0.5) v += 'L’addition +' + virg(R.add) + ' est sous la plage anti-fatigue « (0.50D à 1.00D) » : le cours ne dit pas quoi en faire. <b>À vérifier</b>.';
+      else if(age < 38) v += 'À ' + age + ' ans, avec une addition dans « (0.50D à 1.00D) » : <b>anti-fatigue</b> ' + DED + ' de 6.2-d6 et d10.';
+      else if(age === 38) v += 'À 38 ans, les deux plages se touchent : <b>à vérifier</b> (comme SC6-c04).';
+      else v += 'À ' + age + ' ans (« 38 ans+ pour presbytie ») : <b>progressifs</b> ' + DED + '.';
     }
     $('#rx-verdict').innerHTML = v;
   }
@@ -4944,7 +4921,7 @@ INIT.rx = root => {
   function poser(){
     const C = CAS_ERR[i]; fait = false;
     $('#er-compte').textContent = 'Cas ' + (i + 1) + ' sur ' + CAS_ERR.length + ' · ' + justes + ' trouvée' + (justes > 1 ? 's' : '');
-    $('#er-cas').innerHTML = '<p class="lib" style="margin:4px 0">La réalité</p><p class="erreur-saisie" style="margin:0 0 8px"></p><p class="lib" style="margin:4px 0">La saisie au dossier</p><p class="erreur-saisie" style="margin:0"></p><p class="lib" style="margin:12px 0 6px">Quelle erreur fréquente ?</p>';
+    $('#er-cas').innerHTML = '<p class="lib" style="margin:4px 0">La réalité</p><p class="erreur-saisie" style="margin:0 0 8px"></p><p class="lib" style="margin:4px 0">La saisie au dossier</p><p class="erreur-saisie" style="margin:0"></p><p class="lib" style="margin:12px 0 6px">Quelle erreur fréquente ?</p>';
     const z = $$('.erreur-saisie', $('#er-cas')); z[0].textContent = C.reel; z[1].textContent = C.saisie;
     $('#er-choix').innerHTML = ERREURS.map((t, k) => '<button type="button" class="puce" data-k="' + k + '" style="text-align:left;border-radius:10px">' + t + '</button>').join('');
     dire($('#er-retour'), '');
@@ -4981,7 +4958,7 @@ function ecranLenti(el, lect, actif, opts = {}){
 }
 INIT.lentimetre = root => {
   initOrdre({source:'#ordre-source', cible:'#ordre-cible', zero:'#ordre-zero', retour:'#ordre-retour',
-    items:['Demander : a-t-il ses lunettes ? pour quoi ?', 'Observer : claires ? rayures ? monture ?', 'Mesurer : déplacer le verre', 'Transcrire : OD, OS, add, notes', 'Signaler : ce qu’on ne peut pas mesurer'],
+    items:['Demander : a-t-il ses lunettes ? pour quoi ?', 'Observer : claires ? rayures ? monture ?', 'Mesurer : déplacer le verre', 'Transcrire : OD, OS, add, notes', 'Signaler : ce qu’on ne peut pas mesurer'],
     fin:'Demander → observer → mesurer → transcrire → signaler. Le regroupement en cinq verbes est déduit de 6.2-d13 et 6.3-d7.'});
   $('#l-paires').innerHTML = Object.keys(PAIRES).map(k => '<button type="button" class="puce" data-p="' + k + '">' + esc(PAIRES[k].t) + '</button>').join('');
   let paire = 'sv', oeil = 'R', lect = {};
@@ -4997,7 +4974,7 @@ INIT.lentimetre = root => {
     ecranLenti($('#l-ecran'), lect, oeil, {prisme:paire === 'prisme', mire:L.prisme ? 26 : 0, pd:PAIRES[paire].pd});
     let t = PAIRES[paire].txt;
     if(L.add && y >= 70) t += ' Ici, la sphère a augmenté de +' + virg(L.add) + ' : c’est l’addition.';
-    if(L.prisme) t += ' « Si on n\'est pas capable de center ' + SIC + ' la mire il y a possiblement un prisme. A vérifier avec opticien ou optométriste » ' + S('6.2-d18');
+    if(L.prisme) t += ' « Si on n\'est pas capable de center ' + SIC + ' la mire il y a possiblement un prisme. A vérifier avec opticien ou optométriste » ' + S('6.2-d18');
     $('#l-txt').innerHTML = t;
   }
   $('#l-paires').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if(b){ paire = b.dataset.p; lect = {}; rendre(); } });
@@ -5012,12 +4989,12 @@ INIT.lentimetre = root => {
     const od = lireRx($('#tr-od').value), os = lireRx($('#tr-os').value), ret = $('#tr-retour');
     const okD = egal(od, ATT.OD), okG = egal(os, ATT.OS);
     $('#tr-od').className = 'champ ' + (okD ? 'bon' : 'faux'); $('#tr-os').className = 'champ ' + (okG ? 'bon' : 'faux');
-    if(okD && okG){ dire(ret, 'Oui : OD −4.00 −0.75 x070 ; OS −3.25 sph. R = OD, L = OS, même si L est affiché à gauche.', 'ok'); return; }
-    if(egal(od, ATT.OS) && egal(os, ATT.OD)){ dire(ret, 'Tu as inversé les yeux : R (à droite de l’écran) = OD, L (à gauche) = OS. C’est l’erreur « Mélanger les mesures de l’oeil droit et oeil gauche » (6.2-d20).', 'bad'); return; }
-    if(od && od.s > 0 || os && os.s > 0){ dire(ret, 'Vérifie les signes : l’écran affiche des valeurs négatives. « Écrire + ou (sic) lieu de – » est une erreur fréquente (6.2-d20).', 'bad'); return; }
-    dire(ret, 'Pas encore. Lis R pour l’OD (S, C, A) et L pour l’OS (S seulement : C 0.00 = sphère).', 'bad');
+    if(okD && okG){ dire(ret, 'Oui : OD −4.00 −0.75 x070 ; OS −3.25 sph. R = OD, L = OS, même si L est affiché à gauche.', 'ok'); return; }
+    if(egal(od, ATT.OS) && egal(os, ATT.OD)){ dire(ret, 'Tu as inversé les yeux : R (à droite de l’écran) = OD, L (à gauche) = OS. C’est l’erreur « Mélanger les mesures de l’oeil droit et oeil gauche » (6.2-d20).', 'bad'); return; }
+    if(od && od.s > 0 || os && os.s > 0){ dire(ret, 'Vérifie les signes : l’écran affiche des valeurs négatives. « Écrire + ou (sic) lieu de – » est une erreur fréquente (6.2-d20).', 'bad'); return; }
+    dire(ret, 'Pas encore. Lis R pour l’OD (S, C, A) et L pour l’OS (S seulement : C 0.00 = sphère).', 'bad');
   });
-  $('#tr-voir').addEventListener('click', () => dire($('#tr-retour'), 'Réponse : OD −4.00 −0.75 x070 ; OS −3.25 sph ' + DED + '.'));
+  $('#tr-voir').addEventListener('click', () => dire($('#tr-retour'), 'Réponse : OD −4.00 −0.75 x070 ; OS −3.25 sph ' + DED + '.'));
 };
 
 /* ---------- situations cliniques ---------- */
@@ -5033,8 +5010,8 @@ function rendreSituation(){
   rendreOngletsSC();
   const f = SITUATIONS.find(x => x.n === scCourante), st = ETAT.fiches[f.n] || {}, i = SITUATIONS.indexOf(f);
   $('#sc-zone').innerHTML = '<div class="fiche" role="tabpanel">' +
-    '<p class="lib">Carte mystère ' + f.n + ' · lentimètre automatique · ' + (i + 1) + ' sur 10</p><h3>« ' + f.titre + ' »</h3>' +
-    '<p class="situation">« ' + f.sit + ' »</p>' +
+    '<p class="lib">Carte mystère ' + f.n + ' · lentimètre automatique · ' + (i + 1) + ' sur 10</p><h3>« ' + f.titre + ' »</h3>' +
+    '<p class="situation">« ' + f.sit + ' »</p>' +
     '<p class="lib" style="margin-bottom:6px">Résultats disponibles</p><p class="resultats"></p>' +
     '<p class="lib" style="margin-bottom:6px">Discussion en équipe</p><ol class="qs">' + f.qs.map(q => '<li>' + q + '</li>').join('') + '</ol>' +
     '<textarea data-note="sc-' + f.n + '" aria-label="Ton raisonnement pour la situation ' + f.n + '" placeholder="1. Pourquoi la mesure compte… 2. Ce qu’elle apporte… 3. Ce que l’assistant vérifie, documente, signale…"></textarea>' +
@@ -5051,8 +5028,8 @@ INIT.situations = root => {
     if(e.target.closest('[data-relire]')){
       const f = SITUATIONS.find(x => x.n === scCourante), rais = texteNote('sc-' + f.n).trim();
       const txt = h => { const x = document.createElement('div'); x.innerHTML = h; return x.textContent.replace(/\s+/g, ' ').trim(); };
-      const fiche = 'Situation c' + f.n + ' : ' + txt(f.titre) + '\nSituation : ' + txt(f.sit) + '\nRésultats : ' + f.res.replace(/\n/g, ' / ') + '\nQuestions : ' + f.qs.map((x, k) => (k + 1) + '. ' + txt(x)).join(' ');
-      const piste = 'Piste de l’atelier, pour toi seulement (déduite des diapos, pas un corrigé officiel ; ne la recopie pas) : ' + txt(f.piste.mesure) + ' ' + txt(f.piste.apport) + ' ' + txt(f.piste.assistant);
+      const fiche = 'Situation c' + f.n + ' : ' + txt(f.titre) + '\nSituation : ' + txt(f.sit) + '\nRésultats : ' + f.res.replace(/\n/g, ' / ') + '\nQuestions : ' + f.qs.map((x, k) => (k + 1) + '. ' + txt(x)).join(' ');
+      const piste = 'Piste de l’atelier, pour toi seulement (déduite des diapos, pas un corrigé officiel ; ne la recopie pas) : ' + txt(f.piste.mesure) + ' ' + txt(f.piste.apport) + ' ' + txt(f.piste.assistant);
       Tuteur.demander(
         rais ? 'Relis mon raisonnement sur la situation c' + f.n + ' : ' + rais + '\nDis-moi ce qui est juste, ce qui manque, et pose-moi une question pour compléter. Ne donne pas toute la réponse.'
              : 'Aide-moi à commencer la situation c' + f.n + ' (“' + txt(f.titre) + '”) avec une première piste, sans me donner la réponse.',
@@ -5179,6 +5156,355 @@ INIT['oct-couleurs'] = root => {
   });
   rendre();
 };
+
+/* ======================================================================
+   À TOI et ARÈNE (learning-blueprint.md §4 et §4.7), d'après l'analyse :
+   analyse/to-m05_kc.md (T5.5, T5.10 à T5.13) et analyse/to-profil.md §9.
+   Le moteur est commun (_commun/pratique.js, _commun/arene.js). Ici, ce qui
+   est propre à l'atelier : des générateurs à nombres frais, le plan de chaque
+   démarche (un libellé par ligne de dem), les erreurs nommées de chaque KC,
+   les blocs par écran et les préalables de l'Arène.
+   Méridiens tirés : 180 et 90, ou une paire oblique (30-60 avec 120-150,
+   5.1-d36). Le cours ne dit pas si 170 ou 80 comptent comme horizontal ou
+   vertical (distillation M5, à vérifier n° 5) : ces paires ne sont jamais
+   tirées. Seul ③ (mer90), qui ne demande aucune orientation, prend tout
+   multiple de 5. Tous les nombres affichés sont calculés ici.
+   ====================================================================== */
+const auHasard = a => a[Math.floor(Math.random() * a.length)];
+/* un multiple de 0,25 entre a et b, bornes comprises */
+const pas025 = (a, b) => (4 * a + Math.floor(Math.random() * (4 * (b - a) + 1))) / 4;
+const kTxt = k => virg(k) + ' D';           // 43,25 D : la prose de la page
+const kLigne = k => k.toFixed(2);            // 43.25 : la ligne Optosys, comme le logiciel
+const guil = t => '« ' + t + ' »';
+
+/* une cornée : K plat de 39 à 46 D, astigmatisme de 0,25 à 4,00 D (K cambré de 39,25 à 50 D) ;
+   méridiens 180 et 90 (6 fois sur 10) ou une paire oblique ; le cambré au hasard */
+function tirerCornee(){
+  const kP = pas025(39, 46), ast = pas025(0.25, 4), kC = kP + ast;
+  const obl = Math.random() < 0.4, a = obl ? 30 + 5 * Math.floor(Math.random() * 7) : 180, b = autre(a);
+  const mC = Math.random() < 0.5 ? a : b, mP = mC === a ? b : a;
+  const K = {}; K[mC] = kC; K[mP] = kP;
+  return {obl, mers:[a, b], K, mC, mP, kC, kP, ast};
+}
+/* la kératométrie telle qu'on la reçoit : deux mesures K @ méridien dans un ordre au hasard (5.2-Q1),
+   ou K1 et K2 comme la fiche AK5-B, K1 d'abord (k12) ou K2 d'abord (k21) */
+function presenter(c, style){
+  if(style === 'k12' || style === 'k21'){
+    const k1 = 'K1 : ' + kTxt(c.kP) + ' (' + c.mP + '°)', k2 = 'K2 : ' + kTxt(c.kC) + ' (' + c.mC + '°)';
+    return style === 'k12' ? {txt:k1 + ' ; ' + k2, premier:c.mP} : {txt:k2 + ' ; ' + k1, premier:c.mC};
+  }
+  const [a, b] = Math.random() < 0.5 ? c.mers : [c.mers[1], c.mers[0]];
+  return {txt:kTxt(c.K[a]) + ' @ ' + P3(a) + ' et ' + kTxt(c.K[b]) + ' @ ' + P3(b), premier:a};
+}
+const MSG_210 = m => m + ' + 90 = ' + (m + 90) + ' : ça dépasse 180. Au-dessus de 90, on retire 90 (déduit).';
+const MSG_NEG = m => m + ' − 90 donne un nombre négatif. À 90 ou moins, on ajoute 90 : « 80+90=170 » (5.2-R5).';
+const MSG_0 = 'Le cours écrit 180, pas 0 : « 90+90=180 » (5.2-R4).';
+
+/* ---------- les générateurs : chacun rend {kc, type, q, u, rep, tol, dem, etapes, res, affiche, concept, pieges}
+   type : nombre (tolérance), meridien (entier exact), ligne (une ligne Optosys) ; res : la ligne de dem qui
+   montre le résultat (les aides s'arrêtent avant) ; pieges : {id, v, m, t?}, une erreur nommée et son message ---------- */
+const GEN_TO = {
+  /* ---------- T5.5 · ① du rayon à la puissance, et retour ---------- */
+  'f-rd': () => {
+    const r = (144 + Math.floor(Math.random() * 29)) / 20, rm = r / 1000, D = 0.3375 / rm;   // 7,20 à 8,60 mm
+    return {kc:'T5.5', type:'nombre', u:'D', rep:D, tol:0.06,
+      q:'Une cornée a un rayon de <b>' + virg(r) + ' mm</b>. Quelle est sa puissance, en D ?',
+      dem:['D = (1,3375 − 1) / r, r en mètres', 'r = ' + virg(r) + ' mm = ' + virg(rm, 5) + ' m', 'D = 0,3375 / ' + virg(rm, 5) + ' = ' + virg(D) + ' D', virg(D) + ' D : entre 35 et 50 D, plausible'],
+      etapes:['La formule', 'mm → m', '0,3375 ÷ r', 'Plausible ? entre 35 et 50 D'], res:2, affiche:virg(D) + ' D',
+      concept:'Petit rayon, grande puissance : « Plus le rayon de la cornée est petit, plus la puissance de la cornée est importante » (5.1-d32).',
+      plage:[35, 50, 'Ton résultat est hors de 35–50 D : une cornée « varie entre 35D et 50D » (5.1-d3). Reprends ton plan.'],
+      pieges:[
+        {id:'mm', v:0.3375 / r, t:0.01, m:'Rayon gardé en mm : convertis-le en mètres (÷ 1000) avant de diviser. Ton résultat est hors de 35–50 D.'},
+        {id:'1376', v:0.376 / rm, m:'Tu as pris 1,376, l’indice réel de la cornée : le kératomètre utilise l’indice fictif 1,3375.'},
+        {id:'moins1', v:1.3375 / rm, m:'Tu as oublié le « − 1 » : D = (1,3375 − 1) / r, soit 0,3375 / r.'},
+        {id:'inverse', v:rm / 0.3375, t:0.008, m:'Rapport inversé : D = 0,3375 / r, pas r / 0,3375.'},
+        {id:'inverse', v:r / 0.3375, m:'Rapport inversé : D = 0,3375 / r, pas r / 0,3375.'}]};
+  },
+  'f-dr': () => {
+    const D = (156 + Math.floor(Math.random() * 35)) / 4, rm = 0.3375 / D, r = rm * 1000;   // 39,00 à 47,50 D
+    const rMin = 0.3375 / 50 * 1000, rMax = 0.3375 / 35 * 1000;
+    return {kc:'T5.5', type:'nombre', u:'mm', rep:r, tol:0.015,
+      q:'Une cornée mesure <b>' + virg(D) + ' D</b>. Quel est son rayon, en mm (au centième) ?',
+      dem:['D = 0,3375 / r   →   r = 0,3375 / D', 'r = 0,3375 / ' + virg(D) + ' = ' + virg(rm, 6) + ' m', virg(rm, 6) + ' m = ' + virg(r) + ' mm',
+        virg(r) + ' mm : entre ' + virg(rMin) + ' et ' + virg(rMax) + ' mm, soit entre 35 et 50 D (déduit), plausible'],
+      etapes:['Isoler r', '0,3375 ÷ D', 'm → mm', 'Plausible ? entre 35 et 50 D'], res:2, affiche:virg(r) + ' mm',
+      concept:'① lue à l’envers : un K plus grand vient d’un rayon plus petit, d’une cornée plus cambrée (5.1-d32, d35).',
+      plage:[rMin, rMax, 'Ce rayon donnerait une cornée hors de 35–50 D (de ' + virg(rMin) + ' à ' + virg(rMax) + ' mm, déduit). Reprends ton plan.'],
+      pieges:[
+        {id:'m', v:rm, t:0.003, m:'Ta réponse est en mètres : × 1000 pour des mm.'},
+        {id:'inverse', v:D / 0.3375, m:'Rapport inversé : r = 0,3375 / D, pas D / 0,3375.'},
+        {id:'inverse', v:D / 337.5, t:0.01, m:'Rapport inversé : r = 0,3375 / D, pas D / 0,3375.'},
+        {id:'1376', v:0.376 / D * 1000, m:'Tu as pris 1,376, l’indice réel de la cornée : le kératomètre utilise l’indice fictif 1,3375.'},
+        {id:'moins1', v:1.3375 / D * 1000, m:'Tu as oublié le « − 1 » : r = (1,3375 − 1) / D, soit 0,3375 / D.'}]};
+  },
+  /* ---------- T5.10 · ② le montant, le plat, le cambré ---------- */
+  'mont': () => {
+    const c = tirerCornee(), p = presenter(c, 'ordre');
+    return {kc:'T5.10', type:'nombre', u:'D', rep:c.ast, tol:0.011, cornee:c,
+      q:'La kératométrie donne <b>' + p.txt + '</b>. Combien d’astigmatisme cornéen, en D ?',
+      dem:['Le plus grand K : ' + kTxt(c.kC) + ' (' + P3(c.mC) + ') ; le plus petit : ' + kTxt(c.kP) + ' (' + P3(c.mP) + ')',
+        virg(c.kC) + ' − ' + virg(c.kP) + ' = ' + virg(c.ast) + ' D', 'Cambré : ' + P3(c.mC) + ' ; plat : ' + P3(c.mP)],
+      etapes:['Quel K est le plus grand ?', 'Soustraire : K cambré − K plat', 'Nommer le cambré et le plat'], res:1, affiche:virg(c.ast) + ' D',
+      concept:'« Différence de puissance = astigmatisme cornéen » (5.1-d36) : le plus grand K moins le plus petit.',
+      pieges:[
+        {id:'negatif', v:-c.ast, m:'Le montant est positif : K cambré − K plat, le plus grand K moins le plus petit.'},
+        {id:'somme', v:c.kC + c.kP, m:'Tu as additionné les deux K : l’astigmatisme est leur différence, K cambré − K plat.'}]};
+  },
+  'nommer': () => {
+    const c = tirerCornee(), p = presenter(c, 'ordre'), plat = Math.random() < 0.5;
+    const rep = plat ? c.mP : c.mC, autreM = plat ? c.mC : c.mP;
+    const pieges = [plat
+      ? {id:'grand-plat', v:autreM, m:'Le plus plat, c’est le plus petit K : « K1/K2 désignent le plus plat/le plus cambré; horizontal/vertical désignent l’orientation » (AK5).'}
+      : {id:'petit-cambre', v:autreM, m:'Le plus cambré, c’est le plus grand K : « Plus le rayon de la cornée est petit, plus la puissance de la cornée est importante » (5.1-d32).'}];
+    if(rep === 180) pieges.push({id:'0-180', v:0, m:MSG_0});
+    return {kc:'T5.10', type:'meridien', u:'°', rep, cornee:c,
+      q:'La kératométrie donne <b>' + p.txt + '</b>. Quel est le méridien le plus ' + (plat ? 'plat' : 'cambré') + ' ?',
+      dem:['Comparer : ' + virg(c.kC) + ' > ' + virg(c.kP),
+        'Le plus grand K est au méridien le plus cambré : ' + P3(c.mC) + ' ; le plus petit, au plus plat : ' + P3(c.mP)],
+      etapes:['Quel K est le plus grand ?', 'Le plus grand K = le plus cambré'], res:1, affiche:rep + '°',
+      concept:'Cambré = petit rayon = plus de puissance (5.1-d32). K1 et K2 nomment le plus plat et le plus cambré, pas l’orientation (AK5).',
+      pieges};
+  },
+  'cambre': () => {
+    const c = tirerCornee();
+    return {kc:'T5.10', type:'nombre', u:'D', rep:c.kC, tol:0.011, cornee:c,
+      q:'K plat : <b>' + kTxt(c.kP) + ' @ ' + P3(c.mP) + '</b>. Astigmatisme cornéen : <b>' + kTxt(c.ast) + '</b>. Quel est le K cambré, en D ?',
+      dem:['② à l’envers : K cambré = K plat + astigmatisme (déduit)', virg(c.kP) + ' + ' + virg(c.ast) + ' = ' + virg(c.kC) + ' D', '③ Il est à 90° du plat : ' + P3(c.mC)],
+      etapes:['Isoler le K cambré', 'Additionner', 'Où ? À 90° du plat (③)'], res:1, affiche:virg(c.kC) + ' D',
+      concept:'Le cambré est le plus grand des deux K : ② se lit à l’envers, K cambré = K plat + astigmatisme (déduit de 5.1-d36).',
+      pieges:[{id:'moins', v:c.kP - c.ast, m:'Le K cambré est le plus grand des deux : ajoute l’astigmatisme au K plat, ne le retire pas.'}]};
+  },
+  /* ---------- T5.11 · ③ l'autre méridien (une moitié au-dessus de 90) ---------- */
+  'mer90': () => {
+    const m = Math.random() < 0.5 ? 5 * (1 + Math.floor(Math.random() * 18)) : 5 * (19 + Math.floor(Math.random() * 18));   // 5 à 90, ou 95 à 180
+    const n = autre(m), haut = m > 90;
+    return {kc:'T5.11', type:'meridien', u:'°', rep:n,
+      q:'Un méridien principal de la cornée est à <b>' + m + '°</b>. À quel méridien est l’autre ?',
+      dem:[haut ? m + ' > 90 : on retire 90, pour rester entre 0 et 180 (déduit)' : m + ' ≤ 90 : on ajoute 90 (« 80+90=170 »)', m + (haut ? ' − 90 = ' : ' + 90 = ') + n],
+      etapes:['+ 90 ou − 90 ?', 'Calculer'], res:1, affiche:n + '°',
+      concept:'« l’autre méridien est à 90 degrés de celui-ci » (5.2-R4).',
+      pieges:haut ? [{id:'210', v:m + 90, m:MSG_210(m)}] : m === 90 ? [{id:'0-180', v:0, m:MSG_0}] : [{id:'negatif', v:m - 90, m:MSG_NEG(m)}]};
+  },
+  /* ---------- T5.13 · écrire la ligne Optosys ; la décoder (l'inverse) ---------- */
+  'ox-ecrire': () => {
+    const c = tirerCornee(), style = auHasard(['ordre', 'ordre', 'k12', 'k12', 'k21']), p = presenter(c, style);
+    let lignes, dem, etapes;
+    if(c.obl){
+      const [a, b] = c.mers, l1 = kLigne(c.K[a]) + 'x' + kLigne(c.K[b]) + '@' + P3(b), l2 = kLigne(c.K[b]) + 'x' + kLigne(c.K[a]) + '@' + P3(a);
+      lignes = [l1, l2];
+      dem = [a + ' et ' + b + ' : obliques (30-60, 120-150) ; aucun n’est horizontal', 'L’une ou l’autre valeur d’abord : ' + kLigne(c.K[a]),
+        'x l’autre valeur : ' + kLigne(c.K[a]) + 'x' + kLigne(c.K[b]), '@ le méridien de la 2e valeur (' + b + ') : ' + l1 + ', ou ' + l2];
+      etapes = ['Quel méridien est horizontal ?', 'Une valeur d’abord', 'x l’autre valeur', '@ le méridien de la 2e valeur'];
+    } else {
+      const kH = c.K[180], kV = c.K[90], l = kLigne(kH) + 'x' + kLigne(kV) + '@090';
+      lignes = [l];
+      dem = ['Horizontal : 180 (' + kTxt(kH) + ') ; vertical : 90 (' + kTxt(kV) + ')', 'D’abord la valeur horizontale : ' + kLigne(kH),
+        'x la valeur verticale : ' + kLigne(kH) + 'x' + kLigne(kV), '@ le méridien de la 2e valeur (90) : ' + l];
+      etapes = ['Quel méridien est horizontal ?', 'Sa valeur d’abord', 'x la valeur verticale', '@ le méridien de la 2e valeur'];
+    }
+    return {kc:'T5.13', type:'ligne', u:'', cornee:c, style, lignes, dem, etapes, res:3, affiche:lignes.join(' ou '),
+      q:'Écris cette kératométrie comme dans Optosys : <b>' + p.txt + '</b>',
+      concept:c.obl ? 'Aucun méridien oblique n’est horizontal : les deux écritures sont justes (« On écrit ceci: 41x42@135  ou 42x41@045 », 5.2-R3).'
+        : 'Optosys : méridien horizontal d’abord, puis vertical ; @ = méridien de la 2e valeur. « Les valeurs ne sont pas toujours dans le même ordre » (AK5) : l’ordre suit l’orientation, pas K1 et K2.'};
+  },
+  'ox-lire': () => {
+    const c = tirerCornee(), [m1, m] = c.obl && Math.random() < 0.5 ? [c.mers[1], c.mers[0]] : c.mers;   // axes : toujours 180 d'abord, @090
+    const v1 = c.K[m1], v2 = c.K[m], ligne = kLigne(v1) + 'x' + kLigne(v2) + '@' + P3(m), haut = m > 90;
+    const pieges = [{id:'@-1re', v:m, m:'Le méridien après le @ est celui de la 2e valeur. La 1re est à 90° de lui (③).'}];
+    pieges.push(haut ? {id:'210', v:m + 90, m:MSG_210(m)} : m === 90 ? {id:'0-180', v:0, m:MSG_0} : {id:'negatif', v:m - 90, m:MSG_NEG(m)});
+    return {kc:'T5.13', type:'meridien', u:'°', rep:m1, cornee:c, ligne, pieges,
+      q:'Décode : Optosys affiche ' + guil(ligne) + '. À quel méridien est <b>' + kLigne(v1) + '</b> ?',
+      dem:['La 2e valeur est au méridien du @ : ' + kLigne(v2) + ' @ ' + P3(m),
+        '③ La 1re est à 90° de lui : ' + m + (haut ? ' − 90 = ' + m1 + ' (au-dessus de 90, on retire 90 : déduit)' : ' + 90 = ' + m1),
+        kLigne(v1) + ' @ ' + P3(m1) + ' et ' + kLigne(v2) + ' @ ' + P3(m),
+        '② Astigmatisme : ' + virg(c.kC) + ' − ' + virg(c.kP) + ' = ' + virg(c.ast) + ' D'],
+      etapes:['La 2e valeur est au @', '③ La 1re valeur, à 90° de lui', 'Les deux K et leurs méridiens', '② Le montant'], res:1,
+      affiche:m1 + '° (' + kLigne(v1) + ' @ ' + P3(m1) + ')',
+      concept:'Le @ situe la 2e valeur ; la 1re est à 90° de lui : « l’autre méridien est à 90 degrés de celui-ci » (5.2-R4).'};
+  }
+};
+
+/* ---------- lire et juger une réponse ---------- */
+function lireNb(t){
+  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/(dioptries?|mm|m|d)$/i, '');
+  return /^[+-]?(\d+\.?\d*|\.\d+)$/.test(s) ? parseFloat(s) : null;
+}
+function lireMer(t){
+  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(/^@/, '').replace(/(°|degrés?)$/i, '');
+  return /^-?\d{1,3}$/.test(s) ? parseInt(s, 10) : null;
+}
+/* une ligne Optosys : valeur x valeur @ méridien ; virgule ou point, x × X *, espaces, @90 ou @090, ° permis */
+function lireLigne(t){
+  const m = /^\s*(\d{2}(?:[.,]\d{1,2})?)\s*[x×X*]\s*(\d{2}(?:[.,]\d{1,2})?)\s*@\s*(\d{1,3})\s*°?\s*$/.exec(String(t));
+  return m ? {v1:parseFloat(m[1].replace(',', '.')), v2:parseFloat(m[2].replace(',', '.')), m:+m[3]} : null;
+}
+const tolPiege = (pb, p) => pb.type === 'meridien' ? 0 : p.t != null ? p.t : Math.max(pb.tol, Math.abs(p.v) * 0.02);
+function trouverPiege(pb, v){
+  let best = null, d0 = Infinity;
+  (pb.pieges || []).forEach(p => { const d = Math.abs(v - p.v); if(d <= tolPiege(pb, p) + 1e-9 && d < d0){ best = p; d0 = d; } });
+  return best;
+}
+/* la ligne : la cornée décrite (la 2e valeur au @, la 1re à 90° de lui), puis l'ordre (l'horizontal d'abord) */
+function jugerLigne(pb, t){
+  const L = lireLigne(t), c = pb.cornee, K = c.K;
+  if(!L) return {etat:'faux', pid:pb.id + '.format', piege:'Une ligne Optosys a trois parties : valeur x valeur @ méridien, comme « 42.00x44.00 @090 » (5.2-R1).'};
+  const m = L.m === 0 ? 180 : L.m, n = m <= 180 ? autre(m) : null, egal = (a, b) => b !== undefined && Math.abs(a - b) < 0.001;
+  if(m <= 180 && egal(L.v2, K[m]) && egal(L.v1, K[n])){
+    if(c.obl || m === 90) return {etat:'ok'};
+    /* la cornée est bien décrite, mais la valeur verticale vient d'abord : K1 (le plus petit) ou le plus grand K */
+    return L.v1 < L.v2
+      ? {etat:'faux', pid:pb.id + '.k1', piege:'Tu as écrit d’abord le plus petit K (K1, le plus plat) : ici, il est vertical. « on inscrit le méridien horizontal en premier, suivi du méridien vertical » (5.1-d36) ; K1 et K2 ne disent pas l’ordre.'}
+      : {etat:'faux', pid:pb.id + '.grand', piege:'Tu as écrit d’abord le plus grand K (K2, le plus cambré) : ici, il est vertical. « on inscrit le méridien horizontal en premier, suivi du méridien vertical » (5.1-d36) : l’ordre suit l’orientation, pas la puissance.'};
+  }
+  if(m <= 180 && egal(L.v1, K[m]) && egal(L.v2, K[n])) return {etat:'faux', pid:pb.id + '.@-1re', piege:'Le @ donne le méridien de la 2e valeur, pas celui de la 1re.'};
+  if((egal(L.v1, c.kC) && egal(L.v2, c.kP)) || (egal(L.v1, c.kP) && egal(L.v2, c.kC)))
+    return {etat:'faux', pid:pb.id + '.pas90', piege:'Les deux valeurs sont justes, pas le méridien après le @ : ce doit être l’un des deux méridiens mesurés, à 90° l’un de l’autre (③).'};
+  return {etat:'faux', pid:null, piege:null};
+}
+/* verdict : {etat:'ok' | 'faux' | 'vide', piege, pid} ; une erreur nommée a son message, sinon la vérification de la plage */
+function juger(pb, txt){
+  const t = String(txt == null ? '' : txt).trim();
+  if(!t) return {etat:'vide'};
+  if(pb.type === 'ligne') return jugerLigne(pb, t);
+  const v = pb.type === 'meridien' ? lireMer(t) : lireNb(t);
+  if(v === null) return {etat:'vide'};
+  if(pb.type === 'meridien' ? v === pb.rep : Math.abs(v - pb.rep) <= pb.tol) return {etat:'ok', v};
+  const p = trouverPiege(pb, v);
+  if(p) return {etat:'faux', v, piege:p.m, pid:pb.id + '.' + p.id};
+  if(pb.plage && (v < pb.plage[0] || v > pb.plage[1])) return {etat:'faux', v, piege:pb.plage[2], pid:pb.id + '.hors'};
+  return {etat:'faux', v, piege:null, pid:null};
+}
+const repTxt = pb => pb.affiche;
+/* un problème d'un générateur précis (aussi la jumelle d'un problème raté) ; un piège trop proche de la bonne
+   réponse ne diagnostiquerait rien : il est retiré */
+function tirerGen(id){
+  const pb = GEN_TO[id]();
+  pb.id = id;
+  pb.pieges = (pb.pieges || []).filter(p => isFinite(p.v) && (pb.type === 'meridien' ? p.v !== pb.rep : Math.abs(p.v - pb.rep) > 2 * pb.tol + tolPiege(pb, p)));
+  return pb;
+}
+
+/* ---------- T5.12 · avec, contre la règle, oblique (dans l'Arène) : un choix, l'erreur nommée, le journal du KC ---------- */
+function jugerClasse(c, k){
+  const bonne = c.obl ? 'oblique' : c.mC === 90 ? 'avec' : 'contre';
+  if(k === bonne) return {etat:'ok', bonne};
+  if(c.obl) return {etat:'faux', bonne, pid:'classe.oblique', piege:'Ces deux méridiens sont obliques : « Cylindre oblique: 30-60 degrés ou 120-150 degrés » (5.1-d36).'};
+  if(k === 'oblique') return {etat:'faux', bonne, pid:'classe.pas-oblique', piege:'180 et 90 ne sont pas obliques : « Cylindre oblique: 30-60 degrés ou 120-150 degrés » (5.1-d36).'};
+  return {etat:'faux', bonne, pid:'classe.plat', piege:'Tu as décidé avec le méridien plat. On regarde le méridien cambré, celui du plus grand K : avec la règle, « courbure plus forte selon le méridien vertical » ; contre la règle, « courbure plus forte selon le méridien horizontal » (CM5).'};
+}
+function rendreClasse(el, fini){
+  const c = tirerCornee(), p = presenter(c, 'ordre');
+  const CH = [['avec', 'avec la règle'], ['contre', 'contre la règle'], ['oblique', 'oblique']];
+  el.innerHTML = '<h3 class="ar-qq"></h3><div class="ar-choix"></div>';
+  el.querySelector('.ar-qq').innerHTML = 'La kératométrie donne <b>' + p.txt + '</b>. Avec la règle, contre la règle ou oblique ?';
+  const z = el.querySelector('.ar-choix');
+  CH.forEach(([k, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'ar-c'; b.textContent = t; b.dataset.k = k; z.appendChild(b); });
+  z.addEventListener('click', e => {
+    const b = e.target.closest('.ar-c'); if(!b || el.dataset.fait) return;
+    el.dataset.fait = '1';
+    const j = jugerClasse(c, b.dataset.k), ok = j.etat === 'ok';
+    z.querySelectorAll('.ar-c').forEach(x => { x.disabled = true; if(x.dataset.k === j.bonne) x.classList.add('juste'); });
+    if(!ok) b.classList.add('faux');
+    const why = c.obl ? c.mers[0] + ' et ' + c.mers[1] + ' sont obliques (30-60, 120-150).'
+      : 'Le plus grand K (' + kTxt(c.kC) + ') est au méridien ' + (c.mC === 90 ? 'vertical, 90 : avec la règle.' : 'horizontal, 180 : contre la règle.');
+    const d = document.createElement('div'); d.className = 'ar-modele';
+    d.textContent = (ok ? '' : j.piege + ' ') + why + ' Avec ou contre la règle à partir de deux K : déduit (le cours définit ces mots pour les cartes, CM5).';
+    el.appendChild(d);
+    if(typeof Pratique !== 'undefined') Pratique.noter('T5.12', {premier:ok, aide:false, resolu:ok, err:ok ? [] : [j.pid]});
+    fini(ok);
+  });
+}
+
+/* ---------- les questions « pourquoi » (une par visite, après le premier problème juste sans aide) ---------- */
+const POURQUOI_TO = {
+  'T5.5':[
+    () => ({id:'pq-cambre', q:'Une cornée devient plus cambrée : son rayon diminue. Sa puissance…', choix:['augmente', 'diminue', 'ne change pas'], ok:0,
+      concept:'r est au dénominateur de ① : « Plus le rayon de la cornée est petit, plus la puissance de la cornée est importante » (5.1-d32).'}),
+    () => ({id:'pq-indice', q:'Pourquoi ① prend-elle 1,3375, et pas 1,376 ?', choix:['1,3375 est l’indice fictif de calibration des kératomètres', '1,3375 est l’indice réel de la cornée', '1,3375 est l’indice de l’humeur aqueuse'], ok:0,
+      concept:'« L’indice de refraction (sic) n=1.3375 est utilisé dans la calibration des kératomètres. C’est un indice fictif » (5.1-d32). 1,376, c’est l’indice réel de la cornée (Optique).'}),
+    () => { const r = (144 + Math.floor(Math.random() * 29)) / 20;
+      return {id:'pq-plage', q:'Pour un rayon de ' + virg(r) + ' mm, ton calcul donne ' + virg(0.3375 / r, 3) + ' D. Que conclus-tu ?', choix:['une erreur : une cornée varie entre 35 et 50 D', 'une cornée très plate', 'une cornée très cambrée'], ok:0,
+        concept:'Une cornée « varie entre 35D et 50D » (5.1-d3) : un résultat aussi petit vient d’un rayon gardé en mm (5.1-d35).'}; }
+  ],
+  'T5.10':[
+    () => ({id:'pq-grandK', q:'Le plus grand des deux K est au méridien…', choix:['le plus cambré', 'le plus plat', 'horizontal'], ok:0,
+      concept:'Cambré = petit rayon = plus de puissance (5.1-d32). Et « K1/K2 désignent le plus plat/le plus cambré » (AK5) : ni K1 ni K2 ne disent l’orientation.'}),
+    () => { const k = pas025(40, 46);
+      return {id:'pq-egaux', q:'Deux K égaux : ' + kTxt(k) + ' et ' + kTxt(k) + '. L’astigmatisme cornéen est…', choix:['nul', 'de ' + kTxt(k), 'de ' + kTxt(2 * k)], ok:0,
+        concept:'② : ' + virg(k) + ' − ' + virg(k) + ' = 0. Deux K égaux : pas d’astigmatisme cornéen (AK5, patient D, déduit).'}; }
+  ],
+  'T5.11':[
+    () => { const m = 5 * (19 + Math.floor(Math.random() * 18));
+      return {id:'pq-moins90', q:'Un méridien est à ' + m + '. Pourquoi trouve-t-on l’autre en retirant 90, et pas en ajoutant 90 ?', choix:['un méridien s’écrit entre 0 et 180', 'parce que ' + m + ' est le méridien cambré', 'pour trouver l’axe du cylindre'], ok:0,
+        concept:m + ' + 90 = ' + (m + 90) + ' sortirait de 0 à 180 ; ' + m + ' − 90 = ' + (m - 90) + ' (déduit). La règle du cours : « l’autre méridien est à 90 degrés de celui-ci » (5.2-R4).'}; }
+  ],
+  'T5.13':[
+    () => { const c = tirerCornee(), [a, b] = c.obl && Math.random() < 0.5 ? [c.mers[1], c.mers[0]] : c.mers, v1 = kLigne(c.K[a]), v2 = kLigne(c.K[b]);
+      return {id:'pq-arobase', q:'Dans ' + guil(v1 + 'x' + v2 + '@' + P3(b)) + ', que donne le ' + P3(b) + ' ?', choix:['le méridien de la 2e valeur, ' + v2, 'l’axe du cylindre', 'le méridien de la 1re valeur, ' + v1], ok:0,
+        concept:'Le @ situe la 2e valeur ; la 1re est à 90° de lui (③). Pour la cornée, on donne « sa puissance à un méridien donné » ; l’axe, « la position ou (sic) il n’y a pas de puissance », est un mot de lentille (5.1-d11).'}; },
+    () => { const c = tirerCornee(), l = kLigne(c.K[c.mers[0]]) + 'x' + kLigne(c.K[c.mers[1]]) + '@' + P3(c.mers[1]);
+      return {id:'pq-deux-x', q:'Le x de ' + guil(l) + ' et celui de « OD +1.00-1.00x180 » :', choix:['Optosys : il sépare deux K ; Rx : il introduit l’axe', 'il introduit un axe dans les deux', 'il sépare deux valeurs dans les deux'], ok:0,
+        concept:'Un symbole, deux rôles (déduit) : dans la ligne Optosys, x sépare deux K et le @ donne le méridien de la 2e ; dans l’ordonnance (M6), x introduit l’axe du cylindre.'}; },
+    () => ({id:'pq-oblique', q:'Pourquoi une cornée oblique s’écrit-elle de deux façons dans Optosys ?', choix:['aucun de ses deux méridiens n’est horizontal', 'ses deux K sont égaux', 'Optosys inverse les obliques'], ok:0,
+      concept:'« Cylindre oblique: 30-60 degrés ou 120-150 degrés » (5.1-d36) : la règle de l’horizontal d’abord ne tranche pas. « On écrit ceci: 41x42@135  ou 42x41@045 » (5.2-R3).'})
+  ]
+};
+
+/* ---------- les blocs « À toi », par écran (un bloc = une KC : le moteur tient son journal sous l'id du bloc) ---------- */
+const A_TOI = {
+  formule:[{kc:'T5.5', titre:'① Du rayon à la puissance, et retour', gens:[{id:'f-rd', pas:'formule.1'}, {id:'f-dr', inv:true, pas:'formule.4'}]}],
+  meridiens:[{kc:'T5.10', titre:'② Le montant, le méridien plat, le méridien cambré', gens:[{id:'mont', pas:'meridiens.2'}, {id:'nommer', pas:'meridiens.5'}, {id:'cambre', inv:true, pas:'meridiens.2'}]},
+    {kc:'T5.11', titre:'③ L’autre méridien, à 90°', gens:[{id:'mer90', pas:'meridiens.3'}]}],
+  optosys:[{kc:'T5.13', titre:'L’écriture Optosys : écrire, puis décoder', gens:[{id:'ox-ecrire', pas:'optosys.1'}, {id:'ox-lire', inv:true, pas:'optosys.2'}]}]
+};
+function tuteurAToi(pb, rep){
+  if(typeof Tuteur === 'undefined') return;
+  const d = document.createElement('div'); d.innerHTML = pb.q;
+  Tuteur.demander('Problème « À toi » (' + pb.kc + ') : “' + d.textContent + '”' + (rep ? ' J’ai répondu ' + rep + '.' : '') + ' Aide-moi à trouver l’étape qui cloche, sans me donner la réponse tout de suite.',
+    'Réponse attendue, pour toi seulement : ' + repTxt(pb) + '. Démarche : ' + pb.dem.join(' ; ') + '.');
+}
+/* le champ du moteur attend un nombre (inputmode="decimal") ; une ligne Optosys demande x et @ : clavier texte */
+function ajusterSaisie(z, pb){
+  const i = z && z.querySelector('.px-rep input');
+  if(!i || !pb || pb.type !== 'ligne' || i.dataset.ligne) return;
+  i.dataset.ligne = '1'; i.inputMode = 'text'; i.placeholder = 'ex. 42.00x44.00@090'; i.setAttribute('aria-label', 'Ta ligne Optosys');
+}
+const DERNIER_PB = {};
+function blocsAToi(id, el){
+  if(!el || typeof Pratique === 'undefined') return;
+  (A_TOI[id] || []).forEach(a => {
+    const z = document.createElement('div'); el.appendChild(z);
+    Pratique.bloc(z, Object.assign({}, a, {tirer:g => (DERNIER_PB[a.kc] = tirerGen(g)), etapes:pb => pb.etapes, resultat:pb => pb.res, juger, repTxt, tuteur:tuteurAToi,
+      pourquoi:() => { const l = POURQUOI_TO[a.kc] || []; return l.length ? auHasard(l)() : null; }}));
+    /* le moteur refait le problème au clic (suivant, jumelle) : on règle le champ après lui */
+    ajusterSaisie(z, DERNIER_PB[a.kc]);
+    z.addEventListener('click', () => ajusterSaisie(z, DERNIER_PB[a.kc]));
+  });
+}
+
+/* ---------- l'Arène : les préalables par écran (analyse/to-profil.md §9, graphe des cartes KC) ; chaque bloc
+   reçoit aussi les générateurs de son écran (nombres frais, échelle des essais ; acquis à trois réussites) ---------- */
+const ARENE_GENS = {formule:['f-rd', 'f-dr'], meridiens:['mont', 'nommer', 'cambre', 'mer90'], optosys:['ox-ecrire', 'ox-lire']};
+const PAS_GEN = {'f-rd':'formule.1', 'f-dr':'formule.4', mont:'meridiens.2', nommer:'meridiens.5', cambre:'meridiens.2', mer90:'meridiens.3', 'ox-ecrire':'optosys.1', 'ox-lire':'optosys.2'};
+const ARENE = {
+  prealables:{
+    miroir:[], formule:[], meridiens:['formule'], optosys:['meridiens'], instruments:['miroir', 'formule'],
+    carte:['formule', 'instruments'], mysteres:['carte', 'meridiens'], chirurgie:['carte', 'meridiens'],
+    keratocone:['carte', 'meridiens'], depistage:['keratocone', 'instruments'], traitements:['keratocone'],
+    verres:[], rx:['verres'], lentimetre:['rx'], situations:['lentimetre'], oct:[], 'oct-couleurs':['oct']
+  },
+  sources(id){
+    const out = (ARENE_GENS[id] || []).filter(g => GEN_TO[g]).map(g => ({id:'g:' + g, type:'gen', gen:true, pas:PAS_GEN[g],
+      rendre(el, fini){
+        const pb = tirerGen(g);
+        Pratique.exercice(el, pb, {kc:pb.kc, etapes:pb.etapes, resultat:pb.res, juger, repTxt, fin:r => fini(r.premier && !r.aide)});
+        ajusterSaisie(el, pb);
+      }}));
+    if(id === 'meridiens') out.push({id:'g:classe', type:'gen', gen:true, pas:'meridiens.6', rendre:rendreClasse});
+    return out;
+  }
+};
+/* ---------- fin À TOI et ARÈNE ---------- */
 
 /* ====== _commun/revision.js ====== */
 /* ======================================================================
@@ -6081,7 +6407,8 @@ const Arene = (() => {
     if(!a.items || typeof a.items !== 'object') a.items = {};
     return a;
   }
-  const lu = id => { const s = memoire().items[id]; return s && typeof s === 'object' ? s : null; };
+  /* lire sans rien créer : une page ouverte n'est pas une progression (moteur.js, etatVierge) */
+  const lu = id => { const a = ETAT.mesures && ETAT.mesures.arene, s = a && a.items && typeof a.items === 'object' ? a.items[id] : null; return s && typeof s === 'object' ? s : null; };
   function etat(id){
     const it = memoire().items;
     const s = it[id] && typeof it[id] === 'object' ? it[id] : (it[id] = {});
@@ -12056,7 +12383,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'a48d7850324d';
+  const ICI = 'c2e1601731e3';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
