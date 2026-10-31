@@ -1316,6 +1316,24 @@ details.ar-cours[open] > summary{margin-bottom:4px}
   body.ar-tuteur .ar.avec-carte .ar-carte{display:none}
 }
 @media (max-width:899px){ body.ar-tuteur .tuteur{z-index:325} }
+/* l'arène à plusieurs (Convergence) */
+.ar-b-groupe[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ar-gr{margin:0 0 12px;padding:10px 12px;border:1px dashed var(--line);border-radius:12px;background:var(--bg);font-size:14px}
+.ar-gr .lib{margin:0 0 6px}
+.ar-gr-l{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.ar-gr-l li{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.ar-gr-l i{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none;align-self:center}
+.ar-gr-e{color:var(--ink-2);font-size:13px}
+.ar-gr-e.ok{color:var(--ok,#2e8b57);font-weight:700}
+.ar-gr-e.bad{color:var(--bad,#c0392b);font-weight:700}
+.ar-gr-p{font-size:12px;color:var(--accent);font-weight:700}
+.ar-gr-t{flex-basis:100%;padding-left:18px;font-size:13.5px;overflow-wrap:anywhere}
+.ar-gr-bilan{margin:8px 0 4px;font-weight:600;line-height:1.45}
+.ar-gr-bilan.ok{color:var(--ok,#2e8b57)}
+.ar-gr-prets{margin:4px 0 0;font-size:13px;color:var(--ink-2)}
+.ar-gr-att{margin:10px 0 0;font-size:14px;color:var(--ink-2);font-style:italic}
+.ar-c.choisi{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+body.ar-ouverte .tb.cote{z-index:335}
 </style>
 <div class="app" id="app">
 
@@ -7920,6 +7938,7 @@ const Arene = (() => {
     const niveaux = [];
     blocs.forEach(b => { (niveaux[b.niveau] = niveaux[b.niveau] || []).push(b); });
     B = {blocs, par, niveaux:niveaux.filter(Boolean), pre:!!pre, n:blocs.reduce((s, b) => s + b.items.length, 0)};
+    HASH = empreinte();
   }
   const lettre = n => String.fromCharCode(65 + Math.min(25, n));
   const pc = b => b.items.length ? b.items.filter(acquis).length / b.items.length : 1;
@@ -8031,6 +8050,7 @@ const Arene = (() => {
       '<header class="ar-tete"><b id="ar-titre" class="ar-titre">Arène</b>' +
         '<div class="ar-total"><span class="ar-pc">0 %</span><span class="ar-jauge" aria-hidden="true"><i></i></span><small class="ar-compte"></small></div>' +
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
+        '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
         '<button type="button" class="ar-b" data-a="round" hidden>Dernier round</button>' +
         '<button type="button" class="ar-b" data-a="carte" aria-pressed="false">Carte</button>' +
         '<button type="button" class="ar-x" data-a="fermer" aria-label="Fermer l’arène" title="Fermer (Échap)">✕</button></header>' +
@@ -8046,6 +8066,9 @@ const Arene = (() => {
       else if(a === 'plan'){ const c = R.courant; if(c && c[1]) plan(c[1], suivant, false); }
       else if(a === 'indice') indice();
       else if(a === 'tuteur') demanderTuteur();
+      else if(a === 'arplus') basculerGroupe();
+      else if(a === 'gpret') pretGroupe();
+      else if(a === 'gtableau') tableauGroupe();
       else if(a === 'auto'){ R.bloc = ''; suivant(); }
       else if(a === 'round'){ if(lancerRound()) suivant(); }
     });
@@ -8061,7 +8084,8 @@ const Arene = (() => {
     $('.ar-jauge i', ui).style.width = (t.p * 100).toFixed(1) + '%';
     $('.ar-compte', ui).textContent = t.a + ' / ' + t.n + ' acquis' + (t.k ? ' · ' + t.k + ' ancrés ⚓' : '');
     $('.ar-seance', ui).textContent = R.n ? 'Séance : ' + R.n + ' réponse' + (R.n > 1 ? 's' : '') + (R.acquisSeance.size ? ', ' + R.acquisSeance.size + ' acquis' : '') : '';
-    $('[data-a="round"]', ui).hidden = !!R.round || !!R.retour || R.acquisSeance.size < 3;
+    $('[data-a="round"]', ui).hidden = !!R.round || !!R.retour || R.acquisSeance.size < 3 || GR.actif;
+    majBoutonGroupe();
     majBouton();
   }
   function majCarte(){
@@ -8206,15 +8230,17 @@ const Arene = (() => {
       z.innerHTML = '<div class="ar-fin"><p class="ar-fin-t">100 %</p><p>Tout l’atelier est acquis : chaque question réussie, puis réussie encore de loin. ' + (t.k < t.n ? 'Quand tu reviendras, l’arène vérifiera ce qui est resté : ce qui tient s’ancre ⚓ (' + t.k + ' / ' + t.n + ' ancrés).' : 'Et tout est ancré ⚓.') + '</p></div>';
       return;
     }
-    const s = lu(it.id), n = b.items.filter(acquis).length, mode = R.retour ? 'retour' : R.round ? 'round' : '';
-    if(mode) ou.innerHTML = '<span class="ar-niveau">' + (mode === 'retour' ? '↺' : '★') + '</span> <b>' + (mode === 'retour' ? 'Le retour' : 'Dernier round') + '</b> · ' + ((mode === 'retour' ? R.retour.i : R.round.i) + 1) + ' / ' + (mode === 'retour' ? R.retour.file.length : R.round.file.length) + ' · <span class="ar-auto">' + esc(b.titre) + '</span>';
+    const s = lu(it.id), n = b.items.filter(acquis).length, mode = R.retour ? 'retour' : R.round ? 'round' : '', groupe = enGroupeSur(it);
+    if(groupe) ou.innerHTML = '<span class="ar-niveau">✦</span> <b>À plusieurs</b> · question ' + GR.q.n + ' · <span class="ar-auto">' + esc(b.titre) + '</span>';
+    else if(mode) ou.innerHTML = '<span class="ar-niveau">' + (mode === 'retour' ? '↺' : '★') + '</span> <b>' + (mode === 'retour' ? 'Le retour' : 'Dernier round') + '</b> · ' + ((mode === 'retour' ? R.retour.i : R.round.i) + 1) + ' / ' + (mode === 'retour' ? R.retour.file.length : R.round.file.length) + ' · <span class="ar-auto">' + esc(b.titre) + '</span>';
     else ou.innerHTML = '<span class="ar-niveau">' + niveauTxt(b) + '</span> <b>' + esc(b.titre) + '</b> · ' + n + ' / ' + b.items.length + ' acquis' +
       (n < b.items.length ? ' · ≈ ' + minutesRestantes(b) + ' min pour finir le bloc' : '') +
       (R.bloc ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '');
     const etapeTxt = acquis(it) ? 'révision' : s && s.serie ? (s.serie >= besoin(it) - 1 ? 'à confirmer de loin' : 'à reprendre') : s && s.n ? 'à reprendre' : 'nouvelle';
     /* l'indice : pour les questions de l'arène ; les problèmes et les planches ont déjà leur échelle d'essais */
     const tete = '<p class="ar-type"><span>' + (TYPES[it.type] || 'Question') + ' · ' + etapeTxt + '</span>' +
-      (typeof it.rendre !== 'function' && TUTEUR() ? '<button type="button" class="lien-btn ar-indice" data-a="indice">Un indice</button>' : '') + '</p>';
+      (typeof it.rendre !== 'function' && TUTEUR() ? '<button type="button" class="lien-btn ar-indice" data-a="indice">Un indice</button>' : '') + '</p>' +
+      (groupe ? '<div class="ar-gr" aria-live="polite"></div>' : '');
     z.innerHTML = '';
     const art = H('<article class="ar-q"></article>'); z.appendChild(art);
     const fini = ok => {
@@ -8227,24 +8253,39 @@ const Arene = (() => {
       if(typeof it.rendre === 'function'){ const ex = $('.ar-ex', art); art._q = ex ? (ex.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 1500) : ''; }
       const bi = $('.ar-indice', art); if(bi) bi.remove();
       majTete(); majCarte();
-      const p = H('<div class="ar-suite"><p class="ar-verdict"></p><div class="ar-ctrl"><button type="button" class="btn plein ar-suiv">Suivante →</button>' +
+      if(groupe && enGroupeSur(it)){ GR.mien = {n:GR.q.n, l:1, ok:!!ok, a:aide ? 1 : 0, t:String(art._rep || '').slice(0, 200)}; publierAr(); }
+      const p = H('<div class="ar-suite"><p class="ar-verdict"></p><div class="ar-ctrl">' +
+        (groupe ? '<button type="button" class="btn plein ar-suiv" data-a="gpret">Prêt·e pour la suivante</button>' : '<button type="button" class="btn plein ar-suiv">Suivante →</button>') +
         (TUTEUR() ? '<button type="button" class="btn btn-tuteur" data-a="tuteur">Demander au tuteur</button>' : '') +
-        '<button type="button" class="lien-btn" data-a="plan">Le plan du bloc</button></div></div>');
+        (groupe ? '' : '<button type="button" class="lien-btn" data-a="plan">Le plan du bloc</button>') + '</div></div>');
       $('.ar-verdict', p).textContent = ok && aide ? 'Juste, avec un indice : elle revient dans trois questions, sans indice cette fois.'
         : ok ? (deja ? (mode === 'retour' ? 'Retenu ✓ : il s’ancre ⚓' : 'Toujours là ✓') : r.vient ? 'Acquis ✓' : r.attente === 'long' ? 'Juste. Elle reviendra plus tard, de loin, pour confirmer.' : 'Juste. Elle revient bientôt.')
         : deja ? 'Oublié : il revient en jeu, dans trois questions.' : 'Raté : elle revient dans trois questions.';
       $('.ar-verdict', p).className = 'ar-verdict ' + (ok && aide ? 'aide' : ok ? 'ok' : 'bad');
       if(it.pas) p.insertAdjacentHTML('afterbegin', pointDuCours(it.pas, compte));
       art.appendChild(p);
-      $('.ar-suiv', p).addEventListener('click', suivant);
+      if(!groupe) $('.ar-suiv', p).addEventListener('click', suivant);
       $('.ar-suiv', p).focus({preventScroll:true});
       p.scrollIntoView({block:'nearest'});
+      if(groupe){ majGroupeUI(); piloter(); }
     };
-    if(typeof it.rendre === 'function'){ art.innerHTML = tete + '<div class="ar-ex"></div>'; it.rendre($('.ar-ex', art), fini); return; }
+    /* en groupe : les nombres frais viennent de la graine du meneur (les mêmes pour tous) ; une réponse se verrouille,
+       et la correction s'ouvre quand tout le monde a répondu */
+    const graine = f => groupe && GR.q.g ? avecGraine(GR.q.g, f) : f();
+    const verrou = (rep, ok, afficher) => {
+      if(!enGroupeSur(it)){ afficher(); return; }
+      GR.mien = {n:GR.q.n, l:1, ok:typeof ok === 'boolean' ? ok : null, a:R.aide ? 1 : 0, t:String(rep || '').slice(0, 200)};
+      GR.attente = {n:GR.q.n, f:afficher};
+      art.insertAdjacentHTML('beforeend', '<p class="ar-gr-att">Réponse enregistrée. La correction s’ouvre quand tout le monde a répondu.</p>');
+      const bi = $('.ar-indice', art); if(bi) bi.remove();
+      publierAr(); majGroupeUI(); verifierAttente();
+    };
+    if(typeof it.rendre === 'function'){ art.innerHTML = tete + '<div class="ar-ex"></div>'; graine(() => it.rendre($('.ar-ex', art), fini)); if(groupe) majGroupeUI(); return; }
     const c = it.carte || {};
     if(it.type === 'discrim' || it.type === 'qcm'){
       const choix = it.type === 'qcm' ? it.choix : c.choix || [], bonne = it.type === 'qcm' ? it.ok : c.bonne;
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-choix"></div>';
+      if(groupe) majGroupeUI();
       $('.ar-qq', art).innerHTML = it.type === 'qcm' ? esc(it.q) : c.q;
       art._q = texte($('.ar-qq', art).innerHTML);
       art._ref = 'bonne réponse : ' + texte(choix[bonne]) + ((it.type === 'qcm' ? it.r : c.r) ? ' (' + texte(it.type === 'qcm' ? it.r : c.r) + ')' : '');
@@ -8253,26 +8294,34 @@ const Arene = (() => {
         const bt = e.target.closest('.ar-c'); if(!bt || art.dataset.fait) return;
         art.dataset.fait = '1'; art._rep = texte(bt.innerHTML);
         const ok = +bt.dataset.i === bonne;
-        $$('.ar-c', art).forEach(x => { x.disabled = true; if(+x.dataset.i === bonne) x.classList.add('juste'); });
-        if(!ok) bt.classList.add('faux');
-        const r = it.type === 'qcm' ? esc(it.r || '') : c.r || '';
-        if(r) art.insertAdjacentHTML('beforeend', '<div class="ar-modele">' + r + '</div>');
-        fini(ok);
+        $$('.ar-c', art).forEach(x => { x.disabled = true; });
+        bt.classList.add('choisi');
+        verrou(art._rep, ok, () => {
+          $$('.ar-c', art).forEach(x => { if(+x.dataset.i === bonne) x.classList.add('juste'); });
+          if(!ok) bt.classList.add('faux');
+          const r = it.type === 'qcm' ? esc(it.r || '') : c.r || '';
+          if(r) art.insertAdjacentHTML('beforeend', '<div class="ar-modele">' + r + '</div>');
+          fini(ok);
+        });
       });
       const b0 = $('.ar-c', art); if(b0) b0.focus({preventScroll:true});
       return;
     }
     if(it.type === 'calcul'){
-      let g = null; try{ g = c.gen(); }catch(err){ console.error(err); }
+      let g = null; try{ g = graine(() => c.gen()); }catch(err){ console.error(err); }
       g = g || {q:c.q, r:'', tol:0};
       art.innerHTML = tete + '<h3 class="ar-qq"></h3><div class="ar-rep"><input type="text" inputmode="decimal" aria-label="Ta réponse" placeholder="Ta réponse"></div>' +
         '<div class="ar-ctrl"><button type="button" class="btn plein" data-v="ok">Vérifier</button><button type="button" class="btn" data-v="sais">Je ne sais pas</button></div>';
       $('.ar-qq', art).innerHTML = g.q;
+      if(groupe) majGroupeUI();
       art._q = texte(g.q); art._ref = 'réponse attendue : ' + texte(g.r) + (g.exp ? ' (' + texte(g.exp) + ')' : '');
       const inp = $('input', art);
       const corriger = sais => {
         $('.ar-ctrl', art).hidden = true; inp.readOnly = true; art._rep = sais ? '' : inp.value.trim();
         const ok = !sais && Rappel.comparerNombres(inp.value, g.r, g.tol);
+        verrou(art._rep || (sais ? 'je ne sais pas' : ''), ok, () => afficherCalcul(ok, sais));
+      };
+      const afficherCalcul = (ok, sais) => {
         art.insertAdjacentHTML('beforeend', '<div class="ar-modele"><p><b>Réponse :</b> ' + g.r + '</p>' + (g.exp ? '<p>' + g.exp + '</p>' : '') + '</div>');
         fini(ok);
         if(!ok && !sais && inp.value.trim() && !R.aide){
@@ -8285,6 +8334,7 @@ const Arene = (() => {
             if(s2.serie >= besoin(it)) s2.serie = besoin(it) - 1;
             R.file = R.file.filter(x => x.id !== it.id); R.file.push({id:it.id, apres:s2.serie >= besoin(it) - 1 ? LONG : COURT});
             toucherEtat(); majTete(); majCarte();
+            if(enGroupeSur(it) && GR.mien){ GR.mien.ok = true; publierAr(); majGroupeUI(); }
             const v = $('.ar-verdict', art); if(v){ v.textContent = 'Compté juste. Elle reviendra plus tard, pour confirmer.'; v.className = 'ar-verdict ok'; }
             const cours = $('.ar-cours', art); if(cours) cours.remove();
           });
@@ -8304,11 +8354,15 @@ const Arene = (() => {
       (it.type === 'chaine' ? 'Écris la suite de mémoire, une étape par ligne…' : 'Ta réponse, de mémoire…') + '"></textarea></div>' +
       '<div class="ar-ctrl"><button type="button" class="btn plein" data-v="ok">Vérifier</button><button type="button" class="btn" data-v="sais">Je ne sais pas</button></div>';
     $('.ar-qq', art).innerHTML = q;
+    if(groupe) majGroupeUI();
     art._q = texte(q); art._ref = 'réponse modèle : ' + texte(modele) + (points.length ? ' ; points attendus : ' + points.map(texte).join(' ; ') : '');
     const ta = $('textarea', art);
     if(typeof voixBtn === 'function') $('.ar-rep', art).appendChild(voixBtn(ta));
     const corriger = sais => {
       $('.ar-ctrl', art).hidden = true; ta.readOnly = true; art._rep = sais ? '' : ta.value.trim();
+      verrou(art._rep || (sais ? 'je ne sais pas' : ''), sais ? false : null, () => afficherMemoire(sais));
+    };
+    const afficherMemoire = sais => {
       const box = H('<div class="ar-corrige"><div class="ar-modele"></div></div>');
       $('.ar-modele', box).innerHTML = '<p class="lib">La réponse</p>' + modele;
       art.appendChild(box);
@@ -8333,6 +8387,198 @@ const Arene = (() => {
     ta.focus({preventScroll:true});
   }
 
+  /* ---------- l'arène à plusieurs (Convergence ; learning-blueprint §5.7) ----------
+     La même question pour tout le groupe ; chacun répond seul, sans voir les autres ; la correction s'ouvre quand tout le
+     monde a répondu, avec les réponses de chacun ; si on n'a pas tous trouvé, celui qui avait juste explique. Chacun garde
+     sa propre progression : rien ne se gagne sur la réponse d'un autre (une question ratée revient pour qui l'a ratée).
+     Le premier du groupe (l'ordre de Convergence) choisit les questions d'après ce que chacun a acquis. Tout passe par la
+     présence de chacun (membres/<uid>/ar, publiée par convergence.js) : les règles du relais n'ont pas changé. */
+  const GR = {seance:null, ecoute:null, actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null, hist:{}};
+  let HASH = '';
+  function empreinte(){
+    let h = 5381; const s = B.blocs.map(b => b.id + ':' + b.items.map(i => i.id).join(',')).join('|');
+    for(let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+  const enGroupeSur = it => GR.actif && !!GR.q && !!it && GR.q.id === it.id && GR.q.n === GR.vuN;
+  /* un hasard réglé par une graine, le temps de tirer un problème : les mêmes nombres sur chaque page */
+  function avecGraine(g, f){
+    const vrai = Math.random; let s = g >>> 0;
+    Math.random = () => { s = (s + 0x6D2B79F5) >>> 0; let x = s; x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61); return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+    try{ return f(); } finally { Math.random = vrai; }
+  }
+  /* ce que j'ai acquis, bloc par bloc, 5 éléments par caractère (base 32), dans l'ordre des blocs (l'empreinte garantit le même) */
+  function masques(){
+    return B.blocs.map(b => { let s = ''; for(let j = 0; j < b.items.length; j += 5){ let v = 0; for(let x = 0; x < 5 && j + x < b.items.length; x++) if(acquis(b.items[j + x])) v |= 1 << x; s += v.toString(32); } return s; }).join(',');
+  }
+  const bits = s => { const o = []; for(const ch of String(s || '')){ const v = parseInt(ch, 32) || 0; for(let x = 0; x < 5; x++) o.push((v >> x) & 1); } return o; };
+  const monAr = () => GR.actif ? {on:1, h:HASH, q:GR.chef && GR.q ? GR.q : null, r:GR.mien, pret:GR.pret, m:B ? masques() : ''} : null;
+  function publierAr(){ if(GR.ecoute) GR.ecoute(monAr()); }
+  /* la présence des autres : seulement des valeurs bien formées */
+  function lireAr(a){
+    if(!a || typeof a !== 'object' || a.on !== 1) return null;
+    const q = a.q && typeof a.q === 'object' && Number.isInteger(a.q.n) && a.q.n > 0 ? {n:a.q.n, id:typeof a.q.id === 'string' ? a.q.id.slice(0, 120) : '', g:(+a.q.g >>> 0) || 0, fin:a.q.fin === 1 ? 1 : 0} : null;
+    const r = a.r && typeof a.r === 'object' && Number.isInteger(a.r.n) ? {n:a.r.n, l:a.r.l === 1 ? 1 : 0, ok:typeof a.r.ok === 'boolean' ? a.r.ok : null, a:a.r.a === 1 ? 1 : 0, t:typeof a.r.t === 'string' ? a.r.t.slice(0, 200) : ''} : null;
+    return {h:typeof a.h === 'string' ? a.h : '', q, r, pret:Number.isInteger(a.pret) ? a.pret : 0, m:typeof a.m === 'string' ? a.m.slice(0, 4000) : ''};
+  }
+  /* ceux qui sont dans l'arène du groupe, dans l'ordre de Convergence (le premier mène) */
+  function participants(){
+    const g = GR.seance; if(!g) return [];
+    return g.membres.map(m => m.uid === g.moi ? (GR.actif ? {uid:m.uid, nom:m.nom, c:m.c, moi:true, ar:{h:HASH, q:GR.q, r:GR.mien, pret:GR.pret, m:''}} : null)
+      : (m.ar && m.ar.h === HASH ? {uid:m.uid, nom:m.nom, c:m.c, ar:m.ar} : null)).filter(Boolean);
+  }
+  const estChef = () => { const P = participants(); return GR.actif && P.length > 0 && !!P[0].moi; };
+  const repondu = (p, n) => !!p.ar.r && p.ar.r.n === n && p.ar.r.l === 1;
+  const corrige = (p, n) => repondu(p, n) && typeof p.ar.r.ok === 'boolean';
+  const nomsDe = l => { const n = l.map(p => '« ' + p.nom + ' »'); return n.length < 2 ? n.join('') : n.slice(0, -1).join(', ') + ' et ' + n[n.length - 1]; };
+
+  /* Convergence donne le groupe à chaque changement de présence : {moi, membres:[{uid, nom, c, ar}]} dans l'ordre, ou null */
+  function groupe(g){
+    if(g && !(Array.isArray(g.membres) && g.membres.length)) g = null;
+    if(g && !B){ try{ construire(); }catch(e){ console.error(e); } }
+    GR.seance = g ? {moi:String(g.moi), membres:g.membres.map(m => ({uid:String(m.uid), nom:String(m.nom || 'Quelqu’un').slice(0, 24), c:String(m.c || ''), ar:m.uid === g.moi ? null : lireAr(m.ar)}))} : null;
+    if(!GR.seance && GR.actif) quitterGroupe(true);
+    if(GR.actif){
+      const c = estChef(); if(c !== GR.chef){ GR.chef = c; publierAr(); }
+      const P = participants(), chef = P[0];
+      /* la question du meneur ; après un changement de meneur, la plus récente */
+      if(chef && !chef.moi && chef.ar.q && (!GR.q || chef.ar.q.n > GR.q.n || (chef.ar.q.n === GR.q.n && chef.ar.q.id !== GR.q.id))) GR.q = chef.ar.q;
+      /* chaque page tient l'historique (qui l'a eue, quand), pour qu'un nouveau meneur le connaisse */
+      if(GR.q && GR.q.id && P.length && P.every(p => corrige(p, GR.q.n)) && !(GR.hist[GR.q.id] && GR.hist[GR.q.id].n === GR.q.n))
+        GR.hist[GR.q.id] = {n:GR.q.n, tous:P.every(p => p.ar.r.ok && !p.ar.r.a)};
+      piloter(); montrerGroupe(); verifierAttente(); majGroupeUI();
+    }
+    majBoutonGroupe();
+  }
+  /* le meneur avance quand tout le monde a répondu, s'est corrigé et s'est dit prêt */
+  function piloter(){
+    if(!GR.actif || !B || !estChef()) return;
+    GR.chef = true;
+    const P = participants(), q = GR.q;
+    if(q && (q.fin || !P.every(p => corrige(p, q.n) && p.ar.pret >= q.n))) return;
+    const n = (q ? q.n : 0) + 1, it = choisirGroupe(P, n);
+    GR.q = it ? {n, id:it.id, g:Math.floor(Math.random() * 4294967296) >>> 0, fin:0} : {n, id:'', g:0, fin:1};
+    publierAr();
+    montrerGroupe();
+  }
+  /* d'abord ce que quelqu'un a raté il y a au moins 3 questions, puis du neuf (fondations d'abord), puis ce qui doit être
+     confirmé de loin (au moins 10 questions après), dans les blocs jusqu'au premier où quelqu'un est sous 70 % */
+  function choisirGroupe(P, n){
+    const lus = P.map(p => p.moi ? null : String(p.ar.m || '').split(',').map(bits));
+    const a = (x, k, j) => P[x].moi ? acquis(B.blocs[k].items[j]) : !!(lus[x][k] && lus[x][k][j]);
+    const pcDe = (x, k) => { const L = B.blocs[k].items.length; let s = 0; for(let j = 0; j < L; j++) if(a(x, k, j)) s++; return L ? s / L : 1; };
+    let front = B.blocs.findIndex((b, k) => P.some((p, x) => pcDe(x, k) < SEUIL_OUVERT));
+    if(front < 0) front = B.blocs.length - 1;
+    const cands = [];
+    for(let k = 0; k <= front; k++) B.blocs[k].items.forEach((it, j) => { if(!P.every((p, x) => a(x, k, j))) cands.push({it, h:GR.hist[it.id] || null}); });
+    /* ce qui a déjà été posé au groupe et que quelqu'un n'a pas encore acquis revient, où que soit son bloc */
+    for(let k = front + 1; k < B.blocs.length; k++) B.blocs[k].items.forEach((it, j) => { if(GR.hist[it.id] && !P.every((p, x) => a(x, k, j))) cands.push({it, h:GR.hist[it.id]}); });
+    if(!cands.length) return null;
+    const mur = c => !c.h || n - c.h.n > (c.h.tous ? LONG : COURT);
+    const ancien = (x, y) => x.h.n - y.h.n;
+    const reprises = cands.filter(c => c.h && !c.h.tous && mur(c)).sort(ancien);
+    if(reprises.length) return reprises[0].it;
+    const neufs = cands.filter(c => !c.h);
+    if(neufs.length) return neufs[0].it;
+    const confirmer = cands.filter(c => c.h && mur(c)).sort(ancien);
+    if(confirmer.length) return confirmer[0].it;
+    return cands.sort(ancien)[0].it;
+  }
+  function montrerGroupe(){
+    if(!GR.actif || !GR.q || !ui || ui.hidden || (GR.q.n === GR.vuN && GR.q.id === GR.vuId)) return;
+    GR.vuN = GR.q.n; GR.vuId = GR.q.id; GR.mien = null; GR.attente = null;
+    if(GR.q.fin){
+      R.courant = null; majTete(); majCarte();
+      $('.ar-ou', ui).innerHTML = '<span class="ar-niveau">✦</span> <b>À plusieurs</b>';
+      carte('<p class="ar-fin-t ar-petit">Tout le groupe a tout acquis ✓</p><p>Chaque question a été réussie par chacun, puis réussie encore de loin. Bravo à tout le groupe !</p>',
+        [['Continuer seul·e', () => quitterGroupe(false), true]]);
+      publierAr(); return;
+    }
+    const [it, b] = item(GR.q.id);
+    if(!it){
+      GR.mien = {n:GR.q.n, l:1, ok:false, a:0, t:''}; GR.pret = GR.q.n; publierAr();
+      carte('<p>Cette question n’existe pas dans ta version de l’atelier. Recharge la page (↻) pour avoir la même que le groupe.</p>', [['Revenir seul·e', () => quitterGroupe(false), true]]);
+      return;
+    }
+    publierAr();
+    montrer(it, b);
+  }
+  function verifierAttente(){
+    if(!GR.attente || !GR.q || GR.attente.n !== GR.q.n) return;
+    if(!participants().every(p => repondu(p, GR.attente.n))) return;
+    const f = GR.attente.f; GR.attente = null;
+    const m = ui && $('.ar-gr-att', ui); if(m) m.remove();
+    f();
+  }
+  /* qui a répondu ; à la correction, les réponses de chacun ; si on n'a pas tous trouvé, qui explique */
+  function majGroupeUI(){
+    const z = ui && $('.ar-gr', ui); if(!z || !GR.actif || !GR.q) return;
+    const n = GR.q.n, P = participants(), tousRep = P.every(p => repondu(p, n)), tousCor = P.every(p => corrige(p, n));
+    const ligne = p => {
+      const r = repondu(p, n) ? p.ar.r : null;
+      const e = !r ? '<span class="ar-gr-e">réfléchit…</span>' : !tousRep ? '<span class="ar-gr-e">a répondu</span>'
+        : r.ok === null ? '<span class="ar-gr-e">se corrige…</span>' : r.ok ? '<span class="ar-gr-e ok">✓' + (r.a ? ' avec un indice' : '') + '</span>' : '<span class="ar-gr-e bad">✗</span>';
+      return '<li><i style="background:' + esc(p.c) + '"></i><b>' + esc(p.nom) + (p.moi ? ' (toi)' : '') + '</b> ' + e +
+        (corrige(p, n) && p.ar.pret >= n ? ' <span class="ar-gr-p">prêt·e</span>' : '') + (tousRep && r && r.t ? '<span class="ar-gr-t">« ' + esc(r.t) + ' »</span>' : '') + '</li>';
+    };
+    let bilan = '';
+    if(tousCor){
+      const justes = P.filter(p => p.ar.r.ok && !p.ar.r.a), rates = P.filter(p => !p.ar.r.ok);
+      if(!rates.length) bilan = '<p class="ar-gr-bilan ok">Tout le groupe l’a ✓</p>';
+      else if(!justes.length) bilan = '<p class="ar-gr-bilan">Personne ne l’avait sans aide. Lisez ensemble le point du cours : elle reviendra.</p>';
+      else bilan = '<p class="ar-gr-bilan">Vous n’avez pas tous trouvé. ' + nomsDe(justes) + (justes.length > 1 ? ', expliquez votre démarche' : ', explique ta démarche') +
+        ' aux autres : à voix haute, en message ou au tableau. Pour qui l’a ratée, elle revient dans quelques questions, à faire seul·e.</p>' +
+        (typeof Tableau !== 'undefined' ? '<p><button type="button" class="btn" data-a="gtableau">Ouvrir le tableau</button></p>' : '');
+    }
+    const prets = P.filter(p => corrige(p, n) && p.ar.pret >= n).length;
+    z.innerHTML = '<p class="lib">À plusieurs · ' + P.length + ' · ' + (tousRep ? 'les réponses de chacun' : 'chacun répond seul, sans voir les autres') + '</p>' +
+      '<ul class="ar-gr-l">' + P.map(ligne).join('') + '</ul>' + bilan + (tousCor ? '<p class="ar-gr-prets">Prêt·e·s pour la suivante : ' + prets + ' / ' + P.length + '</p>' : '');
+  }
+  function majBoutonGroupe(){
+    const bg = ui && $('[data-a="arplus"]', ui); if(!bg) return;
+    const g = GR.seance, autres = g ? g.membres.length - 1 : 0;
+    bg.hidden = autres < 1;
+    if(autres < 1) return;
+    const dedans = g.membres.filter(m => m.ar && m.ar.h === HASH).length;
+    bg.textContent = GR.actif ? 'À plusieurs · ' + participants().length : dedans ? 'Rejoindre le groupe (' + dedans + ')' : 'À plusieurs';
+    bg.setAttribute('aria-pressed', String(GR.actif));
+    bg.title = GR.actif ? 'Revenir à ton arène, seul·e' : 'La même question pour tout le groupe de Convergence : chacun répond seul, puis on compare';
+  }
+  function rejoindreGroupe(){
+    if(GR.actif || !GR.seance || GR.seance.membres.length < 2 || !ui) return;
+    if(!B) construire();
+    Object.assign(GR, {actif:true, chef:false, vuN:0, vuId:'', mien:null, pret:0, attente:null});
+    R.retour = null; R.round = null; R.courant = null;
+    const P = participants(), chef = P[0];
+    GR.q = chef && !chef.moi && chef.ar.q ? chef.ar.q : null;
+    GR.chef = estChef();
+    majTete(); majCarte();
+    $('.ar-ou', ui).innerHTML = '<span class="ar-niveau">✦</span> <b>À plusieurs</b>';
+    carte('<p class="ar-fin-t ar-petit">À plusieurs</p><p>La même question pour tout le groupe. Chacun répond seul, sans voir les autres ; la correction s’ouvre quand tout le monde a répondu. Si vous n’avez pas tous trouvé, celui ou celle qui avait juste explique. Chacun garde sa propre progression.</p><p class="ar-plan-pourquoi">On attend la première question…</p>',
+      [['Revenir seul·e', () => quitterGroupe(false)]]);
+    publierAr();
+    piloter(); montrerGroupe();
+  }
+  function quitterGroupe(silencieux){
+    if(!GR.actif) return;
+    Object.assign(GR, {actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null});
+    publierAr();
+    if(ui && !ui.hidden){ majTete(); if(!silencieux){ R.courant = null; suivant(); } }
+  }
+  function basculerGroupe(){ if(GR.actif) quitterGroupe(false); else rejoindreGroupe(); }
+  function pretGroupe(){
+    if(!GR.actif || !GR.q) return;
+    GR.pret = GR.q.n; publierAr();
+    const b = ui && $('.ar-suite [data-a="gpret"]', ui); if(b){ b.disabled = true; b.textContent = 'Prêt·e ✓ · on attend les autres'; }
+    majGroupeUI(); piloter();
+  }
+  /* expliquer au tableau : celui de l'écran de la question, ouvert pour le groupe */
+  function tableauGroupe(){
+    if(typeof Tableau === 'undefined') return;
+    const c = R.courant; if(c && c[0]){ const p = c[0].pas && Pas.get(c[0].pas); aller(p ? p.ecran : c[1].id); }
+    Tableau.ouvrir('groupe');
+  }
+
   /* ---------- ouvrir, fermer, le bouton ---------- */
   function ouvrir(){
     if(!B) construire();
@@ -8344,6 +8590,7 @@ const Arene = (() => {
   /* en partant : un dernier round, proposé une fois, si la séance a acquis assez pour qu'il serve */
   function demanderFermer(){
     if(!ui || ui.hidden) return;
+    if(GR.actif){ quitterGroupe(true); fermer(); return; }
     if(!R.roundFait && !R.round && !R.retour && R.acquisSeance.size >= 5){
       R.roundFait = true;
       $('.ar-ou', ui).innerHTML = '<span class="ar-niveau">★</span> <b>Avant de partir</b>';
@@ -8355,6 +8602,7 @@ const Arene = (() => {
   }
   function fermer(){
     if(!ui || ui.hidden) return;
+    if(GR.actif) quitterGroupe(true);
     ui.hidden = true; document.body.classList.remove('ar-ouverte'); sansTuteur();
     if(!R.round) R.courant = R.courant && R.courant[0] && !acquis(R.courant[0]) ? R.courant : null;
     const b = $('#btn-arene'); if(b) b.focus({preventScroll:true});
@@ -8390,7 +8638,8 @@ const Arene = (() => {
     setTimeout(() => { try{ if(!B) construire(); majBouton(); }catch(e){ console.error(e); } }, 400);
     CROCHETS.externe.push(() => { if(B) majBouton(); });
   }
-  return {demarrer, ouvrir, fermer};
+  return {demarrer, ouvrir, fermer, groupe, ecouterGroupe:f => { GR.ecoute = f; }, enGroupe:() => GR.actif,
+    rejoindre:() => { ouvrir(); rejoindreGroupe(); }};
 })();
 
 /* ====== _commun/rappel.js ====== */
@@ -12610,7 +12859,7 @@ async function quitter(){
     demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:''});
   sauverSeance(); majRail(); majChoixSuivi();
   if(typeof Marques !== 'undefined'){ Marques.partager(false); couleurMarques(); }
-  brancherTableau();
+  brancherTableau(); majArene();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -12623,6 +12872,7 @@ function surMembres(m){
     const sig = autres.map(p => p.uid + '=' + signature(p)).join('\n');
     if(sig !== S.sig){ S.sig = sig; surGroupe(autres); }
     autres.forEach(lireMarques); majMarques();
+    autres.forEach(lireArene); majArene();
     return;
   }
   S.sig = '';
@@ -12631,7 +12881,7 @@ function surMembres(m){
 /* une présence sans le regard, les coches ni le texte du miroir (sa longueur suffit à voir qu'il avance) */
 function signature(p){
   const m = p.miroir && typeof p.miroir === 'object' ? p.miroir : null, t = m && m.tours && typeof m.tours === 'object' ? m.tours : {};
-  const o = Object.assign({}, p); delete o.vue; delete o.coches; delete o.miroir;
+  const o = Object.assign({}, p); delete o.vue; delete o.coches; delete o.miroir; delete o.ar;
   return JSON.stringify(o) + (m ? '|' + !!m.actif + !!m.prive + Object.keys(t).map(k => { const x = t[k] || {}; return k + ':' + String(x.q || '').length + ':' + String(x.r || '').length + (x.fini ? 'f' : '') + (x.m || ''); }).join() : '');
 }
 /* la fiche d'un membre, d'après sa présence */
@@ -12760,7 +13010,7 @@ function lier(ps, aussi){
   }
   publier(); sauverSeance();
   if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
-  brancherTableau();
+  brancherTableau(); majArene();
   demandesVoile([]); demandesPage([]);
   Rac.garder(ps.map(p => p.uid).concat(Object.keys(S.admis), aussi || []));
   etatVoile('Convergence…');
@@ -13637,6 +13887,32 @@ function surMarque(ev){
   const vue = ev.type === 'vue';
   S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + (vue ? '/vue' : '/coches')), vue ? ev.vue : ev.coches).catch(() => {});
 }
+/* ---------- l'arène à plusieurs (arene.js), dans la présence : membres/<uid>/ar ----------
+   Chaque page passe le groupe, dans l'ordre (le premier mène), à l'arène, qui valide ce qu'elle lit ; on ne la
+   rappelle que si l'arène de quelqu'un a changé. Quand quelqu'un ouvre l'arène du groupe, les autres sont invités,
+   une fois. */
+const arVus = new Set();
+let arSig = '';
+function lireArene(p){ const x = S.membres[p.uid]; if(x) x.ar = p.ar && typeof p.ar === 'object' ? p.ar : null; }
+function majArene(){
+  if(typeof Arene === 'undefined' || !Arene.groupe) return;
+  if(S.etat !== 'lie'){ arVus.clear(); arSig = ''; Arene.groupe(null); return; }
+  const l = rang().map(u => ({uid:u, nom:nomU(u), c:couleur(raieU(u)), ar:u === S.uid ? null : (S.membres[u] && S.membres[u].ar) || null}));
+  const sig = JSON.stringify(l);
+  if(sig === arSig) return;
+  arSig = sig;
+  Arene.groupe({moi:S.uid, membres:l});
+  l.forEach(m => {
+    if(!m.ar || m.ar.on !== 1){ arVus.delete(m.uid); return; }
+    if(arVus.has(m.uid)) return;
+    arVus.add(m.uid);
+    if(!Arene.enGroupe()) toast('« ' + m.nom + ' » ouvre l’arène à plusieurs.', 'Rejoindre', () => Arene.rejoindre());
+  });
+}
+function surArene(ar){
+  if(S.etat !== 'lie' || !S.refMoi) return;
+  S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + '/ar'), ar || null).catch(() => {});
+}
 /* ---------- le tableau du groupe (tableau.js) : le relais, et qui l'a ouvert sur quel écran ---------- */
 function brancherTableau(){
   if(typeof Tableau === 'undefined') return;
@@ -13791,6 +14067,7 @@ function demarrer(){
   if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
   if(!memo.get(CLE_RAIE)) memo.set(CLE_RAIE, raie);        // une couleur tirée au hasard reste : les coches la gardent
   if(typeof Marques !== 'undefined'){ Marques.ecouter(surMarque); couleurMarques(); }
+  if(typeof Arene !== 'undefined' && Arene.ecouterGroupe) Arene.ecouterGroupe(surArene);
   if(typeof Tableau !== 'undefined') Tableau.ecouter(ev => { if(S.etat !== 'lie') return; if(ev.type === 'ouvert') publier(); else majBarre(); });
   if(dansClaude()) return;
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
@@ -13811,7 +14088,7 @@ function demarrer(){
     if(!ok){ quitter(); return; }
     montrerBarre();
     if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
-    brancherTableau();
+    brancherTableau(); majArene();
   });
 }
 
@@ -13932,7 +14209,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'b9b793d28cbd';
+  const ICI = '77736f13bf75';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
