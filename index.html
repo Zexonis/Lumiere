@@ -596,6 +596,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
     {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
@@ -713,7 +714,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '37ba55867761';
+  const ICI = 'aec0b6ec4f1b';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

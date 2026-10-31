@@ -1283,6 +1283,9 @@ html.ess .ess-replie .ess-ouvrir{display:inline-flex;align-items:center;margin:4
 @media (max-width:560px){ .ess-barre{font-size:13px} .ess-bascule{margin-left:0} }
 
 /* ---------- L'arène (arene.js) : le bouton, le panneau plein écran, la carte des blocs, les questions ---------- */
+.btn-tab{display:inline-flex;align-items:center;gap:6px}
+.btn-tab svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:760px){ .btn-tab .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} }
 .btn-arene{display:inline-flex;align-items:center;gap:6px;border-color:color-mix(in srgb,var(--accent) 55%,var(--line));font-weight:700}
 .btn-arene svg{width:17px;height:17px;fill:none;stroke:var(--accent);stroke-width:2}
 .btn-arene .n{font-size:11.5px;font-weight:800;padding:1px 6px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
@@ -1435,7 +1438,7 @@ body.ar-ouverte .tb.cote{z-index:335}
     <button type="button" data-aller="notes">✎ Mes notes · export</button>
     <button type="button" data-aller="sources">Sources et crédits</button>
     <button type="button" id="theme">Thème : auto</button>
-    <p class="aide"><kbd>←</kbd> <kbd>→</kbd> écran précédent ou suivant · <kbd>N</kbd> notes · <kbd>T</kbd> tuteur · <kbd>G</kbd> guide · <kbd>R</kbd> rappel</p>
+    <p class="aide"><kbd>←</kbd> <kbd>→</kbd> écran précédent ou suivant · <kbd>N</kbd> notes · <kbd>T</kbd> tuteur · <kbd>G</kbd> guide · <kbd>R</kbd> rappel · <kbd>B</kbd> tableau</p>
   </div>
 </nav>
 
@@ -11518,6 +11521,16 @@ const Tableau = (() => {
       theme.before(b);
       b.addEventListener('click', () => ouvrir());
     }
+    /* et dans la barre du haut, à côté de Convergence (l'Arène s'y glisse aussi) : seul, c'est « Mon tableau » ;
+       en séance, celui du groupe. Touche B. */
+    const cv = $('#btn-cv'), notes = $('#btn-notes');
+    if((cv || notes) && !$('#btn-tableau-haut')){
+      const h = H('<button type="button" class="btn btn-tab" id="btn-tableau-haut"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M7 12.5l3-3 2.5 2 4-4.5M9 20.5l3-4 3 4"/></svg><span class="mot">Tableau</span></button>');
+      h.title = 'Ton tableau blanc pour cet écran (touche B) : seul, c’est « Mon tableau » ; en séance, celui du groupe';
+      h.setAttribute('aria-label', 'Tableau blanc');
+      if(cv) cv.after(h); else notes.before(h);
+      h.addEventListener('click', () => ouvrir());
+    }
     CROCHETS.apresAller.push(suivreEcran);
     CROCHETS.effacer.push(() => { L = {}; memo.set(CLE, JSON.stringify({v:1, e:{}})); Object.keys(piles).forEach(k => delete piles[k]); if(ui && !ui.el.hidden && vue !== 'groupe') changerVue(vue); });
     window.addEventListener('resize', () => { if(ui && !ui.el.hidden) disposer(); });
@@ -13898,6 +13911,7 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
     {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
@@ -14064,7 +14078,7 @@ function demarrer(){
   document.addEventListener('selectionchange', () => { clearTimeout(tSel); tSel = setTimeout(majCiter, 220); });
   window.addEventListener('scroll', () => { if(!c.hidden && !c.classList.contains('choix-type')) majCiter(); }, {passive:true});
 
-  /* clavier : ← → écrans · N notes · T tuteur · G guide · R rappel · Échap */
+  /* clavier : ← → écrans · N notes · T tuteur · G guide · R rappel · B tableau · Échap */
   document.addEventListener('keydown', e => {
     const t = e.target && e.target.nodeType === 1 ? e.target : document.body;
     if(ATELIER.clavier && ATELIER.clavier(e, t)) return;
@@ -14078,6 +14092,7 @@ function demarrer(){
     else if(e.key === 't' || e.key === 'T'){ e.preventDefault(); Tuteur.ouvrir(!$('#app').classList.contains('avec-tuteur')); }
     else if(e.key === 'g' || e.key === 'G'){ e.preventDefault(); Tuteur.mode('guide', true); }
     else if(e.key === 'r' || e.key === 'R'){ e.preventDefault(); aller('cartes'); }
+    else if((e.key === 'b' || e.key === 'B') && typeof Tableau !== 'undefined'){ e.preventDefault(); Tableau.ouvrir(); }
   });
 
   /* mes notes */
@@ -14125,7 +14140,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '37ba55867761';
+  const ICI = 'aec0b6ec4f1b';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
