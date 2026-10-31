@@ -3316,7 +3316,7 @@ const CARTES2 = [
    choix:['−0,50', '+2,50', '−5,50'], bonne:0,
    r:'Près = loin + add : −3,00 + 2,50 = −0,50. L’add seule (+2,50) n’est la puissance de près que pour un œil plano.', src:['M7 D7', 'M7 D9']},
   {id:'c-correction-04', type:'geste', pas:['correction.4', 'correction.5'], geste:'g-regle-lecture',
-   q:'Sur ta règle, fais les lunettes de lecture d’Arthur (−3,00 add +1,50), puis celles du patient de la D10 (+3,00 add +2,50), en disant chaque valeur.', src:['M7 C7', 'M7 D10']},
+   q:'Sur ta règle, fais les lunettes de lecture d’Arthur (−3,00 add +1,50), puis celles d’un patient hypermétrope (+3,00 add +2,50), en disant chaque valeur.', src:['M7 C7', 'M7 D10']},
   {id:'c-correction-05', type:'chaine', pas:['correction.2', 'correction.4'], q:'Les lunettes de lecture d’un amétrope : remets les étapes dans l’ordre.',
    items:['la correction de loin en place : l’œil est comme un emmétrope', 'la demande de près : 1/d', 'Add = 1/d − 0,5 Am (négatif : pas d’addition)', 'lunettes de lecture = correction de loin + Add'],
    qcm:{q:'Comment obtient-on la puissance des lunettes de lecture d’un presbyte qui est aussi myope ou hypermétrope ?', bon:'Add = 1/d − 0,5 Am, correction de loin en place ; puis on ajoute l’Add à la correction de loin', faux:['Add = 1/d + R − 0,5 Am, avec l’œil non corrigé ; puis on ajoute l’Add à la correction de loin', 'Add = 1/d − 0,5 Am, correction de loin en place ; cette Add seule donne la puissance de près', 'Add = 1/d − Am, avec toute l’amplitude ; puis on ajoute l’Add à la correction de loin']}, src:['M7 D5', 'M7 D6', 'M7 C6']},
@@ -15466,7 +15466,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '1a0508e519c9';
+  const ICI = '384b65a390da';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

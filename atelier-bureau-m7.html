@@ -2850,12 +2850,12 @@ const TRI_CROIX = [
 /* ---------- cartes éclair ---------- */
 const CARTES = [
   {g:'croix', q:'Que représente la croix optique ?', a:'Elle « représente les puissance ' + SIC + ' de l’ordonnance en vision de loin (VL) » ' + S('7.1-d3')},
-  {g:'croix', q:'Qu’inclut-elle ?', a:'« Inclus ' + SIC + ' sphère, cylindre et axe » ; « Inclus ' + SIC + ' deux méridiens principaux » ' + S('7.1-d3')},
-  {g:'croix', q:'Qu’exclut-elle ?', a:'« Exclus ' + SIC + ' Prisme » ; « Exclus ' + SIC + ' Pouvoir d’Addition » ' + S('7.1-d5')},
+  {g:'croix', q:'Qu’inclut la croix optique ?', a:'« Inclus ' + SIC + ' sphère, cylindre et axe » ; « Inclus ' + SIC + ' deux méridiens principaux » ' + S('7.1-d3')},
+  {g:'croix', q:'Qu’exclut la croix optique ?', a:'« Exclus ' + SIC + ' Prisme » ; « Exclus ' + SIC + ' Pouvoir d’Addition » ' + S('7.1-d5')},
   {g:'croix', q:'Prisme ou addition dans la Rx : que dessine-t-on ?', a:'« RIEN! » ' + S('7.3-d38')},
   {g:'croix', q:'La croix dit-elle de quel œil il s’agit ?', a:'Non : « ATTN: LA CROIX OPTIQUE NE PRÉCISE PAS OD/OS, CECI EST DICTÉ PAR RX » ' + S('7.1-d24')},
-  {g:'croix', q:'Où sont 180, 090 et 0 ?', a:'180 à gauche, 090 en haut, 0 à droite, sur les deux verres vus de face ' + S('7.1-d8 à d10')},
-  {g:'croix', q:'Où sont 135 et 045 ?', a:'135 en haut à gauche, 045 en haut à droite ' + S('7.1-d23') + '. Chaque méridien porte le même degré à ses deux bouts.'},
+  {g:'croix', q:'Sur un verre vu de face, où sont 180, 090 et 0 ?', a:'180 à gauche, 090 en haut, 0 à droite, sur les deux verres vus de face ' + S('7.1-d8 à d10')},
+  {g:'croix', q:'Sur un verre vu de face, où sont 135 et 045 ?', a:'135 en haut à gauche, 045 en haut à droite ' + S('7.1-d23') + '. Chaque méridien porte le même degré à ses deux bouts.'},
   {g:'croix', q:'Lunettes dessinées vues de face : où est l’OD ?', a:'À gauche du dessin, l’OS à droite ' + S('7.1-d34') + '.'},
   {g:'construire', q:'Rx sphérique : quelle force sur les méridiens ?', a:'« Pouvoir Sphérique = même force dans tous les méridiens de la croix » ' + S('7.1-d22')},
   {g:'construire', q:'Comment s’écrit une Rx sphérique ?', a:'« -1.00 DS » ' + S('7.1-d21') + ' ; sur un bras, « -1.00 D » au début du cours, puis le nombre seul.'},
@@ -2868,18 +2868,18 @@ const CARTES = [
   {g:'oblique', q:'Axe 160 : où est le 2e méridien ?', a:'« 160 - 090 = 070 » ' + S('7.3-d26')},
   {g:'oblique', q:'Pourquoi soustraire 090 à 160 ?', a:'160 + 090 = 250 n’est pas un méridien : « L\'axe du cylindre est toujours compris entre 001 et 180 degrés. » (UA1) ' + DED},
   {g:'oblique', q:'Croix de -5.00 -1.50 x 160 ?', a:'-5.00 sur 160 ; « 2e méridien = SPH + CYL = (-5.00) + (-1.50) = -6.50 » sur 070 ' + S('7.3-d21 à d28')},
-  {g:'oblique', q:'L’option A ?', a:'Dessiner les vrais méridiens, en oblique : le degré en haut de la ligne, la valeur au bout bas ' + S('7.3-d15, d28')},
+  {g:'oblique', q:'Croix à axe oblique : en quoi consiste l’option A ?', a:'Dessiner les vrais méridiens, en oblique : le degré en haut de la ligne, la valeur au bout bas ' + S('7.3-d15, d28')},
   {g:'oblique', q:'L’option B : quel méridien à l’horizontale ?', a:'« (axe le plus près de 180 ou 0) » ; à la verticale : « (axe le plus près de 090) » ' + S('7.3-d17')},
   {g:'oblique', q:'Option B, axe 045 ou 135 ?', a:'La règle ne tranche pas : ces axes sont à égale distance des deux bras. À vérifier en classe.'},
   {g:'lire', q:'Myope sphérique : où est le foyer ?', a:'« Rappel: Myope Sphérique = 1 points focaux ' + SIC + ' devant la rétine » ' + S('7.1-d50')},
-  {g:'lire', q:'Hypermétrope sphérique ?', a:'« Rappel: Hypermétrope Sphérique = 1 points focaux ' + SIC + ' derrière la rétine » ' + S('7.1-d50')},
-  {g:'lire', q:'Un méridien Plano ?', a:'« Plano = Emmetrope ' + SIC + ' = Sur la rétine » ' + S('7.3-d32')},
+  {g:'lire', q:'Hypermétrope sphérique : où est le foyer ?', a:'« Rappel: Hypermétrope Sphérique = 1 points focaux ' + SIC + ' derrière la rétine » ' + S('7.1-d50')},
+  {g:'lire', q:'Un méridien Plano : quelle amétropie, et où tombe son foyer ?', a:'« Plano = Emmetrope ' + SIC + ' = Sur la rétine » ' + S('7.3-d32')},
   {g:'lire', q:'L’œil corrigé : où sont les foyers ?', a:'Sur la rétine : « OD: UN POINT FOCAUX ' + SIC + ' SUR LA RÉTINE » ' + S('7.1-d41')},
   {g:'lire', q:'+2.00 -2.00 x 135 : nom et type ?', a:'« rx: Hypermétrope Torique; » ; « Astigmatisme Hypermétrope Simple » ' + S('7.3-d32')},
   {g:'lire', q:'+6.50 -1.00 x 160 : foyers et type ?', a:'« 2 points en arrière de la rétine » ; « Astigmatisme Hypermétrope Composé » ' + S('7.3-d35')},
-  {g:'lire', q:'Composé ?', a:'« 2 point ' + SIC + ' focaux du même type d’amétropie = composé » (UA1)'},
-  {g:'lire', q:'Mixte ?', a:'« Deux points focaux, 1xmyope et 1x hypermétrope = Mixte » (UA1)'},
-  {g:'lire', q:'Simple ?', a:'« myopie a un méridien et emmétropie à l’autre » ; « hypermétropie a un méridien et emmétropie à l’autre » (UA1)'},
+  {g:'lire', q:'Qu’est-ce qu’un astigmatisme composé ?', a:'« 2 point ' + SIC + ' focaux du même type d’amétropie = composé » (UA1)'},
+  {g:'lire', q:'Qu’est-ce qu’un astigmatisme mixte ?', a:'« Deux points focaux, 1xmyope et 1x hypermétrope = Mixte » (UA1)'},
+  {g:'lire', q:'Qu’est-ce qu’un astigmatisme simple ?', a:'« myopie a un méridien et emmétropie à l’autre » ; « hypermétropie a un méridien et emmétropie à l’autre » (UA1)'},
   {g:'lire', q:'Sur quelle forme de Rx lit-on le type ?', a:'« Les types d’ordonnance optique sont déterminés lorsque celle-ci est en forme de cylindre négatif. » (UA1)'},
   {g:'lire', q:'Analyse inverse : croix +2.00 / +2.00 ?', a:'+2.00 DS ; hypermétrope sphérique ; un foyer derrière la rétine ' + S('7.1-d43') + ' ' + DED}
 ];
@@ -3540,7 +3540,7 @@ const CARTES2 = [
   {id:'c-spherique-03', type:'discrim', pas:['spherique.1', 'torique.1'], q:'Une croix porte -2.00 sur 180 et -2.00 sur 090. Elle est…',
    choix:['sphérique', 'torique'], bonne:0, r:'Même force sur les deux méridiens : sphérique (-2.00 DS) ; une croix torique porte deux forces différentes.', src:['7.1-d22', '7.2-d32']},
   {id:'c-spherique-04', type:'application', pas:['spherique.3', 'echelle.3'],
-   q:'Rx du cours : OD -1.00, OS -2.00 (7.1-d12). Dessine les deux croix sur des lunettes vues de face : que porte chaque bras, et de quel côté est chaque croix ?',
+   q:'Rx du cours : OD -1.00, OS -2.00. Dessine les deux croix sur des lunettes vues de face : que porte chaque bras, et de quel côté est chaque croix ?',
    r:'À gauche, l’OD : -1.00 sur 180 et sur 090. À droite, l’OS : -2.00 sur ses deux bras.', points:['OD à gauche', '-1.00 sur les deux bras', 'OS -2.00 sur les deux bras'], src:['7.1-d12', '7.1-d20', '7.1-d34'],
    qcm:{bon:'À gauche, l’OD : -1.00 sur ses deux bras ; à droite, l’OS : -2.00 sur ses deux bras', faux:['À droite, l’OD : -1.00 sur ses deux bras ; à gauche, l’OS : -2.00 sur ses deux bras', 'À gauche, l’OD : -1.00 sur 180, Plano sur 090 ; à droite, l’OS : -2.00 sur 180, Plano sur 090', 'À gauche, l’OD : -1.00 sur 180, -2.00 sur 090 ; à droite, l’OS : la même croix']}},
 
@@ -3605,7 +3605,7 @@ const CARTES2 = [
   {id:'c-negatifs-02', type:'geste', pas:['negatifs.2', 'negatifs.3'], geste:'g-cylindre-recule',
    q:'Sur ta règle, fais (+0.25) + (-0.75), puis (+2.00) + (-2.00), avec le doigt, en disant chaque valeur.', src:['7.2-d30', '7.3-d30']},
   {id:'c-negatifs-03', type:'application', pas:['negatifs.3'],
-   q:'Exercice 7.2-d30, n° 10 : +1.25 -1.25 x 180. Que vaut le 2e méridien, et où va-t-il ?',
+   q:'+1.25 -1.25 x 180 : que vaut le 2e méridien, et où va-t-il ?',
    r:'(+1.25) + (-1.25) = Plano, sur 090. Un méridien Plano, l’autre positif : astigmatisme hypermétrope simple <span class="deduit">déduit</span>.', points:['Plano', 'sur 090', 'hypermétrope simple'], src:['7.2-d30'],
    qcm:{bon:'Plano, sur 090 : un méridien Plano, l’autre positif, hypermétrope simple', faux:['+2.50, sur 090 : deux méridiens positifs, hypermétrope composé', '-1.25, sur 090 : un positif, un négatif, astigmatisme mixte', 'Plano, sur 180 : le même méridien que l’axe, hypermétrope simple']}},
 
@@ -3701,7 +3701,7 @@ const CARTES2 = [
   {id:'c-types-07', type:'chaine', pas:['foyers.1', 'types.1'], q:'Lire une croix : de la croix au type, dans l’ordre.',
    items:['le signe de chaque méridien', 'la place de chaque foyer (devant, sur ou derrière la rétine)', 'le type d’astigmatisme'], src:['7.1-d50', '7.3-d32', 'UA1'],
    qcm:{q:'Une croix porte +1.25 sur 180 et Plano sur 090. Où tombent ses foyers sans correction, et quel est le type d’astigmatisme ?', bon:'Un derrière la rétine, l’autre sur la rétine : astigmatisme hypermétrope simple', faux:['Deux derrière la rétine : astigmatisme hypermétrope composé', 'Un devant la rétine, l’autre sur la rétine : astigmatisme myope simple', 'Un derrière la rétine, l’autre devant : astigmatisme mixte']}},
-  {id:'c-types-08', type:'discrim', pas:['types.2', 'types.3', 'types.4'], q:'Croix : +0.25 sur 090, -0.50 sur 180 (exercice 7.2-d30, n° 6). Quel type ?',
+  {id:'c-types-08', type:'discrim', pas:['types.2', 'types.3', 'types.4'], q:'Croix : +0.25 sur 090, -0.50 sur 180. Quel type d’astigmatisme ?',
    choix:['astigmatisme hypermétrope simple', 'astigmatisme myope composé', 'astigmatisme mixte'], bonne:2,
    r:'Simple : un Plano ; composé : deux du même signe ; mixte : deux signes opposés. Ici +0.25 et -0.50 : mixte.', src:['7.2-d30', 'UA1']},
   {id:'c-types-09', arene:false, type:'discrim', pas:['types.5'], q:'Pour +2.50 -3.75 x 090, le mot “hypermétrope” décrit…',
@@ -3734,11 +3734,11 @@ const CARTES2 = [
 
   /* ---------- exercices ---------- */
   {id:'c-exercices-01', type:'application', pas:['exercices.1'],
-   q:'Exercice 7.3-d36, n° 8 : +7.75 -1.00 x 138. Donne la croix, le type et le bras de l’axe en option B.',
+   q:'+7.75 -1.00 x 138 : donne la croix, le type et le bras de l’axe en option B.',
    r:'+7.75 sur 138 ; 138 − 090 = 048 ; (+7.75) + (-1.00) = +6.75 sur 048 ; astigmatisme hypermétrope composé ; 138 est à 42° de 180 et à 48° de 090 : bras horizontal <span class="deduit">déduit</span>.', points:['+7.75 sur 138', '+6.75 sur 048', 'hypermétrope composé', 'bras horizontal'], src:['7.3-d36'],
    qcm:{bon:'+7.75 sur 138, +6.75 sur 048 ; hypermétrope composé ; 138 à l’horizontale', faux:['+7.75 sur 138, +6.75 sur 228 ; hypermétrope composé ; 138 à la verticale', '+7.75 sur 138, +6.75 sur 048 ; hypermétrope simple ; 138 à la verticale', '+7.75 sur 138, +8.75 sur 048 ; hypermétrope composé ; 138 à l’horizontale']}},
   {id:'c-exercices-02', type:'discrim', pas:['exercices.1', 'types.2', 'types.3'],
-   q:'+1.25 -1.25 x 180 (7.2-d30, n° 10) et +1.25 -1.00 x 177 (7.3-d36, n° 10) : lequel est un astigmatisme hypermétrope simple ?',
+   q:'+1.25 -1.25 x 180 et +1.25 -1.00 x 177 : lequel est un astigmatisme hypermétrope simple ?',
    choix:['+1.25 -1.25 x 180', '+1.25 -1.00 x 177'], bonne:0,
    r:'Le premier a un méridien Plano (+1.25 et Plano) : simple ; le second a +1.25 et +0.25 : composé.', src:['7.2-d30', '7.3-d36']},
 
@@ -15876,7 +15876,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '1a0508e519c9';
+  const ICI = '384b65a390da';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

@@ -2931,12 +2931,12 @@ const CARTES = [
   {g:'kerato', q:'Quel miroir est la cornée, et que fait-il à l’image ?', a:'Convexe : « image plus petite et effet d’être plus loin que la réalité » ' + S('5.1-d23, d28')},
   {g:'kerato', q:'Le miroir concave ?', a:'« Effet agrandisant ' + SIC + ' pour mirroir ' + SIC + ' maquillage » ' + S('5.1-d22')},
   {g:'kerato', q:'Trois raisons de mesurer la cornée ?', a:'« Adapter correctement les lentilles de contact » ; « Détecter et quantifier l’astigmatisme cornéen pour aider dans la réfraction » ; « Suivre la stabilité et santé cornéenne » ' + S('5.1-d29')},
-  {g:'kerato', q:'Équation ① ?', a:'D = (1,3375 − 1) / r, r en mètres. « Plus le rayon de la cornée est petit, plus la puissance de la cornée est importante » ' + S('5.1-d32')},
+  {g:'kerato', q:'L’équation de la puissance de la cornée ?', a:'D = (1,3375 − 1) / r, r en mètres. « Plus le rayon de la cornée est petit, plus la puissance de la cornée est importante » ' + S('5.1-d32')},
   {g:'kerato', q:'Qu’est-ce que 1,3375 ?', a:'« un indice fictif qui est la moyenne de la refraction ' + SIC + ' air à cornée et cornée à humeur aqueuse (utilisé par Helmholtz qui a inventé le kératomètre) » ' + S('5.1-d32')},
   {g:'kerato', q:'r = 7,8 mm : quelle puissance ?', a:'0,3375 / 0,0078 = 43,3 D ' + S('5.1-d32')},
   {g:'kerato', q:'Quel rayon pour une cornée de 43 D ?', a:'0,3375 / 43 = 0,00785 m = 7,85 mm ' + DED},
-  {g:'kerato', q:'Équation ② ?', a:'Astigmatisme cornéen = K cambré − K plat. « Différence de puissance = astigmatisme cornéen » ' + S('5.1-d36')},
-  {g:'kerato', q:'Équation ③ ?', a:'« l’autre méridien est à 90 degrés de celui-ci » ; « 90+90=180 », « 80+90=170 » ' + S('5.2-R4, R5')},
+  {g:'kerato', q:'L’équation de l’astigmatisme cornéen ?', a:'Astigmatisme cornéen = K cambré − K plat. « Différence de puissance = astigmatisme cornéen » ' + S('5.1-d36')},
+  {g:'kerato', q:'Où est l’autre méridien principal de la cornée ?', a:'« l’autre méridien est à 90 degrés de celui-ci » ; « 90+90=180 », « 80+90=170 » ' + S('5.2-R4, R5')},
   {g:'kerato', q:'Le cylindre oblique ?', a:'« Cylindre oblique: 30-60 degrés ou 120-150 degrés » ' + S('5.1-d36')},
   {g:'kerato', q:'La règle d’écriture Optosys ?', a:'« on inscrit le méridien horizontal en premier, suivi du méridien vertical » ' + S('5.1-d36') + ' ; le méridien après @ est celui de la 2e valeur.'},
   {g:'kerato', q:'« 41.00 x 40.00@090 » : où est chaque K ?', a:'« 41.00 @180 et 40.00@090 » ' + S('5.2-R4')},
@@ -2958,7 +2958,7 @@ const CARTES = [
   {g:'topo', q:'LASIK pour l’hypermétropie ?', a:'« Crééer ' + SIC + ' une cornée plus bombée » ' + S('5.1-d40')},
   {g:'topo', q:'L’orthokératologie ?', a:'« Applatir ' + SIC + ' la cornée avec une lentille cornéenne » ' + S('5.1-d41') + ' ; 43,16 → 42,23 D ' + S('5.3-d10')},
   {g:'topo', q:'Le but de toute chirurgie cornéenne ?', a:'« améliorer la symmétrie ' + SIC + ' et la régularité optique » ' + S('5.3-d12')},
-  {g:'topo', q:'La sortie Medmont de 5.3-d9 ?', a:'« KC oval os, inferior » : zone rouge inférieure ; « Flat K » 44,24 @ 120, « Steep K » 45,47 @ 30, « ΔK » 1,24 ' + S('5.3-d9')},
+  {g:'topo', q:'La sortie Medmont du kératocône montré en cours ?', a:'« KC oval os, inferior » : zone rouge inférieure ; « Flat K » 44,24 @ 120, « Steep K » 45,47 @ 30, « ΔK » 1,24 ' + S('5.3-d9')},
   {g:'kc', q:'Définis le kératocône (3 points).', a:'« Maladie dégénérative non inflammatoire de la cornée » ; « Caractérisée par un amincissement et une déformation conique » ; « Cause une myopie et un astigmatisme irrégulier progressifs » ' + S('6.1-d4')},
   {g:'kc', q:'Le stroma ?', a:'« Le stroma représente 90% de l’épaisseur et assure la rigidité. » ' + S('6.1-d3')},
   {g:'kc', q:'Quand apparaît le kératocône ?', a:'« adolescence à jeune adulte » ' + S('6.1-d7')},
@@ -2967,11 +2967,11 @@ const CARTES = [
   {g:'kc', q:'Combien de cas à Lumiris ?', a:'« Je détecte 1-2 cas par mois en moyenne. 1%-2% des patients. » ' + S('6.1-d7')},
   {g:'kc', q:'Symptôme vs signe ?', a:'« Symptômes: Ce que le patient nous indique qu’il resent ' + SIC + ' subjectivement » ; « Signes: Ce que nous observons ou ce que nous mesurons de facon ' + SIC + ' objective » ' + S('6.1-d12')},
   {g:'kc', q:'Les cinq symptômes du kératocône ?', a:'Vision moins bonne la nuit ; baisse progressive de loin et de près ; un œil moins bon ; « mes lunettes ne m’aident pas » ; allergie, frottement ' + S('6.1-d13')},
-  {g:'kc', q:'Les six signes aux prétests ?', a:'Jeune (18-30 ans) ; AV réduite ; cylindre oblique ; K cambrée ; mires distordues ; PIO plus basse ' + S('6.1-d14')},
+  {g:'kc', q:'Les six signes du kératocône aux prétests ?', a:'Jeune (18-30 ans) ; AV réduite ; cylindre oblique ; K cambrée ; mires distordues ; PIO plus basse ' + S('6.1-d14')},
   {g:'kc', q:'La pression intraoculaire dans le kératocône ?', a:'« Pression intraoculaire plus basse (moins que 9 et parfois asymmétrique ' + SIC + ') » ' + S('6.1-d14')},
-  {g:'kc', q:'Prétests à ajouter ?', a:'« Topographie cornéenne (le plus concluant) » ; « Pachymétrie (épaisseur de la cornée) » ' + S('6.1-d15')},
+  {g:'kc', q:'Prétests à ajouter quand on soupçonne un kératocône ?', a:'« Topographie cornéenne (le plus concluant) » ; « Pachymétrie (épaisseur de la cornée) » ' + S('6.1-d15')},
   {g:'kc', q:'La carte d’un kératocône ?', a:'« Kératocone ' + SIC + ': astigmatisme n’est pas symmétrique ' + SIC + '. Plus de cambrure inférieure par rapport à supérieur » ' + S('6.1-d8')},
-  {g:'kc', q:'La correction optique principale ?', a:'Les lentilles rigides : « Créent une nouvelle surface rigide par dessu ' + SIC + ' la cornée » ' + S('6.1-d18')},
+  {g:'kc', q:'La correction optique principale du kératocône ?', a:'Les lentilles rigides : « Créent une nouvelle surface rigide par dessu ' + SIC + ' la cornée » ' + S('6.1-d18')},
   {g:'kc', q:'Le cross-linking ?', a:'Riboflavine (vit B2), puis UV : « Ceci crée des liens additionnels entre les couches de collagène dans le stroma pour durcir la cornée » ' + S('6.1-d21')},
   {g:'kc', q:'La greffe de cornée ?', a:'« Greffe de cornée : cas sévères » ' + S('6.1-d20')},
   {g:'kc', q:'Le rôle de l’assistant (kératocône) ?', a:'Dépistage et orientation (et la famille) ; aide à l’adaptation en lentilles rigides ; éducation : « éviter le frottement oculaire » ' + S('6.1-d24')},
@@ -2986,7 +2986,7 @@ const CARTES = [
   {g:'rx', q:'Mêmes nombres avec add : « lecture » ou « loin » ?', a:'Lecture : « verre dégressif (intermédiaire et vision de près) » ; loin : « verre anti-fatigue ou progressifs (vision de loin et vision de près) » ' + S('6.2-d15, d16')},
   {g:'rx', q:'Les cinq erreurs fréquentes ?', a:'Ne pas demander s’il a ses lunettes ; ne pas demander quand il les porte ; multifoyer saisi en simple foyer ; OD/OS mélangés ; + écrit au lieu de – ' + S('6.2-d20')},
   {g:'rx', q:'Pourquoi prescrire un prisme ?', a:'« parfois on souhaite un déplacement de l’image. C’est pour cela qu’on prescrit un prisme. » ' + S('6.2-d19')},
-  {g:'rx', q:'Exemple de notes au dossier ?', a:'« Notes: âge 2 ans, claires, sans rayures, monture bon état » ' + S('6.2-d14')},
+  {g:'rx', q:'Exemple de notes au dossier sur les lunettes du patient ?', a:'« Notes: âge 2 ans, claires, sans rayures, monture bon état » ' + S('6.2-d14')},
   {g:'lenti', q:'Pourquoi mesurer les lunettes du patient ?', a:'« C\'est permettre à l\'optométriste de comprendre avec quelle correction le patient fonctionne actuellement. » ' + S('6.3-d3')},
   {g:'lenti', q:'Sans la mesure des lunettes ?', a:'« l’examen ne répond pas aux besoins du patient » ' + S('6.3-d4')},
   {g:'lenti', q:'Quel problème de santé la mesure peut-elle révéler ?', a:'« changement réfractif dans le cristallin du ' + SIC + ' au diabète, cataracte » ' + S('6.3-d6')},
@@ -14233,7 +14233,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '1a0508e519c9';
+  const ICI = '384b65a390da';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
