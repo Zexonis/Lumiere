@@ -11275,7 +11275,7 @@ const Tableau = (() => {
    ====================================================================== */
 const Convergence = (() => {
 const LUMIERE = 'https://zexonis.github.io/Lumiere/';
-const SDK_FIREBASE = 'vendor/firebase-12.19.0.js';
+const SDK_FIREBASE = 'vendor/firebase-12.19.0.js?b=2';     // ?b= : change quand le paquet est reconstruit (31 oct. : onChildChanged ajouté)
 /* la configuration web du projet Firebase : publique par nature (toute page qui s'en sert la montre) ;
    ce sont les règles de la base qui protègent les séances */
 const FIREBASE = {apiKey:'AIzaSyBle6I_mp2DGBGubm5pcc4MOogoyECEu64', authDomain:'lumiere-convergence.firebaseapp.com',
@@ -12731,6 +12731,7 @@ return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ce bouton « Quoi de neuf ? ». Il te montre ce qui a été ajouté et quand, avec un chiffre quand il y a du nouveau depuis ta dernière visite.'},
     {d:'2026-10-31', p:['*'], t:'Étudie l’Arène à plusieurs : pendant une séance Convergence, appuie sur « À plusieurs » dans l’Arène. Tout le monde a la même question, chacun répond seul, puis vous comparez vos réponses.'},
     {d:'2026-10-31', p:['*'], t:'Tu bloques dans l’Arène ? « Un indice » demande au tuteur une piste, sans la réponse. Après chaque réponse, « Demander au tuteur » t’explique pourquoi.'},
@@ -12953,7 +12954,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '6866eab083ba';
+  const ICI = '7154ee0f49ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

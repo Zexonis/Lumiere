@@ -596,6 +596,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Convergence remarche : si ta séance restait bloquée sur « Confirmation… » quand tu acceptais quelqu’un, c’est réglé. Recharge la page si elle était déjà ouverte.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ce bouton « Quoi de neuf ? ». Il te montre ce qui a été ajouté et quand, avec un chiffre quand il y a du nouveau depuis ta dernière visite.'},
     {d:'2026-10-31', p:['*'], t:'Étudie l’Arène à plusieurs : pendant une séance Convergence, appuie sur « À plusieurs » dans l’Arène. Tout le monde a la même question, chacun répond seul, puis vous comparez vos réponses.'},
     {d:'2026-10-31', p:['*'], t:'Tu bloques dans l’Arène ? « Un indice » demande au tuteur une piste, sans la réponse. Après chaque réponse, « Demander au tuteur » t’explique pourquoi.'},
@@ -708,7 +709,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '6866eab083ba';
+  const ICI = '7154ee0f49ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
