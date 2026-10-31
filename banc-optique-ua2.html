@@ -1458,6 +1458,49 @@ body.tb-cote .cv-panneau{right:calc(min(48vw,860px) + 12px)}
   .tb-grp button{min-width:30px;height:30px}
 }
 
+/* ---------- La tablette (tablette.js) : le téléphone relié au tableau de l'ordinateur ---------- */
+.tb-tablette.relie,.tb-tablette.attend{border-color:var(--accent)}
+.tb-tablette.relie::after,.tb-tablette.attend::after{content:"";display:inline-block;width:7px;height:7px;margin-left:7px;border-radius:50%;vertical-align:middle}
+.tb-tablette.relie::after{background:#9BF25C;box-shadow:0 0 6px #9BF25C}
+.tb-tablette.attend::after{background:var(--accent);animation:cv-attente 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){ .tb-tablette.attend::after{animation:none} }
+.tt-voile{z-index:345}
+.tt-carte{text-align:center;align-items:center}
+.tt-pc,.tt-tel,.tt-relier{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.tt-tel .cv-champ{width:min(260px,100%);text-align:left}
+.tt-pc[hidden],.tt-tel[hidden],.tt-relier[hidden]{display:none}
+.tt-qr{width:min(248px,64vw);aspect-ratio:1;border-radius:12px;background:#fff;overflow:hidden;display:grid;place-items:center}
+.tt-qr svg{display:block;width:100%;height:100%}
+.tt-qr.rate{padding:14px;color:#05070D;font-size:13.5px;line-height:1.4;aspect-ratio:auto}
+.tt-scan{margin:0;color:#F3F5FB;font-weight:700;font-size:16px}
+.tt-code{font-size:clamp(26px,7vw,36px)}
+.tt-lien{border:0;background:none;color:#AEB7C9;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:13.5px;padding:2px 4px}
+.tt-lien:hover{color:#F3F5FB}
+.tt-pop{z-index:346}
+body.tt-actif{overflow:hidden}
+.tt{position:fixed;inset:0;z-index:340;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+.tt-tete{display:flex;align-items:center;gap:8px;padding:calc(6px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) 6px max(10px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+.tt-etat{flex:1;min-width:0;margin:0;font-size:13.5px;line-height:1.3;color:var(--ink-2)}
+.tt-etat.ok{color:var(--ink)}
+.tt-etat.ok::before{content:"";display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#9BF25C;box-shadow:0 0 6px #9BF25C;vertical-align:1px}
+.tt-b{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13.5px;min-height:34px;cursor:pointer;touch-action:manipulation}
+.tt-b.plein{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.tt-b:disabled{opacity:.4;cursor:default}
+.tt-zone{position:relative;flex:1;min-height:0;overflow:hidden}
+.tt-toile{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.tt-toile[data-outil="texte"]{cursor:text}
+.tt-toile[data-outil="gomme"]{cursor:cell}
+.tt-vide,.tt-aide{position:absolute;left:50%;transform:translateX(-50%);margin:0;max-width:min(420px,86%);text-align:center;color:var(--ink-2);font-size:15px;line-height:1.45;pointer-events:none}
+.tt-vide{top:40%}
+.tt-aide{bottom:12px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);font-size:14px;box-shadow:0 10px 26px var(--ombre,rgba(0,0,0,.2))}
+.tt-vide[hidden],.tt-aide[hidden],.tt-texte[hidden]{display:none}
+.tt-texte{position:absolute;left:8px;right:8px;top:8px;display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid var(--accent);border-radius:12px;background:var(--panel);box-shadow:0 12px 30px var(--ombre,rgba(0,0,0,.25));-webkit-user-select:text;user-select:text}
+.tt-texte textarea{width:100%;box-sizing:border-box;resize:none;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px}
+.tt-texte-b{display:flex;justify-content:flex-end;gap:8px}
+.tt-outils{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:var(--panel)}
+.tt-outils .tb-grp button{min-width:38px;height:38px;touch-action:manipulation}
+.tt-outils .tb-grp[hidden]{display:none}
+
 /* ---------- La pratique (pratique.js) : l'échelle des essais, et le bloc « À toi » après une formule ---------- */
 .atoi{margin:28px 0 8px;padding:18px 18px 14px;border:1.5px solid var(--accent);border-radius:16px;background:linear-gradient(180deg,var(--accent-soft),transparent 140px)}
 .atoi-tete{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:baseline;margin-bottom:12px}
@@ -11823,6 +11866,9 @@ const Marques = (() => {
    (t : trait, x : texte) et ses données en JSON, vérifiées à l'arrivée.
    Convergence branche le relais : seance (cv/<code>/tableau/<écran>),
    membres (qui est au tableau), couleur, ecouter (ouvert, nouveautés).
+   La tablette (tablette.js) branche un téléphone : ce qu'il envoie passe
+   ici par les mêmes chemins que mes propres gestes (Tableau.tablette),
+   et il dessine avec les mêmes fonctions (Tableau.kit).
    ====================================================================== */
 const Tableau = (() => {
   const CLE = P + '-tableaux', CLE_COTE = 'lumiere-tableau-cote';
@@ -11947,6 +11993,7 @@ const Tableau = (() => {
     sauver();
   }
   function arrive(){
+    bouger();
     if(ui && !ui.el.hidden && vue === 'groupe' && ecranVu === gEcran){ G.forEach((x, i) => connus.add(i)); dessiner(); }
     const n = nonVus(); if(n !== nAvant){ nAvant = n; signaler('nouveau'); }
     clearTimeout(tGarder); tGarder = setTimeout(garderMaintenant, 1500);
@@ -12030,7 +12077,7 @@ const Tableau = (() => {
   }
 
   /* ---------- le dessin ---------- */
-  function dessiner(){ if(!ui || ui.el.hidden || raf) return; raf = requestAnimationFrame(() => { raf = 0; peindre(); }); }
+  function dessiner(){ bouger(); if(!ui || ui.el.hidden || raf) return; raf = requestAnimationFrame(() => { raf = 0; peindre(); }); }
   function tracer(cx, it){
     const col = teinte(it.c);
     if(it.k === 'x'){
@@ -12071,6 +12118,8 @@ const Tableau = (() => {
     const cache = saisie && saisie.it.id;
     elements().forEach((it, i) => { if((!cours || i !== cours.id) && i !== cache) tracer(cx, it); });
     if(cours) tracer(cx, cours);
+    /* le trait que le téléphone trace (au groupe, il est déjà dans le tableau) */
+    if(telCours && !elements().has(telCours.id)) tracer(cx, telCours);
     if(sel.size){
       const b = boite(sel);
       if(b){
@@ -12084,7 +12133,7 @@ const Tableau = (() => {
       cx.strokeRect(Math.min(g.x0, g.x1), Math.min(g.y0, g.y1), Math.abs(g.x1 - g.x0), Math.abs(g.y1 - g.y0)); cx.setLineDash([]);
     }
     const n = elements().size;
-    ui.vide.hidden = n > 0 || !!cours;
+    ui.vide.hidden = n > 0 || !!cours || !!telCours;
     ui.cvs.setAttribute('aria-label', 'Tableau : ' + (n ? n + ' élément' + (n > 1 ? 's' : '') : 'vide'));
   }
 
@@ -12102,9 +12151,9 @@ const Tableau = (() => {
     for(let i = 2; i < p.length; i += 2) if(distSeg(x, y, p[i - 2], p[i - 1], p[i], p[i + 1]) <= r) return true;
     return false;
   }
-  function dessus(x, y, filtre){
+  function dessus(x, y, filtre, tol){
     const l = Array.from(elements().values());
-    for(let i = l.length - 1; i >= 0; i--) if((!filtre || filtre(l[i])) && touche(l[i], x, y, 7 / z)) return l[i];
+    for(let i = l.length - 1; i >= 0; i--) if((!filtre || filtre(l[i])) && touche(l[i], x, y, tol || 7 / z)) return l[i];
     return null;
   }
   /* un trait allégé (Douglas-Peucker) : les points qui ne changent pas sa forme à cette échelle partent */
@@ -12140,7 +12189,7 @@ const Tableau = (() => {
     }
     garderCadre(); majZoom(); dessiner();
   }
-  const garderCadre = () => { cadres[cleVue()] = {z, ox, oy, cw}; };
+  const garderCadre = () => { cadres[cleVue()] = {z, ox, oy, cw}; bouger(); };
   function reprendreCadre(){
     const c = cadres[cleVue()];
     if(c && c.cw){ const k = cw / c.cw; z = borne(c.z * k, ZMIN, ZMAX); ox = c.ox; oy = c.oy; }
@@ -12317,14 +12366,15 @@ const Tableau = (() => {
   }
 
   /* ---------- écrire du texte : une zone posée sur la toile, à l'échelle du tableau ---------- */
-  function ouvrirSaisie(it){
+  function ouvrirSaisie(it, tel){
     if(lectureSeule()) return;
-    saisie = {it:it.id ? copie(it) : it};
+    /* tel : ouverte d'une touche sur le téléphone ; Entrée la pose, Échap l'annule */
+    saisie = {it:it.id ? copie(it) : it, tel:!!tel};
     const t = ui.saisie;
     t.value = it.t || ''; t.hidden = false;
     t.style.color = teinte(it.c); t.style.fontFamily = police;
     placerSaisie(); t.focus({preventScroll:true});
-    if(it.id) dessiner();
+    if(it.id) dessiner(); else bouger();
   }
   function placerSaisie(){
     if(!saisie) return;
@@ -12372,6 +12422,7 @@ const Tableau = (() => {
         '<div class="tb-vues" role="tablist" aria-label="Quel tableau"></div>' +
         '<span class="tb-qui"></span><span class="tb-espace"></span>' +
         '<button type="button" class="tb-b" data-o="copier" hidden></button>' +
+        '<button type="button" class="tb-b tb-tablette" data-o="tablette" title="Relier ton téléphone : il devient une tablette pour ce tableau" hidden>📱 Tablette</button>' +
         '<button type="button" class="tb-b tb-large" data-o="cote" aria-pressed="false" title="Le tableau à droite, l’écran à gauche">Côte à côte</button>' +
         '<button type="button" class="tb-b" data-o="image" title="Télécharger une image du tableau">Image</button>' +
         '<button type="button" class="tb-x" data-o="fermer" aria-label="Fermer le tableau" title="Fermer (Échap)">✕</button>' +
@@ -12409,6 +12460,7 @@ const Tableau = (() => {
       else if(o === 'vider') vider();
       else if(o === 'image') image();
       else if(o === 'copier') copier();
+      else if(o === 'tablette'){ if(telClic) telClic(b); }
       else if(o === 'cote'){ cote = !cote; memo.set(CLE_COTE, cote ? '1' : '0'); disposer(); }
     });
     cvs.addEventListener('pointerdown', bas);
@@ -12430,7 +12482,8 @@ const Tableau = (() => {
     ui.saisie.addEventListener('input', placerSaisie);
     ui.saisie.addEventListener('blur', () => fermerSaisie(true));
     ui.saisie.addEventListener('keydown', e => {
-      if(e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey))){ e.preventDefault(); fermerSaisie(true); cvs.focus({preventScroll:true}); }
+      if(saisie && saisie.tel && ((e.key === 'Enter' && !e.shiftKey) || e.key === 'Escape')){ e.preventDefault(); fermerSaisie(e.key === 'Enter'); cvs.focus({preventScroll:true}); }
+      else if(e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey))){ e.preventDefault(); fermerSaisie(true); cvs.focus({preventScroll:true}); }
       e.stopPropagation();
     });
     el.addEventListener('keydown', clavier);
@@ -12486,6 +12539,7 @@ const Tableau = (() => {
     $('[data-o="annuler"]', el).disabled = ro || !p.annuler.length; $('[data-o="retablir"]', el).disabled = ro || !p.refaire.length;
     $('[data-o="vider"]', el).hidden = ro;
     ui.cvs.dataset.outil = ro ? 'main' : outil;
+    bouger();
   }
   function majZoom(){ if(ui && cw) $('.tb-pc', ui.el).textContent = Math.round(z / zFit() * 100) + ' %'; if(saisie) placerSaisie(); }
   function dateCourte(t){ try{ return new Date(t).toLocaleDateString('fr-CA', {day:'numeric', month:'short'}); }catch(e){ return ''; } }
@@ -12510,11 +12564,14 @@ const Tableau = (() => {
     else if(vue === 'seance'){ cp.hidden = false; cp.textContent = 'Copier dans mon tableau'; }
     else { cp.hidden = !ctx || !nM; cp.textContent = 'Partager au groupe'; }
     $('[data-o="cote"]', el).setAttribute('aria-pressed', String(cote));
+    $('[data-o="tablette"]', el).hidden = !telClic;
     ui.vide.textContent = vue === 'groupe' ? 'Le tableau du groupe est vide. Dessine ou écris : tout le monde le voit en direct.'
       : vue === 'moi' ? 'Ton tableau pour cet écran. Dessine, écris, fais tes schémas : il reste sur cet appareil.' : '';
   }
   function changerVue(v){
     if(saisie) fermerSaisie(true);
+    if(telCours) telAbandon();
+    telFermerGomme();
     vue = v; sel = new Set(); geste = null; cours = null;
     if(v === 'groupe'){ suivre(ecranVu); G.forEach((x, i) => connus.add(i)); nAvant = nonVus(); signaler('nouveau'); }
     if(lectureSeule()) outil = 'main'; else if(outil === 'main' && !espace) outil = 'stylo';
@@ -12551,10 +12608,10 @@ const Tableau = (() => {
     signaler('ouvert');
     const b = $('#btn-tableau'); if(b) b.focus({preventScroll:true});
   }
-  /* l'écran change pendant que le tableau est ouvert (côte à côte) : il suit */
+  /* l'écran change pendant que le tableau est ouvert (côte à côte) : il suit ; un téléphone relié le suit aussi tableau fermé */
   function suivreEcran(){
     if(ctx && ICI) suivre(ICI.id);
-    if(!ui || ui.el.hidden || !ICI || ICI.id === ecranVu) { nAvant = nonVus(); signaler('nouveau'); return; }
+    if(!ui || (ui.el.hidden && !tab) || !ICI || ICI.id === ecranVu) { nAvant = nonVus(); signaler('nouveau'); return; }
     if(saisie) fermerSaisie(true);
     if(cours) finirTrait();
     ecranVu = ICI.id;
@@ -12596,6 +12653,86 @@ const Tableau = (() => {
   function etat(t){ if(!ui) return; ui.etat.textContent = t; clearTimeout(tEtat); tEtat = setTimeout(() => { if(ui) ui.etat.textContent = ''; }, 7000); }
   const nomDe = u => { const m = membres.find(x => x.uid === u); return m ? m.nom : 'quelqu’un d’autre'; };
 
+  /* ---------- la tablette (tablette.js) : le téléphone relié dessine ici comme si c'était moi ----------
+     Ses traits, textes, coups de gomme et annulations passent par poser, oter, memoriser : sur « Mon tableau »,
+     gardés dans le navigateur ; au tableau du groupe, écrits sous mon uid. tab : appelé à chaque changement
+     (tablette.js en fait le miroir pour le téléphone) ; telClic : le bouton « 📱 Tablette » de la barre. */
+  let tab = null, telClic = null, telCours = null, telGomme = null;
+  const telIds = new Map(), telOrigine = new Map();
+  function bouger(){ if(tab) try{ tab(); }catch(e){ console.error(e); } }
+  /* le téléphone agit : le tableau s'ouvre là où je regarde (fermé, il suivait déjà l'écran) */
+  function telPret(){ if(ICI && (!ui || ui.el.hidden)) ouvrir(vue); return !!ui && !lectureSeule(); }
+  function telEtat(){
+    const p = pile(), e = ecran(ecranVu);
+    return {cle:cleVue(), vue, ecran:ecranVu, titre:e ? e.titre : '', ro:lectureSeule(), h:(p.annuler.length ? 1 : 0) + (p.refaire.length ? 2 : 0),
+      v:cw && ch ? [ox, oy, cw / z, ch / z] : null, c:coul || mienne, x:saisie ? [saisie.it.x, saisie.it.y, saisie.it.s] : null,
+      m:elements(), exclu:telCours ? telCours.id : '', origine:telOrigine};
+  }
+  /* le téléphone se relie : le tableau s'ouvre, côte à côte sur un grand écran (pour cette fois, sans changer la préférence gardée) */
+  function telMontrer(){
+    if(large() && !cote) cote = true;
+    if(!ui || ui.el.hidden) ouvrir(); else disposer();
+    bouger();
+  }
+  function telFin(){ if(telCours) telAbandon(); telFermerGomme(); telIds.clear(); telOrigine.clear(); tab = null; }
+  /* le trait en cours sur le téléphone : un aperçu ici ; au groupe, il part en direct comme les miens */
+  function telApercu(s, it){
+    if(!it){ if(telCours && telCours.s === s) telAbandon(); return; }
+    if(!telPret()) return;
+    let id = telIds.get(s); if(!id){ id = nouvelId(); telIds.set(s, id); }
+    Object.assign(it, {id, de:moiDe(), s, g:vue === 'groupe' && ctx ? ecranVu : ''});
+    telCours = it;
+    if(it.g){ G.set(id, it); envoyer(it); }
+    dessiner();
+  }
+  function telAbandon(){
+    const it = telCours; telCours = null; if(!it) return;
+    telIds.delete(it.s);
+    if(it.g && ctx){ if(gEcran === it.g) G.delete(it.id); ctx.F.remove(refEl(it.g, it.id)).catch(() => {}); }
+    dessiner();
+  }
+  /* le trait fini : le même id que son aperçu, posé et annulable comme un des miens */
+  function telTrait(s, it){
+    telFermerGomme();
+    if(!telPret()){ if(telCours && telCours.s === s) telAbandon(); return; }
+    const id = telIds.get(s) || nouvelId(); telIds.delete(s);
+    if(telCours && telCours.s === s) telCours = null;
+    Object.assign(it, {id, de:moiDe()}); borner(it);
+    if(poser(it) !== false){ memoriser([[id, null]], [[id, brut(it)]]); telOrigine.set(id, s); }
+    dessiner();
+  }
+  function telTexte(s, it){
+    telFermerGomme();
+    if(!telPret()) return;
+    const id = nouvelId(); Object.assign(it, {id, de:moiDe()}); borner(it);
+    if(poser(it) !== false){ memoriser([[id, null]], [[id, brut(it)]]); telOrigine.set(id, s); }
+    dessiner();
+  }
+  /* la gomme du téléphone : un geste (g) = une seule annulation, comme ici */
+  function telGommer(g, ids, fin){
+    if(!telGomme || telGomme.g !== g){ telFermerGomme(); telGomme = {g, avant:[], cle:''}; }
+    if(telPret()){
+      if(!telGomme.cle) telGomme.cle = cleVue();
+      const m = elements();
+      ids.forEach(id => { const it = m.get(id); if(it && !(telCours && telCours.id === id) && telGomme.cle === cleVue()){ telGomme.avant.push([id, brut(it)]); oter(id); } });
+      dessiner();
+    }
+    if(fin) telFermerGomme();
+  }
+  function telFermerGomme(){ const g = telGomme; telGomme = null; if(g && g.avant.length && g.cle === cleVue()) memoriser(g.avant, g.avant.map(([i]) => [i, null])); }
+  function telHistoire(refaire){ telFermerGomme(); if(telPret()){ if(refaire) retablir(); else annuler(); } }
+  /* une touche du téléphone en mode texte : la zone de saisie s'ouvre ici, à cet endroit, pour le clavier de l'ordinateur */
+  function telCurseur(x, y, c, s, r){
+    telFermerGomme();
+    if(!telPret()) return;
+    if(saisie) fermerSaisie(true);
+    if(cw && (x < ox || x > ox + cw / z || y < oy || y > oy + ch / z)){ ox = x - cw / z / 2; oy = y - ch / z / 3; garderCadre(); }
+    const it = dessus(x, y, t => t.k === 'x' && mien(t), Math.max(7 / z, r || 0)), sz = s || TAILLES[taille];
+    sel = new Set();
+    ouvrirSaisie(it || {id:'', de:moiDe(), k:'x', c:c || coul || mienne, s:sz, x:Math.round(x), y:Math.round(y - sz * 0.6), t:''}, true);
+    dessiner();
+  }
+
   /* ---------- démarrage, et ce que Convergence branche ---------- */
   function demarrer(){
     charger();
@@ -12617,6 +12754,8 @@ const Tableau = (() => {
     /* le thème change (bouton Thème, ou le système) : les couleurs suivent */
     new MutationObserver(() => { lireTheme(); majOutils(); dessiner(); }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme', 'class']});
     try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { lireTheme(); majOutils(); dessiner(); }); }catch(e){}
+    /* la tablette (tablette.js, plus loin dans le script) : son bouton dans la barre, ou le téléphone en plein écran */
+    if(typeof Tablette !== 'undefined') try{ Tablette.demarrer(); }catch(e){ console.error(e); }
   }
   /* la séance : {F, db, base, uid} (Convergence), ou null en la quittant */
   function seance(c){
@@ -12627,10 +12766,10 @@ const Tableau = (() => {
     lacher(); refusDit = false;
     if(ctx && ICI) suivre(ICI.id);
     if(!ctx){ membres = []; connus.clear(); nAvant = 0; }
-    if(ui && !ui.el.hidden){
-      if(!ctx && vue === 'groupe') vue = avant && L[ecranVu] && L[ecranVu].seance ? 'seance' : 'moi';
-      changerVue(ctx && avant ? vue : ctx ? 'groupe' : vue);
-    }
+    /* la séance finit : le tableau du groupe cède la place (à un téléphone relié, toujours « Mon tableau », où il peut dessiner) */
+    if(!ctx && vue === 'groupe') vue = avant && L[ecranVu] && L[ecranVu].seance && !tab ? 'seance' : 'moi';
+    if(ui && !ui.el.hidden) changerVue(ctx && avant ? vue : ctx ? 'groupe' : vue);
+    else if(tab && ui) changerVue(vue);
   }
   function membresMaj(l){ membres = Array.isArray(l) ? l : []; if(ui && !ui.el.hidden) majTete(); }
   function couleur(r, liste){
@@ -12640,7 +12779,13 @@ const Tableau = (() => {
   }
 
   return {demarrer, ouvrir, fermer, seance, membres:membresMaj, couleur, ecouter:f => { ecoute = f; }, nonVus,
-    ouvertSur:() => ui && !ui.el.hidden && vue === 'groupe' ? ecranVu : ''};
+    ouvertSur:() => ui && !ui.el.hidden && vue === 'groupe' ? ecranVu : '',
+    /* l'ordinateur d'un téléphone relié (tablette.js) */
+    tablette:{brancher:f => { telClic = f; if(ui) majTete(); }, suivre:f => { tab = f; }, montrer:telMontrer, fin:telFin, etat:telEtat, apercu:telApercu, trait:telTrait,
+      texte:telTexte, gomme:telGommer, histoire:telHistoire, curseur:telCurseur, bouton:() => ui ? $('[data-o="tablette"]', ui.el) : null, dire:etat},
+    /* le téléphone dessine avec les mêmes fonctions que le tableau */
+    kit:{lire, brut, borner, tracer, teinte, touche, alleger, idOk, couleurOk, icone, lireTheme, LARGE, BORNE, EPAIS, TAILLES, MAX_POINTS, MAX_TEXTE, ZMIN, ZMAX,
+      teintes:() => teintes, mienne:() => mienne, theme:() => ({fond, ligneC, accent, encre, police})}};
 })();
 
 /* ====== _commun/convergence.js ====== */
@@ -12737,18 +12882,23 @@ function chargerFirebase(){
   }
   return chargement;
 }
-/* une connexion anonyme par onglet (sessionStorage) : deux onglets sont deux personnes, et un rechargement garde la même */
-async function connecter(){
-  if(!S.F){
-    const F = await chargerFirebase();
-    S.app = F.initializeApp(FIREBASE, 'convergence');
-    S.auth = F.initializeAuth(S.app, {persistence:F.browserSessionPersistence});
-    S.db = F.getDatabase(S.app);
-    S.F = F;
-  }
-  await S.auth.authStateReady();
-  if(!S.auth.currentUser) await S.F.signInAnonymously(S.auth);
-  S.uid = S.auth.currentUser.uid;
+/* une connexion anonyme par onglet (sessionStorage) : deux onglets sont deux personnes, et un rechargement garde la même.
+   Un seul appel à la fois : la séance et la tablette (tablette.js) peuvent reprendre ensemble après un rechargement */
+let connexion = null;
+function connecter(){
+  if(!connexion) connexion = (async () => {
+    if(!S.F){
+      const F = await chargerFirebase();
+      S.app = F.initializeApp(FIREBASE, 'convergence');
+      S.auth = F.initializeAuth(S.app, {persistence:F.browserSessionPersistence});
+      S.db = F.getDatabase(S.app);
+      S.F = F;
+    }
+    await S.auth.authStateReady();
+    if(!S.auth.currentUser) await S.F.signInAnonymously(S.auth);
+    S.uid = S.auth.currentUser.uid;
+  })().finally(() => { connexion = null; });
+  return connexion;
 }
 function moi(){
   /* « etat:'lie' » dès qu'un accueil est en cours, et « avec » : le signal qu'attend un invité de la version à deux ; « lie » dit la vérité */
@@ -14136,7 +14286,822 @@ function demarrer(){
   });
 }
 
-return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0};
+/* le relais pour la tablette (tablette.js) : la même connexion, donc le même uid que la séance (un téléphone relié écrit au
+   tableau du groupe sous mon nom) ; le site et l'alphabet des codes */
+async function relais(){ await connecter(); return {F:S.F, db:S.db, uid:S.uid}; }
+
+return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0, relais, dansClaude, LUMIERE, ALPHA};
+})();
+
+/* ====== _commun/tablette.js ====== */
+/* ======================================================================
+   La tablette (DESIGN-convergence.md §3.8) : un téléphone relié à
+   l'ordinateur devient la tablette de son tableau (tableau.js). On
+   dessine au doigt sur le téléphone ; l'ordinateur, seule source de
+   vérité, pose chaque trait comme si c'était le sien : sur « Mon
+   tableau » (gardé dans le navigateur), ou au tableau du groupe d'une
+   séance Convergence, sous son uid à lui. En mode texte, une touche sur
+   le téléphone ouvre la saisie sur l'ordinateur, à cet endroit : on
+   tape au clavier sans reprendre le téléphone ; un appui long ouvre
+   plutôt le clavier du téléphone.
+   Relier : l'ordinateur montre un code QR (vendor/qrcode-generator,
+   chargé au premier usage, comme Firebase) du lien
+   <page>.html#tablette=CODE, et le code en clair ; le téléphone ouvre
+   ce lien, ou entre le code (« 📱 Tablette » de son propre tableau).
+   Un seul téléphone par ordinateur ; « Déconnecter le téléphone »,
+   fermer la page ou la quitter y met fin (un rechargement reprend).
+   Le relais : Firebase, la connexion de Convergence (le même uid), sur
+   tab/<code> : pc (l'état de l'ordinateur : écran, tableau, annuler),
+   el/<id> (le miroir de son tableau), tel (l'uid du téléphone), cours
+   (le trait que le téléphone trace), cmd/<id> (traits finis, textes,
+   gomme, annuler, la touche texte : l'ordinateur les lit puis les
+   efface). L'ordinateur efface tout en partant (onDisconnect). Le
+   téléphone n'entre jamais dans la séance : ni membre, ni yeux.
+   Hors de Claude seulement ; dans Claude, le bouton renvoie au site.
+   ====================================================================== */
+const Tablette = (() => {
+const SDK_QR = 'vendor/qrcode-generator-1.4.4.js';
+const CLE_PC = P + '-tablette', CLE_TEL = P + '-tablette-tel';     // sessionStorage : un rechargement reprend, des deux côtés
+const ATTENTE = 6000;              // ce que le téléphone vient d'envoyer reste affiché jusqu'à l'écho de l'ordinateur, 6 s au plus
+const K = () => Tableau.kit, TB = () => Tableau.tablette;
+const H = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+const idOk = i => typeof i === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(i);
+const entier = (n, a, b) => Number.isInteger(n) && n >= a && n <= b;
+const borne = (x, a, b) => Math.max(a, Math.min(b, x));
+const jeton = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const codeAffiche = c => c.slice(0, 3) + '-' + c.slice(3);
+const propreCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const pageSite = () => ATELIER.fichier || decodeURIComponent(location.pathname.split('/').pop() || '').replace(/\.html?$/i, '');
+const lienTablette = code => Convergence.LUMIERE + pageSite() + '.html#tablette=' + code;
+function session(k, v){
+  try{ if(v === undefined) return sessionStorage.getItem(k); if(v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); }catch(e){}
+  return null;
+}
+const refuseParRegles = e => /permission/i.test(String(e && (e.code || e.message) || e));
+
+/* ---------- le code QR : la bibliothèque du site (vendor/), chargée au premier usage ---------- */
+let chargementQR = null;
+function chargerQR(){
+  if(!chargementQR){
+    const sources = (/^https?:$/.test(location.protocol) ? [new URL(SDK_QR, document.baseURI).href] : []).concat(Convergence.LUMIERE + SDK_QR);
+    chargementQR = sources.reduce((p, url) => p.catch(() => import(url)), Promise.reject())
+      .then(m => { if(typeof m.default !== 'function') throw new Error('qr'); return m.default; })
+      .catch(() => { chargementQR = null; throw {code:'qr'}; });
+  }
+  return chargementQR;
+}
+/* noir sur blanc, avec sa marge de quatre modules, quel que soit le thème : c'est ce que lisent les appareils photo */
+function svgQR(qrcode, texte){
+  const q = qrcode(0, 'M'); q.addData(texte); q.make();
+  const n = q.getModuleCount(), m = 4;
+  let d = '';
+  for(let r = 0; r < n; r++){
+    for(let c = 0; c < n;){
+      if(!q.isDark(r, c)){ c++; continue; }
+      let f = c; while(f < n && q.isDark(r, f)) f++;
+      d += 'M' + (c + m) + ' ' + (r + m) + 'h' + (f - c) + 'v1h-' + (f - c) + 'z';
+      c = f;
+    }
+  }
+  const t = n + 2 * m;
+  return '<svg viewBox="0 0 ' + t + ' ' + t + '" shape-rendering="crispEdges" role="img" aria-label="Code QR du lien de la tablette"><rect width="' + t + '" height="' + t + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
+}
+
+/* ======================================================================
+   L'ordinateur
+   ====================================================================== */
+const PC = {code:'', base:'', F:null, db:null, uid:'', p:'', tel:'', etat:'repos', pret:false, desab:[], cle:'', miroir:new Map(), envoye:{},
+  coursJ:'', coupe:false, refait:false, msg:'', msgTel:''};
+const refPc = c => PC.F.ref(PC.db, PC.base + (c ? '/' + c : ''));
+function tirerCode(){ const A = Convergence.ALPHA, a = new Uint32Array(6); crypto.getRandomValues(a); return Array.from(a, x => A[x % A.length]).join(''); }
+const sauver = () => session(CLE_PC, JSON.stringify({code:PC.code, p:PC.p}));
+
+/* l'état que le téléphone suit : l'écran, quel tableau, annuler/rétablir, ce que je vois, ma couleur, ma saisie de texte */
+const CHAMPS = ['e', 'n', 'k', 'h', 'c', 'p', 'v', 'x'];
+function pcDe(st){
+  const o = {u:PC.uid, e:st.ecran, n:String(st.titre || '').slice(0, 160), k:st.vue, h:st.h, c:st.c};
+  if(PC.p) o.p = PC.p;
+  if(st.v) o.v = st.v.map(n => Math.round(borne(n, -99999, 99999))).join(',');
+  if(st.x) o.x = st.x.map(n => Math.round(n)).join(',');
+  return o;
+}
+function noterEnvoye(o){ PC.envoye = {}; CHAMPS.forEach(k => { PC.envoye[k] = k in o ? o[k] : null; }); }
+
+async function creer(code0){
+  if(PC.etat === 'prep' || PC.code) return;
+  PC.etat = 'prep'; PC.msg = ''; majVoile();
+  let r;
+  try{ r = await Convergence.relais(); }
+  catch(e){
+    PC.etat = 'repos'; PC.msg = e && e.code === 'sdk' ? 'Impossible de charger le relais : vérifie ta connexion internet.' : 'Le relais refuse la connexion. Réessaie dans un moment.';
+    majVoile(); return;
+  }
+  Object.assign(PC, {F:r.F, db:r.db, uid:r.uid});
+  if(!TB().etat().ecran) TB().montrer();
+  /* un code déjà pris par un autre ordinateur est refusé par les règles : on en tire un autre */
+  for(let i = 0; i < (code0 ? 1 : 3) && !PC.code; i++){
+    const code = code0 || tirerCode();
+    PC.base = 'tab/' + code.toLowerCase();
+    const o = pcDe(TB().etat());
+    try{ await PC.F.set(refPc('pc'), o); PC.code = code; noterEnvoye(o); }catch(e){}
+  }
+  if(!PC.code){
+    Object.assign(PC, {base:'', p:'', etat:'repos', msg:code0 ? '' : 'Le relais refuse la tablette : ses règles ne sont pas encore à jour.'});
+    session(CLE_PC, null); majVoile(); return;
+  }
+  const F = PC.F;
+  try{ await F.onDisconnect(refPc()).remove(); }catch(e){}
+  PC.desab.push(
+    F.onValue(refPc('pc'), s => { if(s.val() === null && PC.pret) republier(); }),
+    F.onValue(refPc('tel'), s => surTel(s.val())),
+    F.onValue(refPc('cours'), s => surCours(s.val())),
+    F.onChildAdded(refPc('cmd'), s => surCmd(s.key, s.val())),
+    F.onValue(F.ref(PC.db, '.info/connected'), s => surConnexion(s.val() === true)));
+  PC.etat = 'attente'; PC.pret = true; PC.cle = '';
+  sauver();
+  TB().suivre(change);
+  synchro();
+  majVoile(); majBouton();
+}
+/* la connexion revient (veille, réseau) : le relais a pu tout effacer en mon absence ; tout se réécrit */
+function surConnexion(on){
+  if(!on){ PC.coupe = true; return; }
+  if(PC.coupe){ PC.coupe = false; republier(); }
+}
+async function republier(){
+  if(!PC.pret || PC.refait) return;
+  PC.refait = true;
+  try{
+    const o = pcDe(TB().etat());
+    await PC.F.set(refPc('pc'), o); noterEnvoye(o);
+    await PC.F.onDisconnect(refPc()).remove();
+    PC.cle = ''; synchro();
+  }catch(e){ TB().dire('La tablette ne joint plus le relais : vérifie ta connexion.'); }
+  PC.refait = false;
+}
+
+/* ---------- le miroir : ce que le tableau montre, envoyé au téléphone (seulement ce qui change) ---------- */
+let tSync = 0;
+function change(){ if(PC.pret && !tSync) tSync = setTimeout(synchro, 80); }
+function synchro(){
+  clearTimeout(tSync); tSync = 0;
+  if(!PC.pret) return;
+  const st = TB().etat();
+  if(!st.ecran) return;
+  const upd = {}, pc = pcDe(st);
+  CHAMPS.forEach(k => { const v = k in pc ? pc[k] : null; if(PC.envoye[k] !== v){ upd['pc/' + k] = v; PC.envoye[k] = v; } });
+  const n = it => it.p ? it.p.length : 0;
+  const fiche = (it, id) => {
+    const b = K().brut(it), v = {k:b.k, d:b.d}, j = st.origine.get(id);
+    if(j){ v.j = j; st.origine.delete(id); }               // l'écho d'un trait du téléphone : il cesse de l'afficher en attente
+    return {it, n:n(it), v};
+  };
+  if(st.cle !== PC.cle){
+    /* un autre écran, ou un autre tableau : le miroir est remplacé d'un coup */
+    PC.cle = st.cle; PC.miroir = new Map();
+    const o = {};
+    st.m.forEach((it, id) => { if(id === st.exclu) return; const f = fiche(it, id); PC.miroir.set(id, f); o[id] = f.v; });
+    upd.el = Object.keys(o).length ? o : null;
+  } else {
+    st.m.forEach((it, id) => {
+      if(id === st.exclu) return;
+      const a = PC.miroir.get(id);
+      if(a && a.it === it && a.n === n(it)) return;
+      const f = fiche(it, id);
+      if(a && a.v.k === f.v.k && a.v.d === f.v.d && !f.v.j){ a.it = it; a.n = f.n; return; }
+      PC.miroir.set(id, f); upd['el/' + id] = f.v;
+    });
+    PC.miroir.forEach((f, id) => { if(!st.m.has(id) || id === st.exclu){ PC.miroir.delete(id); upd['el/' + id] = null; } });
+  }
+  if(Object.keys(upd).length) PC.F.update(refPc(), upd).catch(e => { if(refuseParRegles(e)) TB().dire('Le relais refuse la tablette : ses règles ne sont pas encore à jour.'); });
+}
+
+/* ---------- ce que le téléphone envoie : tout est vérifié, puis passe par le tableau comme mes propres gestes ---------- */
+function surTel(v){
+  const u = typeof v === 'string' ? v : '';
+  if(u && PC.p && u !== PC.p) return;                  // les règles l'empêchent déjà : un seul téléphone
+  const avant = PC.tel; PC.tel = u;
+  if(u && !avant){
+    if(!PC.p){ PC.p = u; sauver(); change(); }
+    PC.etat = 'relie'; PC.msg = '';
+    TB().montrer();
+    TB().dire('Téléphone connecté : ce que tu dessines dessus arrive ici.');
+    majVoile(); majBouton();
+    clearTimeout(tFermer); if(voile) tFermer = setTimeout(() => { if(PC.etat === 'relie') fermerVoile(); }, 1400);
+  } else if(!u && avant){
+    PC.etat = 'attente';
+    if(PC.coursJ){ TB().apercu(PC.coursJ, null); PC.coursJ = ''; }
+    TB().dire('Le téléphone s’est déconnecté. Il revient tout seul s’il se reconnecte.');
+    majVoile(); majBouton();
+  }
+}
+function surCours(v){
+  if(!v || typeof v !== 'object' || !idOk(v.j) || typeof v.d !== 'string' || v.d.length > 12000){
+    if(PC.coursJ){ const j = PC.coursJ; PC.coursJ = ''; TB().apercu(j, null); }
+    return;
+  }
+  const it = K().lire('c', {de:'', k:'t', d:v.d});
+  if(!it) return;
+  PC.coursJ = v.j;
+  TB().apercu(v.j, it);
+}
+function surCmd(cle, v){
+  if(PC.F && PC.base) PC.F.remove(refPc('cmd/' + cle)).catch(() => {});
+  if(!v || typeof v !== 'object' || typeof v.o !== 'string') return;
+  if(v.o === 'u' || v.o === 'r'){ TB().histoire(v.o === 'r'); return; }
+  if(typeof v.d !== 'string' || v.d.length > 12000) return;
+  let d; try{ d = JSON.parse(v.d); }catch(e){ return; }
+  if(!d || typeof d !== 'object') return;
+  const k = K();
+  if(v.o === 't' || v.o === 'x'){
+    if(!idOk(d.j)) return;
+    const it = k.lire('c', {de:'', k:v.o, d:v.d});
+    if(it){ if(v.o === 't') TB().trait(d.j, it); else TB().texte(d.j, it); }
+  } else if(v.o === 'g'){
+    if(!idOk(d.g) || !Array.isArray(d.i)) return;
+    TB().gomme(d.g, d.i.filter(idOk).slice(0, 400), d.f === 1);
+  } else if(v.o === 'p'){
+    if(!entier(d.x, -k.BORNE, k.BORNE) || !entier(d.y, -k.BORNE, k.BORNE)) return;
+    TB().curseur(d.x, d.y, k.couleurOk(d.c) ? d.c : '', entier(d.s, 8, 400) ? d.s : 0, typeof d.r === 'number' && d.r > 0 && d.r <= 200 ? d.r : 0);
+  }
+}
+
+/* ---------- finir : « Déconnecter le téléphone » ---------- */
+async function deconnecter(){
+  if(!PC.code){ arreter(); return; }
+  const F = PC.F, base = refPc(), pc = refPc('pc');
+  PC.pret = false;
+  PC.desab.forEach(f => { try{ f(); }catch(e){} }); PC.desab = [];
+  try{ await F.update(pc, {fin:1}); }catch(e){}         // le téléphone sait que c'est voulu, et non une veille
+  try{ await F.onDisconnect(base).cancel(); }catch(e){}
+  try{ await F.remove(base); }catch(e){}
+  arreter();
+  TB().dire('Téléphone déconnecté.');
+}
+function arreter(){
+  PC.desab.forEach(f => { try{ f(); }catch(e){} }); PC.desab = [];
+  clearTimeout(tSync); tSync = 0;
+  TB().suivre(null); TB().fin();
+  Object.assign(PC, {code:'', base:'', p:'', tel:'', etat:'repos', pret:false, cle:'', miroir:new Map(), envoye:{}, coursJ:'', coupe:false, msg:''});
+  session(CLE_PC, null);
+  majVoile(); majBouton();
+}
+
+/* ---------- le voile de l'ordinateur : le code QR, le code, l'état ---------- */
+let voile = null, mode = 'pc', tFermer = null;
+function ouvrirVoile(){
+  if(Convergence.dansClaude()){ popClaude(); return; }
+  if(voile) return;
+  voile = H('<div class="cv-voile tt-voile v2-hors-texte" role="dialog" aria-modal="true" aria-labelledby="tt-titre">' +
+    '<div class="cv-carte tt-carte">' +
+      '<p class="cv-lib" id="tt-titre">📱 Tablette</p>' +
+      '<div class="tt-pc">' +
+        '<p class="cv-intro">Ton téléphone devient une tablette pour ce tableau : ce que tu y dessines arrive ici, sur l’écran où tu es.</p>' +
+        '<div class="tt-relier">' +
+          '<div class="tt-qr"></div>' +
+          '<p class="tt-scan">Scanne avec l’appareil photo du téléphone</p>' +
+          '<p class="cv-note">Sinon, sur le téléphone : ouvre cet atelier, puis le tableau, « 📱 Tablette » et ce code :</p>' +
+          '<p class="cv-code tt-code"></p>' +
+        '</div>' +
+      '</div>' +
+      '<div class="tt-tel" hidden>' +
+        '<p class="cv-intro">Sur l’ordinateur, ouvre le tableau, puis « 📱 Tablette » : un code s’affiche. Entre-le ici.</p>' +
+        '<label class="cv-champ"><span>Code de l’ordinateur</span><input class="cv-code-in tt-code-in" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7M-QX4"></label>' +
+      '</div>' +
+      '<p class="cv-etat tt-etat-pc" aria-live="polite"></p>' +
+      '<div class="cv-actions">' +
+        '<button type="button" class="cv-btn" data-o="deconnecter" hidden>Déconnecter le téléphone</button>' +
+        '<button type="button" class="cv-btn" data-o="fermer">Fermer</button>' +
+        '<button type="button" class="cv-btn plein" data-o="relier" hidden>Relier ce téléphone</button>' +
+      '</div>' +
+      '<button type="button" class="tt-lien" data-o="mode"></button>' +
+    '</div></div>');
+  document.body.appendChild(voile);
+  const v = voile;
+  v.addEventListener('click', e => {
+    const b = e.target.closest('[data-o]'); if(!b) return;
+    const o = b.dataset.o;
+    if(o === 'fermer') fermerVoile();
+    else if(o === 'deconnecter'){ deconnecter(); fermerVoile(); }
+    else if(o === 'mode') montrerMode(mode === 'pc' ? 'tel' : 'pc');
+    else if(o === 'relier') relierCode($('.tt-code-in', v).value);
+  });
+  const champ = $('.tt-code-in', v);
+  champ.addEventListener('input', () => { const c = propreCode(champ.value).slice(0, 6); champ.value = c.length > 3 ? codeAffiche(c) : c; });
+  champ.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); relierCode(champ.value); } });
+  v.addEventListener('keydown', e => { if(e.key === 'Escape') fermerVoile(); e.stopPropagation(); });
+  /* sur un téléphone, on vient d'abord pour entrer le code ; sur l'ordinateur, pour le montrer */
+  let tactile = false; try{ tactile = window.matchMedia('(pointer: coarse)').matches; }catch(e){}
+  montrerMode(!PC.code && tactile ? 'tel' : 'pc');
+}
+function montrerMode(m){
+  mode = m; PC.msgTel = '';
+  if(m === 'pc' && !PC.code) creer();
+  majVoile();
+  const f = m === 'tel' ? $('.tt-code-in', voile) : $('[data-o="fermer"]', voile);
+  setTimeout(() => f && f.focus({preventScroll:true}), 30);
+}
+function majVoile(){
+  if(!voile) return;
+  const v = voile, relie = PC.etat === 'relie';
+  $('.tt-pc', v).hidden = mode !== 'pc';
+  $('.tt-tel', v).hidden = mode !== 'tel';
+  $('.tt-relier', v).hidden = !PC.code || relie;
+  $('[data-o="deconnecter"]', v).hidden = !PC.code || mode !== 'pc';
+  $('[data-o="relier"]', v).hidden = mode !== 'tel';
+  $('[data-o="mode"]', v).textContent = mode === 'pc' ? 'J’utilise ce téléphone comme tablette : entrer le code' : 'Cet appareil est l’ordinateur : montrer son code QR';
+  $('.tt-etat-pc', v).textContent = mode === 'tel' ? PC.msgTel || '' : PC.msg ? PC.msg
+    : PC.etat === 'prep' ? 'Préparation du code…' : relie ? 'Téléphone connecté ✓ Dessine dessus : ça arrive ici.'
+    : PC.etat === 'attente' ? (PC.p ? 'Le téléphone s’est déconnecté. Il revient tout seul s’il se reconnecte ; sinon, déconnecte-le et relie-en un autre.' : 'En attente du téléphone…') : '';
+  if(PC.code && v.dataset.code !== PC.code){
+    v.dataset.code = PC.code;
+    $('.tt-code', v).textContent = codeAffiche(PC.code);
+    const z = $('.tt-qr', v), code = PC.code;
+    z.innerHTML = ''; z.classList.remove('rate');
+    chargerQR().then(q => { if(voile === v && PC.code === code){ z.innerHTML = svgQR(q, lienTablette(code)); z.dataset.lien = lienTablette(code); } },
+      () => { if(voile === v){ z.classList.add('rate'); z.textContent = 'Le code QR n’a pas pu se charger : entre le code ci-dessous sur le téléphone.'; } });
+  }
+}
+function fermerVoile(){
+  clearTimeout(tFermer);
+  if(!voile) return;
+  voile.remove(); voile = null;
+  const b = TB().bouton(); if(b && !b.hidden) b.focus({preventScroll:true});
+}
+function relierCode(texte){
+  const code = propreCode(texte);
+  if(code.length !== 6){ PC.msgTel = 'Le code a six caractères, comme K7M-QX4.'; majVoile(); return; }
+  fermerVoile();
+  if(PC.code) deconnecter();                          // cet appareil cesse d'être l'ordinateur d'un autre téléphone
+  devenirTablette(code);
+}
+function majBouton(){
+  const b = TB().bouton(); if(!b) return;
+  const r = PC.etat === 'relie';
+  b.classList.toggle('relie', r); b.classList.toggle('attend', !!PC.code && !r);
+  b.title = r ? 'Téléphone relié : il dessine sur ce tableau' : PC.code ? 'Tablette : en attente du téléphone' : 'Relier ton téléphone : il devient une tablette pour ce tableau';
+  b.setAttribute('aria-label', '📱 ' + b.title);
+}
+/* dans Claude, la page ne joint aucun relais : la tablette vit sur le site, comme Convergence */
+let popC = null;
+function popClaude(){
+  if(popC){ popC.remove(); popC = null; return; }
+  const b = TB().bouton();
+  popC = H('<div class="sablier-pop cv-pop tt-pop v2-hors-texte" role="dialog" aria-label="Tablette">' +
+    '<p class="lib">📱 Tablette</p><p class="legende">Relier ton téléphone passe par un relais que Claude bloque ici. Ouvre cet atelier sur le site Lumière : ton téléphone s’y relie avec un code QR, et devient une tablette pour le tableau.</p>' +
+    '<div class="ctrl"><a class="btn" target="_blank" rel="noopener"></a><button type="button" class="btn">Fermer</button></div></div>');
+  const a = $('a', popC); a.href = Convergence.LUMIERE + pageSite() + '.html'; a.textContent = 'Ouvrir sur Lumière ↗';
+  $('button', popC).addEventListener('click', () => { popC.remove(); popC = null; });
+  document.body.appendChild(popC);
+  const r = b ? b.getBoundingClientRect() : {right:window.innerWidth - 12, bottom:60}, pw = Math.min(320, window.innerWidth - 24);
+  popC.style.width = pw + 'px';
+  popC.style.left = Math.round(Math.min(Math.max(12, r.right - pw), window.innerWidth - pw - 12)) + 'px';
+  popC.style.top = Math.round(r.bottom + 8) + 'px';
+}
+
+/* ======================================================================
+   Le téléphone : le tableau de l'ordinateur, en plein écran
+   ====================================================================== */
+const T = {code:'', base:'', F:null, db:null, uid:'', pc:null, tel:'', fini:false, refus:false, msg:'', cle:'',
+  el:new Map(), attente:new Map(), masques:new Map(), desab:[], coupe:false};
+let tt = null, cvs = null, cx = null, reclame = false, tMenage = 0, tAide = 0, observateurs = [];
+let outil = 'stylo', coul = '', epais = 1, taille = 1, stylet = false;
+let z = 1, ox = 0, oy = 0, cw = 0, ch = 0, dpr = 1, raf = 0, bouge = false, marque = null, texteEn = null;
+let geste = null, cours = null, tCours = 0, attenteCours = null;
+const pointeurs = new Map();
+const refTel = c => T.F.ref(T.db, T.base + (c ? '/' + c : ''));
+const relie = () => !!T.F && !!T.pc && !T.fini && T.tel === T.uid;
+const peutEcrire = () => relie() && T.pc.k !== 'seance';
+const couleurDe = () => coul || (T.pc && T.pc.c) || K().mienne();
+
+async function devenirTablette(code){
+  if(tt) return;
+  Object.assign(T, {code, base:'tab/' + code.toLowerCase(), fini:false, refus:false, msg:'', cle:''});
+  session(CLE_TEL, code);
+  construireTablette();
+  let r;
+  try{ r = await Convergence.relais(); }
+  catch(e){ T.msg = e && e.code === 'sdk' ? 'Impossible de charger le relais : vérifie ta connexion internet.' : 'Le relais refuse la connexion. Réessaie dans un moment.'; majEtatTel(); return; }
+  if(!tt) return;
+  Object.assign(T, {F:r.F, db:r.db, uid:r.uid});
+  const F = T.F, el = refTel('el');
+  const lu = e => { T.refus = true; T.msg = refuseParRegles(e) ? 'Le relais refuse la tablette : ses règles ne sont pas encore à jour.' : ''; majEtatTel(); };
+  const maj = s => {
+    const v = s.val(), it = v && typeof v === 'object' && (v.k === 't' || v.k === 'x') && typeof v.d === 'string' ? K().lire(s.key, {de:'', k:v.k, d:v.d}) : null;
+    if(it){ T.el.set(s.key, it); if(typeof v.j === 'string') T.attente.delete(v.j); } else T.el.delete(s.key);
+    dessinerTel();
+  };
+  T.desab.push(
+    F.onValue(refTel('pc'), s => surPc(s.val()), lu),
+    F.onValue(refTel('tel'), s => { T.tel = typeof s.val() === 'string' ? s.val() : ''; reclamer(); majEtatTel(); }),
+    F.onChildAdded(el, maj), F.onChildChanged(el, maj),
+    F.onChildRemoved(el, s => { T.el.delete(s.key); T.masques.delete(s.key); dessinerTel(); }),
+    F.onValue(F.ref(T.db, '.info/connected'), s => { if(s.val() === true){ if(T.coupe){ T.coupe = false; reclamer(); } } else T.coupe = true; }));
+  majEtatTel();
+}
+function lirePc(v){
+  if(!v || typeof v !== 'object' || typeof v.u !== 'string' || typeof v.e !== 'string') return null;
+  const nombres = (s, n) => { if(typeof s !== 'string') return null; const l = s.split(',').map(Number); return l.length === n && l.every(Number.isFinite) ? l : null; };
+  return {u:v.u, p:typeof v.p === 'string' ? v.p : '', e:v.e.slice(0, 40), n:typeof v.n === 'string' ? v.n.slice(0, 160) : '',
+    k:['moi', 'groupe', 'seance'].includes(v.k) ? v.k : 'moi', h:entier(v.h, 0, 3) ? v.h : 0, c:K().couleurOk(v.c) ? v.c : '',
+    v:nombres(v.v, 4), x:nombres(v.x, 3), fin:v.fin === 1};
+}
+function surPc(v){
+  const pc = lirePc(v), avant = T.pc;
+  T.pc = pc;
+  if(pc && pc.fin){ finTel(); return; }
+  if(pc){
+    /* l'ordinateur change d'écran ou de tableau : le téléphone suit, et se recadre sur ce qu'il montre */
+    const cle = pc.k + '|' + pc.e;
+    if(cle !== T.cle){ T.cle = cle; T.attente.clear(); T.masques.clear(); marque = null; fermerTexteTel(); cadrer(); }
+    /* tant qu'on n'a pas déplacé la vue du téléphone, elle suit celle de l'ordinateur (jamais pendant un geste) */
+    else if(!bouge && !geste && pc.v && String(pc.v) !== String(avant && avant.v)) cadrer();
+    if(pc.x && !texteEn) marque = null;
+  }
+  reclamer(); majEtatTel(); dessinerTel();
+}
+/* être le téléphone de cet ordinateur : les règles refusent un deuxième téléphone */
+function reclamer(){
+  const pc = T.pc;
+  if(!T.F || reclame || T.fini || !pc || T.tel === T.uid) return;
+  if(T.tel || (pc.p && pc.p !== T.uid)){ majEtatTel(); return; }
+  reclame = true;
+  const F = T.F;
+  F.set(refTel('tel'), T.uid)
+    .then(() => Promise.all([F.onDisconnect(refTel('tel')).remove(), F.onDisconnect(refTel('cours')).remove()]))
+    .then(() => { T.refus = false; }, () => { T.refus = true; })
+    .then(() => { reclame = false; majEtatTel(); });
+}
+function finTel(){
+  T.fini = true;
+  T.desab.forEach(f => { try{ f(); }catch(e){} }); T.desab = [];
+  if(cours) abandonnerTrait();
+  session(CLE_TEL, null);
+  fermerTexteTel(); majEtatTel(); dessinerTel();
+}
+async function quitterTel(){
+  const F = T.F, moi = relie();
+  T.desab.forEach(f => { try{ f(); }catch(e){} }); T.desab = [];
+  session(CLE_TEL, null);
+  if(F && moi){
+    try{ await F.onDisconnect(refTel('tel')).cancel(); await F.onDisconnect(refTel('cours')).cancel(); }catch(e){}
+    F.remove(refTel('cours')).catch(() => {});
+    F.remove(refTel('tel')).catch(() => {});
+  }
+  clearInterval(tMenage); observateurs.forEach(o => o.disconnect()); observateurs = [];
+  if(tt){ tt.remove(); tt = null; }
+  document.body.classList.remove('tt-actif');
+  Object.assign(T, {code:'', base:'', F:null, pc:null, tel:'', fini:false, refus:false, msg:'', cle:'', el:new Map(), attente:new Map(), masques:new Map()});
+  cours = null; geste = null; marque = null; pointeurs.clear();
+}
+
+/* ---------- l'écran du téléphone ---------- */
+const OUTILS_TEL = [['stylo', 'Stylo'], ['surligneur', 'Surligneur'], ['gomme', 'Gomme'], ['texte', 'Texte']];
+function construireTablette(){
+  if(tt) return;
+  const k = K();
+  tt = H('<section class="tt v2-hors-texte" aria-label="Tablette du tableau">' +
+    '<header class="tt-tete"><p class="tt-etat" aria-live="polite"></p>' +
+      '<button type="button" class="tt-b" data-o="cadrer" title="Revenir à ce que montre l’ordinateur">Recadrer</button>' +
+      '<button type="button" class="tt-b" data-o="quitter">Quitter</button></header>' +
+    '<div class="tt-zone"><canvas class="tt-toile" aria-label="Le tableau de l’ordinateur"></canvas>' +
+      '<p class="tt-vide" hidden></p><p class="tt-aide" hidden></p>' +
+      '<div class="tt-texte" hidden><textarea rows="2" maxlength="' + k.MAX_TEXTE + '" enterkeyhint="done" aria-label="Le texte à poser sur le tableau" placeholder="Ton texte…"></textarea>' +
+        '<div class="tt-texte-b"><button type="button" class="tt-b" data-o="texte-non">Annuler</button><button type="button" class="tt-b plein" data-o="texte-oui">Poser</button></div></div>' +
+    '</div>' +
+    '<div class="tt-outils" role="toolbar" aria-label="Outils de la tablette">' +
+      '<span class="tb-grp" data-g="outils">' + OUTILS_TEL.map(([o, n]) => '<button type="button" data-outil="' + o + '" aria-pressed="false" aria-label="' + n + '" title="' + n + '">' + k.icone(o) + '</button>').join('') + '</span>' +
+      '<span class="tb-grp" data-g="couleurs" role="group" aria-label="Couleur"></span>' +
+      '<span class="tb-grp" data-g="epais" role="group" aria-label="Épaisseur">' + k.EPAIS.map((w, i) => '<button type="button" data-epais="' + i + '" aria-pressed="false" aria-label="Trait ' + ['fin', 'moyen', 'épais'][i] + '"><i style="width:' + (4 + i * 4) + 'px;height:' + (4 + i * 4) + 'px"></i></button>').join('') + '</span>' +
+      '<span class="tb-grp" data-g="tailles" role="group" aria-label="Taille du texte" hidden>' + k.TAILLES.map((s, i) => '<button type="button" data-taille="' + i + '" aria-pressed="false" aria-label="Texte ' + ['petit', 'moyen', 'grand', 'titre'][i] + '" style="font-size:' + (11 + i * 3) + 'px">A</button>').join('') + '</span>' +
+      '<span class="tb-grp" data-g="histoire"><button type="button" data-o="annuler" aria-label="Annuler" title="Annuler">↶</button><button type="button" data-o="retablir" aria-label="Rétablir" title="Rétablir">↷</button></span>' +
+    '</div></section>');
+  document.body.appendChild(tt);
+  document.body.classList.add('tt-actif');
+  cvs = $('canvas', tt); cx = cvs.getContext('2d');
+  k.lireTheme();
+  tt.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b || !tt.contains(b)) return;
+    if(b.dataset.outil){ choisirOutil(b.dataset.outil); return; }
+    if(b.dataset.c){ coul = b.dataset.c; majOutilsTel(); return; }
+    if(b.dataset.epais){ epais = +b.dataset.epais; majOutilsTel(); return; }
+    if(b.dataset.taille){ taille = +b.dataset.taille; majOutilsTel(); return; }
+    const o = b.dataset.o;
+    if(o === 'quitter') quitterTel();
+    else if(o === 'cadrer') cadrer();
+    else if(o === 'annuler' || o === 'retablir'){ if(envoyerCmd(o === 'annuler' ? 'u' : 'r')) T.attente.clear(); }
+    else if(o === 'texte-oui') poserTexteTel();
+    else if(o === 'texte-non') fermerTexteTel();
+  });
+  cvs.addEventListener('pointerdown', basTel);
+  cvs.addEventListener('pointermove', bougeTel);
+  cvs.addEventListener('pointerup', hautTel);
+  cvs.addEventListener('pointercancel', hautTel);
+  cvs.addEventListener('lostpointercapture', e => { if(pointeurs.has(e.pointerId)) hautTel(e); });
+  cvs.addEventListener('contextmenu', e => e.preventDefault());
+  cvs.addEventListener('wheel', e => {
+    e.preventDefault();
+    const r = cvs.getBoundingClientRect();
+    if(e.ctrlKey || e.metaKey) zoomerTel(Math.exp(-e.deltaY * (e.deltaMode ? 0.05 : 0.0022)), e.clientX - r.left, e.clientY - r.top);
+    else { const f = e.deltaMode ? 30 : 1; ox += (e.shiftKey ? e.deltaY : e.deltaX) * f / z; oy += (e.shiftKey ? 0 : e.deltaY) * f / z; bouge = true; dessinerTel(); }
+  }, {passive:false});
+  const zone = $('.tt-texte textarea', tt);
+  zone.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); poserTexteTel(); }
+    else if(e.key === 'Escape'){ e.preventDefault(); fermerTexteTel(); }
+  });
+  /* la page de l'atelier, dessous, ne reçoit pas les touches de la tablette */
+  tt.addEventListener('keydown', e => e.stopPropagation());
+  observateurs = [new ResizeObserver(mesurerTel), new MutationObserver(() => { K().lireTheme(); majOutilsTel(); dessinerTel(); })];
+  observateurs[0].observe($('.tt-zone', tt));
+  observateurs[1].observe(document.documentElement, {attributes:true, attributeFilter:['data-theme', 'class']});
+  tMenage = setInterval(menage, 1500);
+  majEtatTel();
+}
+function majEtatTel(){
+  if(!tt) return;
+  let t, ok = false;
+  if(T.fini) t = 'L’ordinateur a déconnecté ce téléphone.';
+  else if(!T.F) t = T.msg || 'Connexion au relais…';
+  else if(relie()){ ok = true; t = 'Relié à l’ordinateur · écran : ' + (T.pc.n || T.pc.e) + (T.pc.k === 'groupe' ? ' · tableau du groupe' : T.pc.k === 'seance' ? ' · copie de séance, lecture seule' : ''); }
+  else if(!T.pc) t = T.msg || 'En attente de l’ordinateur…';
+  else if((T.tel && T.tel !== T.uid) || (T.pc.p && T.pc.p !== T.uid)) t = 'Un autre téléphone est déjà relié à cet ordinateur.';
+  else if(T.refus) t = T.msg || 'Le relais refuse ce téléphone pour l’instant. Réessaie dans un moment.';
+  else t = 'Connexion à l’ordinateur…';
+  const e = $('.tt-etat', tt);
+  e.textContent = t; e.classList.toggle('ok', ok);
+  $('[data-o="quitter"]', tt).textContent = T.fini ? 'Revenir à l’atelier' : 'Quitter';
+  majVide(); majOutilsTel();
+}
+function majVide(){
+  const vide = $('.tt-vide', tt), attend = !!T.F && !T.pc && !T.fini && !T.msg;
+  vide.hidden = !(attend || (relie() && !T.el.size && !T.attente.size && !cours));
+  vide.textContent = attend ? 'Garde le tableau ouvert sur l’ordinateur. Si sa page a été fermée, rouvre « 📱 Tablette » et scanne le nouveau code.'
+    : 'Le tableau est vide. Dessine ici : ça s’affiche sur l’ordinateur.';
+}
+function majOutilsTel(){
+  if(!tt) return;
+  const k = K(), ok = peutEcrire(), h = T.pc ? T.pc.h : 0, c = couleurDe();
+  $$('[data-outil]', tt).forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.outil === outil)); b.disabled = !ok; });
+  $('[data-g="couleurs"]', tt).innerHTML = k.teintes().map(t => ({r:t.r, nom:t.nom})).concat({r:'i', nom:'Encre'}).map(t =>
+    '<button type="button" data-c="' + t.r + '" aria-pressed="' + (t.r === c) + '" aria-label="' + esc(t.nom) + '" title="' + esc(t.nom) + '"' + (ok ? '' : ' disabled') + '><i class="tb-pastille" style="background:' + (t.r === 'i' ? 'var(--ink)' : k.teinte(t.r)) + '"></i></button>').join('');
+  $('[data-g="epais"]', tt).hidden = outil === 'texte'; $('[data-g="tailles"]', tt).hidden = outil !== 'texte';
+  $$('[data-epais]', tt).forEach(b => { b.setAttribute('aria-pressed', String(+b.dataset.epais === epais)); b.disabled = !ok; });
+  $$('[data-taille]', tt).forEach(b => { b.setAttribute('aria-pressed', String(+b.dataset.taille === taille)); b.disabled = !ok; });
+  $('[data-o="annuler"]', tt).disabled = !ok || !(h & 1);
+  $('[data-o="retablir"]', tt).disabled = !ok || !(h & 2);
+  $('[data-o="cadrer"]', tt).disabled = !T.pc;
+  cvs.dataset.outil = outil;
+}
+function choisirOutil(o){
+  if(outil === 'texte' && o !== 'texte') fermerTexteTel();
+  outil = o; majOutilsTel();
+  if(o === 'texte') aide('Touche le tableau : tu écris avec le clavier de l’ordinateur. Appui long : tu écris ici, sur le téléphone.');
+}
+function aide(t){
+  const a = tt && $('.tt-aide', tt); if(!a) return;
+  a.textContent = t; a.hidden = false; clearTimeout(tAide); tAide = setTimeout(() => { a.hidden = true; }, 6000);
+}
+/* ce qui attend l'écho de l'ordinateur trop longtemps n'est plus montré (refusé, ou perdu en route) */
+function menage(){
+  const t = Date.now(); let n = 0;
+  T.attente.forEach((a, j) => { if(t - a.t > ATTENTE){ T.attente.delete(j); n++; } });
+  T.masques.forEach((m, id) => { if(t - m > ATTENTE){ T.masques.delete(id); n++; } });
+  if(marque && t - marque[3] > 4000){ marque = null; n++; }
+  if(n) dessinerTel();
+}
+
+/* ---------- le dessin, comme sur le tableau ---------- */
+function dessinerTel(){ if(!tt || raf) return; raf = requestAnimationFrame(() => { raf = 0; peindreTel(); }); }
+function peindreTel(){
+  if(!tt || !cw) return;
+  const k = K(), th = k.theme();
+  cx.setTransform(1, 0, 0, 1, 0, 0); cx.fillStyle = th.fond; cx.fillRect(0, 0, cvs.width, cvs.height);
+  cx.setTransform(dpr * z, 0, 0, dpr * z, -ox * dpr * z, -oy * dpr * z);
+  const pas = z * 50 >= 14 ? 50 : 250, r = 1.1 / z, x0 = Math.floor(ox / pas) * pas, y0 = Math.floor(oy / pas) * pas;
+  cx.fillStyle = th.ligneC;
+  for(let x = x0; x < ox + cw / z; x += pas) for(let y = y0; y < oy + ch / z; y += pas) cx.fillRect(x - r, y - r, r * 2, r * 2);
+  cx.strokeStyle = th.ligneC; cx.lineWidth = 1 / z; cx.setLineDash([6 / z, 6 / z]);
+  cx.beginPath(); cx.moveTo(0, oy); cx.lineTo(0, oy + ch / z); cx.moveTo(k.LARGE, oy); cx.lineTo(k.LARGE, oy + ch / z); cx.stroke(); cx.setLineDash([]);
+  T.el.forEach((it, id) => { if(!T.masques.has(id)) k.tracer(cx, it); });
+  T.attente.forEach(a => k.tracer(cx, a.it));
+  if(cours) k.tracer(cx, cours);
+  /* ce que l'écran de l'ordinateur montre */
+  const v = T.pc && T.pc.v;
+  if(v){ cx.strokeStyle = th.accent; cx.lineWidth = 1.5 / z; cx.setLineDash([8 / z, 6 / z]); cx.strokeRect(v[0], v[1], v[2], v[3]); cx.setLineDash([]); }
+  /* le curseur de la saisie ouverte sur l'ordinateur (ou la touche qui l'attend) */
+  const c = (T.pc && T.pc.x) || marque;
+  if(c){ cx.fillStyle = th.accent; cx.fillRect(c[0] - 1.5 / z, c[1], 3 / z, c[2] * 1.25); }
+  majVide();
+}
+function mesurerTel(){
+  if(!tt) return;
+  const r = cvs.getBoundingClientRect(); if(!r.width || !r.height) return;
+  const avant = cw;
+  dpr = Math.min(2, window.devicePixelRatio || 1); cw = r.width; ch = r.height;
+  cvs.width = Math.round(cw * dpr); cvs.height = Math.round(ch * dpr);
+  if(!bouge || !avant) cadrer();
+  else if(avant !== cw) z = borne(z * cw / avant, K().ZMIN, K().ZMAX);
+  dessinerTel();
+}
+/* cadrer sur ce que montre l'ordinateur (sinon toute la largeur commune) */
+function cadrer(){
+  if(!cw) return;
+  const k = K(), v = T.pc && T.pc.v;
+  if(v && v[2] > 0 && v[3] > 0){ z = borne(Math.min(cw / v[2], ch / v[3]), k.ZMIN, k.ZMAX); ox = v[0] + v[2] / 2 - cw / z / 2; oy = v[1] + v[3] / 2 - ch / z / 2; }
+  else { z = cw / (k.LARGE + 40); ox = -20; oy = -20; }
+  bouge = false; dessinerTel();
+}
+function zoomerTel(f, sx, sy){
+  const k = K(), wx = ox + sx / z, wy = oy + sy / z;
+  z = borne(z * f, k.ZMIN, k.ZMAX); ox = wx - sx / z; oy = wy - sy / z; bouge = true; dessinerTel();
+}
+
+/* ---------- les gestes : un doigt dessine, deux doigts déplacent et zooment ; avec un stylet, le doigt ne dessine plus ---------- */
+const monde = e => { const r = cvs.getBoundingClientRect(); return [ox + (e.clientX - r.left) / z, oy + (e.clientY - r.top) / z]; };
+const arrondi = ([x, y]) => { const B = K().BORNE; return [Math.round(borne(x, -B, B)), Math.round(borne(y, -B, B))]; };
+function basTel(e){
+  if(e.button === 2) return;
+  e.preventDefault();
+  if(e.pointerType === 'pen') stylet = true;
+  try{ cvs.setPointerCapture(e.pointerId); }catch(err){}
+  pointeurs.set(e.pointerId, [e.clientX, e.clientY]);
+  if(pointeurs.size === 2){
+    /* deux doigts : le geste en cours cède la place au pincement */
+    lacherGeste();
+    const [a, b] = Array.from(pointeurs.values());
+    geste = {type:'pince', d:Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, z, mx:(a[0] + b[0]) / 2, my:(a[1] + b[1]) / 2};
+    return;
+  }
+  if(pointeurs.size > 2) return;
+  const [x, y] = monde(e);
+  if(!peutEcrire() || (stylet && e.pointerType === 'touch') || e.button === 1){ geste = {type:'vue', sx:e.clientX, sy:e.clientY, ox, oy}; return; }
+  if(outil === 'stylo' || outil === 'surligneur'){
+    const [ix, iy] = arrondi([x, y]);
+    nouveauTrait(ix, iy); geste = {type:'trait'};
+    envoyerCours(); dessinerTel(); majEtatTel(); return;
+  }
+  if(outil === 'gomme'){ geste = {type:'gomme', g:jeton(), ids:[], n:0, t:0}; gommerTel(x, y); return; }
+  if(outil === 'texte'){ geste = {type:'texte', x, y, sx:e.clientX, sy:e.clientY, ox, oy, long:false, t:setTimeout(appuiLong, 500)}; }
+}
+function bougeTel(e){
+  if(!pointeurs.has(e.pointerId)) return;
+  pointeurs.set(e.pointerId, [e.clientX, e.clientY]);
+  if(!geste) return;
+  const k = K();
+  if(geste.type === 'pince'){
+    if(pointeurs.size < 2) return;
+    const [a, b] = Array.from(pointeurs.values()), r = cvs.getBoundingClientRect();
+    const d = Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+    const wx = ox + (geste.mx - r.left) / z, wy = oy + (geste.my - r.top) / z;
+    z = borne(geste.z * d / geste.d, k.ZMIN, k.ZMAX);
+    ox = wx - (mx - r.left) / z; oy = wy - (my - r.top) / z;
+    Object.assign(geste, {mx, my, d, z}); bouge = true; dessinerTel(); return;
+  }
+  if(geste.type === 'vue'){ ox = geste.ox - (e.clientX - geste.sx) / z; oy = geste.oy - (e.clientY - geste.sy) / z; bouge = true; dessinerTel(); return; }
+  if(geste.type === 'texte'){
+    /* le doigt glisse : ce n'était ni une touche ni un appui long, mais un déplacement de la vue */
+    if(!geste.long && Math.hypot(e.clientX - geste.sx, e.clientY - geste.sy) > 10){ clearTimeout(geste.t); geste = {type:'vue', sx:geste.sx, sy:geste.sy, ox:geste.ox, oy:geste.oy}; bougeTel(e); }
+    return;
+  }
+  const [x, y] = monde(e);
+  if(geste.type === 'trait' && cours){
+    const [ix, iy] = arrondi([x, y]), p = cours.p;
+    if(Math.hypot(ix - p[p.length - 2], iy - p[p.length - 1]) < Math.max(1.5, 2.5 / z)) return;
+    p.push(ix, iy);
+    /* un trait très long se poursuit dans un nouveau, comme sur le tableau */
+    if(p.length >= k.MAX_POINTS * 2){ finirTraitTel(); nouveauTrait(ix, iy); }
+    k.borner(cours); envoyerCours(); dessinerTel(); return;
+  }
+  if(geste.type === 'gomme') gommerTel(x, y);
+}
+function hautTel(e){
+  pointeurs.delete(e.pointerId);
+  if(!geste) return;
+  const g = geste;
+  if(g.type === 'pince'){ if(pointeurs.size < 2) geste = null; return; }
+  geste = null;
+  if(g.type === 'trait') finirTraitTel();
+  else if(g.type === 'gomme') envoyerGomme(g, true);
+  else if(g.type === 'texte'){
+    clearTimeout(g.t);
+    const zone = $('.tt-texte', tt);
+    if(g.long){ const a = $('textarea', zone); a.focus(); return; }       // le doigt se lève : le clavier du téléphone peut s'ouvrir
+    if(!zone.hidden){ placerTexteTel(g.x, g.y); return; }                   // la boîte est ouverte : la touche choisit un autre endroit
+    const s = K().TAILLES[taille];
+    if(envoyerCmd('p', {x:Math.round(g.x), y:Math.round(g.y), c:couleurDe(), s, r:Math.round(12 / z * 10) / 10})){
+      marque = [g.x, g.y - s * 0.6, s, Date.now()];
+      dessinerTel();
+    }
+  }
+}
+function lacherGeste(){
+  if(!geste) return;
+  if(geste.type === 'trait') abandonnerTrait();
+  else if(geste.type === 'gomme') envoyerGomme(geste, true);
+  else if(geste.type === 'texte') clearTimeout(geste.t);
+  geste = null;
+}
+function nouveauTrait(x, y){
+  const surligne = outil === 'surligneur', k = K();
+  cours = k.borner({id:'', de:'', k:'t', c:couleurDe(), w:k.EPAIS[epais] * (surligne ? 3 : 1), o:surligne ? 1 : 0, a:0, p:[x, y], j:jeton()});
+}
+/* le trait en cours part à l'ordinateur pendant qu'on le trace, au plus toutes les 120 ms */
+function envoyerCours(){
+  clearTimeout(attenteCours);
+  const go = () => { tCours = Date.now(); if(cours && relie()) T.F.set(refTel('cours'), {j:cours.j, d:K().brut(cours).d}).catch(() => {}); };
+  const t = Date.now();
+  if(t - tCours >= 120) go(); else attenteCours = setTimeout(go, 120 - (t - tCours));
+}
+function finirTraitTel(){
+  const it = cours, k = K(); cours = null; clearTimeout(attenteCours);
+  if(!it) return;
+  it.p = k.alleger(it.p, Math.max(0.6, 0.9 / z)); k.borner(it);
+  const d = JSON.parse(k.brut(it).d); d.j = it.j;
+  /* le trait fini d'abord, puis l'aperçu s'efface : l'ordinateur les reçoit dans cet ordre */
+  if(envoyerCmd('t', d)) T.attente.set(it.j, {it, t:Date.now()});
+  if(relie()) T.F.remove(refTel('cours')).catch(() => {});
+  dessinerTel(); majEtatTel();
+}
+function abandonnerTrait(){
+  cours = null; clearTimeout(attenteCours);
+  if(relie()) T.F.remove(refTel('cours')).catch(() => {});
+  dessinerTel();
+}
+function gommerTel(x, y){
+  const k = K(), tol = 10 / z, l = Array.from(T.el.entries()), g = geste;
+  let n = 0;
+  for(let i = l.length - 1; i >= 0 && n < 20; i--){ const [id, it] = l[i]; if(!T.masques.has(id) && k.touche(it, x, y, tol)){ T.masques.set(id, Date.now()); g.ids.push(id); n++; } }
+  if(!n) return;
+  dessinerTel();
+  if(!g.t) g.t = setTimeout(() => envoyerGomme(g, false), 90);
+}
+function envoyerGomme(g, fin){
+  clearTimeout(g.t); g.t = 0;
+  const ids = g.ids.slice(g.n); g.n = g.ids.length;
+  if(ids.length || (fin && g.n)) envoyerCmd('g', {g:g.g, i:ids, f:fin ? 1 : 0});
+}
+function envoyerCmd(o, d){
+  if(!relie()) return false;
+  const v = {o};
+  if(d){ v.d = JSON.stringify(d); if(v.d.length > 12000) return false; }
+  T.F.push(refTel('cmd'), v).catch(() => aide('L’ordinateur n’a pas reçu ce geste : réessaie.'));
+  return true;
+}
+
+/* ---------- le texte : une touche l'écrit sur l'ordinateur ; un appui long, ici ---------- */
+function appuiLong(){
+  const g = geste; if(!g || g.type !== 'texte') return;
+  g.long = true;
+  try{ if(navigator.vibrate) navigator.vibrate(12); }catch(e){}
+  placerTexteTel(g.x, g.y);
+  const zone = $('.tt-texte', tt); zone.hidden = false; $('textarea', zone).value = '';
+}
+function placerTexteTel(x, y){
+  const s = K().TAILLES[taille];
+  texteEn = [x, y]; marque = [x, y - s * 0.6, s, Date.now() + 864e5];    // la marque reste tant que la boîte est ouverte
+  dessinerTel();
+}
+function fermerTexteTel(){
+  if(!tt) return;
+  const zone = $('.tt-texte', tt); if(zone.hidden) return;
+  zone.hidden = true; $('textarea', zone).value = ''; $('textarea', zone).blur();
+  texteEn = null; marque = null; dessinerTel();
+}
+function poserTexteTel(){
+  const a = $('.tt-texte textarea', tt), k = K(), ou = texteEn;
+  const txt = a.value.replace(/\r\n?/g, '\n').slice(0, k.MAX_TEXTE);
+  fermerTexteTel();
+  if(!txt.trim() || !ou || !peutEcrire()) return;
+  const s = k.TAILLES[taille], d = {c:couleurDe(), s, x:Math.round(ou[0]), y:Math.round(ou[1] - s * 0.6), t:txt};
+  const it = k.lire('x', {de:'', k:'x', d:JSON.stringify(d)}); if(!it) return;
+  const j = jeton();
+  if(envoyerCmd('x', Object.assign({j}, d))){ T.attente.set(j, {it, t:Date.now()}); dessinerTel(); majEtatTel(); }
+}
+
+/* ---------- démarrage (par Tableau.demarrer) ---------- */
+/* #tablette=K7MQX4 : la page s'ouvre en tablette ; le lien s'efface de l'adresse (un rechargement reprend par sessionStorage) */
+function lireLien(){
+  const m = (location.hash || '').match(/(?:^#|&)tablette=([A-Za-z0-9-]{6,7})(?:&|$)/);
+  if(!m) return '';
+  try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  const c = propreCode(m[1]);
+  return c.length === 6 ? c : '';
+}
+const recharge = () => { try{ const n = performance.getEntriesByType('navigation')[0]; return !!n && n.type === 'reload'; }catch(e){ return false; } };
+function demarrer(){
+  if(Convergence.dansClaude()){ TB().brancher(popClaude); return; }
+  TB().brancher(ouvrirVoile);
+  window.addEventListener('hashchange', () => { const c = lireLien(); if(c && !tt){ if(PC.code) deconnecter(); devenirTablette(c); } });
+  const code = lireLien() || propreCode(session(CLE_TEL));
+  if(code.length === 6){ devenirTablette(code); return; }
+  /* l'ordinateur rechargé reprend son téléphone ; fermer la page, ou la quitter, met fin à la tablette */
+  let s = null; try{ s = JSON.parse(session(CLE_PC) || 'null'); }catch(e){}
+  if(s && typeof s.code === 'string' && /^[A-Z0-9]{6}$/.test(s.code) && recharge()){ PC.p = typeof s.p === 'string' ? s.p.slice(0, 128) : ''; creer(s.code); }
+  else session(CLE_PC, null);
+}
+
+return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? (T.fini ? 'fini' : relie() ? 'relie' : 'attente') : ''})};
 })();
 
 /* ====== _commun/nouveautes.js ====== */
@@ -14158,6 +15123,7 @@ return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
     {d:'2026-10-31', p:['*'], t:'L’Arène pose maintenant ses questions avec quatre réponses au choix : touche la bonne (ou les touches 1 à 4). Tu préfères répondre de mémoire ? « ✎ Écrire », en haut de l’Arène.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : la balise. Après avoir créé une séance Convergence, « 📡 Lancer une balise » dit au Discord de la classe que tu cherches quelqu’un pour étudier, avec un lien pour te rejoindre en un clic.'},
     {d:'2026-10-31', p:['*'], t:'Tu as créé une séance Convergence et personne n’est encore là ? « Étudier en attendant » te ramène dans l’atelier. Convergence revient tout seul dès que quelqu’un veut te rejoindre.'},
@@ -14384,7 +15350,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '9817c9db25d6';
+  const ICI = '37ba55867761';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
