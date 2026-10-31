@@ -596,6 +596,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'L’Arène ne bloque plus rien : elle commence par les bases, mais tu peux choisir un module en haut de la carte (par exemple seulement le module 7), n’importe quel bloc, ou revoir un bloc déjà acquis.'},
     {d:'2026-10-31', p:['*'], t:'Dans l’Arène, tes bonnes réponses se voient tout de suite : la partie pâle des barres, c’est ce qui est « en route ». Une question devient acquise quand tu la réussis encore, une dizaine de questions plus tard.'},
     {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
@@ -715,7 +716,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '382f9aba20fb';
+  const ICI = 'e08540765cbc';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

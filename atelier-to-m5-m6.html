@@ -1315,7 +1315,10 @@ body.ar-ouverte{overflow:hidden}
 .ar-bloc{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;gap:3px 8px;align-items:center;width:100%;text-align:left;margin:0 0 5px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:13.5px;cursor:pointer}
 .ar-bloc:hover{border-color:var(--accent)}
 .ar-bloc.ici{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
-.ar-bloc.ferme{opacity:.55}
+.ar-bloc.hors{opacity:.5}
+.ar-portees{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.ar-chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.ar-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
 .ar-bloc.fait .ar-bm{color:var(--ok,#2e8b57)}
 .ar-bt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ar-bm{grid-row:span 2;font-weight:800;font-size:12.5px;font-variant-numeric:tabular-nums}
@@ -6591,7 +6594,12 @@ const Arene = (() => {
   const ouvert = b => b.pre.every(p => pc(B.par[p]) >= SEUIL_OUVERT);
   const total = () => { let a = 0, k = 0, r = 0; B.blocs.forEach(b => b.items.forEach(i => { if(acquis(i)){ a++; if(ancre(i)) k++; } else if(enRoute(i)) r++; })); return {n:B.n, a, k, r, p:B.n ? a / B.n : 0, q:B.n ? r / B.n : 0}; };
   const ecartLong = () => Math.max(1, Math.min(LONG, B.n - 1));
-  function frontiere(){ return B.blocs.find(b => pc(b) < 1 && ouvert(b)) || B.blocs.find(b => pc(b) < 1) || null; }
+  /* aucun verrou (31 oct.) : les niveaux A, B, C… donnent l'ordre conseillé, l'arène commence par les bases, et
+     l'étudiant va où il veut ; « ouvert » ne sert plus qu'à conseiller (les fondations à 70 %) */
+  const groupeDe = partie => { const m = String(partie || '').match(/^(?:Module\s*|M)(\d+)\s*·/) || String(partie || '').match(/\(M(\d+)\)/); return m ? 'Module ' + m[1] : String(partie || ''); };
+  const dansPortee = b => !R.portee || groupeDe(b.partie) === R.portee;
+  const portees = () => { const l = []; B.blocs.slice().sort((a, b) => a.rang - b.rang).forEach(b => { const g = groupeDe(b.partie); if(g && !l.includes(g)) l.push(g); }); return l.length > 1 ? l : []; };
+  function frontiere(){ return B.blocs.find(b => dansPortee(b) && pc(b) < 1) || null; }
   /* ce qu'il reste à faire dans un bloc, en réponses, puis en minutes */
   function minutesRestantes(b){
     const n = b.items.reduce((t, i) => { if(acquis(i)) return t; const s = lu(i.id); return t + Math.max(1, besoin(i) - (s ? +s.serie || 0 : 0)); }, 0);
@@ -6600,11 +6608,11 @@ const Arene = (() => {
 
   /* ---------- la séance ---------- */
   const R = {sess:Date.now().toString(36), bloc:'', file:[], dernier:'', n:0, justes:0, depuisRev:0, courant:null,
-    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null, plans:new Set(), aide:false, repondu:false};
+    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null, plans:new Set(), aide:false, repondu:false, portee:'', revoir:'', revus:new Set()};
   const item = id => { for(const b of B.blocs){ const i = b.items.find(x => x.id === id); if(i) return [i, b]; } return [null, null]; };
   function revision(sauf){
     const pool = [];
-    B.blocs.forEach(b => b.items.forEach(i => { if(acquis(i) && i.id !== R.dernier && i.id !== sauf) pool.push([i, b]); }));
+    B.blocs.forEach(b => { if(dansPortee(b)) b.items.forEach(i => { if(acquis(i) && i.id !== R.dernier && i.id !== sauf) pool.push([i, b]); }); });
     if(!pool.length) return null;
     /* les plus anciennes réussites d'abord, avec un peu de hasard */
     pool.sort((x, y) => ((lu(x[0].id) || {}).der || '').localeCompare((lu(y[0].id) || {}).der || ''));
@@ -6614,7 +6622,17 @@ const Arene = (() => {
     if(R.retour) return R.retour.i < R.retour.file.length ? item(R.retour.file[R.retour.i]) : [null, null];
     if(R.round) return R.round.i < R.round.file.length ? item(R.round.file[R.round.i]) : [null, null];
     R.file = R.file.filter(x => item(x.id)[0]);
-    const pret = R.file.find(x => x.apres <= 0 && x.id !== R.dernier);
+    /* revoir un bloc déjà acquis, choisi sur la carte : ses questions une fois chacune, les plus anciennes d'abord */
+    if(R.revoir && B.par[R.revoir]){
+      const rb = B.par[R.revoir], reste = rb.items.filter(i => !R.revus.has(i.id) && i.id !== R.dernier);
+      if(reste.length){
+        const i = reste.sort((x, y) => ((lu(x.id) || {}).der || '').localeCompare((lu(y.id) || {}).der || ''))[0];
+        R.revus.add(i.id); return [i, rb];
+      }
+      annoncer('Bloc « ' + rb.titre + ' » revu. L’arène reprend la suite.');
+      R.revoir = ''; R.revus = new Set();
+    }
+    const pret = R.file.find(x => x.apres <= 0 && x.id !== R.dernier && dansPortee(item(x.id)[1]));
     if(pret){ R.file = R.file.filter(x => x !== pret); return item(pret.id); }
     if(R.depuisRev >= REVISION){ const r = revision(); if(r){ R.depuisRev = 0; return r; } }
     let b = R.bloc && B.par[R.bloc] && pc(B.par[R.bloc]) < 1 ? B.par[R.bloc] : null;
@@ -6625,7 +6643,7 @@ const Arene = (() => {
     let cands = libres(b), bb = b;
     /* les éléments du bloc attendent leur écart : on avance dans du neuf ailleurs, sinon on révise */
     if(!cands.length){
-      const autre = B.blocs.find(x => x !== b && pc(x) < 1 && (ouvert(x) || !B.blocs.some(y => y !== b && pc(y) < 1 && ouvert(y))) && libres(x).length);
+      const autre = B.blocs.find(x => x !== b && dansPortee(x) && pc(x) < 1 && libres(x).length);
       if(autre){ bb = autre; cands = libres(autre); }
     }
     if(cands.length){
@@ -6633,7 +6651,8 @@ const Arene = (() => {
       return [neufs.length ? neufs[0] : cands.slice().sort((p, q) => (lu(p.id) || {serie:0}).serie - (lu(q.id) || {serie:0}).serie)[0], bb];
     }
     const r = revision(); if(r) return r;
-    if(R.file.length){ const x = R.file.sort((p, q) => p.apres - q.apres).shift(); return item(x.id); }
+    const enPortee = R.file.filter(x => dansPortee(item(x.id)[1]));
+    if(enPortee.length){ const x = enPortee.sort((p, q) => p.apres - q.apres)[0]; R.file = R.file.filter(y => y !== x); return item(x.id); }
     const i = b.items.find(x => !acquis(x)); return i ? [i, b] : [null, null];
   }
   function enregistrer(it, ok, aide){
@@ -6721,7 +6740,8 @@ const Arene = (() => {
       else if(a === 'arplus') basculerGroupe();
       else if(a === 'gpret') pretGroupe();
       else if(a === 'gtableau') tableauGroupe();
-      else if(a === 'auto'){ R.bloc = ''; suivant(); }
+      else if(a === 'auto'){ R.bloc = ''; R.revoir = ''; suivant(); }
+      else if(a === 'portee'){ R.portee = b.dataset.p || ''; R.bloc = ''; R.revoir = ''; R.courant = null; majCarte(); suivant(); }
       else if(a === 'round'){ if(lancerRound()) suivant(); }
     });
     ui.addEventListener('keydown', e => {
@@ -6744,23 +6764,25 @@ const Arene = (() => {
   }
   function majCarte(){
     const z = $('.ar-carte', ui), courant = R.courant && R.courant[1] ? R.courant[1].id : '';
-    z.innerHTML = B.niveaux.map((l, k) => '<section class="ar-niv"><h3>' + (B.pre ? 'Niveau ' + lettre(l[0].niveau) : lettre(k) + ' · ' + esc(l[0].partie)) + '</h3>' +
+    const ps = portees();
+    z.innerHTML = (ps.length ? '<div class="ar-portees" role="group" aria-label="Où travailler">' + ['', ...ps].map(g => '<button type="button" class="ar-chip" data-a="portee" data-p="' + esc(g) + '" aria-pressed="' + (R.portee === g) + '">' + (g ? esc(g) : 'Tout') + '</button>').join('') + '</div>' : '') +
+      B.niveaux.map((l, k) => '<section class="ar-niv"><h3>' + (B.pre ? 'Niveau ' + lettre(l[0].niveau) : lettre(k) + ' · ' + esc(l[0].partie)) + '</h3>' +
       l.map(b => {
         const p = pc(b), q = pcRoute(b), o = ouvert(b), fait = p === 1, tousAncres = fait && b.items.every(ancre);
-        return '<button type="button" class="ar-bloc' + (fait ? ' fait' : '') + (o ? '' : ' ferme') + (b.id === courant ? ' ici' : '') + '" data-bloc="' + b.id + '" title="' +
-          esc(b.titre + ' · ' + Math.round(p * 100) + ' % acquis' + (q ? ' · ' + Math.round(q * 100) + ' % en route' : '') + (fait ? '' : ' · ≈ ' + minutesRestantes(b) + ' min pour finir') + (o ? '' : ' · s’appuie sur : ' + b.pre.filter(x => pc(B.par[x]) < SEUIL_OUVERT).map(x => B.par[x].titre).join(', '))) + '">' +
+        return '<button type="button" class="ar-bloc' + (fait ? ' fait' : '') + (dansPortee(b) ? '' : ' hors') + (b.id === courant ? ' ici' : '') + '" data-bloc="' + b.id + '" title="' +
+          esc(b.titre + ' · ' + Math.round(p * 100) + ' % acquis' + (q ? ' · ' + Math.round(q * 100) + ' % en route' : '') + (fait ? '' : ' · ≈ ' + minutesRestantes(b) + ' min pour finir') + (o ? '' : ' · conseillé après : ' + b.pre.filter(x => pc(B.par[x]) < SEUIL_OUVERT).map(x => B.par[x].titre).join(', ')) + (fait ? ' · touche pour le revoir' : '')) + '">' +
           '<span class="ar-bt">' + esc(b.titre) + '</span><span class="ar-bp"><i style="width:' + Math.round(p * 100) + '%"></i><b style="width:' + Math.round(q * 100) + '%"></b></span>' +
-          '<span class="ar-bm">' + (tousAncres ? '⚓' : fait ? '✓' : o ? Math.round(p * 100) + ' %' : '🔒') + '</span></button>';
+          '<span class="ar-bm">' + (tousAncres ? '⚓' : fait ? '✓' : Math.round(p * 100) + ' %') + '</span></button>';
       }).join('') + '</section>').join('') +
-      '<p class="ar-legende">Un bloc s’ouvre quand ceux sur lesquels il s’appuie sont acquis à 70 %. ✓ : tout acquis · ⚓ : retenu aussi un autre jour. Rien ne se perd si tu t’arrêtes.</p>';
+      '<p class="ar-legende">L’arène commence par les bases (niveau A) et monte. Touche un module ou un bloc pour y aller directement, un bloc acquis pour le revoir. ✓ : tout acquis · ⚓ : retenu aussi un autre jour · partie pâle : en route. Rien ne se perd si tu t’arrêtes.</p>';
   }
   function annoncer(t){ if(!ui) return; const a = $('.ar-annonce', ui); a.textContent = t; a.hidden = false; clearTimeout(a._t); a._t = setTimeout(() => { a.hidden = true; }, 6000); }
   function annoncerHTML(h){ const a = $('.ar-annonce', ui); a.innerHTML = h; a.hidden = false; clearTimeout(a._t); }
   function choisirBloc(id){
     const b = B.par[id]; if(!b || R.retour || R.round) return;
-    if(pc(b) === 1){ annoncer('« ' + b.titre + ' » est déjà acquis : l’arène y piochera des révisions.'); return; }
-    R.bloc = id;
-    if(!ouvert(b)) annoncer('« ' + b.titre + ' » s’appuie sur ' + b.pre.filter(x => pc(B.par[x]) < SEUIL_OUVERT).map(x => '« ' + B.par[x].titre + ' »').join(', ') + ', pas encore acquis. Tu peux t’y essayer quand même.');
+    if(R.portee && !dansPortee(b)) R.portee = '';
+    if(pc(b) === 1){ R.revoir = id; R.revus = new Set(); R.bloc = ''; annoncer('On revoit « ' + b.titre + ' » : ses questions une fois chacune. Une question oubliée revient en jeu.'); }
+    else { R.revoir = ''; R.bloc = id; }
     if(window.innerWidth < 900){ ui.classList.remove('avec-carte'); $('[data-a="carte"]', ui).setAttribute('aria-pressed', 'false'); }
     suivant();
   }
@@ -6889,7 +6911,9 @@ const Arene = (() => {
     else if(mode) ou.innerHTML = '<span class="ar-niveau">' + (mode === 'retour' ? '↺' : '★') + '</span> <b>' + (mode === 'retour' ? 'Le retour' : 'Dernier round') + '</b> · ' + ((mode === 'retour' ? R.retour.i : R.round.i) + 1) + ' / ' + (mode === 'retour' ? R.retour.file.length : R.round.file.length) + ' · <span class="ar-auto">' + esc(b.titre) + '</span>';
     else ou.innerHTML = '<span class="ar-niveau">' + niveauTxt(b) + '</span> <b>' + esc(b.titre) + '</b> · ' + n + ' / ' + b.items.length + ' acquis' +
       (n < b.items.length ? ' · ≈ ' + minutesRestantes(b) + ' min pour finir le bloc' : '') +
-      (R.bloc ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '');
+      (R.revoir ? ' · on le revoit' : '') + (R.portee ? ' · ' + esc(R.portee) : '') +
+      (R.bloc || R.revoir ? ' <button type="button" class="lien-btn" data-a="auto">Laisser l’arène choisir</button>' : '') +
+      (R.portee ? ' <button type="button" class="lien-btn" data-a="portee" data-p="">Tout l’atelier</button>' : '');
     const etapeTxt = acquis(it) ? 'révision' : s && s.serie ? (s.serie >= besoin(it) - 1 ? 'à confirmer de loin' : 'à reprendre') : s && s.n ? 'à reprendre' : 'nouvelle';
     /* l'indice : pour les questions de l'arène ; les problèmes et les planches ont déjà leur échelle d'essais */
     const tete = '<p class="ar-type"><span>' + (TYPES[it.type] || 'Question') + ' · ' + etapeTxt + '</span>' +
@@ -13918,6 +13942,7 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'L’Arène ne bloque plus rien : elle commence par les bases, mais tu peux choisir un module en haut de la carte (par exemple seulement le module 7), n’importe quel bloc, ou revoir un bloc déjà acquis.'},
     {d:'2026-10-31', p:['*'], t:'Dans l’Arène, tes bonnes réponses se voient tout de suite : la partie pâle des barres, c’est ce qui est « en route ». Une question devient acquise quand tu la réussis encore, une dizaine de questions plus tard.'},
     {d:'2026-10-31', p:['*'], t:'Le tableau blanc a son bouton en haut, à côté de l’Arène (ou la touche B). Seul, c’est ton tableau à toi, gardé pour chaque écran ; en séance Convergence, c’est celui du groupe.'},
     {d:'2026-10-31', p:['*'], t:'Nouveau : ton téléphone comme tablette du tableau. Ouvre le tableau, touche « 📱 Tablette » et scanne le code QR : ce que tu dessines au téléphone arrive sur l’ordinateur. En mode texte, touche un endroit au téléphone et écris au clavier de l’ordinateur.'},
@@ -14148,7 +14173,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '382f9aba20fb';
+  const ICI = 'e08540765cbc';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
