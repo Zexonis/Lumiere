@@ -895,6 +895,9 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .cv-raies button[aria-pressed="true"]{border-color:var(--c);color:#F3F5FB;background:color-mix(in srgb,var(--c) 14%,#05070D)}
 .cv-code{margin:0;font:600 clamp(30px,8vw,44px)/1 var(--f-mono);letter-spacing:.16em;color:#F3F5FB}
 .cv-code[hidden],.cv-demande[hidden]{display:none}
+.cv-balise{display:flex;flex-direction:column;align-items:center;gap:6px;margin:2px 0}
+.cv-balise[hidden]{display:none}
+.cv-balise small{max-width:40ch;font-size:12.5px;line-height:1.4;color:#AEB7C9;text-align:center}
 .cv-etat{margin:0;color:#AEB7C9;max-width:42ch;min-height:1.4em}
 .cv-qui{margin:0;font:500 22px/1.25 var(--f-display);color:#F3F5FB}
 .cv-demande{display:flex;flex-direction:column;align-items:center;gap:10px}
@@ -12735,6 +12738,12 @@ const CLE_SEANCE = P + '-convergence';      // sessionStorage : la séance survi
 /* une classe entière tient dans une séance (le forfait gratuit de Firebase : 100 connexions simultanées pour tout le projet) */
 const MAX_GROUPE = 32;
 const VIE_GROUPE = 60000;                   // un message au groupe reste une minute dans le relais
+/* la balise (« je cherche un·e partenaire », dans le Discord de la classe) passe par le relais de la classe, qui garde
+   le webhook ; une par appareil toutes les 10 minutes. Tant qu'elle n'est pas ouverte à tous, seul un appareil qui a
+   ouvert une page avec #balise-essai la voit. */
+const RELAIS_BALISE = 'https://lumiere-claude.lumiere-classe.workers.dev/balise';
+const BALISE_POUR_TOUS = false;
+const CLE_BALISE = 'lumiere-balise-t', BALISE_ATTENTE = 600000;
 const dansClaude = () => !!(window.claude && typeof window.claude.use === 'function');
 const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const propre = (x, max) => typeof x === 'string' ? x.replace(/[\u0000-\u001f\u007f-\u009f​-‏‪-‮⁠-⁤﻿]/g, ' ').trim().slice(0, max) : '';
@@ -13310,6 +13319,7 @@ function ouvrir(){
         '<p class="cv-note">Ton surnom et ta couleur ne servent que pour cette séance ; rien n’est gardé après.</p>' +
       '</div>' +
       '<p class="cv-code" hidden></p>' +
+      '<div class="cv-balise" hidden><button type="button" class="cv-btn">📡 Lancer une balise</button><small>Un message dans le Discord de la classe : ton surnom, cet atelier et un lien pour te rejoindre.</small></div>' +
       '<p class="cv-etat" aria-live="polite"></p>' +
       '<div class="cv-demande" hidden></div>' +
       '<div class="cv-actions"><button type="button" class="cv-btn cv-annuler">Annuler</button><button type="button" class="cv-btn plein cv-go">Créer et attendre</button></div>' +
@@ -13332,6 +13342,7 @@ function ouvrir(){
   });
   $('.cv-code-in', v).addEventListener('input', e => { const c = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); e.target.value = c.length > 3 ? c.slice(0, 3) + '-' + c.slice(3) : c; });
   $('.cv-annuler', v).addEventListener('click', () => quitter());
+  $('.cv-balise button', v).addEventListener('click', e => lancerBalise(e.currentTarget, $('.cv-balise small', v)));
   $('.cv-go', v).addEventListener('click', async () => {
     S.nom = propre(nomIn.value, 24) || 'Photon'; S.raie = raie;
     try{ sessionStorage.setItem(P + '-cv-nom', S.nom); }catch(e){}
@@ -13344,13 +13355,65 @@ function ouvrir(){
     $('.cv-choix', v).hidden = true; $('.cv-go', v).hidden = true;
     v.classList.add('pousse');
     Rac.demarrer($('canvas', v), couleur(S.raie));
-    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à qui veut converger. Ta racine cherche les autres.'); }
+    if(mode === 'creer'){ $('.cv-code', v).hidden = false; $('.cv-code', v).textContent = code.slice(0, 3) + '-' + code.slice(3); etatVoile('Donne ce code à qui veut converger. Ta racine cherche les autres.'); $('.cv-balise', v).hidden = !balisePossible(); }
     else etatVoile('Recherche de la séance…');
     const ok = await entrer(mode === 'creer' ? 'hote' : 'invite', code);
     if(ok && mode !== 'creer') setTimeout(() => { if(voile === v && S.role === 'invite' && !S.porte) etatVoile('Toujours personne : vérifie le code, et que l’hôte a bien ouvert la séance sur ce même atelier.'); }, 9000);
   });
   v.addEventListener('keydown', e => { if(e.key === 'Escape') quitter(); e.stopPropagation(); });
   setTimeout(() => $('.cv-go', v).focus({preventScroll:true}), 30);
+}
+
+/* ---------- la balise : « je cherche un·e partenaire d'étude », dans le Discord de la classe ---------- */
+function balisePossible(){
+  if(dansClaude() || !/^https?:$/.test(location.protocol)) return false;
+  let essai = false; try{ essai = localStorage.getItem('lumiere-balise-essai') === '1'; }catch(e){}
+  return BALISE_POUR_TOUS || essai;
+}
+/* le code de la classe et l'identifiant d'appareil, là où le tuteur les garde (le lien de la classe les y a mis) */
+function codeClasse(){ return memo.get(P + '-claude-classe') || memo.get('lumiere-claude-classe') || ''; }
+function idAppareil(){
+  let id = memo.get('lumiere-appareil');
+  if(!id){ id = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/[^\w-]/g, ''); memo.set('lumiere-appareil', id); }
+  return id;
+}
+async function lancerBalise(b, note){
+  const dire = t => { if(note) note.textContent = t; else toast(t); };
+  const reste = BALISE_ATTENTE - (Date.now() - (+memo.get(CLE_BALISE) || 0));
+  if(reste > 0){ dire('Une balise toutes les 10 minutes : la prochaine dans ' + Math.ceil(reste / 60000) + ' min.'); return; }
+  const classe = codeClasse();
+  if(!classe){ dire('Pour lancer une balise, ouvre d’abord une fois le lien de la classe sur cet appareil (le même qui active le tuteur).'); return; }
+  if(!/^[A-Z0-9]{6}$/.test(S.code || '')) return;
+  b.disabled = true; dire('Envoi de la balise…');
+  try{
+    const r = await fetch(RELAIS_BALISE, {method:'POST', headers:{'content-type':'application/json', 'x-api-key':classe, 'x-lumiere-appareil':idAppareil()},
+      body:JSON.stringify({nom:S.nom, code:S.code, page:location.pathname.split('/').pop() || ''})});
+    let j = null; try{ j = await r.json(); }catch(e){}
+    if(r.ok){
+      memo.set(CLE_BALISE, String(Date.now()));
+      b.textContent = '📡 Balise envoyée ✓';
+      dire('Balise envoyée ✓ Le Discord de la classe sait que tu cherches quelqu’un ; le lien mène directement à ta séance.');
+      return;
+    }
+    dire((j && j.error && j.error.message) || 'La balise n’est pas partie (' + r.status + ').');
+  }catch(e){ dire('La balise n’est pas partie : vérifie ta connexion.'); }
+  b.disabled = false;
+}
+/* le lien d'une balise (#rejoindre=K7MQX4) ouvre « Rejoindre », le code déjà écrit ; #balise-essai montre la balise sur cet appareil */
+function lireLienBalise(){
+  const h = location.hash || '';
+  if(/(^#|&)balise-essai(&|$)/.test(h)){ try{ localStorage.setItem('lumiere-balise-essai', '1'); }catch(e){} }
+  const m = h.match(/(?:^#|&)rejoindre=([A-Za-z0-9-]{6,7})(?:&|$)/);
+  if(/(^#|&)(balise-essai|rejoindre=)/.test(h)){ try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){} }
+  return m ? m[1].toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6) : '';
+}
+function ouvrirRejoindre(code){
+  if(S.etat !== 'repos' || code.length !== 6) return;
+  ouvrir(); if(!voile) return;
+  const t = $('.cv-onglets [data-o="rejoindre"]', voile); if(t) t.click();
+  const i = $('.cv-code-in', voile); if(i) i.value = code.slice(0, 3) + '-' + code.slice(3);
+  etatVoile('Choisis ton surnom et ta couleur, puis « Rejoindre ».');
+  const n = $('.cv-nom', voile); if(n) n.focus({preventScroll:true});
 }
 
 /* ---------- les demandes : dans le voile tant que l'hôte attend, puis une petite carte sur la page ---------- */
@@ -13528,6 +13591,7 @@ function ouvrirGpop(ancre){
     else if(g === 'demande') basculerPorte(false);
     else if(g === 'office') basculerPorte(true);
     else if(g === 'tuteur') suivreTuteur(b.dataset.u || '');
+    else if(g === 'balise') lancerBalise(b, null);
     else if(g === 'copier'){
       const c = S.code.slice(0, 3) + '-' + S.code.slice(3);
       (navigator.clipboard ? navigator.clipboard.writeText(c) : Promise.reject()).then(() => toast('Code copié : ' + c + '.'), () => toast('Le code de la séance : ' + c + '.'));
@@ -13559,7 +13623,8 @@ function majGpop(){
   const ligne = (u, parti) => '<li' + (parti ? ' class="parti"' : '') + '><i class="cv-pt" style="--c:' + couleur(raieU(u)) + '"></i><b>' + esc(nomU(u)) + '</b><small>' +
     esc(parti ? 'parti·e' : [ou(u), fiche(u).role === 'hote' ? 'hôte' : u === pilote ? 'accueille' : '', pret(u) ? 'prêt·e ✓' : '', tut(u)].filter(Boolean).join(' · ')) + '</small></li>';
   let h = '<p class="lib">Convergence · ' + tous.length + '</p>' +
-    '<p class="cv-gcode">Code <b>' + esc(S.code.slice(0, 3) + '-' + S.code.slice(3)) + '</b><button type="button" class="btn" data-g="copier">Copier</button><small>pour inviter quelqu’un</small></p>' +
+    '<p class="cv-gcode">Code <b>' + esc(S.code.slice(0, 3) + '-' + S.code.slice(3)) + '</b><button type="button" class="btn" data-g="copier">Copier</button>' +
+      (balisePossible() ? '<button type="button" class="btn" data-g="balise" title="Un message dans le Discord de la classe, avec un lien pour te rejoindre">📡 Balise</button>' : '') + '<small>pour inviter quelqu’un</small></p>' +
     '<ul class="cv-gl">' + tous.map(u => ligne(u, false)).join('') + partis.map(u => ligne(u, true)).join('') + '</ul>';
   if(estPilote()) h += '<div class="cv-gsec"><p>Nouveaux venus</p><div class="cv-seg">' +
     '<button type="button" class="btn" data-g="demande" aria-pressed="' + !S.ouvert + '">Sur demande</button>' +
@@ -14070,8 +14135,10 @@ function demarrer(){
   if(typeof Arene !== 'undefined' && Arene.ecouterGroupe) Arene.ecouterGroupe(surArene);
   if(typeof Tableau !== 'undefined') Tableau.ecouter(ev => { if(S.etat !== 'lie') return; if(ev.type === 'ouvert') publier(); else majBarre(); });
   if(dansClaude()) return;
+  const lien = lireLienBalise();
+  window.addEventListener('hashchange', () => { const c = lireLienBalise(); if(c) ouvrirRejoindre(c); });
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
-  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)) return;
+  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)){ if(lien) setTimeout(() => ouvrirRejoindre(lien), 400); return; }
   let ms = s.membres && typeof s.membres === 'object' ? s.membres : null;
   if(!ms && typeof s.part === 'string' && s.part) ms = {[s.part]:{nom:s.pNom, raie:s.pRaie}};      // une séance de la version à deux
   if(!ms || !Object.keys(ms).length) return;
@@ -14336,7 +14403,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'd71e5096716f';
+  const ICI = '6866eab083ba';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
