@@ -12645,6 +12645,132 @@ function demarrer(){
 return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0};
 })();
 
+/* ====== _commun/nouveautes.js ====== */
+/* ======================================================================
+   « Quoi de neuf ? » : le journal des nouveautés, écrit pour les étudiants.
+   Un petit bouton dans le coin (en bas à gauche) montre un point quand il
+   y a du nouveau ; il ouvre la liste, la plus récente en haut. Une seule
+   liste pour tout le site : chaque entrée dit pour quelles pages elle
+   compte ('*' = tous les ateliers ; sinon leurs préfixes). La page
+   d'accueil du site les montre toutes, avec le nom de l'atelier.
+   Le module ne dépend de rien d'autre (la page d'accueil le reçoit seul,
+   par Lumiere/construire.py) ; son style est le sien.
+
+   ÉCRIRE UNE ENTRÉE (à chaque « push it », avant de construire le site) :
+   - une date, une ou deux phrases courtes, en français, avec « tu » ;
+   - ce que l'étudiant peut faire maintenant, et où le trouver ;
+   - aucun mot technique (pas de « moteur », « synchro », « artefact »,
+     « commit », « bug ») ; une correction n'entre que si on l'a remarquée.
+   ====================================================================== */
+const Nouveautes = (() => {
+  const LISTE = [
+    {d:'2026-10-31', p:['*'], t:'Nouveau : ce bouton « Quoi de neuf ? ». Il te montre ce qui a été ajouté et quand, avec un chiffre quand il y a du nouveau depuis ta dernière visite.'},
+    {d:'2026-10-31', p:['*'], t:'Étudie l’Arène à plusieurs : pendant une séance Convergence, appuie sur « À plusieurs » dans l’Arène. Tout le monde a la même question, chacun répond seul, puis vous comparez vos réponses.'},
+    {d:'2026-10-31', p:['*'], t:'Tu bloques dans l’Arène ? « Un indice » demande au tuteur une piste, sans la réponse. Après chaque réponse, « Demander au tuteur » t’explique pourquoi.'},
+    {d:'2026-10-31', p:['*'], t:'En entrant dans un nouveau bloc de l’Arène, « Le plan du bloc » te montre les questions qui s’en viennent. Tu peux aussi lire l’écran d’abord.'},
+    {d:'2026-10-31', p:['adm-m07'], t:'Nouveau : « Au comptoir », pour pratiquer les rendez-vous et la facturation de l’examen du 23 novembre. C’est la partie 6 de l’atelier, avec l’aide-mémoire OHIP à portée de main.'},
+    {d:'2026-10-31', p:['adm-m07'], t:'« À toi » sur la croix torique et l’axe oblique : des Rx toujours nouvelles, jusqu’à trois justes de suite. Si tu te trompes, l’atelier te dit quelle erreur tu as faite.'},
+    {d:'2026-10-31', p:['to-m56'], t:'« À toi » sur la puissance de la cornée, les méridiens et l’écriture Optosys, avec des nombres toujours nouveaux. Si tu te trompes, l’atelier te dit quelle erreur tu as faite.'},
+    {d:'2026-10-31', p:['anat-m6'], t:'« Les planches, de mémoire » sur l’écran des glandes : tape le nom de chaque repère, sans choix de réponses. Sur l’écran du film lacrymal, devine ce qui arrive quand une glande ne fait plus son travail.'},
+    {d:'2026-10-31', p:['to-m56', 'anat-m6', 'adm-m07'], t:'L’Arène suit maintenant l’ordre du cours : un bloc s’ouvre quand ses bases sont acquises à 70 %.'},
+    {d:'2026-10-31', p:['*'], t:'Ta progression ne s’efface plus quand tu ouvres un atelier sur un nouvel appareil.'},
+    {d:'2026-10-30', p:['*'], t:'Nouveau : l’Arène, à côté de Convergence. Tout l’atelier en questions, des bases jusqu’au sommet, jusqu’à 100 %. Reviens quand tu veux : rien ne se perd.'},
+    {d:'2026-10-30', p:['opt-ua2'], t:'Le Banc montre d’abord l’essentiel de chaque écran. « Tout voir » ouvre le reste.'},
+    {d:'2026-10-30', p:['opt-ua2'], t:'« À toi » après chaque formule du module 7 : pratique avec des nombres toujours nouveaux, avec de l’aide si tu bloques.'},
+    {d:'2026-10-30', p:['*'], t:'Le tableau : un tableau blanc par écran, pour dessiner et écrire ensemble pendant une séance Convergence.'},
+    {d:'2026-10-30', p:['*'], t:'Pendant une séance, « Cocher » pose une coche de ta couleur sur ce que tu as compris, et un petit œil montre où lisent les autres.'},
+    {d:'2026-10-30', p:['anat-m6'], t:'Le module 7 est arrivé : la cornée, le limbe et la sclère, le cristallin, le vitré.'},
+    {d:'2026-10-29', p:['*'], t:'Convergence accueille maintenant jusqu’à 32 personnes dans la même séance.'},
+    {d:'2026-10-28', p:['*'], t:'Convergence : étudie avec d’autres en même temps. Une personne crée la séance, les autres entrent son code.'},
+    {d:'2026-10-28', p:['*'], t:'Bienvenue dans Lumière : les ateliers de l’UA2 au même endroit (Banc d’optique, Anatomie, Tests ophtalmiques, Bureau).'}
+  ];
+  const OU = {'opt-ua2':'Banc d’optique', 'anat-m6':'Atelier Anatomie', 'to-m56':'Atelier Tests ophtalmiques', 'adm-m07':'Atelier Bureau'};
+  const MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  const ici = typeof ATELIER !== 'undefined' && ATELIER && typeof ATELIER.prefixe === 'string' ? ATELIER.prefixe : 'accueil';
+  const K = 'lumiere-nouveautes-vus-' + ici;
+  const cle = e => e.d + ':' + e.t.slice(0, 40);
+  const pourIci = e => ici === 'accueil' || e.p.includes('*') || e.p.includes(ici);
+  const date = d => { const [a, m, j] = d.split('-').map(Number); return j + ' ' + MOIS[m - 1] + (a !== 2026 ? ' ' + a : ''); };
+  const esc = s => String(s).split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
+  function vus(){ try{ const v = JSON.parse(localStorage.getItem(K) || '[]'); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+  function noter(l){ try{ localStorage.setItem(K, JSON.stringify(l.slice(-120))); }catch(e){} }
+  const liste = () => LISTE.filter(pourIci).sort((x, y) => y.d.localeCompare(x.d));
+  const nonLues = () => { const v = new Set(vus()); return liste().filter(e => !v.has(cle(e))); };
+
+  const CSS = `
+.qdn-btn{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;
+  display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:1px solid var(--line,#2A3450);
+  background:var(--panel,#0A0E18);color:var(--ink,#F3F5FB);font:600 13px/1.2 system-ui,-apple-system,sans-serif;cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.qdn-btn:hover,.qdn-btn[aria-expanded="true"]{border-color:var(--accent,#FFD23F)}
+.qdn-btn:focus-visible{outline:2px solid var(--accent,#FFD23F);outline-offset:2px}
+.qdn-etoile{color:var(--accent,#FFD23F)}
+.qdn-n{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent,#FFD23F);color:var(--on-accent,#05070D);
+  font-size:11.5px;font-weight:800;display:inline-grid;place-items:center}
+.qdn-n[hidden]{display:none}
+.qdn-pan{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:61;
+  width:min(380px,calc(100vw - 28px));max-height:min(64vh,560px);overflow:auto;padding:14px 16px 12px;border-radius:14px;
+  border:1px solid var(--line,#2A3450);border-top:3px solid var(--accent,#FFD23F);background:var(--panel,#0A0E18);color:var(--ink,#F3F5FB);
+  box-shadow:0 14px 36px rgba(0,0,0,.3);font:14.5px/1.5 system-ui,-apple-system,sans-serif}
+.qdn-pan[hidden]{display:none}
+.qdn-tete{display:flex;align-items:center;gap:8px;margin:0 0 4px}
+.qdn-tete h2{flex:1;margin:0;font-size:17px;line-height:1.3}
+.qdn-x{border:1px solid var(--line,#2A3450);background:transparent;color:inherit;border-radius:999px;width:30px;height:30px;font-size:15px;cursor:pointer}
+.qdn-sous{margin:0 0 10px;font-size:13px;color:var(--ink-2,#AEB7C9)}
+.qdn-l{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.qdn-l li{padding-left:10px;border-left:2px solid var(--line,#2A3450)}
+.qdn-l li.neuf{border-left-color:var(--accent,#FFD23F)}
+.qdn-d{display:block;font-size:12.5px;font-weight:700;color:var(--ink-2,#AEB7C9)}
+.qdn-ou{font-weight:700}
+.qdn-tag{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--accent,#FFD23F);color:var(--on-accent,#05070D);font-size:11px;font-weight:800}
+@media (min-width:900px){ .rail{padding-bottom:64px} }
+@media (max-width:600px){ .qdn-mot{display:none} .qdn-btn{padding:8px 10px} }
+@media (max-width:899px){ body:has(.avec-tuteur) .qdn-btn,body:has(.avec-notes) .qdn-btn{display:none} }
+body.ar-ouverte .qdn-btn{display:none}
+@media print{ .qdn-btn,.qdn-pan{display:none} }`;
+
+  let btn = null, pan = null;
+  function majBouton(){
+    if(!btn) return;
+    const n = nonLues().length, b = $q('.qdn-n', btn);
+    b.hidden = !n; b.textContent = n > 9 ? '9+' : String(n);
+    btn.setAttribute('aria-label', 'Quoi de neuf ?' + (n ? ' ' + n + (n > 1 ? ' nouveautés' : ' nouveauté') : ''));
+  }
+  const $q = (s, r) => (r || document).querySelector(s);
+  function ouvrir(){
+    const nouv = new Set(nonLues().map(cle));
+    $q('.qdn-l', pan).innerHTML = liste().map(e => {
+      const ou = ici === 'accueil' && !e.p.includes('*') ? e.p.map(x => OU[x]).filter(Boolean).join(', ') : '';
+      return '<li' + (nouv.has(cle(e)) ? ' class="neuf"' : '') + '><span class="qdn-d">' + esc(date(e.d)) + (nouv.has(cle(e)) ? '<span class="qdn-tag">nouveau</span>' : '') + '</span>' +
+        (ou ? '<span class="qdn-ou">' + esc(ou) + ' · </span>' : '') + esc(e.t) + '</li>';
+    }).join('');
+    pan.hidden = false; btn.setAttribute('aria-expanded', 'true');
+    noter(vus().concat(liste().map(cle)).filter((x, i, a) => a.indexOf(x) === i));
+    majBouton();
+    $q('h2', pan).focus({preventScroll:true});
+  }
+  function fermer(rendre){ if(!pan || pan.hidden) return; pan.hidden = true; btn.setAttribute('aria-expanded', 'false'); if(rendre) btn.focus({preventScroll:true}); }
+  function demarrer(){
+    if(btn || !liste().length) return;
+    const st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
+    btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'qdn-btn'; btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', 'qdn-pan');
+    btn.innerHTML = '<span class="qdn-etoile" aria-hidden="true">✦</span><span class="qdn-mot">Quoi de neuf ?</span><span class="qdn-n" hidden></span>';
+    btn.title = 'Ce qui a été ajouté, et quand';
+    pan = document.createElement('section');
+    pan.className = 'qdn-pan'; pan.id = 'qdn-pan'; pan.hidden = true; pan.setAttribute('role', 'dialog'); pan.setAttribute('aria-label', 'Quoi de neuf ?');
+    pan.innerHTML = '<div class="qdn-tete"><h2 tabindex="-1">Quoi de neuf ?</h2><button type="button" class="qdn-x" aria-label="Fermer">✕</button></div>' +
+      '<p class="qdn-sous">Ce qui a été ajouté' + (ici === 'accueil' ? ' aux pages d’étude' : ' à cet atelier') + ', le plus récent en haut.</p><ol class="qdn-l"></ol>';
+    document.body.appendChild(pan); document.body.appendChild(btn);
+    btn.addEventListener('click', () => { if(pan.hidden) ouvrir(); else fermer(true); });
+    $q('.qdn-x', pan).addEventListener('click', () => fermer(true));
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !pan.hidden){ e.stopPropagation(); fermer(true); } }, true);
+    document.addEventListener('pointerdown', e => { if(!pan.hidden && !pan.contains(e.target) && !btn.contains(e.target)) fermer(false); }, true);
+    majBouton();
+  }
+  return {demarrer, liste:() => LISTE.slice()};
+})();
+
 /* ====== _commun/demarrage.js ====== */
 /* ======================================================================
    Démarrage commun
@@ -12745,6 +12871,7 @@ function demarrer(){
 
   /* modules v2 */
   Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer(); Arene.demarrer(); Essentiel.demarrer();
+  try{ Nouveautes.demarrer(); }catch(e){ console.error(e); }
 
   lierNotes(document);
   majIndicateurs();
@@ -12759,7 +12886,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '77736f13bf75';
+  const ICI = 'd71e5096716f';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
