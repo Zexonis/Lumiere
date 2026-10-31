@@ -2926,8 +2926,11 @@ const CARTES2 = [
      const sd = (x, d) => (x > 1e-9 ? '+' : x < -1e-9 ? '−' : '') + Math.abs(x).toFixed(d).replace('.', ',');
      const L = pick([21.5, 22, 22.5, 23, 23.5, 24.5, 25, 25.5, 26, 26.5]);
      const dL = L - 24, corr = -3 * dL;
+     /* les erreurs : le signe inversé, le bon nombre avec le mauvais type, le × 3 oublié (la longueur seule), un dixième */
+     const type = corr < 0 ? 'myope' : 'hypermétrope', autre = corr < 0 ? 'hypermétrope' : 'myope', ecr = (x, ty) => sd(x, 2) + ' D, ' + ty;
+     const faux = [ecr(-corr, autre), ecr(corr, autre), ecr(corr / 3, type), ecr(corr / 10, type)].filter((x, i, a) => x !== ecr(corr, type) && a.indexOf(x) === i).slice(0, 3);
      return {q:'Un œil emmétrope de 24 mm mesure maintenant ' + v(L, 1) + ' mm, sans avoir changé de puissance. Quelle correction lui faut-il environ, avec son signe, en D ?',
-             r:sd(corr, 2) + ' D, ' + (corr < 0 ? 'myope' : 'hypermétrope') + ' (' + sd(dL, 1) + ' mm × 3,00 D par mm)', tol:0.01};
+             r:sd(corr, 2) + ' D, ' + (corr < 0 ? 'myope' : 'hypermétrope') + ' (' + sd(dL, 1) + ' mm × 3,00 D par mm)', tol:0.01, faux};
    }, src:['M6 D36', 'M6 D37']},
   {id:'c-causes-03', type:'discrim', pas:['causes.2', 'causes.4'], q:'Une myopie vient d’une cornée trop cambrée. Qu’est-ce qui a changé dans l’œil ?',
    choix:['sa puissance : une cause cornéenne', 'sa longueur : une cause axiale'], bonne:0,
@@ -3133,8 +3136,13 @@ const CARTES2 = [
      const R = pick([-0.5, -1, -1.25, -1.5, -2, -2.5, -3, -4, -4.5, -5, 2, 2.5, 4, 5]);
      const cm = 100 / Math.abs(R), cote = R < 0 ? 'devant' : 'derrière';
      const ent = Math.abs(cm - Math.round(cm)) < 1e-9;
+     /* les erreurs : le mauvais côté, R non inversé (en cm), un glissement cm / m (÷ 10), le double */
+     const fx = x => v(x, Math.abs(x - Math.round(x)) < 1e-9 ? 0 : Math.abs(x * 10 - Math.round(x * 10)) < 1e-9 ? 1 : 2), autre = R < 0 ? 'derrière' : 'devant';
+     const bonTxt = v(cm, Math.abs(cm - Math.round(cm)) < 1e-9 ? 0 : 1) + ' cm ' + cote;
+     const faux = [v(cm, Math.abs(cm - Math.round(cm)) < 1e-9 ? 0 : 1) + ' cm ' + autre, fx(Math.abs(R)) + ' cm ' + cote, fx(cm / 10) + ' cm ' + cote, fx(cm * 2) + ' cm ' + cote]
+       .filter((x, i, a) => x !== bonTxt && a.indexOf(x) === i).slice(0, 3);
      return {q:'Un œil non corrigé a une erreur R = ' + sd(R, 2) + ' D. Où est son Pr : à combien de cm, devant ou derrière l’œil ?',
-             r:v(cm, ent ? 0 : 1) + ' cm ' + cote + ' (Pr = 1 / ' + sd(R, 2) + ' = ' + sd(1 / R, 3) + ' m)', tol:0.15};
+             r:v(cm, ent ? 0 : 1) + ' cm ' + cote + ' (Pr = 1 / ' + sd(R, 2) + ' = ' + sd(1 / R, 3) + ' m)', tol:0.15, faux};
    }, src:['M7 D23', 'M7 D37', 'M7 C3']},
   {id:'c-pr-04', type:'discrim', pas:['pr.3', 'pr.4'], q:'Un Pr réel, devant l’œil, écrit avec un signe négatif : c’est celui…',
    choix:['du myope', 'de l’hypermétrope', 'de l’emmétrope'], bonne:0,
@@ -3231,8 +3239,11 @@ const CARTES2 = [
      const sd = (x, d) => (x > 1e-9 ? '+' : x < -1e-9 ? '−' : '') + Math.abs(x).toFixed(d).replace('.', ',');
      let Am, loin, add, pres;
      do { Am = pick([0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]); loin = (Math.floor(Math.random() * 37) - 20) / 4; add = 2.5 - Am / 2; pres = loin + add; } while (Math.abs(loin) < 1e-9 || Math.abs(pres) < 1e-9);
+     /* les erreurs : toute l'amplitude au lieu de la moitié, l'addition soustraite, l'addition seule comme lunettes de lecture, l'addition de 2,50 sans tenir compte de l'amplitude */
+     const ecr = (a, p) => sd(a, 2) + ' puis ' + sd(p, 2) + ' D', add2 = 2.5 - Am;
+     const faux = [ecr(add2, loin + add2), ecr(add, loin - add), ecr(add, add), ecr(2.5, loin + 2.5)].filter((x, i, a) => x !== ecr(add, pres) && a.indexOf(x) === i).slice(0, 3);
      return {q:'Correction de loin ' + sd(loin, 2) + ' OU, amplitude ' + v(Am, 2) + ' D, lecture à 40 cm en gardant la moitié de l’amplitude en réserve. Donne l’addition, puis les lunettes de lecture.',
-             r:sd(add, 2) + ' puis ' + sd(pres, 2) + ' D (Add = 2,50 − 0,5 × ' + v(Am, 2) + ' ; ' + sd(loin, 2) + ' + ' + v(add, 2) + ')', tol:0.01};
+             r:sd(add, 2) + ' puis ' + sd(pres, 2) + ' D (Add = 2,50 − 0,5 × ' + v(Am, 2) + ' ; ' + sd(loin, 2) + ' + ' + v(add, 2) + ')', tol:0.01, faux};
    }, src:['M7 D5', 'M7 D6', 'M7 C7']},
   {id:'c-correction-03', type:'discrim', pas:['correction.5', 'correction.4'], q:'Myope de −3,00, add +2,50 : ses lunettes de lecture font…',
    choix:['−0,50', '+2,50', '−5,50'], bonne:0,
@@ -14373,7 +14384,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '4df3048d9290';
+  const ICI = '9817c9db25d6';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
