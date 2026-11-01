@@ -1,0 +1,1484 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diapos TO M5–M6</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos TO M5–M6 : le « Survol » de Tests ophtalmiques (SAN 0010), modules 5 et 6 (1er nov. 2026).
+  Contenu : uniquement Guides/UA2-Tests-Ophtalmiques/distilled/to-m05_distilled.md et to-m06_distilled.md (nombres
+  vérifiés par script là-bas) ; l'ordre et l'insistance suivent analyse/to-profil.md, to-m05_kc.md et to-m06_kc.md.
+  Valeurs déduites, signalées sur leur diapo : la puissance de près +1,75 (diapos 15 et 18) et l'écart de 0,75 D
+  (diapo 18), calculés avec la règle de l'Optique « près = loin + addition », que le cours de TO n'écrit pas.
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; aucune
+  citation de source ni point en attente; un seul bouton utile : Suite. Code couleur constant :
+  orange = cambré · petit rayon · plus de dioptries (le rouge du topographe)
+  cyan = plat · grand rayon · moins de dioptries (le bleu du topographe)   violet = ce que l'assistant note et signale.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un banc d'optique la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --myo: #56d3ea;
+  --hyp: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.myo { color: var(--myo); }
+.hyp { color: var(--hyp); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barres (budgets en dioptries) ---- */
+.barres { display: grid; gap: 12px; min-width: 0; }
+.titre-fig { margin: 0; font-size: var(--t-s); font-weight: 700; color: var(--doux); }
+.barre { display: grid; grid-template-columns: minmax(7.5em, max-content) minmax(0, 1fr) 3.4em; gap: 10px; align-items: center; }
+.barre .nom { font-size: var(--t-s); }
+.piste { position: relative; display: flex; height: 26px; border-radius: 6px; background: var(--fond-2); box-shadow: inset 0 0 0 1px var(--trait); }
+.piste i { display: block; height: 100%; width: calc(var(--w) / var(--max) * 100%); background: var(--c); }
+.piste i:first-child { border-radius: 6px 0 0 6px; }
+.piste i.raye, .legende .raye::before { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 8px); box-shadow: inset 0 0 0 1.5px var(--c); }
+.barres.repere .piste::after { content: ""; position: absolute; top: -5px; bottom: -5px; left: calc(var(--m) / var(--max) * 100%); border-left: 2px dashed var(--encre); }
+.barre .val { font-family: var(--f-chiffre); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.legende { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--t-xs); color: var(--doux); }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende span::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+@media (max-width: 520px) {
+  .barre { grid-template-columns: minmax(0, 1fr) 3.2em; gap: 4px 10px; }
+  .barre .nom { grid-column: 1 / -1; }
+}
+
+/* ---- yeux en rangées (amétropies) ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- lentille dans l'air / dans l'eau ---- */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.carte-eau { margin: 0; padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.carte-eau figcaption { font-weight: 700; }
+.carte-eau svg { display: block; width: 100%; height: auto; }
+.carte-eau dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; margin: 0; font-size: var(--t-s); }
+.carte-eau dt { color: var(--doux); }
+.carte-eau dd { margin: 0; font-family: var(--f-chiffre); text-align: right; }
+.carte-eau .total { font-weight: 700; color: var(--encre); font-size: var(--t-m); }
+
+/* ---- définitions Pr / Pp ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- les quatre questions ---- */
+.questions { list-style: none; margin: 0; padding: 0; counter-reset: q; display: grid; gap: 12px; }
+@media (min-width: 880px) { .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.questions li { counter-increment: q; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 4px 12px; padding: 12px 14px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); }
+.questions li::before { content: counter(q); grid-row: span 2; font-family: var(--f-titre); font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--doux); }
+.questions .q { margin: 0; font-weight: 700; }
+.questions .r { margin: 0; color: var(--doux); font-size: var(--t-s); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-myo { --c: var(--myo); } .c-hyp { --c: var(--hyp); } .c-emm { --c: var(--encre); } .c-aide { --c: var(--aide); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--encre); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .zone { fill: var(--c); fill-opacity: .3; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 3; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.6; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .virtuel { stroke-dasharray: 4 5; stroke-width: 1.8; }
+svg .verre { fill: var(--c); fill-opacity: .18; stroke: var(--c); stroke-width: 2; }
+svg .barre-d { fill: var(--encre); }
+svg .palier-fond { fill: var(--fond-2); }
+svg .palier { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .courbe { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .pt-courbe { fill: var(--encre); }
+svg .bande { fill: var(--aide); fill-opacity: .12; }
+svg .muscle { fill: var(--retine); fill-opacity: .85; }
+svg .zonule { fill: none; stroke: var(--doux); stroke-width: 1.6; }
+svg .eau { fill: var(--doux); fill-opacity: .22; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-to-m5-m6.html" title="Retour à l'atelier TO M5–M6">← Atelier TO</a>
+      <p class="marque">TO M5–M6 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 22</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Tests ophtalmiques · SAN 0010 · modules 5 et 6</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Mesurer la cornée, les lunettes et la rétine</h1>
+            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">22 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-hyp">cambré · petit rayon · plus de dioptries (le rouge du topographe)</li>
+              <li class="c-myo">plat · grand rayon · moins de dioptries (le bleu du topographe)</li>
+              <li class="c-aide">ce que l'assistant note et signale</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="carte-couverture" aria-label="Une carte de topographie : orange en haut et en bas, cambré ; cyan à gauche et à droite, plat"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Quatre appareils, un seul rôle&nbsp;: mesurer, transcrire, signaler</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="appareils" aria-label="Un œil et ses lunettes : le lentimètre lit les lunettes, le kératomètre le centre de la cornée, le topographe toute la cornée, l'OCT la rétine"></figure>
+          <div class="texte">
+            <p class="sous">Ce que lit chaque appareil&nbsp;:</p>
+            <ol class="trois">
+              <li><b>Kératomètre</b>&nbsp;: la courbure du centre de la cornée. <span>module 5</span></li>
+              <li><b>Topographe</b>&nbsp;: une carte de toute la cornée. <span>module 5</span></li>
+              <li><b>Lentimètre</b>&nbsp;: les lunettes que le patient porte. <span>module 6</span></li>
+              <li><b>OCT</b>&nbsp;: les couches de la rétine. <span>module 6</span></li>
+            </ol>
+            <p>Et le <b>kératocône</b>, au module 6&nbsp;: une maladie de la cornée que ces mesures aident à dépister.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>L'assistant mesure, transcrit et <b class="aide">signale</b>. Il ne pose pas le diagnostic.</p>
+      </div>
+    </section>
+
+    <!-- 3 · le miroir -->
+    <section class="diapo" id="d3" data-acte="kerato" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La kératométrie</p>
+        <h2>La cornée est un miroir&nbsp;: plus elle est bombée, plus le reflet est petit</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="miroirs" aria-label="Deux cornées : la plus bombée a un petit rayon et un petit reflet ; la plus plate, un grand rayon et un grand reflet"></figure>
+          <div class="texte">
+            <p>On ne touche pas la cornée&nbsp;: on mesure son <b>reflet</b>. «&nbsp;La cornée agit comme un miroir convexe&nbsp;». Comme avec une cuillère&nbsp;: plus la surface est bombée, plus l'image est petite.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le kératomètre envoie des <b>mires</b> lumineuses vers la cornée.</span></li>
+              <li data-pas="2"><span>La cornée les <b>réfléchit</b>.</span></li>
+              <li data-pas="3"><span>Il mesure la <b>taille du reflet</b>.</span></li>
+              <li data-pas="4"><span>Il en calcule le <b>rayon de courbure</b>, r.</span></li>
+            </ol>
+            <p class="note">En haut, la cornée de profil&nbsp;; en bas, de face, avec le reflet des mires.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Petit reflet = petit rayon = cornée bombée.</p>
+      </div>
+    </section>
+
+    <!-- 4 · rayon et puissance -->
+    <section class="diapo" id="d4" data-acte="kerato" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La kératométrie</p>
+        <h2>Petit rayon, grande puissance</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="puissance" aria-label="La puissance selon le rayon : plus le rayon est petit, plus la puissance est grande. 8,0 mm donne 42,2 D ; 44,4 D vient de 7,60 mm"></figure>
+          <div class="texte">
+            <p class="formule">D = (1,3375 − 1) / r</p>
+            <p class="note">r en mètres · 1,3375&nbsp;: un indice fictif, qui sert à calibrer les kératomètres</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>r = 8,0&nbsp;mm = <b>0,0080&nbsp;m</b>.</span></li>
+              <li data-pas="2"><span>D = 0,3375 / 0,0080 = <b>42,2&nbsp;D</b>.</span></li>
+              <li data-pas="3"><span>À l'envers&nbsp;: 44,4&nbsp;D → r = 0,3375 / 44,4 = 0,00760&nbsp;m = <b>7,60&nbsp;mm</b>.</span></li>
+            </ol>
+            <p>Une cornée moyenne fait environ <b>43&nbsp;D</b>, de 35 à 50&nbsp;D&nbsp;: à peu près les 2/3 de la puissance de l'œil.</p>
+            <p class="piege"><b>Piège</b>Avec 8,0 au lieu de 0,0080, on obtient 0,04&nbsp;D. Convertis en mètres d'abord.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span><b class="hyp">Cambré</b>&nbsp;: petit rayon, plus de dioptries. <b class="myo">Plat</b>&nbsp;: grand rayon, moins.</p>
+      </div>
+    </section>
+
+    <!-- 5 · deux méridiens -->
+    <section class="diapo" id="d5" data-acte="kerato" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La kératométrie</p>
+        <h2>Une cornée astigmate a deux méridiens&nbsp;: un cambré, un plat</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="meridiens" aria-label="La cornée de face : 44,00 au méridien 90, cambré ; 42,00 au méridien 180, plat ; astigmatisme 2,00 D"></figure>
+          <div class="texte">
+            <p>Une cornée <b>sphérique</b> n'a qu'un rayon. Une cornée <b>sphérocylindrique</b> en a deux&nbsp;: «&nbsp;un petit (plus cambré) et un grand (plus plat)&nbsp;».</p>
+            <p>Un <b>K</b> par méridien&nbsp;: ici, 42,00 @ 180 et 44,00 @ 90.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le plus grand K, 44,00, est le méridien <b class="hyp">cambré</b>&nbsp;: 90.</span></li>
+              <li data-pas="2"><span>Le plus petit, 42,00, est le méridien <b class="myo">plat</b>&nbsp;: 180.</span></li>
+              <li data-pas="3"><span>Astigmatisme cornéen = 44,00 − 42,00 = <b>2,00&nbsp;D</b>.</span></li>
+              <li data-pas="4"><span>Les deux méridiens sont à 90° l'un de l'autre&nbsp;: 90 + 90 = 180.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Astigmatisme cornéen = K cambré − K plat. L'autre méridien est toujours à 90°.</p>
+      </div>
+    </section>
+
+    <!-- 6 · Optosys -->
+    <section class="diapo" id="d6" data-acte="kerato" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La kératométrie</p>
+        <h2>Optosys&nbsp;: l'horizontal d'abord, et le @ suit la 2e valeur</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="optosys" aria-label="La ligne 39.00 x 42.00 @80 : 42,00 au méridien 80, cambré ; 39,00 au méridien 170, plat ; 3,00 D"></figure>
+          <div class="texte">
+            <p>On écrit la valeur du méridien <b>horizontal</b>, puis celle du vertical&nbsp;; après le @, le méridien de la <b>2e valeur</b>. La cornée d'avant s'écrit «&nbsp;42.00x44.00@090&nbsp;».</p>
+            <p>À l'envers, Optosys affiche «&nbsp;39.00 x 42.00@80&nbsp;»&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>La 2e valeur est au méridien après le @&nbsp;: <b class="hyp">42,00 @ 80</b>.</span></li>
+              <li data-pas="2"><span>L'autre est à 90°&nbsp;: 80 + 90 = 170, donc <b class="myo">39,00 @ 170</b>.</span></li>
+              <li data-pas="3"><span>Astigmatisme = 42,00 − 39,00 = <b>3,00&nbsp;D</b>&nbsp;; le méridien cambré est à 80.</span></li>
+            </ol>
+            <p class="note">Oblique (30 à 60°, 120 à 150°)&nbsp;: deux écritures justes, «&nbsp;41x42@135&nbsp;» ou «&nbsp;42x41@045&nbsp;».</p>
+            <p class="piege"><b>Piège</b>K1 et K2 disent plat et cambré, pas horizontal et vertical.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le @ donne le méridien de la 2e valeur. L'autre est à 90°.</p>
+      </div>
+    </section>
+
+    <!-- 7 · kératomètre et topographe -->
+    <section class="diapo" id="d7" data-acte="topo" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La topographie</p>
+        <h2>Le kératomètre lit le centre&nbsp;; le topographe, toute la cornée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="zones" aria-label="La cornée à l'échelle : le kératomètre lit 2 à 3 mm au centre ; le topographe, toute la cornée, 11 à 14 mm"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b>Kératomètre</b>&nbsp;: 2 à 3&nbsp;mm au centre, et deux K. À Lumiris, il est combiné à l'auto-réfractomètre.</li>
+              <li data-pas="1"><b>Topographe</b> Medmont&nbsp;: une «&nbsp;extension du kératomètre&nbsp;». Il projette les disques de Placido et lit toute la surface, de 11 à 14&nbsp;mm.</li>
+              <li data-pas="1">Sur sa carte, on voit la symétrie et la régularité de la cornée.</li>
+            </ul>
+            <p class="note" data-pas="2">L'auto-kératomètre ne mesure pas une cornée extrêmement déformée. Le manuel prend plus de temps et repère mal les petits astigmatismes.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Kératomètre&nbsp;: deux K au centre. Topographe&nbsp;: une carte de toute la cornée.</p>
+      </div>
+    </section>
+
+    <!-- 8 · les motifs -->
+    <section class="diapo" id="d8" data-acte="topo" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La topographie</p>
+        <h2>Une carte se lit à son motif</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="motifs" aria-label="Quatre cartes : anneaux réguliers ; avec la règle, vertical cambré ; contre la règle, horizontal cambré ; irrégulier, une zone cambrée en bas"></figure>
+          <div class="texte">
+            <p>Sur l'appareil, les zones <b>rouges</b> sont cambrées, les <b>bleues</b> sont plates. Ici, le rouge est en <b class="hyp">orange</b>, le bleu en <b class="myo">cyan</b>.</p>
+            <ul class="points">
+              <li><b>Anneaux réguliers</b>&nbsp;: «&nbsp;pas d'astigmatisme cornéen apparent significatif&nbsp;».</li>
+              <li data-pas="1"><b>Avec la règle</b>&nbsp;: «&nbsp;courbure plus forte selon le méridien vertical&nbsp;».</li>
+              <li data-pas="2"><b>Contre la règle</b>&nbsp;: «&nbsp;courbure plus forte selon le méridien horizontal&nbsp;».</li>
+              <li data-pas="3"><b>Irrégulier, asymétrique</b>&nbsp;: une «&nbsp;zone de cambrure localisée&nbsp;».</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le méridien cambré décide&nbsp;: vertical, avec la règle&nbsp;; horizontal, contre la règle.</p>
+      </div>
+    </section>
+
+    <!-- 9 · aplatir -->
+    <section class="diapo" id="d9" data-acte="topo" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · La topographie</p>
+        <h2>Aplatir le centre de la cornée baisse sa puissance</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="aplatir" aria-label="Profil de la cornée : après l'orthokératologie, le centre est aplati ; la puissance passe de 43,16 à 42,23 D"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b>Laser pour la myopie</b>&nbsp;: «&nbsp;La cornée est aplatie au centre&nbsp;». Elle devient moins puissante.</li>
+              <li data-pas="1"><b>Orthokératologie</b>&nbsp;: une lentille cornéenne aplatit la cornée. La puissance passe de 43,16 à 42,23&nbsp;D, soit −0,93&nbsp;D.</li>
+              <li data-pas="2"><b>Laser pour l'hypermétropie</b>&nbsp;: l'inverse, il rend la cornée plus bombée.</li>
+            </ul>
+            <p class="note" data-pas="2">Le but de la chirurgie&nbsp;: améliorer la symétrie et la régularité optique de la cornée.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plus plat, moins de dioptries&nbsp;; plus bombé, plus de dioptries.</p>
+      </div>
+    </section>
+
+    <!-- 10 · le kératocône -->
+    <section class="diapo" id="d10" data-acte="cone" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le kératocône</p>
+        <h2>Le stroma s'amincit, et la cornée devient un cône</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cone" aria-label="Profil de la cornée : normale, d'épaisseur égale ; kératocône, amincie et bombée en cône vers le bas"></figure>
+          <div class="texte">
+            <p>Le stroma fait 90&nbsp;% de l'épaisseur de la cornée et lui donne sa rigidité. <span data-pas="1">Quand il s'amincit, la cornée se bombe en cône, surtout en bas.</span></p>
+            <p class="sous">Le kératocône, en trois points&nbsp;:</p>
+            <ol class="trois">
+              <li>une maladie <b>dégénérative non inflammatoire</b> de la cornée&nbsp;;</li>
+              <li>un <b>amincissement</b> et une <b>déformation conique</b>&nbsp;;</li>
+              <li>une <b>myopie</b> et un <b>astigmatisme irrégulier</b>, qui progressent.</li>
+            </ol>
+            <p class="note">Chez l'adolescent ou le jeune adulte. Facteurs&nbsp;: la génétique, et le frottement des yeux (allergies), lié à sa progression.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une cornée plus mince, en cône&nbsp;: myopie et astigmatisme irrégulier, qui progressent.</p>
+      </div>
+    </section>
+
+    <!-- 11 · corriger, traiter -->
+    <section class="diapo" id="d11" data-acte="cone" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le kératocône</p>
+        <h2>Quand les lunettes ne suffisent plus, la lentille rigide refait la surface</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="rigide" aria-label="Une lentille rigide sur un kératocône : une nouvelle surface régulière, du liquide entre la lentille et le cône"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Lunettes, lentilles souples</b>&nbsp;: «&nbsp;utiles au début&nbsp;», mais limitées devant un astigmatisme irrégulier.</span></li>
+              <li data-pas="2"><span><b>Lentilles rigides</b>&nbsp;: elles corrigent un astigmatisme irrégulier et créent une nouvelle surface rigide sur la cornée.</span></li>
+              <li data-pas="3"><span><b>Cross-linking</b>&nbsp;: riboflavine (vitamine B2), puis lumière UV. Il renforce le collagène et <b>stabilise</b> la cornée.</span></li>
+              <li data-pas="4"><span><b>Greffe de cornée</b>&nbsp;: pour les cas sévères.</span></li>
+            </ol>
+            <p class="note">L'assistant dépiste (aussi la famille), aide à l'adaptation des lentilles rigides et rappelle de ne pas se frotter les yeux.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Les lentilles rigides corrigent&nbsp;; le cross-linking stabilise&nbsp;; la greffe, pour les cas sévères.</p>
+      </div>
+    </section>
+
+    <!-- 12 · un cas de dépistage -->
+    <section class="diapo" id="d12" data-acte="cone" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Un cas de dépistage</p>
+        <h2>22 ans&nbsp;: «&nbsp;mes lunettes ne m'aident pas&nbsp;»</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="depistage" aria-label="Le cas trié : symptômes, ce qu'il dit ; signes, ce qu'on mesure ; puis topographie et pachymétrie ; puis orienter vers l'optométriste"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Ce qu'il dit, ce sont des <b>symptômes</b>&nbsp;: ses lunettes ne l'aident pas&nbsp;; il se frotte les yeux (allergies).</span></li>
+              <li data-pas="2"><span>Ce qu'on observe ou mesure, ce sont des <b>signes</b>&nbsp;: il est jeune, cylindre oblique, <b class="hyp">K cambrée</b>, mires distordues.</span></li>
+              <li data-pas="3"><span>On ajoute la <b>topographie</b>, «&nbsp;le plus concluant&nbsp;», et la <b>pachymétrie</b>, l'épaisseur de la cornée.</span></li>
+              <li data-pas="4"><span>On l'<b class="aide">oriente vers l'optométriste</b>&nbsp;: on dépiste, on ne diagnostique pas.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>L'âge est un signe, pas un symptôme&nbsp;: c'est nous qui l'observons.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Symptôme&nbsp;: ce que le patient dit. Signe&nbsp;: ce qu'on observe ou mesure.</p>
+      </div>
+    </section>
+
+    <!-- 13 · deux « x » -->
+    <section class="diapo" id="d13" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les lunettes</p>
+        <h2>Dans une ordonnance, le «&nbsp;x&nbsp;» annonce un axe</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="deux-x" aria-label="Deux lignes : en kératométrie, 42.00 x 44.00 @090, le x sépare deux K ; dans l'ordonnance, OD +1.00 −1.00 x180 add +0.75, le x annonce l'axe"></figure>
+          <div class="texte">
+            <p><b>La cornée</b>&nbsp;: une puissance à un <b>méridien</b>. Dans Optosys, le x sépare les deux K&nbsp;; le @ donne un méridien.</p>
+            <p data-pas="1"><b>Une lentille</b>&nbsp;: l'<b>axe</b> d'un cylindre, c'est la position où il n'y a pas de puissance. Dans l'ordonnance, le x annonce cet axe.</p>
+            <p class="note" data-pas="1">L'ordre&nbsp;: l'œil (OD droit, OS gauche), la sphère et son signe, le cylindre, x l'axe, l'addition.</p>
+            <p class="piege"><b>Piège</b>Le @ de la kératométrie n'est pas un axe&nbsp;: c'est un méridien.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La cornée&nbsp;: des méridiens. Une lentille&nbsp;: un axe.</p>
+      </div>
+    </section>
+
+    <!-- 14 · les types de verres -->
+    <section class="diapo" id="d14" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les lunettes</p>
+        <h2>Le type de verre se voit là où la force change</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="verres" aria-label="Cinq verres : simple vision, une force ; doubles foyers, une fenêtre de lecture ; anti-fatigue, un renfort en bas ; progressifs, loin en haut puis intermédiaire et près ; dégressifs, intermédiaire et près"></figure>
+          <div class="texte">
+            <p>Au lentimètre, on <b>déplace le verre</b>&nbsp;: «&nbsp;Si la force change vers la partie inférieure, il s'agit d'un multifoyers&nbsp;».</p>
+            <ul class="points">
+              <li><b>Anti-fatigue</b>&nbsp;: un renfort en bas, de 0,50 à 1,00&nbsp;D, «&nbsp;pour difficultés d'accommodation&nbsp;».</li>
+              <li><b>Progressifs</b>&nbsp;: loin, puis intermédiaire et près en bas, «&nbsp;pour presbytie&nbsp;».</li>
+              <li><b>Dégressifs</b>&nbsp;: intermédiaire et lecture, sans zone de loin.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Pas tous les 52&nbsp;ans et plus&nbsp;: le dégressif va au presbyte gêné par les progressifs, ou à qui la simple vision ne suffit plus.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une force&nbsp;: simple vision. La force change vers le bas&nbsp;: un multifoyer.</p>
+      </div>
+    </section>
+
+    <!-- 15 · l'usage tranche -->
+    <section class="diapo" id="d15" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Un cas du cours</p>
+        <h2>Mêmes nombres, deux verres&nbsp;: l'usage tranche</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="usage" aria-label="Les mêmes nombres : si le patient dit vision de loin, anti-fatigue ou progressif, loin +1,00 et près +1,75 ; s'il dit lunettes de lecture, un dégressif, intermédiaire et près"></figure>
+          <div class="texte">
+            <p>Au lentimètre&nbsp;: <b>OD +1.00 −1.00 x180 add +0.75</b>. Quand les porte-t-il&nbsp;?</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>L'addition, +0,75, est dans la plage anti-fatigue&nbsp;: de 0,50 à 1,00&nbsp;D.</span></li>
+              <li data-pas="2"><span>«&nbsp;Vision de loin&nbsp;»&nbsp;: anti-fatigue ou progressif. En bas, la sphère devient +1,00 + 0,75 = <b>+1,75</b>.</span></li>
+              <li data-pas="3"><span>«&nbsp;Lunettes de lecture&nbsp;»&nbsp;: un verre <b>dégressif</b>, intermédiaire et près.</span></li>
+              <li data-pas="4"><span>De loin, l'âge oriente&nbsp;: anti-fatigue de 20 à 38&nbsp;ans, progressif à 38&nbsp;ans et plus.</span></li>
+            </ol>
+            <p class="note" data-pas="2">+1,75&nbsp;: calculé avec la règle de l'Optique, près = loin + addition&nbsp;; ce cours-ci ne l'écrit pas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Les nombres ne suffisent pas&nbsp;: demande toujours l'usage.</p>
+      </div>
+    </section>
+
+    <!-- 16 · cinq gestes -->
+    <section class="diapo" id="d16" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le lentimètre</p>
+        <h2>Mesurer des lunettes, en cinq gestes</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="gestes" aria-label="Cinq gestes : demander, observer, mesurer, transcrire, signaler"></figure>
+          <div class="texte">
+            <p>Pourquoi&nbsp;? Pour que l'optométriste sache «&nbsp;avec quelle correction le patient fonctionne actuellement&nbsp;».</p>
+            <p class="sous">Les erreurs fréquentes&nbsp;:</p>
+            <ul class="points">
+              <li data-pas="1">ne pas demander si le patient a ses lunettes, ni quand il les porte&nbsp;;</li>
+              <li data-pas="2">ne pas voir un multifoyer, et l'inscrire comme un simple foyer&nbsp;;</li>
+              <li data-pas="3">mélanger l'œil droit et l'œil gauche&nbsp;;</li>
+              <li data-pas="3">écrire + au lieu de −, ou l'inverse.</li>
+            </ul>
+            <p class="note" data-pas="4">La mire ne se centre pas&nbsp;? Il y a peut-être un prisme&nbsp;: on le note, et on demande l'aide de l'opticien ou de l'optométriste.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Mesurer les lunettes du patient, ce n'est pas simplement recopier une prescription.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 17 · l'écran du lentimètre -->
+    <section class="diapo" id="d17" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le lentimètre</p>
+        <h2>À l'écran, L est à gauche&nbsp;: ne mélange pas OD et OS</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="ecran" aria-label="L'écran du lentimètre : L à gauche, S −3.25 C 0.00 ; R à droite, S −4.00 C −0.75 A 70. Au dossier : OD −4.00 −0.75 x070, OS −3.25 sph"></figure>
+          <div class="texte">
+            <p>L'écran est en anglais&nbsp;: <b>R</b>, right, l'œil droit&nbsp;; <b>L</b>, left, l'œil gauche. S&nbsp;: sphère, C&nbsp;: cylindre, A&nbsp;: axe.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>R&nbsp;: S −4.00, C −0.75, A 70 → <b class="aide">OD −4.00 −0.75 x070</b>.</span></li>
+              <li data-pas="2"><span>L&nbsp;: S −3.25, C 0.00, pas de cylindre → <b class="aide">OS −3.25 sph</b>.</span></li>
+              <li data-pas="3"><span>Lu de gauche à droite, l'écran donne L d'abord&nbsp;: c'est là qu'on mélange les yeux.</span></li>
+            </ol>
+            <p class="note">Garde chaque signe tel qu'il s'affiche&nbsp;: un + écrit à la place d'un − est une autre erreur fréquente.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>R = OD, L = OS, peu importe le côté de l'écran.</p>
+      </div>
+    </section>
+
+    <!-- 18 · une situation clinique -->
+    <section class="diapo" id="d18" data-acte="lunettes" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Une situation clinique</p>
+        <h2>38 ans&nbsp;: elle lit mal avec ses nouvelles lunettes</h2>
+        <div class="corps">
+          <div class="barres repere" style="--max:2; --m:1.75">
+            <p class="titre-fig">Pour lire, œil droit · le trait = +1,75</p>
+            <div class="barre" data-pas="2">
+              <span class="nom">Ses lunettes, en bas</span>
+              <span class="piste"><i class="c-emm" style="--w:0.75"></i><i class="c-aide" style="--w:1"></i></span>
+              <span class="val">+1,75</span>
+            </div>
+            <div class="barre" data-pas="4">
+              <span class="nom">La nouvelle ordonnance</span>
+              <span class="piste"><i class="c-emm" style="--w:1"></i></span>
+              <span class="val">+1,00</span>
+            </div>
+            <p class="legende"><span class="c-emm">la sphère</span><span class="c-aide">l'addition, à noter</span></p>
+          </div>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>1re visite&nbsp;: OD +1.00 −0.50 x020, OS +1.25 −0.75 x030, saisis en simple foyer.</span></li>
+              <li data-pas="2"><span>2e visite, on revérifie&nbsp;: OD +0.75 add +1.00, OS +0.75 add +1.00. Un <b>multifoyer</b>.</span></li>
+              <li data-pas="3"><span>Ce cylindre n'existait pas&nbsp;: des valeurs d'astigmatisme qui clochent trahissent un multifoyer.</span></li>
+              <li data-pas="4"><span>Elle lisait avec +0,75 + 1,00 = <b class="aide">+1,75</b>&nbsp;; l'ordonnance, sans addition, donne +1,00&nbsp;: 0,75&nbsp;D de moins.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Pas de corrigé pour cette situation&nbsp;: la lecture est la nôtre, et +1,75 et 0,75&nbsp;D sont calculés avec la règle de l'Optique, près = loin + addition.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Déplace toujours le verre&nbsp;: une addition oubliée disparaît de l'ordonnance.</p>
+      </div>
+    </section>
+
+    <!-- 19 · l'OCT -->
+    <section class="diapo" id="d19" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · L'OCT</p>
+        <h2>L'OCT, c'est une échographie de la rétine, avec de la lumière</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oct" aria-label="L'OCT : un faisceau entre dans l'œil, se réfléchit sur la rétine, et l'appareil affiche une coupe de ses couches"></figure>
+          <div class="texte">
+            <p><b>OCT</b>&nbsp;: tomographie par cohérence optique. Une imagerie non invasive, en lumière <b>infrarouge</b>, d'une résolution d'environ 5 microns.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Un faisceau de lumière entre dans l'œil.</span></li>
+              <li data-pas="2"><span>Il se réfléchit sur les couches de la rétine.</span></li>
+              <li data-pas="3"><span>L'appareil mesure le temps de réflexion et reconstruit une image en 3D.</span></li>
+              <li data-pas="4"><span>Il affiche une <b>coupe</b> de la rétine, en haute résolution.</span></li>
+            </ol>
+            <p class="note">Pour le patient&nbsp;: aucune goutte, et le test se fait dans l'obscurité.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Comparable à une échographie, mais avec de la lumière&nbsp;».</p>
+      </div>
+    </section>
+
+    <!-- 20 · ce que l'OCT mesure -->
+    <section class="diapo" id="d20" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · L'OCT</p>
+        <h2>L'OCT voit sous la surface&nbsp;: nerf optique, rétine, cornée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oct-cibles" aria-label="L'œil en coupe : 1 le nerf optique, 2 les cellules ganglionnaires, 3 la rétine au centre, 4 la cornée"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Les fibres du nerf optique</b>, par secteur&nbsp;: N nasal, S supérieur, T temporal, I inférieur.</span></li>
+              <li data-pas="2"><span><b>Les cellules ganglionnaires et l'IPL</b>, la couche plexiforme interne&nbsp;: des indices sur les risques de glaucome.</span></li>
+              <li data-pas="3"><span><b>Sous la surface de la rétine</b>&nbsp;: des problèmes cachés, comme un trou maculaire.</span></li>
+              <li data-pas="4"><span><b>L'épaisseur de la cornée</b>&nbsp;: la pachymétrie, celle qu'on ajoute devant un kératocône.</span></li>
+            </ol>
+            <p class="note">Les couches de la macula&nbsp;: «&nbsp;pas nécessaire de mémoriser ces couches&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le nerf optique, la rétine et la cornée, vus en coupe.</p>
+      </div>
+    </section>
+
+    <!-- 21 · les couleurs de l'OCT -->
+    <section class="diapo" id="d21" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · L'OCT</p>
+        <h2>Rouge ne veut pas dire malade&nbsp;; vert ne veut pas dire normal</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="norme" aria-label="Schéma d'un rapport : la courbe du patient suit la bande de la norme, sauf un endroit plus mince et un endroit plus épais"></figure>
+          <div class="texte">
+            <p>Le rapport compare l'épaisseur des fibres à une bande normale. Ce rouge-là ne veut pas dire cambré.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Rouge</b>&nbsp;: fibres plus minces que la moyenne, ou mesure difficile. «&nbsp;Erreur de mesure, forme de nerf optique inhabituelle ou autre&nbsp;».</span></li>
+              <li data-pas="2"><span><b>Plus épais</b>&nbsp;: parfois sans pathologie, parfois un problème, selon la situation.</span></li>
+              <li data-pas="3"><span><b>Vert</b>&nbsp;: «&nbsp;on ne peut pas présumer que vert est toujours normal&nbsp;».</span></li>
+              <li data-pas="4"><span>Comme au topographe&nbsp;: «&nbsp;Les couleurs seules ne suffisent pas à diagnostiquer une anomalie&nbsp;». On <b class="aide">rapporte</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La couleur situe une mesure par rapport à la norme. Elle ne pose pas de diagnostic.</p>
+      </div>
+    </section>
+
+    <!-- 22 · la carte -->
+    <section class="diapo" id="d22" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Rayon → puissance</p><p class="fiche-f">D = 0,3375 / r</p><p class="fiche-n">r en mètres · cornée de 35 à 50&nbsp;D</p></div>
+          <div class="fiche"><p class="fiche-nom">Astigmatisme cornéen</p><p class="fiche-f">K cambré − K plat</p><p class="fiche-n">l'autre méridien est à 90°</p></div>
+          <div class="fiche"><p class="fiche-nom">Optosys</p><p class="fiche-f">42.00x44.00@090</p><p class="fiche-n">horizontal d'abord · @ = méridien de la 2e valeur</p></div>
+          <div class="fiche"><p class="fiche-nom">Topographe</p><p class="fiche-f">rouge cambré, bleu plat</p><p class="fiche-n">vertical cambré&nbsp;: avec la règle</p></div>
+          <div class="fiche"><p class="fiche-nom">Kératocône</p><p class="fiche-f">topographie + pachymétrie</p><p class="fiche-n">puis orienter vers l'optométriste</p></div>
+          <div class="fiche"><p class="fiche-nom">Ordonnance</p><p class="fiche-f">OD sph cyl x axe add</p><p class="fiche-n">le x annonce l'axe · près = loin + addition</p></div>
+          <div class="fiche"><p class="fiche-nom">Type de verre</p><p class="fiche-f">mesure + usage + âge</p><p class="fiche-n">la force change en bas&nbsp;: un multifoyer</p></div>
+          <div class="fiche"><p class="fiche-nom">Les couleurs</p><p class="fiche-f">rouge ≠ malade</p><p class="fiche-n">vert ≠ toujours normal · on signale</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-to-m5-m6.html">L'atelier TO M5–M6</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const RAD = Math.PI / 180;
+
+  // Coupe de l'œil sans rayons, la lumière vient de la gauche (même géométrie que l'œil du diaporama d'Optique).
+  // Repère local 480 × 200 ; place() le pose dans la figure, à l'échelle k.
+  function coupe() {
+    const cy = 100, ry = 82, dy = 40, xg = 140, xr = 372;
+    const cx = (xg + xr) / 2, rx = (xr - xg) / 2;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2), ctrl = xe - 54;
+    const pe = t => [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+    const ps = t => pe(t).map(n1).join(' ');
+    const a = 50 * RAD;
+    let s = `<path d="M ${n1(xe)} ${cy - dy} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - dy} Z" class="globe"/>`;
+    s += `<path d="M ${ps(-a)} A ${rx} ${ry} 0 0 1 ${ps(a)}" class="retine"/>`;
+    s += `<ellipse cx="${n1(xe + 28)}" cy="${cy}" rx="12" ry="33" class="cristallin"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + dy}" class="cornee"/>`;
+    // la cornée : point de la courbe (t = 0,5 au sommet)
+    const qc = t => [(1 - t) ** 2 * xe + 2 * t * (1 - t) * ctrl + t * t * xe, cy - dy + 2 * dy * t];
+    return { s, cy, rx, ry, apex: (xe + ctrl) / 2, xe, xr, pe, qc, haut: cy - ry, bas: cy + ry };
+  }
+  const place = (tx, ty, k) => ({ g: s => `<g transform="translate(${n1(tx)} ${n1(ty)}) scale(${k})">${s}</g>`, X: x => tx + x * k, Y: y => ty + y * k });
+  // Le nerf optique : il sort à l'arrière du globe, un peu sous l'axe.
+  function nerf(e) {
+    const [x1, y1] = e.pe(13 * RAD), [x2, y2] = e.pe(33 * RAD), tm = 23 * RAD, L = 70;
+    let ux = Math.cos(tm) / e.rx, uy = Math.sin(tm) / e.ry;
+    const nn = Math.hypot(ux, uy); ux /= nn; uy /= nn;
+    return { s: `<path d="M ${n1(x1 - 6 * ux)} ${n1(y1 - 6 * uy)} L ${n1(x1 + L * ux)} ${n1(y1 + L * uy)} L ${n1(x2 + L * ux)} ${n1(y2 + L * uy)} L ${n1(x2 - 6 * ux)} ${n1(y2 - 6 * uy)} Z" class="globe"/>`,
+      milieu: [(x1 + x2) / 2 + 42 * ux, (y1 + y2) / 2 + 42 * uy], bout: [(x1 + x2) / 2 + L * ux, (y1 + y2) / 2 + L * uy] };
+  }
+  // Flèche droite, colorée par son groupe.
+  function fleche(x1, y1, x2, y2, cls = 'fleche') {
+    const a = Math.atan2(y2 - y1, x2 - x1), h = 9;
+    const p = da => `${n1(x2 - h * Math.cos(a + da))} ${n1(y2 - h * Math.sin(a + da))}`;
+    return `<path d="M ${n1(x1)} ${n1(y1)} L ${n1(x2)} ${n1(y2)} M ${p(.5)} L ${n1(x2)} ${n1(y2)} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Flèche à coudes : une ligne brisée, la pointe sur le dernier segment.
+  function coude(pts, cls = 'fleche') {
+    const [a, b] = pts.slice(-2), ang = Math.atan2(b[1] - a[1], b[0] - a[0]), h = 9;
+    const p = da => `${n1(b[0] - h * Math.cos(ang + da))} ${n1(b[1] - h * Math.sin(ang + da))}`;
+    return `<path d="M ${pts.map(q => n1(q[0]) + ' ' + n1(q[1])).join(' L ')} M ${p(.5)} L ${n1(b[0])} ${n1(b[1])} L ${p(-.5)}" class="${cls}"/>`;
+  }
+
+  // Carte de topographie, vue de face : orange = cambré (le rouge de l'appareil), cyan = plat (le bleu).
+  // type : anneaux | avec | contre | irreg. Angles comme le cadran : 0° à droite, 90° en haut.
+  function carte(cx, cy, R, type) {
+    const lobe = (th, k, p) => {
+      const pts = [];
+      for (let f = 0; f < 360; f += 3) {
+        const c = Math.cos(2 * (f - th) * RAD), r = c > 0 ? R * k * c ** p : 0;
+        pts.push(`${n1(cx + r * Math.cos(f * RAD))} ${n1(cy - r * Math.sin(f * RAD))}`);
+      }
+      return `M ${pts.join(' L ')} Z`;
+    };
+    const rond = r => `M ${n1(cx - r)} ${n1(cy)} a ${n1(r)} ${n1(r)} 0 1 0 ${n1(2 * r)} 0 a ${n1(r)} ${n1(r)} 0 1 0 ${n1(-2 * r)} 0 Z`;
+    let s = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="globe"/>`;
+    if (type === 'anneaux') {
+      s += `<path d="${rond(R)} ${rond(R * .66)}" fill-rule="evenodd" class="zone c-myo"/><path d="${rond(R)} ${rond(R * .84)}" fill-rule="evenodd" class="zone c-myo"/>`;
+      s += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R * .34)}" class="zone c-hyp"/><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R * .17)}" class="zone c-hyp"/>`;
+    } else if (type === 'irreg') {
+      s += `<ellipse cx="${n1(cx)}" cy="${n1(cy - R * .56)}" rx="${n1(R * .58)}" ry="${n1(R * .28)}" class="zone c-myo"/>`;
+      s += `<ellipse cx="${n1(cx)}" cy="${n1(cy + R * .38)}" rx="${n1(R * .46)}" ry="${n1(R * .38)}" class="zone c-hyp"/>`;
+      s += `<ellipse cx="${n1(cx)}" cy="${n1(cy + R * .45)}" rx="${n1(R * .25)}" ry="${n1(R * .2)}" class="zone c-hyp"/>`;
+    } else {
+      const th = type === 'avec' ? 90 : 0;
+      s += `<path d="${lobe(th + 90, .96, .7)}" class="zone c-myo"/><path d="${lobe(th + 90, .8, 1.6)}" class="zone c-myo"/>`;
+      s += `<path d="${lobe(th, .96, .7)}" class="zone c-hyp"/><path d="${lobe(th, .8, 1.6)}" class="zone c-hyp"/>`;
+    }
+    return s + `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="base"/>`;
+  }
+
+  function couverture(W) {
+    const R = 116, cx = W / 2, cy = 146, H = cy + R + 14;
+    let s = carte(cx, cy, R, 'avec');
+    s += `<text x="${n1(cx)}" y="${cy - R - 10}" text-anchor="middle" class="etiq c-hyp">cambré</text>`;
+    s += `<text x="${n1(cx + R + 10)}" y="${cy + 6}" class="etiq c-myo">plat</text>`;
+    return svgW(W, H, s, 'Carte de topographie : orange en haut et en bas, cambré ; cyan à gauche et à droite, plat');
+  }
+
+  // Le fil : un œil, des lunettes, et ce que lit chaque appareil.
+  function appareils(W) {
+    const e = coupe(), k = Math.min(1, Math.max(.7, .7 * W / 420));
+    const haut = 62, H = Math.round(haut + 164 * k + 66);
+    const xA = Math.max(150, W * .36);
+    const L = place(xA - e.apex * k, haut - e.haut * k, k);
+    const yc = L.Y(e.cy), xl = L.X(e.apex) - 58 * k, hl = 44 * k;
+    let s = L.g(e.s);
+    s += `<path d="M ${n1(xl)} ${n1(yc - hl)} Q ${n1(xl + 18 * k)} ${n1(yc)} ${n1(xl)} ${n1(yc + hl)} Q ${n1(xl - 18 * k)} ${n1(yc)} ${n1(xl)} ${n1(yc - hl)} Z" class="verre c-emm"/>`;
+    const c1 = e.qc(.4), c2 = e.qc(.6);
+    s += `<path d="M ${n1(L.X(c1[0]))} ${n1(L.Y(c1[1]))} Q ${n1(L.X(e.apex - 1))} ${n1(yc)} ${n1(L.X(c2[0]))} ${n1(L.Y(c2[1]))}" class="fleche c-emm"/>`;
+    const lab = (x, y, t, d, cible, anc, ly) => `<line x1="${n1(cible[0])}" y1="${n1(cible[1])}" x2="${n1(x + (anc === 'end' ? -12 : 12))}" y2="${n1(ly)}" class="pointille"/>`
+      + `<text x="${n1(x)}" y="${y}" text-anchor="${anc}" class="etiq">${t}</text><text x="${n1(x)}" y="${y + 18}" text-anchor="${anc}" class="petit t-doux">${d}</text>`;
+    s += lab(xl + 4, 22, 'Lentimètre', 'les lunettes', [xl, yc - hl - 2], 'end', 46);
+    s += lab(L.X(e.apex) - 10, 22, 'Kératomètre', 'le centre de la cornée', [L.X(e.apex) - 2, yc - 4], 'start', 46);
+    const cb = e.qc(.86), r6 = e.pe(.62);
+    s += lab(L.X(e.apex) - 34, H - 30, 'Topographe', 'toute la cornée', [L.X(cb[0]) - 2, L.Y(cb[1]) + 2], 'start', H - 50);
+    s += lab(L.X(300), H - 30, 'OCT', 'la rétine', [L.X(r6[0]), L.Y(r6[1]) + 2], 'start', H - 50);
+    return svgW(W, H, s, 'Un œil et ses lunettes : le lentimètre lit les lunettes, le kératomètre le centre de la cornée, le topographe toute la cornée, l’OCT la rétine');
+  }
+
+  // Deux cornées-miroirs : de profil, la courbure ; de face, le reflet des mires.
+  function miroirs(W) {
+    const H = 270, pw = W / 2;
+    const pan = (x0, R, c, titre, l1, l2) => {
+      const xv = x0 + Math.min(46, pw * .22), cy = 94, ap = 42, a = Math.asin(Math.min(1, ap / R)), xc = xv + R;
+      const p1 = [xc - R * Math.cos(a), cy - R * Math.sin(a)], p2 = [p1[0], cy + R * Math.sin(a)];
+      let s = `<g class="c-${c}">`;
+      s += `<text x="${n1(x0 + pw / 2)}" y="20" text-anchor="middle" class="etiq">${titre}</text>`;
+      let inc = '', ref = '';
+      for (const y0 of [-22, 22]) {
+        const hx = xc - Math.sqrt(R * R - y0 * y0), nx = (hx - xc) / R, ny = y0 / R;
+        const rx = 1 - 2 * nx * nx, ry = -2 * nx * ny, lg = 34;
+        inc += `<path d="M ${n1(x0 + 6)} ${n1(cy + y0)} L ${n1(hx)} ${n1(cy + y0)}" class="rayon"/>`;
+        ref += `<path d="M ${n1(hx)} ${n1(cy + y0)} L ${n1(hx + rx * lg)} ${n1(cy + y0 + ry * lg)}" class="rayon"/>`;
+      }
+      s += `<g${P({ pas: 1 })}>${inc}</g><g${P({ pas: 2 })}>${ref}</g>`;
+      s += `<path d="M ${n1(p1[0])} ${n1(p1[1])} A ${R} ${R} 0 0 0 ${n1(p2[0])} ${n1(p2[1])}" class="fleche"/>`;
+      s += `<g${P({ pas: 4 })}><line x1="${n1(xv)}" y1="${cy}" x2="${n1(xc)}" y2="${cy}" class="pointille"/><circle cx="${n1(xc)}" cy="${cy}" r="3.5" class="plein"/>`;
+      s += `<text x="${n1(xv + 8)}" y="${cy - 8}" class="petit etiq">${l1}</text></g>`;
+      const fx = x0 + pw / 2, fy = 198, fr = 44, rr = R * .34;
+      s += `<circle cx="${n1(fx)}" cy="${fy}" r="${fr}" class="globe"/>`;
+      s += `<g${P({ pas: 2 })}><circle cx="${n1(fx)}" cy="${fy}" r="${n1(rr)}" class="fleche"/>`;
+      for (const d of [0, 90, 180, 270]) s += `<circle cx="${n1(fx + rr * Math.cos(d * RAD))}" cy="${n1(fy + rr * Math.sin(d * RAD))}" r="4" class="plein"/>`;
+      s += `</g><text x="${n1(fx)}" y="${H - 6}" text-anchor="middle" class="petit etiq"${P({ pas: 3 })}>${l2}</text>`;
+      return s + '</g>';
+    };
+    const s = pan(0, 50, 'hyp', 'Plus bombée', 'petit rayon', 'petit reflet') + pan(pw, 108, 'myo', 'Plus plate', 'grand rayon', 'grand reflet')
+      + `<line x1="${n1(pw)}" y1="34" x2="${n1(pw)}" y2="${H - 30}" class="separe"/>`;
+    return svgW(W, H, s, 'Deux cornées : la plus bombée a un petit rayon et un petit reflet ; la plus plate, un grand rayon et un grand reflet');
+  }
+
+  // D = 0,3375 / r : la courbe, la plage de la cornée, et les deux calculs du cours.
+  function puissance(W) {
+    const H = 280, l = 50, r = W - 18, t = 30, b = H - 48;
+    const r0 = 6.5, r1 = 10, d0 = 32, d1 = 53;
+    const X = mm => l + (mm - r0) / (r1 - r0) * (r - l), Y = d => b - (d - d0) / (d1 - d0) * (b - t);
+    const D = mm => 337.5 / mm;
+    const trace = (a, z) => { const p = []; for (let m = a; m <= z + 1e-9; m += .05) p.push(`${n1(X(m))} ${n1(Y(D(m)))}`); return 'M ' + p.join(' L '); };
+    let s = `<rect x="${l}" y="${n1(Y(50))}" width="${n1(r - l)}" height="${n1(Y(35) - Y(50))}" class="eau"/>`;
+    s += `<text x="${n1(r - 6)}" y="${n1(Y(50) + 20)}" text-anchor="end" class="petit t-doux">la cornée : 35 à 50 D</text>`;
+    for (const d of [35, 40, 45, 50]) {
+      s += `<line x1="${l}" y1="${n1(Y(d))}" x2="${n1(r)}" y2="${n1(Y(d))}" class="grille"/>`;
+      s += `<text x="${l - 8}" y="${n1(Y(d) + 5)}" text-anchor="end" class="petit t-doux">${d}</text>`;
+    }
+    for (const m of [7, 8, 9, 10]) s += `<text x="${n1(X(m))}" y="${b + 22}" text-anchor="middle" class="petit t-doux">${m}</text>`;
+    s += `<text x="${n1(r)}" y="${H - 4}" text-anchor="end" class="petit t-doux">rayon r (mm)</text>`;
+    s += `<text x="${l - 8}" y="16" class="petit t-doux">puissance (D)</text>`;
+    s += `<path d="${trace(6.5, 10)}" class="courbe"/>`;
+    s += `<path d="${trace(6.5, 7.3)}" class="fleche c-hyp"/><path d="${trace(8.7, 10)}" class="fleche c-myo"/>`;
+    s += `<text x="${n1(X(6.75) + 14)}" y="${n1(Y(50.6))}" class="etiq c-hyp">cambré</text>`;
+    s += `<text x="${n1(X(9.45))}" y="${n1(Y(33.2))}" text-anchor="end" class="etiq c-myo">plat</text>`;
+    const pt = (mm, txt, pas) => `<g${P({ pas })}><line x1="${n1(X(mm))}" y1="${n1(Y(D(mm)))}" x2="${n1(X(mm))}" y2="${b}" class="pointille"/>`
+      + `<circle cx="${n1(X(mm))}" cy="${n1(Y(D(mm)))}" r="6" class="pt-courbe"/><text x="${n1(X(mm) + 10)}" y="${n1(Y(D(mm)) - 8)}" class="valeur">${txt}</text></g>`;
+    s += pt(8, '8,0 mm → 42,2 D', 2) + pt(7.6, '44,4 D → 7,60 mm', 3);
+    return svgW(W, H, s, 'La puissance selon le rayon : plus le rayon est petit, plus la puissance est grande. 8,0 mm donne 42,2 D ; 44,4 D vient de 7,60 mm');
+  }
+
+  // Cadran : la cornée vue de face, 0° à droite, 90° en haut, 180° à gauche (comme dans l'atelier).
+  // mers : { m, v (valeur), c (couleur), role, pas, tout (tout le méridien n'apparaît qu'à ce pas) }
+  function cadran(cx, cy, R, mers) {
+    let s = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${R}" class="globe"/>`;
+    for (let a = 0; a < 360; a += 15) {
+      const r1 = a % 45 ? R - 6 : R - 12, c = Math.cos(a * RAD), sn = Math.sin(a * RAD);
+      s += `<line x1="${n1(cx + r1 * c)}" y1="${n1(cy - r1 * sn)}" x2="${n1(cx + R * c)}" y2="${n1(cy - R * sn)}" class="grille"/>`;
+    }
+    for (const a of [0, 45, 90, 135, 180]) {
+      const r = R + 20;
+      s += `<text x="${n1(cx + r * Math.cos(a * RAD))}" y="${n1(cy - r * Math.sin(a * RAD) + 5)}" text-anchor="middle" class="petit t-doux">${a}°</text>`;
+    }
+    mers.forEach(M => {
+      const u = [Math.cos(M.m * RAD), -Math.sin(M.m * RAD)], nv = [Math.sin(M.m * RAD), Math.cos(M.m * RAD)];
+      const rl = R - 14, vert = Math.abs(nv[0]) > .7;
+      const ligne = `x1="${n1(cx - rl * u[0])}" y1="${n1(cy - rl * u[1])}" x2="${n1(cx + rl * u[0])}" y2="${n1(cy + rl * u[1])}"`;
+      const bx = cx + u[0] * R * .5, by = cy + u[1] * R * .5;
+      const v = vert ? [bx + nv[0] * 12, by + nv[1] * 12 + 5] : [bx + nv[0] * 12, by + nv[1] * 12];
+      const ro = vert ? [v[0], v[1] + 19] : [bx - nv[0] * 12, by - nv[1] * 12 + 12];
+      const anc = vert ? 'start' : 'middle';
+      const base = `<line ${ligne} class="base"/><text x="${n1(v[0])}" y="${n1(v[1])}" text-anchor="${anc}" class="valeur">${M.v}</text>`;
+      const coul = M.c ? `<g class="c-${M.c}"${M.tout ? '' : P(M)}><line ${ligne} class="fleche"/><text x="${n1(ro[0])}" y="${n1(ro[1])}" text-anchor="${anc}" class="petit etiq">${M.role}</text></g>` : '';
+      s += M.tout ? `<g${P(M)}>${base}${coul}</g>` : base + coul;
+    });
+    return s + `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="3.5" class="pt-courbe"/>`;
+  }
+
+  function meridiens(W) {
+    const R = 112, cx = W / 2, cy = R + 32, H = cy + R + 58;
+    let s = cadran(cx, cy, R, [
+      { m: 90, v: '44,00 @ 90', c: 'hyp', role: 'cambré', pas: 1 },
+      { m: 180, v: '42,00 @ 180', c: 'myo', role: 'plat', pas: 2 }]);
+    s += `<text x="${n1(cx)}" y="${H - 10}" text-anchor="middle" class="valeur"${P({ pas: 3 })}>44,00 − 42,00 = 2,00 D</text>`;
+    return svgW(W, H, s, 'La cornée de face : 44,00 au méridien 90, cambré ; 42,00 au méridien 180, plat ; astigmatisme 2,00 D');
+  }
+
+  function optosys(W) {
+    const R = 104, cx = W / 2, cy = 86 + R + 24, H = cy + R + 50;
+    const sl = [['39.00', 58], ['x', 26], ['42.00', 58], ['@80', 48]], gap = 12;
+    const tot = sl.reduce((a, [, w]) => a + w, 0) + gap * (sl.length - 1);
+    let x = cx - tot / 2; const mil = [];
+    let s = '';
+    sl.forEach(([t, w]) => { mil.push(x + w / 2); s += `<text x="${n1(x + w / 2)}" y="34" text-anchor="middle" class="grand">${t}</text>`; x += w + gap; });
+    s += `<g class="c-hyp"${P({ pas: 1 })}><path d="M ${n1(mil[2] - 29)} 44 L ${n1(mil[3] + 24)} 44" class="fleche"/><text x="${n1((mil[2] + mil[3]) / 2)}" y="66" text-anchor="middle" class="petit etiq">même méridien</text></g>`;
+    s += `<g class="c-myo"${P({ pas: 2 })}><path d="M ${n1(mil[0] - 29)} 44 L ${n1(mil[0] + 29)} 44" class="fleche"/><text x="${n1(mil[0] + 18)}" y="66" text-anchor="end" class="petit etiq">à 170°</text></g>`;
+    s += cadran(cx, cy, R, [
+      { m: 80, v: '42,00', c: 'hyp', role: 'cambré', pas: 1, tout: true },
+      { m: 170, v: '39,00', c: 'myo', role: 'plat', pas: 2, tout: true }]);
+    s += `<text x="${n1(cx)}" y="${H - 10}" text-anchor="middle" class="valeur"${P({ pas: 3 })}>42,00 − 39,00 = 3,00 D</text>`;
+    return svgW(W, H, s, 'La ligne 39.00 x 42.00 @80 : 42,00 au méridien 80, cambré ; 39,00 au méridien 170, plat ; 3,00 D');
+  }
+
+  // Ce que lit chaque appareil, à l'échelle : 2 à 3 mm au centre, 11 à 14 mm pour toute la cornée.
+  function zones(W) {
+    const k = 16.5, cx = Math.min(W * .32, 150), cy = 7 * k + 14, H = cy + 7 * k + 40;
+    let s = `<g${P({ pas: 1 })}><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(7 * k)}" class="zone c-doux"/><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(5.5 * k)}" class="zone c-doux"/>`;
+    for (let i = 1; i <= 6; i++) s += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(i * 1.02 * k)}" fill="none" class="separe"/>`;
+    s += '</g>';
+    s += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(7 * k)}" class="base"/>`;
+    s += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(1.5 * k)}" class="zone c-emm"/><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(1 * k)}" class="zone c-emm"/>`;
+    const xt = cx + 7 * k + 18;
+    s += `<line x1="${n1(cx + 1.5 * k)}" y1="${n1(cy)}" x2="${n1(xt - 8)}" y2="${n1(cy - 34)}" class="pointille"/>`;
+    s += `<text x="${n1(xt)}" y="${n1(cy - 44)}" class="etiq">Kératomètre</text><text x="${n1(xt)}" y="${n1(cy - 26)}" class="petit t-doux">2 à 3 mm au centre</text>`;
+    s += `<g${P({ pas: 1 })}><line x1="${n1(cx + 6.2 * k * Math.cos(25 * RAD))}" y1="${n1(cy + 6.2 * k * Math.sin(25 * RAD))}" x2="${n1(xt - 8)}" y2="${n1(cy + 40)}" class="pointille"/>`;
+    s += `<text x="${n1(xt)}" y="${n1(cy + 36)}" class="etiq">Topographe</text><text x="${n1(xt)}" y="${n1(cy + 54)}" class="petit t-doux">11 à 14 mm :</text><text x="${n1(xt)}" y="${n1(cy + 72)}" class="petit t-doux">toute la cornée</text></g>`;
+    s += `<line x1="${n1(cx - 2.5 * k)}" y1="${n1(H - 14)}" x2="${n1(cx + 2.5 * k)}" y2="${n1(H - 14)}" class="palier"/><text x="${n1(cx + 2.5 * k + 10)}" y="${n1(H - 9)}" class="petit t-doux">5 mm</text>`;
+    return svgW(W, H, s, 'La cornée à l’échelle : le kératomètre lit 2 à 3 mm au centre ; le topographe, toute la cornée, 11 à 14 mm');
+  }
+
+  function motifs(W) {
+    const cw = W / 2, R = Math.min(cw * .34, 92), ch = 2 * R + 46, H = 2 * ch;
+    const M = [['anneaux', 'Anneaux réguliers', 0], ['avec', 'Avec la règle', 1], ['contre', 'Contre la règle', 2], ['irreg', 'Irrégulier', 3]];
+    let s = '';
+    M.forEach(([t, nom, pas], i) => {
+      const cx = cw * (i % 2) + cw / 2, cy = ch * Math.floor(i / 2) + 6 + R;
+      s += `<g${P({ pas })}>${carte(cx, cy, R, t)}<text x="${n1(cx)}" y="${n1(cy + R + 26)}" text-anchor="middle" class="titre-rang">${nom}</text></g>`;
+    });
+    return svgW(W, H, s, 'Quatre cartes : anneaux réguliers ; avec la règle, vertical cambré ; contre la règle, horizontal cambré ; irrégulier, une zone cambrée en bas');
+  }
+
+  // Profil de la cornée avant et après une orthokératologie : le centre aplati (forme exagérée).
+  function aplatir(W) {
+    const H = 270, cy = 128, A = 104, R1 = 110, yz = 82;
+    const xv = Math.min(W * .28, 150);
+    const D = yz * yz / (4 * R1);
+    const avant = y => xv + R1 - Math.sqrt(R1 * R1 - y * y);
+    const apres = y => avant(y) + (Math.abs(y) < yz ? D * (1 - (y / yz) ** 2) ** 2 : 0);
+    const trace = f => { const p = []; for (let y = -A; y <= A; y += 4) p.push(`${n1(f(y))} ${n1(cy + y)}`); return 'M ' + p.join(' L '); };
+    let s = `<path d="${trace(avant)}" class="pointille"/>`;
+    s += `<text x="${n1(xv - 10)}" y="${cy + 5}" text-anchor="end" class="petit t-doux">avant</text>`;
+    s += `<g class="c-myo"${P({ pas: 1 })}><path d="${trace(apres)}" class="fleche"/>`;
+    s += `<text x="${n1(xv + D + 12)}" y="${cy + 5}" class="petit etiq">après : centre aplati</text></g>`;
+    const xt = xv + 66;
+    s += `<g${P({ pas: 1 })}><text x="${n1(xt)}" y="${cy + 46}" class="petit t-doux">avant : 43,16 D</text>`;
+    s += `<text x="${n1(xt)}" y="${cy + 66}" class="petit etiq c-myo">après : 42,23 D</text>`;
+    s += `<text x="${n1(xt)}" y="${cy + 90}" class="valeur">−0,93 D</text></g>`;
+    s += `<text x="${n1(W - 10)}" y="${H - 6}" text-anchor="end" class="petit t-doux">forme exagérée</text>`;
+    return svgW(W, H, s, 'Profil de la cornée : après l’orthokératologie, le centre est aplati ; la puissance passe de 43,16 à 42,23 D');
+  }
+
+  // Profil d'une cornée, la lumière vient de la gauche ; kc : kératocône (le cône est en bas).
+  function cornee(x0, cy, kc) {
+    const A = 92, R = 120, t0 = 18, yc = 34, w = 36;
+    const g = y => (kc ? Math.exp(-(((y - yc) / w) ** 2)) : 0);
+    const av = y => x0 + R - Math.sqrt(R * R - y * y) - 17 * g(y);
+    const ar = y => av(y) + t0 * (1 - .5 * g(y));
+    const p1 = [], p2 = [];
+    for (let y = -A; y <= A; y += 4) { p1.push(`${n1(av(y))} ${n1(cy + y)}`); p2.unshift(`${n1(ar(y))} ${n1(cy + y)}`); }
+    let s = `<path d="M ${p1.join(' L ')} L ${p2.join(' L ')} Z" class="verre c-emm"/>`;
+    if (kc) {
+      const p = []; for (let y = yc - 40; y <= yc + 40; y += 4) p.push(`${n1(av(y))} ${n1(cy + y)}`);
+      s += `<path d="M ${p.join(' L ')}" class="fleche c-hyp"/>`;
+    }
+    return { s, av, ar, yc };
+  }
+
+  function cone(W) {
+    const H = 262, pw = W / 2, cy = 132;
+    const xa = pw * .2, xb = pw + pw * .2;
+    const n = cornee(xa, cy, false), c = cornee(xb, cy, true);
+    let s = `<text x="${n1(pw / 2)}" y="20" text-anchor="middle" class="etiq">Cornée normale</text>` + n.s;
+    s += `<line x1="${n1(n.av(-20) + 9)}" y1="${cy - 20}" x2="${n1(xa + 74)}" y2="${cy - 48}" class="pointille"/><text x="${n1(xa + 78)}" y="${cy - 52}" class="petit">stroma</text><text x="${n1(xa + 78)}" y="${cy - 34}" class="petit t-doux">90 % de</text><text x="${n1(xa + 78)}" y="${cy - 16}" class="petit t-doux">l’épaisseur</text>`;
+    s += `<g${P({ pas: 1 })}><text x="${n1(pw + pw / 2)}" y="20" text-anchor="middle" class="etiq c-hyp">Kératocône</text>${c.s}`;
+    s += `<text x="${n1(xb + 72)}" y="${cy - 82}" class="petit t-doux">haut</text><text x="${n1(xb + 72)}" y="${cy + 96}" class="petit t-doux">bas</text>`;
+    s += `<line x1="${n1(c.ar(c.yc) + 3)}" y1="${cy + c.yc}" x2="${n1(xb + 76)}" y2="${cy + c.yc - 30}" class="pointille"/><text x="${n1(xb + 80)}" y="${cy + c.yc - 34}" class="petit">plus mince</text>`;
+    s += `<line x1="${n1(c.av(c.yc) - 3)}" y1="${cy + c.yc + 8}" x2="${n1(xb - 10)}" y2="${cy + c.yc + 48}" class="pointille"/><text x="${n1(xb - 14)}" y="${cy + c.yc + 64}" class="petit etiq c-hyp">un cône</text></g>`;
+    s += `<line x1="${n1(pw)}" y1="34" x2="${n1(pw)}" y2="${H - 20}" class="separe"/>`;
+    return svgW(W, H, s, 'Profil de la cornée : normale, d’épaisseur égale ; kératocône, amincie et bombée en cône vers le bas');
+  }
+
+  // Une lentille rigide posée sur le cône : sa face arrière régulière, du liquide entre les deux.
+  function rigide(W) {
+    const H = 266, cy = 128, x0 = Math.min(W * .56, 330);
+    const c = cornee(x0, cy, true), Rb = 120, Al = 84;
+    const sag = y => Rb - Math.sqrt(Rb * Rb - y * y);
+    let xb0 = Infinity;
+    for (let y = -Al; y <= Al; y += 2) xb0 = Math.min(xb0, c.av(y) - sag(y));
+    xb0 -= 4;
+    const ar = y => xb0 + sag(y), av = y => ar(y) - 9;
+    const pa = [], pb = [], pc = [];
+    for (let y = -Al; y <= Al; y += 4) { pa.push(`${n1(av(y))} ${n1(cy + y)}`); pb.unshift(`${n1(ar(y))} ${n1(cy + y)}`); pc.unshift(`${n1(c.av(y))} ${n1(cy + y)}`); }
+    let s = c.s;
+    s += `<g${P({ pas: 2 })}><path d="M ${pb.slice().reverse().join(' L ')} L ${pc.join(' L ')} Z" class="eau"/>`;
+    s += `<path d="M ${pa.join(' L ')} L ${pb.join(' L ')} Z" class="verre c-emm"/>`;
+    const xt = Math.max(10, av(-60) - 190), yl = c.yc;
+    s += `<line x1="${n1(av(-60) - 4)}" y1="${cy - 60}" x2="${n1(xt + 120)}" y2="${cy - 80}" class="pointille"/>`;
+    s += `<text x="${n1(xt)}" y="${cy - 106}" class="etiq">lentille rigide</text><text x="${n1(xt)}" y="${cy - 88}" class="petit t-doux">une nouvelle surface</text>`;
+    s += `<line x1="${n1((ar(yl) + c.av(yl)) / 2)}" y1="${cy + yl}" x2="${n1(xt + 64)}" y2="${cy + yl + 42}" class="pointille"/>`;
+    s += `<text x="${n1(xt)}" y="${cy + yl + 52}" class="petit">liquide</text></g>`;
+    s += `<text x="${n1(c.ar(0) + 22)}" y="${cy + 5}" class="petit etiq c-hyp">cornée en cône</text>`;
+    return svgW(W, H, s, 'Une lentille rigide sur un kératocône : une nouvelle surface régulière, du liquide entre la lentille et le cône');
+  }
+
+  // Le cas de dépistage : trier, ajouter, orienter.
+  function depistage(W) {
+    const m = 8, gap = 12, cw = (W - 2 * m - gap) / 2, bh = 150;
+    const boite = (x, titre, sous, items, pas) => {
+      let s = `<rect x="${n1(x)}" y="4" width="${n1(cw)}" height="${bh}" rx="12" class="globe"/>`;
+      s += `<text x="${n1(x + 14)}" y="30" class="etiq">${titre}</text><text x="${n1(x + 14)}" y="49" class="petit t-doux">${sous}</text>`;
+      s += `<g${P({ pas })}>` + items.map(([t, c], i) => `<text x="${n1(x + 14)}" y="${76 + i * 22}" class="petit${c ? ' etiq c-' + c : ''}">${t}</text>`).join('') + '</g>';
+      return s;
+    };
+    let s = boite(m, 'Symptômes', 'ce qu’il dit', [['lunettes qui n’aident pas'], ['se frotte les yeux']], 1);
+    s += boite(m + cw + gap, 'Signes', 'ce qu’on observe, mesure', [['jeune : 22 ans'], ['cylindre oblique'], ['K cambrée', 'hyp'], ['mires distordues']], 2);
+    const y2 = bh + 34, y3 = y2 + 62, H = y3 + 46;
+    s += `<g${P({ pas: 3 })}>${fleche(W / 2, bh + 8, W / 2, y2 - 4, 'fleche c-emm')}<rect x="${m}" y="${y2}" width="${W - 2 * m}" height="40" rx="12" class="globe"/>`;
+    s += `<text x="${n1(W / 2)}" y="${y2 + 26}" text-anchor="middle">+ topographie · + pachymétrie</text></g>`;
+    s += `<g class="c-aide"${P({ pas: 4 })}>${fleche(W / 2, y2 + 44, W / 2, y3 - 4)}<rect x="${m}" y="${y3}" width="${W - 2 * m}" height="40" rx="12" class="verre"/>`;
+    s += `<text x="${n1(W / 2)}" y="${y3 + 26}" text-anchor="middle" class="etiq">orienter vers l’optométriste</text></g>`;
+    return svgW(W, H, s, 'Le cas trié : symptômes, ce qu’il dit ; signes, ce qu’on mesure ; puis topographie et pachymétrie ; puis orienter vers l’optométriste');
+  }
+
+  // Deux lignes, deux « x » : la kératométrie et l'ordonnance.
+  function deuxX(W) {
+    const rangs = [
+      { y: 52, titre: 'Kératométrie, dans Optosys', pas: 0, t: [['42.00', 64, 'K horizontal', 'myo'], ['x', 22, 'sépare'], ['44.00', 64, 'K vertical', 'hyp'], ['@090', 58, 'son méridien']] },
+      { y: 178, titre: 'Ordonnance', pas: 1, t: [['OD', 34, 'œil'], ['+1.00', 64, 'sphère'], ['−1.00', 64, 'cylindre'], ['x180', 56, 'x : l’axe'], ['add +0.75', 108, 'addition']] }];
+    let s = '';
+    for (const rg of rangs) {
+      const gap = 12, tot = rg.t.reduce((a, q) => a + q[1], 0) + gap * (rg.t.length - 1);
+      let x = Math.max(10, W / 2 - tot / 2);
+      let g = `<text x="${n1(x)}" y="${rg.y - 30}" class="petit t-doux">${rg.titre}</text>`;
+      rg.t.forEach(([tok, w, lib, c], i) => {
+        const xm = x + w / 2, yl = rg.y + (i % 2 ? 44 : 24);
+        g += `<g class="c-${c || 'emm'}"><text x="${n1(xm)}" y="${rg.y}" text-anchor="middle" class="grand${c ? ' etiq' : ''}">${tok}</text>`;
+        g += `<line x1="${n1(xm)}" y1="${rg.y + 7}" x2="${n1(xm)}" y2="${yl - 14}" class="pointille"/><text x="${n1(xm)}" y="${yl}" text-anchor="middle" class="petit${c ? ' etiq' : ''}">${lib}</text></g>`;
+        x += w + gap;
+      });
+      s += rg.pas ? `<g${P(rg)}>${g}</g>` : g;
+    }
+    return svgW(W, 236, s, 'Deux lignes : en kératométrie, 42.00 x 44.00 @090, le x sépare deux K ; dans l’ordonnance, OD +1.00 −1.00 x180 add +0.75, le x annonce l’axe');
+  }
+
+  // Un verre de lunettes vu de face ; plus c'est foncé, plus il y a de puissance ajoutée.
+  function verre(cx, cy, rx, ry, type) {
+    const bas = d => {
+      const w = rx * Math.sqrt(Math.max(0, 1 - (d / ry) ** 2)), y0 = cy + d;
+      return `M ${n1(cx - w)} ${n1(y0)} L ${n1(cx + w)} ${n1(y0)} A ${n1(rx)} ${n1(ry)} 0 ${d < 0 ? 1 : 0} 1 ${n1(cx - w)} ${n1(y0)} Z`;
+    };
+    const z = (d, n = 1) => `<path d="${bas(d)}" class="zone c-doux"/>`.repeat(n);
+    const tout = `<ellipse cx="${n1(cx)}" cy="${n1(cy)}" rx="${n1(rx)}" ry="${n1(ry)}" class="zone c-doux"/>`;
+    let s = `<ellipse cx="${n1(cx)}" cy="${n1(cy)}" rx="${n1(rx)}" ry="${n1(ry)}" class="palier-fond"/>`;
+    if (type === 'antifatigue') s += z(ry * .55, 2);
+    if (type === 'progressif') s += z(ry * .02) + z(ry * .42);
+    if (type === 'loinpres') s += z(ry * .12, 2);
+    if (type === 'degressif') s += tout + z(ry * .12);
+    if (type === 'bifocal') {
+      const a = rx * .42, b = ry * .46, yt = cy + ry * .22;
+      const seg = `<path d="M ${n1(cx - a)} ${n1(yt)} L ${n1(cx + a)} ${n1(yt)} A ${n1(a)} ${n1(b)} 0 0 1 ${n1(cx - a)} ${n1(yt)} Z" class="zone c-doux"/>`;
+      s += seg + seg + `<line x1="${n1(cx - a)}" y1="${n1(yt)}" x2="${n1(cx + a)}" y2="${n1(yt)}" class="courbe"/>`;
+    }
+    return s + `<ellipse cx="${n1(cx)}" cy="${n1(cy)}" rx="${n1(rx)}" ry="${n1(ry)}" class="courbe"/>`;
+  }
+  const legendeVerre = (x, y) => {
+    let s = '', xx = x;
+    for (const [lib, n] of [['loin', 0], ['intermédiaire', 1], ['près', 2]]) {
+      s += `<rect x="${n1(xx)}" y="${y - 13}" width="16" height="16" rx="4" class="palier-fond"/>` + `<rect x="${n1(xx)}" y="${y - 13}" width="16" height="16" rx="4" class="zone c-doux"/>`.repeat(n);
+      s += `<rect x="${n1(xx)}" y="${y - 13}" width="16" height="16" rx="4" class="base"/><text x="${n1(xx + 22)}" y="${y}" class="petit t-doux">${lib}</text>`;
+      xx += 22 + lib.length * 8.2 + 20;
+    }
+    return s;
+  };
+
+  function verres(W) {
+    const T = [['simple', 'Simple vision', 'tout âge'], ['bifocal', 'Doubles foyers', 'ligne visible'], ['antifatigue', 'Anti-fatigue', '20 à 38 ans'],
+      ['progressif', 'Progressifs', '38 ans et plus'], ['degressif', 'Dégressifs', 'presbytes avancés']];
+    const cols = W >= 700 ? 5 : 3, cw = W / cols, rx = Math.min(cw * .38, 62), ry = rx * .74, rh = 2 * ry + 62;
+    let s = '';
+    T.forEach(([t, nom, age], i) => {
+      const row = Math.floor(i / cols), nrow = Math.min(cols, T.length - row * cols);
+      const cx = (W - nrow * cw) / 2 + cw * (i % cols) + cw / 2, cy = row * rh + ry + 6;
+      s += verre(cx, cy, rx, ry, t);
+      s += `<text x="${n1(cx)}" y="${n1(cy + ry + 22)}" text-anchor="middle" class="titre-rang">${nom}</text><text x="${n1(cx)}" y="${n1(cy + ry + 40)}" text-anchor="middle" class="petit t-doux">${age}</text>`;
+    });
+    const H = Math.ceil(T.length / cols) * rh + 30;
+    s += legendeVerre(Math.max(8, W / 2 - 150), H - 8);
+    return svgW(W, H, s, 'Cinq verres : simple vision, une force ; doubles foyers, une fenêtre de lecture ; anti-fatigue, un petit renfort en bas ; progressifs, loin en haut puis intermédiaire et près ; dégressifs, intermédiaire et près');
+  }
+
+  function usage(W) {
+    const pw = W / 2, rx = Math.min(pw * .38, 96), ry = rx * .74, cy = 76 + ry, H = cy + ry + 54;
+    let s = `<text x="${n1(W / 2)}" y="20" text-anchor="middle" class="valeur">OD +1.00 −1.00 x180 add +0.75</text>`;
+    const pan = (x0, pas, dit, type, z1, z2, z2pas, nom) => {
+      const cx = x0 + pw / 2;
+      let g = `<text x="${n1(cx)}" y="56" text-anchor="middle" class="etiq">«&#160;${dit}&#160;»</text>` + verre(cx, cy, rx, ry, type);
+      g += `<text x="${n1(cx)}" y="${n1(cy - ry * .38)}" text-anchor="middle" class="petit">${z1}</text>`;
+      g += `<text x="${n1(cx)}" y="${n1(cy + ry * .56)}" text-anchor="middle" class="petit"${P({ pas: z2pas })}>${z2}</text>`;
+      g += `<text x="${n1(cx)}" y="${n1(cy + ry + 24)}" text-anchor="middle" class="titre-rang">${nom}</text>`;
+      return `<g${P({ pas })}>${g}</g>`;
+    };
+    s += pan(0, 2, 'vision de loin', 'loinpres', 'loin : +1,00', 'près : +1,75', 2, 'anti-fatigue ou progressif');
+    s += pan(pw, 3, 'lunettes de lecture', 'degressif', 'intermédiaire', 'près', 3, 'dégressif');
+    s += `<line x1="${n1(pw)}" y1="40" x2="${n1(pw)}" y2="${H - 34}" class="separe"/>`;
+    s += legendeVerre(Math.max(8, W / 2 - 150), H - 6);
+    return svgW(W, H, s, 'Les mêmes nombres : si le patient dit vision de loin, anti-fatigue ou progressif, loin +1,00 et près +1,75 ; s’il dit lunettes de lecture, un dégressif, intermédiaire et près');
+  }
+
+  // Mesurer des lunettes : les cinq gestes ; un cadre pointillé marque là où tombe une erreur fréquente.
+  function gestes(W) {
+    const R = [['Demander', 'a-t-il ses lunettes ? quand ?', 1], ['Observer', 'claires ? rayures ? monture ?', 0], ['Mesurer', 'déplacer le verre vers le bas', 2],
+      ['Transcrire', 'OD, OS, signes, addition', 3], ['Signaler', 'un prisme, une mesure instable', 4]];
+    const rh = 52, H = R.length * rh + 8, xd = 50 + 104;
+    let s = '';
+    R.forEach(([v, d, err], i) => {
+      const y = 4 + i * rh, yc = y + rh / 2, c = i >= 3 ? 'aide' : 'emm';
+      if (err) s += `<rect x="3" y="${y + 3}" width="${W - 6}" height="${rh - 6}" rx="12" class="pointille"${P({ pas: err })}/>`;
+      if (i < R.length - 1) s += `<line x1="26" y1="${yc + 15}" x2="26" y2="${yc + rh - 15}" class="base"/>`;
+      s += `<g class="c-${c}"><circle cx="26" cy="${yc}" r="14" class="creux"/><text x="26" y="${yc + 6}" text-anchor="middle" class="etiq">${i + 1}</text>`;
+      s += `<text x="50" y="${yc + 6}" class="etiq">${v}</text></g><text x="${xd}" y="${yc + 5}" class="petit t-doux">${d}</text>`;
+    });
+    return svgW(W, H, s, 'Cinq gestes : demander, observer, mesurer, transcrire, signaler');
+  }
+
+  // L'écran du lentimètre automatique (L à gauche, R à droite) et ce qu'on écrit au dossier.
+  function ecran(W) {
+    const x0 = Math.max(10, W / 2 - 190), x1 = Math.min(W - 10, W / 2 + 190), y0 = 6, y1 = 166;
+    const cL = x0 + (x1 - x0) * .27, cR = x0 + (x1 - x0) * .73;
+    let s = `<rect x="${n1(x0)}" y="${y0}" width="${n1(x1 - x0)}" height="${y1 - y0}" rx="14" class="globe"/>`;
+    s += `<line x1="${n1(W / 2)}" y1="${y0 + 14}" x2="${n1(W / 2)}" y2="${y1 - 36}" class="separe"/>`;
+    const col = (cx, lettre, lignes) => {
+      let g = `<text x="${n1(cx)}" y="${y0 + 34}" text-anchor="middle" class="grand">${lettre}</text>`;
+      lignes.forEach(([a, v], i) => {
+        g += `<text x="${n1(cx - 48)}" y="${y0 + 64 + i * 24}" class="petit t-doux">${a}</text><text x="${n1(cx + 46)}" y="${y0 + 64 + i * 24}" text-anchor="end" class="valeur">${v}</text>`;
+      });
+      return g;
+    };
+    s += col(cL, 'L', [['S', '−3.25'], ['C', '0.00'], ['A', '']]) + col(cR, 'R', [['S', '−4.00'], ['C', '−0.75'], ['A', '70']]);
+    s += `<text x="${n1(W / 2)}" y="${y1 - 12}" text-anchor="middle" class="petit t-doux">PD 58.0</text>`;
+    s += `<rect x="${n1(cL - 58)}" y="${y0 + 10}" width="116" height="${y1 - y0 - 46}" rx="10" class="pointille"${P({ pas: 3 })}/>`;
+    // au dossier, OD d'abord : les flèches font le tour du texte
+    const xs = x0 + 36, ya = 222, yb = 256, fin = xs + 212;
+    s += `<text x="${n1(x1 - 6)}" y="${yb}" text-anchor="end" class="petit t-doux">au dossier</text>`;
+    s += `<g class="c-aide"${P({ pas: 1 })}>${coude([[cR, y1 + 4], [cR, ya - 6], [fin + 4, ya - 6]])}<text x="${n1(xs)}" y="${ya}" class="etiq">OD −4.00 −0.75 x070</text></g>`;
+    s += `<g class="c-aide"${P({ pas: 2 })}>${coude([[cL, y1 + 4], [cL, y1 + 18], [x0 + 12, y1 + 18], [x0 + 12, yb - 6], [xs - 6, yb - 6]])}<text x="${n1(xs)}" y="${yb}" class="etiq">OS −3.25 sph</text></g>`;
+    return svgW(W, yb + 14, s,'L’écran du lentimètre : L à gauche, S −3.25 C 0.00 ; R à droite, S −4.00 C −0.75 A 70. Au dossier : OD −4.00 −0.75 x070, OS −3.25 sph');
+  }
+
+  // L'OCT : le faisceau entre, se réfléchit sur la rétine, et l'appareil en affiche une coupe.
+  function oct(W) {
+    const e = coupe(), k = W < 560 ? .6 : .8;
+    const L = place(6 - 40 * k, 30 - e.haut * k, k), yc = L.Y(e.cy);
+    const xr = L.X(e.xr), px = xr + 36, pwd = Math.min(W - 10 - px, 300), ph = 120, py = yc - ph / 2;
+    const H = Math.round(Math.max(L.Y(e.bas), py + ph) + 40);
+    let s = L.g(e.s);
+    s += `<g${P({ pas: 1 })}>${fleche(L.X(40), yc + 3, xr - 4, yc + 3, 'rayon')}</g>`;
+    s += `<g${P({ pas: 2 })}>${fleche(xr - 4, yc - 4, L.X(60), yc - 4, 'rayon virtuel')}</g>`;
+    let c = `<rect x="${n1(px)}" y="${n1(py)}" width="${n1(pwd)}" height="${ph}" rx="6" class="palier-fond"/>`;
+    const N = 6, xm = px + pwd / 2, bord = i => {
+      const pts = [];
+      for (let x = px; x <= px + pwd + .1; x += pwd / 40) pts.push([x, py + 14 + i * 17 + 20 * (1 - i / N) * Math.exp(-(((x - xm) / (pwd * .14)) ** 2))]);
+      return pts;
+    };
+    for (let i = 0; i < N; i += 2) {
+      const a = bord(i), b = bord(i + 1).reverse();
+      c += `<path d="M ${a.map(p => n1(p[0]) + ' ' + n1(p[1])).join(' L ')} L ${b.map(p => n1(p[0]) + ' ' + n1(p[1])).join(' L ')} Z" class="zone ${i === N - 2 ? 'c-emm' : 'c-doux'}"/>`;
+    }
+    c += `<rect x="${n1(px)}" y="${n1(py)}" width="${n1(pwd)}" height="${ph}" rx="6" class="base"/>`;
+    c += `<line x1="${n1(xr)}" y1="${n1(yc - 6)}" x2="${n1(px)}" y2="${n1(py)}" class="pointille"/><line x1="${n1(xr)}" y1="${n1(yc + 6)}" x2="${n1(px)}" y2="${n1(py + ph)}" class="pointille"/>`;
+    c += `<text x="${n1(px + pwd / 2)}" y="${n1(py + ph + 24)}" text-anchor="middle" class="petit t-doux">une coupe de la rétine</text>`;
+    s += `<g${P({ pas: 4 })}>${c}</g>`;
+    s += `<text x="${n1(L.X(250))}" y="${n1(L.Y(e.bas) + 26)}" text-anchor="middle" class="petit t-doux"${P({ pas: 3 })}>temps de réflexion → image</text>`;
+    return svgW(W, H, s, 'L’OCT : un faisceau entre dans l’œil, se réfléchit sur la rétine, et l’appareil affiche une coupe de ses couches');
+  }
+
+  // Ce que l'OCT mesure : quatre endroits, numérotés comme la liste.
+  function cibles(W) {
+    const e = coupe(), nv = nerf(e), k = W < 560 ? .76 : .95;
+    const L = place((W - 316 * k) / 2 - e.apex * k, 10 - e.haut * k, k);
+    const H = Math.round(Math.max(L.Y(e.bas), L.Y(nv.bout[1])) + 14);
+    let s = L.g(nv.s + e.s);
+    const pts = [[nv.milieu, 1], [[e.xr - 40, e.cy - 34], 2], [[e.xr - 2, e.cy], 3], [[e.apex, e.cy], 4]];
+    for (const [[x, y], i] of pts) {
+      s += `<g class="c-emm"${P({ pas: i })}><circle cx="${n1(L.X(x))}" cy="${n1(L.Y(y))}" r="13" class="creux"/><text x="${n1(L.X(x))}" y="${n1(L.Y(y) + 6)}" text-anchor="middle" class="etiq">${i}</text></g>`;
+    }
+    return svgW(W, H, s, 'L’œil en coupe : 1 le nerf optique, 2 les cellules ganglionnaires, 3 la rétine au centre, 4 la cornée');
+  }
+
+  // Le rapport des fibres : la mesure du patient comparée à une bande normale (schéma, sans valeurs).
+  function norme(W) {
+    const H = 250, l = 14, r = W - 14;
+    const X = u => l + u * (r - l), gs = (u, c, w) => Math.exp(-(((u - c) / w) ** 2));
+    const moy = u => 162 - 52 * gs(u, .3, .11) - 56 * gs(u, .72, .11);
+    const pat = u => moy(u) + 30 * gs(u, .74, .055) - 26 * gs(u, .28, .05);
+    const pts = f => { const p = []; for (let u = 0; u <= 1.0001; u += .01) p.push([X(u), f(u)]); return p; };
+    const j = p => p.map(q => n1(q[0]) + ' ' + n1(q[1])).join(' L ');
+    const haut = pts(u => moy(u) - 16), bas = pts(u => moy(u) + 16).reverse();
+    let s = `<path d="M ${j(haut)} L ${j(bas)} Z" class="zone c-doux"/>`;
+    s += `<text x="${n1(X(.01))}" y="${n1(moy(.01) + 36)}" class="petit">la norme</text>`;
+    s += `<path d="M ${j(pts(pat))}" class="courbe"/>`;
+    s += `<g${P({ pas: 1 })}><circle cx="${n1(X(.74))}" cy="${n1(pat(.74))}" r="7" class="pt-courbe"/><line x1="${n1(X(.74))}" y1="${n1(pat(.74) + 8)}" x2="${n1(X(.74))}" y2="${H - 64}" class="pointille"/>`;
+    s += `<text x="${n1(X(.74))}" y="${H - 46}" text-anchor="middle" class="petit">plus mince : « rouge »</text></g>`;
+    s += `<g${P({ pas: 2 })}><circle cx="${n1(X(.28))}" cy="${n1(pat(.28))}" r="7" class="pt-courbe"/><text x="${n1(X(.28))}" y="${n1(pat(.28) - 16)}" text-anchor="middle" class="petit">plus épais</text></g>`;
+    s += `<text x="${l}" y="22" class="petit t-doux">↑ épaisseur des fibres</text>`;
+    s += `<text x="${n1(r)}" y="${H - 8}" text-anchor="end" class="petit t-doux">le tour du nerf optique →</text>`;
+    return svgW(W, H, s, 'Schéma d’un rapport : la courbe du patient suit la bande de la norme, sauf un endroit plus mince et un endroit plus épais');
+  }
+
+  const FIG = {
+    'carte-couverture': couverture, appareils, miroirs, puissance, meridiens, optosys, zones, motifs, aplatir, cone, rigide,
+    depistage, 'deux-x': deuxX, verres, usage, gestes, ecran, oct, 'oct-cibles': cibles, norme
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', kerato: 'La kératométrie', topo: 'La topographie', cone: 'Le kératocône', lunettes: 'Les lunettes', oct: 'L’OCT', route: 'Pour la route' };
+  const CLE = 'diapos-to-m5-m6';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'a55b77ff2e52';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

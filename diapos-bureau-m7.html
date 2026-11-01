@@ -1,0 +1,1371 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diapos Bureau M7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos Bureau M7 (ADM 0010) : le « Survol » de la croix optique, plus le comptoir du module 5 (1er nov. 2026).
+  Contenu : uniquement Guides/UA2-Bureau-Ophtalmique/distilled/adm-m07_distilled.md et, pour « Au comptoir »,
+  Guides/UA1-Bureau-Ophtalmique/distilled/adm-m05_distilled.md (à l'UA2 : « -Exercices Gestion de rendez-vous »,
+  « -Exercices Gestion financière »). Les réponses sans corrigé du cours (exercices, analyse inverse) sont calculées
+  avec ses règles et signalées sur la diapo. La transposition n'est pas encore reçue : absente.
+  Moteur, styles et navigation : copiés tels quels de Guides/UA2-Optique/diapos-m6-m7.html.
+  Code couleur constant : neutre = le méridien de l'axe, la sphère · violet = le cylindre et le 2e méridien (au comptoir,
+  ce que paient OHIP ou l'assureur) · cyan = négatif, foyer devant la rétine · orange = positif, foyer derrière.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un banc d'optique la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --myo: #56d3ea;
+  --hyp: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.myo { color: var(--myo); }
+.hyp { color: var(--hyp); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barres (budgets en dioptries) ---- */
+.barres { display: grid; gap: 12px; min-width: 0; }
+.titre-fig { margin: 0; font-size: var(--t-s); font-weight: 700; color: var(--doux); }
+.barre { display: grid; grid-template-columns: minmax(7.5em, max-content) minmax(0, 1fr) 3.4em; gap: 10px; align-items: center; }
+.barre .nom { font-size: var(--t-s); }
+.piste { position: relative; display: flex; height: 26px; border-radius: 6px; background: var(--fond-2); box-shadow: inset 0 0 0 1px var(--trait); }
+.piste i { display: block; height: 100%; width: calc(var(--w) / var(--max) * 100%); background: var(--c); }
+.piste i:first-child { border-radius: 6px 0 0 6px; }
+.piste i.raye, .legende .raye::before { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 8px); box-shadow: inset 0 0 0 1.5px var(--c); }
+.barres.repere .piste::after { content: ""; position: absolute; top: -5px; bottom: -5px; left: calc(var(--m) / var(--max) * 100%); border-left: 2px dashed var(--encre); }
+.barre .val { font-family: var(--f-chiffre); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.legende { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--t-xs); color: var(--doux); }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende span::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+@media (max-width: 520px) {
+  .barre { grid-template-columns: minmax(0, 1fr) 3.2em; gap: 4px 10px; }
+  .barre .nom { grid-column: 1 / -1; }
+}
+
+/* ---- yeux en rangées (amétropies) ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- lentille dans l'air / dans l'eau ---- */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.carte-eau { margin: 0; padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.carte-eau figcaption { font-weight: 700; }
+.carte-eau svg { display: block; width: 100%; height: auto; }
+.carte-eau dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; margin: 0; font-size: var(--t-s); }
+.carte-eau dt { color: var(--doux); }
+.carte-eau dd { margin: 0; font-family: var(--f-chiffre); text-align: right; }
+.carte-eau .total { font-weight: 700; color: var(--encre); font-size: var(--t-m); }
+
+/* ---- définitions Pr / Pp ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- les quatre questions ---- */
+.questions { list-style: none; margin: 0; padding: 0; counter-reset: q; display: grid; gap: 12px; }
+@media (min-width: 880px) { .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.questions li { counter-increment: q; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 4px 12px; padding: 12px 14px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); }
+.questions li::before { content: counter(q); grid-row: span 2; font-family: var(--f-titre); font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--doux); }
+.questions .q { margin: 0; font-weight: 700; }
+.questions .r { margin: 0; color: var(--doux); font-size: var(--t-s); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-myo { --c: var(--myo); } .c-hyp { --c: var(--hyp); } .c-emm { --c: var(--encre); } .c-aide { --c: var(--aide); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--encre); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .zone { fill: var(--c); fill-opacity: .3; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 3; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.6; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .virtuel { stroke-dasharray: 4 5; stroke-width: 1.8; }
+svg .verre { fill: var(--c); fill-opacity: .18; stroke: var(--c); stroke-width: 2; }
+svg .barre-d { fill: var(--encre); }
+svg .palier-fond { fill: var(--fond-2); }
+svg .palier { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .courbe { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .pt-courbe { fill: var(--encre); }
+svg .bande { fill: var(--aide); fill-opacity: .12; }
+svg .muscle { fill: var(--retine); fill-opacity: .85; }
+svg .zonule { fill: none; stroke: var(--doux); stroke-width: 1.6; }
+svg .eau { fill: var(--doux); fill-opacity: .22; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-bureau-m7.html" title="Retour à l'Atelier Bureau M7">← Atelier Bureau</a>
+      <p class="marque">Bureau M7 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 23</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Bureau ophtalmique · ADM 0010 · module 7</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>La croix optique&nbsp;: une Rx, deux méridiens</h1>
+            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo, puis le comptoir du module 5&nbsp;: les deux sont à la sommative UA2 du 23 novembre. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">23 diapos · ≈ 16 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-emm">le méridien de l'axe&nbsp;: la sphère</li>
+              <li class="c-aide">le cylindre et le 2e méridien · au comptoir, ce que paient OHIP ou l'assureur</li>
+              <li class="c-myo">négatif · foyer devant la rétine</li>
+              <li class="c-hyp">positif · foyer derrière la rétine</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="La croix de OD −5.00 −1.50 x 160 : −5.00 sur le méridien 160, −6.50 sur le 070"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>La croix pose l'ordonnance sur l'œil</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="rx-parts" aria-label="La Rx OD −1.00 −0.50 x 180, chaque partie nommée, et sa croix : −1.00 sur 180, −1.50 sur 090"></figure>
+          <div class="texte">
+            <p>«&nbsp;Comment visualiser l'ordonnance sur l'œil du patient&nbsp;?&nbsp;» Une Rx de loin donne trois nombres&nbsp;: la <b>sphère</b>, le <b class="aide">cylindre</b> et l'<b>axe</b>. La croix en fait <b>deux puissances</b>, posées sur deux méridiens à angle droit.</p>
+            <p class="sous">Le module répond à trois questions&nbsp;:</p>
+            <ol class="trois">
+              <li><b>Où va chaque nombre</b>&nbsp;? <span>construire la croix</span></li>
+              <li><b>Où tombent les foyers</b>&nbsp;? <span>lire la croix</span></li>
+              <li><b>Quel astigmatisme</b>&nbsp;? <span>le nommer</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Trois nombres → deux méridiens, deux puissances.</p>
+      </div>
+    </section>
+
+    <!-- 3 · ce que la croix garde -->
+    <section class="diapo" id="d3" data-acte="porte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Ce que montre la croix</p>
+        <h2>La croix ne garde que la Rx de loin</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="garde" aria-label="Une Rx complète : sphère, cylindre et axe vont sur la croix ; le prisme et l'addition restent dehors"></figure>
+          <div class="texte">
+            <p>La croix représente la Rx de <b>vision de loin</b> (VL)&nbsp;: sphère, cylindre et axe, sur deux méridiens principaux.</p>
+            <p data-pas="1">Le prisme et l'addition n'y vont pas. Pour eux, sur la croix&nbsp;: «&nbsp;RIEN&nbsp;!&nbsp;»</p>
+            <p class="piege"><b>Piège</b>L'addition est sur la Rx, mais pas sur la croix.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Sur la croix&nbsp;: SPH, CYL, AXE. Rien d'autre.</p>
+      </div>
+    </section>
+
+    <!-- 4 · le cadran -->
+    <section class="diapo" id="d4" data-acte="porte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Ce que montre la croix</p>
+        <h2>Sur le verre vu de face, 180 est à gauche et 090 en haut</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cadran" aria-label="Le cadran d'un verre vu de face : 180 à gauche, 0 à droite, 090 en haut, 135 en haut à gauche, 045 en haut à droite, une ligne à 160"></figure>
+          <div class="texte">
+            <p>On lit les degrés sur le verre <b>vu de face</b>, avec la même échelle sur les deux verres.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Les obliques&nbsp;: <b>135</b> en haut à gauche, <b>045</b> en haut à droite. Une ligne porte le même degré à ses deux bouts.</span></li>
+              <li data-pas="2"><span>Une ligne à <b>160</b> monte un peu vers la gauche et traverse tout le verre.</span></li>
+            </ol>
+            <p class="note">0 et 180 sont la même ligne. Dans une Rx, on écrit 180&nbsp;: «&nbsp;L'axe du cylindre est toujours compris entre 001 et 180 degrés.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>180 à gauche, 090 en haut, 135 en haut à gauche.</p>
+      </div>
+    </section>
+
+    <!-- 5 · sphérique -->
+    <section class="diapo" id="d5" data-acte="porte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Ce que montre la croix</p>
+        <h2>Sans cylindre, la même force sur tous les méridiens</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="spherique" aria-label="La croix de −1.00 DS : −1.00 sur 180, 090, 135 et 045"></figure>
+          <div class="texte">
+            <p>Une Rx sans cylindre s'écrit <b>−1.00 DS</b>. Sur la croix, la même valeur va au bout de chaque bras.</p>
+            <p>«&nbsp;Pouvoir Sphérique = même force dans tous les méridiens de la croix&nbsp;»</p>
+            <p data-pas="1">Même à 135 et à 045&nbsp;: partout <span class="myo">−1.00</span>. Un seul foyer.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Sphérique&nbsp;: une seule valeur, sur tous les bras.</p>
+      </div>
+    </section>
+
+    <!-- 6 · une croix par œil -->
+    <section class="diapo" id="d6" data-acte="porte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Ce que montre la croix</p>
+        <h2>Une croix par œil, et c'est la Rx qui dit lequel</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="lunettes" aria-label="Lunettes vues de face : à gauche l'OD, −3.50 sur ses deux bras ; à droite l'OS, −2.75 sur les deux siens"></figure>
+          <div class="texte">
+            <p>Rx&nbsp;: OD −3.50, OS −2.75. Sur des lunettes vues de face, en face du patient, l'<b>OD est à gauche</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>OD&nbsp;: <span class="myo">−3.50</span> sur ses deux bras.</span></li>
+              <li data-pas="2"><span>OS&nbsp;: <span class="myo">−2.75</span> sur les deux siens.</span></li>
+              <li data-pas="3"><span>Une croix +2.50 seule, sans Rx&nbsp;: «&nbsp;OD ou OS&nbsp;???&nbsp;» → «&nbsp;Inconnu dans ce scénario&nbsp;».</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Dessiner l'OD à ta droite. Tu regardes le patient en face&nbsp;: son OD est à ta gauche.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La croix ne dit pas l'œil&nbsp;: c'est la Rx qui le dit.</p>
+      </div>
+    </section>
+
+    <!-- 7 · ① la sphère sur l'axe -->
+    <section class="diapo" id="d7" data-acte="construire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Construire la croix</p>
+        <h2>① La sphère va sur le méridien de l'axe</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="od-1" aria-label="OD −1.00 −0.50 x 180 : la sphère −1.00 va au bout du méridien 180"></figure>
+          <div class="texte">
+            <p>Une Rx <b>torique</b> a un cylindre&nbsp;: deux méridiens, deux forces. Première règle&nbsp;:</p>
+            <p class="formule">P(axe) = SPH</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>OD −1.00 −0.50 x 180&nbsp;: l'axe est 180, donc <b class="myo">−1.00</b> va au bout du bras 180.</span></li>
+              <li data-pas="2"><span>Pourquoi&nbsp;? Sur son axe, un cylindre n'a <b>aucune puissance</b>. Il ne reste que la sphère.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Le mot «&nbsp;axe&nbsp;» fait croire que le cylindre agit là. C'est l'inverse.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le méridien de l'axe ne porte que la sphère.</p>
+      </div>
+    </section>
+
+    <!-- 8 · ② SPH + CYL -->
+    <section class="diapo" id="d8" data-acte="construire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Construire la croix</p>
+        <h2>② L'autre méridien porte la sphère plus le cylindre</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="od-2" aria-label="OD −1.00 −0.50 x 180 : −1.00 sur 180, et −1.50 sur 090, à angle droit"></figure>
+          <div class="texte">
+            <p>«&nbsp;SPH + CYL = Force du 2e méridien&nbsp;». Ce méridien est à angle droit de l'axe.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>(−1.00) + (−0.50) = <b class="myo">−1.50</b>.</span></li>
+              <li data-pas="2"><span>−1.50 va au bout du bras <b class="aide">090</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Le cylindre seul (−0.50) sur le 090, ou SPH − CYL&nbsp;: deux erreurs.</p>
+            <p class="note">Vérifie&nbsp;: avec un cylindre négatif, le 2e méridien est toujours plus bas que la sphère. Cette vérification découle de la règle&nbsp;; le cours ne l'écrit pas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le 2e méridien&nbsp;: SPH + CYL, signes compris.</p>
+      </div>
+    </section>
+
+    <!-- 9 · OD x 180, OS x 090 -->
+    <section class="diapo" id="d9" data-acte="construire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Un cas du cours</p>
+        <h2>Axe 090&nbsp;: la sphère monte sur le bras vertical</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="od-os" aria-label="OD −1.00 −0.50 x 180 : −1.00 sur 180, −1.50 sur 090. OS −2.00 −0.75 x 090 : −2.00 sur 090, −2.75 sur 180"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>OD −1.00 −0.50 x 180</b>&nbsp;: −1.00 sur 180, −1.50 sur 090.</span></li>
+              <li data-pas="2"><span><b>OS −2.00 −0.75 x 090</b>&nbsp;: l'axe est 090, donc −2.00 va sur le bras <b>vertical</b>.</span></li>
+              <li data-pas="3"><span>(−2.00) + (−0.75) = <b class="myo">−2.75</b>, sur le 180.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Mettre la sphère sur le 180 par habitude.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La sphère suit l'axe, quel qu'il soit.</p>
+      </div>
+    </section>
+
+    <!-- 10 · ③ axe oblique -->
+    <section class="diapo" id="d10" data-acte="oblique" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · L'axe oblique</p>
+        <h2>③ Le 2e méridien est à 90° de l'axe</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oblique-a" aria-label="OD −5.00 −1.50 x 160 : −5.00 sur la ligne 160, −6.50 sur la ligne 070, à angle droit"></figure>
+          <div class="texte">
+            <p>«&nbsp;+/- 090 (Angle Droit)&nbsp;»&nbsp;: le 2e méridien est l'axe, plus ou moins 090.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>OD −5.00 −1.50 x 160&nbsp;: <b class="myo">−5.00</b> sur le 160, l'axe.</span></li>
+              <li data-pas="2"><span>(−5.00) + (−1.50) = <b class="myo">−6.50</b>.</span></li>
+              <li data-pas="3"><span>160 − 090 = <b class="aide">070</b>&nbsp;: −6.50 va sur le 070.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>160 + 090 = 250&nbsp;: hors de 001 à 180. Ici, on soustrait.</p>
+            <p class="note">Plus ou moins&nbsp;? Celui qui reste entre 001 et 180. Cette façon de choisir est déduite de la plage de l'axe.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le 2e méridien est toujours à angle droit de l'axe.</p>
+      </div>
+    </section>
+
+    <!-- 11 · options A et B -->
+    <section class="diapo" id="d11" data-acte="oblique" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · L'axe oblique</p>
+        <h2>Un axe oblique se dessine de deux façons</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="options" aria-label="La même croix en option A, les vrais méridiens 160 et 070, et en option B, une croix droite : 160 à l'horizontale, 070 à la verticale"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Option A</b>&nbsp;: on trace les vrais méridiens, 160 et 070.</span></li>
+              <li data-pas="2"><span><b>Option B</b>&nbsp;: on garde une croix droite. Bras horizontal&nbsp;: «&nbsp;(axe le plus près de 180 ou 0)&nbsp;»&nbsp;; bras vertical&nbsp;: «&nbsp;(axe le plus près de 090)&nbsp;».</span></li>
+              <li data-pas="3"><span>160 est à 20° de 180, mais à 70° de 090&nbsp;: <b>horizontal</b>. Le 070 prend le bras vertical.</span></li>
+            </ol>
+            <p class="note">En option B, le degré va à un bout du bras, la valeur à l'autre.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Option B&nbsp;: le méridien le plus près de 180 ou de 0 va à l'horizontale.</p>
+      </div>
+    </section>
+
+    <!-- 12 · le signe situe le foyer -->
+    <section class="diapo" id="d12" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Lire la croix</p>
+        <h2>Le signe d'un méridien dit où tombe son foyer</h2>
+        <div class="corps plein">
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="mini-myo" aria-label="Méridien négatif : foyer devant la rétine"></figure>
+              <div><h3 class="myo">Négatif · myope</h3><p>Le foyer tombe <b>devant</b> la rétine.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="mini-emm" aria-label="Plano : foyer sur la rétine"></figure>
+              <div><h3>Plano · emmétrope</h3><p>Le foyer tombe <b>sur</b> la rétine.</p></div>
+            </div>
+            <div class="rang" data-pas="2">
+              <figure class="visuel" data-fig="mini-hyp" aria-label="Méridien positif : foyer derrière la rétine"></figure>
+              <div><h3 class="hyp">Positif · hypermétrope</h3><p>Le foyer tombe <b>derrière</b> la rétine.</p></div>
+            </div>
+          </div>
+          <p class="note" data-pas="3">Corrigé par sa Rx, l'œil a ses foyers «&nbsp;SUR LA RÉTINE&nbsp;». Sur une croix torique, le cours montre des méridiens + et Plano&nbsp;; un méridien négatif suit la règle du myope.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un signe est une place&nbsp;: − devant, Plano sur la rétine, + derrière. Comme en Optique.</p>
+      </div>
+    </section>
+
+    <!-- 13 · les cinq types -->
+    <section class="diapo" id="d13" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Lire la croix</p>
+        <h2>Deux signes nomment l'astigmatisme</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="types" aria-label="Les cinq types : myope et hypermétrope simple, un méridien sur Plano ; myope et hypermétrope composé, deux méridiens du même côté ; mixte, un de chaque côté"></figure>
+          <div class="texte">
+            <p>Un astigmate a deux foyers, un par méridien. Le type vient des <b>deux</b> signes.</p>
+            <ul class="points">
+              <li data-pas="1"><b>Simple</b>&nbsp;: un méridien Plano, l'autre myope ou hypermétrope.</li>
+              <li data-pas="2"><b>Composé</b>&nbsp;: deux méridiens du même signe, de forces différentes.</li>
+              <li data-pas="3"><b>Mixte</b>&nbsp;: un myope et un hypermétrope.</li>
+            </ul>
+            <p class="note">Deux méridiens égaux&nbsp;: pas d'astigmatisme. C'est un myope ou un hypermétrope sphérique.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Simple&nbsp;: un Plano. Composé&nbsp;: même signe. Mixte&nbsp;: signes opposés.</p>
+      </div>
+    </section>
+
+    <!-- 14 · +2.00 -2.00 x 135 -->
+    <section class="diapo" id="d14" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Un cas du cours</p>
+        <h2>+2.00 −2.00 x 135&nbsp;: un astigmatisme hypermétrope simple</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-135" aria-label="+2.00 −2.00 x 135 : +2.00 sur la ligne 135, Plano sur la ligne 045"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="hyp">+2.00</b> sur le 135, l'axe.</span></li>
+              <li data-pas="2"><span>+2.00 + (−2.00) = 0, qui s'écrit <b>Plano</b>, sur le 045 (135 − 090).</span></li>
+              <li data-pas="3"><span>Foyers sans correction&nbsp;: un <b class="hyp">derrière</b> la rétine, un <b>sur</b> la rétine.</span></li>
+              <li data-pas="4"><span>Type&nbsp;: «&nbsp;Astigmatisme Hypermétrope Simple&nbsp;». La Rx, elle, se nomme par le signe de sa sphère&nbsp;: «&nbsp;Hypermétrope Torique&nbsp;».</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le type vient des deux méridiens&nbsp;; le nom de la Rx, de la sphère.</p>
+      </div>
+    </section>
+
+    <!-- 15 · où le cylindre s'arrête -->
+    <section class="diapo" id="d15" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Lire la croix</p>
+        <h2>Où le cylindre s'arrête nomme le type</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="arret" aria-label="Trois Rx : le cylindre descend de la sphère et s'arrête au-dessus de 0 (composé), sur 0 (simple) ou sous 0 (mixte)"></figure>
+          <div class="texte">
+            <p>Un cylindre négatif fait <b>descendre</b>&nbsp;: on part de la sphère, on descend du cylindre, on regarde où l'on s'arrête.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>+6.50 −1.00 x 160&nbsp;: arrêt à <span class="hyp">+5.50</span>, encore au-dessus de 0 → «&nbsp;Astigmatisme Hypermétrope Composé&nbsp;».</span></li>
+              <li data-pas="2"><span>+2.00 −2.00 x 135&nbsp;: arrêt pile à Plano → hypermétrope <b>simple</b>.</span></li>
+              <li data-pas="3"><span>+2.50 −3.75 x 090&nbsp;: on passe sous 0, à <span class="myo">−1.25</span> → <b>mixte</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>La sphère de +2.50 est positive, et pourtant c'est un mixte.</p>
+            <p class="note" data-pas="3">Ce dernier exercice du cours n'a pas de corrigé&nbsp;: la réponse est calculée avec ses règles.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Lis les deux méridiens, jamais la sphère seule.</p>
+      </div>
+    </section>
+
+    <!-- 16 · à rebours -->
+    <section class="diapo" id="d16" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Lire la croix</p>
+        <h2>À rebours, la croix redonne la Rx</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="rebours" aria-label="Une croix −2.00 sur 180 et −3.50 sur 090 redonne la Rx −2.00 −1.50 x 180"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Deux bras égaux&nbsp;: pas de cylindre. +2.00 et +2.00 → <b>+2.00 DS</b>.</span></li>
+              <li data-pas="2"><span>Sinon, le méridien <b>le plus positif</b> donne la sphère et l'axe&nbsp;: −2.00, sur le 180.</span></li>
+              <li data-pas="3"><span>CYL = l'autre − SPH = −3.50 − (−2.00) = <b class="aide">−1.50</b>.</span></li>
+              <li data-pas="4"><span>Rx&nbsp;: <b>−2.00 −1.50 x 180</b>. Vérifie&nbsp;: −2.00 + (−1.50) = −3.50.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Partir du méridien le plus négatif donne un cylindre positif. La Rx s'écrit en cylindre négatif.</p>
+            <p class="note">Le cours pose la question («&nbsp;ANALYSE INVERSE&nbsp;»)&nbsp;; ces réponses sont déduites des règles ① et ②.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>À rebours&nbsp;: le méridien le plus positif devient la sphère.</p>
+      </div>
+    </section>
+
+    <!-- 17 · l'exercice complet -->
+    <section class="diapo" id="d17" data-acte="methode" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La méthode de la prof</p>
+        <h2>Un exercice complet&nbsp;: la croix, les foyers, le type</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="complet" aria-label="+2.00 −1.00 x 065 en option B : 065 et +2.00 sur le bras vertical, 155 et +1.00 sur le bras horizontal"></figure>
+          <div class="texte">
+            <p>Rx&nbsp;: <b>+2.00 −1.00 x 065</b>. Après la croix, la prof demande l'amétropie, les foyers sans puis avec correction, et «&nbsp;Quel est le type d'astigmatisme&nbsp;?&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>① <span class="hyp">+2.00</span> sur 065. ② +2.00 + (−1.00) = <b class="hyp">+1.00</b>.</span></li>
+              <li data-pas="2"><span>③ 065 + 090 = <b class="aide">155</b>&nbsp;: +1.00 sur le 155.</span></li>
+              <li data-pas="3"><span>Option B&nbsp;: 065 est à 25° de 090, à 65° de 0 → bras <b>vertical</b>. Le 155 va à l'horizontale.</span></li>
+              <li data-pas="4"><span>Sans correction, deux foyers <b class="hyp">derrière</b> la rétine. Corrigé, sur la rétine.</span></li>
+              <li data-pas="5"><span>Deux positifs différents&nbsp;: astigmatisme hypermétrope <b>composé</b>. La Rx&nbsp;: hypermétrope torique.</span></li>
+            </ol>
+            <p class="note">Cet exercice n'a pas de corrigé&nbsp;: les réponses sont calculées avec les règles du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Analyse Rx, Croix Optique, Type d'astigmatisme&nbsp;»&nbsp;: les trois temps de l'exercice.</p>
+      </div>
+    </section>
+
+    <!-- 18 · deux factures -->
+    <section class="diapo" id="d18" data-acte="comptoir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · Au comptoir</p>
+        <h2>Deux factures, chacune&nbsp;: frais moins escompte</h2>
+        <div class="corps">
+          <div class="barres" style="--max:700">
+            <p class="titre-fig">Lunetterie Vizo</p>
+            <div class="barre" data-pas="1">
+              <span class="nom">Frais produit</span>
+              <span class="piste"><i class="c-doux" style="--w:550"></i></span>
+              <span class="val">550&nbsp;$</span>
+            </div>
+            <div class="barre">
+              <span class="nom">Facture produit</span>
+              <span class="piste"><i class="c-emm" style="--w:475" data-pas="3"></i><i class="c-doux raye" style="--w:75" data-pas="2"></i></span>
+              <span class="val" data-pas="3">475&nbsp;$</span>
+            </div>
+            <div class="barre">
+              <span class="nom">Facture service</span>
+              <span class="piste"><i class="c-emm" style="--w:195"></i></span>
+              <span class="val">195&nbsp;$</span>
+            </div>
+            <div class="barre" data-pas="4">
+              <span class="nom">Total payé</span>
+              <span class="piste"><i class="c-emm" style="--w:670"></i></span>
+              <span class="val">670&nbsp;$</span>
+            </div>
+            <p class="legende"><span class="c-emm">la facture</span><span class="c-doux raye">l'escompte</span></p>
+          </div>
+          <div class="texte">
+            <p>Une facture pour les <b>services</b>, une pour les <b>produits</b>&nbsp;; pas de taxes sur ce qui est médical.</p>
+            <p class="formule">Facture = Frais − Escompte</p>
+            <p>«&nbsp;Promotion&nbsp;: 50&nbsp;% rabais sur les lentilles ophtalmique avec achat de monture&nbsp;». Examen 195&nbsp;$, monture 400&nbsp;$, lentilles 150&nbsp;$.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Frais produit&nbsp;: 400 + 150 = 550&nbsp;$.</span></li>
+              <li data-pas="2"><span>Escompte&nbsp;: 50&nbsp;% des <b>lentilles seulement</b>&nbsp;: 0,50 × 150 = 75&nbsp;$.</span></li>
+              <li data-pas="3"><span>Facture produit&nbsp;: 550 − 75 = <b>475&nbsp;$</b>. Le service reste à 195&nbsp;$.</span></li>
+              <li data-pas="4"><span>Total payé&nbsp;: 195 + 475 = <b>670&nbsp;$</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>0,50 × 550 = 275&nbsp;$, c'est l'escompte sur toute la facture. Il ne touche que les items de la promotion.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Chaque facture&nbsp;: ses frais, moins l'escompte sur ses items.</p>
+      </div>
+    </section>
+
+    <!-- 19 · qui paie -->
+    <section class="diapo" id="d19" data-acte="comptoir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · Au comptoir</p>
+        <h2>Les payeurs passent dans l'ordre&nbsp;; le patient paie le reste</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="payeurs" aria-label="Service : OHIP, payeurs tiers, assureur, puis le patient. Produit : pas d'OHIP, payeurs tiers, assureur, puis le patient"></figure>
+          <div class="texte">
+            <p class="formule">Déboursé = Facture − Couverture</p>
+            <p class="sous">Pour un service, six questions&nbsp;:</p>
+            <ol class="etapes">
+              <li><span>«&nbsp;Quel est le frais&nbsp;?&nbsp;»</span></li>
+              <li><span>«&nbsp;Est-ce qu'il y a un escompte&nbsp;?&nbsp;»</span></li>
+              <li><span>«&nbsp;Calcul de la facture (frais – escompte)&nbsp;»</span></li>
+              <li><span>«&nbsp;Est-ce couvert par OHIP&nbsp;? Si oui, facturez OHIP directement.&nbsp;»</span></li>
+              <li><span>«&nbsp;Est-ce couvert par un assureur&nbsp;? Si oui, calculez la couverture.&nbsp;»</span></li>
+              <li><span>«&nbsp;Une fois tout considéré, combien sera déboursé par le patient&nbsp;?&nbsp;»</span></li>
+            </ol>
+            <p data-pas="1">Un <b>produit</b> saute la question OHIP&nbsp;: OHIP ne couvre pas les produits. Et si OHIP couvre le service, le patient paie 0&nbsp;$.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>OHIP, seulement pour un service. Le patient paie ce qui reste.</p>
+      </div>
+    </section>
+
+    <!-- 20 · l'assureur -->
+    <section class="diapo" id="d20" data-acte="comptoir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · Un cas du cours</p>
+        <h2>L'assureur paie un pourcentage, jamais plus que son maximum</h2>
+        <div class="corps">
+          <div class="barres repere" style="--max:110; --m:80">
+            <p class="titre-fig">Le trait = le maximum, 80&nbsp;$</p>
+            <div class="barre">
+              <span class="nom">Facture</span>
+              <span class="piste"><i class="c-doux" style="--w:110"></i></span>
+              <span class="val">110&nbsp;$</span>
+            </div>
+            <div class="barre" data-pas="2">
+              <span class="nom">80&nbsp;% de la facture</span>
+              <span class="piste"><i class="c-aide raye" style="--w:88"></i></span>
+              <span class="val">88&nbsp;$</span>
+            </div>
+            <div class="barre">
+              <span class="nom">Qui paie</span>
+              <span class="piste"><i class="c-aide" style="--w:80" data-pas="3"></i><i class="c-emm" style="--w:30" data-pas="4"></i></span>
+              <span class="val" data-pas="4">110&nbsp;$</span>
+            </div>
+            <p class="legende"><span class="c-aide">l'assureur&nbsp;: 80&nbsp;$</span><span class="c-emm">le patient&nbsp;: 30&nbsp;$</span></p>
+          </div>
+          <div class="texte">
+            <p>Un étudiant de La Cité, 21&nbsp;ans, en santé, à Lumiris. Plan AE&nbsp;: «&nbsp;couvre 80&nbsp;% (max 80&nbsp;$)&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Examen à Lumiris&nbsp;: <b>110&nbsp;$</b>. OHIP&nbsp;? À 21&nbsp;ans, en santé&nbsp;: aucune couverture.</span></li>
+              <li data-pas="2"><span>110 × 0,80 = 88&nbsp;$.</span></li>
+              <li data-pas="3"><span>Le maximum est 80&nbsp;$&nbsp;: l'assureur paie <b class="aide">80&nbsp;$</b>.</span></li>
+              <li data-pas="4"><span>Le patient&nbsp;: 110 − 80 = <b>30&nbsp;$</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Le pourcentage s'applique à la facture après escompte (110&nbsp;$), jamais aux frais (205&nbsp;$).</p>
+            <p class="note">Le solde (ce qui reste du maximum) plafonne aussi&nbsp;: l'assureur paie le plus petit de facture × %, maximum et solde. Forme déduite des cas du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un pourcentage de la facture, jamais plus que le maximum.</p>
+      </div>
+    </section>
+
+    <!-- 21 · la grille OHIP -->
+    <section class="diapo" id="d21" data-acte="comptoir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · Au comptoir</p>
+        <h2>OHIP&nbsp;: la catégorie du patient fixe la fréquence</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="grille-ohip" aria-label="Examen majeur couvert par OHIP : 0–19 ans tous les 12 mois ; 20–64 ans en santé, aucun ; avec condition admissible, 12 mois ; POSPH/ODSP ou OW, 24 mois ; 65 ans et plus en santé, 18 mois ; avec condition, 12 mois"></figure>
+          <div class="texte">
+            <p>OHIP paie l'<b>examen majeur</b> (la réfraction <b>et</b> la santé oculaire) à une fréquence fixée par la catégorie. L'examen mineur, c'est l'une <b>ou</b> l'autre.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>L'âge compte <b>le jour de l'examen</b>, pas le jour de l'appel&nbsp;: «&nbsp;(px à 69 en date de l'examen)&nbsp;».</span></li>
+              <li data-pas="2"><span>Puis&nbsp;: une condition médicale admissible, ou un programme (POSPH/ODSP, OW)&nbsp;?</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>De 20 à 64&nbsp;ans, en santé&nbsp;: aucun examen majeur couvert.</p>
+            <p class="note">À l'UA1, l'aide-mémoire OHIP donnait les codes, pas les fréquences&nbsp;: celles-là, apprends-les.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>12, 18 ou 24 mois, ou rien&nbsp;: l'âge le jour de l'examen décide.</p>
+      </div>
+    </section>
+
+    <!-- 22 · la prochaine date -->
+    <section class="diapo" id="d22" data-acte="comptoir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 5 · Un cas du cours</p>
+        <h2>Prochaine date&nbsp;: dernier examen + fréquence + 1 jour</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="date-ohip" aria-label="Dernier examen le 12 janvier 2020, plus 18 mois : 12 juillet 2021 ; plus 1 jour : admissible le 13 juillet 2021 ; l'examen du 7 décembre 2021 est couvert"></figure>
+          <div class="texte">
+            <p>Examen demandé le 7&nbsp;déc. 2021. Né le 4&nbsp;févr. 1952. Dernier examen le 12&nbsp;janv. 2020.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le 7&nbsp;déc. 2021, il a <b>69&nbsp;ans</b>&nbsp;: 65&nbsp;ans et plus, en santé → tous les <b>18&nbsp;mois</b>.</span></li>
+              <li data-pas="2"><span>12&nbsp;janv. 2020 + 18&nbsp;mois = 12&nbsp;juil. 2021.</span></li>
+              <li data-pas="3"><span>+ 1&nbsp;jour&nbsp;: admissible dès le <b class="aide">13&nbsp;juil. 2021</b>.</span></li>
+              <li data-pas="4"><span>Le 7&nbsp;déc. vient après&nbsp;: couvert, code V406. Le patient paie 0&nbsp;$.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>S'arrêter au 12&nbsp;juil.&nbsp;: ce jour-là, c'est encore trop tôt.</p>
+            <p class="note">Trop tôt&nbsp;? La vérification répond 201&nbsp;: note la date du dernier examen, recalcule, vérifie de nouveau.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Avant toute prise de rendez-vous, il est préférable de débuter avec la vérification d'admissibilité.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 23 · la carte -->
+    <section class="diapo" id="d23" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">① Sur l'axe</p><p class="fiche-f">P(axe) = SPH</p><p class="fiche-n">sur son axe, le cylindre n'a pas de puissance</p></div>
+          <div class="fiche"><p class="fiche-nom">② L'autre méridien</p><p class="fiche-f">SPH + CYL</p><p class="fiche-n">signes compris&nbsp;; zéro s'écrit Plano</p></div>
+          <div class="fiche"><p class="fiche-nom">③ Où&nbsp;?</p><p class="fiche-f">axe ± 090</p><p class="fiche-n">rester entre 001 et 180</p></div>
+          <div class="fiche"><p class="fiche-nom">Option B</p><p class="fiche-f">près de 180 ou 0 → horizontal</p><p class="fiche-n">près de 090 → vertical</p></div>
+          <div class="fiche"><p class="fiche-nom">Le signe</p><p class="fiche-f">− devant · + derrière</p><p class="fiche-n">Plano&nbsp;: sur la rétine</p></div>
+          <div class="fiche"><p class="fiche-nom">Le type</p><p class="fiche-f">simple · composé · mixte</p><p class="fiche-n">un Plano · même signe · signes opposés</p></div>
+          <div class="fiche"><p class="fiche-nom">À rebours</p><p class="fiche-f">SPH = le plus positif</p><p class="fiche-n">CYL = l'autre − SPH</p></div>
+          <div class="fiche"><p class="fiche-nom">Au comptoir</p><p class="fiche-f">frais − escompte</p><p class="fiche-n">OHIP&nbsp;: dernier + fréquence + 1 jour</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-bureau-m7.html">L'atelier Bureau M7</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+
+  // Coupe de l'œil : la lumière vient de la gauche. type : emm | myo | hyp ; xr : rétine sur l'axe ; xf : foyer.
+  function oeil(o = {}) {
+    const W = 480, H = 200, cy = 100, ry = 82, dy = 40, xg = 140;
+    const xr = o.xr || 372;
+    const cx = (xg + xr) / 2, rx = (xr - xg) / 2;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2);
+    const ctrl = xe - (o.cambree ? 72 : 54);
+    const apex = (xe + ctrl) / 2;
+    const a = 50 * Math.PI / 180;
+    const pe = t => `${n1(cx + rx * Math.cos(t))} ${n1(cy + ry * Math.sin(t))}`;
+    const xRet = xr - 2;
+    const xf = o.xf || (o.type === 'myo' ? xr - 46 : o.type === 'hyp' ? xr + 46 : xRet);
+    const lx = xe + 28, lrx = o.bombe ? 17 : 12, lry = 33;
+    const coul = o.type === 'myo' ? 'myo' : o.type === 'hyp' ? 'hyp' : 'emm';
+    let s = `<path d="M ${n1(xe)} ${cy - dy} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - dy} Z" class="globe"/>`;
+    s += `<path d="M ${pe(-a)} A ${rx} ${ry} 0 0 1 ${pe(a)}" class="retine"/>`;
+    s += `<ellipse cx="${n1(lx)}" cy="${cy}" rx="${lrx}" ry="${lry}" class="cristallin"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + dy}" class="cornee"/>`;
+    for (const y0 of [cy - 28, cy, cy + 28]) {
+      const t = (y0 - cy + dy) / (2 * dy);
+      const xc = xe + 2 * t * (1 - t) * (ctrl - xe);
+      const pente = (cy - y0) / (xf - xc);
+      if (xf <= xRet) {
+        s += `<path d="M 6 ${y0} L ${n1(xc)} ${y0} L ${n1(xRet)} ${n1(y0 + pente * (xRet - xc))}" class="rayon"/>`;
+      } else {
+        const yR = y0 + pente * (xRet - xc);
+        s += `<path d="M 6 ${y0} L ${n1(xc)} ${y0} L ${n1(xRet)} ${n1(yR)}" class="rayon"/>`;
+        if (y0 !== cy) s += `<path d="M ${n1(xRet)} ${n1(yR)} L ${n1(xf)} ${cy}" class="rayon virtuel"/>`;
+      }
+    }
+    s += `<circle cx="${n1(xf)}" cy="${cy}" r="5.5" class="${o.type === 'hyp' ? 'creux' : 'plein'} c-${coul}"/>`;
+    if (o.labels) {
+      s += `<text x="${n1(apex)}" y="${cy - dy - 14}" text-anchor="middle">cornée${o.puissances ? ' ≈ +40 D' : ''}</text>`;
+      s += `<text x="${n1(lx)}" y="${cy + lry + 26}" text-anchor="middle">cristallin${o.puissances ? ' ≈ +20 D' : ''}</text>`;
+      s += `<text x="${n1(cx + rx * Math.cos(a))}" y="${n1(cy + ry * Math.sin(a) + 24)}" text-anchor="middle" class="t-doux">rétine</text>`;
+      if (o.foyer) s += `<text x="${n1(xf + 12)}" y="${cy + 5}" class="etiq c-emm">foyer</text>`;
+    }
+    return svgW(W, H, s, o.label || 'Coupe de l’œil');
+  }
+
+  // Petit œil vu de côté, sur un axe.
+  const oeilGlyphe = (x, y) => `<path d="M ${n1(x - 13)} ${y} Q ${n1(x)} ${y - 11} ${n1(x + 13)} ${y} Q ${n1(x)} ${y + 11} ${n1(x - 13)} ${y} Z" class="oeil-g"/><circle cx="${n1(x)}" cy="${y}" r="4" class="pupille"/>`;
+
+  /* ---- Bureau M7 : la croix optique ---- */
+  const rad = a => a * Math.PI / 180;
+  // Couleur d'une puissance : négatif → cyan (foyer devant), positif → orange (derrière), Plano → neutre (sur la rétine).
+  const signe = v => (/^−/.test(v) ? 'myo' : /^\+/.test(v) ? 'hyp' : 'emm');
+
+  // Texte posé au-delà du bout d'un méridien. a en degrés, le verre vu de face : 0 à droite, 090 en haut, 180 à gauche.
+  function bout(o, a, txt, cls) {
+    const ux = Math.cos(rad(a)), uy = -Math.sin(rad(a));
+    const d = 9 + 7 * Math.abs(uy);
+    const anc = ux > 0.35 ? 'start' : ux < -0.35 ? 'end' : 'middle';
+    return `<text x="${n1(o.cx + (o.R + d) * ux)}" y="${n1(o.cy + (o.R + d) * uy + 6)}" text-anchor="${anc}" class="${cls}">${txt}</text>`;
+  }
+
+  // Une croix : chaque méridien est une ligne entière, son degré au bout haut (ou gauche), sa puissance à l'autre bout.
+  // role : 'axe' (la sphère, neutre) · '2e' (SPH + CYL, violet) · 'neutre' · 'aux' (pointillé). droit : le coin à 90°.
+  function croix(o) {
+    const cv = o.taille === 'moyen' ? 'etiq' : 'grand etiq';
+    let s = '';
+    if (o.droit !== undefined) {
+      const r = 14, ca = Math.cos(rad(o.droit)), sa = Math.sin(rad(o.droit));
+      const q = (i, j) => `${n1(o.cx + r * (i * ca - j * sa))} ${n1(o.cy - r * (i * sa + j * ca))}`;
+      s += `<path d="M ${q(1, 0)} L ${q(1, 1)} L ${q(0, 1)}" class="base"${P({ pas: o.pasDroit })}/>`;
+    }
+    o.lignes.forEach(l => {
+      const ux = Math.cos(rad(l.a)), uy = Math.sin(rad(l.a));
+      const cls = l.role === 'aux' ? 'pointille' : `fleche c-${l.role === '2e' ? 'aide' : 'emm'}`;
+      s += `<g${P(l)}><line x1="${n1(o.cx + o.R * ux)}" y1="${n1(o.cy - o.R * uy)}" x2="${n1(o.cx - o.R * ux)}" y2="${n1(o.cy + o.R * uy)}" class="${cls}"/>`;
+      if (l.t) s += bout(o, l.a, l.t, 't-doux');
+      s += '</g>';
+      if (l.v) s += `<g${P({ pas: l.pasV || l.pas })}>${bout(o, l.a + 180, l.v, `${cv} c-${signe(l.v)}`)}</g>`;
+    });
+    return s;
+  }
+
+  // Une Rx écrite, ses parties réparties sur la largeur. r : 'oeil' | 'sph' | 'cyl' | 'axe' ; lab : son nom dessous ;
+  // barre : demi-longueur du trait qui la raye.
+  function rx(parts, y, o) {
+    const n = parts.length;
+    let s = '';
+    parts.forEach((p, i) => {
+      const x = o.x0 + o.w * (i + 0.5) / n;
+      const cls = p.r === 'oeil' ? 'grand t-doux' : p.r === 'cyl' ? 'grand etiq c-aide' : 'grand';
+      s += `<g${P(p)}><text x="${n1(x)}" y="${y}" text-anchor="middle" class="${cls}">${p.t}</text>`;
+      if (p.lab) {
+        s += `<line x1="${n1(x - 24)}" y1="${y + 10}" x2="${n1(x + 24)}" y2="${y + 10}" class="base"/>`;
+        s += `<text x="${n1(x)}" y="${y + 30}" text-anchor="middle" class="petit ${p.r === 'cyl' ? 'etiq c-aide' : 't-doux'}">${p.lab}</text>`;
+      }
+      if (p.barre) s += `<line x1="${n1(x - p.barre)}" y1="${y - 7}" x2="${n1(x + p.barre)}" y2="${y - 7}" class="fleche c-doux"/>`;
+      s += '</g>';
+    });
+    return s;
+  }
+
+  // La Rx en haut, sa croix dessous.
+  function rxEtCroix(o, W) {
+    const R = Math.min(104, W * 0.22);
+    const haut = o.rx.some(p => p.lab) ? 92 : 60;
+    const cy = haut + R + 34, H = cy + R + 40;
+    const s = rx(o.rx, 34, { x0: 0, w: W }) + croix({ cx: W / 2, cy, R, lignes: o.lignes, droit: o.droit, pasDroit: o.pasDroit });
+    return svgW(W, H, s, o.label);
+  }
+
+  // Deux croix côte à côte (deux yeux, ou deux façons de dessiner).
+  function deuxCroix(o, W) {
+    const R = Math.min(84, W * 0.11);
+    const cy = 74 + R + 22, H = cy + R + 36;
+    let s = '';
+    o.panneaux.forEach((p, i) => {
+      const cx = W * (i ? 0.73 : 0.24);
+      s += `<g${P(p)}><text x="${n1(cx)}" y="22" text-anchor="middle" class="titre-rang">${p.titre}</text>`;
+      if (p.rx) s += `<text x="${n1(cx)}" y="50" text-anchor="middle" class="etiq">${p.rx}</text>`;
+      s += croix({ cx, cy, R, lignes: p.lignes, droit: p.droit, taille: 'moyen' }) + '</g>';
+    });
+    return svgW(W, H, s, o.label);
+  }
+
+  // Le cadran d'un verre vu de face.
+  function cadran(W) {
+    const R = Math.min(118, W * 0.25), o = { cx: W / 2, cy: R + 46, R };
+    const H = o.cy + R + 44;
+    const ligne = (a, cls) => {
+      const ux = Math.cos(rad(a)), uy = Math.sin(rad(a));
+      return `<line x1="${n1(o.cx + R * ux)}" y1="${n1(o.cy - R * uy)}" x2="${n1(o.cx - R * ux)}" y2="${n1(o.cy + R * uy)}" class="${cls}"/>`;
+    };
+    let s = `<circle cx="${n1(o.cx)}" cy="${n1(o.cy)}" r="${n1(R)}" class="globe"/>`;
+    for (let a = 0; a < 360; a += 10) {
+      const ux = Math.cos(rad(a)), uy = Math.sin(rad(a));
+      s += `<line x1="${n1(o.cx + (R - 7) * ux)}" y1="${n1(o.cy - (R - 7) * uy)}" x2="${n1(o.cx + R * ux)}" y2="${n1(o.cy - R * uy)}" class="grille"/>`;
+    }
+    s += ligne(0, 'fleche c-emm') + bout(o, 180, '180', 'valeur') + bout(o, 0, '0', 'valeur');
+    s += ligne(90, 'fleche c-emm') + bout(o, 90, '090', 'valeur');
+    s += `<g data-pas="1">${ligne(135, 'pointille')}${ligne(45, 'pointille')}`;
+    s += bout(o, 135, '135', 'valeur') + bout(o, 315, '135', 'valeur') + bout(o, 45, '045', 'valeur') + bout(o, 225, '045', 'valeur') + '</g>';
+    s += `<g data-pas="2">${ligne(160, 'fleche c-emm')}${bout(o, 160, '160', 'etiq c-emm')}</g>`;
+    return svgW(W, H, s, 'Le cadran d’un verre vu de face : 180 à gauche, 0 à droite, 090 en haut, 135 en haut à gauche, 045 en haut à droite');
+  }
+
+  // Une paire de lunettes vue de face, une croix sphérique par verre : l'OD à gauche.
+  function lunettes(W) {
+    const R = Math.min(120, W * 0.2), cy = R + 44, H = cy + R + 48;
+    const xs = [W / 2 - R - 14, W / 2 + R + 14], h = R * 0.72;
+    let s = `<path d="M ${n1(xs[0] + R)} ${n1(cy - R * 0.35)} Q ${n1(W / 2)} ${n1(cy - R * 0.62)} ${n1(xs[1] - R)} ${n1(cy - R * 0.35)}" class="base"/>`;
+    [['OD', '−3.50', 1], ['OS', '−2.75', 2]].forEach(([oe, v, pas], i) => {
+      const cx = xs[i];
+      s += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="globe"/>`;
+      s += `<text x="${n1(cx)}" y="26" text-anchor="middle" class="titre-rang">${oe}</text>`;
+      s += `<line x1="${n1(cx - h)}" y1="${n1(cy)}" x2="${n1(cx + h)}" y2="${n1(cy)}" class="fleche c-emm"/>`;
+      s += `<line x1="${n1(cx)}" y1="${n1(cy - h)}" x2="${n1(cx)}" y2="${n1(cy + h)}" class="fleche c-emm"/>`;
+      s += `<text x="${n1(cx - h)}" y="${n1(cy - 10)}" class="petit t-doux">180</text>`;
+      s += `<text x="${n1(cx + 7)}" y="${n1(cy - h + 14)}" class="petit t-doux">090</text>`;
+      s += `<g data-pas="${pas}"><text x="${n1(cx + h)}" y="${n1(cy - 10)}" text-anchor="end" class="etiq c-myo">${v}</text>`;
+      s += `<text x="${n1(cx + 8)}" y="${n1(cy + h - 2)}" class="etiq c-myo">${v}</text></g>`;
+    });
+    s += `<text x="${n1(W / 2)}" y="${n1(H - 12)}" text-anchor="middle" class="petit t-doux">les verres vus de face, en face du patient</text>`;
+    return svgW(W, H, s, 'Lunettes vues de face : à gauche l’OD, −3.50 sur ses deux bras ; à droite l’OS, −2.75 sur les deux siens');
+  }
+
+  // Une Rx complète : ce qui va sur la croix, ce qui reste dehors.
+  function garde(W) {
+    const m = 10, bw = W - 2 * m;
+    let s = `<text x="${n1(W / 2)}" y="20" text-anchor="middle" class="petit t-doux">OD −2.25 −0.75 x 180 · 2Δ BI · add +2.00</text>`;
+    s += `<rect x="${m}" y="34" width="${n1(bw)}" height="112" rx="12" class="base"/>`;
+    s += `<text x="${m + 14}" y="56" class="petit etiq c-emm">sur la croix</text>`;
+    s += rx([{ t: '−2.25', r: 'sph', lab: 'sphère' }, { t: '−0.75', r: 'cyl', lab: 'cylindre' }, { t: 'x 180', r: 'axe', lab: 'axe' }], 96, { x0: m, w: bw });
+    s += `<g data-pas="1"><rect x="${m}" y="162" width="${n1(bw)}" height="112" rx="12" class="pointille"/>`;
+    s += `<text x="${m + 14}" y="184" class="petit t-doux">hors de la croix&#160;: «&#160;RIEN&#160;!&#160;»</text>`;
+    s += rx([{ t: '2Δ BI', r: 'oeil', lab: 'prisme', barre: 34 }, { t: 'add +2.00', r: 'oeil', lab: 'addition', barre: 58 }], 224, { x0: m, w: bw }) + '</g>';
+    return svgW(W, 288, s, 'Une Rx complète : sphère, cylindre et axe vont sur la croix ; le prisme et l’addition restent dehors');
+  }
+
+  // Les cinq types : deux méridiens, deux points, placés par rapport à Plano (la ligne pointillée).
+  function types(W) {
+    const x0 = 20, x1 = W - 20, xm = W / 2, rowH = 58, top = 34, H = top + 5 * rowH + 6;
+    const X = v => xm + v / 3 * (x1 - xm);
+    const rangs = [
+      { t: 'Myope simple', c: 'myo', p: [0, -1.6], pas: 1 },
+      { t: 'Hypermétrope simple', c: 'hyp', p: [0, 1.6], pas: 1 },
+      { t: 'Myope composé', c: 'myo', p: [-0.9, -2.3], pas: 2 },
+      { t: 'Hypermétrope composé', c: 'hyp', p: [0.9, 2.3], pas: 2 },
+      { t: 'Mixte', c: 'emm', p: [-1.4, 1.6], pas: 3 }];
+    let s = `<text x="${x0}" y="18" class="petit t-doux">← négatif · devant</text>`;
+    s += `<text x="${n1(xm)}" y="18" text-anchor="middle" class="petit">Plano</text>`;
+    s += `<text x="${x1}" y="18" text-anchor="end" class="petit t-doux">derrière · positif →</text>`;
+    s += `<line x1="${n1(xm)}" y1="26" x2="${n1(xm)}" y2="${H - 4}" class="pointille"/>`;
+    rangs.forEach((r, i) => {
+      const y = top + i * rowH, yl = y + 38;
+      s += `<g${P(r)}><text x="${x0}" y="${y + 15}" class="titre-rang c-${r.c}">${r.t}</text>`;
+      s += `<line x1="${x0}" y1="${yl}" x2="${x1}" y2="${yl}" class="base"/>`;
+      r.p.forEach(v => { s += `<circle cx="${n1(X(v))}" cy="${yl}" r="7.5" class="plein c-${v < 0 ? 'myo' : v > 0 ? 'hyp' : 'emm'}"/>`; });
+      s += '</g>';
+    });
+    return svgW(W, H, s, 'Les cinq types d’astigmatisme : simple, un méridien sur Plano ; composé, deux du même côté ; mixte, un de chaque côté');
+  }
+
+  // Le cylindre fait descendre : de la sphère, on descend du cylindre ; l'arrêt par rapport à 0 nomme le type.
+  function arret(W) {
+    const x0 = 24, x1 = W - 24, lo = -2, hi = 7.5, rowH = 96, top = 4, H = top + 3 * rowH + 24;
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+    const rangs = [
+      { rx: '+6.50 −1.00 x 160', de: 6.5, a: 5.5, cyl: '−1.00', v: ['+6.50', '+5.50'], type: 'hypermétrope composé', c: 'hyp', pas: 1 },
+      { rx: '+2.00 −2.00 x 135', de: 2, a: 0, cyl: '−2.00', v: ['+2.00', 'Plano'], type: 'hypermétrope simple', c: 'hyp', pas: 2 },
+      { rx: '+2.50 −3.75 x 090', de: 2.5, a: -1.25, cyl: '−3.75', v: ['+2.50', '−1.25'], type: 'mixte', c: 'emm', pas: 3 }];
+    let s = `<text x="${n1(X(0))}" y="${H - 4}" text-anchor="middle" class="petit t-doux">0 · Plano</text>`;
+    rangs.forEach((r, i) => {
+      const y = top + i * rowH, yl = y + 64, xd = X(r.de), xa = X(r.a), ya = yl - 16;
+      s += `<g${P(r)}>`;
+      s += `<text x="${x0}" y="${y + 18}" class="etiq">${r.rx}</text>`;
+      s += `<text x="${x1}" y="${y + 18}" text-anchor="end" class="titre-rang c-${r.c}">${r.type}</text>`;
+      s += `<line x1="${n1(X(0))}" y1="${yl - 30}" x2="${n1(X(0))}" y2="${yl + 10}" class="pointille"/>`;
+      s += `<line x1="${x0}" y1="${yl}" x2="${x1}" y2="${yl}" class="base"/>`;
+      for (let k = Math.ceil(lo); k <= hi; k++) s += `<line x1="${n1(X(k))}" y1="${yl - 4}" x2="${n1(X(k))}" y2="${yl + 4}" class="base"/>`;
+      s += `<path d="M ${n1(xd)} ${ya} H ${n1(xa + 2)} M ${n1(xa + 9)} ${ya - 7} L ${n1(xa + 2)} ${ya} L ${n1(xa + 9)} ${ya + 7}" class="fleche c-aide"/>`;
+      s += `<text x="${n1((xd + xa) / 2)}" y="${ya - 12}" text-anchor="middle" class="petit etiq c-aide">${r.cyl}</text>`;
+      const pres = xd - xa < 64;
+      [[xd, r.v[0], pres ? 'start' : 'middle', pres ? -8 : 0], [xa, r.v[1], pres ? 'end' : 'middle', pres ? 8 : 0]].forEach(([x, v, anc, dx]) => {
+        s += `<circle cx="${n1(x)}" cy="${yl}" r="7" class="plein c-${signe(v)}"/>`;
+        s += `<text x="${n1(x + dx)}" y="${yl + 26}" text-anchor="${anc}" class="etiq c-${signe(v)}">${v}</text>`;
+      });
+      s += '</g>';
+    });
+    return svgW(W, H, s, 'Trois Rx : le cylindre descend de la sphère et s’arrête au-dessus de 0 (composé), sur 0 (simple) ou sous 0 (mixte)');
+  }
+
+  // À rebours : la croix, puis la Rx qu'on en tire.
+  function rebours(W) {
+    const R = Math.min(90, W * 0.2), o = { cx: W / 2, cy: 46 + R, R };
+    let s = croix(Object.assign({}, o, { lignes: [{ a: 180, t: '180', v: '−2.00', role: 'neutre' }, { a: 90, t: '090', v: '−3.50', role: 'neutre' }] }));
+    const ya = o.cy + R + 44, yr = ya + 66;
+    s += `<path d="M ${n1(o.cx)} ${ya} V ${ya + 30} M ${n1(o.cx - 9)} ${ya + 21} L ${n1(o.cx)} ${ya + 30} L ${n1(o.cx + 9)} ${ya + 21}" class="fleche c-doux" data-pas="2"/>`;
+    s += rx([{ t: '−2.00', r: 'sph', lab: 'sphère', pas: 2 }, { t: '−1.50', r: 'cyl', lab: 'cylindre', pas: 3 }, { t: 'x 180', r: 'axe', lab: 'axe', pas: 2 }], yr, { x0: 0, w: W });
+    return svgW(W, yr + 40, s, 'Une croix −2.00 sur 180 et −3.50 sur 090 redonne la Rx −2.00 −1.50 x 180');
+  }
+
+  // Qui paie, dans l'ordre : un service, un produit.
+  function payeurs(W) {
+    const cw = Math.min(210, W * 0.43), hC = 38, gap = 22, top = 40;
+    const cols = [
+      { x: W * 0.26, t: 'Service', ch: [['OHIP', 'aide'], ['payeurs tiers', 'aide'], ['assureur', 'aide'], ['patient&#160;: le reste', 'emm']] },
+      { x: W * 0.74, t: 'Produit', ch: [['OHIP&#160;: jamais', ''], ['payeurs tiers', 'aide'], ['assureur', 'aide'], ['patient&#160;: le reste', 'emm']], pas: 1 }];
+    let s = '';
+    cols.forEach(c => {
+      s += `<g${P(c)}><text x="${n1(c.x)}" y="22" text-anchor="middle" class="titre-rang">${c.t}</text>`;
+      c.ch.forEach(([t, k], i) => {
+        const y = top + i * (hC + gap);
+        s += `<rect x="${n1(c.x - cw / 2)}" y="${y}" width="${n1(cw)}" height="${hC}" rx="9" class="${k ? 'zone c-' + k : 'pointille'}"/>`;
+        s += `<text x="${n1(c.x)}" y="${y + hC / 2 + 6}" text-anchor="middle"${k ? '' : ' class="t-doux"'}>${t}</text>`;
+        if (i < c.ch.length - 1) {
+          const y1 = y + hC + 4, y2 = y + hC + gap - 4;
+          s += `<path d="M ${n1(c.x)} ${y1} V ${y2} M ${n1(c.x - 6)} ${y2 - 6} L ${n1(c.x)} ${y2} L ${n1(c.x + 6)} ${y2 - 6}" class="fleche c-doux"/>`;
+        }
+      });
+      s += '</g>';
+    });
+    return svgW(W, top + 4 * hC + 3 * gap + 8, s, 'Service : OHIP, payeurs tiers, assureur, puis le patient. Produit : pas d’OHIP, payeurs tiers, assureur, puis le patient');
+  }
+
+  // La grille OHIP de l'examen majeur : la catégorie fixe la fréquence (et le code).
+  function grilleOhip(W) {
+    const l = 6, g = 6, top = 34, hT = 222, uw = W - 2 * l - 2 * g;
+    const cols = [
+      { w: 0.25, t: '0–19 ans', c: [{ f: '12 mois', k: 'V404' }] },
+      { w: 0.41, t: '20–64 ans', c: [{ q: 'en santé', f: 'aucune' }, { q: 'condition admissible', f: '12 mois', k: 'V409' }, { q: 'POSPH/ODSP · OW', f: '24 mois', k: 'V450 · V451' }] },
+      { w: 0.34, t: '65 ans et plus', c: [{ q: 'en santé', f: '18 mois', k: 'V406' }, { q: 'avec condition', f: '12 mois', k: 'V407' }] }];
+    let s = '', x = l;
+    cols.forEach(col => {
+      const w = uw * col.w, n = col.c.length, h = (hT - (n - 1) * g) / n, cx = x + w / 2;
+      s += `<text x="${n1(cx)}" y="22" text-anchor="middle" class="titre-rang">${col.t}</text>`;
+      col.c.forEach((c, i) => {
+        const y = top + i * (h + g), m = y + h / 2;
+        s += `<rect x="${n1(x)}" y="${n1(y)}" width="${n1(w)}" height="${n1(h)}" rx="10" class="${c.f === 'aucune' ? 'pointille' : 'zone c-aide'}"/>`;
+        const lignes = [c.q && ['petit t-doux', c.q], ['valeur', c.f], c.k && ['petit t-doux', c.k]].filter(Boolean);
+        lignes.forEach(([cls, t], j) => {
+          s += `<text x="${n1(cx)}" y="${n1(m + 6 + (j - (lignes.length - 1) / 2) * 20)}" text-anchor="middle" class="${cls}">${t}</text>`;
+        });
+      });
+      x += w + g;
+    });
+    return svgW(W, top + hT + 6, s, 'Examen majeur couvert par OHIP : 0–19 ans tous les 12 mois ; 20–64 ans en santé, aucun ; avec condition admissible, 12 mois ; POSPH/ODSP ou OW, 24 mois ; 65 ans et plus en santé, 18 mois ; avec condition, 12 mois');
+  }
+
+  // La prochaine date admissible, à l'échelle des jours : dernier examen + 18 mois + 1 jour.
+  function dateOhip(W) {
+    const x0 = 24, x1 = W - 24, y = 92, H = 160;
+    const j = (a, m, d) => Math.round((Date.UTC(a, m, d) - Date.UTC(2020, 0, 12)) / 864e5);
+    const k = (x1 - x0) / (j(2021, 11, 7) + 160), X = d => x0 + d * k;
+    const xa = X(0), xb = X(j(2021, 6, 12)), xc = X(j(2021, 6, 13)), xd = X(j(2021, 11, 7));
+    let s = `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" class="base"/>`;
+    s += `<rect x="${n1(xc)}" y="${y - 7}" width="${n1(x1 - xc)}" height="14" rx="7" class="zone c-aide" data-pas="3"/>`;
+    s += `<circle cx="${n1(xa)}" cy="${y}" r="7" class="plein c-emm"/>`;
+    s += `<text x="${x0}" y="${y + 28}" class="petit">12 janv. 2020</text><text x="${x0}" y="${y + 46}" class="petit t-doux">dernier examen</text>`;
+    s += `<g data-pas="2"><path d="M ${n1(xa)} ${y - 26} V ${y - 36} H ${n1(xb)} V ${y - 26}" class="fleche c-aide"/>`;
+    s += `<text x="${n1((xa + xb) / 2)}" y="${y - 46}" text-anchor="middle" class="etiq c-aide">18 mois</text>`;
+    s += `<line x1="${n1(xb)}" y1="${y - 12}" x2="${n1(xb)}" y2="${y + 12}" class="fleche c-emm"/>`;
+    s += `<text x="${n1(xb - 6)}" y="${y - 14}" text-anchor="end" class="petit">12 juil. 2021</text></g>`;
+    s += `<g data-pas="3"><circle cx="${n1(xc)}" cy="${y}" r="7" class="plein c-aide"/>`;
+    s += `<text x="${n1(xc + 8)}" y="${y - 14}" class="petit etiq c-aide">+ 1 jour</text>`;
+    s += `<text x="${n1(xc + 6)}" y="${y + 28}" text-anchor="end" class="petit">13 juil. 2021</text>`;
+    s += `<text x="${n1(xc + 6)}" y="${y + 46}" text-anchor="end" class="petit t-doux">admissible</text></g>`;
+    s += `<g data-pas="4"><circle cx="${n1(xd)}" cy="${y}" r="8" class="plein c-emm"/>`;
+    s += `<text x="${n1(xd)}" y="${y + 28}" text-anchor="middle" class="petit">7 déc. 2021</text>`;
+    s += `<text x="${n1(xd)}" y="${y + 46}" text-anchor="middle" class="petit t-doux">l’examen</text></g>`;
+    return svgW(W, H, s, 'Dernier examen le 12 janvier 2020, plus 18 mois : 12 juillet 2021 ; plus 1 jour : admissible le 13 juillet 2021 ; l’examen du 7 décembre 2021 est couvert');
+  }
+
+  const C = t => `<tspan class="etiq c-aide">${t}</tspan>`;
+  const FIG = {
+    'mini-myo': () => oeil({ type: 'myo', label: 'Méridien négatif : foyer devant la rétine' }),
+    'mini-emm': () => oeil({ type: 'emm', label: 'Plano : foyer sur la rétine' }),
+    'mini-hyp': () => oeil({ type: 'hyp', label: 'Méridien positif : foyer derrière la rétine' }),
+    cadran, lunettes, garde, types, arret, rebours, payeurs,
+    'grille-ohip': grilleOhip,
+    'date-ohip': dateOhip,
+    couverture: W => rxEtCroix({ label: 'La croix de OD −5.00 −1.50 x 160', droit: 160,
+      rx: [{ t: 'OD', r: 'oeil' }, { t: '−5.00', r: 'sph' }, { t: '−1.50', r: 'cyl' }, { t: 'x 160', r: 'axe' }],
+      lignes: [{ a: 160, t: '160', v: '−5.00', role: 'axe' }, { a: 70, t: '070', v: '−6.50', role: '2e' }] }, W),
+    'rx-parts': W => rxEtCroix({ label: 'La Rx OD −1.00 −0.50 x 180 et sa croix', droit: 0,
+      rx: [{ t: 'OD', r: 'oeil', lab: 'l’œil' }, { t: '−1.00', r: 'sph', lab: 'sphère' }, { t: '−0.50', r: 'cyl', lab: 'cylindre' }, { t: 'x 180', r: 'axe', lab: 'axe' }],
+      lignes: [{ a: 180, t: '180', v: '−1.00', role: 'axe' }, { a: 90, t: '090', v: '−1.50', role: '2e' }] }, W),
+    spherique: W => rxEtCroix({ label: 'La croix de −1.00 DS : −1.00 sur tous les méridiens',
+      rx: [{ t: '−1.00 DS', r: 'sph' }],
+      lignes: [{ a: 180, t: '180', v: '−1.00', role: 'neutre' }, { a: 90, t: '090', v: '−1.00', role: 'neutre' },
+        { a: 135, t: '135', v: '−1.00', role: 'aux', pas: 1 }, { a: 45, t: '045', v: '−1.00', role: 'aux', pas: 1 }] }, W),
+    'od-1': W => rxEtCroix({ label: 'OD −1.00 −0.50 x 180 : la sphère −1.00 va sur le méridien 180',
+      rx: [{ t: 'OD', r: 'oeil', lab: 'l’œil' }, { t: '−1.00', r: 'sph', lab: 'sphère' }, { t: '−0.50', r: 'cyl', lab: 'cylindre' }, { t: 'x 180', r: 'axe', lab: 'axe' }],
+      lignes: [{ a: 180, t: '180', v: '−1.00', role: 'axe', pasV: 1 }, { a: 90, t: '090', role: 'aux' }] }, W),
+    'od-2': W => rxEtCroix({ label: 'OD −1.00 −0.50 x 180 : −1.00 sur 180, −1.50 sur 090', droit: 0,
+      rx: [{ t: 'OD', r: 'oeil', lab: 'l’œil' }, { t: '−1.00', r: 'sph', lab: 'sphère' }, { t: '−0.50', r: 'cyl', lab: 'cylindre' }, { t: 'x 180', r: 'axe', lab: 'axe' }],
+      lignes: [{ a: 180, t: '180', v: '−1.00', role: 'axe' }, { a: 90, t: '090', v: '−1.50', role: '2e', pasV: 2 }] }, W),
+    'od-os': W => deuxCroix({ label: 'OD −1.00 −0.50 x 180 et OS −2.00 −0.75 x 090 : la sphère de l’OS va sur le bras vertical', panneaux: [
+      { titre: 'OD', rx: `−1.00 ${C('−0.50')} x 180`, droit: 0,
+        lignes: [{ a: 180, t: '180', v: '−1.00', role: 'axe', pasV: 1 }, { a: 90, t: '090', v: '−1.50', role: '2e', pasV: 1 }] },
+      { titre: 'OS', rx: `−2.00 ${C('−0.75')} x 090`, droit: 0,
+        lignes: [{ a: 90, t: '090', v: '−2.00', role: 'axe', pasV: 2 }, { a: 180, t: '180', v: '−2.75', role: '2e', pasV: 3 }] }] }, W),
+    'oblique-a': W => rxEtCroix({ label: 'OD −5.00 −1.50 x 160 : −5.00 sur la ligne 160, −6.50 sur la ligne 070, à angle droit', droit: 160, pasDroit: 3,
+      rx: [{ t: 'OD', r: 'oeil' }, { t: '−5.00', r: 'sph' }, { t: '−1.50', r: 'cyl' }, { t: 'x 160', r: 'axe' }],
+      lignes: [{ a: 160, t: '160', v: '−5.00', role: 'axe', pas: 1 }, { a: 70, t: '070', v: '−6.50', role: '2e', pas: 3 }] }, W),
+    options: W => deuxCroix({ label: 'La même croix en option A, les vrais méridiens 160 et 070, et en option B, une croix droite : 160 à l’horizontale, 070 à la verticale', panneaux: [
+      { titre: 'Option A', pas: 1, droit: 160,
+        lignes: [{ a: 160, t: '160', v: '−5.00', role: 'axe' }, { a: 70, t: '070', v: '−6.50', role: '2e' }] },
+      { titre: 'Option B', pas: 2, droit: 0,
+        lignes: [{ a: 180, t: '160', v: '−5.00', role: 'axe' }, { a: 90, t: '070', v: '−6.50', role: '2e' }] }] }, W),
+    'cas-135': W => rxEtCroix({ label: '+2.00 −2.00 x 135 : +2.00 sur 135, Plano sur 045', droit: 45, pasDroit: 2,
+      rx: [{ t: '+2.00', r: 'sph' }, { t: '−2.00', r: 'cyl' }, { t: 'x 135', r: 'axe' }],
+      lignes: [{ a: 135, t: '135', v: '+2.00', role: 'axe', pas: 1 }, { a: 45, t: '045', v: 'Plano', role: '2e', pas: 2 }] }, W),
+    complet: W => rxEtCroix({ label: '+2.00 −1.00 x 065 en option B : 065 et +2.00 sur le bras vertical, 155 et +1.00 sur l’horizontal', droit: 0, pasDroit: 3,
+      rx: [{ t: '+2.00', r: 'sph' }, { t: '−1.00', r: 'cyl' }, { t: 'x 065', r: 'axe' }],
+      lignes: [{ a: 90, t: '065', v: '+2.00', role: 'axe', pas: 3 }, { a: 180, t: '155', v: '+1.00', role: '2e', pas: 3 }] }, W)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', porte: 'Ce que montre la croix', construire: 'Construire la croix', oblique: 'L’axe oblique', lire: 'Lire la croix', methode: 'L’exercice complet', comptoir: 'Au comptoir', route: 'Pour la route' };
+  const CLE = 'diapos-adm-m7';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'a55b77ff2e52';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

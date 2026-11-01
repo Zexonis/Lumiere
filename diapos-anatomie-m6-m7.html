@@ -1,0 +1,1449 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diapos Anatomie M6–M7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos Anatomie M6–M7 (Survol) : les deux modules en ≈ 18 minutes (1er nov. 2026).
+  Contenu : uniquement Guides/UA2-Anatomie/distilled/anat-m06_distilled.md et anat-m07_distilled.md; ordre et
+  priorités d'après analyse/anat-profil.md, anat-m06_kc.md, anat-m07_kc.md. Les liens déduits (non écrits dans les
+  diapos du cours) sont signalés sur la diapo par une .note. Les points « à vérifier » de la distillation sont soit
+  donnés dans leur version sûre, soit laissés de côté.
+  Moteur, CSS et navigation : copiés de Guides/UA2-Optique/diapos-m6-m7.html (le pilote).
+  Code couleur constant : cyan = l'eau (couche aqueuse, larmes, humeur aqueuse, vitré) · orange = les lipides
+  (couche lipidique, Meibomius) · violet = la mucine (couche mucinique, cellules caliciformes) · rose = les nerfs
+  (message sensitif en tirets, commande en trait plein) · jaune pâle = la lumière.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un banc d'optique la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --myo: #56d3ea;
+  --hyp: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.myo { color: var(--myo); }
+.hyp { color: var(--hyp); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barres (budgets en dioptries) ---- */
+.barres { display: grid; gap: 12px; min-width: 0; }
+.titre-fig { margin: 0; font-size: var(--t-s); font-weight: 700; color: var(--doux); }
+.barre { display: grid; grid-template-columns: minmax(7.5em, max-content) minmax(0, 1fr) 3.4em; gap: 10px; align-items: center; }
+.barre .nom { font-size: var(--t-s); }
+.piste { position: relative; display: flex; height: 26px; border-radius: 6px; background: var(--fond-2); box-shadow: inset 0 0 0 1px var(--trait); }
+.piste i { display: block; height: 100%; width: calc(var(--w) / var(--max) * 100%); background: var(--c); }
+.piste i:first-child { border-radius: 6px 0 0 6px; }
+.piste i.raye, .legende .raye::before { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 8px); box-shadow: inset 0 0 0 1.5px var(--c); }
+.barres.repere .piste::after { content: ""; position: absolute; top: -5px; bottom: -5px; left: calc(var(--m) / var(--max) * 100%); border-left: 2px dashed var(--encre); }
+.barre .val { font-family: var(--f-chiffre); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.legende { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--t-xs); color: var(--doux); }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende span::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+@media (max-width: 520px) {
+  .barre { grid-template-columns: minmax(0, 1fr) 3.2em; gap: 4px 10px; }
+  .barre .nom { grid-column: 1 / -1; }
+}
+
+/* ---- yeux en rangées (amétropies) ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- lentille dans l'air / dans l'eau ---- */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.carte-eau { margin: 0; padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.carte-eau figcaption { font-weight: 700; }
+.carte-eau svg { display: block; width: 100%; height: auto; }
+.carte-eau dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; margin: 0; font-size: var(--t-s); }
+.carte-eau dt { color: var(--doux); }
+.carte-eau dd { margin: 0; font-family: var(--f-chiffre); text-align: right; }
+.carte-eau .total { font-weight: 700; color: var(--encre); font-size: var(--t-m); }
+
+/* ---- définitions Pr / Pp ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- les quatre questions ---- */
+.questions { list-style: none; margin: 0; padding: 0; counter-reset: q; display: grid; gap: 12px; }
+@media (min-width: 880px) { .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.questions li { counter-increment: q; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 4px 12px; padding: 12px 14px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); }
+.questions li::before { content: counter(q); grid-row: span 2; font-family: var(--f-titre); font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--doux); }
+.questions .q { margin: 0; font-weight: 700; }
+.questions .r { margin: 0; color: var(--doux); font-size: var(--t-s); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-myo { --c: var(--myo); } .c-hyp { --c: var(--hyp); } .c-emm { --c: var(--encre); } .c-aide { --c: var(--aide); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--encre); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .zone { fill: var(--c); fill-opacity: .3; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 3; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.6; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .virtuel { stroke-dasharray: 4 5; stroke-width: 1.8; }
+svg .verre { fill: var(--c); fill-opacity: .18; stroke: var(--c); stroke-width: 2; }
+svg .barre-d { fill: var(--encre); }
+svg .palier-fond { fill: var(--fond-2); }
+svg .palier { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .courbe { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .pt-courbe { fill: var(--encre); }
+svg .bande { fill: var(--aide); fill-opacity: .12; }
+svg .muscle { fill: var(--retine); fill-opacity: .85; }
+svg .zonule { fill: none; stroke: var(--doux); stroke-width: 1.6; }
+svg .eau { fill: var(--doux); fill-opacity: .22; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+
+/* ---- anatomie : code couleur et schémas propres à ces diapos ---- */
+.c-eau { --c: var(--myo); } .c-lip { --c: var(--hyp); } .c-muc { --c: var(--aide); } .c-nerf { --c: var(--retine); }
+.k-eau { color: var(--myo); } .k-lip { color: var(--hyp); } .k-muc { color: var(--aide); } .k-nerf { color: var(--retine); }
+svg .boite { fill: var(--fond-2); stroke: var(--c, var(--trait)); stroke-width: 2; }
+svg .trait-c { fill: none; stroke: var(--c, var(--encre)); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .tirets { stroke-dasharray: 7 6; }
+svg .tete { fill: var(--c, var(--encre)); }
+svg .tissu { fill: var(--fond-2); stroke: var(--doux); stroke-width: 1.6; }
+svg .fibre { fill: none; stroke: var(--doux); stroke-width: 1.4; stroke-linecap: round; }
+svg .point-c { fill: var(--c, var(--encre)); }
+svg .croix { fill: none; stroke: var(--c, var(--encre)); stroke-width: 3; stroke-linecap: round; }
+svg .pastille { fill: var(--encre); }
+svg .lettre { font-family: var(--f-chiffre); font-size: 14px; font-weight: 700; fill: var(--fond); }
+svg .nom-g { font-size: 16px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .ret { fill: none; stroke: var(--doux); stroke-width: 5; stroke-linecap: round; }
+svg .trouble { fill: var(--doux); fill-opacity: .4; }
+svg .peau { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-anatomie-m6.html" title="Retour à l'atelier Anatomie M6–M7">← Atelier Anatomie</a>
+      <p class="marque">Anatomie M6–M7 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 24</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Anatomie · SCI 23545 · modules 6 et 7</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Des larmes au vitré</h1>
+            <p class="chapeau">Les deux modules en 18 minutes, une idée par diapo. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">24 diapos · ≈ 18 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-eau">l'eau&nbsp;: couche aqueuse, larmes, humeur aqueuse, vitré</li>
+              <li class="c-lip">les lipides&nbsp;: couche lipidique, Meibomius</li>
+              <li class="c-muc">la mucine&nbsp;: couche mucinique, cellules caliciformes</li>
+              <li class="c-nerf">les nerfs&nbsp;: en tirets ce qui sent, en trait plein ce qui commande</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="oeil-couverture" aria-label="Coupe de l'œil : le film de larmes devant la cornée, puis l'humeur aqueuse, le cristallin et le vitré"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Devant l'œil, un film de larmes&nbsp;; dedans, quatre milieux clairs</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oeil-fil" aria-label="Coupe de l'œil : film lacrymal, cornée, humeur aqueuse, cristallin, vitré, rétine"></figure>
+          <div class="texte">
+            <p>La surface de l'œil vit d'un <b class="k-eau">film de larmes</b>&nbsp;: il faut le produire, l'étaler, le garder et l'évacuer, et des nerfs commandent chaque étape. Derrière, la lumière traverse <b>quatre milieux transparents</b> jusqu'à la rétine.</p>
+            <p class="sous">Les questions du cours&nbsp;:</p>
+            <ol class="trois">
+              <li>«&nbsp;Pourquoi les yeux pleurent quand on coupe un oignon&nbsp;?&nbsp;» <span>module 6&nbsp;: les nerfs</span></li>
+              <li>«&nbsp;Est-ce qu'on peut remplacer les larmes avec de l'eau uniquement&nbsp;?&nbsp;» <span>module 6&nbsp;: le film</span></li>
+              <li>Pour chaque milieu&nbsp;: «&nbsp;Pourquoi est-il transparent&nbsp;?&nbsp;» Et que change l'âge&nbsp;? <span>module 7</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Module 6&nbsp;: les larmes et leurs nerfs. Module 7&nbsp;: les milieux que la lumière traverse.</p>
+      </div>
+    </section>
+
+    <!-- 3 · le système nerveux -->
+    <section class="diapo" id="d3" data-acte="nerfs" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les nerfs</p>
+        <h2>Les larmes sont commandées par le parasympathique</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="arbre" aria-label="Le système nerveux : SNC et SNP; le SNP somatique ou autonome; l'autonome sympathique, parasympathique, entérique; les larmes sous le parasympathique"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li>Le <b>SNC</b>&nbsp;: le cerveau et la moelle épinière.</li>
+              <li data-pas="1">Le <b>SNP</b>&nbsp;: les nerfs qui surveillent le corps et l'environnement, et qui commandent. Les nerfs crâniens de l'œil en font partie. Ses actions sont volontaires (<b>somatiques</b>) ou involontaires (<b>autonomes</b>).</li>
+              <li data-pas="2">L'autonome a trois divisions&nbsp;: sympathique, parasympathique, entérique.</li>
+              <li data-pas="3">La sécrétion des larmes est sous le contrôle du <b>parasympathique</b>.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Sympathique&nbsp;: «&nbsp;mettre en action&nbsp;». Parasympathique&nbsp;: «&nbsp;repos et digestion&nbsp;». Même les larmes émotionnelles relèvent du parasympathique, «&nbsp;qui veut calmer&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Larmes&nbsp;: système autonome, division parasympathique.</p>
+      </div>
+    </section>
+
+    <!-- 4 · nerf ↔ fonction -->
+    <section class="diapo" id="d4" data-acte="nerfs" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les nerfs</p>
+        <h2>Le V sent&nbsp;; le III et le VII commandent</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="nerfs" aria-label="Le V porte le message de l'œil vers le centre nerveux; le III et le VII portent les ordres du centre vers l'œil"></figure>
+          <div class="texte">
+            <dl class="defs">
+              <dt class="k-nerf">V</dt><dd><b>Trijumeau</b>, branche ophtalmique. La sensation de la cornée, de la conjonctive, de l'iris, du corps ciliaire et de la glande lacrymale.</dd>
+              <dt class="k-nerf">III</dt><dd><b>Oculomoteur</b>. Élève la paupière (le releveur), contracte la pupille, l'accommodation, certains mouvements de l'œil.</dd>
+              <dt class="k-nerf">VII</dt><dd><b>Facial</b>. La production des larmes et la fermeture des paupières (l'orbiculaire).</dd>
+            </dl>
+            <p class="piege"><b>Piège</b>Seul le III est l'oculomoteur&nbsp;: le V est le trijumeau, le VII le facial.</p>
+            <p class="note">Sensitif&nbsp;: le message va vers le centre. Moteur&nbsp;: l'ordre en part, vers un muscle ou une glande. Ces deux définitions sont déduites de l'arc réflexe. Le II, le nerf optique, revient au module 9.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le V apporte le message au centre. Le III et le VII portent les ordres.</p>
+      </div>
+    </section>
+
+    <!-- 5 · l'arc réflexe : l'oignon -->
+    <section class="diapo" id="d5" data-acte="nerfs" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les nerfs</p>
+        <h2>L'oignon fait pleurer par un arc réflexe</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="arc" aria-label="Arc du larmoiement : irritant, cornée et conjonctive, le V, le centre nerveux, le VII, la glande lacrymale principale, les larmes"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Stimulus</b>&nbsp;: un irritant atteint la surface de l'œil.</span></li>
+              <li data-pas="2"><span><b>Récepteur</b>&nbsp;: la cornée et la conjonctive le sentent, grâce au <b class="k-nerf">V</b>, qui transmet le message.</span></li>
+              <li data-pas="3"><span><b>Centre nerveux</b>&nbsp;: il reçoit l'information et commande la réponse.</span></li>
+              <li data-pas="4"><span>L'ordre part par le <b class="k-nerf">VII</b>, sous contrôle parasympathique.</span></li>
+              <li data-pas="5"><span><b>Effecteur</b>&nbsp;: la glande lacrymale principale fait des larmes réflexes, surtout de l'eau salée diluée, «&nbsp;pour noyer et rincer l'irritant&nbsp;».</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Le V sent, le VII commande. Les intervertir casse l'arc.</p>
+            <p class="note">Le cours donne les cinq maillons&nbsp;; leur assemblage pour l'oignon est déduit. Compare avec la version faite en classe.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Stimulus → récepteur → nerf → centre → effecteur, «&nbsp;muscle ou glande&nbsp;». Un maillon coupé, pas de réponse.</p>
+      </div>
+    </section>
+
+    <!-- 6 · Bell -->
+    <section class="diapo" id="d6" data-acte="nerfs" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les nerfs</p>
+        <h2>Un nerf atteint perd ses fonctions, et seulement les siennes</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="bell" aria-label="Paralysie de Bell : le VII atteint ne ferme plus la paupière et produit moins de larmes; les deux mènent à la sécheresse oculaire"></figure>
+          <div class="texte">
+            <p>La <b>paralysie de Bell</b>, c'est une inflammation du 7<sup>e</sup> nerf crânien&nbsp;: le <b class="k-nerf">VII</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le VII ferme les paupières&nbsp;: la paupière ne ferme plus, l'œil reste découvert et le film s'étale mal.</span></li>
+              <li data-pas="2"><span>Le VII fait produire les larmes&nbsp;: il en vient moins.</span></li>
+              <li data-pas="3"><span>D'où la plainte&nbsp;: la <b>sécheresse oculaire</b>. Déclencheurs cités&nbsp;: virus, stress, diabète.</span></li>
+            </ol>
+            <p class="note" data-pas="3">Les deux chemins vers la sécheresse sont déduits des deux fonctions du VII.</p>
+            <p class="note" data-pas="4">Même logique pour les pupilles&nbsp;: le III commande leur constriction. Une pupille qui ne se contracte plus signale une voie nerveuse en panne (déduit&nbsp;; le réflexe pupillaire est au module 8).</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Bell&nbsp;: le VII → ferme mal et pleure moins → œil sec.</p>
+      </div>
+    </section>
+
+    <!-- 7 · trois couches -->
+    <section class="diapo" id="d7" data-acte="film" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le film lacrymal</p>
+        <h2>Trois couches, trois travaux&nbsp;: l'eau seule ne suffit pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="couches" aria-label="Le film sur la cornée : couche mucinique contre la cornée, couche aqueuse au milieu, couche lipidique vers l'air, chacune avec son rôle"></figure>
+          <div class="texte">
+            <p>De la cornée vers l'air&nbsp;: <b class="k-muc">mucinique</b>, <b class="k-eau">aqueuse</b>, <b class="k-lip">lipidique</b>. Elles ne sont pas complètement séparées&nbsp;: «&nbsp;Il y a une continuité entre les couches.&nbsp;»</p>
+            <p class="sous">«&nbsp;Est-ce qu'on peut remplacer les larmes avec de l'eau uniquement&nbsp;?&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Pas de lipides&nbsp;: rien ne freine l'évaporation.</span></li>
+              <li data-pas="2"><span>Pas de mucine&nbsp;: l'eau ne tient pas sur l'épithélium.</span></li>
+              <li data-pas="3"><span>Pas de protéines protectrices (lysozymes, lactotransferrines), ni le sel, le glucose, les sels minéraux et l'urée des larmes.</span></li>
+              <li data-pas="4"><span>Donc non&nbsp;: il faut les trois couches.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Cette réponse est déduite des rôles des couches.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une couche manque, son travail cesse.</p>
+      </div>
+    </section>
+
+    <!-- 8 · les sources -->
+    <section class="diapo" id="d8" data-acte="film" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le film lacrymal</p>
+        <h2>Chaque couche a sa source, à sa place</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="sources" aria-label="Lipidique : glandes de Meibomius, dans le tarse. Aqueuse : glande lacrymale principale, Krause, Wolfring. Mucinique : cellules caliciformes de la conjonctive. Zeis et Moll : aucune couche"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li data-pas="1"><b class="k-lip">Lipidique</b> ← les glandes de <b>Meibomius</b>, dans le tarse.</li>
+              <li data-pas="2"><b class="k-eau">Aqueuse</b> ← la <b>glande lacrymale principale</b>, pour la plupart. Un peu&nbsp;: <b>Krause</b>, dans le fornix de la conjonctive palpébrale, et <b>Wolfring</b>, dans la conjonctive palpébrale.</li>
+              <li data-pas="3"><b class="k-muc">Mucinique</b> ← les <b>cellules caliciformes</b> de la conjonctive.</li>
+            </ul>
+            <p class="piege" data-pas="4"><b>Piège</b>Zeis fait de l'huile et Moll de la sueur, près des cils&nbsp;: aucun des deux ne fait une couche du film. Krause et Wolfring sont dans la conjonctive, mais ils font de l'aqueuse, pas de la mucine.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Meibomius → lipides · glande principale, Krause, Wolfring → aqueuse · caliciformes → mucine.</p>
+      </div>
+    </section>
+
+    <!-- 9 · trois sortes de larmes -->
+    <section class="diapo" id="d9" data-acte="film" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le film lacrymal</p>
+        <h2>Trois sortes de larmes, trois compositions</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="sortes" aria-label="Trois gouttes : réflexes, peu de protéines en proportion; basales; émotionnelles, les plus riches en protéines"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b>Basales</b>&nbsp;: «&nbsp;de base, protection&nbsp;». Environ 98&nbsp;% d'eau, plus du sel, du glucose, des sels minéraux, de l'urée, et des protéines comme les lysozymes et les lactotransferrines.</li>
+              <li data-pas="1"><b>Réflexes</b>&nbsp;: rincer l'œil. Elles viennent surtout de la glande lacrymale principale&nbsp;: une grande quantité d'eau salée diluée.</li>
+              <li data-pas="2"><b>Émotionnelles</b>&nbsp;: communication, régulariser les émotions. Les plus riches en protéines des trois, avec des hormones du stress.</li>
+            </ul>
+            <p class="piege" data-pas="3"><b>Piège</b>Les réflexes ont le moins de protéines en proportion, «&nbsp;car elles sont produites en très grand volume&nbsp;».</p>
+            <p class="note">Les points du dessin montrent seulement un ordre, pas des quantités.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le plus de protéines&nbsp;: les émotionnelles. Le moins, en proportion&nbsp;: les réflexes.</p>
+      </div>
+    </section>
+
+    <!-- 10 · six étapes du clignement -->
+    <section class="diapo" id="d10" data-acte="trajet" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le trajet des larmes</p>
+        <h2>Un clignement, six étapes&nbsp;: il étale les larmes et les draine</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="clignement" aria-label="Le cycle du clignement : 1 ouverture, 2 fermeture et apposition, 3 points lacrymaux, 4 pompe lacrymale, 5 drainage, 6 réouverture"></figure>
+          <div class="texte">
+            <p>On cligne normalement <b>15 à 20 fois par minute</b>, plus que nécessaire pour les fonctions de base. Moins quand on regarde des détails fins, et encore moins quand on est concentré.</p>
+            <ul class="points">
+              <li data-pas="1"><b>Fermeture</b>&nbsp;: «&nbsp;les paupières répartissent le film lacrymal sur la cornée&nbsp;».</li>
+              <li data-pas="2"><b>Points lacrymaux</b>&nbsp;: ils doivent être bien tournés vers le lac lacrymal.</li>
+              <li data-pas="3"><b>Pompe</b>&nbsp;: la fermeture pousse les larmes vers les canalicules et le sac&nbsp;; la réouverture les aspire vers le sac.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Le releveur (III) ouvre&nbsp;; l'orbiculaire (VII) ferme.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Chaque clignement nettoie, nourrit, garde la cornée transparente, et fait avancer les larmes.</p>
+      </div>
+    </section>
+
+    <!-- 11 · les voies de drainage -->
+    <section class="diapo" id="d11" data-acte="trajet" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le trajet des larmes</p>
+        <h2>Les larmes finissent dans le nez</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="drainage" aria-label="Œil gauche vu de face : la glande lacrymale, le lac lacrymal au coin interne, les points lacrymaux, les canalicules, le sac lacrymal, le conduit nasolacrymal, la cavité nasale"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>La glande lacrymale fait les larmes. En fermant, l'orbiculaire les pousse de la tempe vers le coin interne.</span></li>
+              <li data-pas="2"><span>Au coin interne, le <b>lac lacrymal</b>. Les deux <b>points lacrymaux</b>, un en haut et un en bas, sont tournés vers lui.</span></li>
+              <li data-pas="3"><span>Les <b>canalicules</b>, supérieur et inférieur.</span></li>
+              <li data-pas="4"><span>Le <b>sac lacrymal</b>.</span></li>
+              <li data-pas="5"><span>Le <b>conduit nasolacrymal</b>, jusqu'à la <b>cavité nasale</b>.</span></li>
+            </ol>
+            <p class="note">Ici, l'œil gauche vu de face&nbsp;: le nez est à droite. Les modules 6 et 7 ne décrivent pas la place de la glande&nbsp;: le dessin la met en haut, côté tempe, comme sur le schéma habituel de l'appareil lacrymal.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Points → canalicules → sac lacrymal → conduit nasolacrymal → cavité nasale.</p>
+      </div>
+    </section>
+
+    <!-- 12 · le trajet en quatre étapes -->
+    <section class="diapo" id="d12" data-acte="trajet" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Le trajet des larmes</p>
+        <h2>Produire, répartir, évaporer, drainer&nbsp;: chaque panne a ses signes</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="bilan" aria-label="Le trajet des larmes : production par les glandes, répartition par le clignement, évaporation freinée par les lipides, drainage jusqu'au nez"></figure>
+          <div class="texte">
+            <p>Chaque fiche de cas demande&nbsp;: «&nbsp;S'agit-il surtout d'un problème de production, de répartition, d'évaporation ou de drainage des larmes&nbsp;?&nbsp;»</p>
+            <ul class="points">
+              <li data-pas="1">Répartition ou évaporation en panne&nbsp;: la surface <b>s'assèche</b>.</li>
+              <li data-pas="2">Drainage en panne&nbsp;: l'<b>épiphora</b>, «&nbsp;Débordement des larmes sur la joue, notamment lorsque leur drainage est insuffisant.&nbsp;»</li>
+              <li data-pas="3">Irritation&nbsp;: le <b>larmoiement réflexe</b>, «&nbsp;Augmentation de la production de larmes en réponse à une irritation&nbsp;».</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une plainte se situe à une étape du trajet.</p>
+      </div>
+    </section>
+
+    <!-- 13 · une fiche : larmes sur la joue -->
+    <section class="diapo" id="d13" data-acte="trajet" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Une fiche de cas</p>
+        <h2>Des larmes sur la joue&nbsp;: trop d'entrée, ou une sortie bloquée&nbsp;?</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="joue" aria-label="Deux causes, un même signe : au vent, la production augmente; conduit nasolacrymal obstrué, le drainage est bloqué. Dans les deux cas, des larmes sur la joue"></figure>
+          <div class="texte">
+            <p>Une fiche&nbsp;: conduit nasolacrymal obstrué, «&nbsp;débordement fréquent des larmes sur sa joue&nbsp;». On explique le mécanisme, sans poser de diagnostic.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Structure</b>&nbsp;: le conduit nasolacrymal, dernier tronçon avant la cavité nasale.</span></li>
+              <li data-pas="2"><span><b>Effet</b>&nbsp;: les larmes ne s'évacuent plus et débordent&nbsp;: c'est l'épiphora.</span></li>
+              <li data-pas="3"><span><b>Étape</b>&nbsp;: le <b>drainage</b>. Rien n'indique un excès de production&nbsp;: c'est la sortie qui est bloquée.</span></li>
+              <li data-pas="4"><span>Au vent, même signe, autre étape&nbsp;: l'œil irrité produit plus, c'est le <b>larmoiement réflexe</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>«&nbsp;Larmes sur la joue&nbsp;» ne dit pas l'étape. Cherche la cause&nbsp;: un irritant, ou une sortie bloquée ou mal placée (un point lacrymal tourné vers l'extérieur, un ectropion).</p>
+            <p class="note">Les fiches n'ont pas de corrigé&nbsp;: ces réponses sont déduites du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un même signe, deux causes opposées&nbsp;: la production ou le drainage.</p>
+      </div>
+    </section>
+
+    <!-- 14 · quatre milieux -->
+    <section class="diapo" id="d14" data-acte="clarte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La transparence</p>
+        <h2>La lumière traverse quatre milieux transparents</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="milieux" aria-label="La lumière traverse la cornée, l'humeur aqueuse, le cristallin et le vitré jusqu'à la rétine"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Cornée</b>&nbsp;: à l'avant, en continuité avec la sclère.</span></li>
+              <li data-pas="2"><span><b class="k-eau">Humeur aqueuse</b>&nbsp;: la chambre antérieure (cornée à l'iris) et la chambre postérieure (iris au cristallin). Elle nourrit les structures sans vaisseaux, comme la cornée et le cristallin.</span></li>
+              <li data-pas="3"><span><b>Cristallin</b>&nbsp;: entre l'humeur aqueuse en avant et le vitré en arrière.</span></li>
+              <li data-pas="4"><span><b class="k-eau">Vitré</b>&nbsp;: derrière le cristallin jusqu'à la rétine, 80&nbsp;% du volume de l'œil.</span></li>
+            </ol>
+            <p class="note">Pour chacun, l'activité du cours pose quatre questions&nbsp;: où est-il, pourquoi est-il transparent, quelle est sa fonction principale, que change l'âge.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Cornée → humeur aqueuse → cristallin → vitré → rétine.</p>
+      </div>
+    </section>
+
+    <!-- 15 · cinq couches de la cornée -->
+    <section class="diapo" id="d15" data-acte="clarte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La transparence</p>
+        <h2>La cornée a cinq couches</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cornee" aria-label="La cornée en coupe, de l'avant vers l'arrière : épithélium, membrane de Bowman, stroma, membrane de Descemet, endothélium"></figure>
+          <div class="texte">
+            <p>Les trois grandes parties vues à l'UA1 (épithélium, stroma, endothélium) gagnent deux membranes&nbsp;: <b>Bowman</b> et <b>Descemet</b>.</p>
+            <ul class="points">
+              <li>Le <b>stroma</b> fait presque toute l'épaisseur. Ses cellules, les <b>kératocytes</b>, sont aplaties contre les fibres de collagène.</li>
+              <li>L'<b>endothélium</b>&nbsp;: une seule couche de cellules.</li>
+              <li>Devant, le film de larmes&nbsp;; derrière, l'humeur aqueuse.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Bowman est juste sous l'épithélium&nbsp;; Descemet est la membrane sur laquelle repose l'endothélium.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Épithélium, Bowman, stroma, Descemet, endothélium.</p>
+      </div>
+    </section>
+
+    <!-- 16 · même collagène, autre ordre -->
+    <section class="diapo" id="d16" data-acte="clarte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La transparence</p>
+        <h2>Même collagène, autre ordre&nbsp;: la cornée est claire, la sclère opaque</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="collagene" aria-label="Cornée : fibres de collagène régulières, en couches croisées, la lumière passe. Sclère : fibres moins régulières, la lumière ne passe pas"></figure>
+          <div class="texte">
+            <p>Les deux forment la tunique fibreuse, et les deux sont faites de collagène.</p>
+            <ul class="points">
+              <li><b>Cornée</b>&nbsp;: dans le stroma, une «&nbsp;organisation régulière des fibres de collagène, essentielle à la transparence&nbsp;», en couches croisées.</li>
+              <li data-pas="1"><b>Sclère</b>&nbsp;: «&nbsp;La disposition moins régulière des fibres de collagène dans la sclère contribue à son opacité.&nbsp;» Un tissu résistant, qui maintient la forme du globe et reçoit les muscles oculaires.</li>
+              <li data-pas="2">Même idée dans le cristallin&nbsp;: des fibres «&nbsp;organisées afin de maintenir la transparence&nbsp;».</li>
+            </ul>
+            <p class="piege"><b>Piège</b>«&nbsp;La cornée n'a pas de collagène&nbsp;»&nbsp;: faux. Elle en a, elle aussi&nbsp;; c'est son ordre qui la rend claire.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La différence n'est pas la matière, c'est l'ordre.</p>
+      </div>
+    </section>
+
+    <!-- 17 · l'endothélium pompe -->
+    <section class="diapo" id="d17" data-acte="clarte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La transparence</p>
+        <h2>L'endothélium pompe l'eau, et il ne se remplace pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="pompe" aria-label="Endothélium sain : il pompe l'eau, la cornée reste à 78 % d'eau et claire. Endothélium abîmé : la cornée s'imbibe d'eau et devient trouble"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li>Son «&nbsp;Rôle de pompe pour garder la cornée à 78&nbsp;% eau&nbsp;» la garde claire.</li>
+              <li data-pas="1">Abîmé, «&nbsp;la cornée perd de sa transparence parce qu'elle devient imbibée d'eau&nbsp;».</li>
+              <li data-pas="2">Ses cellules ne se reproduisent pas et sont perdues au long de la vie. Celles qui restent changent de grandeur (<b>polymégathisme</b>) et de forme (<b>pléomorphisme</b>).</li>
+              <li data-pas="3">L'<b>épithélium</b>, lui, se renouvelle&nbsp;: grâce aux cellules souches du <b>limbe</b>, la zone de transition entre la cornée et la sclère, vascularisée.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Plus d'eau ne rend pas la cornée plus claire&nbsp;: imbibée, elle devient trouble.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Transparent = ordonné, avec la bonne quantité d'eau.</p>
+      </div>
+    </section>
+
+    <!-- 18 · les UV -->
+    <section class="diapo" id="d18" data-acte="clarte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La transparence</p>
+        <h2>Les UV s'arrêtent en chemin&nbsp;; le visible va jusqu'à la rétine</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="uv" aria-label="Les UVB, 280 à 320 nm, s'arrêtent à la cornée; les UVA, 320 à 400 nm, au cristallin; le visible, à partir de 400 nm, atteint la rétine"></figure>
+          <div class="texte">
+            <p>«&nbsp;La lentille transmet la lumière visible et absorbe la lumière UV.&nbsp;» Deux filtres, l'un derrière l'autre&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>La <b>cornée</b> absorbe 280–320&nbsp;nm, les <b>UVB</b>.</span></li>
+              <li data-pas="2"><span>Le <b>cristallin</b> absorbe 320–400&nbsp;nm, les <b>UVA</b>.</span></li>
+              <li data-pas="3"><span>Le <b>visible</b>, à partir de 400&nbsp;nm, atteint la rétine.</span></li>
+            </ol>
+            <p class="note">«&nbsp;La lentille&nbsp;», dans le cours, c'est le cristallin. Sa troisième fonction&nbsp;: «&nbsp;Absorption des rayons UV pour protéger la rétine&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>UVB&nbsp;: la cornée. UVA&nbsp;: le cristallin. Visible&nbsp;: la rétine.</p>
+      </div>
+    </section>
+
+    <!-- 19 · la cornée à l'air -->
+    <section class="diapo" id="d19" data-acte="refraction" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La réfraction</p>
+        <h2>La cornée fait les 2/3 du travail, parce qu'elle touche l'air</h2>
+        <div class="corps plein">
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="oeil-air" aria-label="Œil dans l'air : les rayons se rejoignent sur la rétine"></figure>
+              <div><h3>Dans l'air</h3><p>De l'air (1) à la cornée (1,376), une grande différence d'indice&nbsp;: 0,376. La cornée fait les <b>2/3</b> du pouvoir optique, environ <b>42&nbsp;D</b>&nbsp;; le cristallin, <b>1/3</b>.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="oeil-eau" aria-label="Œil sous l'eau : les rayons se rejoignent derrière la rétine"></figure>
+              <div><h3 class="k-eau">Sous l'eau</h3><p>L'eau remplace l'air devant la cornée&nbsp;: le saut d'indice fond, la puissance aussi. L'image tombe derrière la rétine&nbsp;: l'œil devient <b>hypermétrope</b>.</p></div>
+            </div>
+          </div>
+          <p class="note" data-pas="2">Avec des lunettes de natation, l'air revient devant la cornée, et la vision aussi. Les chiffres de l'Optique (D = Δn / r)&nbsp;: face avant +48,21&nbsp;D dans l'air, +5,90&nbsp;D sous l'eau (eau&nbsp;: 1,33). Ce calcul est déduit&nbsp;; il n'est pas dans les diapos d'anatomie.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>La puissance vient du saut d'indice. Sans air devant la cornée, elle fond.</p>
+      </div>
+    </section>
+
+    <!-- 20 · le cristallin bombé -->
+    <section class="diapo" id="d20" data-acte="refraction" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · La réfraction</p>
+        <h2>Le cristallin est très bombé parce qu'il baigne dans le liquide</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="bombe" aria-label="Le cristallin entre l'humeur aqueuse et le vitré : rayon de 10 mm devant, 6 mm derrière; en accommodant, il se bombe davantage"></figure>
+          <div class="texte">
+            <p>Ses trois fonctions&nbsp;: réfracter, accommoder (en jeunesse), absorber les UV.</p>
+            <ul class="points">
+              <li>Il vaut <b>18 à 20&nbsp;D</b>. Pas d'air autour de lui, mais du liquide&nbsp;: l'humeur aqueuse devant, le vitré derrière.</li>
+              <li>Une lentille biconvexe asymétrique&nbsp;: rayon de 10&nbsp;mm devant, 6&nbsp;mm derrière. Indice&nbsp;: 1,38 en périphérie, 1,41 au centre.</li>
+              <li data-pas="1">Pour voir de près, il se déforme&nbsp;: ses fibres peuvent glisser les unes par rapport aux autres. Un jeune œil monte jusqu'à <b>30&nbsp;D</b>.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Plus bombé ne veut pas dire plus fort que la cornée&nbsp;: 18–20&nbsp;D contre 42&nbsp;D.</p>
+            <p class="note">Pourquoi le liquide oblige à bomber&nbsp;: le saut d'indice y est petit, alors il faut des surfaces plus courbes. Ce lien vient de la formule de l'Optique&nbsp;; il est déduit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Bombé parce qu'immergé&nbsp;; encore plus bombé pour voir de près.</p>
+      </div>
+    </section>
+
+    <!-- 21 · le cristallin grandit par couches -->
+    <section class="diapo" id="d21" data-acte="age" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Grandir et vieillir</p>
+        <h2>Le cristallin grandit par couches&nbsp;: le plus vieux est au centre</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cd" aria-label="Le dessin du cristallin, l'avant à gauche : A capsule antérieure, E zone équatoriale, C cortex, N3 à N1 noyaux, N1 au centre, P capsule postérieure"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>A</b>, la capsule antérieure&nbsp;: la création de nouvelles cellules.</span></li>
+              <li data-pas="2"><span><b>E</b>, la zone équatoriale&nbsp;: les cellules y deviennent des fibres du cristallin.</span></li>
+              <li data-pas="3"><span><b>C</b>, le cortex&nbsp;: les fibres les plus récentes.</span></li>
+              <li data-pas="4"><span><b>N3, N2, N1</b>, les noyaux&nbsp;: des fibres de plus en plus vieilles vers le centre. N1, au centre, est le plus vieux.</span></li>
+              <li data-pas="5"><span><b>P</b>, la capsule postérieure&nbsp;: une barrière entre le cristallin et le vitré.</span></li>
+            </ol>
+            <p class="note">Les flèches (les nouvelles fibres poussent les anciennes vers le centre) sont déduites de l'ordre des couches.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le plus récent en périphérie, le plus vieux au centre.</p>
+      </div>
+    </section>
+
+    <!-- 22 · le vitré -->
+    <section class="diapo" id="d22" data-acte="age" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Grandir et vieillir</p>
+        <h2>Avec l'âge, le vitré se liquéfie et se retire de la rétine</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="vitre" aria-label="Trois temps : un gel collé à la rétine; plus liquide, il se retire à l'arrière, avec des corps flottants; parfois, à un point d'adhérence, la rétine se déchire"></figure>
+          <div class="texte">
+            <p>Un gel&nbsp;: 99&nbsp;% d'eau, avec du collagène et de l'acide hyaluronique. Il transmet la lumière, entrepose des métabolites pour le cristallin et la rétine, absorbe les chocs, protège la rétine et maintient la forme de l'œil.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Il devient plus liquide et «&nbsp;peut se retirer de la rétine&nbsp;»&nbsp;: le <b>décollement du vitré postérieur</b>. À 50 ans, chez environ 50&nbsp;% des gens.</span></li>
+              <li data-pas="2"><span>Des éclairs, des <b>corps flottants</b>&nbsp;: de petites masses dans le vitré, perçues comme des ombres. D'ordinaire sans gravité.</span></li>
+              <li data-pas="3"><span>Rarement, s'il y a un point d'adhérence entre le vitré et la rétine, la rétine se déchire et se décolle.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Décollement du vitré ≠ décollement de rétine. Le premier est habituellement sans conséquence.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plus liquide → il se retire → corps flottants → parfois, la rétine suit.</p>
+      </div>
+    </section>
+
+    <!-- 23 · chaque milieu vieillit -->
+    <section class="diapo" id="d23" data-acte="age" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Grandir et vieillir</p>
+        <h2>Chaque milieu vieillit à sa façon</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="age" aria-label="Avec l'âge : la cornée s'imbibe et devient moins sensible; la sclère jaunit; le cristallin durcit puis jaunit; le vitré devient plus liquide"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li data-pas="1"><b>Cornée</b>&nbsp;: elle perd des cellules endothéliales&nbsp;; si c'est sévère, elle s'imbibe d'eau. Elle devient aussi moins sensible.</li>
+              <li data-pas="2"><b>Sclère</b>&nbsp;: jaunâtre chez la personne âgée, par l'accumulation des <b class="k-lip">lipides</b>. Chez le bébé, bleutée&nbsp;: plus transparente.</li>
+              <li data-pas="3"><b>Cristallin</b>&nbsp;: il durcit, et accommoder devient difficile&nbsp;: la <b>presbytie</b>. Puis il jaunit et s'opacifie&nbsp;: la <b>cataracte</b>, souvent problématique vers 70–80 ans.</li>
+              <li data-pas="4"><b class="k-eau">Vitré</b>&nbsp;: plus liquide, il se retire de la rétine.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>La presbytie ne vient pas du muscle ciliaire&nbsp;: «&nbsp;L'œil ne devient pas faible, il devient moins flexible.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Presbytie&nbsp;: le cristallin perd sa souplesse. Cataracte&nbsp;: il perd sa clarté.</p>
+      </div>
+    </section>
+
+    <!-- 24 · la carte -->
+    <section class="diapo" id="d24" data-acte="carte" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Les nerfs</p><p class="fiche-f">V sent · III, VII commandent</p><p class="fiche-n">VII&nbsp;: larmes et fermeture</p></div>
+          <div class="fiche"><p class="fiche-nom">L'arc réflexe</p><p class="fiche-f">V → centre → VII → glande</p><p class="fiche-n">larmes&nbsp;: parasympathique</p></div>
+          <div class="fiche"><p class="fiche-nom">Le film</p><p class="fiche-f"><span class="k-muc">mucine</span> · <span class="k-eau">eau</span> · <span class="k-lip">lipides</span></p><p class="fiche-n">de la cornée vers l'air</p></div>
+          <div class="fiche"><p class="fiche-nom">Les sources</p><p class="fiche-f"><span class="k-lip">Meibomius</span> · <span class="k-eau">principale</span> · <span class="k-muc">caliciformes</span></p><p class="fiche-n">Krause, Wolfring&nbsp;: un peu d'aqueuse</p></div>
+          <div class="fiche"><p class="fiche-nom">Le drainage</p><p class="fiche-f">points → canalicules → sac → conduit → nez</p><p class="fiche-n">bloqué&nbsp;: épiphora</p></div>
+          <div class="fiche"><p class="fiche-nom">La cornée</p><p class="fiche-f">5 couches · 2/3 · 42&nbsp;D</p><p class="fiche-n">claire&nbsp;: collagène ordonné, 78&nbsp;% d'eau</p></div>
+          <div class="fiche"><p class="fiche-nom">Le cristallin</p><p class="fiche-f">18–20&nbsp;D · vieux au centre</p><p class="fiche-n">UVA&nbsp;; presbytie, puis cataracte</p></div>
+          <div class="fiche"><p class="fiche-nom">Le vitré</p><p class="fiche-f">gel à 99&nbsp;% d'eau</p><p class="fiche-n">liquéfié&nbsp;: il se retire de la rétine</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-anatomie-m6.html">L'atelier Anatomie M6–M7</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const g = (o, s) => `<g${o && o.c ? ` class="c-${o.c}"` : ''}${P(o)}>${s}</g>`;
+
+  // Flèche droite avec sa pointe; o.c : couleur (token), o.tirets : message sensitif.
+  function fleche(x1, y1, x2, y2, o = {}) {
+    const a = Math.atan2(y2 - y1, x2 - x1), L = 11, l = 6;
+    const bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    const pts = [[x2, y2], [bx + l * Math.sin(a), by - l * Math.cos(a)], [bx - l * Math.sin(a), by + l * Math.cos(a)]];
+    return `<g class="c-${o.c || 'emm'}"${P(o)}><path d="M ${n1(x1)} ${n1(y1)} L ${n1(bx)} ${n1(by)}" class="trait-c${o.tirets ? ' tirets' : ''}"/>` +
+      `<path d="M ${pts.map(p => n1(p[0]) + ' ' + n1(p[1])).join(' L ')} Z" class="tete"/></g>`;
+  }
+  // Texte sur une ou plusieurs lignes (lignes de 18 unités).
+  const txt = (x, y, lignes, cls = '', anc = 'start', dy = 18) =>
+    [].concat(lignes).map((t, i) => `<text x="${n1(x)}" y="${n1(y + i * dy)}" text-anchor="${anc}"${cls ? ` class="${cls}"` : ''}>${t}</text>`).join('');
+  const trait = (x1, y1, x2, y2) => `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="pointille"/>`;
+
+  // Coupe horizontale de l'œil, la lumière vient de la gauche. Repère fixe : centre du globe (250, 150).
+  // o.dx décale le dessin; o.rayons : 'net' | 'derriere' | false; o.eauDevant; o.etiq : étiquettes {nom: pas}.
+  function coupe(o = {}) {
+    const dx = o.dx || 0, cx = 250 + dx, cy = 150, rx = 135, ry = 105;
+    const xe = cx - 115, ctrl = xe - 60;                          // jonction cornée–sclère à cy ± 55
+    const xc = y => { const t = (y - (cy - 55)) / 110; return xe - 120 * t * (1 - t); };   // face avant de la cornée
+    const lx = cx - 78, xRet = cx + rx - 2;
+    const pe = t => `${n1(cx + rx * Math.cos(t))} ${n1(cy + ry * Math.sin(t))}`;
+    let s = '';
+    if (o.eauDevant) s += `<path d="M 0 40 H ${n1(xe)} V ${cy - 55} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + 55} V 260 H 0 Z" class="zone c-eau"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - 55} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + 55} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - 55} Z" class="globe"/>`;
+    // humeur aqueuse (devant le cristallin) et vitré (derrière)
+    s += `<path d="M ${n1(xe)} ${cy - 53} Q ${n1(ctrl + 4)} ${cy} ${n1(xe)} ${cy + 53} L ${n1(lx - 14)} ${cy + 41} L ${n1(lx - 14)} ${cy - 41} Z" class="zone c-eau"/>`;
+    s += `<path d="M ${n1(cx - 75)} ${cy - 87} A ${rx} ${ry} 0 1 1 ${n1(cx - 75)} ${cy + 87} L ${n1(lx + 4)} ${cy + 40} Q ${n1(lx + 28)} ${cy} ${n1(lx + 4)} ${cy - 40} Z" class="zone c-eau" style="fill-opacity:.16"/>`;
+    s += `<path d="M ${pe(-50 * Math.PI / 180)} A ${rx} ${ry} 0 0 1 ${pe(50 * Math.PI / 180)}" class="ret"/>`;
+    s += `<ellipse cx="${n1(lx)}" cy="${cy}" rx="16" ry="40" class="cristallin"/>`;
+    if (o.trouble) s += `<ellipse cx="${n1(lx)}" cy="${cy}" rx="16" ry="40" class="trouble"${P({ pas: o.trouble })}/>`;
+    for (const [a, b] of [[cy - 58, cy - 24], [cy + 24, cy + 58]]) s += `<line x1="${n1(lx - 19)}" y1="${a}" x2="${n1(lx - 19)}" y2="${b}" class="base" style="stroke:var(--doux);stroke-width:4"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - 55} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + 55}" class="cornee"/>`;
+    if (o.film !== false) s += `<path d="M ${n1(xe - 3)} ${cy - 58} Q ${n1(ctrl - 6)} ${cy} ${n1(xe - 3)} ${cy + 58}" class="trait-c c-eau" style="stroke-width:5"/>`;
+    if (o.rayons) {
+      const xf = o.rayons === 'derriere' ? xRet + 50 : xRet;
+      for (const y0 of [cy - 28, cy, cy + 28]) {
+        const x0 = xc(y0), yR = y0 + (cy - y0) * (xRet - x0) / (xf - x0);
+        s += `<path d="M ${dx ? 6 : 6} ${y0} L ${n1(x0)} ${y0} L ${n1(xRet)} ${n1(yR)}" class="rayon"/>`;
+        if (xf > xRet && y0 !== cy) s += `<path d="M ${n1(xRet)} ${n1(yR)} L ${n1(xf)} ${cy}" class="rayon virtuel"/>`;
+      }
+      s += `<circle cx="${n1(xf)}" cy="${cy}" r="5.5" class="${xf > xRet ? 'creux' : 'plein'} c-emm"/>`;
+    }
+    const E = o.etiq || {}, T = (k, s2) => (k in E ? g({ pas: E[k] }, s2) : '');
+    s += T('film', txt(8 + dx, 64, 'film lacrymal', 'etiq c-eau') + trait(50 + dx, 72, xc(cy - 30) - 6, cy - 30));
+    s += T('humeur', txt(lx - 30, 30, 'humeur aqueuse', 'etiq c-eau', 'middle') + trait(lx - 30, 36, lx - 26, cy - 44));
+    s += T('cornee', txt(xe - 50, 290, 'cornée', 'etiq', 'middle') + trait(xe - 45, 274, xc(cy + 40), cy + 42));
+    s += T('cristallin', txt(lx + 12, 290, 'cristallin', 'etiq', 'middle') + trait(lx + 6, 274, lx, cy + 42));
+    s += T('vitre', txt(cx + 40, cy - 40, 'vitré', 'etiq c-eau', 'middle'));
+    s += T('retine', txt(cx + 166, 48, 'rétine', 'etiq', 'end') + trait(cx + 146, 54, cx + 92, cy - 76));
+    return s;
+  }
+  const oeilW = (o, label, W = 420) => svgW(W, 300, coupe(o), label);
+
+  // Chaque milieu vieillit : la coupe, avec une remarque par milieu.
+  function age() {
+    const lx = 172, s = coupe({ trouble: 3 }) +
+      g({ pas: 1 }, txt(8, 272, ['cornée&nbsp;: s’imbibe,', 'moins sensible'], 'petit') + trait(60, 256, 104, 178)) +
+      g({ pas: 2, c: 'lip' }, `<path d="M 160 63 A 135 105 0 0 1 340 72" class="trait-c" style="stroke-width:6;stroke-opacity:.8"/>` + txt(250, 26, 'sclère&nbsp;: jaunâtre (lipides)', 'etiq', 'middle')) +
+      g({ pas: 3 }, txt(lx + 60, 286, 'cristallin&nbsp;: durcit, puis jaunit', 'petit', 'middle') + trait(lx + 10, 270, lx, 192)) +
+      g({ pas: 4, c: 'eau' }, txt(296, 124, ['vitré&nbsp;:', 'plus liquide'], 'etiq', 'middle'));
+    return svgW(420, 300, s, 'Chaque milieu vieillit à sa façon');
+  }
+
+  // Les UV s'arrêtent en chemin : trois rayons.
+  function uv() {
+    const dx = 64, cy = 150, xe = 135 + dx;
+    const xc = y => { const t = (y - (cy - 55)) / 110; return xe - 120 * t * (1 - t); };
+    let s = coupe({ dx, film: false });
+    const stop = (x, y) => `<path d="M ${n1(x - 6)} ${y - 6} L ${n1(x + 6)} ${y + 6} M ${n1(x + 6)} ${y - 6} L ${n1(x - 6)} ${y + 6}" class="croix c-doux"/>`;
+    const lf = y => 172 + dx - 16 * Math.sqrt(1 - ((y - cy) / 40) ** 2);
+    s += g({ pas: 1 }, txt(6, 104, 'UVB · 280–320&nbsp;nm', 'petit') + `<path d="M 6 112 L ${n1(xc(112) - 3)} 112" class="trait-c tirets c-doux"/>` + stop(xc(112) - 3, 112));
+    s += g({ pas: 2 }, txt(6, 130, 'UVA · 320–400&nbsp;nm', 'petit') + `<path d="M 6 138 L ${n1(lf(138) - 2)} 138" class="trait-c tirets c-doux"/>` + stop(lf(138) - 2, 138));
+    const x0 = xc(164), xR = 250 + dx + 133;
+    s += g({ pas: 3 }, txt(6, 156, 'visible · dès 400&nbsp;nm', 'petit') + `<path d="M 6 164 L ${n1(x0)} 164 L ${n1(xR)} ${cy}" class="rayon"/><circle cx="${n1(xR)}" cy="${cy}" r="5.5" class="plein c-emm"/>`);
+    s += txt(xe - 30, 290, 'cornée', 'etiq', 'middle') + txt(172 + dx + 22, 290, 'cristallin', 'etiq', 'middle') + txt(250 + dx + 100, 290, 'rétine', 'etiq', 'middle');
+    return svgW(484, 300, s, 'Où s’arrêtent les UV');
+  }
+
+  // Boîte arrondie avec des lignes de texte centrées. l : [[texte, classe], ...]
+  function boite(x, y, w, h, l, o = {}) {
+    const y0 = y + h / 2 - (l.length - 1) * 9 + 5;
+    return `<g${o.c ? ` class="c-${o.c}"` : ''}${P(o)}><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" class="boite"/>` +
+      l.map(([t, c], i) => `<text x="${n1(x + w / 2)}" y="${n1(y0 + i * 18)}" text-anchor="middle"${c ? ` class="${c}"` : ''}>${t}</text>`).join('') + '</g>';
+  }
+  const croix = (x, y, c = 'nerf') => `<path d="M ${x - 7} ${y - 7} L ${x + 7} ${y + 7} M ${x + 7} ${y - 7} L ${x - 7} ${y + 7}" class="croix c-${c}"/>`;
+
+  // Le système nerveux, en arbre; le chemin jusqu'aux larmes en rose.
+  function arbre() {
+    const L = (x1, y1, x2, y2, o) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${o ? 'trait-c c-nerf' : 'base'}"${P(o)}/>`;
+    const N = (x, y, nom, sous, o = {}) => g(o, `<text x="${x}" y="${y}" text-anchor="middle" class="nom-g">${nom}</text>` +
+      (sous ? [].concat(sous).map((t, i) => `<text x="${x}" y="${y + 18 + i * 17}" text-anchor="middle" class="petit t-doux">${t}</text>`).join('') : ''));
+    let s = N(210, 24, 'système nerveux');
+    s += L(180, 32, 96, 68) + L(240, 32, 300, 68);
+    s += N(90, 86, 'SNC', ['cerveau,', 'moelle épinière']) + N(300, 86, 'SNP', 'les nerfs');
+    s += g({ pas: 1 }, L(290, 112, 240, 142) + L(310, 112, 362, 142) + N(236, 160, 'somatique', 'volontaire') + N(364, 160, 'autonome', 'involontaire'));
+    s += g({ pas: 2 }, L(350, 186, 92, 218) + L(360, 186, 232, 218) + L(368, 186, 352, 218) +
+      N(78, 236, 'sympathique', 'mettre en action') + N(226, 236, 'parasympathique', 'repos et digestion') + N(355, 236, 'entérique', 'digestion'));
+    s += g({ pas: 3 }, L(240, 32, 300, 68, {}) + L(310, 112, 362, 142, {}) + L(360, 186, 232, 218, {}) + L(226, 264, 226, 284, {}) +
+      `<path d="M 226 288 Q 214 306 226 314 Q 238 306 226 288 Z" class="point-c c-eau"/>` +
+      `<text x="244" y="308" class="etiq c-eau">les larmes</text>`);
+    return svgW(420, 324, s, 'Le système nerveux');
+  }
+
+  // Le V apporte, le III et le VII emportent.
+  function nerfs() {
+    let s = boite(8, 60, 120, 180, [['centre', 'etiq'], ['nerveux', 'etiq']]);
+    s += `<circle cx="348" cy="150" r="70" class="globe"/><circle cx="348" cy="150" r="28" class="cristallin"/><circle cx="348" cy="150" r="11" class="pupille"/>`;
+    const rangs = [[88, 'V · sent', 'message sensitif', true], [150, 'III · commande', 'paupière, pupille', false], [212, 'VII · commande', 'paupières, larmes', false]];
+    for (const [y, nom, sous, sens] of rangs) {
+      const xo = 348 - Math.sqrt(70 * 70 - (y - 150) ** 2) - 4;
+      s += sens ? fleche(xo, y, 134, y, { c: 'nerf', tirets: true }) : fleche(134, y, xo, y, { c: 'nerf' });
+      s += `<text x="${n1((134 + xo) / 2)}" y="${y - 10}" text-anchor="middle" class="etiq c-nerf">${nom}</text>`;
+      s += `<text x="${n1((134 + xo) / 2)}" y="${y + 22}" text-anchor="middle" class="petit t-doux">${sous}</text>`;
+    }
+    s += `<text x="348" y="248" text-anchor="middle" class="petit t-doux">l’œil</text>`;
+    return svgW(420, 256, s, 'Le sens des messages');
+  }
+
+  // L'arc du larmoiement, en boucle : il se referme quand les larmes rincent l'irritant.
+  function arc() {
+    let s = '';
+    s += `<g>` + `<rect x="10" y="20" width="150" height="60" rx="10" class="boite"/><text x="85" y="44" text-anchor="middle" class="etiq">Stimulus</text></g>`;
+    s += g({ pas: 1 }, `<text x="85" y="66" text-anchor="middle" class="petit">un irritant</text>`);
+    s += `<rect x="250" y="20" width="160" height="60" rx="10" class="boite"/><text x="330" y="44" text-anchor="middle" class="etiq">Récepteur</text>`;
+    s += g({ pas: 2 }, `<text x="330" y="66" text-anchor="middle" class="petit">cornée, conjonctive</text>`);
+    s += `<rect x="250" y="200" width="160" height="60" rx="10" class="boite"/><text x="330" y="236" text-anchor="middle" class="etiq">Centre nerveux</text>`;
+    s += `<rect x="10" y="200" width="160" height="80" rx="10" class="boite"/><text x="90" y="224" text-anchor="middle" class="etiq">Effecteur</text>`;
+    s += g({ pas: 5 }, txt(90, 246, ['glande lacrymale', 'principale'], 'petit', 'middle'));
+    s += fleche(164, 50, 246, 50, { c: 'doux' });
+    s += fleche(330, 84, 330, 196, { c: 'nerf', tirets: true });
+    s += g({ pas: 2 }, `<text x="320" y="132" text-anchor="end" class="etiq c-nerf">V</text>` + txt(320, 152, ['message', 'sensitif'], 'petit t-doux', 'end', 16));
+    s += fleche(246, 232, 174, 232, { c: 'nerf' });
+    s += g({ pas: 4 }, `<text x="210" y="222" text-anchor="middle" class="etiq c-nerf">VII</text>` + `<text x="210" y="252" text-anchor="middle" class="petit t-doux">ordre</text>`);
+    s += g({ pas: 5 }, fleche(50, 196, 50, 86, { c: 'eau' }) + `<text x="62" y="132" class="etiq c-eau">larmes</text>` + `<text x="62" y="150" class="petit t-doux">rincent</text>`);
+    return svgW(420, 290, s, 'L’arc réflexe du larmoiement');
+  }
+
+  // Bell : un nerf, deux fonctions perdues, une plainte.
+  function bell() {
+    let s = boite(130, 12, 160, 46, [['VII atteint', 'etiq']], { c: 'nerf' });
+    s += g({ pas: 1 }, fleche(180, 62, 110, 104, { c: 'nerf' }) + croix(145, 83) + boite(10, 108, 190, 54, [['ne ferme plus', ''], ['la paupière', '']]) +
+      fleche(105, 166, 105, 190) + boite(10, 194, 190, 42, [['film mal étalé', '']]));
+    s += g({ pas: 2 }, fleche(240, 62, 310, 104, { c: 'nerf' }) + croix(275, 83) + boite(220, 108, 190, 54, [['produit moins', ''], ['de larmes', '']], { c: 'eau' }));
+    s += g({ pas: 3 }, fleche(130, 240, 180, 262) + fleche(315, 166, 250, 262) + boite(120, 266, 180, 46, [['sécheresse oculaire', 'etiq']]));
+    return svgW(420, 320, s, 'La paralysie de Bell');
+  }
+
+  // Hasard reproductible (pour les fibres et les points) : même dessin à chaque rendu.
+  const hasard = graine => () => ((graine = (graine * 16807) % 2147483647) - 1) / 2147483646;
+
+  // Le film sur la cornée : trois couches empilées, chacune avec son travail.
+  function couches() {
+    let s = `<text x="16" y="24" class="petit t-doux">air</text>`;
+    s += `<text x="168" y="24" text-anchor="end" class="petit t-doux">évaporation</text>`;
+    for (const x of [182, 206, 230]) s += fleche(x, 34, x, 8, { c: 'doux' });
+    const bandes = [
+      ['lip', 36, 48, 'lipidique · externe', ['freine l’évaporation, stabilise le film']],
+      ['eau', 84, 100, 'aqueuse · milieu', ['hydrate, protège contre les infections,', 'nettoie, apporte de l’oxygène dissous']],
+      ['muc', 184, 48, 'mucinique · interne', ['étale le film et le fait adhérer']]];
+    for (const [c, y, h, nom, roles] of bandes) {
+      s += `<rect x="8" y="${y}" width="404" height="${h}" class="zone c-${c}"/>`;
+      s += `<text x="16" y="${y + 21}" class="etiq c-${c}">${nom}</text>` + txt(16, y + 40, roles, 'petit');
+    }
+    s += `<rect x="8" y="232" width="404" height="46" class="tissu"/><text x="16" y="261" class="etiq">cornée · épithélium</text>`;
+    s += g({ pas: 1 }, `<text x="404" y="24" text-anchor="end" class="petit">l’eau seule&nbsp;:</text>` + croix(396, 58, 'doux'));
+    s += g({ pas: 2 }, croix(396, 206, 'doux'));
+    s += g({ pas: 3 }, croix(396, 106, 'doux'));
+    return svgW(420, 286, s, 'Les trois couches du film lacrymal');
+  }
+
+  // Chaque couche ← sa source. Les bandes à gauche suivent l'ordre du film, de l'air vers la cornée.
+  function sources() {
+    const xb = 14, wb = 92, xt = 130;
+    let s = `<text x="${xb}" y="20" class="petit t-doux">air</text>`;
+    const bandes = [['lip', 28, 56, 'lipidique'], ['eau', 84, 140, 'aqueuse'], ['muc', 224, 56, 'mucinique']];
+    for (const [c, y, h, nom] of bandes) {
+      s += `<rect x="${xb}" y="${y}" width="${wb}" height="${h}" class="zone c-${c}"/>`;
+      s += `<text x="${xb + wb / 2}" y="${y + h / 2 + 5}" text-anchor="middle" class="petit" style="font-weight:700">${nom}</text>`;
+    }
+    s += `<rect x="${xb}" y="280" width="${wb}" height="28" class="tissu"/><text x="${xb + wb / 2}" y="299" text-anchor="middle" class="petit t-doux">cornée</text>`;
+    const entree = (y, c, nom, ou) => fleche(xt - 6, y, xb + wb + 4, y, { c }) +
+      `<text x="${xt}" y="${y - 3}" class="nom-g c-${c}">${nom}</text><text x="${xt}" y="${y + 15}" class="petit">${ou}</text>`;
+    s += g({ pas: 1 }, entree(56, 'lip', 'glandes de Meibomius', 'dans le tarse'));
+    s += g({ pas: 2 }, entree(108, 'eau', 'glande lacrymale principale', 'la plupart de l’aqueuse') +
+      entree(154, 'eau', 'Krause · un peu', 'dans le fornix') + entree(200, 'eau', 'Wolfring · un peu', 'dans la conjonctive palpébrale'));
+    s += g({ pas: 3 }, entree(252, 'muc', 'cellules caliciformes', 'dans la conjonctive'));
+    s += g({ pas: 4 }, `<rect x="${xt - 10}" y="320" width="292" height="50" rx="10" class="base" style="stroke-dasharray:6 5"/>` +
+      `<text x="${xt}" y="341" class="nom-g">Zeis (huile) · Moll (sueur)</text><text x="${xt}" y="360" class="petit t-doux">avec les cils&nbsp;: aucune couche</text>`);
+    return svgW(420, 378, s, 'La source de chaque couche');
+  }
+
+  // Trois gouttes; les points (protéines) ne montrent qu'un ordre.
+  function sortes() {
+    const goutte = (x, y0, k) => `<path d="M ${x} ${y0} C ${n1(x + 10 * k)} ${n1(y0 + 30 * k)} ${n1(x + 44 * k)} ${n1(y0 + 60 * k)} ${n1(x + 44 * k)} ${n1(y0 + 86 * k)} A ${n1(44 * k)} ${n1(44 * k)} 0 0 1 ${n1(x - 44 * k)} ${n1(y0 + 86 * k)} C ${n1(x - 44 * k)} ${n1(y0 + 60 * k)} ${n1(x - 10 * k)} ${n1(y0 + 30 * k)} ${x} ${y0} Z" class="zone c-eau"/>`;
+    const points = (x, yc, r, n, graine) => {
+      const h = hasard(graine); let s = '', k = 0;
+      while (k < n) { const a = h() * 2 * Math.PI, d = Math.sqrt(h()) * r; s += `<circle cx="${n1(x + d * Math.cos(a))}" cy="${n1(yc + d * Math.sin(a))}" r="3.6" class="pastille"/>`; k++; }
+      return s;
+    };
+    const G = [[75, 1, 9, 'Basales', 'protection', 0], [210, 1.22, 4, 'Réflexes', 'rincer', 1], [345, 1, 20, 'Émotionnelles', 'émotions', 2]];
+    let s = `<circle cx="18" cy="16" r="3.6" class="pastille"/><text x="28" y="21" class="petit t-doux">protéines</text>`;
+    for (const [x, k, n, nom, role, pas] of G) {
+      const y0 = 196 - 130 * k;
+      s += g({ pas }, goutte(x, y0, k) + points(x, y0 + 86 * k, 30 * k, n, 7 + x) +
+        `<text x="${x}" y="226" text-anchor="middle" class="etiq">${nom}</text><text x="${x}" y="245" text-anchor="middle" class="petit t-doux">${role}</text>`);
+    }
+    return svgW(420, 254, s, 'Trois sortes de larmes');
+  }
+
+  // Le cycle du clignement : six étapes, et la boucle repart.
+  function clignement() {
+    const C = [["Ouverture", "releveur · III", 0], ["Fermeture", "orbiculaire · VII", 1], ["Points lacrymaux", "tournés vers le lac", 2],
+      ["Pompe lacrymale", "pousse, puis aspire", 3], ["Drainage", "jusqu’au nez", 3], ["Réouverture", "orbiculaire relâché", 3]];
+    let s = "";
+    C.forEach(([nom, sous, pas], i) => {
+      const y = 8 + i * 48;
+      s += g({ pas }, `<rect x="14" y="${y}" width="368" height="40" rx="10" class="boite"/><circle cx="34" cy="${y + 20}" r="11" class="pastille"/>` +
+        `<text x="34" y="${y + 25}" text-anchor="middle" class="lettre">${i + 1}</text><text x="54" y="${y + 26}" class="etiq" style="font-size:15px">${nom}</text>` +
+        `<text x="372" y="${y + 26}" text-anchor="end" class="petit t-doux">${sous}</text>`);
+    });
+    s += g({ pas: 3 }, `<path d="M 384 268 H 404 V 28 H 396" class="trait-c c-doux"/>` + fleche(398, 28, 386, 28, { c: "doux" }));
+    return svgW(420, 300, s, "Les six étapes du clignement");
+  }
+
+  // Flèche courbe (quadratique), pointe orientée selon la tangente d'arrivée.
+  function courbe(x1, y1, qx, qy, x2, y2, o = {}) {
+    const a = Math.atan2(y2 - qy, x2 - qx), L = 11, l = 6, bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    return `<g class="c-${o.c || 'emm'}"${P(o)}><path d="M ${n1(x1)} ${n1(y1)} Q ${n1(qx)} ${n1(qy)} ${n1(bx)} ${n1(by)}" class="trait-c${o.tirets ? ' tirets' : ''}"/>` +
+      `<path d="M ${n1(x2)} ${n1(y2)} L ${n1(bx + l * Math.sin(a))} ${n1(by - l * Math.cos(a))} L ${n1(bx - l * Math.sin(a))} ${n1(by + l * Math.cos(a))} Z" class="tete"/></g>`;
+  }
+  const goutteP = (x, y, c = 'eau') => `<path d="M ${x} ${y} Q ${x - 11} ${y + 16} ${x} ${y + 24} Q ${x + 11} ${y + 16} ${x} ${y} Z" class="point-c c-${c}"/>`;
+
+  // L'œil gauche vu de face (le nez à droite) et les voies lacrymales.
+  function drainage() {
+    let s = '';
+    s += `<text x="14" y="206" class="petit t-doux">tempe</text><text x="410" y="206" text-anchor="end" class="petit t-doux">nez</text>`;
+    s += `<path d="M 40 130 Q 150 52 260 130 Q 150 196 40 130 Z" class="globe"/>`;
+    s += `<circle cx="150" cy="130" r="31" class="cristallin"/><circle cx="150" cy="130" r="12" class="pupille"/>`;
+    s += `<path d="M 40 130 Q 150 52 260 130" class="cornee" style="stroke:var(--doux)"/><path d="M 40 130 Q 150 196 260 130" class="cornee" style="stroke:var(--doux)"/>`;
+    // 1 · la glande et l'étalement
+    s += g({ pas: 1 }, `<ellipse cx="78" cy="56" rx="40" ry="17" transform="rotate(-14 78 56)" class="zone c-eau" style="fill-opacity:.55"/>` +
+      `<path d="M 66 72 L 70 96 M 86 70 L 92 94 M 104 64 L 112 90" class="trait-c c-eau" style="stroke-width:2"/>` +
+      `<text x="14" y="24" class="etiq c-eau">glande lacrymale</text>` +
+      courbe(84, 108, 160, 82, 230, 116, { c: 'eau' }) + courbe(78, 152, 160, 182, 232, 142, { c: 'eau' }));
+    // 2 · le lac et les points
+    s += g({ pas: 2 }, `<ellipse cx="248" cy="130" rx="13" ry="11" class="zone c-eau" style="fill-opacity:.6"/>` +
+      `<circle cx="236" cy="115" r="4.5" class="pastille"/><circle cx="236" cy="143" r="4.5" class="pastille"/>` +
+      `<text x="176" y="44" text-anchor="middle" class="etiq petit">points lacrymaux</text>` + trait(220, 50, 234, 109) +
+      `<text x="178" y="226" text-anchor="middle" class="etiq petit">lac lacrymal</text>` + trait(196, 212, 246, 142));
+    // 3 · les canalicules
+    s += g({ pas: 3 }, `<path d="M 236 115 V 102 L 290 106 M 236 143 V 156 L 290 150" class="trait-c c-eau" style="stroke-width:4"/>` +
+      `<text x="296" y="66" class="etiq petit">canalicules</text>` + trait(296, 72, 262, 103));
+    // 4 · le sac
+    s += g({ pas: 4 }, `<rect x="288" y="84" width="22" height="86" rx="11" class="zone c-eau" style="fill-opacity:.55"/><rect x="288" y="84" width="22" height="86" rx="11" class="base"/>` +
+      `<text x="318" y="140" class="etiq petit">sac</text><text x="318" y="157" class="etiq petit">lacrymal</text>`);
+    // 5 · le conduit et la cavité nasale
+    s += g({ pas: 5 }, `<path d="M 294 170 V 288 M 304 170 V 288" class="base"/><path d="M 299 172 V 284" class="trait-c c-eau" style="stroke-width:5"/>` +
+      `<text x="286" y="252" text-anchor="end" class="etiq petit">conduit nasolacrymal</text>` +
+      `<rect x="240" y="292" width="172" height="34" rx="12" class="base" style="stroke-dasharray:6 5"/><text x="326" y="314" text-anchor="middle" class="etiq petit">cavité nasale</text>`);
+    return svgW(420, 332, s, 'Les voies lacrymales');
+  }
+
+  // Le trajet des larmes : une entrée, l'étalement, deux sorties.
+  function bilan() {
+    const B = (x, y, n, nom, sous) => `<rect x="${x}" y="${y}" width="116" height="56" rx="10" class="boite"/>` +
+      `<circle cx="${x + 2}" cy="${y + 2}" r="11" class="pastille"/><text x="${x + 2}" y="${y + 7}" text-anchor="middle" class="lettre">${n}</text>` +
+      `<text x="${x + 58}" y="${y + 25}" text-anchor="middle" class="nom-g">${nom}</text>` + (sous ? `<text x="${x + 58}" y="${y + 45}" text-anchor="middle" class="petit t-doux">${sous}</text>` : '');
+    let s = B(14, 120, 1, 'Production', 'les glandes') + B(152, 120, 2, 'Répartition', 'le clignement') + B(296, 120, 4, 'Drainage', 'jusqu’au nez');
+    s += `<rect x="152" y="14" width="116" height="44" rx="10" class="boite"/><circle cx="154" cy="16" r="11" class="pastille"/><text x="154" y="21" text-anchor="middle" class="lettre">3</text>` +
+      `<text x="210" y="42" text-anchor="middle" class="nom-g">Évaporation</text>`;
+    s += fleche(132, 148, 150, 148, { c: 'eau' }) + fleche(270, 148, 294, 148, { c: 'eau' }) + fleche(210, 116, 210, 62, { c: 'eau' });
+    s += txt(220, 86, ['freinée par', 'les lipides'], 'petit etiq c-lip', 'start', 16);
+    s += g({ pas: 1 }, fleche(232, 180, 232, 232, { c: 'doux' }) + `<text x="232" y="252" text-anchor="middle" class="etiq petit">surface sèche</text>`);
+    s += g({ pas: 2 }, croix(282, 148) + `<text x="354" y="210" text-anchor="middle" class="etiq petit">épiphora</text><text x="354" y="228" text-anchor="middle" class="petit t-doux">débordement</text>`);
+    s += g({ pas: 3 }, courbe(176, 180, 124, 222, 76, 182, { c: 'nerf' }) + txt(72, 244, ['larmoiement', 'réflexe'], 'etiq petit', 'middle', 17));
+    return svgW(420, 266, s, 'Le trajet des larmes');
+  }
+
+  // Un même signe, deux causes : la sortie bloquée, l'irritant.
+  function joue() {
+    const B = (x, y, nom, c) => `<rect x="${x}" y="${y}" width="96" height="44" rx="10" class="boite"${c ? ` style="stroke:var(--${c});stroke-width:3"` : ''}/>` +
+      `<text x="${x + 48}" y="${y + 27}" text-anchor="middle" class="etiq petit">${nom}</text>`;
+    const rang = (y, titre, o) => `<text x="8" y="${y - 12}" class="etiq petit">${titre}</text>` +
+      B(8, y, 'Production', o.prod ? 'myo' : '') + B(162, y, 'Surface') + B(316, y, 'Drainage') +
+      (o.prod ? `<path d="M 106 ${y + 22} L 148 ${y + 22}" class="trait-c c-eau" style="stroke-width:8"/>` : '') + fleche(106, y + 22, 160, y + 22, { c: 'eau' }) + fleche(258, y + 22, 314, y + 22, { c: 'eau' }) +
+      fleche(210, y + 46, 210, y + 70, { c: 'eau' }) + goutteP(226, y + 52) + `<text x="244" y="${y + 70}" class="petit">sur la joue</text>`;
+    let s = g({}, rang(40, 'Conduit nasolacrymal obstrué', {}));
+    s += g({ pas: 1 }, croix(287, 62));
+    s += g({ pas: 3 }, `<text x="380" y="${40 + 66}" text-anchor="middle" class="etiq petit">épiphora</text>`);
+    s += g({ pas: 4 }, rang(170, 'Au vent, l’œil irrité produit plus', { prod: true }) + `<text x="8" y="${170 + 66}" class="etiq petit">larmoiement réflexe</text>`);
+    return svgW(420, 254, s, 'Larmes sur la joue : deux causes');
+  }
+
+  // La cornée en coupe : cinq couches, de l'avant (les larmes) vers l'arrière (l'humeur aqueuse).
+  function cornee() {
+    const x0 = 10, w = 112;
+    let s = `<text x="${x0}" y="14" class="petit etiq c-eau">film lacrymal</text><rect x="${x0}" y="20" width="${w}" height="10" class="zone c-eau"/>`;
+    s += `<rect x="${x0}" y="30" width="${w}" height="46" class="tissu"/>`;
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) s += `<rect x="${x0 + 3 + c * 15.6 + (r % 2) * 7}" y="${33 + r * 14}" width="12" height="11" rx="4" class="fibre"/>`;
+    s += `<rect x="${x0}" y="76" width="${w}" height="10" class="zone c-doux"/>`;
+    s += `<rect x="${x0}" y="86" width="${w}" height="120" class="tissu"/>`;
+    for (let r = 0; r < 8; r++) {
+      const y = 94 + r * 14.5;
+      s += r % 2 ? Array.from({ length: 10 }, (_, k) => `<circle cx="${x0 + 7 + k * 11}" cy="${y}" r="1.8" class="pastille" style="fill:var(--doux)"/>`).join('')
+                 : `<line x1="${x0 + 4}" y1="${y}" x2="${x0 + w - 4}" y2="${y}" class="fibre"/>`;
+    }
+    for (const [x, y] of [[40, 116], [86, 174]]) s += `<ellipse cx="${x}" cy="${y}" rx="15" ry="3.5" class="pastille"/>`;
+    s += `<rect x="${x0}" y="206" width="${w}" height="7" class="zone c-doux" style="fill-opacity:.6"/>`;
+    s += `<rect x="${x0}" y="213" width="${w}" height="16" class="tissu"/>`;
+    for (let c = 0; c < 7; c++) s += `<rect x="${x0 + 2 + c * 15.7}" y="215" width="13" height="12" rx="3" class="fibre"/>`;
+    s += `<rect x="${x0}" y="229" width="${w}" height="22" class="zone c-eau"/><text x="${x0}" y="270" class="petit etiq c-eau">humeur aqueuse</text>`;
+    const L = [[53, 40, 'épithélium', 'barrière protectrice'], [81, 94, 'membrane de Bowman', 'couche de soutien acellulaire'],
+      [146, 148, 'stroma', 'fibres de collagène régulières'], [209, 202, 'membrane de Descemet', 'membrane basale de l’endothélium'],
+      [221, 256, 'endothélium', 'règle l’hydratation du stroma']];
+    for (const [ym, yl, nom, role] of L) s += trait(x0 + w + 2, ym, 144, yl - 5) + `<text x="150" y="${yl}" class="nom-g">${nom}</text><text x="150" y="${yl + 18}" class="petit t-doux">${role}</text>`;
+    return svgW(420, 286, s, 'Les cinq couches de la cornée');
+  }
+
+  // Même collagène, deux ordres.
+  function collagene() {
+    const h = hasard(11);
+    let s = `<text x="105" y="24" text-anchor="middle" class="etiq">Cornée</text><rect x="14" y="36" width="182" height="164" rx="8" class="tissu"/>`;
+    for (let r = 0; r < 6; r++) {
+      const y = 46 + r * 27;
+      s += r % 2 ? Array.from({ length: 15 }, (_, k) => `<circle cx="${22 + k * 11.6}" cy="${y + 8}" r="2.4" class="pastille" style="fill:var(--doux)"/>`).join('')
+                 : [0, 6, 12].map(d => `<line x1="20" y1="${y + d + 2}" x2="190" y2="${y + d + 2}" class="fibre"/>`).join('');
+    }
+    for (const x of [60, 105, 150]) s += `<path d="M ${x} 28 V 206" class="rayon"/><path d="M ${x - 5} 200 L ${x} 210 L ${x + 5} 200" class="rayon"/>`;
+    s += txt(105, 230, ['fibres régulières', 'la lumière passe'], 'petit', 'middle');
+    let t = `<text x="315" y="24" text-anchor="middle" class="etiq">Sclère</text><rect x="224" y="36" width="182" height="164" rx="8" class="tissu"/>`;
+    for (let k = 0; k < 16; k++) {
+      const x1 = 230 + h() * 170, y1 = 42 + h() * 152, x2 = 230 + h() * 170, y2 = 42 + h() * 152, qx = 230 + h() * 170, qy = 42 + h() * 152;
+      t += `<path d="M ${n1(x1)} ${n1(y1)} Q ${n1(qx)} ${n1(qy)} ${n1(x2)} ${n1(y2)}" class="fibre"/>`;
+    }
+    for (const [x, a] of [[270, -0.9], [315, 0.6], [360, -0.3]]) t += `<path d="M ${x} 28 V 48 L ${n1(x + 22 * Math.sin(a))} ${n1(48 + 22 * Math.cos(a))}" class="rayon"/>`;
+    t += txt(315, 230, ['moins régulières', 'la lumière ne passe pas'], 'petit', 'middle');
+    return svgW(420, 254, s + g({ pas: 1 }, t), 'Collagène de la cornée et de la sclère');
+  }
+
+  // L'endothélium pompe l'eau du stroma; abîmé, la cornée s'imbibe.
+  function pompe() {
+    const panneau = (x0, sain) => {
+      let s = `<text x="${x0 + 95}" y="24" text-anchor="middle" class="etiq">${sain ? 'Endothélium sain' : 'Endothélium abîmé'}</text>`;
+      s += `<rect x="${x0}" y="40" width="190" height="12" class="tissu"/>`;
+      s += `<rect x="${x0}" y="52" width="190" height="110" class="tissu"/><rect x="${x0}" y="52" width="190" height="110" class="zone c-eau" style="fill-opacity:${sain ? 0.14 : 0.5}"/>`;
+      for (let r = 0; r < 4; r++) s += `<line x1="${x0 + 6}" y1="${66 + r * 26}" x2="${x0 + 184}" y2="${66 + r * 26}" class="fibre"/>`;
+      if (!sain) s += `<rect x="${x0}" y="52" width="190" height="110" class="trouble"/>`;
+      const largeurs = sain ? Array(12).fill(14) : [10, 24, 8, 30, 14, 34, 12, 26];
+      let x = x0 + 2;
+      for (const l of largeurs) { s += `<rect x="${n1(x)}" y="164" width="${l}" height="12" rx="3" class="fibre"/>`; x += l + (sain ? 1.7 : 3); }
+      s += `<rect x="${x0}" y="180" width="190" height="34" class="zone c-eau"/>`;
+      if (sain) for (const xa of [x0 + 45, x0 + 95, x0 + 145]) s += fleche(xa, 136, xa, 206, { c: 'eau' });
+      s += sain ? `<path d="M ${x0 + 20} 30 V 214" class="rayon"/>` : `<path d="M ${x0 + 20} 30 V 92" class="rayon"/><path d="M ${x0 + 20} 92 V 140" class="rayon virtuel"/>`;
+      s += txt(x0 + 95, 236, sain ? ['pompe&nbsp;: 78&nbsp;% d’eau', 'claire'] : ['imbibée d’eau', 'perd sa transparence'], 'petit', 'middle');
+      return s;
+    };
+    return svgW(420, 260, panneau(10, true) + g({ pas: 1 }, panneau(220, false)), 'La pompe de l’endothélium');
+  }
+
+  // Lentille biconvexe asymétrique : équateur en ex, demi-hauteur hh, flèches avant (sa) et arrière (sp).
+  function lentille(ex, cy, hh, sa, sp, cls, extra = '') {
+    const Ra = (hh * hh + sa * sa) / (2 * sa), Rp = (hh * hh + sp * sp) / (2 * sp);
+    return `<path d="M ${n1(ex)} ${n1(cy - hh)} A ${n1(Ra)} ${n1(Ra)} 0 0 0 ${n1(ex)} ${n1(cy + hh)} A ${n1(Rp)} ${n1(Rp)} 0 0 0 ${n1(ex)} ${n1(cy - hh)} Z" class="${cls}"${extra}/>`;
+  }
+
+  // Le cristallin dans le liquide : bombé, et plus encore pour voir de près.
+  function bombe() {
+    let s = `<rect x="10" y="34" width="190" height="236" class="zone c-eau"/><rect x="200" y="34" width="210" height="236" class="zone c-eau" style="fill-opacity:.16"/>`;
+    s += lentille(200, 152, 106, 34, 58, 'cristallin');
+    s += `<text x="212" y="157" text-anchor="middle" class="valeur">1,41</text><text x="210" y="112" text-anchor="middle" class="petit">1,38</text>`;
+    s += `<text x="148" y="157" text-anchor="end" class="petit">rayon 10&nbsp;mm</text><text x="278" y="157" class="petit">rayon 6&nbsp;mm</text>`;
+    s += `<text x="10" y="22" class="valeur">18–20&nbsp;D</text>`;
+    s += g({ pas: 1 }, lentille(200, 152, 94, 44, 70, 'base', ' style="stroke:var(--encre);stroke-dasharray:6 5"') + `<text x="410" y="22" text-anchor="end" class="valeur">de près&nbsp;: jusqu’à 30&nbsp;D</text>`);
+    s += `<text x="100" y="292" text-anchor="middle" class="etiq c-eau">humeur aqueuse</text><text x="310" y="292" text-anchor="middle" class="etiq c-eau">vitré</text>`;
+    return svgW(420, 300, s, 'Le cristallin baigne dans le liquide');
+  }
+
+  // Le dessin du cristallin, l'avant à gauche : du bord (récent) vers le centre (vieux).
+  function cd() {
+    const ex = 100, cy = 150, hh = 115, sa = 36, sp = 58, cc = ex + (sp - sa) / 2;
+    const pastille = (x, y, t, r = 11) => `<circle cx="${x}" cy="${y}" r="${r}" class="pastille"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="lettre">${t}</text>`;
+    let s = lentille(ex, cy, hh, sa, sp, 'cristallin', ' style="stroke-width:3.5"');
+    [[0.74, 0.12], [0.5, 0.22], [0.27, 0.36]].forEach(([k, op]) => {
+      s += lentille(cc - k * (sp - sa) / 2, cy, hh * k, sa * k, sp * k, 'zone c-emm', ` style="fill-opacity:${op}"`);
+    });
+    s += g({ pas: 1 }, pastille(44, cy, 'A'));
+    s += g({ pas: 2 }, pastille(ex, 20, 'E') + pastille(ex, 282, 'E') + courbe(66, 118, 66, 56, 90, 40, { c: 'doux' }));
+    s += g({ pas: 3 }, pastille(ex, 250, 'C'));
+    s += g({ pas: 4 }, pastille(cc, 79, 'N3', 12) + pastille(cc, 106, 'N2', 12) + pastille(cc, cy, 'N1', 13) + fleche(132, 236, 122, 206, { c: 'doux' }));
+    s += g({ pas: 5 }, pastille(174, cy, 'P'));
+    const leg = [['A', 'capsule antérieure', 40, 1], ['E', 'zone équatoriale', 90, 2], ['C', 'cortex, le plus récent', 140, 3], ['N', 'N3, N2, N1 · noyaux', 190, 4], ['P', 'capsule postérieure', 250, 5]];
+    for (const [l, t, y, pas] of leg) s += g({ pas }, pastille(212, y, l) + `<text x="230" y="${y + 5}" class="petit" style="font-weight:700">${t}</text>`);
+    s += g({ pas: 4 }, `<text x="230" y="213" class="petit t-doux">N1&nbsp;: le plus vieux</text>`);
+    s += `<text x="14" y="296" class="petit t-doux">avant</text><text x="190" y="296" text-anchor="end" class="petit t-doux">arrière</text>`;
+    return svgW(420, 300, s, 'Le dessin du cristallin');
+  }
+
+  // Le vitré en trois temps.
+  function vitre() {
+    const R = 56, cy = 96;
+    const oeil = (cx, etat) => {
+      let s = `<circle cx="${cx}" cy="${cy}" r="${R}" class="globe"/>`;
+      s += `<path d="M ${cx - 26} ${cy - 44} A 50 50 0 1 1 ${cx - 26} ${cy + 44} Q ${cx - 14} ${cy} ${cx - 26} ${cy - 44} Z" class="zone c-eau" style="fill-opacity:${etat ? 0.1 : 0.35}"/>`;
+      if (etat) s += `<circle cx="${cx - 6}" cy="${cy}" r="36" class="zone c-eau" style="fill-opacity:.4"/>`;
+      const arcR = (a1, a2) => `<path d="M ${n1(cx + (R - 3) * Math.cos(a1 * Math.PI / 180))} ${n1(cy + (R - 3) * Math.sin(a1 * Math.PI / 180))} A ${R - 3} ${R - 3} 0 0 1 ${n1(cx + (R - 3) * Math.cos(a2 * Math.PI / 180))} ${n1(cy + (R - 3) * Math.sin(a2 * Math.PI / 180))}" class="ret"/>`;
+      s += etat === 2 ? arcR(-65, -54) + arcR(-38, 65) + `<path d="M ${n1(cx + 30)} ${n1(cy - 43)} L ${n1(cx + 20)} ${n1(cy - 34)}" class="ret" style="stroke-width:3"/>` +
+        `<path d="M ${cx + 16} ${cy - 26} L ${n1(cx + 29)} ${n1(cy - 41)}" class="trait-c c-eau"/><circle cx="${n1(cx + 29)}" cy="${n1(cy - 41)}" r="4" class="pastille"/>` : arcR(-65, 65);
+      s += `<ellipse cx="${cx - 34}" cy="${cy}" rx="7" ry="19" class="cristallin"/>`;
+      s += `<path d="M ${cx - 50} ${cy - 26} Q ${cx - 76} ${cy} ${cx - 50} ${cy + 26}" class="cornee"/>`;
+      return s;
+    };
+    const legende = (cx, l) => txt(cx, 184, l[0], 'etiq petit', 'middle') + txt(cx, 203, l.slice(1), 'petit t-doux', 'middle', 17);
+    let s = oeil(72, 0) + legende(72, ['jeune', 'un gel collé', 'à la rétine']);
+    s += g({ pas: 1 }, oeil(210, 1) + legende(210, ['avec l’âge', 'plus liquide,', 'il se retire']));
+    s += g({ pas: 2 }, [[200, 84], [214, 108], [196, 104]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.2" class="pastille"/>`).join('') +
+      `<text x="210" y="24" text-anchor="middle" class="petit" style="font-weight:700">corps flottants</text>` + trait(206, 30, 201, 79));
+    s += g({ pas: 3 }, oeil(348, 2) + legende(348, ['rarement', 'la rétine', 'se déchire']));
+    return svgW(420, 240, s, 'Le vitré avec l’âge');
+  }
+
+  const FIG = {
+    'oeil-couverture': () => oeilW({ rayons: 'net' }, 'Coupe de l’œil'),
+    'oeil-fil': () => oeilW({ rayons: 'net', etiq: { film: 0, humeur: 0, cornee: 0, cristallin: 0, vitre: 0, retine: 0 } }, 'Coupe de l’œil'),
+    milieux: () => oeilW({ rayons: 'net', film: false, etiq: { cornee: 1, humeur: 2, cristallin: 3, vitre: 4, retine: 4 } }, 'Les quatre milieux transparents'),
+    'oeil-air': () => oeilW({ rayons: 'net', film: false }, 'Œil dans l’air', 470),
+    'oeil-eau': () => oeilW({ rayons: 'derriere', film: false, eauDevant: true }, 'Œil sous l’eau', 470),
+    arbre, nerfs, arc, bell, couches, sources, sortes, clignement, drainage, bilan, joue,
+    cornee, collagene, pompe, uv, bombe, cd, vitre, age
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', nerfs: 'Les nerfs', film: 'Le film lacrymal', trajet: 'Le trajet des larmes', clarte: 'La transparence', refraction: 'La réfraction', age: 'Grandir et vieillir', carte: 'Pour la route' };
+  const CLE = 'diapos-anat-m6-m7';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'a55b77ff2e52';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>
