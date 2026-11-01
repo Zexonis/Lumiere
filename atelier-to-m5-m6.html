@@ -1291,6 +1291,10 @@ html.ess .ess-replie .ess-ouvrir{display:inline-flex;align-items:center;margin:4
 .btn-arene .n{font-size:11.5px;font-weight:800;padding:1px 6px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
 .btn-arene .n[hidden]{display:none}
 @media (max-width:760px){ .btn-arene .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} }
+.btn-survol{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);font-weight:700}
+.btn-survol svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn-survol svg .jouer{fill:var(--accent);stroke:none}
+@media (max-width:760px){ .btn-survol .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} }
 @media (max-width:420px){ .haut .btn .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} .btn-arene .n{display:none} }
 body.ar-ouverte{overflow:hidden}
 .ar{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;background:var(--bg);color:var(--ink)}
@@ -13999,6 +14003,7 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-01', p:['opt-ua2'], t:'Nouveau : le bouton « Survol », en haut du Banc. Tout le module 6 et 7 en 22 diapos, environ 15 minutes : une idée par diapo, des schémas et des exemples résolus pas à pas. Commence par là, puis entraîne-toi dans le Banc.'},
     {d:'2026-10-31', p:['opt-ua2', 'to-m56', 'adm-m07'], t:'Dans l’Arène, les problèmes avec des nombres se font aussi en quatre réponses au choix : calcule, puis touche ta réponse. Une mauvaise réponse te dit quelle erreur tu as faite. Pour qu’un problème soit acquis, tu écris le nombre toi-même une dernière fois, comme à l’examen.'},
     {d:'2026-10-31', p:['anat-m6'], t:'Dans l’Arène, les planches se font en quatre réponses au choix : quelle structure est au repère A ? Pour t’entraîner à écrire les noms, « Les planches, de mémoire » reste sur l’écran des glandes.'},
     {d:'2026-10-31', p:['*'], t:'Dans l’Arène, les séquences te posent maintenant une vraie question sur la matière, par exemple : que fait l’œil quand un objet se rapproche ? Fini les « quelle étape vient après », qui pouvaient compter faux une bonne réponse. Les questions qui renvoyaient à une figure ou à un numéro de l’écran se lisent maintenant toutes seules.'},
@@ -14122,6 +14127,18 @@ body.ar-ouverte .qdn-btn{display:none}
    Démarrage commun
    ====================================================================== */
 function redessinerTheme(){ RAFRAICHIR_THEME.forEach(f => { try{ f(); }catch(e){ console.error(e); } }); }
+/* « Survol » : le module en diapos, une idée par diapo (1er nov.), en tête des outils du haut quand l'atelier en a
+   (ATELIER.survol). Le lien est l'adresse de l'artefact ; Lumiere/construire.py le change en lien vers la copie du site. */
+function survol(){
+  const s = ATELIER.survol; if(!s || !s.url || $('#btn-survol')) return;
+  const ref = $('#btn-cv') || $('#btn-arene') || $('#btn-tableau-haut') || $('#btn-notes'); if(!ref) return;
+  const a = document.createElement('a');
+  a.className = 'btn btn-survol'; a.id = 'btn-survol'; a.href = s.url;
+  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path class="jouer" d="M10.2 7.6v5.3l4.4-2.65z"/><path d="M12 16.5v3.5M8.5 20h7"/></svg><span class="mot">Survol</span>';
+  a.title = s.titre || 'Survol : tout le module en diapos';
+  a.setAttribute('aria-label', a.title);
+  ref.before(a);
+}
 function demarrer(){
   construireRail();
   initQCM(document);
@@ -14218,6 +14235,7 @@ function demarrer(){
 
   /* modules v2 */
   Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer(); Arene.demarrer(); Essentiel.demarrer();
+  try{ survol(); }catch(e){ console.error(e); }
   try{ Nouveautes.demarrer(); }catch(e){ console.error(e); }
 
   lierNotes(document);
@@ -14233,7 +14251,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '384b65a390da';
+  const ICI = 'c8789cbea912';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

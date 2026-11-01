@@ -1,0 +1,1255 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diapos Optique M6–M7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos Optique M6–M7 : l'expérience « tout le module en 15 minutes » (1er nov. 2026).
+  Contenu : uniquement Guides/UA2-Optique/distilled/opt-m06_distilled.md et opt-m07_distilled.md (nombres vérifiés
+  par script là-bas). Une seule valeur n'en vient pas : la ligne « lunettes de lecture » d'Arthur (28,6–66,7 cm),
+  déduite des mêmes formules et signalée sur la diapo.
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; aucune
+  citation de source, aucun « à vérifier »; un seul bouton utile : Suite. Code couleur constant :
+  cyan = myope · devant l'œil · −   orange = hypermétrope · derrière l'œil · +   violet = ce que paient les lunettes.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un banc d'optique la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --myo: #56d3ea;
+  --hyp: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.myo { color: var(--myo); }
+.hyp { color: var(--hyp); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barres (budgets en dioptries) ---- */
+.barres { display: grid; gap: 12px; min-width: 0; }
+.titre-fig { margin: 0; font-size: var(--t-s); font-weight: 700; color: var(--doux); }
+.barre { display: grid; grid-template-columns: minmax(7.5em, max-content) minmax(0, 1fr) 3.4em; gap: 10px; align-items: center; }
+.barre .nom { font-size: var(--t-s); }
+.piste { position: relative; display: flex; height: 26px; border-radius: 6px; background: var(--fond-2); box-shadow: inset 0 0 0 1px var(--trait); }
+.piste i { display: block; height: 100%; width: calc(var(--w) / var(--max) * 100%); background: var(--c); }
+.piste i:first-child { border-radius: 6px 0 0 6px; }
+.piste i.raye, .legende .raye::before { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 8px); box-shadow: inset 0 0 0 1.5px var(--c); }
+.barres.repere .piste::after { content: ""; position: absolute; top: -5px; bottom: -5px; left: calc(var(--m) / var(--max) * 100%); border-left: 2px dashed var(--encre); }
+.barre .val { font-family: var(--f-chiffre); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.legende { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--t-xs); color: var(--doux); }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende span::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
+@media (max-width: 520px) {
+  .barre { grid-template-columns: minmax(0, 1fr) 3.2em; gap: 4px 10px; }
+  .barre .nom { grid-column: 1 / -1; }
+}
+
+/* ---- yeux en rangées (amétropies) ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- lentille dans l'air / dans l'eau ---- */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.carte-eau { margin: 0; padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.carte-eau figcaption { font-weight: 700; }
+.carte-eau svg { display: block; width: 100%; height: auto; }
+.carte-eau dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; margin: 0; font-size: var(--t-s); }
+.carte-eau dt { color: var(--doux); }
+.carte-eau dd { margin: 0; font-family: var(--f-chiffre); text-align: right; }
+.carte-eau .total { font-weight: 700; color: var(--encre); font-size: var(--t-m); }
+
+/* ---- définitions Pr / Pp ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- les quatre questions ---- */
+.questions { list-style: none; margin: 0; padding: 0; counter-reset: q; display: grid; gap: 12px; }
+@media (min-width: 880px) { .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.questions li { counter-increment: q; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 4px 12px; padding: 12px 14px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); }
+.questions li::before { content: counter(q); grid-row: span 2; font-family: var(--f-titre); font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--doux); }
+.questions .q { margin: 0; font-weight: 700; }
+.questions .r { margin: 0; color: var(--doux); font-size: var(--t-s); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-myo { --c: var(--myo); } .c-hyp { --c: var(--hyp); } .c-emm { --c: var(--encre); } .c-aide { --c: var(--aide); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--encre); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .zone { fill: var(--c); fill-opacity: .3; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 3; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.6; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .virtuel { stroke-dasharray: 4 5; stroke-width: 1.8; }
+svg .verre { fill: var(--c); fill-opacity: .18; stroke: var(--c); stroke-width: 2; }
+svg .barre-d { fill: var(--encre); }
+svg .palier-fond { fill: var(--fond-2); }
+svg .palier { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .courbe { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .pt-courbe { fill: var(--encre); }
+svg .bande { fill: var(--aide); fill-opacity: .12; }
+svg .muscle { fill: var(--retine); fill-opacity: .85; }
+svg .zonule { fill: none; stroke: var(--doux); stroke-width: 1.6; }
+svg .eau { fill: var(--doux); fill-opacity: .22; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="banc-optique-ua2.html" title="Retour au Banc d'optique UA2">← Banc</a>
+      <p class="marque">Optique M6–M7 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 22</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Optique · SCI 23546 · modules 6 et 7</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>L'œil, ses amétropies, le Pr et le Pp</h1>
+            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo. Ensuite, le Banc sert à t'entraîner.</p>
+            <p class="meta">22 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-myo">myope · devant l'œil · signe −</li>
+              <li class="c-hyp">hypermétrope · derrière l'œil · signe +</li>
+              <li class="c-aide">ce que paient les lunettes</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="oeil-couverture" aria-label="Un œil : les rayons parallèles se rejoignent sur la rétine"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Voir net, c'est faire tomber la lumière sur la rétine</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oeil-fil" aria-label="Coupe de l'œil : cornée, cristallin, rétine; le foyer tombe sur la rétine"></figure>
+          <div class="texte">
+            <p>D'un objet lointain, les rayons arrivent parallèles. La cornée et le cristallin les font converger. Si leur point de rencontre, le <b>foyer</b>, tombe sur la rétine, l'image est nette.</p>
+            <p class="sous">Le cours répond à trois questions&nbsp;:</p>
+            <ol class="trois">
+              <li><b>Quelle puissance</b> a l'œil&nbsp;? <span>module 6</span></li>
+              <li><b>Où voit-il net</b>, sans aide&nbsp;? <span>module 7&nbsp;: le Pr et le Pp</span></li>
+              <li><b>Quelle lentille</b> le corrige, de loin et de près&nbsp;? <span>modules 6 et 7</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Net = le foyer tombe sur la rétine.</p>
+      </div>
+    </section>
+
+    <!-- 3 · dioptrie -->
+    <section class="diapo" id="d3" data-acte="puissance" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · La puissance</p>
+        <h2>Une dioptrie, c'est 1 divisé par des mètres</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="dioptries" aria-label="Plus l'objet est près de l'œil, plus la demande en dioptries grimpe : 1 m, 1 D; 40 cm, 2,50 D; 25 cm, 4 D; 10 cm, 10 D"></figure>
+          <div class="texte">
+            <p class="formule">D = 1 / d</p>
+            <p class="note">d en mètres</p>
+            <ul class="points">
+              <li>Un livre à 40&nbsp;cm&nbsp;: 40&nbsp;cm = 0,40&nbsp;m, donc 1&nbsp;/&nbsp;0,40 = <b>2,50&nbsp;D</b>.</li>
+              <li>Deux fois plus près, deux fois plus de dioptries&nbsp;: à 20&nbsp;cm, 5&nbsp;D.</li>
+              <li>Même règle pour une lentille&nbsp;: F = 1&nbsp;/&nbsp;f′, la focale en mètres.</li>
+            </ul>
+            <p class="piege"><b>Piège</b>1&nbsp;/&nbsp;40 = 0,025&nbsp;: faux. Convertis en mètres d'abord.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plus c'est près, plus il faut de dioptries. Et ça grimpe vite.</p>
+      </div>
+    </section>
+
+    <!-- 4 · +60 D -->
+    <section class="diapo" id="d4" data-acte="puissance" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · La puissance</p>
+        <h2>L'œil fait environ +60&nbsp;D, surtout grâce à la cornée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="oeil-puissance" aria-label="Coupe de l'œil : cornée environ +40 D, cristallin environ +20 D"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li>Repère du cours&nbsp;: cornée ≈ <b>+40&nbsp;D</b>, cristallin ≈ <b>+20&nbsp;D</b>.</li>
+              <li>Le modèle simplifié de l'œil a une focale de 17&nbsp;mm&nbsp;: 1&nbsp;/&nbsp;0,017 = <b>+58,8&nbsp;D</b>, environ +60&nbsp;D.</li>
+              <li>Au-delà de 6&nbsp;m, les rayons arrivent presque parallèles&nbsp;: c'est «&nbsp;de loin&nbsp;».</li>
+            </ul>
+            <p class="piege"><b>Piège</b>On inverse la focale de 17&nbsp;mm, jamais les 24&nbsp;mm de longueur de l'œil.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Deux lentilles&nbsp;: la cornée, fixe et la plus forte, et le cristallin, qui peut changer de forme.</p>
+      </div>
+    </section>
+
+    <!-- 5 · saut d'indice -->
+    <section class="diapo" id="d5" data-acte="puissance" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · La puissance</p>
+        <h2>Une surface dévie la lumière là où l'indice change</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="indices" aria-label="Indices traversés : air 1,000, cornée 1,376, humeur aqueuse 1,336. Gros saut à la face avant, petit saut à la face arrière"></figure>
+          <div class="texte">
+            <p class="formule">D = (n<sub>r</sub> − n<sub>i</sub>) / r</p>
+            <p class="note">n<sub>i</sub>&nbsp;: avant la surface · n<sub>r</sub>&nbsp;: après · r en mètres</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Face avant</b>, air → cornée&nbsp;: (1,376 − 1,000) / 0,0078 = <b>+48,21&nbsp;D</b>. Gros saut, grosse puissance.</span></li>
+              <li data-pas="2"><span><b>Face arrière</b>, cornée → humeur aqueuse&nbsp;: (1,336 − 1,376) / 0,0065 = <b>−6,15&nbsp;D</b>. Petit saut.</span></li>
+              <li data-pas="3"><span><b>Cornée entière</b>&nbsp;: +48,21 − 6,15 ≈ <b>+42,06&nbsp;D</b>. Le cours arrondit à +40&nbsp;D.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Le rayon en mètres&nbsp;: 7,8&nbsp;mm = 0,0078&nbsp;m.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La face avant de la cornée fait presque tout&nbsp;: c'est là que l'indice saute le plus.</p>
+      </div>
+    </section>
+
+    <!-- 6 · dans l'eau -->
+    <section class="diapo" id="d6" data-acte="puissance" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · La puissance</p>
+        <h2>Dans l'eau, la même lentille change de puissance</h2>
+        <div class="corps">
+          <div class="duo">
+            <figure class="carte-eau" data-pas="1">
+              <figcaption>Dans l'air</figcaption>
+              <svg viewBox="0 0 200 112" role="img" aria-label="Lentille ménisque, de l'air devant">
+                <text x="10" y="22" class="petit t-doux">air 1,00</text>
+                <path d="M 96 10 Q 72 56 96 102 L 120 102 Q 106 56 120 10 Z" class="verre c-emm"/>
+                <text x="132" y="60" class="petit t-doux">1,50</text>
+              </svg>
+              <dl>
+                <dt>Face avant</dt><dd>+6,25</dd>
+                <dt>Face arrière</dt><dd>−5,00</dd>
+                <dt class="total">Total</dt><dd class="total">+1,25&nbsp;D</dd>
+              </dl>
+            </figure>
+            <figure class="carte-eau" data-pas="2">
+              <figcaption>De l'eau devant</figcaption>
+              <svg viewBox="0 0 200 112" role="img" aria-label="La même lentille, de l'eau devant">
+                <rect x="0" y="0" width="92" height="112" class="eau"/>
+                <text x="10" y="22" class="petit">eau 1,33</text>
+                <path d="M 96 10 Q 72 56 96 102 L 120 102 Q 106 56 120 10 Z" class="verre c-emm"/>
+                <text x="132" y="60" class="petit t-doux">1,50</text>
+              </svg>
+              <dl>
+                <dt>Face avant</dt><dd>+2,125</dd>
+                <dt>Face arrière</dt><dd>−5,00</dd>
+                <dt class="total">Total</dt><dd class="total">−2,875&nbsp;D</dd>
+              </dl>
+            </figure>
+          </div>
+          <div class="texte">
+            <p class="formule">F = (n<sub>v</sub> − n<sub>avant</sub>) / r₁ − (n<sub>v</sub> − n<sub>arrière</sub>) / r₂</p>
+            <p class="note">La formule du lunetier&nbsp;: la règle de la diapo précédente, appliquée aux deux faces.</p>
+            <p>Lentille du cours&nbsp;: n<sub>v</sub> = 1,50, r₁ = +0,08&nbsp;m, r₂ = +0,10&nbsp;m.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Dans l'air&nbsp;: 0,50 / 0,08 − 0,50 / 0,10 = 6,25 − 5,00 = <b>+1,25&nbsp;D</b>.</span></li>
+              <li data-pas="2"><span>Eau (1,33) devant&nbsp;: (1,50 − 1,33) / 0,08 = 2,125, puis 2,125 − 5,00 = <b>−2,875&nbsp;D</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;La contribution d'une surface dépend de la différence d'indice de part et d'autre de cette surface.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 7 · accommodation -->
+    <section class="diapo" id="d7" data-acte="pres" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Voir de près</p>
+        <h2>De près, le cristallin se bombe</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="accom" aria-label="De loin : muscle ciliaire relâché, zonules tendues, cristallin plat. De près : muscle contracté, zonules relâchées, cristallin bombé"></figure>
+          <div class="texte">
+            <p>Un objet proche envoie des rayons qui s'écartent. Il faut plus de puissance&nbsp;: c'est la <b>demande</b>, 1&nbsp;/&nbsp;d. Un livre à 40&nbsp;cm demande 2,50&nbsp;D.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le muscle ciliaire se <b>contracte</b>.</span></li>
+              <li data-pas="2"><span>Les zonules se <b>relâchent</b> et cessent d'étirer le cristallin.</span></li>
+              <li data-pas="3"><span>Le cristallin se <b>bombe</b>&nbsp;: plus courbé, il est plus puissant.</span></li>
+              <li data-pas="4"><span>L'image revient sur la rétine.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Accommoder, c'est ajouter des dioptries avec le cristallin.</p>
+      </div>
+    </section>
+
+    <!-- 8 · Donders -->
+    <section class="diapo" id="d8" data-acte="pres" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Voir de près</p>
+        <h2>Avec l'âge, l'amplitude fond</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="donders" aria-label="Tableau de Donders : 14 D à 10 ans, 10 D à 20 ans, 7 D à 30 ans, 4,5 D à 40 ans, 2,5 D à 50 ans, 1 D à 60 ans, 0 à 75 ans"></figure>
+          <div class="texte">
+            <p>L'<b>amplitude d'accommodation</b>, Am, c'est le maximum de dioptries que le cristallin peut ajouter.</p>
+            <p>Elle baisse toute la vie (tableau de Donders)&nbsp;: 14&nbsp;D à 10&nbsp;ans, 4,5&nbsp;D à 40&nbsp;ans, 0 à 75&nbsp;ans.</p>
+            <p>Cette perte, c'est la <b>presbytie</b>. «&nbsp;Ce n'est pas une amétropie au sens strict.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Vers 40 ans, il ne reste plus assez d'amplitude pour lire longtemps sans aide.</p>
+      </div>
+    </section>
+
+    <!-- 9 · addition -->
+    <section class="diapo" id="d9" data-acte="pres" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Voir de près</p>
+        <h2>On n'utilise que la moitié&nbsp;; l'addition paie le reste</h2>
+        <div class="corps">
+          <div class="barres" style="--max:2.5">
+            <p class="titre-fig">Lecture à 40&nbsp;cm, Am = 2,00</p>
+            <div class="barre">
+              <span class="nom">Amplitude Am</span>
+              <span class="piste"><i class="c-emm" style="--w:1" data-pas="2"></i><i class="c-doux raye" style="--w:1" data-pas="2"></i></span>
+              <span class="val">2,00</span>
+            </div>
+            <div class="barre">
+              <span class="nom">Demande 1/d</span>
+              <span class="piste"><i class="c-emm" style="--w:1" data-pas="2"></i><i class="c-aide" style="--w:1.5" data-pas="3"></i></span>
+              <span class="val">2,50</span>
+            </div>
+            <p class="legende"><span class="c-emm">l'œil paie ½ Am</span><span class="c-doux raye">réserve, gardée</span><span class="c-aide">l'addition</span></p>
+          </div>
+          <div class="texte">
+            <p>Pour lire longtemps, l'œil ne dépense que la <b>moitié de Am</b>. L'autre moitié, on la garde&nbsp;: c'est la <b>réserve accommodative</b>.</p>
+            <p class="formule">Add = 1/d − 0,5 Am</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Demande&nbsp;: 1&nbsp;/&nbsp;0,40 = 2,50&nbsp;D.</span></li>
+              <li data-pas="2"><span>L'œil paie la moitié de Am&nbsp;: 0,5 × 2,00 = 1,00&nbsp;D.</span></li>
+              <li data-pas="3"><span>Add = 2,50 − 1,00 = <b>+1,50</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Négatif&nbsp;? Aucune addition. À 40&nbsp;ans, pour voir à 1&nbsp;m&nbsp;: 1,00 − 2,25 = −1,25.</p>
+            <p class="piege"><b>Piège</b>On divise Am par deux, jamais la demande.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Les lunettes paient seulement ce que la moitié de Am ne couvre pas.</p>
+      </div>
+    </section>
+
+    <!-- 10 · amétropies -->
+    <section class="diapo" id="d10" data-acte="ametropies" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les amétropies</p>
+        <h2>Au repos, la puissance doit aller avec la longueur</h2>
+        <div class="corps plein">
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="mini-emm" aria-label="Œil emmétrope : foyer sur la rétine"></figure>
+              <div><h3>Emmétrope</h3><p>Le foyer tombe sur la rétine. Net de loin, sans effort.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="mini-myo" aria-label="Œil myope : foyer devant la rétine"></figure>
+              <div><h3 class="myo">Myope</h3><p>Trop de puissance pour sa longueur&nbsp;: le foyer tombe <b>devant</b> la rétine.</p></div>
+            </div>
+            <div class="rang" data-pas="2">
+              <figure class="visuel" data-fig="mini-hyp" aria-label="Œil hypermétrope : foyer derrière la rétine"></figure>
+              <div><h3 class="hyp">Hypermétrope</h3><p>Pas assez de puissance&nbsp;: le foyer tombe <b>derrière</b> la rétine.</p></div>
+            </div>
+          </div>
+          <p class="note" data-pas="3"><b>Astigmate</b>&nbsp;: la cornée n'est pas sphérique, alors il y a <b>deux</b> foyers.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>Myope&nbsp;: trop. Hypermétrope&nbsp;: pas assez.</p>
+      </div>
+    </section>
+
+    <!-- 11 · causes -->
+    <section class="diapo" id="d11" data-acte="ametropies" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 6 · Les amétropies</p>
+        <h2>Deux causes&nbsp;: la longueur ou la courbure</h2>
+        <div class="corps plein">
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="mini-long" aria-label="Œil trop long : le foyer tombe devant la rétine"></figure>
+              <div><h3>Axiale</h3><p>Le globe est trop long. <b>1&nbsp;mm ≈ 3,00&nbsp;D</b>&nbsp;: un œil de 24&nbsp;mm qui passe à 25&nbsp;mm devient myope d'environ −3,00. À 23&nbsp;mm, hypermétrope d'environ +3,00.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="mini-cambre" aria-label="Cornée plus cambrée : plus puissante, le foyer tombe devant la rétine"></figure>
+              <div><h3>De courbure</h3><p>Cornée plus cambrée&nbsp;: rayon plus petit, donc plus puissante → myopie. Plus plate → hypermétropie.</p></div>
+            </div>
+          </div>
+          <p class="note" data-pas="2">La longueur de l'œil se <b>mesure</b> (échographie A, IOLMaster)&nbsp;: l'ordonnance ne la donne pas.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une même ordonnance peut venir de l'une ou l'autre cause.</p>
+      </div>
+    </section>
+
+    <!-- 12 · Pr et Pp -->
+    <section class="diapo" id="d12" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Où l'œil voit net</p>
+        <h2>Deux points résument un œil&nbsp;: le Pr et le Pp</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-intro" aria-label="Un myope de −3,00 avec Am = 6 D voit net entre son Pp à 11,1 cm et son Pr à 33,3 cm"></figure>
+          <div class="texte">
+            <dl class="defs">
+              <dt>Pr</dt><dd><b>Punctum remotum</b>&nbsp;: le point le plus <b>loin</b> vu net, l'œil au <b>repos</b>.</dd>
+              <dt>Pp</dt><dd><b>Punctum proximum</b>&nbsp;: le point le plus <b>près</b> vu net, en accommodant au <b>maximum</b>.</dd>
+            </dl>
+            <p>Entre les deux&nbsp;: la zone de vision nette. Ici, un <span class="myo">myope de −3,00</span> avec Am = 6&nbsp;D voit net de 11,1 à 33,3&nbsp;cm.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Pr = l'œil au repos. Pp = l'effort maximal.</p>
+      </div>
+    </section>
+
+    <!-- 13 · la formule commune -->
+    <section class="diapo" id="d13" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Où l'œil voit net</p>
+        <h2>Une seule formule&nbsp;: A = 1/d + R</h2>
+        <div class="corps">
+          <div class="barres" style="--max:8">
+            <p class="titre-fig">Objet à 20&nbsp;cm&nbsp;: 1/d = 5&nbsp;D</p>
+            <div class="barre" data-pas="1">
+              <span class="nom">Emmétrope</span>
+              <span class="piste"><i class="c-emm" style="--w:5"></i></span>
+              <span class="val">5&nbsp;D</span>
+            </div>
+            <div class="barre" data-pas="2">
+              <span class="nom hyp">Hypermétrope +2,00</span>
+              <span class="piste"><i class="c-emm" style="--w:5"></i><i class="c-hyp" style="--w:2"></i></span>
+              <span class="val">7&nbsp;D</span>
+            </div>
+            <div class="barre" data-pas="3">
+              <span class="nom myo">Myope −3,00</span>
+              <span class="piste"><i class="c-emm" style="--w:2"></i><i class="c-myo raye" style="--w:3"></i></span>
+              <span class="val">2&nbsp;D</span>
+            </div>
+            <p class="legende"><span class="c-emm">la demande 1/d</span><span class="c-hyp">+ R de l'hypermétrope</span><span class="c-myo raye">− R&nbsp;: ce que le myope économise</span></p>
+          </div>
+          <div class="texte">
+            <p>Sans correction, l'œil paie la demande 1/d <b>plus son erreur R</b>. A, c'est l'accommodation qu'il doit fournir.</p>
+            <p>R, c'est sa correction de loin&nbsp;: <span class="myo">myope R&nbsp;&lt;&nbsp;0</span> · emmétrope R = 0 · <span class="hyp">hypermétrope R&nbsp;&gt;&nbsp;0</span>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Emmétrope&nbsp;: A = 5 + 0 = <b>5&nbsp;D</b>.</span></li>
+              <li data-pas="2"><span>Hypermétrope +2,00&nbsp;: A = 5 + 2 = <b>7&nbsp;D</b>. Il accommode plus, et même de loin.</span></li>
+              <li data-pas="3"><span>Myope −3,00&nbsp;: A = 5 − 3 = <b>2&nbsp;D</b>. Il accommode moins.</span></li>
+            </ol>
+            <p class="note" data-pas="4">A négatif&nbsp;? Impossible&nbsp;: c'est flou. Myope −5,00 à 40&nbsp;cm&nbsp;: 2,50 − 5,00 = −2,50.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Myopie&nbsp;: demande diminuée. Hypermétropie&nbsp;: demande augmentée.</p>
+      </div>
+    </section>
+
+    <!-- 14 · Pr -->
+    <section class="diapo" id="d14" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Où l'œil voit net</p>
+        <h2>Au repos, A = 0&nbsp;: R = 1/Pr</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-pr" aria-label="Le Pr : myope −2,00 à 50 cm devant l'œil; emmétrope à l'infini; hypermétrope +2,00 à 50 cm derrière l'œil"></figure>
+          <div class="texte">
+            <p>Le Pr porte un <b>signe</b>&nbsp;: devant l'œil, négatif&nbsp;; derrière, positif.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><span class="myo">Myope −2,00</span>&nbsp;: Pr = 1&nbsp;/&nbsp;(−2,00) = −0,50&nbsp;m → <b>50&nbsp;cm devant</b>. Un point réel.</span></li>
+              <li data-pas="2"><span><span class="hyp">Hypermétrope +2,00</span>&nbsp;: Pr = +0,50&nbsp;m → <b>50&nbsp;cm derrière</b>. Un point virtuel.</span></li>
+              <li data-pas="3"><span>Emmétrope&nbsp;: R = 0 → Pr à l'<b>infini</b>.</span></li>
+              <li data-pas="4"><span>À l'envers&nbsp;: Pr à 50&nbsp;cm devant → R = 1&nbsp;/&nbsp;(−0,50) = <b>−2,00&nbsp;D</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Oublier le moins donne +2,00&nbsp;: une lentille d'hypermétrope.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Myope&nbsp;: Pr devant. Hypermétrope&nbsp;: Pr derrière.</p>
+      </div>
+    </section>
+
+    <!-- 15 · Pp -->
+    <section class="diapo" id="d15" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Où l'œil voit net</p>
+        <h2>À fond, A = Am&nbsp;: 1/Pp = Am − R</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-pp" aria-label="Avec Am = 6 D : Pp du myope −3 à 11,1 cm, de l'emmétrope à 16,7 cm, de l'hypermétrope +3 à 33,3 cm"></figure>
+          <div class="texte">
+            <p>Le Pp dépense <b>toute</b> l'amplitude, pas la moitié. Il s'écrit sans signe&nbsp;: c'est une distance devant l'œil. Seul le Pr porte un signe.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><span class="myo">Myope −3</span>, Am = 6&nbsp;: 1/Pp = 6 − (−3) = 9 → <b>11,1&nbsp;cm</b>.</span></li>
+              <li data-pas="2"><span>Emmétrope&nbsp;: 1/Pp = 6 → <b>16,7&nbsp;cm</b>.</span></li>
+              <li data-pas="3"><span><span class="hyp">Hypermétrope +3</span>&nbsp;: 1/Pp = 6 − 3 = 3 → <b>33,3&nbsp;cm</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Vérifie toujours&nbsp;: Pp myope &lt; Pp emmétrope &lt; Pp hypermétrope. Si Am ≤ R, l'hypermétrope n'a pas de Pp réel.</p>
+            <p class="piege"><b>Piège</b>Moins un négatif = plus&nbsp;: 6 − (−3) = 9.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La myopie s'ajoute à l'amplitude&nbsp;; l'hypermétropie s'en soustrait.</p>
+      </div>
+    </section>
+
+    <!-- 16 · zone nette -->
+    <section class="diapo" id="d16" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Où l'œil voit net</p>
+        <h2>La zone nette va du Pp au Pr</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-zone" aria-label="Zones nettes avec Am = 6 D : myope de 11,1 à 33,3 cm; emmétrope de 16,7 cm à l'infini; hypermétrope de 33,3 cm à l'infini, Pr 33,3 cm derrière l'œil"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li data-pas="1"><b class="myo">Myope</b>&nbsp;: entre le Pp et le Pr, tous deux devant. Au-delà de 33&nbsp;cm, flou.</li>
+              <li data-pas="2"><b>Emmétrope</b>&nbsp;: du Pp jusqu'à l'infini.</li>
+              <li data-pas="3"><b class="hyp">Hypermétrope</b>&nbsp;: du Pp jusqu'à l'infini, mais en accommodant. Son Pr est derrière l'œil.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le myope voit bien de près. L'hypermétrope voit loin, mais il paie l'effort.</p>
+      </div>
+    </section>
+
+    <!-- 17 · la lentille -->
+    <section class="diapo" id="d17" data-acte="corriger" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Corriger</p>
+        <h2>La lentille qui corrige vaut R</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="lentilles" aria-label="Lentille concave, divergente, plus mince au centre; lentille convexe, convergente, plus mince au bord"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b class="myo">Myope</b>&nbsp;: lentille <b>concave</b>, divergente, «&nbsp;−&nbsp;». Plus mince au centre qu'au bord.</li>
+              <li><b class="hyp">Hypermétrope</b>&nbsp;: lentille <b>convexe</b>, convergente, «&nbsp;+&nbsp;». Plus mince au bord qu'au centre.</li>
+              <li data-pas="1">Avec la bonne lentille, R tombe à 0&nbsp;: l'œil devient «&nbsp;comme un emmétrope&nbsp;». Pr à l'infini, <b>Pp = 1&nbsp;/&nbsp;Am</b>.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Corriger, c'est ramener R à zéro.</p>
+      </div>
+    </section>
+
+    <!-- 18 · Marie -->
+    <section class="diapo" id="d18" data-acte="corriger" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Un cas du corrigé</p>
+        <h2>Marie&nbsp;: hypermétrope de +2,00, Am = 7&nbsp;D</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-marie" aria-label="Marie sans lentille : Pr 50 cm derrière l'œil, Pp à 20 cm. Avec sa lentille : Pp à 14,3 cm, Pr à l'infini"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Pr = 1&nbsp;/&nbsp;(+2,00) = +0,50&nbsp;m → <b>50&nbsp;cm derrière</b> l'œil.</span></li>
+              <li data-pas="2"><span>Sans lentille&nbsp;: 1/Pp = 7 − 2 = 5 → <b>20&nbsp;cm</b>.</span></li>
+              <li data-pas="3"><span>Avec sa lentille +2,00, R = 0&nbsp;: 1/Pp = 7 → <b>14,3&nbsp;cm</b>.</span></li>
+              <li data-pas="4"><span>À 40&nbsp;cm sans lentille&nbsp;: A = 2,50 + 2,00 = <b>4,50&nbsp;D</b>, 2,00 pour son hypermétropie et 2,50 pour voir de près.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Corriger l'hypermétrope l'aide aussi de près.</p>
+      </div>
+    </section>
+
+    <!-- 19 · le piège de l'hypermétrope -->
+    <section class="diapo" id="d19" data-acte="corriger" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Corriger</p>
+        <h2>Le piège de l'hypermétrope</h2>
+        <div class="corps">
+          <div class="barres repere" style="--max:10; --m:5">
+            <p class="titre-fig">20 ans, +4,00, Am = 10&nbsp;D · la barre entière = Am · le trait = la moitié, 5&nbsp;D</p>
+            <div class="barre" data-pas="1">
+              <span class="nom">De loin</span>
+              <span class="piste"><i class="c-hyp" style="--w:4"></i></span>
+              <span class="val">4&nbsp;D</span>
+            </div>
+            <div class="barre" data-pas="2">
+              <span class="nom">À 50&nbsp;cm</span>
+              <span class="piste"><i class="c-hyp" style="--w:6"></i></span>
+              <span class="val">6&nbsp;D</span>
+            </div>
+            <div class="barre" data-pas="3">
+              <span class="nom">À 25&nbsp;cm</span>
+              <span class="piste"><i class="c-hyp" style="--w:8"></i></span>
+              <span class="val">8&nbsp;D</span>
+            </div>
+          </div>
+          <div class="texte">
+            <p>Un jeune hypermétrope peut lire 20/20 sans lunettes&nbsp;: il accommode, même de loin (A = R).</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>De loin&nbsp;: A = 0 + 4 = 4&nbsp;D.</span></li>
+              <li data-pas="2"><span>À 50&nbsp;cm&nbsp;: A = 2 + 4 = 6&nbsp;D, déjà plus que la moitié de son amplitude.</span></li>
+              <li data-pas="3"><span>À 25&nbsp;cm&nbsp;: A = 4 + 4 = 8&nbsp;D.</span></li>
+            </ol>
+            <p data-pas="4">Le prix&nbsp;: fatigue visuelle, maux de tête. «&nbsp;La cycloplégie permet de relâcher l'accommodation afin de mieux révéler l'hypermétropie totale.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>20/20 ne veut pas dire «&nbsp;pas besoin de correction&nbsp;».</p>
+      </div>
+    </section>
+
+    <!-- 20 · Arthur -->
+    <section class="diapo" id="d20" data-acte="corriger" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Module 7 · Un cas du corrigé</p>
+        <h2>Arthur&nbsp;: 55 ans, myope de −3,00, Am = 2&nbsp;D</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-arthur" aria-label="Arthur : sans lunettes, net de 20 à 33 cm; avec ses lunettes de loin, Pp à 50 cm; avec ses lunettes de lecture −1,50, net de 28,6 à 66,7 cm; le livre est à 40 cm"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Pr = 1&nbsp;/&nbsp;(−3,00) = −0,33&nbsp;m → <b>33&nbsp;cm devant</b>.</span></li>
+              <li data-pas="2"><span>1/Pp = 2 − (−3) = 5 → <b>20&nbsp;cm</b>. Sans lunettes, il voit net de 20 à 33&nbsp;cm.</span></li>
+              <li data-pas="3"><span>Avec ses lunettes de loin, R = 0&nbsp;: Pp = 1&nbsp;/&nbsp;2 = 50&nbsp;cm, et le livre à 40&nbsp;cm est trop près. Add = 2,50 − 0,5 × 2,00 = <b class="aide">+1,50</b>.</span></li>
+              <li data-pas="4"><span>Lunettes de lecture = loin + Add = −3,00 + 1,50 = <b class="aide">−1,50&nbsp;D</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>La puissance de près n'est pas l'addition seule&nbsp;: on l'ajoute à la correction de loin.</p>
+            <p class="note" data-pas="4">La ligne violette (28,6 à 66,7&nbsp;cm) n'est pas dans le corrigé&nbsp;: elle montre pourquoi les −1,50 marchent.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>De près&nbsp;: la correction de loin, plus l'addition.</p>
+      </div>
+    </section>
+
+    <!-- 21 · quatre questions -->
+    <section class="diapo" id="d21" data-acte="methode" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La méthode du prof</p>
+        <h2>Avant de calculer, quatre questions</h2>
+        <ol class="questions">
+          <li><p class="q">«&nbsp;Quelle amétropie&nbsp;?&nbsp;»</p><p class="r">Myope (−), emmétrope (0) ou hypermétrope (+)&nbsp;?</p></li>
+          <li><p class="q">«&nbsp;Quel point recherche-t-on&nbsp;?&nbsp;»</p><p class="r">Pr&nbsp;: œil au repos. Pp&nbsp;: accommodation maximale.</p></li>
+          <li><p class="q">«&nbsp;Quel effet sur l'accommodation&nbsp;?&nbsp;»</p><p class="r">Myopie&nbsp;: demande diminuée. Hypermétropie&nbsp;: demande augmentée.</p></li>
+          <li><p class="q">«&nbsp;Le résultat est-il plausible&nbsp;?&nbsp;»</p><p class="r">À amplitude égale, le Pp du myope est plus près que celui de l'hypermétrope.</p></li>
+        </ol>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Toujours vérifier la logique physique du résultat, pas seulement les chiffres.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 22 · la carte -->
+    <section class="diapo" id="d22" data-acte="methode" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Dioptrie</p><p class="fiche-f">D = 1 / d</p><p class="fiche-n">d en mètres</p></div>
+          <div class="fiche"><p class="fiche-nom">Une surface</p><p class="fiche-f">D = (nr − ni) / r</p><p class="fiche-n">r en mètres</p></div>
+          <div class="fiche"><p class="fiche-nom">Formule commune</p><p class="fiche-f">A = 1/d + R</p><p class="fiche-n">myope R &lt; 0, hypermétrope R &gt; 0</p></div>
+          <div class="fiche"><p class="fiche-nom">Au repos</p><p class="fiche-f">R = 1 / Pr</p><p class="fiche-n">Pr signé&nbsp;: devant −, derrière +</p></div>
+          <div class="fiche"><p class="fiche-nom">Effort maximal</p><p class="fiche-f">1 / Pp = Am − R</p><p class="fiche-n">toute l'amplitude, Pp sans signe</p></div>
+          <div class="fiche"><p class="fiche-nom">Corrigé</p><p class="fiche-f">R = 0</p><p class="fiche-n">Pr à l'infini, Pp = 1 / Am</p></div>
+          <div class="fiche"><p class="fiche-nom">Addition</p><p class="fiche-f">Add = 1/d − 0,5 Am</p><p class="fiche-n">négatif → aucune addition</p></div>
+          <div class="fiche"><p class="fiche-nom">De près</p><p class="fiche-f">près = loin + Add</p><p class="fiche-n">Arthur&nbsp;: −3,00 + 1,50 = −1,50</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="banc-optique-ua2.html">Le Banc d'optique UA2</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+
+  // Coupe de l'œil : la lumière vient de la gauche. type : emm | myo | hyp ; xr : rétine sur l'axe ; xf : foyer.
+  function oeil(o = {}) {
+    const W = 480, H = 200, cy = 100, ry = 82, dy = 40, xg = 140;
+    const xr = o.xr || 372;
+    const cx = (xg + xr) / 2, rx = (xr - xg) / 2;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2);
+    const ctrl = xe - (o.cambree ? 72 : 54);
+    const apex = (xe + ctrl) / 2;
+    const a = 50 * Math.PI / 180;
+    const pe = t => `${n1(cx + rx * Math.cos(t))} ${n1(cy + ry * Math.sin(t))}`;
+    const xRet = xr - 2;
+    const xf = o.xf || (o.type === 'myo' ? xr - 46 : o.type === 'hyp' ? xr + 46 : xRet);
+    const lx = xe + 28, lrx = o.bombe ? 17 : 12, lry = 33;
+    const coul = o.type === 'myo' ? 'myo' : o.type === 'hyp' ? 'hyp' : 'emm';
+    let s = `<path d="M ${n1(xe)} ${cy - dy} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - dy} Z" class="globe"/>`;
+    s += `<path d="M ${pe(-a)} A ${rx} ${ry} 0 0 1 ${pe(a)}" class="retine"/>`;
+    s += `<ellipse cx="${n1(lx)}" cy="${cy}" rx="${lrx}" ry="${lry}" class="cristallin"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + dy}" class="cornee"/>`;
+    for (const y0 of [cy - 28, cy, cy + 28]) {
+      const t = (y0 - cy + dy) / (2 * dy);
+      const xc = xe + 2 * t * (1 - t) * (ctrl - xe);
+      const pente = (cy - y0) / (xf - xc);
+      if (xf <= xRet) {
+        s += `<path d="M 6 ${y0} L ${n1(xc)} ${y0} L ${n1(xRet)} ${n1(y0 + pente * (xRet - xc))}" class="rayon"/>`;
+      } else {
+        const yR = y0 + pente * (xRet - xc);
+        s += `<path d="M 6 ${y0} L ${n1(xc)} ${y0} L ${n1(xRet)} ${n1(yR)}" class="rayon"/>`;
+        if (y0 !== cy) s += `<path d="M ${n1(xRet)} ${n1(yR)} L ${n1(xf)} ${cy}" class="rayon virtuel"/>`;
+      }
+    }
+    s += `<circle cx="${n1(xf)}" cy="${cy}" r="5.5" class="${o.type === 'hyp' ? 'creux' : 'plein'} c-${coul}"/>`;
+    if (o.labels) {
+      s += `<text x="${n1(apex)}" y="${cy - dy - 14}" text-anchor="middle">cornée${o.puissances ? ' ≈ +40 D' : ''}</text>`;
+      s += `<text x="${n1(lx)}" y="${cy + lry + 26}" text-anchor="middle">cristallin${o.puissances ? ' ≈ +20 D' : ''}</text>`;
+      s += `<text x="${n1(cx + rx * Math.cos(a))}" y="${n1(cy + ry * Math.sin(a) + 24)}" text-anchor="middle" class="t-doux">rétine</text>`;
+      if (o.foyer) s += `<text x="${n1(xf + 12)}" y="${cy + 5}" class="etiq c-emm">foyer</text>`;
+    }
+    return svgW(W, H, s, o.label || 'Coupe de l’œil');
+  }
+
+  // Petit œil vu de côté, sur un axe.
+  const oeilGlyphe = (x, y) => `<path d="M ${n1(x - 13)} ${y} Q ${n1(x)} ${y - 11} ${n1(x + 13)} ${y} Q ${n1(x)} ${y + 11} ${n1(x - 13)} ${y} Z" class="oeil-g"/><circle cx="${n1(x)}" cy="${y}" r="4" class="pupille"/>`;
+
+  // Axes signés : l'œil à 0, devant à gauche (négatif), derrière à droite (positif). Une rangée par œil.
+  function axes(o, W) {
+    const rowH = 84, top = o.reperes ? 30 : 4, bas = 24;
+    const H = top + o.rangs.length * rowH + bas;
+    const x0 = 30, x1 = W - 22;
+    const k = (x1 - x0 - 16) / (o.avant + o.arriere);
+    const xe = x0 + 16 + o.avant * k;
+    const X = cm => (cm === -Infinity ? x0 : xe + cm * k);
+    let s = '';
+    (o.reperes || []).forEach(r => {
+      s += `<text x="${n1(X(r.cm))}" y="${top - 10}" text-anchor="middle" class="petit t-doux">${r.t}</text>`;
+    });
+    o.rangs.forEach((rg, i) => {
+      const y = top + i * rowH, yl = y + 50;
+      if (rg.titre) s += `<text x="${x0}" y="${y + 14}" class="titre-rang c-${rg.c}">${rg.titre}</text>`;
+      (o.reperes || []).forEach(r => {
+        s += `<line x1="${n1(X(r.cm))}" y1="${yl - 26}" x2="${n1(X(r.cm))}" y2="${yl + 12}" class="pointille"/>`;
+      });
+      s += `<line x1="${x0}" y1="${yl}" x2="${x1}" y2="${yl}" class="base"/>`;
+      for (let c = -Math.floor(o.avant / 10) * 10; c <= o.arriere; c += 10) {
+        if (c) s += `<line x1="${n1(X(c))}" y1="${yl - 4}" x2="${n1(X(c))}" y2="${yl + 4}" class="base"/>`;
+      }
+      s += `<text x="${x0 - 22}" y="${yl + 6}" class="t-doux">∞</text>`;
+      (rg.zones || []).forEach(z => {
+        const a = X(z.de), b = X(z.a);
+        s += `<rect x="${n1(Math.min(a, b))}" y="${yl - 7}" width="${n1(Math.abs(b - a))}" height="14" rx="7" class="zone c-${z.c}"${P(z)}/>`;
+      });
+      s += oeilGlyphe(xe, yl);
+      (rg.pts || []).forEach(p => {
+        const inf = p.cm === -Infinity, x = inf ? x0 : X(p.cm), anc = inf ? 'start' : 'middle';
+        s += `<g class="c-${p.c}"${P(p)}>`;
+        s += inf ? `<path d="M ${x0 + 13} ${yl - 9} L ${x0} ${yl} L ${x0 + 13} ${yl + 9}" class="fleche"/>`
+                 : `<circle cx="${n1(x)}" cy="${yl}" r="7.5" class="${p.creux ? 'creux' : 'plein'}"/>`;
+        s += `<text x="${n1(x)}" y="${yl - 15}" text-anchor="${anc}" class="etiq">${p.t}</text>`;
+        s += `<text x="${n1(x)}" y="${yl + 27}" text-anchor="${anc}" class="valeur">${p.v}</text>`;
+        s += `</g>`;
+      });
+    });
+    s += `<text x="${x0}" y="${H - 4}" class="petit t-doux">← devant l’œil · négatif</text>`;
+    if (o.arriere >= 20) s += `<text x="${x1}" y="${H - 4}" text-anchor="end" class="petit t-doux">derrière · positif →</text>`;
+    return svgW(W, H, s, o.label);
+  }
+
+  function dioptries(W) {
+    const H = 236, yb = 172, xe = W - 34, x0 = 36;
+    const k = (xe - x0) / 100, X = cm => xe - cm * k;
+    let s = `<line x1="${x0 - 16}" y1="${yb}" x2="${xe - 18}" y2="${yb}" class="base"/>` + oeilGlyphe(xe, yb);
+    for (const [cm, dist, d, v] of [[100, '1 m', '1 D', 1], [40, '40 cm', '2,50 D', 2.5], [25, '25 cm', '4 D', 4], [10, '10 cm', '10 D', 10]]) {
+      const x = X(cm), h = v * 12;
+      s += `<rect x="${n1(x - 9)}" y="${yb - h}" width="18" height="${h}" rx="3" class="barre-d"/>`;
+      s += `<text x="${n1(x)}" y="${yb - h - 9}" text-anchor="middle" class="valeur">${d}</text>`;
+      s += `<text x="${n1(x)}" y="${yb + 24}" text-anchor="middle" class="petit t-doux">${dist}</text>`;
+    }
+    s += `<text x="${n1((x0 + xe) / 2)}" y="${H - 6}" text-anchor="middle" class="petit t-doux">distance entre l’objet et l’œil</text>`;
+    return svgW(W, H, s, 'Dioptries selon la distance');
+  }
+
+  function indices(W) {
+    const H = 246, l = 24, r = W - 20, t = 58, b = 196;
+    const xa = l + (r - l) * 0.36, xb = l + (r - l) * 0.56;
+    const Y = n => b - (n - 0.96) / (1.42 - 0.96) * (b - t);
+    const pal = `M ${l} ${n1(Y(1))} H ${n1(xa)} V ${n1(Y(1.376))} H ${n1(xb)} V ${n1(Y(1.336))} H ${r}`;
+    let s = `<path d="${pal} V ${b} H ${l} Z" class="palier-fond"/><path d="${pal}" class="palier"/>`;
+    s += `<text x="${n1((l + xa) / 2)}" y="${n1(Y(1) - 12)}" text-anchor="middle" class="t-doux">air 1,000</text>`;
+    s += `<text x="${n1((xa + xb) / 2)}" y="${n1(Y(1.376) - 30)}" text-anchor="middle" class="etiq">cornée</text>`;
+    s += `<text x="${n1((xa + xb) / 2)}" y="${n1(Y(1.376) - 11)}" text-anchor="middle" class="valeur">1,376</text>`;
+    s += `<text x="${n1((xb + r) / 2)}" y="${n1(Y(1.336) - 30)}" text-anchor="middle">humeur aqueuse</text>`;
+    s += `<text x="${n1((xb + r) / 2)}" y="${n1(Y(1.336) - 11)}" text-anchor="middle" class="valeur">1,336</text>`;
+    s += `<text x="${n1(xa - 10)}" y="${n1((Y(1) + Y(1.376)) / 2)}" text-anchor="end" class="grand">+0,376</text>`;
+    s += `<text x="${n1(xa - 10)}" y="${n1((Y(1) + Y(1.376)) / 2 + 20)}" text-anchor="end" class="petit t-doux">gros saut</text>`;
+    s += `<text x="${n1(xb + 10)}" y="${n1(Y(1.336) + 30)}" class="valeur">−0,040</text>`;
+    s += `<text x="${n1(xb + 10)}" y="${n1(Y(1.336) + 49)}" class="petit t-doux">petit saut</text>`;
+    s += `<line x1="${n1(xa)}" y1="${b}" x2="${n1(xa)}" y2="${b + 8}" class="pointille"/><text x="${n1(xa)}" y="${b + 22}" text-anchor="middle" class="petit">face avant</text>`;
+    s += `<line x1="${n1(xb)}" y1="${b}" x2="${n1(xb)}" y2="${b + 28}" class="pointille"/><text x="${n1(xb)}" y="${b + 42}" text-anchor="middle" class="petit">face arrière</text>`;
+    return svgW(W, H, s, 'Indices traversés par la lumière');
+  }
+
+  function accom(W) {
+    const H = 278, pw = W / 2;
+    const pan = (x0, pres) => {
+      const cx = x0 + pw / 2, cy = 128;
+      const lrx = pres ? 21 : 12, lry = pres ? 40 : 46;
+      const dM = pres ? 80 : 90, mh = pres ? 24 : 12, mw = pres ? 54 : 70;
+      let s = `<text x="${n1(cx)}" y="17" text-anchor="middle" class="etiq c-emm">${pres ? 'De près' : 'De loin'}</text>`;
+      for (const sg of [-1, 1]) {
+        const yM = cy + sg * dM, yRect = sg < 0 ? yM - mh : yM;
+        s += `<rect x="${n1(cx - mw / 2)}" y="${yRect}" width="${mw}" height="${mh}" rx="${mh / 2}" class="muscle"/>`;
+        for (const off of [-1, 0, 1]) {
+          const xl = cx + off * 6, yl = cy + sg * lry * Math.sqrt(1 - (off * 6 / lrx) ** 2), xm = cx + off * 20;
+          if (pres) {
+            const qx = (xl + xm) / 2 + (off === 0 ? 9 : off * 12), qy = (yl + yM) / 2;
+            s += `<path d="M ${n1(xl)} ${n1(yl)} Q ${n1(qx)} ${n1(qy)} ${n1(xm)} ${yM}" class="zonule"/>`;
+          } else {
+            s += `<line x1="${n1(xl)}" y1="${n1(yl)}" x2="${n1(xm)}" y2="${yM}" class="zonule"/>`;
+          }
+        }
+      }
+      s += `<ellipse cx="${n1(cx)}" cy="${cy}" rx="${lrx}" ry="${lry}" class="cristallin"/>`;
+      s += `<text x="${n1(cx)}" y="${H - 24}" text-anchor="middle" class="petit t-doux">${pres ? 'muscle contracté' : 'muscle relâché'}</text>`;
+      s += `<text x="${n1(cx)}" y="${H - 5}" text-anchor="middle" class="petit">${pres ? 'cristallin bombé' : 'cristallin plat'}</text>`;
+      return s;
+    };
+    const s = pan(0, false) + pan(pw, true) + `<line x1="${n1(pw)}" y1="30" x2="${n1(pw)}" y2="${H - 50}" class="separe"/>`;
+    return svgW(W, H, s, 'L’accommodation : de loin et de près');
+  }
+
+  function donders(W) {
+    const H = 290, l = 44, r = W - 18, t = 34, b = H - 44;
+    const X = a => l + a / 75 * (r - l), Y = d => b - d / 18 * (b - t);
+    const D = [[1, 18], [5, 16], [10, 14], [15, 12], [20, 10], [25, 8.5], [30, 7], [40, 4.5], [44, 4], [50, 2.5], [60, 1], [75, 0]];
+    const lab = { 10: '14', 20: '10', 30: '7', 40: '4,5', 50: '2,5', 60: '1', 75: '0' };
+    let s = `<rect x="${n1(X(40))}" y="${t}" width="${n1(r - X(40))}" height="${b - t}" class="bande"/>`;
+    s += `<text x="${n1((X(40) + r) / 2)}" y="${t + 22}" text-anchor="middle" class="etiq c-aide">presbytie</text>`;
+    for (const d of [0, 5, 10, 15]) {
+      s += `<line x1="${l}" y1="${n1(Y(d))}" x2="${r}" y2="${n1(Y(d))}" class="grille"/>`;
+      s += `<text x="${l - 8}" y="${n1(Y(d) + 5)}" text-anchor="end" class="petit t-doux">${d}</text>`;
+    }
+    for (const a of [0, 10, 20, 30, 40, 50, 60, 70]) s += `<text x="${n1(X(a))}" y="${b + 22}" text-anchor="middle" class="petit t-doux">${a}</text>`;
+    s += `<text x="${r}" y="${H - 4}" text-anchor="end" class="petit t-doux">âge (ans)</text>`;
+    s += `<text x="${l}" y="${t - 14}" class="petit t-doux">amplitude Am (D)</text>`;
+    s += `<polyline points="${D.map(([a, d]) => n1(X(a)) + ',' + n1(Y(d))).join(' ')}" class="courbe"/>`;
+    for (const [a, d] of D) {
+      s += `<circle cx="${n1(X(a))}" cy="${n1(Y(d))}" r="${a === 40 ? 6.5 : 4}" class="pt-courbe"/>`;
+      if (lab[a]) s += `<text x="${n1(X(a))}" y="${n1(Y(d) - 12)}" text-anchor="middle" class="valeur">${lab[a]}</text>`;
+    }
+    return svgW(W, H, s, 'Tableau de Donders');
+  }
+
+  function lentilles(W) {
+    const H = 236, pw = W / 2, cy = 110;
+    const pan = (x0, conc) => {
+      const cx = x0 + pw * 0.4, f = pw * 0.42, xFin = x0 + pw - 12;
+      let s = `<g class="c-${conc ? 'myo' : 'hyp'}">`;
+      s += `<text x="${n1(x0 + pw / 2)}" y="22" text-anchor="middle" class="etiq">${conc ? 'Concave · −' : 'Convexe · +'}</text>`;
+      s += conc
+        ? `<path d="M ${n1(cx - 15)} ${cy - 62} L ${n1(cx + 15)} ${cy - 62} Q ${n1(cx + 3)} ${cy} ${n1(cx + 15)} ${cy + 62} L ${n1(cx - 15)} ${cy + 62} Q ${n1(cx - 3)} ${cy} ${n1(cx - 15)} ${cy - 62} Z" class="verre"/>`
+        : `<path d="M ${n1(cx)} ${cy - 64} Q ${n1(cx + 32)} ${cy} ${n1(cx)} ${cy + 64} Q ${n1(cx - 32)} ${cy} ${n1(cx)} ${cy - 64} Z" class="verre"/>`;
+      for (const y0 of [cy - 28, cy, cy + 28]) {
+        s += `<path d="M ${n1(x0 + 10)} ${y0} L ${n1(cx)} ${y0}" class="rayon"/>`;
+        const pente = conc ? (y0 - cy) / f : (cy - y0) / f;
+        s += `<path d="M ${n1(cx)} ${y0} L ${n1(xFin)} ${n1(y0 + pente * (xFin - cx))}" class="rayon"/>`;
+        if (conc && y0 !== cy) s += `<path d="M ${n1(cx)} ${y0} L ${n1(cx - f)} ${cy}" class="rayon virtuel"/>`;
+      }
+      s += `<circle cx="${n1(conc ? cx - f : cx + f)}" cy="${cy}" r="5" class="${conc ? 'creux' : 'plein'}"/>`;
+      s += `<text x="${n1(x0 + pw / 2)}" y="${H - 28}" text-anchor="middle" class="petit">${conc ? 'plus mince au centre' : 'plus mince au bord'}</text>`;
+      s += `<text x="${n1(x0 + pw / 2)}" y="${H - 8}" text-anchor="middle" class="petit t-doux">${conc ? 'divergente' : 'convergente'}</text>`;
+      return s + '</g>';
+    };
+    return svgW(W, H, pan(0, true) + pan(pw, false) + `<line x1="${n1(pw)}" y1="30" x2="${n1(pw)}" y2="${H - 50}" class="separe"/>`, 'Lentilles concave et convexe');
+  }
+
+  const INF = -Infinity;
+  const FIG = {
+    'oeil-couverture': () => oeil({ type: 'emm', label: 'Un œil : les rayons se rejoignent sur la rétine' }),
+    'oeil-fil': () => oeil({ type: 'emm', labels: true, foyer: true, label: 'Coupe de l’œil' }),
+    'oeil-puissance': () => oeil({ type: 'emm', labels: true, puissances: true, label: 'Puissances de la cornée et du cristallin' }),
+    'mini-emm': () => oeil({ type: 'emm', label: 'Emmétrope' }),
+    'mini-myo': () => oeil({ type: 'myo', label: 'Myope' }),
+    'mini-hyp': () => oeil({ type: 'hyp', label: 'Hypermétrope' }),
+    'mini-long': () => oeil({ type: 'myo', xr: 414, xf: 370, label: 'Œil trop long' }),
+    'mini-cambre': () => oeil({ type: 'myo', cambree: true, xf: 326, label: 'Cornée plus cambrée' }),
+    dioptries, indices, accom, donders, lentilles,
+    'axe-intro': W => axes({ avant: 40, arriere: 8, label: 'Zone nette d’un myope', rangs: [
+      { titre: 'Myope −3,00 · Am = 6 D', c: 'myo', zones: [{ de: -33.3, a: -11.1, c: 'myo' }],
+        pts: [{ cm: -33.3, t: 'Pr', v: '33,3 cm', c: 'myo' }, { cm: -11.1, t: 'Pp', v: '11,1 cm', c: 'myo' }] }] }, W),
+    'axe-pr': W => axes({ avant: 60, arriere: 60, label: 'Le Pr de trois yeux', rangs: [
+      { titre: 'Myope −2,00', c: 'myo', pts: [{ cm: -50, t: 'Pr', v: '−50 cm', c: 'myo', pas: 1 }] },
+      { titre: 'Emmétrope', c: 'emm', pts: [{ cm: INF, t: 'Pr', v: 'à l’infini', c: 'emm', pas: 3 }] },
+      { titre: 'Hypermétrope +2,00', c: 'hyp', pts: [{ cm: 50, t: 'Pr', v: '+50 cm', c: 'hyp', creux: true, pas: 2 }] }] }, W),
+    'axe-pp': W => axes({ avant: 40, arriere: 40, label: 'Le Pp de trois yeux, Am = 6 D', rangs: [
+      { titre: 'Myope −3', c: 'myo', pts: [{ cm: -11.1, t: 'Pp', v: '11,1 cm', c: 'myo', pas: 1 }] },
+      { titre: 'Emmétrope', c: 'emm', pts: [{ cm: -16.7, t: 'Pp', v: '16,7 cm', c: 'emm', pas: 2 }] },
+      { titre: 'Hypermétrope +3', c: 'hyp', pts: [{ cm: -33.3, t: 'Pp', v: '33,3 cm', c: 'hyp', pas: 3 }] }] }, W),
+    'axe-zone': W => axes({ avant: 40, arriere: 40, label: 'Zones nettes de trois yeux, Am = 6 D', rangs: [
+      { titre: 'Myope −3', c: 'myo', zones: [{ de: -33.3, a: -11.1, c: 'myo', pas: 1 }],
+        pts: [{ cm: -11.1, t: 'Pp', v: '11,1', c: 'myo' }, { cm: -33.3, t: 'Pr', v: '−33,3', c: 'myo', pas: 1 }] },
+      { titre: 'Emmétrope', c: 'emm', zones: [{ de: INF, a: -16.7, c: 'emm', pas: 2 }],
+        pts: [{ cm: -16.7, t: 'Pp', v: '16,7', c: 'emm' }, { cm: INF, t: 'Pr', v: '', c: 'emm', pas: 2 }] },
+      { titre: 'Hypermétrope +3', c: 'hyp', zones: [{ de: INF, a: -33.3, c: 'hyp', pas: 3 }],
+        pts: [{ cm: -33.3, t: 'Pp', v: '33,3', c: 'hyp' }, { cm: 33.3, t: 'Pr', v: '+33,3', c: 'hyp', creux: true, pas: 3 }] }] }, W),
+    'axe-marie': W => axes({ avant: 30, arriere: 55, label: 'Marie, sans et avec sa lentille', rangs: [
+      { titre: 'Sans lentille', c: 'hyp', zones: [{ de: INF, a: -20, c: 'hyp', pas: 2 }],
+        pts: [{ cm: 50, t: 'Pr', v: '+50 cm', c: 'hyp', creux: true, pas: 1 }, { cm: -20, t: 'Pp', v: '20 cm', c: 'hyp', pas: 2 }] },
+      { titre: 'Avec sa lentille +2,00', c: 'emm', zones: [{ de: INF, a: -14.3, c: 'emm', pas: 3 }],
+        pts: [{ cm: INF, t: 'Pr', v: '', c: 'emm', pas: 3 }, { cm: -14.3, t: 'Pp', v: '14,3 cm', c: 'emm', pas: 3 }] }] }, W),
+    'axe-arthur': W => axes({ avant: 72, arriere: 4, label: 'Arthur : où il voit net', reperes: [{ cm: -40, t: 'livre · 40 cm' }], rangs: [
+      { titre: 'Sans lunettes', c: 'myo', zones: [{ de: -33.3, a: -20, c: 'myo', pas: 2 }],
+        pts: [{ cm: -33.3, t: 'Pr', v: '33', c: 'myo', pas: 1 }, { cm: -20, t: 'Pp', v: '20', c: 'myo', pas: 2 }] },
+      { titre: 'Lunettes de loin −3,00', c: 'emm', zones: [{ de: INF, a: -50, c: 'emm', pas: 3 }],
+        pts: [{ cm: INF, t: 'Pr', v: '', c: 'emm', pas: 3 }, { cm: -50, t: 'Pp', v: '50', c: 'emm', pas: 3 }] },
+      { titre: 'Lunettes de lecture −1,50', c: 'aide', zones: [{ de: -66.7, a: -28.6, c: 'aide', pas: 4 }],
+        pts: [{ cm: -66.7, t: 'Pr', v: '66,7', c: 'aide', pas: 4 }, { cm: -28.6, t: 'Pp', v: '28,6', c: 'aide', pas: 4 }] }] }, W)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', puissance: 'La puissance', pres: 'Voir de près', ametropies: 'Les amétropies', prpp: 'Le Pr et le Pp', corriger: 'Corriger', methode: 'La méthode' };
+  const CLE = 'diapos-opt-m6-m7';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'c8789cbea912';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>
