@@ -105,7 +105,7 @@ h2 { font-size: var(--t-xl); max-width: 26ch; }
 .visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
 .texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
 .texte p { margin: 0; }
-.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
 .note { color: var(--doux); font-size: var(--t-s); }
 .sous { font-weight: 700; }
 .etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
@@ -158,6 +158,7 @@ h2 { font-size: var(--t-xl); max-width: 26ch; }
 .rangs { display: flex; flex-direction: column; gap: 12px; }
 .rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
 .rang svg { display: block; width: 100%; height: auto; }
+@media (min-width: 880px) { .rang { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); } }
 .rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
 .rang p { margin: 0; font-size: var(--t-s); }
 
@@ -253,6 +254,16 @@ svg .zonule { fill: none; stroke: var(--doux); stroke-width: 1.6; }
 svg .eau { fill: var(--doux); fill-opacity: .22; }
 svg .separe { stroke: var(--trait); stroke-width: 1; }
 
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
 @media (prefers-reduced-motion: reduce) {
   [data-pas], .progres i { transition: none; }
   .diapo.entre .cadre { animation: none; }
@@ -281,7 +292,7 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
         <div class="corps">
           <div class="texte">
             <h1>La croix optique&nbsp;: une Rx, deux méridiens</h1>
-            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo, puis le comptoir du module 5&nbsp;: les deux sont à la sommative UA2 du 23 novembre. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="chapeau">Le module 7, puis le comptoir du module 5, en 16 minutes, une idée par diapo&nbsp;: les deux sont à la sommative UA2 du 23 novembre. Ensuite, l'atelier sert à t'entraîner.</p>
             <p class="meta">23 diapos · ≈ 16 min</p>
             <ul class="code" aria-label="Code couleur">
               <li class="c-emm">le méridien de l'axe&nbsp;: la sphère</li>
@@ -758,7 +769,6 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
               <li data-pas="2"><span>Puis&nbsp;: une condition médicale admissible, ou un programme (POSPH/ODSP, OW)&nbsp;?</span></li>
             </ol>
             <p class="piege"><b>Piège</b>De 20 à 64&nbsp;ans, en santé&nbsp;: aucun examen majeur couvert.</p>
-            <p class="note">À l'UA1, l'aide-mémoire OHIP donnait les codes, pas les fréquences&nbsp;: celles-là, apprends-les.</p>
           </div>
         </div>
         <p class="retiens"><span>À retenir</span>12, 18 ou 24 mois, ou rien&nbsp;: l'âge le jour de l'examen décide.</p>
@@ -1248,9 +1258,22 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
     memoriser();
   }
 
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
   function suite() {
     const m = maxPas(diapos[cur]);
-    if (rev < m) { rev++; majChrome(); }
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
     else if (cur < N - 1) aller(cur + 1);
     else aller(0);
   }
@@ -1347,7 +1370,7 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
 </script>
 <script>
 (() => {
-  const ICI = 'a55b77ff2e52';
+  const ICI = 'feb0b0b20e5c';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
