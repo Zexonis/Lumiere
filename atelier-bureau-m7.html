@@ -550,7 +550,7 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
   .grand-chiffre{font-size:32px}
 }
 /* ======================================================================
-   Au comptoir (partie 6) : l'aide-mémoire, la calculatrice, la grille, les factures à relire
+   Au comptoir (partie 7) : l'aide-mémoire, la calculatrice, la grille, les factures à relire
    ====================================================================== */
 .cpt-barre{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:14px 0 0}
 .cpt-barre .legende{margin:0;font-size:13.5px;color:var(--ink-3)}
@@ -593,6 +593,21 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
   .am-tiroir{width:100%;border-left:0}
   .cpt-grille th:nth-child(3),.cpt-grille td:nth-child(3){display:none}
 }
+/* ======================================================================
+   La transposition (partie 6) : le tableau Rx originale → Rx transposée, la droite, l'analyse pas à pas, les exercices
+   ====================================================================== */
+.tr-table th[scope="row"]{white-space:nowrap;font-weight:600;color:var(--ink-2);text-align:left}
+.tr-table td.n{text-align:center}
+.tr-vide{color:var(--accent);font-weight:800}
+#tr-droite .lbl-deg{font-size:14px} #tr-droite .lbl-val{font-size:17px}
+.aa-liste{margin:12px 0 0}
+.aa-ex{margin-top:10px}
+.aa-ex label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.aa-ex .atoi-rx{font-size:15px}
+.aa-tout{margin-top:6px}
+.aa-tout summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.px-rep input.px-transpo-champ{width:min(100%,25em)}
+#tc-res .mesure{flex:1 1 210px} #tc-res .mesure .v{font-size:16px;overflow-wrap:anywhere}
 
 /* ======================================================================
    v2 : pas et maîtrise, Rappel du jour, annotations, Vis-le, gestes,
@@ -1471,7 +1486,7 @@ body.ar-ouverte .tb.cote{z-index:335}
   <header class="tete">
     <p class="eyebrow">Principes et procédures d'un bureau ophtalmique (ADM 0010) · Modules 7 et 5</p>
     <h2>Dessiner l'ordonnance sur l'œil</h2>
-    <p class="chapeau">Tout le module tient en une règle : <b>la sphère va sur le méridien de l'axe ; la sphère + le cylindre va sur le méridien à 90°</b>. La croix montre ensuite où tombent les foyers et quel est le type d'astigmatisme. Cet atelier parcourt les trois decks en onze écrans courts, puis te fait pratiquer sur les 20 exercices du cours. La partie 6, <b>Au comptoir</b>, ajoute la matière du module 5 pour les exercices de l'UA2 : les rendez-vous OHIP et la facturation, en sept écrans, avec des nombres frais.</p>
+    <p class="chapeau">Tout le module tient en une règle : <b>la sphère va sur le méridien de l'axe ; la sphère + le cylindre va sur le méridien à 90°</b>. La croix montre ensuite où tombent les foyers et quel est le type d'astigmatisme. Cet atelier parcourt les trois decks de la croix en onze écrans courts, puis te fait pratiquer sur les 20 exercices du cours. La partie 6, <b>La transposition</b>, ajoute la suite du module 7 en quatre écrans : transposer, la croix d'une Rx à cylindre positif, l'analyse d'une ordonnance. La partie 7, <b>Au comptoir</b>, ajoute la matière du module 5 pour les exercices de l'UA2 : les rendez-vous OHIP et la facturation, en sept écrans, avec des nombres frais.</p>
   </header>
 
   <div class="questions-ouvertes">
@@ -1491,6 +1506,11 @@ body.ar-ouverte .tb.cote{z-index:335}
       <button type="button" class="btn" data-aller="types">Les cinq types →</button>
     </div>
     <div class="carte-q">
+      <p class="lib">La suite du module · <span class="src">7.1T-d7</span></p>
+      <blockquote>« Une même correction peut s’écrire de deux façons… et corriger la même amétropie. »</blockquote>
+      <button type="button" class="btn" data-aller="transpo-pourquoi">La transposition →</button>
+    </div>
+    <div class="carte-q">
       <p class="lib">Au comptoir · <span class="src">EF p2</span></p>
       <blockquote>« Une fois tout considéré, combien sera déboursé par le patient? »</blockquote>
       <button type="button" class="btn" data-aller="cpt-factures">Au comptoir →</button>
@@ -1498,12 +1518,13 @@ body.ar-ouverte .tb.cote{z-index:335}
   </div>
 
   <div class="bloc">
-    <p class="lib">Les quatre idées du module : tout le reste en découle</p>
+    <p class="lib">Les cinq idées du module : tout le reste en découle</p>
     <div class="idees">
       <div class="idee" style="--c:var(--accent)"><h4>1 · Ce que la croix montre</h4><p>la Rx de loin seulement : sphère, cylindre, axe, sur deux méridiens. Ni prisme, ni addition, ni OD/OS.</p></div>
       <div class="idee" style="--c:var(--m1)"><h4>2 · Construire</h4><p>① la sphère sur le méridien de l'axe · ② sphère + cylindre sur le 2e méridien · ③ le 2e méridien est à 90°.</p></div>
       <div class="idee" style="--c:var(--m2)"><h4>3 · L'axe oblique</h4><p>axe ± 090, en restant entre 001 et 180 · option A : les vrais méridiens · option B : une croix droite étiquetée.</p></div>
       <div class="idee" style="--c:var(--retine)"><h4>4 · Lire la croix</h4><p>le signe de chaque méridien situe son foyer (devant, derrière, sur la rétine) ; les deux signes nomment l'astigmatisme.</p></div>
+      <div class="idee" style="--c:var(--m2)"><h4>5 · Transposer</h4><p>SPH + CYL, inverser le CYL, axe ± 090, prisme et ADD recopiés : la même correction, l'autre écriture. Avant d'analyser une Rx, son CYL doit être absent ou négatif.</p></div>
     </div>
   </div>
 
@@ -1540,7 +1561,7 @@ body.ar-ouverte .tb.cote{z-index:335}
       <div class="legende-codes">
         <span>« … »</span><span>les mots exacts de la prof, fautes comprises, marquées <span class="sic">(sic)</span>.</span>
         <span><span class="deduit">déduit</span></span><span>un lien qui découle des diapos, mais qu'elles ne font pas elles-mêmes.</span>
-        <span><span class="src">7.3-d15</span></span><span>deck et diapo. <b>7.1</b> croix sphérique · <b>7.2</b> torique, axes 090 et 180 · <b>7.3</b> torique avancée · <b>UA1</b> module 3 de Bureau · <b>TO</b> Tests ophtalmiques. Au comptoir : <b>4.1</b>, <b>4.2</b> les decks du module 5, <b>ASO</b> les notes OHIP, <b>AM</b> l'aide-mémoire, <b>EF/EFR</b> et <b>EO</b> les exercices.</span>
+        <span><span class="src">7.3-d15</span></span><span>deck et diapo. <b>7.1</b> croix sphérique · <b>7.2</b> torique, axes 090 et 180 · <b>7.3</b> torique avancée · <b>UA1</b> module 3 de Bureau · <b>TO</b> Tests ophtalmiques. La transposition : <b>7.1T</b>, <b>7.2T</b>, <b>7.3T</b> les diapos du 2 nov., <b>PDF</b> la fiche des étapes, <b>MP4</b> la vidéo de la prof sur la transposition. Au comptoir : <b>4.1</b>, <b>4.2</b> les decks du module 5, <b>ASO</b> les notes OHIP, <b>AM</b> l'aide-mémoire, <b>EF/EFR</b> et <b>EO</b> les exercices.</span>
         <span><span class="hors">hors cours</span></span><span>un ajout qui n'est pas dans les fichiers du cours.</span>
         <span><span class="etiquette m1">axe</span></span><span>bleu-vert : le méridien de l'axe, qui porte la sphère.</span>
         <span><span class="etiquette m2">2e</span></span><span>orange : le 2e méridien, qui porte la sphère + le cylindre.</span>
@@ -1549,7 +1570,7 @@ body.ar-ouverte .tb.cote{z-index:335}
   </div>
 
   <div class="astuce">
-    <b>L'examen.</b> Sommative UA2 : lundi 23 novembre 2026, 35 % (« UA2: 23 novembre 2026 35% », introduction du cours). Format selon le tableau chronologique : réponses courtes, QCM, V/F. Le tableau remet la croix au module 9 (9 nov.) avec les cinq types d'astigmatisme. Pratique : deux questionnaires eCité, « *Pratique = Illimité et avec correction automatique » <span class="src">7.3-d39</span>. Le tableau ajoute au module 11 « -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » : la matière du module 5 (facturation, OHIP, assurances), entraînée dans la partie 6, Au comptoir. Les aides de l'UA2 ne sont pas annoncées ; à l'UA1, l'« Aide-mémoire OHIP » était fourni et la « Calculatrice de base » permise.
+    <b>L'examen.</b> Sommative UA2 : lundi 23 novembre 2026, 35 % (« UA2: 23 novembre 2026 35% », introduction du cours). Format selon le tableau chronologique : réponses courtes, QCM, V/F. Le tableau remet la croix au module 9 (9 nov.) avec les cinq types d'astigmatisme. Pratique : deux questionnaires eCité, « *Pratique = Illimité et avec correction automatique » <span class="src">7.3-d39</span>. Le tableau ajoute au module 11 « -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » : la matière du module 5 (facturation, OHIP, assurances), entraînée dans la partie 7, Au comptoir. La transposition est au programme de l'UA2 : elle est entraînée dans la partie 6. Les aides de l'UA2 ne sont pas annoncées ; à l'UA1, l'« Aide-mémoire OHIP » était fourni et la « Calculatrice de base » permise.
   </div>
 
   <div class="ctrl" style="margin-top:22px">
@@ -2137,11 +2158,346 @@ body.ar-ouverte .tb.cote{z-index:335}
   <div class="astuce"><b>Au tableau.</b> « *Attn: Réserve croix optique au tableau pour analyse avancée » <span class="src">7.2-d30</span> : pour chaque croix, la prof demande aussi les points focaux, l'amétropie et le type <span class="src">7.2-d31</span>. Pour pratiquer sans fin : l'onglet <b>Au hasard</b>, ou les questionnaires eCité.</div>
 </section>
 
+<!-- ===================================================================== TRANSPOSITION : DÉBUT -->
+<!-- ===================================================================== TRANSPOSITION · DEUX ÉCRITURES -->
+<section class="ecran" data-id="transpo-pourquoi" data-partie="6 · La transposition" data-titre="Deux écritures, une correction">
+  <header class="tete">
+    <p class="eyebrow">Partie 6 · La transposition · I2</p>
+    <h2>Deux écritures, une correction</h2>
+    <p class="chapeau">« Une même correction peut s’écrire de deux façons… et corriger la même amétropie. » <span class="src">7.1T-d7</span> L'optométriste écrit le cylindre en négatif, l'ophtalmologiste en positif. Transposer, c'est passer d'une écriture à l'autre sans rien changer à la correction.</p>
+  </header>
+
+  <div class="regle">
+    <ul>
+      <li>Qui écrit quoi : « en général: » « OD et RO = - cyl » ; « MD = + cyl » <span class="src">7.1T-d5</span>. Ici, OD est l'optométriste, RO l'opticien, MD l'ophtalmologiste.</li>
+      <li>« La transposition, c'est l'échange d'ordonnances entre un format de cylindre négatif et un cylindre positif. » <span class="src">MP4</span></li>
+      <li>La règle d'or : « Transposer, ce n’est pas changer la correction : c’est apprendre à la lire sous une autre forme. » <span class="src">7.1T-d7</span></li>
+      <li>Les deux écritures posent les mêmes pouvoirs sur les mêmes méridiens, donc la même croix : « Même puissance d’optique! » <span class="src">7.1T-d22</span>. Le lien avec ① et ② du module 7 est un raisonnement <span class="deduit">déduit</span>.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Essaie · une croix, deux écritures</p>
+    <div class="presets" id="tp-paires" role="group" aria-label="Les exemples du cours"></div>
+    <div class="atelier-croix" style="margin-top:12px">
+      <figure class="fig"><svg id="tp-svg" class="croix-svg" viewBox="0 0 380 300" role="img" aria-label="La croix des deux écritures"></svg>
+        <figcaption id="tp-leg"></figcaption></figure>
+      <div>
+        <div class="puces" id="tp-ecriture" role="group" aria-label="Écriture">
+          <button type="button" class="puce" data-f="moins" aria-pressed="true">CYL négatif · optométriste</button>
+          <button type="button" class="puce" data-f="plus" aria-pressed="false">CYL positif · ophtalmologiste</button>
+        </div>
+        <p class="atoi-rx" id="tp-rx" style="margin:12px 0 0"></p>
+        <div class="calc" id="tp-calc"></div>
+        <div class="res-croix" id="tp-res"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Distingue · OD, l'optométriste ou l'œil droit ?</p>
+    <p style="margin:0 0 10px;font-size:15.5px">Le même sigle a deux sens dans ces diapos. Pour chaque ligne, choisis.</p>
+    <div class="tri" id="tp-od"></div>
+    <div class="ctrl"><button type="button" class="btn plein" id="tp-od-ok">Vérifier</button><button type="button" class="btn" id="tp-od-zero">Recommencer</button></div>
+    <p class="retour" id="tp-od-retour" aria-live="polite"></p>
+  </div>
+
+  <div class="duo" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Deux langages · <span class="src">7.1T-d4, MP4</span></p>
+      <p style="margin:0 0 8px;font-size:15.5px">La note de la diapo : « Cyl - = ‘’langage’’ des orthèses visuelles vs Cyl + = ‘’langage’’ de la cornée ».</p>
+      <p style="margin:0;font-size:15.5px">Dans la vidéo : « Ces deux formats sont équivaux, c'est juste que c'est écrit différent. » <span class="sic">(sic)</span></p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Pourquoi l'opticien lit les deux · <span class="src">7.3T-d5</span></p>
+      <p style="margin:0 0 8px;font-size:15.5px">Une Rx d'ophtalmologiste arrive en cylindre positif. Pour nommer son type, il faut la remettre en cylindre négatif : « La transposition vous permettra de changer l’ordonnance en cylindre négatif. »</p>
+      <p style="margin:0;font-size:15.5px">La suite de la partie : transposer en quatre étapes, la croix d'une Rx à cylindre positif, puis l'analyse.</p>
+    </div>
+  </div>
+
+  <div class="piege"><b>Le piège.</b> L'image de 7.1T-d2 dit « Même patient… Résultats différents selon le professionnel ». Pourtant ses nombres, +2.00 -1.00 x 065 chez l'optométriste et +1.00 +1.00 x 155 chez l'ophtalmologiste, sont la même Rx transposée : même croix, même correction <span class="deduit">déduit</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="a" data-explique="« OD et RO = - cyl » ; « MD = + cyl » (7.1T-d5) : OD est l’optométriste, RO l’opticien.">
+      <p>Dans « OD et RO = - cyl », OD veut dire…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">l'optométriste</button><button type="button" class="puce" data-v="b">l'œil droit</button><button type="button" class="puce" data-v="c">l'œil gauche</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="Les deux mettent +2.00 sur 065 et +1.00 sur 155 : « Même puissance d’optique! » (7.1T-d22).">
+      <p>+2.00 -1.00 x 065 et +1.00 +1.00 x 155 : leurs croix sont…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">identiques</button><button type="button" class="puce" data-v="b">différentes : deux corrections</button><button type="button" class="puce" data-v="c">tournées de 90° l'une par rapport à l'autre</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="« MD = + cyl », « en général » (7.1T-d5) : l’ophtalmologiste écrit le cylindre en positif.">
+      <p>Une Rx écrite en cylindre positif vient, en général…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">d'un optométriste</button><button type="button" class="puce" data-v="b">d'un ophtalmologiste</button><button type="button" class="puce" data-v="c">d'un opticien</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== TRANSPOSITION · LES 4 ÉTAPES -->
+<section class="ecran" data-id="transposer" data-partie="6 · La transposition" data-titre="Transposer en 4 étapes">
+  <header class="tete">
+    <p class="eyebrow">Partie 6 · La transposition · I1</p>
+    <h2>Transposer en 4 étapes</h2>
+    <p class="chapeau">Quatre étapes, toujours dans le même ordre : la sphère, le cylindre, l'axe, puis ce qu'on recopie <span class="src">7.1T-d8</span>. Au tableau, la prof les abrège : « 1: Sph + Cyl 2: +/- cyl 3: +/- 90 » <span class="src">7.1T-d8, note</span>.</p>
+  </header>
+
+  <div class="regle">
+    <ol>
+      <li>« Étape 1 : (SPH) + (CYL) = nouveau SPH » ; « Additionner le SPH et CYL algébriquement » <span class="src">7.1T-d8 ; PDF</span>. Plano compte pour 0 : « Plano veut dire 0 » <span class="src">MP4</span>.</li>
+      <li>« Étape 2 : Inverser la force du CYL = nouveau CYL » ; « Changer le signe du CYL » <span class="src">7.1T-d8 ; PDF</span>. Même valeur, signe contraire : « S'il est positif, on change à négatif. » <span class="src">MP4</span></li>
+      <li>« Étape 3 : Additionner ou soustraire 90 degrés à l’axe » ; « (Rappel: axe doit se retrouver entre 001 et 180) » <span class="src">7.1T-d8</span>. Axe jusqu'à 090 : on additionne ; au-delà de 090 : on soustrait. Ce seuil est tiré des cas de la vidéo <span class="deduit">déduit</span>.</li>
+      <li>« Étape 4 : Pouvoir addition et prisme demeurent les mêmes » <span class="src">7.1T-d8</span> : on les recopie. « Mais il doit être transféré. » « Et vous ne pouvez pas l'oublier. » <span class="src">MP4</span></li>
+    </ol>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Essaie · écris une Rx, puis transpose-la étape par étape</p>
+    <div class="ligne-champ"><label class="sr" for="tr-rx">Ordonnance à transposer</label><input class="champ rx-saisie" id="tr-rx" value="-8.00 +2.00 x 135" autocomplete="off" spellcheck="false" aria-label="Ordonnance à transposer"></div>
+    <div class="presets" id="tr-presets"></div>
+    <p class="msg" id="tr-msg" aria-live="polite"></p>
+    <div class="puces" id="tr-etapes" role="group" aria-label="Étapes de la transposition" style="margin-top:10px">
+      <button type="button" class="puce" data-e="1" aria-pressed="true">1 · SPH + CYL</button>
+      <button type="button" class="puce" data-e="2" aria-pressed="false">2 · inverser le CYL</button>
+      <button type="button" class="puce" data-e="3" aria-pressed="false">3 · axe ± 090</button>
+      <button type="button" class="puce" data-e="4" aria-pressed="false">4 · prisme et ADD</button>
+    </div>
+    <div class="tab-wrap">
+      <table class="tr-table">
+        <thead><tr><th scope="col"><span class="sr">Ligne</span></th><th scope="col">SPH</th><th scope="col">CYL</th><th scope="col">AXE</th><th scope="col">PRISME</th><th scope="col">ADD</th></tr></thead>
+        <tbody id="tr-table"></tbody>
+      </table>
+    </div>
+    <figure class="fig" id="tr-droite-fig"><svg id="tr-droite" class="croix-svg" viewBox="0 0 520 130" role="img" aria-label="Droite des dioptries : la sphère, puis le cylindre ajouté"></svg>
+      <figcaption>L'étape 1 sur la droite des dioptries : un cylindre négatif fait reculer, un cylindre positif fait monter. « on additionne du négatif. Donc, on doit reculer dans l'échelle » <span class="src">MP4</span></figcaption></figure>
+    <div class="calc" id="tr-calc"></div>
+    <p class="legende" id="tr-croix"></p>
+  </div>
+
+  <div class="duo" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Une Rx sans cylindre · <span class="src">MP4</span></p>
+      <p style="margin:0 0 8px;font-size:15.5px">-1.00 : rien à transposer, car « pour faire une transposition, nous devons avoir la cylindre ».</p>
+      <p style="margin:0;font-size:15.5px">Une Rx a un nombre, ou trois : « tu ne vas jamais avoir un cylindre sans axe et tu ne vas jamais avoir un axe sans cylindre ».</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">À rebours · retrouver la Rx d'origine</p>
+      <p style="margin:0 0 8px;font-size:15.5px">Transposer deux fois rend la Rx de départ : (SPH + CYL) − CYL = SPH ; le signe du cylindre change deux fois ; ± 090 deux fois <span class="deduit">déduit</span>.</p>
+      <p style="margin:0;font-size:15.5px">-6.00 -2.00 x 045 et -8.00 +2.00 x 135 sont l'une la transposée de l'autre <span class="src">7.1T-d23</span>.</p>
+    </div>
+  </div>
+
+  <div data-atoi-transpo></div>
+
+  <div class="piege"><b>Le piège</b> de l'exemple du cours, « svp transposer: -8.00 +2.00 x 135 » <span class="src">7.1T-d16</span> : « (-8.00) + (+2.00) » donne -6.00, pas -10.00. Additionner un positif, c'est monter sur la droite : « on va augmenter dans l'échelle » <span class="src">MP4</span>. Et 135 + 090 = 225 sortirait de la plage 001-180 : « 135 - 090 » <span class="src">7.1T-d20</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="a" data-explique="On additionne du négatif : on recule de 0.75 sur la droite, (+1.00) + (-0.75) = +0.25 (vidéo de la prof).">
+      <p>+1.00 -0.75 x 025, étape 1 : la nouvelle sphère vaut…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">+0.25</button><button type="button" class="puce" data-v="b">+1.75</button><button type="button" class="puce" data-v="c">-0.25</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="090 − 090 donnerait 0, « qui n'est pas un axe d'ordonnance » (MP4) : on additionne, 090 + 090 = 180.">
+      <p>Étape 3, axe 090 : le nouvel axe est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">000</button><button type="button" class="puce" data-v="b">180</button><button type="button" class="puce" data-v="c">090</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« Étape 4 : Pouvoir addition et prisme demeurent les mêmes » (7.1T-d8).">
+      <p>-2.00 +1.50 x 110 Add +2.00 : dans la transposée, l'addition devient…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">Add +2.00</button><button type="button" class="puce" data-v="b">Add -2.00</button><button type="button" class="puce" data-v="c">rien : elle disparaît</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== TRANSPOSITION · LA CROIX -->
+<section class="ecran" data-id="transpo-croix" data-partie="6 · La transposition" data-titre="La croix d'une Rx à CYL positif">
+  <header class="tete">
+    <p class="eyebrow">Partie 6 · La transposition · I3</p>
+    <h2>La croix d'une Rx à CYL positif</h2>
+    <p class="chapeau">Les trois règles du module 7 valent aussi en cylindre positif, sans transposer : « Démontrer la croix optique », avec OD -1.00 +0.50 x 065 et OS -1.50 +0.75 x 105 <span class="src">7.2T-d5</span>. Et une croix donne deux Rx : l'une en cylindre négatif, l'autre en cylindre positif.</p>
+  </header>
+
+  <div class="regle">
+    <ul>
+      <li>La sphère va sur l'axe : « 065 » reçoit -1.00 <span class="src">7.2T-d7</span>. Puis « Axe du 2e méridien: +/- 090 » : 065 + 090 = 155 ; « Force du 2e méridien: SPH + CYL » : (-1.00) + (+0.50) = -0.50 <span class="src">7.2T-d8, d10</span>.</li>
+      <li>« Un dernier élément à ajouter à la croix optique est le cylindre » <span class="src">7.2T-d13</span> : deux flèches, dans le quart en bas à droite. Vers le bras du pouvoir le plus négatif, -0.50 ; vers l'autre, +0.50 <span class="src">7.2T-d15</span>. La règle des signes est tirée de ces valeurs <span class="deduit">déduit</span>.</li>
+      <li>De la croix aux Rx : le méridien le plus positif donne « RX - OD - CYL NÉGATIF », le plus négatif « Rx - MD - CYL POSITIF » <span class="src">7.2T-d22, d23</span>. Ce sont deux transposées : « TRANSPOSITION ! » <span class="src">7.2T-d25</span></li>
+      <li>Sur une croix droite : « Méridien Horizontal » « (axe le plus près de 180 ou 0) » ; « Méridien Vertical » « (axe le plus près de 090) » <span class="src">7.2T-d3</span>.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Essaie · la croix d'une Rx, en cylindre positif ou négatif</p>
+    <div class="ligne-champ"><label class="sr" for="tc-rx">Ordonnance</label><input class="champ rx-saisie" id="tc-rx" value="OD -1.00 +0.50 x 065" autocomplete="off" spellcheck="false" aria-label="Ordonnance"></div>
+    <div class="presets" id="tc-presets"></div>
+    <p class="msg" id="tc-msg" aria-live="polite"></p>
+    <div class="atelier-croix" style="margin-top:12px">
+      <figure class="fig"><svg id="tc-svg" class="croix-svg" viewBox="0 0 380 300" role="img" aria-label="Croix de l'ordonnance, avec les flèches du cylindre"></svg>
+        <figcaption id="tc-leg"></figcaption></figure>
+      <div>
+        <div class="calc" id="tc-calc" style="margin-top:0"></div>
+        <div class="res-croix" id="tc-res"></div>
+      </div>
+    </div>
+    <p class="legende" id="tc-bras" style="font-size:14.5px"></p>
+  </div>
+
+  <div class="duo" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Le gabarit de la prof · <span class="src">7.2T-d16</span></p>
+      <figure class="fig" style="margin:0"><svg class="croix-svg" viewBox="0 0 420 230" role="img" aria-label="Gabarit de la croix : Axe Vertical en haut, Pouvoir Vertical en bas, Axe Horizontal à gauche, Pouvoir Horizontal à droite, deux flèches CYL en bas à droite">
+        <defs><marker id="pointe-gab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="c-acc"/></marker></defs>
+        <line x1="155" y1="115" x2="265" y2="115" class="d-trait" stroke-width="4" stroke-linecap="round"/>
+        <line x1="210" y1="60" x2="210" y2="170" class="d-trait" stroke-width="4" stroke-linecap="round"/>
+        <text x="210" y="50" text-anchor="middle" class="lbl-deg halo">Axe Vertical</text>
+        <text x="210" y="192" text-anchor="middle" class="lbl-deg halo">Pouvoir Vertical</text>
+        <text x="149" y="120" text-anchor="end" class="lbl-deg halo">Axe Horizontal</text>
+        <text x="271" y="120" text-anchor="start" class="lbl-deg halo">Pouvoir Horizontal</text>
+        <line x1="255" y1="122" x2="216" y2="161" class="d-acc" stroke-width="2.2" marker-end="url(#pointe-gab)"/>
+        <line x1="226" y1="170" x2="265" y2="131" class="d-acc" stroke-width="2.2" marker-end="url(#pointe-gab)"/>
+        <text x="224" y="137" text-anchor="middle" class="lbl-deg c-acc halo">CYL</text>
+        <text x="262" y="166" text-anchor="middle" class="lbl-deg c-acc halo">CYL</text>
+      </svg></figure>
+      <p class="legende" style="margin-top:6px">Le degré à gauche et en haut, le pouvoir à droite et en bas, les flèches du cylindre en bas à droite.</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">L'autre chemin · la vidéo de la prof</p>
+      <p style="margin:0 0 8px;font-size:15.5px">Dans sa vidéo, la prof transpose d'abord, puis pose la sphère de chaque écriture sur son propre axe. Pour -1.00 -0.50 x 180 et sa transposée -1.50 +0.50 x 090 : -1.00 sur 180, -1.50 sur 090. C'est la même croix qu'avec les trois règles.</p>
+      <p style="margin:0;font-size:15.5px"><b>À vérifier.</b> Pour le bras horizontal, la vidéo prend le plus grand des deux nombres (125 plutôt que 035) ; les diapos disent « (axe le plus près de 180 ou 0) » et mettent 015 à l'horizontale <span class="src">7.2T-d12</span>. À 045 et 135, aucune des deux règles ne tranche. Les pouvoirs ne changent pas, et l'atelier ne te demande jamais le bras.</p>
+    </div>
+  </div>
+
+  <div data-atoi-transpo></div>
+
+  <div class="piege"><b>Le piège.</b> « RX - OD - CYL NÉGATIF » ne parle pas de l'œil droit : OD, c'est l'optométriste, qui écrit le cylindre en négatif <span class="src">7.2T-d22</span>. Et en cylindre positif, la sphère n'est pas le méridien le plus positif, mais le plus négatif.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="a" data-explique="105 − 090 = 015 ; (-1.50) + (+0.75) = -0.75 sur 015 (7.2T-d8, d10).">
+      <p>OS -1.50 +0.75 x 105 : quelle valeur sur le méridien 015 ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">-0.75</button><button type="button" class="puce" data-v="b">-1.50</button><button type="button" class="puce" data-v="c">-2.25</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="En cylindre positif, la sphère est le plus négatif, -3.25 sur 120 ; CYL = (-2.00) − (-3.25) = +1.25.">
+      <p>Croix : -2.00 sur 030, -3.25 sur 120. Sa Rx en cylindre positif ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">-3.25 +1.25 x 120</button><button type="button" class="puce" data-v="b">-2.00 -1.25 x 030</button><button type="button" class="puce" data-v="c">-3.25 +1.25 x 030</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="Vers le bras du pouvoir le plus négatif, -|CYL| ; vers l’autre, +|CYL| (7.2T-d15 ; règle déduite des valeurs).">
+      <p>La flèche du cylindre qui pointe vers le bras le plus négatif porte…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">+|CYL|</button><button type="button" class="puce" data-v="b">-|CYL|</button><button type="button" class="puce" data-v="c">le pouvoir de ce bras</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== TRANSPOSITION · L'ANALYSE AVANCÉE -->
+<section class="ecran" data-id="analyse-avancee" data-partie="6 · La transposition" data-titre="Analyser une Rx à CYL positif">
+  <header class="tete">
+    <p class="eyebrow">Partie 6 · La transposition · I4</p>
+    <h2>Analyser une Rx à CYL positif</h2>
+    <p class="chapeau">« BASE = Analyse rx avec Cyl négatif » ; « AVANCÉE = Comment analyser une ordonnance avec un CYL Positif? » <span class="src">7.3T-d4</span> La réponse tient en une règle : « AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF » <span class="src">7.3T-d5</span>.</p>
+  </header>
+
+  <div class="regle">
+    <ul>
+      <li>« Ordonnance avec CYL Positif = Transposition (à suivre) » <span class="src">7.3T-d7</span> : « La transposition vous permettra de changer l’ordonnance en cylindre négatif. » <span class="src">7.3T-d5</span></li>
+      <li>Ensuite seulement, le signe de la sphère : « SPH négatif = MYOPE » ; « SPH Positif = HYPERMÉTROPE » ; « Si PLANO = aucun ajout à l’analyse car méridien emmétrope » <span class="src">7.3T-d9</span>.</li>
+      <li>« Résultat MONOCULAIRE » : un nom par œil ; « *OU peut être utilisé si deux yeux ont même analyse » <span class="src">7.3T-d33</span>.</li>
+    </ul>
+  </div>
+
+  <div class="tab-wrap">
+    <table>
+      <thead><tr><th>Étape</th><th>La question de la prof (7.3T-d33)</th><th>Ce qu'on ajoute au nom</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>« Étape 1 = Pouvons-nous faire l’analyse? »</td><td>CYL absent ou négatif : on continue ; CYL positif : « Transposition (à suivre) »</td></tr>
+        <tr><td class="n">2</td><td>« Étape 2 = Quel est le pouvoir du sphère? » <span class="sic">(sic)</span></td><td>MYOPE ou HYPERMÉTROPE ; Plano : rien</td></tr>
+        <tr><td class="n">3</td><td>« Étape 3 = As-t-il de l’astigmatisme? » <span class="sic">(sic)</span></td><td>« Ordonnance avec SPH seul = SPHÉRIQUE » ; avec un CYL et un axe, TORIQUE</td></tr>
+        <tr><td class="n">4</td><td>« Étape 4 = As-t-il un prisme? » <span class="sic">(sic)</span></td><td>« Ordonnance avec Prisme = PRISMATIQUE »</td></tr>
+        <tr><td class="n">5</td><td>« Étape 5 = As-t-il un pouvoir d’addition? » <span class="sic">(sic)</span></td><td>« Ordonnance avec ADD =PRESBYTE »</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Essaie · analyse une Rx, étape par étape</p>
+    <div class="ligne-champ"><label class="sr" for="aa-rx">Ordonnance à analyser</label><input class="champ rx-saisie" id="aa-rx" value="OD -3.75 +4.00 x 166 Add +2.00" autocomplete="off" spellcheck="false" aria-label="Ordonnance à analyser"></div>
+    <div class="presets" id="aa-presets"></div>
+    <div class="puces" id="aa-etapes" role="group" aria-label="Étapes de l'analyse" style="margin-top:10px">
+      <button type="button" class="puce" data-e="1" aria-pressed="false">Étape 1</button>
+      <button type="button" class="puce" data-e="2" aria-pressed="false">Étape 2</button>
+      <button type="button" class="puce" data-e="3" aria-pressed="false">Étape 3</button>
+      <button type="button" class="puce" data-e="4" aria-pressed="false">Étape 4</button>
+      <button type="button" class="puce" data-e="5" aria-pressed="false">Étape 5</button>
+    </div>
+    <p class="msg" id="aa-msg" aria-live="polite"></p>
+    <ol class="px-etapes aa-liste" id="aa-liste"></ol>
+    <p class="calc" id="aa-res" hidden></p>
+  </div>
+
+  <div data-atoi-transpo></div>
+
+  <div class="bloc">
+    <p class="lib">La Rx complète · <span class="src">7.3T-d19 à d30</span></p>
+    <p style="margin:0 0 8px;font-size:15.5px">OD -1.00 ; OS Plano -0.50 x 180. La prof analyse : « RÉSULTAT: OD Myope Sphérique » ; « RÉSULTAT: OS Torique ». Puis elle demande : « Pts Focaux? » « Croix Optique? » « Type astigmatisme (si applicable)? »</p>
+    <details class="aa-tout"><summary>Voir la réponse, après avoir essayé</summary>
+      <p style="margin:8px 0 0;font-size:15.5px">OD -1.00 : un foyer, devant la rétine ; croix -1.00 sur 180 et sur 090 ; pas d'astigmatisme. OS : deux foyers ; croix Plano sur 180 (sur la rétine) et -0.50 sur 090 (devant) ; astigmatisme myope simple <span class="deduit">déduit</span>.</p>
+    </details>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Les exercices du cours · « Exercices: Décrire le type d’ordonnance » · <span class="src">7.3T-d44 à d67</span></p>
+    <div class="onglets" id="aa-onglets" role="tablist" aria-label="Exercices d'analyse"></div>
+    <div class="fiche">
+      <p class="lib" id="aa-ex-lib" style="margin:0"></p>
+      <div class="saisie-croix aa-ex">
+        <label><span id="aa-ex-od-rx" class="atoi-rx"></span><input class="champ" id="aa-ex-od" autocomplete="off" spellcheck="false" placeholder="le type, avec les mots du cours"></label>
+        <label><span id="aa-ex-os-rx" class="atoi-rx"></span><input class="champ" id="aa-ex-os" autocomplete="off" spellcheck="false" placeholder="le type, avec les mots du cours"></label>
+      </div>
+      <div class="ctrl"><button type="button" class="btn plein" id="aa-ex-ok">Vérifier</button><button type="button" class="btn" id="aa-ex-voir">Voir le corrigé</button></div>
+      <p class="retour" id="aa-ex-retour" aria-live="polite"></p>
+      <p class="legende" id="aa-ex-corr" hidden></p>
+    </div>
+  </div>
+
+  <div class="piege"><b>Le piège.</b> OD -3.75 +4.00 x 166 a l'air myope : sa sphère est négative. Mais le cylindre est positif : transposée, c'est +0.25 -4.00 x 076, et « OD: Hypermétrope Torique et Presbyte » <span class="src">7.3T-d62</span>. Dans les exercices de 7.3T-d61 à d67, cinq des sept Rx écrites avec une sphère négative sont hypermétropes une fois transposées.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="a" data-explique="« AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF » (7.3T-d5) : ici, il est positif.">
+      <p>-0.50 +1.25 x 090 : peut-on l'analyser tout de suite ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">non : le CYL est positif, on transpose d'abord</button><button type="button" class="puce" data-v="b">oui : il y a un cylindre</button><button type="button" class="puce" data-v="c">oui : la sphère est négative</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« Si PLANO = aucun ajout à l’analyse car méridien emmétrope » (7.3T-d9) ; CYL et axe : torique, comme « OD: Torique » (7.3T-d58).">
+      <p>Plano -1.00 x 045 : quel type ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">Torique</button><button type="button" class="puce" data-v="b">Myope Torique</button><button type="button" class="puce" data-v="c">Myope Sphérique</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="Transposée : (-1.25) + (+2.00) = +0.75, -2.00 x 120 : la sphère est positive, hypermétrope.">
+      <p>-1.25 +2.00 x 030 : après transposition, la sphère dit…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">hypermétrope (+0.75)</button><button type="button" class="puce" data-v="b">myope (-1.25)</button><button type="button" class="puce" data-v="c">emmétrope (Plano)</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+<!-- ===================================================================== TRANSPOSITION : FIN -->
+
 <!-- ===================================================================== COMPTOIR : DÉBUT -->
 <!-- ===================================================================== COMPTOIR · DEUX FACTURES -->
-<section class="ecran" data-id="cpt-factures" data-partie="6 · Au comptoir" data-titre="Deux factures, six étapes">
+<section class="ecran" data-id="cpt-factures" data-partie="7 · Au comptoir" data-titre="Deux factures, six étapes">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir : rendez-vous et facturation · module 5</p>
+    <p class="eyebrow">Partie 7 · Au comptoir : rendez-vous et facturation · module 5</p>
     <h2>Deux factures, six étapes</h2>
     <p class="chapeau">Avant le service ou la commande, le bureau dit au patient ce qu'il paiera : « Consentement éclairé! » <span class="src">4.1-d9</span>. Chaque cas du cours finit sur la même question : « Une fois tout considéré, combien sera déboursé par le patient? » <span class="src">EF p2</span></p>
   </header>
@@ -2218,9 +2574,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · ESCOMPTES -->
-<section class="ecran" data-id="cpt-escomptes" data-partie="6 · Au comptoir" data-titre="Les escomptes">
+<section class="ecran" data-id="cpt-escomptes" data-partie="7 · Au comptoir" data-titre="Les escomptes">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · étapes 1 à 3</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · étapes 1 à 3</p>
     <h2>Les escomptes</h2>
     <p class="chapeau">Trois sortes d'escomptes : « Rabais items », « Rabais en pourcentage (ex: 10%) », « Rabais monétaire (ex: 50$) » <span class="src">4.1-d8</span>. La facture est ce qui reste : « Facture = Frais - Escompte » <span class="src">4.1-d7</span>.</p>
   </header>
@@ -2306,9 +2662,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · OHIP -->
-<section class="ecran" data-id="cpt-ohip" data-partie="6 · Au comptoir" data-titre="OHIP : qui, tous les combien">
+<section class="ecran" data-id="cpt-ohip" data-partie="7 · Au comptoir" data-titre="OHIP : qui, tous les combien">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · étape 4</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · étape 4</p>
     <h2>OHIP : qui, tous les combien</h2>
     <p class="chapeau">OHIP paie des services, jamais des produits : « Couverture OHIP = Services en santé oculaire » <span class="src">4.2-d6</span>. Qui est couvert, et à quelle fréquence, dépend de l'âge le jour de l'examen et d'une condition ou d'un programme.</p>
   </header>
@@ -2376,9 +2732,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · RENDEZ-VOUS -->
-<section class="ecran" data-id="cpt-rdv" data-partie="6 · Au comptoir" data-titre="Le rendez-vous : la date, le code">
+<section class="ecran" data-id="cpt-rdv" data-partie="7 · Au comptoir" data-titre="Le rendez-vous : la date, le code">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · Gestion de rendez-vous</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · Gestion de rendez-vous</p>
     <h2>Le rendez-vous : la date, le code</h2>
     <p class="chapeau">« Lors de la prise de rendez-vous d’un examen majeur ou mineur il est important de savoir ce qui est permis par OHIP et quel code attribué au rendez-vous. » <span class="src">ASO p2</span></p>
   </header>
@@ -2479,9 +2835,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · ASSUREUR -->
-<section class="ecran" data-id="cpt-assureur" data-partie="6 · Au comptoir" data-titre="L'assureur : un %, deux plafonds">
+<section class="ecran" data-id="cpt-assureur" data-partie="7 · Au comptoir" data-titre="L'assureur : un %, deux plafonds">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · étape 5 (produit : 4)</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · étape 5 (produit : 4)</p>
     <h2>L'assureur : un %, deux plafonds</h2>
     <p class="chapeau">« Couverture d’assurance paie les frais médicaux qui ne sont pas couverts par le programme de soins provincial. » <span class="src">4.2-d11</span> Elle paie un pourcentage de la facture, jamais plus que son maximum, ni plus que ce qui reste du maximum.</p>
   </header>
@@ -2558,9 +2914,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · TROUVE L'ERREUR -->
-<section class="ecran" data-id="cpt-erreurs" data-partie="6 · Au comptoir" data-titre="Trouve l'erreur">
+<section class="ecran" data-id="cpt-erreurs" data-partie="7 · Au comptoir" data-titre="Trouve l'erreur">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · relire une facture</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · relire une facture</p>
     <h2>Trouve l'erreur</h2>
     <p class="chapeau">Un collègue a rempli la facture étape par étape, et une de ses lignes s'écarte du cours. Trouve la première étape fausse, puis nomme la règle oubliée. Relire ainsi, c'est vérifier ta propre facture avant de la donner au patient.</p>
   </header>
@@ -2597,9 +2953,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== COMPTOIR · CAS COMPLETS -->
-<section class="ecran" data-id="cpt-comptoir" data-partie="6 · Au comptoir" data-titre="Au comptoir : des cas complets">
+<section class="ecran" data-id="cpt-comptoir" data-partie="7 · Au comptoir" data-titre="Au comptoir : des cas complets">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Au comptoir · mélange</p>
+    <p class="eyebrow">Partie 7 · Au comptoir · mélange</p>
     <h2>Au comptoir : des cas complets</h2>
     <p class="chapeau">La sommative UA2 annonce « -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » <span class="src">TC module 11</span> ; leur forme n'est pas annoncée. Ici, des cas entiers, du plus simple au plus complet : chaque problème commence par “quelle étape ?”, puis tu calcules le déboursé.</p>
   </header>
@@ -2664,9 +3020,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 <!-- ===================================================================== COMPTOIR : FIN -->
 
 <!-- ===================================================================== CARTES -->
-<section class="ecran" data-id="cartes" data-partie="7 · Révision" data-titre="Rappel du jour">
+<section class="ecran" data-id="cartes" data-partie="8 · Révision" data-titre="Rappel du jour">
   <header class="tete">
-    <p class="eyebrow">Partie 7 · Révision</p>
+    <p class="eyebrow">Partie 8 · Révision</p>
     <h2>Rappel du jour</h2>
     <p class="chapeau">Produis la réponse de mémoire, vérifie tout de suite, et continue jusqu’à réussir chaque carte une fois. Une carte réussie revient dans 1, 3, 7, 14 puis 30 jours ; une carte ratée revient demain. Quelques minutes par jour valent mieux qu’une longue relecture la veille.</p>
   </header>
@@ -2674,21 +3030,21 @@ body.ar-ouverte .tb.cote{z-index:335}
 </section>
 
 <!-- ===================================================================== QUESTIONS -->
-<section class="ecran" data-id="questions" data-partie="7 · Révision" data-titre="Questions d'entraînement">
+<section class="ecran" data-id="questions" data-partie="8 · Révision" data-titre="Questions d'entraînement">
   <header class="tete">
-    <p class="eyebrow">Partie 7 · Révision</p>
+    <p class="eyebrow">Partie 8 · Révision</p>
     <h2>Questions d'entraînement</h2>
-    <p class="chapeau">Dix-neuf questions graduées (rappel → calcul → et si), dont au moins une à rebours par règle. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
+    <p class="chapeau">Trente et une questions graduées (rappel → calcul → et si), dont au moins une à rebours par règle. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
   </header>
   <div class="bloc" id="questions-liste"></div>
 </section>
 
 <!-- ===================================================================== À VÉRIFIER -->
-<section class="ecran" data-id="verifier" data-partie="7 · Révision" data-titre="À vérifier en classe">
+<section class="ecran" data-id="verifier" data-partie="8 · Révision" data-titre="À vérifier en classe">
   <header class="tete">
-    <p class="eyebrow">Partie 7 · Révision</p>
+    <p class="eyebrow">Partie 8 · Révision</p>
     <h2>À vérifier en classe</h2>
-    <p class="chapeau">Les vingt-trois points où les fichiers se contredisent, se taisent ou renvoient à la classe. Coche-les à mesure, et note la réponse de la prof dans les notes de cet écran.</p>
+    <p class="chapeau">Les vingt-huit points où les fichiers se contredisent, se taisent ou renvoient à la classe. Coche-les à mesure, et note la réponse de la prof dans les notes de cet écran.</p>
   </header>
   <ul class="averifier" id="averifier" style="margin-top:20px"></ul>
 </section>
@@ -2762,7 +3118,15 @@ body.ar-ouverte .tb.cote{z-index:335}
       <li>Rappels d'autres cours : Tests ophtalmiques 5.1-d11 ; Optique M6. Tableau chronologique ADM 0010 ; introduction du cours (Module 01).</li>
     </ul>
     <p>La prof numérote ce module 7 : le 7 septembre, férié, compte comme module 1. Cet atelier suit la distillation du module (<code>adm-m07_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les fichiers du cours, par script. Les liens marqués <span class="deduit">déduit</span> sont des raisonnements, pas des affirmations de la prof. Les réponses aux exercices n'ont pas de corrigé officiel : elles sont calculées.</p>
-    <h3>Module 5 · partie 6, Au comptoir</h3>
+    <h3>Module 7, suite · partie 6, La transposition (dossier eCité “Module 07”)</h3>
+    <ul>
+      <li><b>7.1T</b> · <code>Mod 7.1 Transposition.pptx</code>, 42 diapos : optométriste et ophtalmologiste, les 4 étapes, cinq transpositions.</li>
+      <li><b>7.2T</b> · <code>Mod 7.2 Transposition et Croix Optique.pptx</code>, 31 diapos : la croix d'une Rx à cylindre positif, les flèches du cylindre, la croix et ses deux Rx.</li>
+      <li><b>7.3T</b> · <code>Mod 7.3 Analyse d'ordonnance Avancée.pptx</code>, 69 diapos : l'analyse en 5 étapes, transposer d'abord, les exercices corrigés.</li>
+      <li><b>PDF</b> · <code>Transposition_ Étape.pdf</code>, la fiche eCité des étapes. <b>MP4</b> · <code>Transposition.mp4</code>, la vidéo de la prof (17 min), citée d'après sa transcription. La vidéo de la prof sur la croix optique est résumée, jamais citée.</li>
+    </ul>
+    <p>Les fichiers disent “Mod 7.x” : pour la prof, c'est la suite du module 7. Cette partie suit la distillation <code>adm-m07t_distilled.md</code> et son analyse <code>adm-m07t_kc.md</code> ; ses diapos sont citées 7.1T, 7.2T, 7.3T, pour ne pas les confondre avec celles de la croix. Chaque transposition, chaque croix et chaque type affichés sont calculés par l'atelier (<code>outils/test_atoi.js</code>) ; les pratiques au tableau de 7.2T-d27 à d29 n'ont pas de corrigé : leurs réponses sont calculées.</p>
+    <h3>Module 5 · partie 7, Au comptoir</h3>
     <ul>
       <li><b>4.1</b> · <code>Module 4.1_Facturation_Général</code>, 56 diapos : deux factures, trois types d'escompte, sept factures résolues.</li>
       <li><b>4.2</b> · <code>Module 4.2_Facturation_Assurance</code>, 39 diapos : la grille OHIP, l'assurance privée, le plan AE, quatre cas.</li>
@@ -2847,6 +3211,47 @@ const PRESETS_OP = ['OD -5.00 -1.50 x 160', '+2.00 -2.00 x 135', '+6.50 -1.00 x 
 const PRESETS_FO = ['+2.00 -2.00 x 135', '+6.50 -1.00 x 160', 'OD -1.00 DS', '+2.50 -3.75 x 090', 'Plano -1.25 x 180', '-5.00 -1.50 x 160'];
 /* ---------- les analyses inverses sphériques du cours ---------- */
 const INVERSES_COURS = [{p:2, src:'7.1-d43'}, {p:-6.5, src:'7.1-d46'}, {p:4, src:'7.1-d47'}, {p:-10, src:'7.1-d48'}, {p:0.75, src:'7.1-d49'}];
+
+/* ======================================================================
+   La transposition (partie 6 ; la suite du module 7 de la prof, “Mod 7.1 à 7.3”) : 7.1T, 7.2T, 7.3T, PDF, MP4.
+   distilled/adm-m07t_distilled.md ; nombres refaits par build/distill-m7t/recalcul_adm7t.py et outils/test_atoi.js.
+   ====================================================================== */
+/* une croix, deux écritures : [sphère, cylindre, axe] (B7.21) */
+const PAIRES_TP = [
+  {moins:[2, -1, 65], plus:[1, 1, 155], src:'7.1T-d10 à d15'},
+  {moins:[-6, -2, 45], plus:[-8, 2, 135], src:'7.1T-d16 à d23'},
+  {moins:[-0.5, -1, 180], plus:[-1.5, 1, 90], src:'7.2T-d18 à d25'}
+];
+/* « OD » : l'optométriste ou l'œil droit ? (B7.20 ; les quatre contextes de la prescription, et un corrigé) */
+const TRI_OD = [
+  {t:'« OD et RO = - cyl »', src:'7.1T-d5', v:'opto', e:'« OD et RO = - cyl » : OD est l’optométriste, à côté de RO, l’opticien.'},
+  {t:'« RX - OD - CYL NÉGATIF »', src:'7.2T-d22', v:'opto', e:'« RX - OD - CYL NÉGATIF » : la Rx comme l’écrit l’optométriste ; l’autre est « Rx - MD - CYL POSITIF ».'},
+  {t:'OD -1.00 +0.50 x 065', src:'7.2T-d5', v:'oeil', e:'En tête d’une Rx, OD est l’œil droit : OD -1.00 +0.50 x 065, OS -1.50 +0.75 x 105.'},
+  {t:'« OD et RO = Cylindre négatif »', src:'7.3T-d5', v:'opto', e:'« OD et RO = Cylindre négatif » ; « MD = Cylindre positif » : des professionnels, pas des yeux.'},
+  {t:'« OD: Hypermétrope Torique et Presbyte »', src:'7.3T-d62', v:'oeil', e:'Dans un corrigé d’analyse, OD est l’œil droit : le résultat est « MONOCULAIRE ».'}
+];
+/* les Rx du cours, toutes prêtes (diapos, PDF, vidéos de la prof) */
+const PRESETS_TR = ['-8.00 +2.00 x 135', '+2.00 -1.00 x 065', '+2.00 -1.50 x 090 Add +1.75', '-3.75 +1.00 x 095 Add +1.50', '-1.00 -1.00 x 065 1△BU Add +1.50', 'Plano -2.00 x 090', '-2.00 +2.00 x 110', '-1.00 DS'];
+const PRESETS_TC = ['OD -1.00 +0.50 x 065', 'OS -1.50 +0.75 x 105', '-2.00 +0.50 x 090', '-1.00 -0.50 x 180', '-2.50 +1.00 x 045', '+3.00 -0.50 x 035'];
+const PRESETS_AA = ['OD -3.75 +4.00 x 166 Add +2.00', 'OS -3.25 +2.75 x 177 Add +2.00', 'OD +2.25 -0.50 x 166 Add +2.25', 'OS +2.75 2△BI Add +2.25', 'OS -5.00 +5.00 x 047', 'OD Plano -0.50 x 176'];
+/* « Exercices: Décrire le type d’ordonnance » (7.3T-d44 à d67) : [sphère, cylindre, axe, addition], prismes à part ;
+   corr : le corrigé de la diapo, mot pour mot ; plus : CYL positif, à transposer d'abord */
+const EXOS_AA = [
+  {src:'7.3T-d44, d45', od:[2.25, 0, null], os:[2.25, -0.5, 145], corr:['OD: Hypermétrope Sphérique', 'OS: Hypermétrope Torique']},
+  {src:'7.3T-d46, d47', od:[-1, -0.5, 60], os:[-1, -0.25, 75], corr:['OD: Myope Torique', 'OS: Myope Torique', '*OU: Myope Torique']},
+  {src:'7.3T-d48, d49', od:[-3.25, 0, null, 2], os:[-2.25, -0.5, 180, 2], osP:[{v:1.5, b:'BI'}], corr:['OD: Myope Sphérique et presbyte', 'OS: Myope Torique, prismatique et presbyte']},
+  {src:'7.3T-d50, d51', od:[4, -1.25, 170], odP:[{v:2, b:'BU'}], os:[4.25, 0, null], corr:['OD: Hypermétrope Torique et Prismatique', 'OS: Hypermétrope Sphérique']},
+  {src:'7.3T-d52, d53', od:[-10, 0, null, 2.75], os:[-11.25, 0, null, 2.75], corr:['OD: Myope Sphérique et Presbyte', 'OS: Myope Sphérique et Presbyte', 'OU: Myope Sphérique et Presbyte']},
+  {src:'7.3T-d54, d55', od:[-0.5, 0, null, 2], os:[-0.5, 0, null, 2], corr:['OD: Myope Sphérique Presbyte', 'OS: Myope Sphérique Presbyte']},
+  {src:'7.3T-d56', od:[-6.5, -0.5, 60], odP:[{v:1.5, b:'BU'}], os:[-5.5, 0, null], corr:['OD: Myope Torique Prismatique', 'OS: Myope Sphérique']},
+  {src:'7.3T-d57, d58', od:[0, -0.5, 176], os:[0, 0, null], corr:['OD: Torique', 'OS: Emmétrope']},
+  {src:'7.3T-d59, d60', od:[3.75, 0, null], odP:[{v:1, b:'BU'}, {v:2, b:'BO'}], os:[3.25, -2.75, 177], osP:[{v:0.5, b:'BI'}], corr:['OD: Hypermétrope Sphérique Prismatique', 'OS: Hypermétrope Torique Prismatique']},
+  {src:'7.3T-d61, d62', plus:true, od:[-3.75, 4, 166, 2], os:[-3.25, 2.75, 177, 2], corr:['OD: Hypermétrope Torique et Presbyte', 'OS: Myope Torique et Presbyte']},
+  {src:'7.3T-d63, d64', plus:true, od:[0.75, 1, 180], os:[-0.5, 1, 90], corr:['OD: Hypermétrope Torique', 'OS: Hypermétrope Torique']},
+  {src:'7.3T-d65, d66', plus:true, od:[-1, 2.5, 175], os:[-0.75, 2, 177], corr:['OD: Hypermétrope Torique', 'OS: Hypermétrope Torique']},
+  {src:'7.3T-d67', plus:true, od:[-4.75, 5.25, 35], os:[-5, 5, 47], corr:['OD: Hypermétrope Torique', 'OS: Emmetrope Torique'],
+   note:'« OS: Emmetrope Torique » ' + SIC + ' : transposée, c’est Plano -5.00 x 137 ; 7.3T-d58 nomme le même cas « Torique » (Plano -0.50 x 176). Les deux réponses sont acceptées ici ; à vérifier en classe.'}
+];
 
 /* ---------- tri : sur la croix ou pas ---------- */
 const TRI_CROIX = [
@@ -2936,6 +3341,32 @@ const QUESTIONS = [
     r:'<p><b>-6.50 DS</b> ; myope sphérique ; <b>un foyer devant la rétine</b> (' + S('7.1-d50') + ') ' + DED + '.</p>'},
   {g:'Synthèse', n:'application', q:'L’image d’ouverture (7.1-d1) montre une Rx « +2.00 », « -1.00 », « x 065 ». Dessine sa croix en option B et nomme le type.',
     r:'<p><b>+2.00 sur 065</b> ; +2.00 + (-1.00) = <b>+1.00 sur 155</b> (065 + 090) ; <b>astigmatisme hypermétrope composé</b>, deux foyers derrière la rétine. Option B : 065 est plus près de 090 (25°) que de 0 (65°), donc <b>065 sur le bras vertical</b>, 155 à l’horizontale ' + DED + '.</p>'}
+  ,
+  /* ---------- la transposition (partie 6) : annexe B de adm-m07t_distilled.md ; à la fin seulement (les réponses suivent le rang) ---------- */
+  {g:'I5 · la transposition', n:'rappel', q:'Qui écrit une Rx en cylindre positif, et qui en cylindre négatif ?',
+    r:'<p>Cylindre positif : les ophtalmologistes (« MD = + cyl ») ; cylindre négatif : les optométristes et les opticiens (« OD et RO = - cyl »), « en général » ' + S('7.1T-d5') + '. Ici, OD veut dire optométriste.</p>'},
+  {g:'I5 · la transposition', n:'rappel', q:'Quelles deux parties d’une Rx ne changent jamais à la transposition ?',
+    r:'<p>Le prisme et l’addition : « Pouvoir addition et prisme demeurent les mêmes » ' + S('7.1T-d8') + '. Ils se recopient : « Mais il doit être transféré. » (MP4)</p>'},
+  {g:'I5 · la transposition', n:'calcul', q:'Transpose +1.25 -0.75 x 040.',
+    r:'<p>(+1.25) + (-0.75) = +0.50 ; -0.75 devient +0.75 ; 040 + 090 = 130 → <b>+0.50 +0.75 x 130</b>.</p>'},
+  {g:'I5 · la transposition', n:'calcul', q:'Transpose -4.00 +1.50 x 120 2△BI Add +2.25.',
+    r:'<p>(-4.00) + (+1.50) = -2.50 ; +1.50 devient -1.50 ; 120 − 090 = 030 ; prisme et addition recopiés → <b>-2.50 -1.50 x 030 2△BI Add +2.25</b>.</p>'},
+  {g:'I5 · la transposition', n:'calcul', q:'Transpose Plano +0.75 x 090.',
+    r:'<p>Plano vaut 0 : 0 + (+0.75) = +0.75 ; -0.75 ; 090 + 090 = 180 → <b>+0.75 -0.75 x 180</b>.</p>'},
+  {g:'I5 · la transposition', n:'à rebours', q:'Une Rx transposée vaut -1.25 +0.50 x 095. Quelle était la Rx d’origine ?',
+    r:'<p>On transpose encore : (-1.25) + (+0.50) = -0.75 ; -0.50 ; 095 − 090 = 005 → <b>-0.75 -0.50 x 005</b> ' + DED + '.</p>'},
+  {g:'I5 · la transposition', n:'et si', q:'À l’étape 3, on fait 090 − 090. Qu’obtient-on, et que faut-il faire ?',
+    r:'<p>0, « qui n\'est pas un axe d\'ordonnance » (MP4) : il faut <b>additionner</b>, 090 + 090 = 180.</p>'},
+  {g:'I5 · la transposition', n:'et si', q:'Une Rx sans cylindre, -3.00 : à quoi ressemble sa transposition ?',
+    r:'<p>Rien ne change : -3.00 + 0 = -3.00, et aucun cylindre à inverser. « pour faire une transposition, nous devons avoir la cylindre » (MP4).</p>'},
+  {g:'I5 · la transposition', n:'calcul, croix', q:'Une croix porte +1.00 sur 020 et -0.50 sur 110. Écris sa Rx en cylindre négatif et en cylindre positif.',
+    r:'<p>Cylindre négatif : la sphère est le plus positif, +1.00 sur 020 ; CYL = (-0.50) − (+1.00) = -1.50 → <b>+1.00 -1.50 x 020</b>. Cylindre positif : <b>-0.50 +1.50 x 110</b>. Ce sont deux transpositions ' + DED + '.</p>'},
+  {g:'I5 · la transposition', n:'calcul, analyse', q:'Analyse OD -2.50 +3.00 x 010 ; OS -1.00 +0.50 x 170 1△BU.',
+    r:'<p>OD : CYL positif, on transpose : +0.50 -3.00 x 100 → <b>Hypermétrope Torique</b>. OS : -0.50 -0.50 x 080 1△BU → <b>Myope Torique et Prismatique</b> ' + DED + '.</p>'},
+  {g:'I5 · la transposition', n:'et si', q:'Une ophtalmologiste écrit -0.75 +0.75 x 180. Une collègue la nomme “Myope Torique” sans transposer. Où est l’erreur ?',
+    r:'<p>Elle a lu le signe de la sphère en cylindre positif. Transposée : Plano -0.75 x 090. Plano : « aucun ajout à l’analyse car méridien emmétrope » → <b>Torique</b>, comme 7.3T-d58 (7.3T-d67 dirait « Emmetrope Torique » ' + SIC + ' : à vérifier en classe).</p>'},
+  {g:'I5 · la transposition', n:'synthèse', q:'OD -1.00 ; OS Plano -0.50 x 180 (7.3T-d30) : les points focaux, la croix, le type d’astigmatisme.',
+    r:'<p>OD -1.00 : <b>un foyer</b>, devant la rétine ; croix -1.00 sur 180 et sur 090 ; pas d’astigmatisme. OS : <b>deux foyers</b> ; croix Plano sur 180 (sur la rétine), -0.50 sur 090 (devant) ; <b>astigmatisme myope simple</b> ' + DED + '.</p>'}
 ];
 
 /* ---------- à vérifier en classe ---------- */
@@ -2964,6 +3395,13 @@ const AVERIFIER = [
   {m:'Au comptoir : ce que le cours ne dit pas', t:'Les codes sans action, et le code 20', p:'102 (« OHIP valide / Code de service invalide ») et 60 à 89 (« Carte Invalide et détenteur éligible ») : que fait-on au comptoir ? Le cours n’en dit rien ; l’atelier n’en demande que le sens. Et pourquoi, à l’exercice EO-7, un patient de 25 ans en santé reçoit-il le code 20 (une question de carte) plutôt que 102 ?'},
   {m:'Au comptoir : ce que le cours ne dit pas', t:'Les dates du 29 au 31', p:'Dernier examen le 31 août, plus 18 mois : le 28 ou le 29 février, le 1er mars ? Le cours ne le dit pas. L’atelier ne tire que des dates du 1er au 28.'},
   {m:'Au comptoir : ce que le cours ne dit pas', t:'Les petites erreurs des corrigés', p:'Rien à demander, mais à savoir en révisant : exercice 2, « Px 60 ans » (il a 61 ans le 10 juil. 2021, même catégorie) ; EO-9, « px a 11ans en 2020 » (10 ans le 22 mars 2020) ; exercice 10, « (200x.020) » pour 0.20 (le résultat, 40 $, est juste) ; 4.2-d25 et d35, un examen à « 190$ » au lieu de 205 $ ; « V402_367 » (V402 est le mineur des 0-19 ans ; un 20-64 ans avec condition, c’est V408) ; « 11 scénarios » annoncés, 10 reçus.'}
+  ,
+  /* ---------- La transposition (partie 6) : à la fin seulement (les cases cochées suivent le rang) ---------- */
+  {m:'La transposition', t:'7.2T-d11 : le verre OS', p:'Rien à demander, mais à savoir en révisant : sur 7.2T-d11, les deux valeurs du verre OS sont mal placées. La croix de OS -1.50 +0.75 x 105 est -1.50 sur 105 et -0.75 sur 015, comme en d10 et d12 : révise avec d12.'},
+  {m:'La transposition', t:'« Emmetrope Torique » ou « Torique » ?', p:'7.3T-d67 nomme l’OS -5.00 +5.00 x 047 (transposé : Plano -5.00 x 137) « OS: Emmetrope Torique » ' + SIC + '. Mais 7.3T-d9 dit « Si PLANO = aucun ajout à l’analyse car méridien emmétrope », et d58 nomme Plano -0.50 x 176 « OD: Torique ». Lequel écrire à l’examen ? L’atelier accepte les deux.'},
+  {m:'La transposition', t:'L’addition : étape 4 ou étape 5 ?', p:'Les diapos de 7.3T numérotent l’addition « Étape 4 » en d17 et d28 (le prisme est aussi l’étape 4, en d15), mais « Étape 5 » en d27 et dans le résumé de d33. L’atelier suit les cinq étapes de d33.'},
+  {m:'La transposition', t:'Quel méridien sur le bras horizontal ?', p:'7.2T-d3 met à l’horizontale « (axe le plus près de 180 ou 0) », et 7.2T-d12 y met 015. La vidéo de la prof y met le plus grand des deux nombres (125 contre 035, 135 contre 045). Avec les diapos, 035 irait à l’horizontale ; à 045 et 135, elles ne tranchent pas. Les pouvoirs ne changent pas, seulement le bras. Quelle règle à l’examen ? L’atelier ne le demande jamais.'},
+  {m:'La transposition', t:'OD : l’optométriste', p:'Dans « OD et RO = - cyl » (7.1T-d5), « OD et RO = Cylindre négatif » (7.3T-d5) et « RX - OD - CYL NÉGATIF » (7.2T-d22), OD désigne l’optométriste, pas l’œil droit ; RO, l’opticien ; MD, l’ophtalmologiste. À confirmer en classe.'}
 ];
 
 /* ====== 21-config.js ====== */
@@ -2979,8 +3417,12 @@ const ATELIER = {
   examen:'2026-11-23',               // sommative UA2 (planificateur) : le rappel ne saute jamais par-dessus
   verifierModule:m => m,
   notesSup:[],
-  /* « Survol » (bouton du haut) : le module 7 et le comptoir en 23 diapos, Guides/UA2-Bureau-Ophtalmique/diapos-bureau-m7.html */
-  survol:{url:'diapos-bureau-m7.html', titre:'Survol : le module 7 et le comptoir en 23 diapos, environ 16 minutes'}
+  /* « Survol » (bouton du haut), deux diaporamas au menu : diapos-bureau-m7.html (la croix et le comptoir) et
+     diapos-bureau-m7t.html (la transposition, suite du module 7, 2 nov.) */
+  survol:[
+    {url:'diapos-bureau-m7.html', titre:'Survol : la croix optique et le comptoir en 23 diapos, environ 16 minutes', court:'La croix et le comptoir', detail:'croix optique, foyers, types d’astigmatisme, facture et OHIP · 23 diapos, ≈ 16 min'},
+    {url:'diapos-bureau-m7t.html', titre:'Survol : la transposition en 20 diapos, environ 15 minutes', court:'La transposition', detail:'cylindre négatif ou positif, une croix pour deux écritures, analyser une Rx · 20 diapos, ≈ 15 min'}
+  ]
 };
 
 /* ====== 22-v2.js ====== */
@@ -3251,6 +3693,122 @@ const PAS = [
    verif:{q:'Une fois la croix dessinée, quelles questions la prof ajoute-t-elle ?', r:'Où sont les points focaux sans correction, quelle est l’amétropie, quel est le type d’astigmatisme.', points:['points focaux', 'amétropie', 'type d’astigmatisme'],
      qcm:{bon:'Les points focaux sans correction, l’amétropie et le type d’astigmatisme', faux:['L’œil de la croix (OD ou OS), l’addition et le prisme', 'La Rx en cylindre positif et la Rx de près, avec l’addition', 'La distance de lecture, l’addition et la puissance de près']}},
    src:['7.2-d30', '7.2-d31']},
+
+  /* ---------- 6 · La transposition · Deux écritures, une correction (B7.20, B7.21) ---------- */
+  {id:'transpo-pourquoi.1', ecran:'transpo-pourquoi', ancre:'Ici, OD est l’optométriste, RO l’opticien', titre:'Qui écrit quel format',
+   cle:['optométristes et opticiens : cylindre négatif', 'ophtalmologistes : cylindre positif', 'en général, pas toujours'],
+   explique:'Pourquoi un opticien doit-il savoir lire les deux formats ?',
+   verif:{q:'Qui écrit le cylindre en négatif, et qui l’écrit en positif ?', r:'En négatif : l’optométriste et l’opticien (OD et RO) ; en positif : l’ophtalmologiste (MD), en général.', points:['optométriste et opticien : négatif', 'ophtalmologiste : positif'],
+     qcm:{bon:'Négatif : optométriste et opticien ; positif : ophtalmologiste', faux:['Négatif : ophtalmologiste ; positif : optométriste et opticien', 'Négatif : l’œil droit ; positif : l’œil gauche', 'Négatif : l’opticien seul ; positif : optométriste et ophtalmologiste']}},
+   qcm:'Une Rx écrite en cylindre positif vient', src:['7.1T-d5', '7.1T-d23', 'PDF']},
+  {id:'transpo-pourquoi.2', ecran:'transpo-pourquoi', ancre:'posent les mêmes pouvoirs sur les mêmes méridiens', titre:'Deux écritures, une croix',
+   cle:['une Rx et sa transposée : la même correction', 'les mêmes pouvoirs sur les mêmes méridiens', 'donc la même croix'],
+   explique:'Comment deux suites de nombres différentes peuvent-elles corriger exactement le même œil ?',
+   verif:{q:'+2.00 -1.00 x 065 et +1.00 +1.00 x 155 : quel pouvoir chacune met-elle sur 065 et sur 155 ?', r:'+2.00 sur 065 et +1.00 sur 155, pour les deux écritures : la même croix, la même correction.', points:['+2.00 sur 065', '+1.00 sur 155', 'la même croix'],
+     qcm:{bon:'+2.00 sur 065 et +1.00 sur 155, pour les deux : la même croix', faux:['+2.00 sur 065 pour l’une, +1.00 sur 065 pour l’autre : deux croix', '+1.00 sur 065 et +2.00 sur 155, pour les deux : la même croix', '+2.00 sur 065 et +3.00 sur 155, pour les deux : la même croix']}},
+   qcm:'+2.00 -1.00 x 065 et +1.00 +1.00 x 155 : leurs', src:['7.1T-d7', '7.1T-d10', '7.1T-d15', '7.1T-d22']},
+  {id:'transpo-pourquoi.3', ecran:'transpo-pourquoi', ancre:'Le même sigle a deux sens dans ces diapos', titre:'OD : une personne ou un œil',
+   cle:['devant un format ou un professionnel : OD = optométriste', 'en tête d’une ligne de Rx : OD = œil droit', 'RO = opticien, MD = ophtalmologiste'],
+   explique:'Comment le contexte te dit-il si OD est une personne ou un œil ?',
+   verif:{q:'Sur la diapo « RX - OD - CYL NÉGATIF », que veut dire OD ?', r:'L’optométriste, qui écrit le cylindre en négatif ; ce n’est pas l’œil droit.', points:['optométriste', 'pas l’œil droit'],
+     qcm:{bon:'L’optométriste, qui écrit le cylindre en négatif', faux:['L’œil droit, dont la Rx est en cylindre négatif', 'L’opticien, qui fabrique les verres en négatif', 'L’ophtalmologiste, qui écrit en cylindre négatif']}},
+   qcm:'Dans « OD et RO = - cyl », OD veut dire', src:['7.1T-d5', '7.2T-d22', '7.3T-d5']},
+  {id:'transpo-pourquoi.4', ecran:'transpo-pourquoi', ancre:'sont la même Rx transposée', titre:'Pas deux résultats',
+   cle:['l’image dit : résultats différents selon le professionnel', 'ses nombres sont la même Rx transposée', 'même croix, même correction'],
+   explique:'Pourquoi l’image de 7.1T-d2 peut-elle tromper un patient qui compare deux ordonnances ?',
+   verif:{q:'Un patient compare -6.00 -2.00 x 045 (optométriste) et -8.00 +2.00 x 135 (ophtalmologiste) : deux corrections différentes ?', r:'Non : -8.00 +2.00 x 135 est la transposée de -6.00 -2.00 x 045 ; même croix, même correction.', points:['non', 'transposée', 'même croix'],
+     qcm:{bon:'Non : l’une est la transposée de l’autre, même croix', faux:['Oui : l’ophtalmologiste a trouvé 2 D de myopie en plus', 'Oui : les axes diffèrent de 90°, donc l’astigmatisme aussi', 'Non : seule la sphère compte, et elles diffèrent peu']}},
+   src:['7.1T-d2', '7.1T-d22', '7.1T-d23']},
+
+  /* ---------- 6 · Transposer en 4 étapes (B7.22 à B7.27) ---------- */
+  {id:'transposer.1', ecran:'transposer', ancre:'(SPH) + (CYL) = nouveau SPH', titre:'Étape 1 : SPH + CYL',
+   cle:['nouveau SPH = SPH + CYL, avec les signes', 'un CYL négatif fait reculer, un positif fait monter', 'Plano compte pour 0'],
+   explique:'Pourquoi -8.00 + (+2.00) donne-t-il -6.00 et non -10.00 ?',
+   verif:{q:'Étape 1 pour -2.00 +2.00 x 110 : quelle est la nouvelle sphère, et comment l’écris-tu ?', r:'(-2.00) + (+2.00) = 0 : on écrit Plano.', points:['0', 'Plano'],
+     qcm:{bon:'(-2.00) + (+2.00) = 0 : on l’écrit Plano', faux:['(-2.00) + (+2.00) = -4.00 : on l’écrit -4.00', '(-2.00) − (+2.00) = -4.00 : on l’écrit -4.00', '(-2.00) + (+2.00) = 0 : on garde -2.00']}},
+   qcm:'+1.00 -0.75 x 025, étape 1', src:['7.1T-d8', 'PDF', 'MP4']},
+  {id:'transposer.2', ecran:'transposer', ancre:'Même valeur, signe contraire', titre:'Étape 2 : inverser le CYL',
+   cle:['nouveau CYL = −CYL', 'même valeur, signe contraire', 'positif devient négatif, et l’inverse'],
+   explique:'Pourquoi le cylindre garde-t-il sa valeur quand il change de signe ?',
+   verif:{q:'-1.50 +0.75 x 040 : quel est le nouveau cylindre ?', r:'-0.75 : la même valeur, avec le signe contraire.', points:['-0.75', 'signe contraire'],
+     qcm:{bon:'-0.75 : la même valeur, avec le signe contraire', faux:['+0.75 : le cylindre garde son signe', '-1.50 : la sphère prend la place du cylindre', '-2.25 : la sphère moins le cylindre']}},
+   src:['7.1T-d8', 'PDF', 'MP4']},
+  {id:'transposer.3', ecran:'transposer', ancre:'Axe jusqu’à 090 : on additionne', titre:'Étape 3 : axe ± 090',
+   cle:['nouvel axe = axe ± 090', 'jusqu’à 090 : on additionne ; au-delà : on soustrait', 'toujours entre 001 et 180 : jamais 0, jamais négatif'],
+   explique:'Pourquoi 090 − 090 ou 025 − 090 ne peuvent-ils pas donner un axe ?',
+   verif:{q:'Étape 3 pour les axes 025 et 110 : quels nouveaux axes ?', r:'025 + 090 = 115 ; 110 − 090 = 020.', points:['115', '020'],
+     qcm:{bon:'025 + 090 = 115 ; 110 − 090 = 020', faux:['025 − 090 = -065 ; 110 − 090 = 020', '025 + 090 = 115 ; 110 + 090 = 200', '025 + 090 = 115 ; 110 − 090 = 200']}},
+   qcm:'Étape 3, axe 090 : le nouvel axe', src:['7.1T-d8', 'MP4']},
+  {id:'transposer.4', ecran:'transposer', ancre:'on les recopie', titre:'Étape 4 : on recopie',
+   cle:['le prisme et l’addition ne changent pas', 'on les recopie dans la transposée', 'il ne faut pas les oublier'],
+   explique:'Pourquoi la transposition ne touche-t-elle ni au prisme ni à l’addition ?',
+   verif:{q:'Transpose -1.00 -1.00 x 065 1△BU Add +1.50.', r:'-2.00 +1.00 x 155 1△BU Add +1.50 : le prisme et l’addition sont recopiés.', points:['-2.00 +1.00 x 155', '1△BU', 'Add +1.50'],
+     qcm:{bon:'-2.00 +1.00 x 155 1△BU Add +1.50', faux:['-2.00 +1.00 x 155, sans rien d’autre', '-2.00 +1.00 x 155 1△BU Add -1.50', '-2.00 +1.00 x 155 1△BD Add +1.50']}},
+   qcm:'-2.00 +1.50 x 110 Add +2.00', src:['7.1T-d8', '7.1T-d35', '7.1T-d39', 'MP4']},
+  {id:'transposer.5', ecran:'transposer', ancre:'la sphère, le cylindre, l’axe, puis ce qu’on recopie', titre:'Transposer de bout en bout',
+   cle:['les quatre étapes, dans l’ordre', 'une Rx sphérique n’a rien à transposer', 'vérifier : les deux écritures font la même croix'],
+   explique:'Comment vérifies-tu, sans corrigé, qu’une transposition est juste ?',
+   verif:{q:'Transpose -8.00 +2.00 x 135.', r:'(-8.00) + (+2.00) = -6.00 ; +2.00 devient -2.00 ; 135 − 090 = 045 : -6.00 -2.00 x 045.', points:['-6.00', '-2.00', '045'],
+     qcm:{bon:'-6.00 -2.00 x 045', faux:['-10.00 -2.00 x 045', '-6.00 +2.00 x 045', '-6.00 -2.00 x 225']}},
+   src:['7.1T-d16', '7.1T-d22', 'MP4']},
+  {id:'transposer.6', ecran:'transposer', ancre:'Transposer deux fois rend la Rx de départ', titre:'À rebours : l’origine',
+   cle:['transposer deux fois rend la Rx de départ', 'pour retrouver l’origine : transposer encore', 'SPH d’origine = SPH′ + CYL′'],
+   explique:'Pourquoi transposer une deuxième fois ramène-t-il exactement à la Rx de départ ?',
+   verif:{q:'Une Rx transposée vaut -1.25 +0.50 x 095. Quelle était la Rx d’origine ?', r:'On transpose encore : -0.75 -0.50 x 005.', points:['-0.75', '-0.50', '005'],
+     qcm:{bon:'-0.75 -0.50 x 005', faux:['-1.75 -0.50 x 005', '-0.75 +0.50 x 005', '-0.75 -0.50 x 185']}},
+   src:['7.1T-d23']},
+
+  /* ---------- 6 · La croix d'une Rx à CYL positif (B7.28 à B7.30) ---------- */
+  {id:'transpo-croix.1', ecran:'transpo-croix', ancre:'065 + 090 = 155', titre:'Les trois règles, en CYL +',
+   cle:['la sphère va sur l’axe, même en cylindre positif', 'axe du 2e méridien : ± 090', 'force du 2e méridien : SPH + CYL', 'pas besoin de transposer'],
+   explique:'Pourquoi les trois règles de la croix ne dépendent-elles pas du signe du cylindre ?',
+   verif:{q:'OS -1.50 +0.75 x 105 : écris sa croix.', r:'-1.50 sur 105 (l’axe) ; 105 − 090 = 015 ; (-1.50) + (+0.75) = -0.75 sur 015.', points:['-1.50 sur 105', '-0.75 sur 015'],
+     qcm:{bon:'-1.50 sur 105, -0.75 sur 015', faux:['-1.50 sur 105, +0.75 sur 015', '-1.50 sur 105, -2.25 sur 015', '-1.50 sur 105, -0.75 sur 195']}},
+   qcm:'OS -1.50 +0.75 x 105 : quelle', src:['7.2T-d5', '7.2T-d7', '7.2T-d8', '7.2T-d10', '7.2T-d12']},
+  {id:'transpo-croix.2', ecran:'transpo-croix', ancre:'le méridien le plus positif donne', titre:'Une croix, deux Rx',
+   cle:['le plus positif : la Rx en cylindre négatif', 'le plus négatif : la Rx en cylindre positif', 'CYL = l’autre − SPH', 'les deux Rx sont des transposées'],
+   explique:'Pourquoi le cylindre sort-il négatif quand on part du méridien le plus positif ?',
+   verif:{q:'Croix : -0.50 sur 180, -1.50 sur 090. Écris ses deux Rx.', r:'Cylindre négatif : -0.50 -1.00 x 180 ; cylindre positif : -1.50 +1.00 x 090. Ce sont des transposées.', points:['-0.50 -1.00 x 180', '-1.50 +1.00 x 090'],
+     qcm:{bon:'-0.50 -1.00 x 180 et -1.50 +1.00 x 090', faux:['-1.50 -1.00 x 090 et -0.50 +1.00 x 180', '-0.50 -1.50 x 180 et -1.50 +0.50 x 090', '-0.50 -1.00 x 090 et -1.50 +1.00 x 180']}},
+   qcm:'Croix : -2.00 sur 030, -3.25 sur 120', src:['7.2T-d18', '7.2T-d22', '7.2T-d23', '7.2T-d25']},
+  {id:'transpo-croix.3', ecran:'transpo-croix', ancre:'deux flèches, dans le quart en bas à droite', titre:'Les flèches du cylindre',
+   cle:['deux flèches de CYL, en bas à droite', 'vers le bras le plus négatif : −|CYL|', 'vers l’autre : +|CYL|'],
+   explique:'Que mesure une flèche du cylindre entre les deux bras de la croix ?',
+   verif:{q:'Croix : -0.50 sur 155 (horizontal), -1.00 sur 065 (vertical). Quelles valeurs portent les deux flèches ?', r:'Vers le bras vertical (-1.00) : -0.50 ; vers le bras horizontal : +0.50.', points:['-0.50 vers le vertical', '+0.50 vers l’horizontal'],
+     qcm:{bon:'-0.50 vers le bras vertical, +0.50 vers l’horizontal', faux:['+0.50 vers le bras vertical, -0.50 vers l’horizontal', '-1.00 vers le bras vertical, -0.50 vers l’horizontal', '-0.50 sur les deux flèches, quel que soit le sens']}},
+   qcm:'La flèche du cylindre qui pointe', src:['7.2T-d13', '7.2T-d15', '7.2T-d16']},
+  {id:'transpo-croix.4', ecran:'transpo-croix', ancre:'Le degré à gauche et en haut, le pouvoir à droite et en bas', titre:'Le gabarit de la croix',
+   cle:['le degré à gauche et en haut', 'le pouvoir à droite et en bas', 'les flèches du cylindre en bas à droite'],
+   explique:'Pourquoi une convention de dessin évite-t-elle les malentendus entre collègues ?',
+   verif:{q:'Sur le gabarit de la croix, où vont le degré et le pouvoir du bras horizontal ?', r:'Le degré à gauche (Axe Horizontal), le pouvoir à droite (Pouvoir Horizontal).', points:['degré à gauche', 'pouvoir à droite'],
+     qcm:{bon:'Le degré à gauche, le pouvoir à droite', faux:['Le pouvoir à gauche, le degré à droite', 'Le degré en bas, le pouvoir en haut', 'Le degré au centre, le pouvoir en haut']}},
+   src:['7.2T-d16']},
+
+  /* ---------- 6 · Analyser une Rx à CYL positif (B7.31 à B7.33) ---------- */
+  {id:'analyse-avancee.1', ecran:'analyse-avancee', ancre:'La réponse tient en une règle', titre:'Avant tout : CYL − ou absent',
+   cle:['avant tout : CYL absent ou négatif', 'CYL positif : transposer d’abord', 'le signe de la sphère ne se lit qu’en cylindre négatif'],
+   explique:'Pourquoi lire le signe de la sphère avant de transposer donne-t-il parfois le mauvais type ?',
+   verif:{q:'OD -3.75 +4.00 x 166 : myope ou hypermétrope ? Explique.', r:'Hypermétrope : le CYL est positif, on transpose d’abord, +0.25 -4.00 x 076 ; la sphère est positive.', points:['hypermétrope', 'transposer d’abord', '+0.25'],
+     qcm:{bon:'Hypermétrope : transposée, la sphère vaut +0.25', faux:['Myope : la sphère écrite est négative, -3.75', 'Emmétrope : sphère et cylindre s’annulent presque', 'Myope : la sphère reste négative après transposition']}},
+   qcm:'-0.50 +1.25 x 090 : peut-on', src:['7.3T-d4', '7.3T-d5', '7.3T-d7', '7.3T-d62']},
+  {id:'analyse-avancee.2', ecran:'analyse-avancee', ancre:'La question de la prof (7.3T-d33)', titre:'Les cinq étapes',
+   cle:['1 : CYL absent ou négatif ?', '2 : le signe de la sphère', '3 : astigmatisme ? 4 : prisme ? 5 : addition ?', 'un nom par œil'],
+   explique:'Pourquoi l’ordre des étapes compte-t-il, surtout la première ?',
+   verif:{q:'Décris le type de OS -2.25 -0.50 x 180 1.5ΔBI Add +2.00.', r:'Myope Torique, Prismatique et Presbyte : CYL négatif, sphère négative, un cylindre, un prisme, une addition.', points:['Myope', 'Torique', 'Prismatique', 'Presbyte'],
+     qcm:{bon:'Myope Torique, Prismatique et Presbyte', faux:['Myope Sphérique, Prismatique et Presbyte', 'Myope Torique et Presbyte', 'Hypermétrope Torique, Prismatique et Presbyte']}},
+   src:['7.3T-d33', '7.3T-d31', '7.3T-d49']},
+  {id:'analyse-avancee.3', ecran:'analyse-avancee', ancre:'Ensuite seulement, le signe de la sphère', titre:'Plano : aucun ajout',
+   cle:['SPH négative : MYOPE ; positive : HYPERMÉTROPE', 'Plano : aucun ajout, méridien emmétrope', 'Plano + CYL : Torique'],
+   explique:'Pourquoi une sphère Plano ne fait-elle ni un myope ni un hypermétrope ?',
+   verif:{q:'OD Plano -0.50 x 176 : quel type ?', r:'Torique : Plano n’ajoute rien, et il y a un cylindre (7.3T-d58 ; d67 écrit « Emmetrope Torique » pour un cas semblable, à vérifier en classe).', points:['Torique', 'Plano : aucun ajout'],
+     qcm:{bon:'Torique : Plano n’ajoute rien, mais il y a un cylindre', faux:['Myope Torique : le cylindre est négatif', 'Emmétrope Sphérique : la sphère vaut Plano', 'Hypermétrope Torique : Plano compte comme positif']}},
+   qcm:'Plano -1.00 x 045 : quel type', src:['7.3T-d9', '7.3T-d58', '7.3T-d67']},
+  {id:'analyse-avancee.4', ecran:'analyse-avancee', ancre:'Puis elle demande', titre:'La Rx complète',
+   cle:['le type de chaque œil', 'la croix optique', 'les points focaux et le type d’astigmatisme'],
+   explique:'Pourquoi la croix et le type d’astigmatisme ne changent-ils pas quand on transpose la Rx ?',
+   verif:{q:'OS Plano -0.50 x 180 : sa croix et son type d’astigmatisme ?', r:'Plano sur 180, -0.50 sur 090 : un méridien emmétrope, l’autre myope, astigmatisme myope simple.', points:['Plano sur 180', '-0.50 sur 090', 'myope simple'],
+     qcm:{bon:'Plano sur 180, -0.50 sur 090 : astigmatisme myope simple', faux:['Plano sur 180, -0.50 sur 090 : astigmatisme myope composé', '-0.50 sur 180, Plano sur 090 : astigmatisme myope simple', 'Plano sur 180, -0.50 sur 090 : astigmatisme mixte']}},
+   src:['7.3T-d19', '7.3T-d29', '7.3T-d30']},
 
   /* ---------- Au comptoir (module 5) · Deux factures, six étapes (B5.1, B5.2, B5.7, B5.8) ---------- */
   {id:'cpt-factures.1', ecran:'cpt-factures', ancre:'Une visite fait deux factures', titre:'Deux factures',
@@ -3755,6 +4313,101 @@ const CARTES2 = [
    choix:['+1.25 -1.25 x 180', '+1.25 -1.00 x 177'], bonne:0,
    r:'Le premier a un méridien Plano (+1.25 et Plano) : simple ; le second a +1.25 et +0.25 : composé.', src:['7.2-d30', '7.3-d36']},
 
+  /* ---------- 6 · La transposition : cartes ; les calculs tirent leurs nombres de TranspoAToi (31-widgets.js) ---------- */
+  {id:'c-transpo-pourquoi-01', type:'libre', pas:['transpo-pourquoi.1'], q:'Qui écrit le cylindre en négatif, et qui l’écrit en positif ?',
+   r:'En négatif : optométristes et opticiens (« OD et RO = - cyl ») ; en positif : ophtalmologistes (« MD = + cyl »), en général (7.1T-d5).', points:['négatif : optométriste, opticien', 'positif : ophtalmologiste'],
+   qcm:{bon:'Négatif : optométristes et opticiens ; positif : ophtalmologistes', faux:['Négatif : ophtalmologistes ; positif : optométristes et opticiens', 'Négatif : opticiens seulement ; positif : tous les médecins', 'Négatif : l’œil droit ; positif : l’œil gauche']}, src:['7.1T-d5']},
+  {id:'c-transpo-pourquoi-02', type:'discrim', pas:['transpo-pourquoi.3'], q:'Sur la diapo « RX - OD - CYL NÉGATIF », OD veut dire…',
+   choix:['l’optométriste', 'l’œil droit'], bonne:0, r:'Devant un format ou un professionnel, OD est l’optométriste ; en tête d’une ligne de Rx, c’est l’œil droit.', src:['7.2T-d22']},
+  {id:'c-transpo-pourquoi-03', type:'discrim', pas:['transpo-pourquoi.3'], q:'Une Rx : OD -1.00 +0.50 x 065, OS -1.50 +0.75 x 105. Ici, OD veut dire…',
+   choix:['l’œil droit', 'l’optométriste'], bonne:0, r:'En tête d’une ligne de Rx, à côté de OS, OD est l’œil droit (7.2T-d5).', src:['7.2T-d5']},
+  {id:'c-transpo-pourquoi-04', type:'libre', pas:['transpo-pourquoi.2'], q:'Une Rx et sa transposée corrigent-elles la même amétropie ? Pourquoi ?',
+   r:'Oui : elles posent les mêmes pouvoirs sur les mêmes méridiens, la même croix ; « Même puissance d’optique! » (7.1T-d22).', points:['oui', 'mêmes pouvoirs sur les mêmes méridiens'],
+   qcm:{bon:'Oui : mêmes pouvoirs sur les mêmes méridiens, même croix', faux:['Non : la sphère change, donc la correction aussi', 'Non : l’axe tourne de 90°, donc l’astigmatisme aussi', 'Oui, mais seulement si le cylindre est négatif']}, src:['7.1T-d7', '7.1T-d22']},
+  {id:'c-transpo-pourquoi-05', type:'application', pas:['transpo-pourquoi.4', 'transpo-pourquoi.2'],
+   q:'Une patiente compare deux ordonnances du même mois : OD -6.00 -2.00 x 045 (optométriste) et OD -8.00 +2.00 x 135 (ophtalmologiste). Elle croit que sa vue a changé. Que lui dis-tu ?',
+   r:'Que c’est la même correction, écrite de deux façons : -8.00 +2.00 x 135, transposée, donne -6.00 -2.00 x 045 (7.1T-d23).', points:['la même correction', 'transposée'],
+   qcm:{bon:'C’est la même correction, écrite dans les deux formats', faux:['Sa myopie a augmenté de 2 D chez l’ophtalmologiste', 'Son astigmatisme a tourné de 90° en un mois', 'L’une des deux ordonnances contient une erreur']}, src:['7.1T-d23']},
+  {id:'c-transpo-pourquoi-06', type:'discrim', pas:['transpo-pourquoi.1'], q:'Une Rx arrive écrite en cylindre positif. En général, elle vient…',
+   choix:['d’un ophtalmologiste', 'd’un optométriste'], bonne:0, r:'« MD = + cyl » ; « OD et RO = - cyl », en général (7.1T-d5).', src:['7.1T-d5']},
+
+  {id:'c-transposer-01', type:'chaine', pas:['transposer.1', 'transposer.2', 'transposer.3', 'transposer.4'], q:'Les quatre étapes de la transposition, dans l’ordre.',
+   items:['SPH + CYL = nouveau SPH', 'Inverser le CYL : même valeur, signe contraire', 'Axe ± 090, en restant entre 001 et 180', 'Prisme et addition : recopiés tels quels'],
+   qcm:{q:'Une fois la nouvelle sphère trouvée (SPH + CYL), que fait-on ensuite pour transposer ?', bon:'On inverse le signe du cylindre, sans changer sa valeur', faux:['On ajoute ou retire 090 à la nouvelle sphère', 'On recopie le cylindre tel quel, avec son signe', 'On additionne l’addition à la nouvelle sphère']}, src:['7.1T-d8', '7.1T-d40']},
+  {id:'c-transposer-02', type:'libre', pas:['transposer.3'], q:'Pour transposer l’axe : quand additionne-t-on 090, quand le soustrait-on ?',
+   r:'Axe jusqu’à 090 : on additionne ; au-delà de 090 : on soustrait. Le nouvel axe reste entre 001 et 180 (7.1T-d8 ; le seuil est déduit des cas de la vidéo).', points:['jusqu’à 090 : additionner', 'au-delà : soustraire', 'entre 001 et 180'],
+   qcm:{bon:'Jusqu’à 090, on additionne ; au-delà, on soustrait', faux:['Cylindre positif : on additionne ; négatif : on soustrait', 'Axe pair : on additionne ; axe impair : on soustrait', 'Jusqu’à 090, on soustrait ; au-delà, on additionne']}, src:['7.1T-d8', 'MP4']},
+  {id:'c-transposer-03', type:'discrim', pas:['transposer.4', 'transposer.2'], q:'Dans la Rx transposée, qu’est-ce qui change de signe ?',
+   choix:['le cylindre seulement', 'le cylindre et l’addition', 'tout : sphère, cylindre, addition'], bonne:0,
+   r:'Seul le cylindre s’inverse : « Étape 4 : Pouvoir addition et prisme demeurent les mêmes » (7.1T-d8).', src:['7.1T-d8']},
+  {id:'c-transposer-04', type:'calcul', pas:['transposer.5'], q:'Une Rx tirée au hasard : transpose-la.',
+   gen:() => {
+     let pb; do{ pb = TranspoAToi.tirer(Math.random() < 0.5 ? 'tr-moins' : 'tr-plus', true); }while(pb.rep.add || pb.rep.prismes.length);
+     const r = ecrireRx(pb.rep), e = typeof esc === 'function' ? esc : String;
+     /* les tuiles : les erreurs nommées du problème (TranspoAToi.ERREURS), au format de la réponse */
+     const faux = QCM_TROIS(r, pb.pieges.filter(p => p.rx.axe >= 0).map(p => ecrireRx(p.rx)));
+     return {q:'Transpose ' + e(ecrireRx(pb.G)) + '.', r, tol:0.001, exp:e(pb.dem.join(' ; ')), faux};
+   }, src:['7.1T-d8']},
+  {id:'c-transposer-05', type:'calcul', pas:['transposer.6'], q:'Une Rx transposée tirée au hasard : retrouve la Rx d’origine.',
+   gen:() => {
+     let pb; do{ pb = TranspoAToi.tirer('tr-inv', true); }while(pb.rep.add || pb.rep.prismes.length);
+     const r = ecrireRx(pb.rep), e = typeof esc === 'function' ? esc : String;
+     const faux = QCM_TROIS(r, pb.pieges.filter(p => p.rx.axe >= 0).map(p => ecrireRx(p.rx)));
+     return {q:'La transposée d’une Rx vaut ' + e(ecrireRx(pb.G)) + '. Quelle était la Rx d’origine ?', r, tol:0.001, exp:e(pb.dem.join(' ; ')), faux};
+   }, src:['7.1T-d23']},
+  {id:'c-transposer-06', type:'libre', pas:['transposer.5'], q:'Que devient une Rx sans cylindre, comme -1.00, à la transposition ?',
+   r:'Rien : « pour faire une transposition, nous devons avoir la cylindre » (MP4). -1.00 reste -1.00.', points:['rien ne change', 'il faut un cylindre'],
+   qcm:{bon:'Rien : il faut un cylindre pour transposer', faux:['Elle devient Plano -1.00 x 180', 'Elle devient +1.00 DS, de signe contraire', 'Elle devient -1.00 +1.00 x 090']}, src:['MP4']},
+  {id:'c-transposer-07', type:'application', pas:['transposer.3', 'transposer.5'],
+   q:'Une ophtalmologiste écrit -3.75 +1.00 x 095 Add +1.50. Ta collègue transpose et écrit -2.75 -1.00 x 185 Add +1.50. Corrige-la.',
+   r:'095 + 090 = 185 dépasse 180 : au-delà de 090, on soustrait, 095 − 090 = 005. La transposée : -2.75 -1.00 x 005 Add +1.50 (7.1T-d30 à d34).', points:['185 dépasse 180', 'soustraire : 005'],
+   qcm:{bon:'L’axe : au-delà de 090, on soustrait, 005', faux:['La sphère : il fallait -4.75', 'Le cylindre : il fallait garder +1.00', 'L’addition : il fallait l’inverser, Add -1.50']}, src:['7.1T-d30', '7.1T-d34']},
+
+  {id:'c-transpo-croix-01', type:'libre', pas:['transpo-croix.1'], q:'Faut-il transposer une Rx à cylindre positif avant de dessiner sa croix ?',
+   r:'Non : la sphère va sur l’axe, puis axe ± 090 et SPH + CYL, comme en cylindre négatif (7.2T-d5 à d12).', points:['non', 'la sphère sur l’axe', 'SPH + CYL'],
+   qcm:{bon:'Non : la sphère sur l’axe, SPH + CYL sur l’autre méridien', faux:['Oui : la croix ne se dessine qu’en cylindre négatif', 'Oui : sinon la sphère irait sur le mauvais méridien', 'Non : on pose le cylindre seul sur l’axe']}, src:['7.2T-d5', '7.2T-d12']},
+  {id:'c-transpo-croix-02', type:'chaine', pas:['transpo-croix.2'], q:'De la croix à ses deux Rx, dans l’ordre.',
+   items:['Repérer le méridien le plus positif et le plus négatif', 'Cylindre négatif : SPH = le plus positif, AXE = son degré', 'CYL = l’autre − SPH (il sort négatif)', 'Cylindre positif : SPH = le plus négatif, CYL = l’autre − SPH (positif)'],
+   qcm:{q:'Pour écrire la Rx d’une croix en cylindre positif, quel méridien donne la sphère ?', bon:'Le méridien le plus négatif, et son degré donne l’axe', faux:['Le méridien le plus positif, et son degré donne l’axe', 'Le méridien horizontal, quel que soit son pouvoir', 'Le méridien le plus négatif, et l’axe est l’autre degré']}, src:['7.2T-d18', '7.2T-d25']},
+  {id:'c-transpo-croix-03', type:'discrim', pas:['transpo-croix.2'], q:'Croix : -0.50 sur 180, -1.50 sur 090. Laquelle est « RX - OD - CYL NÉGATIF » ?',
+   choix:['-0.50 -1.00 x 180', '-1.50 +1.00 x 090'], bonne:0, r:'OD, l’optométriste, écrit en cylindre négatif : la sphère est le méridien le plus positif, -0.50 sur 180 (7.2T-d23).', src:['7.2T-d22', '7.2T-d23']},
+  {id:'c-transpo-croix-04', type:'calcul', pas:['transpo-croix.2'], q:'Une croix tirée au hasard : écris sa Rx en cylindre positif.',
+   gen:() => {
+     const pb = TranspoAToi.tirer('cx-deux', true), r = ecrireRx(pb.P), e = typeof esc === 'function' ? esc : String;
+     const l = pb.croix.map(x => (Math.abs(x[0]) < 1e-9 ? 'Plano' : (x[0] > 0 ? '+' : '-') + Math.abs(x[0]).toFixed(2)) + ' sur ' + String(x[1]).padStart(3, '0'));
+     /* les tuiles : la Rx en cylindre négatif, puis les erreurs nommées du côté positif (format-croise, cyl-egal-meridien, axe-autre) */
+     const faux = QCM_TROIS(r, [ecrireRx(pb.N)].concat(pb.variantes.filter(v => v.plus).map(v => ecrireRx(v.plus))));
+     return {q:'Une croix porte ' + e(l.join(' et ')) + '. Écris sa Rx en cylindre positif.', r, tol:0.001, exp:e(pb.dem.join(' ; ')), faux};
+   }, src:['7.2T-d18', '7.2T-d23']},
+  {id:'c-transpo-croix-05', type:'calcul', pas:['transpo-croix.1'], q:'Une Rx à cylindre positif tirée au hasard : écris sa croix.',
+   gen:() => {
+     const pb = TranspoAToi.tirer('cx-inv', true), e = typeof esc === 'function' ? esc : String;
+     const c = l => l.map(x => (Math.abs(x[0]) < 1e-9 ? 'Plano' : (x[0] > 0 ? '+' : '-') + Math.abs(x[0]).toFixed(2)) + ' sur ' + String(x[1]).padStart(3, '0')).join(', ');
+     const r = c(pb.rep), faux = QCM_TROIS(r, pb.pieges.filter(p => p.paires.length === 2).map(p => c(p.paires)));
+     return {q:'Écris la croix de ' + e(ecrireRx(pb.rx)) + ', la sphère d’abord : “valeur sur méridien”, deux fois.', r, tol:0.001, exp:e(pb.dem.join(' ; ')), faux};
+   }, src:['7.2T-d5', '7.2T-d12']},
+  {id:'c-transpo-croix-06', type:'libre', pas:['transpo-croix.3'], q:'Que valent les deux flèches du cylindre sur la croix de OD -1.00 +0.50 x 065 ?',
+   r:'Vers le bras du pouvoir le plus négatif (065, -1.00) : -0.50 ; vers l’autre (155, -0.50) : +0.50 (7.2T-d15).', points:['-0.50 vers le plus négatif', '+0.50 vers l’autre'],
+   qcm:{bon:'-0.50 vers le bras de 065, +0.50 vers celui de 155', faux:['+0.50 vers le bras de 065, -0.50 vers celui de 155', '-1.00 vers le bras de 065, -0.50 vers celui de 155', '+0.50 sur les deux flèches, quel que soit le sens']}, src:['7.2T-d13', '7.2T-d15']},
+
+  {id:'c-analyse-avancee-01', type:'chaine', pas:['analyse-avancee.2'], q:'Les cinq étapes de l’analyse d’une ordonnance, dans l’ordre.',
+   items:['CYL absent ou négatif ? Sinon, transposer', 'Le signe de la sphère : myope ou hypermétrope (Plano : rien)', 'Un cylindre ? Torique ; sinon, Sphérique', 'Un prisme ? Prismatique', 'Une addition ? Presbyte'],
+   qcm:{q:'Dans l’analyse d’une ordonnance, que vérifie-t-on avant de lire le signe de la sphère ?', bon:'Que le cylindre est absent ou négatif ; sinon, on transpose', faux:['Que la Rx a une addition ; sinon, on s’arrête', 'Que les deux yeux ont la même Rx ; sinon, on écrit OU', 'Que l’axe est 090 ou 180 ; sinon, on dessine la croix']}, src:['7.3T-d33', '7.3T-d31']},
+  {id:'c-analyse-avancee-02', type:'discrim', pas:['analyse-avancee.3'], q:'Laquelle de ces Rx est “Torique”, sans myope ni hypermétrope ?',
+   choix:['Plano -0.75 x 090', '-0.25 -0.75 x 090'], bonne:0, r:'Plano : « aucun ajout à l’analyse car méridien emmétrope » (7.3T-d9) ; -0.25 est une sphère négative : Myope Torique.', src:['7.3T-d9', '7.3T-d58']},
+  {id:'c-analyse-avancee-03', type:'discrim', pas:['analyse-avancee.2'], q:'OD +3.75 1ΔBU 2ΔBO, ou OD +3.75 : laquelle est “Hypermétrope Sphérique Prismatique” ?',
+   choix:['OD +3.75 1ΔBU 2ΔBO', 'OD +3.75'], bonne:0, r:'« Ordonnance avec Prisme = PRISMATIQUE » ; sans prisme, « aucun ajout à l’analyse » (7.3T-d15).', src:['7.3T-d15', '7.3T-d60']},
+  {id:'c-analyse-avancee-04', type:'discrim', pas:['analyse-avancee.2'], q:'-0.50 Add +2.00, ou -0.50 : laquelle est “Myope Sphérique Presbyte” ?',
+   choix:['-0.50 Add +2.00', '-0.50'], bonne:0, r:'« Ordonnance avec ADD =PRESBYTE » ; « Ordonnance sans ADD = aucun ajout à l’analyse » (7.3T-d17).', src:['7.3T-d17', '7.3T-d55']},
+  {id:'c-analyse-avancee-05', type:'discrim', pas:['analyse-avancee.1'], q:'Laquelle s’analyse tout de suite, sans transposer ?',
+   choix:['+0.25 -4.00 x 076', '-3.75 +4.00 x 166'], bonne:0, r:'« AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF » (7.3T-d5) : c’est la même Rx, mais seule la première est en cylindre négatif.', src:['7.3T-d5', '7.3T-d62']},
+  {id:'c-analyse-avancee-06', type:'libre', pas:['analyse-avancee.1'], q:'Pourquoi -3.75 +4.00 x 166 n’est-elle pas myope ?',
+   r:'Le cylindre est positif : transposée, c’est +0.25 -4.00 x 076, une sphère positive, donc hypermétrope (7.3T-d62).', points:['cylindre positif', 'transposer', '+0.25 : hypermétrope'],
+   qcm:{bon:'Transposée, sa sphère vaut +0.25 : elle est hypermétrope', faux:['Son cylindre fort la rend emmétrope, donc ni l’un ni l’autre', 'Une sphère négative avec un CYL positif est mixte', 'Son axe à 166 annule la myopie de la sphère']}, src:['7.3T-d61', '7.3T-d62']},
+  {id:'c-analyse-avancee-07', type:'application', pas:['analyse-avancee.1', 'analyse-avancee.3'], q:'Une collègue analyse OS -5.00 +5.00 x 047 et écrit “Myope Torique”. Qu’en dis-tu ?',
+   r:'Elle a lu la sphère avant de transposer. Transposée : Plano -5.00 x 137 ; Plano n’ajoute rien : Torique (7.3T-d58) ; la diapo d67 écrit « Emmetrope Torique » (à vérifier en classe).', points:['transposer d’abord', 'Plano -5.00 x 137', 'Torique'],
+   qcm:{bon:'Il fallait transposer : Plano -5.00 x 137, donc Torique', faux:['C’est juste : la sphère écrite est négative', 'Il fallait écrire Myope Sphérique : le cylindre s’annule', 'Il fallait écrire Hypermétrope Torique : le cylindre est positif']}, src:['7.3T-d67', '7.3T-d58']},
+
   /* ---------- Au comptoir (module 5) : cartes ; les calculs tirent leurs nombres du moteur (31-widgets.js, Comptoir) ---------- */
   {id:'c-cpt-fac-01', type:'libre', pas:['cpt-factures.1'], q:'Une visite : combien de factures ?',
    r:'Deux : « Deux factures sont créé, une pour les services et une pour les produits » <span class="sic">(sic)</span> <span class="src">4.1-d6</span>', points:['deux', 'services', 'produits'], src:['4.1-d6'],
@@ -3929,6 +4582,22 @@ const VISLE = {
     texte:'Diane revient chercher ses lunettes avec la feuille où tu as dessiné son OD. “Et mon œil gauche ?” Son OS : -2.00 -1.00 x 015, toujours avec l’add +1.75. Fais toute l’analyse comme au tableau : la croix, le bras de l’option B, les foyers sans correction et le type.',
     prediction:{q:'Sans correction, où tombent les foyers de l’OS de Diane, et quel est le type ?', choix:['deux devant la rétine : astigmatisme myope composé', 'un devant, un sur la rétine : astigmatisme myope simple', 'un devant, un derrière : astigmatisme mixte'], bonne:0,
       retour:'-2.00 sur 015 et (-2.00) + (-1.00) = -3.00 sur 105 : deux méridiens négatifs différents, deux foyers devant la rétine <span class="deduit">déduit</span> ; l’addition reste hors de la croix.'}},
+  'transpo-pourquoi':{genre:'comptoir', titre:'Les deux ordonnances de Diane',
+    texte:'Diane Lévesque revient avec une 2e ordonnance, de son ophtalmologiste : OD -2.50 +0.75 x 080 ; OS -3.00 +1.00 x 105. Elle la pose à côté de celle de son optométriste, OD -1.75 -0.75 x 170 ; OS -2.00 -1.00 x 015. “Rien ne se ressemble : laquelle est la bonne ?”',
+    prediction:{q:'Diane a-t-elle deux corrections différentes ?', choix:['Non : la même correction, écrite dans l’autre format', 'Oui : l’ophtalmologiste a trouvé plus de myopie', 'Oui : les axes ont tourné, l’astigmatisme a changé'], bonne:0,
+      retour:'Transposée, son OD -1.75 -0.75 x 170 donne (-1.75) + (-0.75) = -2.50, +0.75, 170 − 090 = 080 : la même Rx. « Même puissance d’optique! » (7.1T-d22)'}},
+  transposer:{genre:'vie', titre:'L’ascenseur du stationnement',
+    texte:'Tu es au 8e sous-sol, le niveau -8, et tu montes de 2 étages : tu arrives au niveau -6, pas au -10. Monter, c’est ajouter un positif ; descendre, ajouter un négatif <span class="hors">hors cours</span>. L’étape 1 de la transposition est ce trajet : la sphère est l’étage de départ, le cylindre le trajet.',
+    prediction:{q:'Étape 1 pour -8.00 +2.00 x 135 : (-8.00) + (+2.00) = ?', choix:['-6.00', '-10.00', '+6.00'], bonne:0,
+      retour:'Additionner un positif, c’est monter : « on va augmenter dans l’échelle » (MP4) ; -8.00 devient -6.00 (7.1T-d18).'}},
+  'transpo-croix':{genre:'comptoir', titre:'La croix de Diane, en cylindre positif',
+    texte:'Diane voudrait voir sa Rx d’ophtalmologiste, OD -2.50 +0.75 x 080, dessinée en croix. Tu hésites : faut-il d’abord la remettre en cylindre négatif ? Les trois règles du module 7 répondent pour toi.',
+    prediction:{q:'Sur le méridien 080, la croix de cette Rx porte…', choix:['-2.50, la sphère', '-1.75, la sphère + le cylindre', '+0.75, le cylindre seul'], bonne:0,
+      retour:'La sphère va sur l’axe, même en cylindre positif, comme « 065 » et -1.00 pour OD -1.00 +0.50 x 065 (7.2T-d7) ; -1.75 va sur 170 : c’est la croix de sa Rx d’optométriste.'}},
+  'analyse-avancee':{genre:'comptoir', titre:'Le piège du signe',
+    texte:'Une collègue lit l’ordonnance d’un ophtalmologiste : OD -3.75 +4.00 x 166 Add +2.00. “Sphère négative : myope”, note-t-elle, et elle passe à l’œil gauche. Avant de la suivre, regarde le signe du cylindre.',
+    prediction:{q:'Cet OD est…', choix:['hypermétrope', 'myope', 'emmétrope'], bonne:0,
+      retour:'Le cylindre est positif : on transpose d’abord, (-3.75) + (+4.00) = +0.25, -4.00 x 076. « OD: Hypermétrope Torique et Presbyte » (7.3T-d62)'}},
   'cpt-factures':{genre:'comptoir', titre:'Mme Roy au comptoir',
     texte:'Mme Roy, 71 ans, sort de son examen de la vue et choisit une nouvelle lunette. Elle te demande : “Combien je vous dois pour aujourd’hui ?” Avant de répondre, tu dois savoir combien de factures tu prépares, et ce qui va sur chacune.',
     prediction:{q:'Pour l’examen et la lunette de Mme Roy, tu prépares…', choix:['deux factures : une de service, une de produit', 'une facture pour la visite', 'trois factures : examen, monture, verres'], bonne:0,
@@ -4057,6 +4726,23 @@ const PREDIRE = [
   {id:'p-in-voir', ecran:'inverse', cible:'#in-voir',
    q:'Avant de voir la solution : quel bras de la croix donne la sphère de la Rx ?', choix:['le plus positif', 'le plus négatif', 'toujours le bras horizontal'], bonne:0,
    retour:'En cylindre négatif, la sphère est le méridien le plus positif, et son degré donne l’axe ; si les deux bras sont égaux, la Rx est DS <span class="deduit">déduit</span>.'}
+  ,
+  /* ---------- 6 · La transposition ---------- */
+  {id:'p-tp-plus', ecran:'transpo-pourquoi', cible:'#tp-ecriture .puce[data-f="plus"]',
+   q:'Passe à l’écriture de l’ophtalmologiste, en cylindre positif. La croix…', choix:['reste la même', 'change de valeurs', 'tourne de 90°'], bonne:0,
+   retour:'Les mêmes pouvoirs restent sur les mêmes méridiens ; seule la sphère passe à l’autre méridien : « Même puissance d’optique! » (7.1T-d22).'},
+  {id:'p-tr-axe', ecran:'transposer', cible:'#tr-etapes .puce[data-e="3"]',
+   q:'Étape 3 : pour un axe au-delà de 090, comme 135, on…', choix:['soustrait 090', 'additionne 090', 'garde l’axe'], bonne:0,
+   retour:'« 135 - 090 » = 045 (7.1T-d20) : 135 + 090 = 225 sortirait de la plage 001-180.'},
+  {id:'p-tr-t4', ecran:'transposer', cible:'#tr-etapes .puce[data-e="4"]',
+   q:'Étape 4 : le prisme et l’addition, dans la Rx transposée…', choix:['restent les mêmes', 'changent de signe', 'disparaissent'], bonne:0,
+   retour:'« Étape 4 : Pouvoir addition et prisme demeurent les mêmes » (7.1T-d8) ; « Mais il doit être transféré. » (MP4)'},
+  {id:'p-tc-os', ecran:'transpo-croix', cible:'#tc-presets .puce:nth-child(2)',
+   q:'OS -1.50 +0.75 x 105 : son 2e méridien est…', choix:['015', '195', '105'], bonne:0,
+   retour:'« Axe du 2e méridien: +/- 090 » : 105 − 090 = 015 (7.2T-d8) ; il porte (-1.50) + (+0.75) = -0.75.'},
+  {id:'p-aa-1', ecran:'analyse-avancee', cible:'#aa-etapes .puce[data-e="1"]',
+   q:'Étape 1 : on peut faire l’analyse tout de suite si le CYL est…', choix:['absent ou négatif', 'positif', 'plus fort que la sphère'], bonne:0,
+   retour:'« AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF » (7.3T-d5) ; positif : « Transposition (à suivre) » (7.3T-d7).'}
 ];
 
 /* ====== _commun/moteur.js ====== */
@@ -4818,6 +5504,61 @@ function nomRx(sph, cyl){
 }
 
 /* ======================================================================
+   La transposition (la suite du module 7 : 7.1T, 7.2T, 7.3T ; analyse/adm-m07t_kc.md, B7.20 à B7.33).
+   T1 SPH′ = SPH + CYL · T2 CYL′ = −CYL · T3 AXE′ = AXE ± 090, entre 001 et 180 · T4 prisme et ADD recopiés.
+   T1 à T3 sont ② et ③ lus depuis l'autre méridien (déduit) : une Rx et sa transposée font la même croix.
+   Vérifié contre build/distill-m7t/recalcul_adm7t.py par outils/test_atoi.js.
+   ====================================================================== */
+/* une Rx sphérique n'a rien à transposer (MP4 02:44) */
+function transposer(sph, cyl, axe){
+  return zero(cyl) ? {sph:r2(sph), cyl:0, axe:axe == null ? null : axe, ds:true} : {sph:r2(sph + cyl), cyl:r2(-cyl), axe:autreMer(axe), ds:false};
+}
+/* le prisme comme au cours (« 1△BU », « 2ΔBI », « 1.5 Δ BI ») ; au clavier : 1BU, 1 pd BU, 1^BI… */
+const PRISME_RE = /(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:[△Δᐃ∆▲^]|pd|dp|d(?=\s*b))?\s*(b\s?[ioud])(?![a-z])/gi;
+const ecrirePrismes = l => (l || []).map(p => String(p.v) + '△' + p.b).join(' ');
+const memesPrismes = (a, b) => { const k = l => (l || []).map(p => r2(p.v).toFixed(2) + p.b).sort().join('|'); return k(a) === k(b); };
+/* la Rx complète : sphère, cylindre, axe, prisme(s), addition */
+const ecrireRxT = (r, oeil) => ecrireRx(r, oeil) + (r.prismes && r.prismes.length ? ' ' + ecrirePrismes(r.prismes) : '') + (r.add ? ' Add ' + fP(r.add) : '');
+/* lire une Rx écrite par l'étudiant, prisme et addition compris. L'axe brut est gardé (0, négatif, au-delà de 180)
+   pour nommer l'erreur ; “x” peut manquer (“-2.00 +2.00 180”, PDF). → {oeil, sph, cyl, axe, brut, ds, prismes, add} | null */
+function lireRxT(s){
+  let t = String(s == null ? '' : s).replace(/[−–]/g, '-').replace(/\s+/g, ' ').trim();
+  if(!t) return null;
+  let add = null;
+  t = t.replace(/\badd(?:ition)?\.?\s*:?\s*([+-]?\s?\d{1,2}(?:[.,]\d{1,2})?)/i, (m, v) => { add = lisPuiss(v.replace(/\s/g, '')); return ' '; });
+  if(add !== null && isNaN(add)) return null;
+  const prismes = [];
+  t = t.replace(PRISME_RE, (m, v, b) => { prismes.push({v:r2(parseFloat(v.replace(',', '.'))), b:b.replace(/\s/g, '').toUpperCase()}); return ' '; });
+  t = t.replace(/(\d),(\d)/g, '$1.$2').replace(/\s+/g, ' ').trim();
+  const m = /^(?:(OD|OS|OG|OU)\s*:?\s*)?(plano|pl|[+-]?\d{1,2}(?:\.\d{1,2})?)\s*(?:D\.?S\.?|sph)?\s*(?:([+-]\s?\d{1,2}(?:\.\d{1,2})?)\s*(?:x|×|\*)?\s*(-?\s?\d{1,3})\s*°?)?$/i.exec(t);
+  if(!m) return null;
+  const sph = lisPuiss(m[2]), cyl = m[3] ? lisPuiss(m[3].replace(/\s/g, '')) : 0;
+  if(isNaN(sph) || isNaN(cyl)) return null;
+  const brut = m[4] != null ? parseInt(m[4].replace(/\s/g, ''), 10) : null, ds = !m[3] || zero(cyl);
+  return {oeil:m[1] ? m[1].toUpperCase() : '', sph, cyl:ds ? 0 : cyl, axe:brut != null && brut >= 1 && brut <= 180 ? brut : null, brut, ds, prismes, add:add === null || zero(add) ? null : add};
+}
+/* le type d'une ordonnance, en 5 étapes (7.3T-d33) : 1 CYL absent ou négatif, sinon transposer · 2 signe de la SPH
+   (Plano : aucun ajout) · 3 CYL → TORIQUE, sinon SPHÉRIQUE (Plano seul : Emmétrope, 7.3T-d58) · 4 prisme · 5 ADD */
+function typeRx(sph, cyl, axe, prisme, add){
+  const plus = !zero(cyl) && cyl > 0, t = plus ? transposer(sph, cyl, axe) : {sph, cyl:zero(cyl) ? 0 : cyl, axe};
+  return {am:zero(t.sph) ? '' : t.sph < 0 ? 'myope' : 'hyper', forme:!zero(t.cyl) ? 'torique' : zero(t.sph) ? 'emmetrope' : 'spherique',
+    prisme:!!prisme, presbyte:!!add, transpose:plus, t};
+}
+const MOTS_TYPE = {myope:'Myope', hyper:'Hypermétrope', torique:'Torique', spherique:'Sphérique', emmetrope:'Emmétrope'};
+/* écrit comme les corrigés : « Hypermétrope Torique et Presbyte » (7.3T-d62), « Myope Torique, prismatique et presbyte » (d49) */
+function nomType(T){
+  const base = [T.am && MOTS_TYPE[T.am], MOTS_TYPE[T.forme]].filter(Boolean).join(' ');
+  const plus = [T.prisme && 'Prismatique', T.presbyte && 'Presbyte'].filter(Boolean);
+  return base + (plus.length === 1 ? ' et ' + plus[0] : plus.length === 2 ? ', ' + plus[0] + ' et ' + plus[1] : '');
+}
+/* les mots d'une réponse : accents, majuscules, « et », virgules, « OU » sans importance */
+function lireType(txt){
+  const t = String(txt == null ? '' : txt).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const a = {myope:/\bmyop/.test(t), hyper:/\bhyper/.test(t), emm:/\be(?:m?m)?etrop/.test(t), sph:/\bspheri/.test(t), tor:/\btori/.test(t), prisme:/\bprism/.test(t), presbyte:/\bpresbyt/.test(t)};
+  return Object.values(a).some(Boolean) ? a : null;
+}
+
+/* ======================================================================
    Dessins (SVG, couleurs par jetons)
    ====================================================================== */
 const CX = 190, CY = 152, RB = 92;
@@ -4977,9 +5718,11 @@ function dessinerDroite(svg, sph, cyl, voir){
     if(grand) h += T(x(v), Y + 24, v > 0 ? '+' + v : String(v), 'lbl-deg', 'middle');
   }
   h += L(x(sph), 46, x(res) + (cyl < 0 ? 6 : -6), 46, 'd-m2', 3, ' marker-end="url(#pointe-cyl)"');
-  /* l'étiquette du cylindre à droite du départ de la flèche, ou à gauche de l'arrivée s'il n'y a pas la place */
-  const aDroite = x(sph) + 12 + 96 < W;
-  h += aDroite ? T(x(sph) + 12, 51, 'CYL ' + fP(cyl), 'lbl-deg c-m2', 'start') : T(x(res) - 14, 51, 'CYL ' + fP(cyl), 'lbl-deg c-m2', 'end');
+  /* l'étiquette du cylindre du côté où la flèche ne va pas : à côté de son départ, ou au-delà de son arrivée s'il n'y a
+     pas la place (un cylindre positif, à la transposition, fait aller la flèche vers la droite) */
+  const lib = 'CYL ' + fP(cyl);
+  if(cyl < 0) h += x(sph) + 12 + 96 < W ? T(x(sph) + 12, 51, lib, 'lbl-deg c-m2', 'start') : T(x(res) - 14, 51, lib, 'lbl-deg c-m2', 'end');
+  else h += x(sph) - 12 - 96 > 0 ? T(x(sph) - 12, 51, lib, 'lbl-deg c-m2', 'end') : T(x(res) + 14, 51, lib, 'lbl-deg c-m2', 'start');
   h += '<circle cx="' + n1(x(sph)) + '" cy="' + Y + '" r="7" class="c-m1"/>';
   h += T(x(sph), Y + 46, 'SPH ' + fP(sph), 'lbl-val c-m1');
   h += '<circle cx="' + n1(x(res)) + '" cy="' + Y + '" r="7" class="c-m2"/>';
@@ -5495,7 +6238,241 @@ INIT.exercices = root => {
 function arreterChrono(){ if(chronoT){ clearInterval(chronoT); chronoT = null; } const c = $('#ex-chrono'); if(c){ c.hidden = true; } const b = $('#ex-chrono-btn'); if(b) b.textContent = '⏱ « 2min »'; }
 
 /* ======================================================================
-   12 · “À toi” sur la croix (CroixAToi), et l'arène (ARENE)
+   11b · La transposition (partie 6) : les quatre écrans. Les “À toi” et l'arène sont plus bas (TranspoAToi).
+   analyse/adm-m07t_kc.md (prescription) ; distilled/adm-m07t_distilled.md.
+   ====================================================================== */
+/* les cinq étapes de 7.3T-d33, en libellés courts ; une ligne de démarche par étape */
+const ETAPES_ANALYSE = ['Étape 1 : CYL absent ou négatif ?', 'Étape 2 : le signe de la sphère', 'Étape 3 : de l’astigmatisme ?', 'Étape 4 : un prisme ?', 'Étape 5 : une addition ?'];
+function etapesAnalyse(rx, T){
+  const t = T.t, pr = rx.prismes || [];
+  return [
+    rx.ds || zero(rx.cyl) ? 'Pas de CYL : on peut analyser' : T.transpose ? 'CYL positif (' + fP(rx.cyl) + ') : on transpose d’abord, ' + ecrireRx(t) : 'CYL négatif : on peut analyser',
+    zero(t.sph) ? 'SPH Plano : aucun ajout, méridien emmétrope' : 'SPH ' + fP(t.sph) + (t.sph < 0 ? ', négative : MYOPE' : ', positive : HYPERMÉTROPE'),
+    !zero(t.cyl) ? 'CYL et axe : TORIQUE' : zero(t.sph) ? 'Plano seul, sans CYL : Emmétrope' : 'SPH seule : SPHÉRIQUE',
+    pr.length ? ecrirePrismes(pr) + ' : PRISMATIQUE' : 'Pas de prisme : aucun ajout',
+    rx.add ? 'Add ' + fP(rx.add) + ' : PRESBYTE' : 'Pas d’addition : aucun ajout'
+  ];
+}
+const rxDe = a => ({sph:a[0], cyl:a[1], axe:a[2], ds:zero(a[1])});
+/* les deux flèches du cylindre, dans le quart en bas à droite d'une croix droite (7.2T-d13 à d16) : vers le bras
+   du pouvoir le plus négatif, −|CYL| ; vers l'autre, +|CYL| (la règle est déduite des valeurs du cours) */
+function flechesCyl(k){
+  const b = k.axe === 180 ? 'horizontal' : k.axe === 90 ? 'vertical' : bras(k.axe);
+  const vert = b === 'vertical', H = vert ? k.m2 : k.axe, V = vert ? k.axe : k.m2, PH = vert ? k.pM2 : k.pAxe, PV = vert ? k.pAxe : k.pM2;
+  const versV = r2(PV - PH), versH = r2(PH - PV), f = v => zero(v) ? '0.00' : (v > 0 ? '+' : '-') + Math.abs(v).toFixed(2);
+  let h = '<defs><marker id="pointe-fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="c-acc"/></marker></defs>';
+  h += L(CX + 72, CY + 8, CX + 10, CY + 70, 'd-acc', 2.2, ' marker-end="url(#pointe-fl)"');      // vers le bras vertical
+  h += L(CX + 16, CY + 88, CX + 88, CY + 16, 'd-acc', 2.2, ' marker-end="url(#pointe-fl)"');     // vers le bras horizontal
+  h += T(CX + 24, CY + 26, f(versV), 'lbl-deg c-acc') + T(CX + 74, CY + 76, f(versH), 'lbl-deg c-acc');
+  return {h, versV, versH, H, V, PH, PV, f, txt:'vers le bras vertical (' + P3(V) + ') ' + f(versV) + ', vers le bras horizontal (' + P3(H) + ') ' + f(versH)};
+}
+/* la Rx d'un exercice du cours (EXOS_AA, 20-donnees.js) : [sph, cyl, axe, add], prismes à part */
+const rxEx = (x, k) => Object.assign(rxDe(x[k]), {prismes:x[k + 'P'] || [], add:x[k][3] || null});
+
+/* ---------- 6 · Deux écritures, une correction (B7.20, B7.21) ---------- */
+INIT['transpo-pourquoi'] = root => {
+  let paire = 0, format = 'moins';
+  const box = $('#tp-paires');
+  box.innerHTML = PAIRES_TP.map((p, i) => '<button type="button" class="puce" data-i="' + i + '" aria-pressed="false">' + esc(ecrireRx(rxDe(p.moins))) + '</button>').join('');
+  function rendre(){
+    const p = PAIRES_TP[paire], r = rxDe(format === 'moins' ? p.moins : p.plus), autre = rxDe(format === 'moins' ? p.plus : p.moins);
+    const k = croix(r.sph, r.cyl, r.axe);
+    $$('.puce', box).forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === paire ? 'true' : 'false'));
+    $$('#tp-ecriture .puce').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === format ? 'true' : 'false'));
+    dessinerCroix($('#tp-svg'), k, {mode:modeNaturel(k)});
+    $('#tp-rx').textContent = ecrireRx(r);
+    $('#tp-calc').innerHTML = '<span class="m1">①</span> Sphère ' + fP(r.sph) + ' → méridien de l’axe, <b>' + P3(r.axe) + '</b><br>' +
+      '<span class="m2">②</span> (' + fP(r.sph) + ') + (' + fP(r.cyl) + ') = <b>' + fP(k.pM2) + '</b> → ' + P3(k.m2) + '<br>' +
+      (r.cyl < 0 ? 'Cylindre négatif : la sphère est le méridien le plus positif.' : 'Cylindre positif : la sphère est le méridien le plus négatif.');
+    $('#tp-res').innerHTML = chipsCroix(k, false);
+    $('#tp-leg').textContent = (format === 'moins' ? 'Écriture de l’optométriste (CYL négatif). ' : 'Écriture de l’ophtalmologiste (CYL positif). ') +
+      'L’autre écriture, ' + ecrireRx(autre) + ', donne exactement la même croix (' + p.src + ').';
+  }
+  box.addEventListener('click', e => { const b = e.target.closest('.puce'); if(!b) return; paire = +b.dataset.i; rendre(); });
+  $('#tp-ecriture').addEventListener('click', e => { const b = e.target.closest('.puce'); if(!b) return; format = b.dataset.f; rendre(); });
+  rendre();
+  /* « OD » : l'optométriste ou l'œil droit ? (B7.20, le discrim de la prescription) */
+  const tri = $('#tp-od');
+  function rendreTri(){
+    tri.innerHTML = TRI_OD.map((x, i) => '<div class="tri-l" data-i="' + i + '"><span><b style="font-family:var(--f-mono)">' + x.t + '</b> · <span class="src">' + esc(x.src) + '</span></span>' +
+      '<div class="puces"><button type="button" class="puce" data-v="opto" aria-pressed="false">l’optométriste</button><button type="button" class="puce" data-v="oeil" aria-pressed="false">l’œil droit</button></div></div>').join('');
+    $('#tp-od-retour').textContent = ''; $('#tp-od-retour').className = 'retour';
+  }
+  tri.addEventListener('click', e => {
+    const b = e.target.closest('.puce'); if(!b) return;
+    const l = b.closest('.tri-l');
+    $$('.puce', l).forEach(x => { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); x.classList.remove('bon', 'faux'); });
+  });
+  $('#tp-od-ok').addEventListener('click', () => {
+    let justes = 0, vides = 0; const fauxL = [];
+    $$('.tri-l', tri).forEach(l => {
+      const x = TRI_OD[+l.dataset.i], b = $('.puce[aria-pressed="true"]', l);
+      if(!b){ vides++; return; }
+      const ok = b.dataset.v === x.v; b.classList.add(ok ? 'bon' : 'faux');
+      if(ok) justes++; else fauxL.push(x);
+    });
+    const r = $('#tp-od-retour');
+    if(vides){ r.className = 'retour bad'; r.textContent = 'Choisis d’abord pour les ' + TRI_OD.length + ' lignes (encore ' + vides + ').'; return; }
+    if(fauxL.length){ r.className = 'retour bad'; r.innerHTML = justes + ' sur ' + TRI_OD.length + '. ' + fauxL.map(x => x.e).join(' '); return; }
+    r.className = 'retour ok'; r.textContent = 'Tout juste. Devant un format ou un professionnel, OD est l’optométriste ; en tête d’une ligne de Rx, c’est l’œil droit.';
+  });
+  $('#tp-od-zero').addEventListener('click', rendreTri);
+  rendreTri();
+};
+
+/* ---------- 6 · Transposer en 4 étapes (B7.22 à B7.27) : le tableau Rx originale → Rx transposée, pas à pas ---------- */
+let trEtape = 4;
+INIT.transposer = root => {
+  const champ = $('#tr-rx');
+  presets($('#tr-presets'), PRESETS_TR, champ);
+  function rendre(){
+    const rx = lireRxT(champ.value), msg = $('#tr-msg');
+    $$('#tr-etapes .puce').forEach(b => b.setAttribute('aria-pressed', +b.dataset.e === trEtape ? 'true' : 'false'));
+    if(!rx || (!rx.ds && rx.axe == null)){
+      dire(msg, 'Écris la Rx comme au cours : -8.00 +2.00 x 135 ; ajoute le prisme et l’addition s’il y en a (1△BU Add +1.50). L’axe va de 001 à 180.', 'bad');
+      $('#tr-table').innerHTML = ''; $('#tr-calc').innerHTML = ''; $('#tr-croix').innerHTML = ''; $('#tr-droite-fig').hidden = true; return;
+    }
+    const T = Object.assign(transposer(rx.sph, rx.cyl, rx.axe), {prismes:rx.prismes, add:rx.add}), e = rx.ds ? 4 : trEtape;
+    dire(msg, rx.ds ? 'Rx sphérique : rien à transposer, « pour faire une transposition, nous devons avoir la cylindre » (MP4 02:44).' :
+      rx.cyl > 0 ? 'Cylindre positif (format de l’ophtalmologiste) : la transposée sera en cylindre négatif.' : 'Cylindre négatif (format de l’optométriste) : la transposée sera en cylindre positif.');
+    const cel = (v, cls) => '<td class="n' + (cls ? ' ' + cls : '') + '">' + v + '</td>', vide = '<span class="tr-vide">?</span>';
+    const pr = rx.prismes.length ? esc(ecrirePrismes(rx.prismes)) : '—', ad = rx.add ? fP(rx.add) : '—', v = (n, x) => e >= n ? x : vide;
+    $('#tr-table').innerHTML =
+      '<tr><th scope="row">Rx originale</th>' + cel(fP(rx.sph)) + cel(rx.ds ? '—' : fP(rx.cyl)) + cel(rx.ds ? '—' : P3(rx.axe)) + cel(pr) + cel(ad) + '</tr>' +
+      '<tr><th scope="row">Rx transposée</th>' + cel(v(1, fP(T.sph)), 'tr-t1') + cel(rx.ds ? '—' : v(2, fP(T.cyl)), 'tr-t2') + cel(rx.ds ? '—' : v(3, P3(T.axe)), 'tr-t3') + cel(v(4, pr), 'tr-t4') + cel(v(4, ad), 'tr-t4') + '</tr>';
+    const fig = $('#tr-droite-fig'); fig.hidden = rx.ds;
+    if(!rx.ds) dessinerDroite($('#tr-droite'), rx.sph, rx.cyl, e >= 1);
+    if(rx.ds){
+      $('#tr-calc').innerHTML = 'Pas de cylindre : ' + fP(rx.sph) + ' + 0 = ' + fP(rx.sph) + ', aucun cylindre à inverser, aucun axe. La Rx reste ' + esc(ecrireRxT(Object.assign({}, rx, {ds:true}))) + '.';
+      $('#tr-croix').innerHTML = ''; return;
+    }
+    const plus = rx.axe <= 90, recopie = [rx.prismes.length && 'le prisme ' + ecrirePrismes(rx.prismes), rx.add && 'l’addition ' + fP(rx.add)].filter(Boolean);
+    const L = [
+      '① SPH + CYL = (' + fP(rx.sph) + ') + (' + fP(rx.cyl) + ') = <b>' + fP(T.sph) + '</b>' + (rx.cyl > 0 ? ' (on monte de ' + rx.cyl.toFixed(2) + ' sur la droite)' : ' (on recule de ' + Math.abs(rx.cyl).toFixed(2) + ' sur la droite)'),
+      '② ' + fP(rx.cyl) + ' devient <b>' + fP(T.cyl) + '</b> : même valeur, signe contraire',
+      '③ ' + P3(rx.axe) + (plus ? ' + 090 = ' : ' − 090 = ') + '<b>' + P3(T.axe) + '</b>' + (plus ? ' (axe jusqu’à 090 : on additionne)' : ' (axe au-delà de 090 : on soustrait)'),
+      '④ ' + (recopie.length ? 'On recopie ' + esc(recopie.join(' et ')) : 'Rien à recopier : ni prisme ni addition') + ' → <b>' + esc(ecrireRxT(T)) + '</b>'
+    ];
+    $('#tr-calc').innerHTML = L.slice(0, e).join('<br>');
+    const k1 = croix(rx.sph, rx.cyl, rx.axe), k2 = croix(T.sph, T.cyl, T.axe);
+    $('#tr-croix').innerHTML = e >= 4 ? 'Même croix : ' + fP(k1.pAxe) + ' sur ' + P3(k1.axe) + ', ' + fP(k1.pM2) + ' sur ' + P3(k1.m2) + ' (Rx originale) ; ' +
+      fP(k2.pAxe) + ' sur ' + P3(k2.axe) + ', ' + fP(k2.pM2) + ' sur ' + P3(k2.m2) + ' (transposée). « Même puissance d’optique! » (7.1T-d22)' : '';
+  }
+  champ.addEventListener('input', rendre);
+  $('#tr-etapes').addEventListener('click', e => { const b = e.target.closest('.puce'); if(!b) return; trEtape = +b.dataset.e; rendre(); });
+  rendre();
+};
+
+/* ---------- 6 · La croix d'une Rx à CYL positif (B7.28 à B7.30) ---------- */
+INIT['transpo-croix'] = root => {
+  const champ = $('#tc-rx');
+  presets($('#tc-presets'), PRESETS_TC, champ);
+  function rendre(){
+    const rx = lireRxT(champ.value), msg = $('#tc-msg');
+    if(!rx || (!rx.ds && rx.axe == null)){ dire(msg, 'Écris la Rx comme au cours : OD -1.00 +0.50 x 065 (sphère, cylindre, x, axe).', 'bad');
+      ['#tc-calc', '#tc-res', '#tc-bras', '#tc-leg'].forEach(s => { $(s).innerHTML = ''; }); return; }
+    const k = rx.ds ? croix(rx.sph, 0, 180) : croix(rx.sph, rx.cyl, rx.axe), svg = $('#tc-svg');
+    const egal = !rx.ds && rx.axe !== 180 && rx.axe !== 90 && bras(rx.axe) === 'egalite', F = flechesCyl(k);
+    dessinerCroix(svg, k, {mode:egal ? 'reelle' : 'droite'});
+    if(!egal) svg.innerHTML += F.h;
+    svg.setAttribute('aria-label', (svg.getAttribute('aria-label') || '') + (egal ? '' : ' ; flèches du cylindre : ' + F.txt));
+    dire(msg, rx.ds ? 'Rx sphérique : même force partout ; par convention, 180 et 090, et des flèches de valeur 0.' :
+      rx.cyl > 0 ? 'Cylindre positif : ① ② ③ s’appliquent tels quels, sans transposer.' : 'Cylindre négatif : la croix se construit comme au module 7.');
+    if(rx.ds) $('#tc-calc').innerHTML = 'Rx sphérique : ' + fP(rx.sph) + ' sur tous les méridiens.';
+    else $('#tc-calc').innerHTML = '<span class="m1">①</span> Sphère ' + fP(rx.sph) + ' → méridien de l’axe, <b>' + P3(rx.axe) + '</b><br>' +
+      '③ Axe du 2e méridien : ' + P3(rx.axe) + (rx.axe <= 90 ? ' + 090' : ' − 090') + ' = <b>' + P3(k.m2) + '</b><br>' +
+      '<span class="m2">②</span> Force du 2e méridien : (' + fP(rx.sph) + ') + (' + fP(rx.cyl) + ') = <b>' + fP(k.pM2) + '</b>';
+    const neg = inverse(k.pAxe, k.axe, k.pM2, k.m2), pos = neg.ds ? neg : transposer(neg.sph, neg.cyl, neg.axe);
+    $('#tc-res').innerHTML = neg.ds ? '<div class="mesure"><div class="k">Rx (sphérique)</div><div class="v">' + esc(ecrireRx(neg)) + '</div></div>' :
+      '<div class="mesure m1"><div class="k">Rx en CYL négatif (optométriste)</div><div class="v">' + esc(ecrireRx(neg)) + '</div></div>' +
+      '<div class="mesure m2"><div class="k">Rx en CYL positif (ophtalmologiste)</div><div class="v">' + esc(ecrireRx(pos)) + '</div></div>';
+    $('#tc-leg').textContent = rx.ds ? 'Croix sphérique.' : egal ? 'Croix tracée avec ses vrais méridiens (option A du module 7).' : 'Croix droite : degré à un bout du bras, pouvoir à l’autre ; les deux flèches du cylindre en bas à droite.';
+    let b = '';
+    if(rx.ds) b = 'Flèches : 0.00 ; aucun cylindre.';
+    else if(egal){
+      const vNeg = F.PV < F.PH ? F.V : F.H, vAutre = F.PV < F.PH ? F.H : F.V;
+      b = P3(rx.axe) + ' et ' + P3(k.m2) + ' sont à égale distance de 180 et de 090 : « (axe le plus près de 180 ou 0) » ne tranche pas (à vérifier en classe). Flèches du cylindre : vers ' +
+        P3(vNeg) + ', ' + F.f(-Math.abs(rx.cyl)) + ' ; vers ' + P3(vAutre) + ', ' + F.f(Math.abs(rx.cyl)) + '.';
+    } else {
+      b = 'Bras horizontal : ' + P3(F.H) + ', « (axe le plus près de 180 ou 0) » ; bras vertical : ' + P3(F.V) + ' (7.2T-d3). Flèches du cylindre : ' + F.txt + '.';
+      if(F.H < 45) b += ' À vérifier : la vidéo de la prof met à l’horizontale le plus grand des deux nombres, ici ' + P3(F.V) + ' ; les pouvoirs, eux, ne changent pas.';
+    }
+    $('#tc-bras').textContent = b;
+  }
+  champ.addEventListener('input', rendre);
+  rendre();
+};
+
+/* ---------- 6 · Analyser une Rx à CYL positif (B7.31 à B7.33) : l'analyse pas à pas, puis les exercices du cours ---------- */
+let aaEtape = 0, aaEx = 0;
+INIT['analyse-avancee'] = root => {
+  const champ = $('#aa-rx');
+  presets($('#aa-presets'), PRESETS_AA, champ);
+  function rendre(){
+    const rx = lireRxT(champ.value), msg = $('#aa-msg');
+    $$('#aa-etapes .puce').forEach(b => b.setAttribute('aria-pressed', +b.dataset.e === aaEtape ? 'true' : 'false'));
+    if(!rx || (!rx.ds && rx.axe == null)){ dire(msg, 'Écris la Rx comme au cours : OD -3.75 +4.00 x 166 Add +2.00 (prisme : 1△BU).', 'bad');
+      $('#aa-liste').innerHTML = ''; $('#aa-res').hidden = true; return; }
+    dire(msg, aaEtape ? '' : 'Choisis une étape : la démarche se dévoile jusqu’à elle.');
+    const T = typeRx(rx.sph, rx.cyl, rx.axe, rx.prismes.length > 0, !!rx.add), L = etapesAnalyse(rx, T);
+    $('#aa-liste').innerHTML = L.map((x, i) => '<li' + (i >= aaEtape ? ' class="a-toi"' : '') + '><b>' + esc(ETAPES_ANALYSE[i]) + '</b><span>' + (i < aaEtape ? esc(x) : '…') + '</span></li>').join('');
+    const res = $('#aa-res');
+    if(aaEtape >= 5){
+      res.innerHTML = 'Résultat : <b>' + esc((rx.oeil ? rx.oeil + ' : ' : '') + nomType(T)) + '</b>' +
+        (T.forme === 'torique' && !T.am ? ' (7.3T-d67 écrit « Emmetrope Torique » <span class="sic">(sic)</span> pour ce cas : à vérifier en classe)' : '');
+      res.hidden = false;
+    } else res.hidden = true;
+  }
+  champ.addEventListener('input', rendre);
+  $('#aa-etapes').addEventListener('click', e => { const b = e.target.closest('.puce'); if(!b) return; aaEtape = +b.dataset.e; rendre(); });
+  rendre();
+  /* les exercices du cours (7.3T-d44 à d67), triés par l'étape 1 : CYL absent ou négatif, puis CYL positif */
+  const ong = $('#aa-onglets');
+  const fait = i => ETAT.fiches['a7t-' + pad(i + 1)] === 'ok';
+  function onglets(){
+    const b = i => '<button type="button" role="tab" data-i="' + i + '" aria-selected="' + (aaEx === i) + '" aria-label="Exercice ' + EXOS_AA[i].src + (fait(i) ? ', réussi' : '') + '">' + (i + 1) + (fait(i) ? '<span class="ok">✓</span>' : '') + '</button>';
+    const idx = EXOS_AA.map((x, i) => i);
+    ong.innerHTML = '<div class="onglets" style="width:100%"><span class="lib" style="align-self:center;margin-right:4px">CYL absent ou négatif</span>' + idx.filter(i => !EXOS_AA[i].plus).map(b).join('') + '</div>' +
+      '<div class="onglets" style="width:100%"><span class="lib" style="align-self:center;margin-right:4px">CYL positif : transposer d’abord</span>' + idx.filter(i => EXOS_AA[i].plus).map(b).join('') + '</div>' +
+      '<p class="serie-pts" style="margin:4px 0 0;width:100%">Réussis : ' + idx.filter(fait).length + ' sur ' + EXOS_AA.length + '</p>';
+  }
+  const YEUX = [['od', 'OD'], ['os', 'OS']];
+  function exercice(){
+    const x = EXOS_AA[aaEx];
+    onglets();
+    $('#aa-ex-lib').textContent = x.src + (fait(aaEx) ? ' · réussi ✓' : '');
+    YEUX.forEach(([k, O]) => { $('#aa-ex-' + k + '-rx').textContent = O + ' ' + ecrireRxT(rxEx(x, k)); const f = $('#aa-ex-' + k); f.value = ''; noter(f, null); });
+    $('#aa-ex-retour').textContent = ''; $('#aa-ex-corr').hidden = true;
+  }
+  function corrige(){
+    const x = EXOS_AA[aaEx], c = $('#aa-ex-corr');
+    c.innerHTML = 'Corrigé de la diapo (' + esc(x.src) + ') : ' + x.corr.map(t => '« ' + t + ' »').join(' ; ') + (x.note ? '<br>' + x.note : '');
+    c.hidden = false;
+  }
+  $('#aa-ex-ok').addEventListener('click', () => {
+    const x = EXOS_AA[aaEx], r = $('#aa-ex-retour'), pistes = [];
+    let n = 0, vides = 0;
+    YEUX.forEach(([k, O]) => {
+      const f = $('#aa-ex-' + k), R = rxEx(x, k), pb = {sens:'type', rx:R, T:typeRx(R.sph, R.cyl, R.axe, R.prismes.length > 0, !!R.add)}, j = TranspoAToi.jugerType(pb, f.value);
+      if(j.etat === 'vide'){ vides++; noter(f, null); return; }
+      noter(f, j.etat === 'ok');
+      if(j.etat === 'ok') n++; else pistes.push(O + ' : ' + (j.piege || 'reprends les cinq étapes, dans l’ordre.'));
+    });
+    if(vides){ r.className = 'retour bad'; r.textContent = 'Écris le type des deux yeux, avec les mots du cours (Myope ou Hypermétrope, Sphérique ou Torique…).'; return; }
+    if(n === 2){
+      r.className = 'retour ok'; r.textContent = 'Les deux yeux sont justes.';
+      ETAT.fiches['a7t-' + pad(aaEx + 1)] = 'ok'; toucherEtat(); onglets(); $('#aa-ex-lib').textContent = x.src + ' · réussi ✓';
+      corrige();
+    } else { r.className = 'retour bad'; r.textContent = n + ' sur 2. ' + pistes.join(' '); }
+  });
+  $('#aa-ex-voir').addEventListener('click', corrige);
+  ong.addEventListener('click', e => { const b = e.target.closest('[data-i]'); if(!b) return; aaEx = +b.dataset.i; exercice(); });
+  exercice();
+  RAFRAICHIR.push(() => { if(ecran('analyse-avancee').init) onglets(); });
+};
+
+/* ======================================================================
+   12 · “À toi” sur la croix (CroixAToi) et sur la transposition (TranspoAToi, 12b), et l'arène (ARENE)
    learning-blueprint.md §4, §4.7, §5.4 ; analyse/adm-m07_kc.md (B7.6 à B7.11, B7.17 ; prescription 1 et 2) ;
    analyse/adm-profil.md §8. Le moteur est commun : _commun/pratique.js (échelle des essais, critère,
    journal) et _commun/arene.js. Ici, ce qui est propre à la croix :
@@ -5876,6 +6853,551 @@ const CroixAToi = (() => {
       }}));
   }
   return {tirer, juger, repTxt, lireCroix, demarche, sources, monter, ERREURS, BLOCS, KC_GEN, GENS:Object.keys(AXE)};
+})();
+
+/* ======================================================================
+   12b · “À toi” sur la transposition (TranspoAToi) : la partie 6
+   learning-blueprint.md §4, §4.7, §5.4 ; analyse/adm-m07t_kc.md (B7.20 à B7.33, prescription) ; adm-profil.md §8.
+   - transposer (B7.22 à B7.27) : CYL − → CYL + (tr-moins), CYL + → CYL − (tr-plus), et à rebours, retrouver la Rx
+     d'origine (tr-inv, B7.27 : un problème sur trois dans le bloc) ; axes jusqu'à 090 et au-delà, avec les bords
+     090, 180, 001, 089, 091 ; un tirage sur trois passe par zéro ou part de Plano ; un sur quatre porte un prisme
+     ou une addition (T4) ;
+   - la croix (B7.28, B7.29) : croix → les deux Rx, « RX - OD - CYL NÉGATIF » et « Rx - MD - CYL POSITIF »
+     (cx-deux ; les trois croix « PRATIQUE (Tableau) » de 7.2T-d27 à d29 d'abord, sans corrigé sur les diapos), et
+     à l'envers, Rx en CYL + → croix, sans transposer (cx-inv) ;
+   - le type (B7.31, B7.32) : “Décris le type” d'une Rx fraîche, CYL absent ou négatif (type-moins) ou positif
+     (type-plus), avec prisme, addition, Plano ;
+   - les erreurs nommées (ERREURS : id → KC, message sans la réponse) ; juger() renvoie l'id en pid.
+   Ce que le cours ne tranche pas n'est ni tiré ni noté faux : le bras horizontal n'est jamais demandé (045/135 ;
+   001 à 044 selon la vidéo de la prof) ; “Emmetrope Torique” et “Torique” sont acceptés pour Plano + CYL
+   (7.3T-d67, d58) ; “70” vaut “070” ; Plano s'écrit Plano, 0 ou pl. Les Rx que la page montre résolues ne
+   sont jamais tirées (VUES). Tests : outils/test_atoi.js.
+   ====================================================================== */
+const TranspoAToi = (() => {
+  const q4 = (lo, hi) => hasard(lo, hi, 0.25);
+  const sg = x => zero(x) ? 0 : x > 0 ? 1 : -1;
+  const cleRx = r => (zero(r.sph) ? 0 : r.sph).toFixed(2) + '|' + (zero(r.cyl || 0) ? 'DS' : r.cyl.toFixed(2) + '|' + r.axe);
+  /* ---------- les Rx que la page montre résolues : diapos, PDF, vidéos, exercices du cours, Vis-le, questions ;
+     avec leurs transposées (même croix). Jamais tirées. ---------- */
+  const VUES = new Set();
+  [[2, -1, 65], [-8, 2, 135], [2, -1.5, 90], [-3.75, 1, 95], [-1, -1, 65], [0, -2, 90], [-1, -0.5, 90], [1, -0.75, 25], [0, -1, 180], [1, 2, 10],
+   [-2, 2, 110], [0.5, -0.25, 180], [0, 1, 15], [-1, -0.5, 180], [-2, 0.5, 90], [-2.5, 1, 45], [-2.5, 1, 60], [3, -0.5, 35],           // 7.1T, PDF, MP4, vidéo
+   [-1, 0.5, 65], [-1.5, 0.75, 105], [-0.5, -1, 180], [3, -5.5, 175], [3, -1.5, 15], [-5, -1.75, 55],                                 // 7.2T (d27 à d29 compris)
+   [2.25, -0.5, 145], [-1, -0.5, 60], [-1, -0.25, 75], [-2.25, -0.5, 180], [4, -1.25, 170], [-6.5, -0.5, 60], [0, -0.5, 176], [3.25, -2.75, 177],
+   [-3.75, 4, 166], [-3.25, 2.75, 177], [0.75, 1, 180], [-0.5, 1, 90], [-1, 2.5, 175], [-0.75, 2, 177], [-4.75, 5.25, 35], [-5, 5, 47],
+   [2.25, -0.5, 166], [0, -0.5, 180],                                                                                                  // 7.3T
+   [-1.75, -0.75, 170], [-2, -1, 15],                                                                                                 // Diane (Vis-le)
+   [1.25, -0.75, 40], [-4, 1.5, 120], [0, 0.75, 90], [-2, -1, 30], [-2.5, 3, 10], [-1, 0.5, 170], [-1.25, 0.5, 95], [1, -1.5, 20], [-0.75, 0.75, 180],  // questions (annexe B)
+   [-1.5, 0.75, 40], [0, -0.75, 90], [-0.25, -0.75, 90], [-2, -1.25, 30], [-0.5, 1.25, 90], [0, -1, 45], [-1.25, 2, 30], [-2, 1.5, 110]   // pas, cartes, Vérifie-toi
+  ].forEach(a => { const r = {sph:a[0], cyl:a[1], axe:a[2]}, t = transposer(a[0], a[1], a[2]); VUES.add(cleRx(r)); VUES.add(cleRx(t)); });
+  [2.25, -3.25, 4.25, -10, -11.25, -0.5, -5.5, 0, 3.75, -1, 2.75, -3].forEach(s => VUES.add(cleRx({sph:s, cyl:0})));                   // les Rx sphériques du cours
+  const vue = r => VUES.has(cleRx(r));
+
+  /* ---------- les erreurs nommées (blueprint §4.4) : id → KC de la carte, message (court, sans la réponse) ---------- */
+  const PAS_T4 = pb => [pb.rep.prismes && pb.rep.prismes.length && 'le prisme', pb.rep.add && 'l’addition'].filter(Boolean).join(' et ') || 'le prisme et l’addition';
+  const ERREURS = {
+    /* transposer (B7.22 à B7.27) */
+    'somme-valeurs':{kc:'B7.22', m:pb => 'Tu as additionné les nombres sans leurs signes. (' + fP(pb.G.sph) + ') + (' + fP(pb.G.cyl) + ') : sur la droite des dioptries, ' + (pb.G.cyl > 0 ? 'on monte' : 'on recule') + ' de ' + Math.abs(pb.G.cyl).toFixed(2) + '.'},
+    'soustrait':{kc:'B7.22', m:pb => 'Tu as soustrait le cylindre. ' + (pb.type === 'croix' ? 'La force du 2e méridien est une addition : SPH + CYL, avec le signe du cylindre.' : 'L’étape 1 est une addition : SPH + CYL, avec le signe du cylindre.')},
+    'signe-zero':{kc:'B7.22', m:pb => 'Attention au signe en passant zéro : pars de ' + fP(pb.G.sph) + ' et ' + (pb.G.cyl > 0 ? 'monte' : 'recule') + ' de ' + Math.abs(pb.G.cyl).toFixed(2) + ' sur la droite des dioptries.'},
+    'sph-gardee':{kc:'B7.22', m:() => 'La sphère change aussi : étape 1, SPH + CYL = nouveau SPH.'},
+    'cyl-garde':{kc:'B7.23', m:() => 'Le cylindre garde sa valeur, mais change de signe (étape 2).'},
+    'cyl-valeur':{kc:'B7.23', m:() => 'Le nouveau cylindre n’est pas SPH + CYL : c’est le même nombre que l’ancien, avec le signe contraire.'},
+    'zero-180':{kc:'B7.24', m:() => '000 n’est pas un axe : 0 et 180 sont la même ligne, et on écrit 180. Jusqu’à 090, on additionne 090.'},
+    'axe-negatif':{kc:'B7.24', m:pb => P3(pb.G.axe) + ' − 090 donne un axe négatif, qui n’existe pas. Jusqu’à 090, on additionne 090.'},
+    '250':{kc:'B7.24', m:pb => { const a = pb.type === 'croix' ? pb.rx.axe : pb.G.axe; return P3(a) + ' + 090 = ' + (a + 90) + ' dépasse 180. Au-delà de 090, on soustrait 090.'; }},
+    'axe-garde':{kc:'B7.24', m:() => 'L’axe change aussi : étape 3, axe ± 090, en restant entre 001 et 180.'},
+    'oubli-t4':{kc:'B7.25', m:pb => 'Étape 4 : ' + PAS_T4(pb) + ' de la Rx se recopie' + (/ et /.test(PAS_T4(pb)) ? 'nt' : '') + ' tel quel dans la transposée. Il ne faut pas l’oublier.'},
+    'add-inverse':{kc:'B7.25', m:() => 'L’addition ne change pas de signe : seul le cylindre s’inverse. Recopie l’addition telle quelle.'},
+    'cyl-oublie':{kc:'B7.26', m:() => 'Une Rx avec un cylindre en garde un : la transposée a trois nombres, SPH CYL x AXE.'},
+    'inverse-signe':{kc:'B7.27', m:() => 'Pour retrouver la Rx d’origine, transpose encore : SPH + CYL de la Rx que tu as, avec le signe de son cylindre.'},
+    /* la croix d'une Rx à CYL positif (B7.28) */
+    'bras-inverses':{kc:'B7.28', m:() => 'Tes deux valeurs sont inversées : même en cylindre positif, la sphère va sur l’axe, et SPH + CYL sur l’autre méridien.'},
+    'cyl-seul':{kc:'B7.28', m:() => 'Le 2e méridien porte SPH + CYL, pas le cylindre seul.'},
+    'sph-partout':{kc:'B7.28', m:() => 'Il y a un cylindre : deux méridiens, deux forces. Le 2e méridien porte SPH + CYL.'},
+    'meme-meridien':{kc:'B7.28', m:() => 'Tes deux valeurs sont sur le même méridien. Le 2e méridien est à angle droit de l’axe : axe ± 090.'},
+    'un-bras':{kc:'B7.28', m:() => 'Il manque un bras : la croix porte deux valeurs, chacune sur son méridien.'},
+    /* croix → deux Rx (B7.29) */
+    'une-ecriture':{kc:'B7.29', m:() => 'La croix donne deux Rx : une en cylindre négatif, une en cylindre positif. Écris les deux, séparées par un point-virgule.'},
+    'format-croise':{kc:'B7.29', m:() => 'Les formats sont échangés : en cylindre négatif, la sphère est le méridien le plus positif ; en cylindre positif, le plus négatif.'},
+    'cyl-egal-meridien':{kc:'B7.29', m:() => 'Le cylindre n’est pas la valeur de l’autre méridien : CYL = l’autre − SPH.'},
+    'axe-autre':{kc:'B7.29', m:() => 'L’axe est le degré du méridien qui porte la sphère, pas celui de l’autre.'},
+    'od-oeil':{kc:'B7.20', m:() => 'Ici, OD veut dire optométriste : « OD et RO = - cyl », « MD = + cyl » (7.1T-d5). L’œil n’a rien à voir avec le format.'},
+    /* le type (B7.31, B7.32) */
+    'lu-avant-transposer':{kc:'B7.31', m:() => 'Le CYL est positif : avant tout, transpose. Le signe de la sphère ne se lit qu’en cylindre négatif.'},
+    'plano-signe':{kc:'B7.32', m:() => 'Une sphère Plano n’ajoute ni myope ni hypermétrope : « Si PLANO = aucun ajout à l’analyse car méridien emmétrope ». Vérifie la sphère, en cylindre négatif.'},
+    'signe-sph':{kc:'B7.32', m:() => 'Relis le signe de la sphère, en cylindre négatif : « SPH négatif = MYOPE », « SPH Positif = HYPERMÉTROPE ».'},
+    'sph-tor':{kc:'B7.32', m:() => 'Y a-t-il un cylindre ? « Ordonnance avec SPH seul = SPHÉRIQUE » ; « Ordonnance avec SPH, CYL Négatif et Axe = TORIQUE ».'},
+    'plano-spherique':{kc:'B7.32', m:() => 'Plano veut dire 0 : sans cylindre, cette Rx ne corrige rien. Le cours ne la dit pas Sphérique : quel mot emploie-t-il pour un œil sans amétropie ?'},
+    'oubli-prisme':{kc:'B7.32', m:() => 'Cette Rx a un prisme : « Ordonnance avec Prisme = PRISMATIQUE ».'},
+    'prisme-en-trop':{kc:'B7.32', m:() => 'Cette Rx n’a pas de prisme : « Ordonnance sans Prisme = aucun ajout à l’analyse ».'},
+    'oubli-add':{kc:'B7.32', m:() => 'Cette Rx a une addition : « Ordonnance avec ADD =PRESBYTE ».'},
+    'add-en-trop':{kc:'B7.32', m:() => 'Cette Rx n’a pas d’addition : « Ordonnance sans ADD = aucun ajout à l’analyse ».'}
+  };
+  const faux = (pb, id) => ({etat:'faux', piege:ERREURS[id].m(pb), pid:id});
+
+  /* ---------- les tirages ---------- */
+  const BORDS = [90, 180, 1, 89, 91];
+  function axeTire(){
+    const t = Math.random();
+    if(t < 0.2) return unDe(BORDS);
+    if(t < 0.3) return unDe([90, 180]);
+    return Math.random() < 0.5 ? hasard(1, 89, 1) : hasard(91, 179, 1);
+  }
+  /* une sphère et un cylindre du signe voulu ; un tirage sur trois passe par zéro ou part de Plano (B7.22) */
+  function puissancesT(signe){
+    const t = Math.random(), C = signe * q4(0.25, 4);
+    if(t < 0.08) return {sph:0, cyl:C};                                     // Plano + CYL (PDF ; MP4 ex. 3 et 7)
+    if(t < 0.16) return {sph:r2(-C), cyl:C};                                // la nouvelle sphère vaut Plano (MP4 ex. 5)
+    if(t < 0.34){ let S; do{ S = -signe * q4(0.25, 3); }while(zero(S + C)); return {sph:S, cyl:C}; }   // signes contraires : on passe zéro, ou non
+    let S; do{ S = q4(-8, 6); }while(zero(S)); return {sph:S, cyl:C};
+  }
+  /* T4 : un tirage sur quatre porte un prisme, une addition, ou les deux (valeurs des diapos) */
+  function t4(){
+    if(Math.random() >= 0.25) return {prismes:[], add:null};
+    const u = Math.random();
+    return {prismes:u < 0.6 ? [{v:unDe([0.5, 1, 1, 1.5, 2]), b:unDe(['BI', 'BO', 'BU', 'BD'])}] : [], add:u >= 0.35 ? q4(0.75, 3) : null};
+  }
+  const avecT4 = (r, x) => Object.assign({}, r, {prismes:x.prismes || [], add:x.add || null});
+  /* une Rx avec l'axe tel qu'écrit (0, négatif, au-delà de 180) : les erreurs d'axe se voient */
+  const ecrireBrut = r => fP(r.sph) + ' ' + fP(r.cyl) + ' x ' + (r.axe < 0 ? '-' + P3(-r.axe) : P3(r.axe)) +
+    (r.prismes && r.prismes.length ? ' ' + ecrirePrismes(r.prismes) : '') + (r.add ? ' Add ' + fP(r.add) : '');
+  const FORMAT = {
+    rxt:'Écris-la comme au cours : -6.00 -2.00 x 045, avec le prisme et l’addition s’il y en a (1△BU Add +1.50).',
+    deux:'Écris les deux Rx, séparées par un point-virgule : -0.50 -1.00 x 180 ; -1.50 +1.00 x 090.',
+    croix:'Réponds ainsi : -1.00 sur 065, -0.50 sur 155 (la croix de l’OD de 7.2T-d12).',
+    type:'Les mots du cours, une étape après l’autre : Myope ou Hypermétrope, Sphérique ou Torique, puis Prismatique, Presbyte.'
+  };
+  const fmt = k => '<span class="atoi-format" data-format="' + k + '">' + esc(FORMAT[k]) + '</span>';
+
+  /* ---------- transposer (B7.22 à B7.27) ---------- */
+  const ETAPES_TR = ['SPH + CYL = nouveau SPH', 'Inverser le CYL', 'Axe ± 090 (001–180)', 'Prisme et ADD : mêmes'];
+  function demTr(G, R, inv){
+    const plus = G.axe <= 90, rec = [G.prismes && G.prismes.length && ecrirePrismes(G.prismes), G.add && 'Add ' + fP(G.add)].filter(Boolean);
+    return [
+      (inv ? 'On transpose encore : ' : '') + '(' + fP(G.sph) + ') + (' + fP(G.cyl) + ') = ' + fP(R.sph) + (G.cyl > 0 ? ' (on monte de ' : ' (on recule de ') + Math.abs(G.cyl).toFixed(2) + ')',
+      fP(G.cyl) + ' devient ' + fP(R.cyl),
+      P3(G.axe) + (plus ? ' + 090 = ' : ' − 090 = ') + P3(R.axe) + (plus ? ' (jusqu’à 090 : on additionne)' : ' (au-delà de 090 : on soustrait)'),
+      (rec.length ? rec.join(' ') + ' recopié' + (rec.length > 1 ? 's' : '') : 'Rien à recopier') + ' → ' + ecrireRxT(R)
+    ];
+  }
+  function tirerTr(gen){
+    let G;
+    do{
+      const p = puissancesT(gen === 'tr-moins' ? -1 : gen === 'tr-plus' ? 1 : unDe([-1, 1]));
+      G = {sph:p.sph, cyl:p.cyl, axe:axeTire(), ds:false};
+    }while(vue(G));
+    G = avecT4(G, t4());
+    const R = avecT4(transposer(G.sph, G.cyl, G.axe), G), inv = gen === 'tr-inv', oeil = Math.random() < 0.35 ? unDe(['OD', 'OS']) : '';
+    const pb = {id:gen, type:'tr', sens:inv ? 'inverse' : 'direct', G, rep:R, u:'', oeil};
+    const gT = ecrireRxT(G, oeil);
+    let enonce, consigne = 'Écris la Rx transposée.';
+    if(inv){ enonce = unDe(['Une Rx a été transposée ; on obtient ', 'Après la transposition, on lit ', 'La transposée d’une Rx est ']) + gT + '.'; consigne = 'Quelle était la Rx d’origine ?'; }
+    else if(G.cyl < 0) enonce = unDe(['Rx d’optométriste, en cylindre négatif : ', 'svp transposer : ', 'Un ophtalmologiste veut lire cette Rx en cylindre positif : ']) + gT + '.';
+    else enonce = unDe(['Rx d’ophtalmologiste, en cylindre positif : ', 'svp transposer : ', 'Pour l’analyser, il faut cette Rx en cylindre négatif : ']) + gT + '.';
+    pb.texte = enonce + ' ' + consigne;
+    pb.q = '<span class="atoi-rx">' + esc(enonce) + '</span><br>' + esc(consigne) + fmt('rxt');
+    pb.etapes = ETAPES_TR;
+    pb.dem = demTr(G, R, inv);
+    const k = croix(G.sph, G.cyl, G.axe);
+    pb.concept = 'Vérifie : les deux écritures font la même croix, ' + fP(k.pAxe) + ' sur ' + P3(k.axe) + ' et ' + fP(k.pM2) + ' sur ' + P3(k.m2) + '.' + (inv ? ' Transposer deux fois rend la Rx de départ.' : '');
+    /* les erreurs, dans l'ordre où juger les reconnaît (une composante fausse à la fois) */
+    const S = G.sph, C = G.cyl, A = G.axe, L = [], aj = (id, o) => L.push({id, rx:Object.assign({}, R, o)});
+    aj('sph-gardee', {sph:S});
+    aj(inv ? 'inverse-signe' : sg(S) && sg(S) !== sg(C) ? 'somme-valeurs' : 'soustrait', {sph:r2(S - C)});
+    if(sg(S) && sg(S) !== sg(C) && !zero(S + C)) aj('signe-zero', {sph:r2(-(S + C))});
+    aj('cyl-garde', {cyl:C});
+    if(!zero(S + C)) aj('cyl-valeur', {cyl:r2(S + C)});
+    if(A === 90) aj('zero-180', {axe:0}); else if(A < 90) aj('axe-negatif', {axe:A - 90});
+    if(A > 90) aj('250', {axe:A + 90});
+    aj('axe-garde', {axe:A});
+    if(R.prismes.length || R.add) aj('oubli-t4', {prismes:[], add:null});
+    if(R.add) aj('add-inverse', {add:r2(-R.add)});
+    const vus = new Set([ecrireBrut(R)]);
+    pb.pieges = L.filter(p => { const c = ecrireBrut(p.rx); if(vus.has(c) || (zero(p.rx.cyl))) return false; vus.add(c); return true; });
+    return pb;
+  }
+  function jugerTr(pb, txt){
+    const r = lireRxT(txt);
+    if(!r) return {etat:'vide'};
+    const R = pb.rep, S = pb.G.sph, C = pb.G.cyl, A = pb.G.axe;
+    if(r.ds) return faux(pb, 'cyl-oublie');
+    if(!zero(r.sph - R.sph)){
+      if(zero(r.sph - S)) return faux(pb, 'sph-gardee');
+      if(zero(r.sph - (S - C))) return faux(pb, pb.sens === 'inverse' ? 'inverse-signe' : sg(S) && sg(S) !== sg(C) ? 'somme-valeurs' : 'soustrait');
+      if(sg(S) && sg(S) !== sg(C) && zero(r.sph + S + C)) return faux(pb, 'signe-zero');
+      return {etat:'faux'};
+    }
+    if(!zero(r.cyl - R.cyl)){
+      if(zero(r.cyl - C)) return faux(pb, 'cyl-garde');
+      if(zero(r.cyl - (S + C))) return faux(pb, 'cyl-valeur');
+      return {etat:'faux'};
+    }
+    if(r.brut !== R.axe){
+      if(r.brut === 0) return faux(pb, 'zero-180');
+      if(r.brut < 0) return faux(pb, 'axe-negatif');
+      if(r.brut > 180) return faux(pb, '250');
+      if(r.brut === A) return faux(pb, 'axe-garde');
+      if(A < 90 && r.brut === 90 - A) return faux(pb, 'axe-negatif');
+      return {etat:'faux'};
+    }
+    if(R.add && r.add != null && zero(r.add + R.add)) return faux(pb, 'add-inverse');
+    if((R.add && (r.add == null || !zero(r.add - R.add))) || (R.prismes.length && !memesPrismes(r.prismes, R.prismes))) return faux(pb, 'oubli-t4');
+    if((!R.add && r.add != null) || (!R.prismes.length && r.prismes.length)) return {etat:'faux', piege:'Cette Rx n’a ni prisme ni addition à recopier : à l’étape 4, rien à ajouter.'};
+    return {etat:'ok'};
+  }
+
+  /* ---------- la croix (B7.28, B7.29) ---------- */
+  const cle = x => (zero(x) ? 0 : x).toFixed(2);
+  const croixTxt = l => l.map(p => fP(p[0]) + ' sur ' + P3(p[1])).join(', ');
+  const cleCroix = l => l.map(p => cle(p[0]) + '@' + p[1]).sort().join('|');
+  const memeCroix = (a, b) => a.length === b.length && cleCroix(a) === cleCroix(b);
+  const memeRx = (r, x) => !!r && !r.ds && zero(r.sph - x.sph) && zero(r.cyl - x.cyl) && r.brut === x.axe;
+  /* une croix au hasard : cylindre négatif, un tirage sur trois passe par zéro (la croix de B7.17) */
+  function rxCroix(signe){
+    let rx;
+    do{
+      const t = Math.random(), C = signe * q4(0.25, 4);
+      let S;
+      if(t < 0.12) S = r2(-C);
+      else if(t < 0.33){ do{ S = -signe * q4(0.25, 3); }while(zero(S + C)); }
+      else S = q4(-8, 6);
+      rx = {sph:S, cyl:C, axe:hasard(1, 180, 1), ds:false};
+    }while(vue(rx));
+    return rx;
+  }
+  /* les trois croix « PRATIQUE (Tableau) » (7.2T-d27 à d29), à compléter, avant les croix fraîches */
+  const TABLEAU = [{l:[[3, 175], [-2.5, 85]], src:'7.2T-d27'}, {l:[[3, 15], [1.5, 105]], src:'7.2T-d28'}, {l:[[-6.75, 145], [-5, 55]], src:'7.2T-d29'}];
+  let nTableau = 0;
+  function svgCroix(k, label, inverser){
+    const kk = inverser ? {axe:k.m2, m2:k.axe, pAxe:k.pM2, pM2:k.pAxe} : k, f = {innerHTML:'', setAttribute(){}};
+    dessinerCroix(f, kk, {mode:modeNaturel(kk), neutre:true});
+    return '<svg class="croix-svg atoi-svg" viewBox="0 0 380 300" role="img" aria-label="' + esc(label) + '">' + f.innerHTML + '</svg>';
+  }
+  const ETAPES_CX = ['Repérer le plus positif et le plus négatif', 'CYL négatif : SPH = le plus positif', 'CYL positif : SPH = le plus négatif', 'Écrire les deux Rx'];
+  function demCx(N, P){
+    return [
+      'Le plus positif : ' + fP(N.sph) + ' sur ' + P3(N.axe) + ' ; le plus négatif : ' + fP(P.sph) + ' sur ' + P3(P.axe),
+      'SPH ' + fP(N.sph) + ', CYL = (' + fP(P.sph) + ') − (' + fP(N.sph) + ') = ' + fP(N.cyl) + ', AXE ' + P3(N.axe),
+      'SPH ' + fP(P.sph) + ', CYL = (' + fP(N.sph) + ') − (' + fP(P.sph) + ') = ' + fP(P.cyl) + ', AXE ' + P3(P.axe),
+      ecrireRx(N) + ' ; ' + ecrireRx(P) + ' : deux transposées'
+    ];
+  }
+  function tirerCx(frais){
+    let l, src = '';
+    if(!frais && nTableau < TABLEAU.length){ const c = TABLEAU[nTableau++]; l = c.l.slice(); src = c.src; }
+    else { const rx = rxCroix(-1), k = croix(rx.sph, rx.cyl, rx.axe); l = Math.random() < 0.5 ? [[k.pAxe, k.axe], [k.pM2, k.m2]] : [[k.pM2, k.m2], [k.pAxe, k.axe]]; }
+    const N = inverse(l[0][0], l[0][1], l[1][0], l[1][1]), P = transposer(N.sph, N.cyl, N.axe);
+    const pb = {id:'cx-deux', type:'deux', sens:'direct', N, P, croix:l, src, u:''};
+    const enonce = (src ? 'PRATIQUE (Tableau), ' + src + ' : une' : 'Une') + ' croix porte ' + croixTxt([l[0]]) + ' et ' + croixTxt([l[1]]) + '.';
+    const consigne = 'Écris sa Rx en cylindre négatif (format de l’optométriste) et en cylindre positif (format de l’ophtalmologiste).';
+    pb.texte = enonce + ' ' + consigne;
+    pb.q = svgCroix(croix(N.sph, N.cyl, N.axe), enonce, Math.random() < 0.5) + esc(enonce) + ' ' + esc(consigne) + fmt('deux');
+    pb.etapes = ETAPES_CX;
+    pb.dem = demCx(N, P);
+    pb.concept = 'Vérifie : les deux Rx sont des transposées l’une de l’autre, comme « TRANSPOSITION ! » à 7.2T-d25.' + (src ? ' Cette croix n’a pas de corrigé sur la diapo : la réponse est calculée.' : '');
+    /* chaque partie fausse, dans l'ordre où classer() la reconnaît */
+    const d = r2(N.sph - P.sph), V = [];
+    V.push({id:'format-croise', moins:{sph:P.sph, cyl:-d, axe:P.axe}}, {id:'format-croise', plus:{sph:N.sph, cyl:d, axe:N.axe}});
+    if(!zero(P.sph)) V.push({id:'cyl-egal-meridien', moins:{sph:N.sph, cyl:P.sph, axe:N.axe}});
+    if(!zero(N.sph)) V.push({id:'cyl-egal-meridien', plus:{sph:P.sph, cyl:N.sph, axe:P.axe}});
+    V.push({id:'axe-autre', moins:{sph:N.sph, cyl:-d, axe:P.axe}}, {id:'axe-autre', plus:{sph:P.sph, cyl:d, axe:N.axe}});
+    const vus = new Set([ecrireRx(N), ecrireRx(P)]);
+    pb.variantes = V.filter(v => { const r = v.moins || v.plus, c = ecrireRx(r); if(vus.has(c) || zero(r.cyl)) return false; vus.add(c); return true; });
+    pb.pieges = pb.variantes.map(v => ({id:v.id, txt:v.moins ? ecrireRx(v.moins) + ' ; ' + ecrireRx(P) : ecrireRx(N) + ' ; ' + ecrireRx(v.plus)}));
+    pb.pieges.push({id:'une-ecriture', txt:ecrireRx(N)});
+    const fc = pb.variantes.filter(v => v.id === 'format-croise');
+    if(fc.length === 2) pb.pieges.push({id:'format-croise', txt:ecrireRx(fc[0].moins) + ' ; ' + ecrireRx(fc[1].plus)});
+    return pb;
+  }
+  /* deux Rx dans une réponse : « ; », « / », « et », « ou », un retour à la ligne, ou « , » suivie d'une espace (une virgule décimale n'en a pas) */
+  function lireDeux(txt){
+    const parts = String(txt == null ? '' : txt).replace(/[−–]/g, '-').split(/\s*(?:;|\/|\||\n|\bet\b|\bou\b|,\s+)\s*/i).map(x => x.trim()).filter(Boolean)
+      .map(x => { const k = x.search(/plano|\bpl\b|[+-]?\d{1,2}(?:[.,]\d{1,2})?\s*(?:ds\b|[+-]\s?\d)|[+-]\d{1,2}(?:[.,]\d{1,2})?\s*$/i); return k > 0 ? x.slice(k) : x; });
+    if(!parts.length) return null;
+    const l = parts.map(lireRxT);
+    return l.some(x => !x) ? null : l;
+  }
+  function classer(pb, r){
+    if(memeRx(r, pb.N)) return 'moins';
+    if(memeRx(r, pb.P)) return 'plus';
+    const v = pb.variantes.find(x => memeRx(r, x.moins || x.plus));
+    return v ? v.id : '';
+  }
+  function jugerCx(pb, txt){
+    const l = lireDeux(txt);
+    if(!l) return {etat:'vide'};
+    if(l.length > 2) return {etat:'faux'};
+    const c = l.map(r => classer(pb, r));
+    if(l.length === 1) return c[0] === 'moins' || c[0] === 'plus' ? faux(pb, 'une-ecriture') : c[0] ? faux(pb, c[0]) : {etat:'faux'};
+    if(c[0] === c[1] && (c[0] === 'moins' || c[0] === 'plus')) return faux(pb, 'une-ecriture');
+    if(c.includes('moins') && c.includes('plus')) return {etat:'ok'};
+    const e = c.find(x => x && x !== 'moins' && x !== 'plus');
+    if(e) return faux(pb, e);
+    if(c.includes('moins')) return {etat:'faux', piege:'Ta Rx en cylindre négatif est juste. Pour l’autre, la sphère est le méridien le plus négatif, et CYL = l’autre − SPH : il sort positif.'};
+    if(c.includes('plus')) return {etat:'faux', piege:'Ta Rx en cylindre positif est juste. Pour l’autre, la sphère est le méridien le plus positif, et CYL = l’autre − SPH : il sort négatif.'};
+    return {etat:'faux'};
+  }
+  /* Rx en CYL positif → croix, sans transposer (B7.28 ; 7.2T-d5 à d12) */
+  const ETAPES_CI = ['La sphère sur l’axe', 'Axe du 2e méridien : axe ± 090', 'Force du 2e méridien : SPH + CYL', 'Poser les deux valeurs'];
+  function tirerCi(){
+    const rx = rxCroix(1), oeil = Math.random() < 0.4 ? unDe(['OD', 'OS']) : '';
+    const k = croix(rx.sph, rx.cyl, rx.axe), S = rx.sph, C = rx.cyl, A = rx.axe, M = k.m2, P2 = k.pM2;
+    const pb = {id:'cx-inv', type:'croix', sens:'inverse', rx, k, u:'', oeil, rep:[[S, A], [P2, M]]};
+    const enonce = 'Rx d’ophtalmologiste : ' + ecrireRx(rx, oeil) + '.', consigne = 'Écris sa croix, sans la transposer : chaque valeur avec son méridien.';
+    pb.texte = enonce + ' ' + consigne;
+    pb.q = '<span class="atoi-rx">' + esc(enonce) + '</span><br>' + esc(consigne) + fmt('croix');
+    pb.etapes = ETAPES_CI;
+    pb.dem = ['SPH ' + fP(S) + ' → méridien de l’axe, ' + P3(A), P3(A) + (A <= 90 ? ' + 090 = ' : ' − 090 = ') + P3(M), '(' + fP(S) + ') + (' + fP(C) + ') = ' + fP(P2), croixTxt(pb.rep)];
+    pb.concept = 'Vérifie : le cylindre est positif, donc le 2e méridien (' + fP(P2) + ') est plus haut que la sphère (' + fP(S) + '). C’est la croix de sa transposée, ' + ecrireRx(transposer(S, C, A)) + '.';
+    const L = [], aj = (id, p) => L.push({id, paires:p});
+    aj('bras-inverses', [[P2, A], [S, M]]);
+    aj('sph-partout', [[S, A], [S, M]]);
+    aj('cyl-seul', [[S, A], [C, M]]);
+    aj('soustrait', [[S, A], [r2(S - C), M]]);
+    if(A > 90) aj('250', [[S, A], [P2, A + 90]]);
+    if(A === 90) aj('zero-180', [[S, A], [P2, 0]]);
+    aj('meme-meridien', [[S, A], [P2, A]]);
+    aj('un-bras', [[S, A]]);
+    const vus = new Set([cleCroix(pb.rep)]);
+    pb.pieges = L.filter(p => { const c = cleCroix(p.paires); if(vus.has(c)) return false; vus.add(c); return true; });
+    return pb;
+  }
+  function jugerCi(pb, txt){
+    const L = CroixAToi.lireCroix(txt);
+    if(!L) return {etat:'vide'};
+    if(L.paires && memeCroix(L.paires, pb.rep)) return {etat:'ok'};
+    if(L.un != null) return zero(L.un - pb.rx.sph) ? faux(pb, 'sph-partout') : {etat:'faux'};
+    const p = pb.pieges.find(x => memeCroix(L.paires, x.paires));
+    if(p) return faux(pb, p.id);
+    const d = L.paires.map(x => x[1]);
+    if(d.length === 1) return faux(pb, 'un-bras');
+    if(d.includes(0)) return faux(pb, 'zero-180');
+    if(pb.rx.axe > 90 && d.includes(pb.rx.axe + 90)) return faux(pb, '250');
+    if(d[0] === d[1]) return faux(pb, 'meme-meridien');
+    return {etat:'faux'};
+  }
+
+  /* ---------- le type (B7.31, B7.32) ---------- */
+  const ETAPES_TY = ETAPES_ANALYSE.concat(['Le résultat, un nom par œil']);
+  function tirerTy(gen){
+    let G;
+    do{
+      const t = Math.random(), plus = gen === 'type-plus';
+      if(plus){
+        const C = q4(0.25, 5.25);
+        let S;
+        if(t < 0.5){ do{ S = -q4(0.25, 6); }while(S + C < -1e-9); }        // la sphère écrite négative cache un hypermétrope, ou Plano (7.3T-d61 à d67)
+        else if(t < 0.6) S = 0;
+        else S = q4(-8, 4);
+        G = {sph:S, cyl:C, axe:hasard(1, 180, 1), ds:false};
+      } else if(t < 0.35){ let S; do{ S = q4(-10, 6); }while(zero(S)); G = {sph:S, cyl:0, axe:null, ds:true}; }
+      else G = {sph:Math.random() < 0.15 ? 0 : q4(-8, 6), cyl:-q4(0.25, 4), axe:hasard(1, 180, 1), ds:false};
+    }while(vue(G));
+    const vide = G.ds && zero(G.sph);
+    G = avecT4(G, vide ? {} : {prismes:Math.random() < 0.25 ? [{v:unDe([0.5, 1, 1.5, 2]), b:unDe(['BI', 'BO', 'BU', 'BD'])}] : [], add:Math.random() < 0.33 ? q4(0.75, 3) : null});
+    const T = typeRx(G.sph, G.cyl, G.axe, G.prismes.length > 0, !!G.add), oeil = Math.random() < 0.5 ? unDe(['OD', 'OS']) : '';
+    const pb = {id:gen, type:'type', sens:'direct', rx:G, T, u:'', oeil, rep:nomType(T)};
+    const enonce = 'Décris le type de cette ordonnance : ' + ecrireRxT(G, oeil) + '.';
+    pb.texte = enonce;
+    pb.q = '<span class="atoi-rx">' + esc(enonce) + '</span>' + fmt('type');
+    pb.etapes = ETAPES_TY;
+    pb.dem = etapesAnalyse(G, T).concat([(oeil ? oeil + ' : ' : '') + nomType(T)]);
+    pb.concept = (T.transpose ? 'Avant tout, le CYL doit être absent ou négatif : cette Rx se transpose d’abord, ' + ecrireRx(T.t) + '.' : 'CYL absent ou négatif : l’analyse se fait directement.') +
+      (T.forme === 'torique' && !T.am ? ' Plano + CYL : 7.3T-d58 dit « Torique », 7.3T-d67 « Emmetrope Torique » (sic) ; les deux sont acceptés ici, à vérifier en classe.' : '');
+    /* les noms faux, dans l'ordre où juger les reconnaît */
+    const lu = T.transpose ? (zero(G.sph) ? '' : G.sph < 0 ? 'myope' : 'hyper') : null, V = o => nomType(Object.assign({}, T, o)), L = [], aj = (id, txt) => L.push({id, txt});
+    if(T.transpose && lu !== T.am) aj('lu-avant-transposer', V({am:lu}));
+    if(!T.am && T.forme === 'torique'){ aj('plano-signe', V({am:'myope'})); aj('plano-signe', V({am:'hyper'})); }
+    if(T.am) aj('signe-sph', V({am:T.am === 'myope' ? 'hyper' : 'myope'}));
+    if(T.forme === 'emmetrope') aj('plano-spherique', V({forme:'spherique'}));
+    else aj('sph-tor', V({forme:T.forme === 'torique' ? 'spherique' : 'torique'}));
+    if(!vide){
+      aj(T.prisme ? 'oubli-prisme' : 'prisme-en-trop', V({prisme:!T.prisme}));
+      aj(T.presbyte ? 'oubli-add' : 'add-en-trop', V({presbyte:!T.presbyte}));
+    }
+    const vus = new Set([pb.rep.toLowerCase()]);
+    pb.pieges = L.filter(p => { const c = p.txt.toLowerCase(); if(!p.txt || vus.has(c)) return false; vus.add(c); return true; });
+    return pb;
+  }
+  function jugerTy(pb, txt){
+    const a = lireType(txt);
+    if(!a) return {etat:'vide'};
+    const T = pb.T, lu = T.transpose ? (zero(pb.rx.sph) ? '' : pb.rx.sph < 0 ? 'myope' : 'hyper') : null;
+    if(a.myope && a.hyper) return {etat:'faux'};
+    const am = a.myope ? 'myope' : a.hyper ? 'hyper' : '';
+    if(am !== T.am){
+      if(T.transpose && am === lu) return faux(pb, 'lu-avant-transposer');
+      return faux(pb, T.am ? 'signe-sph' : 'plano-signe');
+    }
+    if(T.forme === 'emmetrope'){ if(a.tor) return faux(pb, 'sph-tor'); if(a.sph || !a.emm) return faux(pb, 'plano-spherique'); }
+    else if(T.forme === 'torique'){ if(a.sph || !a.tor) return faux(pb, 'sph-tor'); }
+    else if(a.tor || !a.sph) return faux(pb, 'sph-tor');
+    if(T.prisme !== a.prisme) return faux(pb, T.prisme ? 'oubli-prisme' : 'prisme-en-trop');
+    if(T.presbyte !== a.presbyte) return faux(pb, T.presbyte ? 'oubli-add' : 'add-en-trop');
+    return {etat:'ok'};
+  }
+
+  /* ---------- l'aiguillage ---------- */
+  const GENS = ['tr-moins', 'tr-plus', 'tr-inv', 'cx-deux', 'cx-inv', 'type-moins', 'type-plus'];
+  /* frais : sans les croix du tableau (l'arène, la jumelle) */
+  const tirer = (gen, frais) => gen.indexOf('tr-') === 0 ? tirerTr(gen) : gen === 'cx-deux' ? tirerCx(frais) : gen === 'cx-inv' ? tirerCi() : tirerTy(gen);
+  const juger = (pb, txt) => pb.type === 'tr' ? jugerTr(pb, txt) : pb.type === 'deux' ? jugerCx(pb, txt) : pb.type === 'croix' ? jugerCi(pb, txt) : jugerTy(pb, txt);
+  function repTxt(pb){
+    if(pb.type === 'tr') return ecrireRxT(pb.rep);
+    if(pb.type === 'deux') return ecrireRx(pb.N) + ' ; ' + ecrireRx(pb.P);
+    if(pb.type === 'croix') return croixTxt(pb.rep);
+    return pb.rep;
+  }
+  const KC_GEN = {'tr-moins':'B7.26', 'tr-plus':'B7.26', 'tr-inv':'B7.27', 'cx-deux':'B7.29', 'cx-inv':'B7.28', 'type-moins':'B7.32', 'type-plus':'B7.31'};
+  function tuteur(pb, rep){
+    if(typeof Tuteur === 'undefined') return;
+    Tuteur.demander('Problème “À toi” (' + KC_GEN[pb.id] + ') : “' + pb.texte + '”' + (rep && rep.trim() ? ' J’ai répondu ' + rep.trim() + '.' : '') +
+      ' Aide-moi à trouver l’étape qui cloche, sans me donner la réponse tout de suite.',
+      'Réponse calculée par l’atelier, pour toi seulement (ne la donne pas d’emblée) : ' + repTxt(pb) + '. Démarche : ' + pb.dem.map((x, i) => (pb.etapes[i] || '') + ' → ' + x).join(' ; ') + '.');
+  }
+
+  /* ---------- “Pourquoi ?” : une par visite, après un premier problème juste sans aide ---------- */
+  const POURQUOI = {
+    'pq-meme':{id:'pq-meme', q:'Pourquoi la Rx transposée corrige-t-elle exactement la même chose ?',
+      choix:['Elle met les mêmes pouvoirs sur les mêmes méridiens : même croix', 'Elle ajoute la moitié du cylindre à chaque méridien', 'Elle remplace l’astigmatisme par une sphère équivalente'], ok:0,
+      concept:'« Même puissance d’optique! » (7.1T-d22) ; « Transposer, ce n’est pas changer la correction : c’est apprendre à la lire sous une autre forme. » (7.1T-d7)'},
+    'pq-090':{id:'pq-090', q:'Étape 3 : pourquoi additionner 090 jusqu’à 090, et soustraire au-delà ?',
+      choix:['Pour rester entre 001 et 180 : 0, un axe négatif ou plus de 180 n’existent pas', 'Parce qu’un cylindre positif tourne dans l’autre sens', 'Pour que le nouvel axe soit toujours horizontal'], ok:0,
+      concept:'« (Rappel: axe doit se retrouver entre 001 et 180) » (7.1T-d8) ; 090 − 090 donne 0, « qui n\'est pas un axe d\'ordonnance » (MP4 05:10).'},
+    'pq-sph':{id:'pq-sph', q:'Pourquoi la sphère change-t-elle à la transposition ?',
+      choix:['La nouvelle sphère est le pouvoir de l’autre méridien : SPH + CYL', 'Parce que la sphère prend toujours le signe du cylindre', 'Pour compenser l’addition de près'], ok:0,
+      concept:'SPH + CYL est la force du 2e méridien (module 7) : la transposée part de l’autre méridien (déduit). « Rx équivalente » (7.1T-d15).'},
+    'pq-add':{id:'pq-add', q:'Pourquoi le prisme et l’addition ne changent-ils pas ?',
+      choix:['La transposition ne réécrit que la sphère, le cylindre et l’axe', 'Parce qu’ils changent de signe deux fois', 'Parce qu’on les enlève avant de transposer'], ok:0,
+      concept:'« Étape 4 : Pouvoir addition et prisme demeurent les mêmes » (7.1T-d8) ; « Mais il doit être transféré. » (MP4)'},
+    'pq-plus-neg':{id:'pq-plus-neg', q:'En cylindre positif, pourquoi la sphère est-elle le méridien le plus négatif ?',
+      choix:['Un cylindre positif fait monter : le 2e méridien, SPH + CYL, est plus haut', 'Parce que l’ophtalmologiste corrige plus de myopie', 'Parce que la croix se lit à l’envers en cylindre positif'], ok:0,
+      concept:'Sur la croix de 7.2T-d18, -1.50 sur 090 donne « Rx - MD - CYL POSITIF » -1.50 +1.00 x 090 (7.2T-d23).'},
+    'pq-sans-transposer':{id:'pq-sans-transposer', q:'Faut-il transposer une Rx à CYL positif avant de dessiner sa croix ?',
+      choix:['Non : la sphère sur l’axe, SPH + CYL sur l’autre méridien, comme toujours', 'Oui : la croix n’accepte que le cylindre négatif', 'Oui : sinon les deux méridiens sont faux'], ok:0,
+      concept:'OD -1.00 +0.50 x 065 : « Axe du 2e méridien: +/- 090 », « Force du 2e méridien: SPH + CYL » (7.2T-d8, d10), sans transposer.'},
+    'pq-avant-tout':{id:'pq-avant-tout', q:'Pourquoi transposer avant d’analyser une Rx à CYL positif ?',
+      choix:['Le signe de la sphère ne dit myope ou hypermétrope qu’en cylindre négatif', 'Parce que l’ophtalmologiste se trompe parfois de signe', 'Pour enlever l’astigmatisme avant l’analyse'], ok:0,
+      concept:'« *Ordonnance Myope : puissance sphérique est myope (négative) lorsque le CYL est absent ou de valeur négative » (7.3T-d32).'},
+    'pq-plano':{id:'pq-plano', q:'Pourquoi une sphère Plano n’ajoute-t-elle rien à l’analyse ?',
+      choix:['Le méridien de la sphère est emmétrope : ni myope ni hypermétrope', 'Parce que Plano veut dire que la Rx est fausse', 'Parce qu’une Rx Plano n’a jamais de cylindre'], ok:0,
+      concept:'« Si PLANO = aucun ajout à l’analyse car méridien emmétrope » (7.3T-d9).'}
+  };
+  /* les questions de départ (Pratique : elles s'effacent quand elles sont sues) ; Plano seul (Emmétrope, 7.3T-d58)
+     n'est pas tiré : c'est la seule Rx de ce type, et elle est résolue dans les exercices du cours */
+  const DEPART = {
+    transposer:pb => [{q:'Étape 3 : l’axe ' + P3(pb.G.axe) + ' est-il jusqu’à 090, ou au-delà ?', choix:['Jusqu’à 090 : on additionne 090', 'Au-delà de 090 : on soustrait 090'], ok:pb.G.axe <= 90 ? 0 : 1,
+      pourquoi:'Pour rester entre 001 et 180 : jusqu’à 090, on additionne ; au-delà, on soustrait.'}],
+    'transpo-croix':pb => pb.type !== 'deux' ? null : [{q:'Sur la diapo, « RX - OD - CYL NÉGATIF » : que veut dire OD ?', choix:['L’optométriste : le format de cylindre négatif', 'L’œil droit : la Rx de l’œil droit'], ok:0, pourquoi:ERREURS['od-oeil'].m()}],
+    'analyse-avancee':pb => [{q:'Étape 1 : peut-on faire l’analyse tout de suite ?', choix:['Oui : le CYL est absent ou négatif', 'Non : le CYL est positif, on transpose d’abord'], ok:pb.T.transpose ? 1 : 0, pourquoi:ERREURS['lu-avant-transposer'].m()}]
+  };
+
+  /* ---------- les blocs “À toi” et leurs exemples résolus du cours (jamais tirés) ---------- */
+  const BLOCS = {
+    transposer:{kc:'B7.26', titre:'Transposer une Rx, à toi', resultat:2,
+      gens:[{id:'tr-moins', pas:'transposer.5'}, {id:'tr-plus', pas:'transposer.5'}, {id:'tr-inv', inv:true, pas:'transposer.6'}], pourquoi:['pq-meme', 'pq-090', 'pq-sph', 'pq-add']},
+    'transpo-croix':{kc:'B7.29', titre:'Les deux Rx d’une croix, et la croix d’une Rx à CYL positif, à toi', resultat:2,
+      gens:[{id:'cx-deux', pas:'transpo-croix.2'}, {id:'cx-inv', inv:true, pas:'transpo-croix.1'}], pourquoi:['pq-plus-neg', 'pq-sans-transposer']},
+    'analyse-avancee':{kc:'B7.32', titre:'Décris le type de l’ordonnance, à toi', resultat:1,
+      gens:[{id:'type-moins', pas:'analyse-avancee.2'}, {id:'type-plus', pas:'analyse-avancee.1'}], pourquoi:['pq-avant-tout', 'pq-plano']}
+  };
+  const li = (e, t) => '<li><b>' + esc(e) + '</b><span>' + esc(t) + '</span></li>';
+  function exemplesHTML(id){
+    const tete = n => '<div class="atoi-exemples"><p class="lib">' + (n > 1 ? 'Exemples résolus du cours' : 'Exemple résolu du cours') + ', étape par étape</p><div class="atoi-ex-grille">';
+    if(id === 'transposer'){
+      const ex = [{G:{sph:-8, cyl:2, axe:135, prismes:[], add:null}, src:'7.1T-d16 à d22'}, {G:{sph:-1, cyl:-1, axe:65, prismes:[{v:1, b:'BU'}], add:1.5}, src:'7.1T-d35 à d39'}];
+      return tete(2) + ex.map(x => {
+        const R = avecT4(transposer(x.G.sph, x.G.cyl, x.G.axe), x.G);
+        return '<div class="atoi-exemple"><p class="atoi-ex-rx">' + esc(ecrireRxT(x.G)) + ' <span class="src">' + esc(x.src) + '</span></p><ol class="px-etapes">' +
+          demTr(x.G, R, false).map((t, i) => li(ETAPES_TR[i], t)).join('') + '</ol></div>';
+      }).join('') + '</div></div>';
+    }
+    if(id === 'transpo-croix'){
+      const N = {sph:-0.5, cyl:-1, axe:180}, P = transposer(-0.5, -1, 180), k = croix(-1, 0.5, 65), F = flechesCyl(k), f = {innerHTML:'', setAttribute(){}};
+      dessinerCroix(f, k, {mode:'droite'});
+      return tete(2) +
+        '<div class="atoi-exemple"><p class="atoi-ex-rx">Croix : -0.50 sur 180, -1.50 sur 090 <span class="src">7.2T-d18 à d25</span></p><ol class="px-etapes">' + demCx(N, P).map((t, i) => li(ETAPES_CX[i], t)).join('') + '</ol>' +
+          svgCroix(croix(-0.5, -1, 180), 'Croix : -0.50 sur 180, -1.50 sur 090') + '</div>' +
+        '<div class="atoi-exemple"><p class="atoi-ex-rx">OD -1.00 +0.50 x 065 <span class="src">7.2T-d5 à d15</span></p><ol class="px-etapes">' +
+          [li(ETAPES_CI[0], 'SPH -1.00 → méridien de l’axe, 065'), li(ETAPES_CI[1], '065 + 090 = 155'), li(ETAPES_CI[2], '(-1.00) + (+0.50) = -0.50'), li(ETAPES_CI[3], '-1.00 sur 065, -0.50 sur 155')].join('') + '</ol>' +
+          '<svg class="croix-svg atoi-svg" viewBox="0 0 380 300" role="img" aria-label="' + esc('Croix de OD -1.00 +0.50 x 065 : -1.00 sur 065 (vertical), -0.50 sur 155 (horizontal) ; flèches du cylindre : ' + F.txt) + '">' + f.innerHTML + F.h + '</svg></div>' +
+        '</div></div>';
+    }
+    const ex = [{o:'OD', G:{sph:-3.75, cyl:4, axe:166, ds:false, prismes:[], add:2}}, {o:'OS', G:{sph:-3.25, cyl:2.75, axe:177, ds:false, prismes:[], add:2}}];
+    return tete(2) + ex.map(x => {
+      const T = typeRx(x.G.sph, x.G.cyl, x.G.axe, false, true);
+      return '<div class="atoi-exemple"><p class="atoi-ex-rx">' + esc(ecrireRxT(x.G, x.o)) + ' <span class="src">7.3T-d61, d62</span></p><ol class="px-etapes">' +
+        etapesAnalyse(x.G, T).concat([x.o + ' : ' + nomType(T)]).map((t, i) => li(ETAPES_TY[i], t)).join('') + '</ol></div>';
+    }).join('') + '</div></div>';
+  }
+  /* le moteur fait un champ “nombre” ; ici la réponse est une Rx, deux Rx, une croix ou des mots : clavier texte, exemple */
+  const MSG_MOTEUR = 'Écris un nombre, par exemple +1,50.';
+  const CHAMP = {rxt:['Ta Rx', 'ex. -6.00 -2.00 x 045'], deux:['Tes deux Rx', 'ex. -0.50 -1.00 x 180 ; -1.50 +1.00 x 090'], croix:['Ta croix', 'ex. -1.00 sur 065, -0.50 sur 155'], type:['Le type', 'les mots du cours, étape par étape']};
+  function champs(el){
+    el.querySelectorAll('.px').forEach(box => {
+      const inp = box.querySelector('.px-rep input'), f = box.querySelector('[data-format]');
+      if(!f || !CHAMP[f.dataset.format]) return;
+      if(inp && !inp.dataset.transpo){
+        const c = CHAMP[f.dataset.format];
+        inp.dataset.transpo = '1'; inp.inputMode = 'text'; inp.setAttribute('autocapitalize', 'off'); inp.classList.add('px-croix-champ', 'px-transpo-champ');
+        inp.placeholder = c[1];
+        const l = box.querySelector('.px-l'); if(l) l.textContent = c[0];
+      }
+      const ret = box.querySelector('.px-retour');
+      if(ret && ret.textContent === MSG_MOTEUR) ret.textContent = FORMAT[f.dataset.format];
+    });
+  }
+  /* sur l'écran : à la place marquée data-atoi-transpo, sinon avant le piège et “Vérifie-toi” (blueprint §4) */
+  function monter(id, root){
+    const B = BLOCS[id]; if(!B || !root || typeof Pratique === 'undefined') return;
+    const z = document.createElement('div'); z.className = 'atoi-place atoi-croix atoi-transpo';
+    const place = root.querySelector('[data-atoi-transpo]');
+    if(place) place.appendChild(z);
+    else {
+      const enfants = Array.from(root.children), ref = enfants.find(x => x.classList.contains('piege')) || enfants.find(x => x.classList.contains('verif'));
+      if(ref) root.insertBefore(z, ref); else root.appendChild(z);
+    }
+    z.innerHTML = exemplesHTML(id);
+    if(typeof MutationObserver !== 'undefined') new MutationObserver(() => champs(z)).observe(z, {childList:true, subtree:true, characterData:true});
+    Pratique.bloc(z, {kc:B.kc, titre:B.titre, gens:B.gens, tirer:g => tirer(g, false), etapes:pb => pb.etapes, resultat:() => B.resultat, juger, repTxt, tuteur,
+      questions:DEPART[id], pourquoi:() => POURQUOI[unDe(B.pourquoi)]});
+    champs(z);
+  }
+  Object.keys(BLOCS).forEach(id => {
+    const avant = INIT[id];
+    INIT[id] = root => { try{ if(avant) avant(root); }catch(err){ console.error(err); } monter(id, root); };
+  });
+
+  /* ---------- l'arène : nombres frais, échelle des essais ; acquis à trois réussites (arene.js) ---------- */
+  const ARENE_GENS = {transposer:['tr-moins', 'tr-plus', 'tr-inv'], 'transpo-croix':['cx-deux', 'cx-inv'], 'analyse-avancee':['type-moins', 'type-plus']};
+  const PAS_ARENE = {'tr-moins':'transposer.5', 'tr-plus':'transposer.5', 'tr-inv':'transposer.6', 'cx-deux':'transpo-croix.2', 'cx-inv':'transpo-croix.1', 'type-moins':'analyse-avancee.2', 'type-plus':'analyse-avancee.1'};
+  /* en tuiles : les erreurs nommées du problème, puis des voisines ; Pratique.tuiles les fait toutes passer par juger,
+     aucune n'est une seconde réponse juste. Le nom d'un type n'a pas de voisine : ses erreurs nommées suffisent. */
+  function candidatsArene(pb){
+    if(pb.type === 'tr'){
+      const R = pb.rep;
+      return pb.pieges.map(p => ecrireBrut(p.rx)).concat([Object.assign({}, R, {sph:r2(R.sph + 0.5)}), Object.assign({}, R, {sph:r2(R.sph - 0.5)}), Object.assign({}, R, {cyl:r2(-R.cyl)})].map(ecrireBrut));
+    }
+    if(pb.type === 'deux') return pb.pieges.map(p => p.txt).concat([ecrireRx({sph:pb.N.sph, cyl:pb.N.cyl, axe:pb.P.axe}) + ' ; ' + ecrireRx({sph:pb.P.sph, cyl:pb.P.cyl, axe:pb.N.axe})]);
+    if(pb.type === 'croix'){
+      const S = pb.rx.sph, A = pb.rx.axe, M = pb.k.m2, P = pb.k.pM2;
+      return pb.pieges.filter(p => p.id !== 'un-bras').map(p => croixTxt(p.paires)).concat([[[S, A], [r2(P - 0.5), M]], [[S, A], [r2(P + 0.5), M]]].map(croixTxt));
+    }
+    return pb.pieges.map(p => p.txt);
+  }
+  function sources(id){
+    return (ARENE_GENS[id] || []).map(g => ({id:'g:' + g, type:'gen', gen:true, pas:PAS_ARENE[g], confirmer:true,
+      tuiles(){ const pb = tirer(g, true), t = Pratique.tuiles(pb, {juger, repTxt, etapes:pb.etapes, candidats:candidatsArene(pb)}); return t && Object.assign(t, {kc:KC_GEN[g]}); },
+      rendre(el, fini){
+        const pb = tirer(g, true);
+        if(typeof MutationObserver !== 'undefined') new MutationObserver(() => champs(el)).observe(el, {childList:true, subtree:true, characterData:true});
+        Pratique.exercice(el, pb, {kc:KC_GEN[g], etapes:pb.etapes, resultat:BLOCS[id].resultat, juger, repTxt, fin:r => fini(r.premier && !r.aide)});
+        champs(el);
+      }}));
+  }
+  return {tirer, juger, repTxt, jugerType:jugerTy, lireDeux, candidatsArene, sources, monter, exemplesHTML, ERREURS, BLOCS, KC_GEN, GENS, DEPART, POURQUOI, VUES,
+    reinitTableau:() => { nTableau = 0; }, TABLEAU};
 })();
 
 /* ======================================================================
@@ -7318,15 +8840,18 @@ const Comptoir = (() => {
 })();
 /* FIN_COMPTOIR */
 
-/* l'ordre de l'arène : la croix (analyse/adm-profil.md §8), inchangée ; le comptoir suit le graphe des préalables
+/* l'ordre de l'arène : la croix (analyse/adm-profil.md §8), inchangée ; la transposition (adm-profil.md §8, ajout du
+   2 nov. ; analyse/adm-m07t_kc.md) ; le comptoir suit le graphe des préalables
    des KC de adm-m05_kc.md (B5.1 → B5.3 → B5.20 ; B5.8 → B5.10 → B5.11 → B5.12 → B5.14 → B5.15 ; B5.23 à B5.25) */
 const ARENE = {
   prealables:{pourquoi:[], echelle:[], negatifs:[], spherique:['pourquoi', 'echelle'], torique:['spherique', 'negatifs'],
     oblique:['torique', 'echelle'], foyers:['torique'], options:['oblique', 'echelle'], types:['foyers', 'negatifs'],
     inverse:['torique', 'foyers', 'negatifs'], exercices:['types', 'options'],
+    'transpo-pourquoi':['torique'], transposer:['transpo-pourquoi', 'negatifs', 'oblique'],
+    'transpo-croix':['transposer', 'inverse'], 'analyse-avancee':['transposer', 'types'],
     'cpt-factures':[], 'cpt-escomptes':['cpt-factures'], 'cpt-ohip':['cpt-factures'], 'cpt-rdv':['cpt-ohip'],
     'cpt-assureur':['cpt-escomptes', 'cpt-rdv'], 'cpt-erreurs':['cpt-assureur'], 'cpt-comptoir':['cpt-escomptes', 'cpt-rdv', 'cpt-assureur']},
-  sources(id){ return CroixAToi.sources(id).concat(Comptoir.sources(id)); }
+  sources(id){ return CroixAToi.sources(id).concat(TranspoAToi.sources(id), Comptoir.sources(id)); }
 };
 
 /* ====== _commun/revision.js ====== */
@@ -7440,13 +8965,13 @@ function basculer(ecranId, attr, voulu, vide){
    QUESTION_ECRAN : une question suggérée par écran ; SEL_BLOCS : les blocs
    lus pour “ce qui est visible” ; ACTIONS : les réglages [[ATELIER]].
    ====================================================================== */
-const REGLES = `Tu es le tuteur intégré à l’« Atelier Bureau M7 », une page d’étude interactive du cours Principes et procédures d’un bureau ophtalmique (ADM 0010), UA2, module 7 : la croix optique, et, dans sa partie 6 (Au comptoir), le module 5 : rendez-vous et facturation, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
+const REGLES = `Tu es le tuteur intégré à l’« Atelier Bureau M7 », une page d’étude interactive du cours Principes et procédures d’un bureau ophtalmique (ADM 0010), UA2, module 7 : la croix optique ; dans sa partie 6, la transposition (la suite du module 7) ; et, dans sa partie 7 (Au comptoir), le module 5 : rendez-vous et facturation, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
 
 Règles :
 - Réponds dans la langue de la question (français par défaut). Garde les termes du cours en français.
 - Sois bref : le panneau est étroit. De 3 à 8 phrases ou une courte liste ; développe seulement si on te le demande.
 - Appuie-toi d’abord sur le contenu du cours fourni (le texte de l’écran). Si tu ajoutes une notion absente du cours, signale-la par “(hors cours)”.
-- Écris les Rx comme le cours : points décimaux, deux décimales, signe toujours écrit, cylindre négatif, axe à trois chiffres (-1.00 -0.50 x 180) ; « Plano » pour zéro. Pas de LaTeX. Pour un calcul : la règle, les valeurs, le résultat.
+- Écris les Rx comme le cours : points décimaux, deux décimales, signe toujours écrit, cylindre négatif (en transposition, le cylindre positif aussi), axe à trois chiffres (-1.00 -0.50 x 180) ; « Plano » pour zéro. Pas de LaTeX. Pour un calcul : la règle, les valeurs, le résultat.
 - Pour un exercice ou une question d’entraînement, guide d’abord avec une piste ; ne donne la réponse complète que si on te la demande.
 - Les exercices du cours (7.2-d30, 7.3-d36) n’ont pas de corrigé officiel : les réponses de l’atelier sont calculées. Quand le cours ne tranche pas (option B à 045 ou 135, nom d’une Rx mixte, axes à deux ou trois chiffres), dis-le et propose de le vérifier en classe.
 - Si une image est jointe, c’est la zone de la page que l’étudiant a encadrée : dis en une phrase ce qu’elle montre, puis explique.
@@ -7458,9 +8983,10 @@ I1 — La croix optique représente la Rx de loin (VL) : sphère, cylindre et ax
 I2 — ① la sphère va sur le méridien de l’axe (la puissance d’un cylindre est nulle sur son axe, TO 5.1) ; ② SPH + CYL = force du 2e méridien ; ③ 2e méridien = axe ± 090 : axe jusqu’à 090, on ajoute 090 ; au-delà, on retire 090, pour rester entre 001 et 180. Rx sphérique (« -1.00 DS ») : même force sur tous les méridiens. Exemples du cours : OD -1.00 -0.50 x 180 → -1.00 sur 180, -1.50 sur 090 ; OS -2.00 -0.75 x 090 → -2.00 sur 090, -2.75 sur 180 ; -5.00 -1.50 x 160 → -5.00 sur 160, -6.50 sur 070. Le piège : additionner des négatifs.
 I3 — Axe oblique : option A = les vrais méridiens en oblique (degré en haut de la ligne, valeur au bout bas) ; option B = croix droite, le méridien le plus près de 180 ou 0 à l’horizontale, le plus près de 090 à la verticale (degré à un bout du bras, valeur à l’autre). À 045 et 135, la règle ne tranche pas.
 I4 — ⑤ méridien négatif : foyer devant la rétine ; positif : derrière ; Plano : sur la rétine ; œil corrigé : sur la rétine. ⑥ types (définitions de l’UA1, Rx en cylindre négatif) : Plano et − = astigmatisme myope simple ; Plano et + = hypermétrope simple ; deux − différents = myope composé ; deux + différents = hypermétrope composé ; un + et un − = mixte ; deux égaux = myope ou hypermétrope sphérique. Le nom de la Rx (« rx: Hypermétrope Torique ») suit le signe de la sphère ; le type suit les deux méridiens (+2.50 -3.75 x 090 : nom hypermétrope, type mixte ; à vérifier en classe). ⑦ analyse inverse (déduite) : deux bras égaux → Rx DS ; sinon la sphère = le méridien le plus positif, l’axe = ce méridien, le cylindre = l’autre − la sphère.
+I5 — La transposition (partie 6 ; diapos 7.1T, 7.2T, 7.3T du 2 nov., la fiche PDF et la vidéo MP4 de la prof ; pour la prof, c’est la suite du module 7 : garde ce numéro). Qui écrit quoi, « en général » : optométristes et opticiens en cylindre négatif (« OD et RO = - cyl », où OD veut dire optométriste, pas l’œil droit), ophtalmologistes en positif (« MD = + cyl »). Les 4 étapes : 1 SPH + CYL = nouveau SPH (Plano = 0) ; 2 inverser le signe du CYL, même valeur ; 3 axe ± 090, entre 001 et 180 (jusqu’à 090 on additionne, au-delà on soustrait : seuil tiré des cas de la vidéo) ; 4 prisme et addition recopiés tels quels. Une Rx sphérique n’a rien à transposer. Transposer deux fois rend la Rx. Une Rx et sa transposée font la même croix (« Même puissance d’optique! »). Exemples du cours : -8.00 +2.00 x 135 → -6.00 -2.00 x 045 ; -1.00 -1.00 x 065 1△BU Add +1.50 → -2.00 +1.00 x 155 1△BU Add +1.50. La croix d’une Rx à cylindre positif se construit sans transposer (OD -1.00 +0.50 x 065 : -1.00 sur 065, -0.50 sur 155) ; deux flèches du cylindre en bas à droite : vers le bras le plus négatif −|CYL|, vers l’autre +|CYL|. D’une croix : le méridien le plus positif donne la Rx en cylindre négatif, le plus négatif celle en cylindre positif (croix -0.50 sur 180, -1.50 sur 090 : -0.50 -1.00 x 180 et -1.50 +1.00 x 090). L’analyse du type (7.3T-d33) : 1 CYL absent ou négatif, sinon transposer d’abord ; 2 signe de la sphère (négatif MYOPE, positif HYPERMÉTROPE, Plano : aucun ajout) ; 3 CYL → TORIQUE, sinon SPHÉRIQUE (Plano seul : Emmétrope) ; 4 prisme → PRISMATIQUE ; 5 addition → PRESBYTE ; un nom par œil. Le piège : OD -3.75 +4.00 x 166 Add +2.00 est hypermétrope (+0.25 -4.00 x 076), « OD: Hypermétrope Torique et Presbyte ». À vérifier, ne tranche pas : le bras horizontal (diapos « (axe le plus près de 180 ou 0) » ; la vidéo de la prof prend le plus grand nombre ; 045/135 indécis) ; « Emmetrope Torique » (7.3T-d67) ou « Torique » (d58) pour Plano + CYL ; l’addition numérotée étape 4 ou 5 ; 7.2T-d11, dont les valeurs du verre OS sont mal placées (la bonne croix de l’OS : -1.50 sur 105, -0.75 sur 015). La vidéo YouTube de la prof se résume, ne se cite pas.
 Examen : sommative UA2, lundi 23 novembre 2026, 35 % ; le tableau remet la croix au module 9 (9 novembre) avec les cinq types.
 
-Au comptoir (partie 6 ; module 5 de la prof : facturation, OHIP, assurances ; pour les « -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » de l’UA2) :
+Au comptoir (partie 7 ; module 5 de la prof : facturation, OHIP, assurances ; pour les « -Exercices Gestion de rendez-vous » et « -Exercices Gestion financière » de l’UA2) :
 F — Deux factures (service, produit), chacune frais − escompte, sans taxe. Un escompte ne touche que les items que la promotion nomme (rabais items, en pourcentage, monétaire). Lumiris : examen 205 $ → 110 $, partiel 115 $ → 60 $, lunette −25 %, verres de contact −15 % ; escompte famille AOpto-Opti : services 110 $ et 60 $ sans demande, produits par le comité (jamais calculés au comptoir).
 Méthode EF : 1 le frais, 2 l’escompte, 3 la facture, 4 OHIP (service seulement), 5 l’assureur, 6 ce que le patient débourse ; produit : cinq étapes, sans OHIP. Quand OHIP couvre l’examen : assureur non applicable, patient 0 $.
 OHIP — l’âge le jour de l’examen ; 0-19 : tous les 12 mois, V404/V402 ; 20-64 en santé : pas couvert ; 20-64 avec condition admissible : 12 mois, V409/V408 ; POSPH/ODSP : 24 mois, V450 ; OW : 24 mois, V451 ; 65 et plus : 18 mois, V406/V415 ; 65 et plus avec condition : 12 mois, V407/V415. Prochaine date = dernier examen majeur + fréquence + 1 jour. Majeur = réfraction ET santé oculaire ; mineur = l’une OU l’autre. Codes reçus : 101 valide ; 201 trop tôt (noter la date du dernier examen, vérifier de nouveau) ; 50-59 carte valide (52 et 55 : aviser le patient) ; 05 : confirmer le numéro et le code de version ; 20 (EO-7) : assurance privée ou le patient paie.
@@ -7477,7 +9003,11 @@ DÉMONSTRATION DANS L’ATELIER (facultatif) — si régler un écran aiderait l
 - options : rx (ex. "+2.00 -1.00 x 065")
 - foyers : rx (ex. "+6.50 -1.00 x 160"), corrige (true ou false)
 - exercices : serie ("7.2" ou "7.3"), n (1 à 10)
-Les autres écrans se donnent par leur seul nom : pourquoi, negatifs, types, inverse, cpt-factures, cpt-escomptes, cpt-ohip, cpt-rdv, cpt-assureur, cpt-erreurs, cpt-comptoir (la partie Au comptoir), cartes (le Rappel du jour), questions, verifier.
+- transpo-pourquoi : paire (1 à 3, les exemples du cours), ecriture ("moins" ou "plus")
+- transposer : rx (ex. "-8.00 +2.00 x 135", prisme et addition permis : "1△BU Add +1.50"), etape (1 à 4)
+- transpo-croix : rx (ex. "OD -1.00 +0.50 x 065")
+- analyse-avancee : rx (ex. "OD -3.75 +4.00 x 166 Add +2.00"), etape (1 à 5)
+Les autres écrans se donnent par leur seul nom : pourquoi, negatifs, types, inverse, transpo-pourquoi, transposer, transpo-croix, analyse-avancee (la partie 6, la transposition), cpt-factures, cpt-escomptes, cpt-ohip, cpt-rdv, cpt-assureur, cpt-erreurs, cpt-comptoir (la partie Au comptoir), cartes (le Rappel du jour), questions, verifier.
 N’ajoute cette ligne que si elle sert vraiment ; l’étudiant cliquera pour l’appliquer.`;
 
 const QUESTION_ECRAN = {
@@ -7493,6 +9023,10 @@ const QUESTION_ECRAN = {
   types:'Comment distinguer astigmatisme simple, composé et mixte ?',
   inverse:'Comment retrouver la Rx à partir d’une croix ?',
   exercices:'Guide-moi sur cet exercice sans me donner la réponse.',
+  'transpo-pourquoi':'Pourquoi une Rx et sa transposée corrigent-elles la même chose ?',
+  transposer:'Comment savoir s’il faut additionner ou soustraire 090 à l’étape 3 ?',
+  'transpo-croix':'Comment trouver les deux Rx d’une croix optique ?',
+  'analyse-avancee':'Pourquoi faut-il transposer avant d’analyser une Rx à cylindre positif ?',
   'cpt-factures':'Pourquoi deux factures pour une seule visite ?',
   'cpt-escomptes':'Sur quels items s’applique une promotion ?',
   'cpt-ohip':'Comment savoir si OHIP couvre un patient, et tous les combien ?',
@@ -7522,7 +9056,18 @@ const ACTIONS = {
       faire:() => { if(rx) regler('#fo-rx', rx); if(c !== null) clic('#fo-corr [data-c="' + (c ? '1' : '0') + '"]'); }}; },
   exercices:o => { const s = o.serie === '7.2' || o.serie === '7.3' ? o.serie : null, n = num(o, 'n', 1, 10);
     const id = s && n !== null ? 'e7' + s.slice(2) + '-' + pad(Math.round(n)) : null;
-    return {resume:id ? (s === '7.2' ? '7.2-d30' : '7.3-d36') + ' n° ' + Math.round(n) : '', faire:() => { if(id) choisirExercice(id); }}; }
+    return {resume:id ? (s === '7.2' ? '7.2-d30' : '7.3-d36') + ' n° ' + Math.round(n) : '', faire:() => { if(id) choisirExercice(id); }}; },
+  /* la partie 6 : une Rx n'est prise que si l'atelier sait la lire (lireRxT) */
+  'transpo-pourquoi':o => { const p = num(o, 'paire', 1, 3), f = o.ecriture === 'moins' || o.ecriture === 'plus' ? o.ecriture : null;
+    return {resume:[p !== null && 'exemple ' + Math.round(p), f && (f === 'plus' ? 'cylindre positif' : 'cylindre négatif')].filter(Boolean).join(', '),
+      faire:() => { if(p !== null) clic(dans('transpo-pourquoi', '#tp-paires .puce[data-i="' + (Math.round(p) - 1) + '"]')); if(f) clic('#tp-ecriture [data-f="' + f + '"]'); }}; },
+  transposer:o => { const rx = typeof o.rx === 'string' && lireRxT(o.rx) ? o.rx.trim().slice(0, 50) : null, e = num(o, 'etape', 1, 4);
+    return {resume:[rx, e !== null && 'étape ' + Math.round(e)].filter(Boolean).join(', '),
+      faire:() => { if(rx) regler('#tr-rx', rx); if(e !== null) clic('#tr-etapes [data-e="' + Math.round(e) + '"]'); }}; },
+  'transpo-croix':o => { const rx = typeof o.rx === 'string' && lireRxT(o.rx) ? o.rx.trim().slice(0, 50) : null; return {resume:rx || '', faire:() => { if(rx) regler('#tc-rx', rx); }}; },
+  'analyse-avancee':o => { const rx = typeof o.rx === 'string' && lireRxT(o.rx) ? o.rx.trim().slice(0, 50) : null, e = num(o, 'etape', 1, 5);
+    return {resume:[rx, e !== null && 'étape ' + Math.round(e)].filter(Boolean).join(', '),
+      faire:() => { if(rx) regler('#aa-rx', rx); if(e !== null) clic('#aa-etapes [data-e="' + Math.round(e) + '"]'); }}; }
 };
 
 const TUTEUR_CONFIG = {REGLES, QUESTION_ECRAN, SEL_BLOCS:SEL_BLOCS_ATELIER, ACTIONS};
@@ -15655,6 +17200,9 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['adm-m07'], t:'La transposition est arrivée dans l’atelier : passer une ordonnance du cylindre négatif au cylindre positif (et l’inverse), la croix d’une ordonnance d’ophtalmologiste, et nommer son type. C’est la partie 6 du plan ; « Au comptoir » devient la partie 7.'},
+    {d:'2026-11-02', p:['adm-m07'], t:'« À toi » sur la transposition : des ordonnances toujours nouvelles, avec ou sans prisme et addition, jusqu’à trois justes de suite, puis à l’envers (retrouver l’ordonnance de départ). Aussi : les deux ordonnances d’une croix, et « Décris le type ».'},
+    {d:'2026-11-02', p:['adm-m07'], t:'Le bouton « Survol » propose maintenant deux diaporamas : la croix optique et le comptoir, ou la transposition (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
     {d:'2026-11-02', p:['to-m56'], t:'Sur l’écran des deux tests de l’OCT, la coupe de la fovéa montre maintenant ses sept lettres (F, N, G, P, E, B, C). « Me tester » les cache pour que tu les replaces de mémoire.'},
     {d:'2026-11-02', p:['to-m56'], t:'Le fond d’œil le plus pâle est normal lui aussi : en classe, on l’a vu chez les plus jeunes. L’écran du fond d’œil et le Survol du module 7 le disent maintenant.'},
     {d:'2026-11-02', p:['to-m56'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 5 et 6, ou le module 7 seul (21 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -15929,7 +17477,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'de7d7b7811a4';
+  const ICI = '99a7c6bb95ac';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

@@ -254,7 +254,7 @@ const COURS = [
 const PAGES = {
   adm:[
     {g:'Atelier', t:'Atelier Bureau M7', u:'atelier-bureau-m7.html', v:true, ua:2,
-     d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+     d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. Nouveau : la transposition (cylindre négatif ou positif, une croix pour deux écritures, analyser une Rx d’ophtalmologiste). Au comptoir, Rappel du jour, tuteur.'},
     {g:'Guide', t:'Réviser l’UA1', u:'reviser-ua1.html', ua:1, d:'Le guide de révision de l’UA1.'},
     {g:'Cartes', t:'Cartes UA1', u:'cartes-ua1.html', ua:1, d:'80 cartes éclair de l’UA1.'},
     {g:'Drills', t:'Drills Rx', u:'drills-ua1.html', ua:1, d:'40 QCM sur les Rx et la facturation.'},
@@ -596,6 +596,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['adm-m07'], t:'La transposition est arrivée dans l’atelier : passer une ordonnance du cylindre négatif au cylindre positif (et l’inverse), la croix d’une ordonnance d’ophtalmologiste, et nommer son type. C’est la partie 6 du plan ; « Au comptoir » devient la partie 7.'},
+    {d:'2026-11-02', p:['adm-m07'], t:'« À toi » sur la transposition : des ordonnances toujours nouvelles, avec ou sans prisme et addition, jusqu’à trois justes de suite, puis à l’envers (retrouver l’ordonnance de départ). Aussi : les deux ordonnances d’une croix, et « Décris le type ».'},
+    {d:'2026-11-02', p:['adm-m07'], t:'Le bouton « Survol » propose maintenant deux diaporamas : la croix optique et le comptoir, ou la transposition (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
     {d:'2026-11-02', p:['to-m56'], t:'Sur l’écran des deux tests de l’OCT, la coupe de la fovéa montre maintenant ses sept lettres (F, N, G, P, E, B, C). « Me tester » les cache pour que tu les replaces de mémoire.'},
     {d:'2026-11-02', p:['to-m56'], t:'Le fond d’œil le plus pâle est normal lui aussi : en classe, on l’a vu chez les plus jeunes. L’écran du fond d’œil et le Survol du module 7 le disent maintenant.'},
     {d:'2026-11-02', p:['to-m56'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 5 et 6, ou le module 7 seul (21 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -727,7 +730,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'de7d7b7811a4';
+  const ICI = '99a7c6bb95ac';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

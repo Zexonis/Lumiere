@@ -1,0 +1,1236 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survol · La transposition</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Survol · La transposition (ADM 0010) : le « Survol » de la suite du module 7 de Bureau ophtalmique (cours du
+  2 nov. 2026 ; pour la prof, c'est la suite de son module 7 : « Mod 7.1 » à « Mod 7.3 »). Écrit le 2 nov. 2026.
+  Contenu : uniquement Guides/UA2-Bureau-Ophtalmique/distilled/adm-m07t_distilled.md (citations vérifiées par
+  build/distill-m7t/verif_adm7t.py) et adm-m07t_videos.md ; l'ordre et les pièges suivent analyse/adm-m07t_kc.md
+  (la ligne « Survol » de la prescription). Nombres recalculés avec build/distill-m7t/recalcul_adm7t.py.
+  Codes des sources (jamais affichés, comme le veut le format) : en commentaire au-dessus de chaque diapo.
+  7.1T, 7.2T, 7.3T = les diaporamas du 2 nov. ; PDF = Transposition_ Étape.pdf ; MP4 = Transposition.mp4 (Whisper).
+  Liens et valeurs déduits, signalés sur leur diapo (.note) : le choix « jusqu'à 090 on additionne, au-delà on
+  soustrait » (diapo 8, déduit des cas du MP4) ; « chaque écriture part d'un bras de la croix » (diapo 12, déduit des
+  règles du M7) ; « le bras le plus positif donne la Rx en cylindre négatif » (diapo 13, déduit comme l'analyse
+  inverse du M7). Écarté exprès : la question du bras horizontal pour 045/135 (vidéo YouTube contre 7.2T-d3) ;
+  la croix de 135/045 est dessinée aux vrais angles, ce qui évite la question.
+  Moteur, styles et navigation : copiés tels quels de diapos-bureau-m7.html (et du correctif `button, a` de
+  diapos-to-m7.html).
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; une seule
+  phrase « À retenir »; au plus un piège, tiré des cartes KC; aucune citation de source ni point en attente; un seul
+  bouton utile : Suite. Code couleur constant :
+  cyan = le cylindre négatif, l'écriture de l'optométriste et de l'opticien (et le bras où se pose sa sphère)
+  orange = le cylindre positif, l'écriture de l'ophtalmologiste (et le bras où se pose sa sphère)
+  violet = ce qui se recopie tel quel : le prisme et l'addition
+  neutre = la croix et ses pouvoirs, les mêmes pour les deux écritures.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un comptoir d'opticien le soir. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --neg: #56d3ea;
+  --pos: #f4a640;
+  --aide: #b8a4ff;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --neg: #077d93; --pos: #b25a00; --aide: #6448c9;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --neg: #077d93; --pos: #b25a00; --aide: #6448c9;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.neg { color: var(--neg); }
+.pos { color: var(--pos); }
+.aide { color: var(--aide); }
+.rx { font-family: var(--f-chiffre); font-weight: 700; white-space: nowrap; }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-neg { --c: var(--neg); } .c-pos { --c: var(--pos); } .c-aide { --c: var(--aide); } .c-emm { --c: var(--encre); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .val { font-family: var(--f-chiffre); font-size: 17px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 2.5; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .mince { stroke-width: 2; }
+svg .tirets { stroke-dasharray: 5 5; }
+svg .boite { fill: var(--fond-2); stroke: var(--c, var(--trait)); stroke-width: 2; }
+svg .bande { fill: var(--encre); fill-opacity: .06; stroke: var(--trait); stroke-width: 1; stroke-dasharray: 4 4; }
+svg .quart { fill: var(--encre); fill-opacity: .08; }
+svg .pastille { fill: var(--fond-2); stroke: var(--doux); stroke-width: 1.5; }
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-bureau-m7.html" title="Retour à l'Atelier Bureau M7">← Atelier Bureau</a>
+      <p class="marque">Bureau M7 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 20</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture (croix : 7.2T-d18–d25) -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Bureau ophtalmique · ADM 0010 · module 7, la suite</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>La transposition&nbsp;: une croix, deux écritures</h1>
+            <p class="chapeau">La suite du module 7 en 15 minutes, une idée par diapo&nbsp;: c'est à la sommative UA2 du 23 novembre. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">20 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-neg">le cylindre négatif (opto, opticien)</li>
+              <li class="c-pos">le cylindre positif (ophtalmo)</li>
+              <li class="c-aide">recopié tel quel&nbsp;: prisme, addition</li>
+              <li class="c-emm">la croix&nbsp;: la même pour les deux</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="Une croix : −0.50 sur 180, −1.50 sur 090. Deux écritures de la même croix : −0.50 −1.00 x 180 en cylindre négatif, −1.50 +1.00 x 090 en cylindre positif"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le problème (7.1T-d2, d4, d5, d23 ; PDF p1) -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Même patient, deux ordonnances qui ne se ressemblent pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="deux-pros" aria-label="Le même patient : l'optométriste écrit −6.00 −2.00 x 045, en cylindre négatif ; l'ophtalmologiste écrit −8.00 +2.00 x 135, en cylindre positif"></figure>
+          <div class="texte">
+            <p>Le même patient voit l'optométriste, puis l'ophtalmologiste. Ni la sphère, ni le signe du cylindre, ni l'axe ne se ressemblent.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;OD et RO =  - cyl&nbsp;»&nbsp;: en général, l'optométriste (OD) et l'opticien (RO) écrivent le cylindre en <b class="neg">négatif</b>.</span></li>
+              <li data-pas="2"><span>«&nbsp;MD = + cyl&nbsp;»&nbsp;: l'ophtalmologiste (MD) l'écrit en <b class="pos">positif</b>.</span></li>
+              <li data-pas="3"><span>L'opticien doit lire les deux, et passer de l'une à l'autre&nbsp;: c'est la <b>transposition</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Ici, «&nbsp;OD&nbsp;» veut dire optométriste, pas œil droit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Opto et opticien&nbsp;: cylindre négatif. Ophtalmo&nbsp;: cylindre positif.</p>
+      </div>
+    </section>
+
+    <!-- 3 · la carte des quatre étapes (MP4 00:00 ; 7.1T-d8, d9, d41) -->
+    <section class="diapo" id="d3" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Transposer change l'écriture, pas la correction</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="carte" aria-label="Les quatre étapes : la sphère devient SPH + CYL ; le cylindre change de signe ; l'axe tourne de 090 ; le prisme et l'addition restent les mêmes"></figure>
+          <div class="texte">
+            <p>«&nbsp;La transposition, c'est l'échange d'ordonnances entre un format de cylindre négatif et un cylindre positif.&nbsp;» Quatre étapes, dans un sens comme dans l'autre&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>la nouvelle sphère&nbsp;: SPH + CYL&nbsp;;</span></li>
+              <li data-pas="2"><span>le cylindre change de signe&nbsp;;</span></li>
+              <li data-pas="3"><span>l'axe tourne de 090&nbsp;;</span></li>
+              <li data-pas="4"><span>le prisme et l'addition <b class="aide">se recopient</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>SPH + CYL, inverser le CYL, axe ± 090, recopier le reste.</p>
+      </div>
+    </section>
+
+    <!-- 4 · étape 1, monter (7.1T-d8, d16–d18 ; MP4 00:14, 11:31) -->
+    <section class="diapo" id="d4" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 1</p>
+        <h2>Étape 1&nbsp;: la nouvelle sphère, c'est SPH + CYL</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-monte" aria-label="Sur une échelle verticale, on part de −8.00 et on monte de +2.00 : on arrive à −6.00"></figure>
+          <div class="texte">
+            <p>La Rx de l'ophtalmologiste&nbsp;: «&nbsp;svp transposer:  -8.00 +2.00 x 135&nbsp;». Pour additionner, la prof se sert d'une échelle, comme celle du lentimètre.</p>
+            <p class="formule">SPH + CYL = nouveau SPH</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;(-8.00) + (+2.00)&nbsp;»&nbsp;: on part de <b class="pos">−8.00</b>.</span></li>
+              <li data-pas="2"><span>Ajouter un positif, c'est <b>monter</b>&nbsp;: «&nbsp;on va augmenter dans l'échelle&nbsp;». On arrive à <b class="neg">−6.00</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>8 + 2 = 10, donc −10.00&nbsp;: non. On monte de 2, vers le 0.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un cylindre positif fait monter sur l'échelle.</p>
+      </div>
+    </section>
+
+    <!-- 5 · étape 1, descendre (MP4 05:46–07:30, ex. 2) -->
+    <section class="diapo" id="d5" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 1</p>
+        <h2>Ajouter un cylindre négatif, c'est descendre</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-descend" aria-label="Sur l'échelle, on part de +1.00 et on descend de 0.75 : on arrive à +0.25, encore au-dessus de 0"></figure>
+          <div class="texte">
+            <p>Un exemple de la vidéo de la prof&nbsp;: <span class="rx">+1.00 −0.75 x 025</span>. Cette fois, le cylindre est <b class="neg">négatif</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>(+1.00) + (−0.75)&nbsp;: «&nbsp;on additionne du négatif. Donc, on doit reculer dans l'échelle&nbsp;».</span></li>
+              <li data-pas="2"><span>On descend de 0.75 depuis +1.00&nbsp;: on arrive à <b class="pos">+0.25</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Écrire −0.25&nbsp;: on n'est pas passé sous 0.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un cylindre négatif fait descendre&nbsp;; le signe se lit là où l'on s'arrête.</p>
+      </div>
+    </section>
+
+    <!-- 6 · Plano (PDF p1 ; MP4 ex. 5, 10:54–12:31 ; MP4 16:02) -->
+    <section class="diapo" id="d6" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 1</p>
+        <h2>Plano vaut 0, au départ comme à l'arrivée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-plano" aria-label="Sur l'échelle, de Plano on descend de 2.00 jusqu'à −2.00 ; de −2.00 on monte de 2.00 jusqu'à 0, qui s'écrit Plano"></figure>
+          <div class="texte">
+            <p>«&nbsp;Plano veut dire 0.&nbsp;» Sur l'échelle, Plano est le 0.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><span class="rx neg">Plano −2.00 x 090</span>&nbsp;: 0 + (−2.00) = <b class="pos">−2.00</b>.</span></li>
+              <li data-pas="2"><span><span class="rx pos">−2.00 +2.00 x 110</span>&nbsp;: on monte de 2 et on arrive à 0, qui s'écrit <b class="neg">Plano</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Garder Plano comme nouvelle sphère&nbsp;: c'est l'ancienne. La nouvelle, c'est 0 + CYL.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plano, c'est 0&nbsp;: il s'additionne comme les autres.</p>
+      </div>
+    </section>
+
+    <!-- 7 · étape 2 (7.1T-d8, d19 ; MP4 01:37) -->
+    <section class="diapo" id="d7" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 2</p>
+        <h2>Étape 2&nbsp;: le cylindre change de signe, pas de valeur</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="inverse" aria-label="−8.00 +2.00 x 135 : le cylindre +2.00 devient −2.00 dans la transposée, qui commence par −6.00 −2.00"></figure>
+          <div class="texte">
+            <p>«&nbsp;Inverser la force du CYL&nbsp;». Dans la vidéo&nbsp;: «&nbsp;S'il est positif, on change à négatif.&nbsp;» Et l'inverse.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;+2.00 est inversé à&nbsp;» <b class="neg">−2.00</b>. La valeur, 2.00, ne bouge pas.</span></li>
+              <li data-pas="2"><span>La transposée commence par <span class="rx neg">−6.00 −2.00</span>&nbsp;; il reste l'axe.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Garder +2.00&nbsp;: les deux écritures auraient le même signe. Ce ne serait plus une transposition.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Même valeur, signe contraire.</p>
+      </div>
+    </section>
+
+    <!-- 8 · étape 3 (7.1T-d8, d20–d22 ; MP4 05:10, 07:10–07:14) -->
+    <section class="diapo" id="d8" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 3</p>
+        <h2>Étape 3&nbsp;: l'axe tourne de 090 et reste entre 001 et 180</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="bande" aria-label="Les axes d'une Rx vont de 001 à 180. 135 moins 090 donne 045, plus 090 donne 225, trop grand. 090 moins 090 donne 0, plus 090 donne 180. 025 moins 090 donne un axe négatif, plus 090 donne 115"></figure>
+          <div class="texte">
+            <p>«&nbsp;Additionner ou soustraire 90 degrés à l’axe&nbsp;» «&nbsp;(Rappel: axe doit se retrouver entre 001 et 180)&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>135&nbsp;: «&nbsp;135 - 090&nbsp;» = <b class="neg">045</b>. 135 + 090 = 225&nbsp;: trop grand.</span></li>
+              <li data-pas="2"><span>La transposée est complète&nbsp;: <b class="rx neg">−6.00 −2.00 x 045</b>.</span></li>
+              <li data-pas="3"><span>090&nbsp;: «&nbsp;90 moins 90, ça nous donne 0, qui n'est pas un axe d'ordonnance&nbsp;». On additionne&nbsp;: 180.</span></li>
+              <li data-pas="4"><span>025&nbsp;: soustraire donne un axe négatif. «&nbsp;Ceci n'existe pas.&nbsp;» On additionne&nbsp;: 115.</span></li>
+            </ol>
+            <p class="note">Jusqu'à 090, on additionne&nbsp;; au-delà, on soustrait. Cette façon de choisir est déduite des cas de la vidéo.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>L'axe tourne de 090&nbsp;: jamais 0, jamais négatif, jamais plus de 180.</p>
+      </div>
+    </section>
+
+    <!-- 9 · étape 4, de bout en bout (7.1T-d8, d35–d39 ; MP4 14:34–14:38) -->
+    <section class="diapo" id="d9" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · étape 4</p>
+        <h2>Étape 4&nbsp;: le prisme et l'addition se recopient</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="quatre" aria-label="−1.00 −1.00 x 065 1△BU Add +1.50 devient −2.00 +1.00 x 155 1△BU Add +1.50 : le prisme et l'addition sont recopiés"></figure>
+          <div class="texte">
+            <p>Une Rx complète, en cylindre négatif&nbsp;: «&nbsp;-1.00 -1.00 x 065 1△BU Add +1.50&nbsp;». Les quatre étapes&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>(−1.00) + (−1.00) = <b class="pos">−2.00</b>&nbsp;: on descend.</span></li>
+              <li data-pas="2"><span>−1.00 devient <b class="pos">+1.00</b>.</span></li>
+              <li data-pas="3"><span>065 + 090 = <b class="pos">155</b>.</span></li>
+              <li data-pas="4"><span>«&nbsp;1△BU Add +1.50 demeure&nbsp;»&nbsp;: <b class="aide">recopiés</b>. La transposée&nbsp;: <b class="rx">−2.00 +1.00 x 155 1△BU Add +1.50</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Les oublier. La prof&nbsp;: «&nbsp;Mais il doit être transféré.&nbsp;» «&nbsp;Et vous ne pouvez pas l'oublier.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Le prisme et l'addition ne changent pas.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 10 · une Rx sphérique (MP4 02:08–04:00 ; YT ex. 1, paraphrase) -->
+    <section class="diapo" id="d10" data-acte="transposer" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Transposer · un cas limite</p>
+        <h2>Sans cylindre, il n'y a rien à transposer</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="spherique" aria-label="La Rx sphérique −1.00 et sa croix : −1.00 sur 180 et sur 090"></figure>
+          <div class="texte">
+            <p>La vidéo de la prof commence par une Rx sphérique&nbsp;: <span class="rx">−1.00</span>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Étape 1&nbsp;: −1.00 + 0 = −1.00. Rien ne change.</span></li>
+              <li data-pas="2"><span>Pas de cylindre à inverser, pas d'axe à tourner&nbsp;: «&nbsp;tu ne vas jamais avoir un cylindre sans axe et tu ne vas jamais avoir un axe sans cylindre&nbsp;».</span></li>
+              <li data-pas="3"><span>Sur la croix, −1.00 sur les deux bras&nbsp;: une seule écriture possible.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Inventer un cylindre pour transposer une Rx sphérique.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Pas de cylindre, pas de transposition.</p>
+      </div>
+    </section>
+
+    <!-- 11 · une croix, deux écritures (7.1T-d2, d7, d22, d23 ; M7 ① ② ③) -->
+    <section class="diapo" id="d11" data-acte="croix" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Une croix, deux écritures</p>
+        <h2>Les deux écritures posent les mêmes pouvoirs sur la même croix</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="meme-croix" aria-label="Une croix aux vrais angles : −8.00 sur 135, −6.00 sur 045. −8.00 +2.00 x 135 et −6.00 −2.00 x 045 donnent cette même croix"></figure>
+          <div class="texte">
+            <p>Avec les règles de la croix du module 7&nbsp;: la sphère sur l'axe, SPH + CYL sur l'autre méridien.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="rx pos">−8.00 +2.00 x 135</b>&nbsp;: −8.00 sur 135&nbsp;; (−8.00) + (+2.00) = −6.00 sur 045.</span></li>
+              <li data-pas="2"><span><b class="rx neg">−6.00 −2.00 x 045</b>&nbsp;: −6.00 sur 045&nbsp;; (−6.00) + (−2.00) = −8.00 sur 135.</span></li>
+              <li data-pas="3"><span>Mêmes méridiens, mêmes pouvoirs&nbsp;: «&nbsp;Même puissance d’optique!&nbsp;»</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Croire que l'opto et l'ophtalmo ont trouvé deux corrections. C'est la même, écrite deux fois.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Transposer, ce n’est pas changer la correction : c’est apprendre à la lire sous une autre forme.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 12 · chaque écriture part d'un bras (déduit : T1–T3 = ② ③ lus depuis l'autre méridien ; flèches 7.2T-d13–d15) -->
+    <section class="diapo" id="d12" data-acte="croix" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Une croix, deux écritures</p>
+        <h2>Chaque écriture part d'un bras de la croix</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="deux-chemins" aria-label="Sur la croix, l'écriture positive part de −8.00 sur 135 et monte de +2.00 vers le 045 ; l'écriture négative part de −6.00 sur 045 et descend de −2.00 vers le 135"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>L'écriture <b class="pos">positive</b> part du bras le plus négatif, −8.00 sur 135, et <b>monte</b> de +2.00 jusqu'à l'autre bras.</span></li>
+              <li data-pas="2"><span>L'écriture <b class="neg">négative</b> part de l'autre bras, −6.00 sur 045, et <b>descend</b> de −2.00.</span></li>
+              <li data-pas="3"><span>Transposer, c'est changer de point de départ&nbsp;: l'étape 1 donne le pouvoir de l'autre bras, l'étape 3 son degré, l'étape 2 le chemin du retour.</span></li>
+            </ol>
+            <p class="note">Ce lien entre les quatre étapes et la croix découle des règles du module 7&nbsp;; le cours ne l'écrit pas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Transposer, c'est relire la même croix depuis l'autre bras.</p>
+      </div>
+    </section>
+
+    <!-- 13 · croix → Rx en cylindre négatif (7.2T-d18–d22) -->
+    <section class="diapo" id="d13" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">De la croix aux deux Rx</p>
+        <h2>Le bras le plus positif donne la Rx en cylindre négatif</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="croix-neg" aria-label="La croix −0.50 sur 180, −1.50 sur 090 donne, depuis le bras 180, la Rx −0.50 −1.00 x 180"></figure>
+          <div class="texte">
+            <p>La prof donne une croix&nbsp;: −0.50 sur 180, −1.50 sur 090. Quelle est la Rx&nbsp;?</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le bras le plus positif&nbsp;: −0.50, sur 180. Il donne la sphère et l'axe.</span></li>
+              <li data-pas="2"><span>CYL = l'autre − SPH = (−1.50) − (−0.50) = <b class="neg">−1.00</b>.</span></li>
+              <li data-pas="3"><span>«&nbsp;RX - OD - CYL NÉGATIF&nbsp;»&nbsp;: <b class="rx neg">−0.50 −1.00 x 180</b>.</span></li>
+            </ol>
+            <p class="note">C'est l'analyse inverse du module 7. La règle du bras le plus positif est déduite des cas du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Cylindre négatif&nbsp;: on part du bras le plus positif.</p>
+      </div>
+    </section>
+
+    <!-- 14 · croix → Rx en cylindre positif (7.2T-d23–d25) -->
+    <section class="diapo" id="d14" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">De la croix aux deux Rx</p>
+        <h2>Le bras le plus négatif donne la Rx en cylindre positif</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="croix-pos" aria-label="La même croix donne, depuis le bras 090, la Rx −1.50 +1.00 x 090 : c'est la transposée de −0.50 −1.00 x 180"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Le bras le plus négatif&nbsp;: −1.50, sur 090.</span></li>
+              <li data-pas="2"><span>CYL = (−0.50) − (−1.50) = <b class="pos">+1.00</b>.</span></li>
+              <li data-pas="3"><span>«&nbsp;Rx - MD - CYL POSITIF&nbsp;»&nbsp;: <b class="rx pos">−1.50 +1.00 x 090</b>.</span></li>
+              <li data-pas="4"><span>Deux Rx tirées d'une même croix&nbsp;: «&nbsp;TRANSPOSITION !&nbsp;»</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Partir du bras le plus négatif pour la Rx en cylindre négatif&nbsp;: on obtient un cylindre positif.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une croix, deux Rx&nbsp;: chacune est la transposée de l'autre.</p>
+      </div>
+    </section>
+
+    <!-- 15 · les flèches et les étiquettes (7.2T-d13–d16 ; YT 01:11–02:15, paraphrase) -->
+    <section class="diapo" id="d15" data-acte="lire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">De la croix aux deux Rx</p>
+        <h2>Les deux flèches du cylindre portent les deux écritures</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fleches" aria-label="La croix étiquetée : l'axe horizontal 180 à gauche, son pouvoir −0.50 à droite ; l'axe vertical 090 en haut, son pouvoir −1.50 en bas. Dans le quart en bas à droite, une flèche vers le bras vertical porte −1.00, une vers le bras horizontal porte +1.00"></figure>
+          <div class="texte">
+            <p>Sur le gabarit de la prof&nbsp;: «&nbsp;Axe Horizontal&nbsp;» à gauche, «&nbsp;Pouvoir Horizontal&nbsp;» à droite, «&nbsp;Axe Vertical&nbsp;» en haut, «&nbsp;Pouvoir Vertical&nbsp;» en bas.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Les deux flèches du cylindre vont dans le quart en bas à droite.</span></li>
+              <li data-pas="2"><span>Vers le bras le plus négatif&nbsp;: <b class="neg">−1.00</b>, le cylindre de la Rx en négatif.</span></li>
+              <li data-pas="3"><span>Vers l'autre bras&nbsp;: <b class="pos">+1.00</b>, celui de la Rx en positif.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une flèche par écriture&nbsp;: −1.00 et +1.00.</p>
+      </div>
+    </section>
+
+    <!-- 16 · avant tout (7.3T-d4–d7) -->
+    <section class="diapo" id="d16" data-acte="analyser" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Analyser une Rx</p>
+        <h2>Avant d'analyser, le cylindre doit être absent ou négatif</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="porte" aria-label="Une Rx à analyser : son cylindre ? Aucun ou négatif : on analyse. Positif : on transpose, puis on analyse"></figure>
+          <div class="texte">
+            <p>Pour nommer le type d'une Rx (myope, torique, presbyte…), la prof pose une condition&nbsp;: «&nbsp;AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Pas de cylindre, ou un cylindre <b class="neg">négatif</b>&nbsp;: on analyse.</span></li>
+              <li data-pas="2"><span>Un cylindre <b class="pos">positif</b>, celui d'un ophtalmologiste&nbsp;: «&nbsp;La transposition vous permettra de changer l’ordonnance en cylindre négatif.&nbsp;»</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Cylindre positif&nbsp;? On transpose d'abord, on analyse ensuite.</p>
+      </div>
+    </section>
+
+    <!-- 17 · le piège : −3.75 +4.00 x 166 (7.3T-d61–d62, d8–d9) -->
+    <section class="diapo" id="d17" data-acte="analyser" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Analyser une Rx · un cas du cours</p>
+        <h2>−3.75 +4.00 x 166 a l'air myope&nbsp;; transposée, elle est hypermétrope</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-piege" aria-label="Sur l'échelle, on part de −3.75 et on monte de +4.00 : on passe au-dessus de 0 et on arrive à +0.25, du côté hypermétrope"></figure>
+          <div class="texte">
+            <p>Un exercice de la prof&nbsp;: OD <span class="rx pos">−3.75 +4.00 x 166</span>. Le cylindre est positif&nbsp;: on transpose.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>(−3.75) + (+4.00) = <b class="neg">+0.25</b>&nbsp;: on monte de 4 et on passe au-dessus de 0.</span></li>
+              <li data-pas="2"><span>Puis −4.00, et 166 − 090 = 076&nbsp;: <b class="rx neg">+0.25 −4.00 x 076</b>.</span></li>
+              <li data-pas="3"><span>La sphère est positive&nbsp;: «&nbsp;SPH Positif = HYPERMÉTROPE&nbsp;».</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Lire −3.75 et dire myope&nbsp;: le signe de la sphère ne compte qu'en cylindre négatif.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le signe de la sphère se lit après la transposition.</p>
+      </div>
+    </section>
+
+    <!-- 18 · les exercices du cours (7.3T-d61–d67, transposés : distillation I4) -->
+    <section class="diapo" id="d18" data-acte="analyser" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Analyser une Rx · les exercices du cours</p>
+        <h2>En cylindre positif, une sphère négative cache souvent un hypermétrope</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="sept" aria-label="Sept Rx du cours écrites en cylindre positif avec une sphère négative. Transposées, cinq passent au-dessus de 0, une reste à −0.50 et une arrive à Plano"></figure>
+          <div class="texte">
+            <p>Dans les exercices de la prof à cylindre positif, sept Rx ont une sphère négative. Chaque flèche, c'est l'étape 1&nbsp;: de la sphère <b class="pos">écrite</b> à la sphère <b class="neg">transposée</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Cinq</b> passent au-dessus de 0&nbsp;: hypermétropes.</span></li>
+              <li data-pas="2"><span>Une reste sous 0, à −0.50&nbsp;: myope. Une s'arrête pile à Plano.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une sphère négative en cylindre positif ne prouve rien&nbsp;: transpose d'abord.</p>
+      </div>
+    </section>
+
+    <!-- 19 · les cinq étapes (7.3T-d33 ; corrigé 7.3T-d62) -->
+    <section class="diapo" id="d19" data-acte="analyser" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Analyser une Rx · la méthode</p>
+        <h2>Le nom d'une Rx, en cinq étapes</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cinq" aria-label="Les cinq étapes pour OD et OS : cylindre positif, on transpose ; sphère +0.25 hypermétrope et −0.50 myope ; torique ; pas de prisme ; presbyte"></figure>
+          <div class="texte">
+            <p>L'exercice complet&nbsp;: OD <span class="rx pos">−3.75 +4.00 x 166</span> Add +2.00&nbsp;; OS <span class="rx pos">−3.25 +2.75 x 177</span> Add +2.00.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>On transpose&nbsp;: OD <span class="rx neg">+0.25 −4.00 x 076</span>, OS <span class="rx neg">−0.50 −2.75 x 087</span>.</span></li>
+              <li data-pas="2"><span>Le signe de la sphère, puis le cylindre, le prisme, l'addition&nbsp;: une ligne chacun.</span></li>
+              <li data-pas="5"><span>«&nbsp;OD: Hypermétrope Torique et Presbyte&nbsp;»&nbsp;; «&nbsp;OS: Myope Torique et Presbyte&nbsp;».</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Transposer, puis la sphère, le cylindre, le prisme, l'addition.</p>
+      </div>
+    </section>
+
+    <!-- 20 · la carte et « Et maintenant » (pratiques : 7.1T-d42, 7.2T-d31, 7.3T-d68) -->
+    <section class="diapo" id="d20" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Toute la transposition tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Qui écrit quoi</p><p class="fiche-f"><span class="neg">OD, RO&nbsp;: CYL −</span><br><span class="pos">MD&nbsp;: CYL +</span></p><p class="fiche-n">ici, OD = optométriste</p></div>
+          <div class="fiche"><p class="fiche-nom">Étape 1</p><p class="fiche-f">SPH + CYL</p><p class="fiche-n">+ monte, − descend&nbsp;; Plano = 0</p></div>
+          <div class="fiche"><p class="fiche-nom">Étape 2</p><p class="fiche-f">inverser le CYL</p><p class="fiche-n">même valeur, autre signe</p></div>
+          <div class="fiche"><p class="fiche-nom">Étape 3</p><p class="fiche-f">axe ± 090</p><p class="fiche-n">entre 001 et 180, jamais 0</p></div>
+          <div class="fiche"><p class="fiche-nom">Étape 4</p><p class="fiche-f aide">prisme, ADD&nbsp;: recopiés</p><p class="fiche-n">ne pas les oublier</p></div>
+          <div class="fiche"><p class="fiche-nom">Une croix</p><p class="fiche-f">mêmes pouvoirs</p><p class="fiche-n">deux écritures, une seule croix</p></div>
+          <div class="fiche"><p class="fiche-nom">Croix → Rx</p><p class="fiche-f">bras le + positif → <span class="neg">CYL −</span></p><p class="fiche-n">le + négatif → CYL +&nbsp;; flèches ± CYL</p></div>
+          <div class="fiche"><p class="fiche-nom">Analyser</p><p class="fiche-f"><span class="pos">CYL +</span>&nbsp;? transposer</p><p class="fiche-n">puis sphère, cylindre, prisme, ADD</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-bureau-m7.html">L'atelier Bureau M7</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul, et les trois pratiques de la prof sur eCité, illimitées et corrigées automatiquement.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const rad = a => a * Math.PI / 180;
+  // un point à l'angle a (degrés : 0 à droite, 090 en haut, comme sur le verre vu de face) et au rayon r
+  const pt = (o, a, r) => [o.cx + r * Math.cos(rad(a)), o.cy - r * Math.sin(rad(a))];
+  // un pouvoir écrit comme dans une Rx : +0.50, −1.25, 0
+  const fmt = v => (Math.abs(v) < 1e-9 ? '0' : (v > 0 ? '+' : '−') + Math.abs(v).toFixed(2));
+
+  // La pointe d'une flèche en (x, y), dirigée selon (tx, ty), unitaire.
+  function pointe(x, y, tx, ty, cls, L = 9) {
+    const c = Math.cos(rad(28)), s = Math.sin(rad(28)), bx = -tx, by = -ty;
+    const w1 = [x + L * (bx * c - by * s), y + L * (bx * s + by * c)];
+    const w2 = [x + L * (bx * c + by * s), y + L * (-bx * s + by * c)];
+    return `<path d="M ${n1(w1[0])} ${n1(w1[1])} L ${n1(x)} ${n1(y)} L ${n1(w2[0])} ${n1(w2[1])}" class="${cls}"/>`;
+  }
+  // Une flèche droite.
+  function trait(x1, y1, x2, y2, cls) {
+    const L = Math.hypot(x2 - x1, y2 - y1) || 1;
+    return `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="${cls}"/>` + pointe(x2, y2, (x2 - x1) / L, (y2 - y1) / L, cls);
+  }
+  // Un arc fléché autour du centre de la croix, de l'angle a0 à l'angle a1.
+  function arc(o, r, a0, a1, cls) {
+    const [x0, y0] = pt(o, a0, r), [x1, y1] = pt(o, a1, r);
+    const horaire = a1 < a0, t = rad(a1);
+    const tx = horaire ? Math.sin(t) : -Math.sin(t), ty = horaire ? Math.cos(t) : -Math.cos(t);
+    return `<path d="M ${n1(x0)} ${n1(y0)} A ${n1(r)} ${n1(r)} 0 ${Math.abs(a1 - a0) > 180 ? 1 : 0} ${horaire ? 1 : 0} ${n1(x1)} ${n1(y1)}" class="${cls}"/>` + pointe(x1, y1, tx, ty, cls);
+  }
+
+  // Texte posé au-delà du bout d'un méridien.
+  function bout(o, a, txt, cls) {
+    const ux = Math.cos(rad(a)), uy = -Math.sin(rad(a));
+    const d = 9 + 7 * Math.abs(uy);
+    const anc = ux > 0.35 ? 'start' : ux < -0.35 ? 'end' : 'middle';
+    return `<text x="${n1(o.cx + (o.R + d) * ux)}" y="${n1(o.cy + (o.R + d) * uy + 6)}" text-anchor="${anc}" class="${cls}">${txt}</text>`;
+  }
+
+  // Une croix : chaque méridien est une ligne entière, son degré au bout haut (ou gauche), son pouvoir à l'autre bout.
+  // c : la couleur de l'écriture dont la sphère se pose sur ce bras ('neg' | 'pos'), ou 'emm' ; pasC : le bras se colore à ce pas.
+  function croix(o) {
+    const cv = 'grand c-emm';
+    let s = '';
+    if (o.droit !== undefined) {
+      const r = 14, ca = Math.cos(rad(o.droit)), sa = Math.sin(rad(o.droit));
+      const q = (i, j) => `${n1(o.cx + r * (i * ca - j * sa))} ${n1(o.cy - r * (i * sa + j * ca))}`;
+      s += `<path d="M ${q(1, 0)} L ${q(1, 1)} L ${q(0, 1)}" class="base"/>`;
+    }
+    o.lignes.forEach(l => {
+      const [xa, ya] = pt(o, l.a, o.R), [xb, yb] = pt(o, l.a + 180, o.R);
+      const seg = cls => `<line x1="${n1(xa)}" y1="${n1(ya)}" x2="${n1(xb)}" y2="${n1(yb)}" class="${cls}"/>`;
+      s += `<g${P(l)}>`;
+      if (l.pasC) s += seg('fleche c-emm') + `<g data-pas="${l.pasC}">${seg(`fleche c-${l.c}`)}</g>`;
+      else s += seg(`fleche c-${l.c || 'emm'}`);
+      if (l.t) s += bout(o, l.a, l.t, 't-doux');
+      s += '</g>';
+      if (l.v) s += `<g${P({ pas: l.pasV })}>${bout(o, l.a + 180, l.v, cv)}</g>`;
+    });
+    return s;
+  }
+
+  // Une Rx écrite, ses parties réparties sur la largeur ; c : sa couleur ; lab : son nom dessous.
+  function rx(parts, y, o) {
+    const n = parts.length;
+    let s = '';
+    parts.forEach((p, i) => {
+      const x = o.x0 + o.w * (i + 0.5) / n;
+      s += `<g${P(p)}><text x="${n1(x)}" y="${y}" text-anchor="middle" class="grand ${p.c ? 'c-' + p.c : 't-doux'}">${p.t}</text>`;
+      if (p.lab) s += `<text x="${n1(x)}" y="${y + 26}" text-anchor="middle" class="petit t-doux">${p.lab}</text>`;
+      s += '</g>';
+    });
+    return s;
+  }
+
+  // Une croix, et au-dessus les écritures qui la donnent (une ou deux) ; arcs : les flèches du cylindre.
+  function uneCroix(o, W) {
+    const R = Math.min(108, W * 0.24);
+    const top = o.rx ? 62 : 10;
+    const cy = top + R + 36;
+    let H = cy + R + 40;
+    const C = { cx: W / 2, cy, R };
+    let s = '';
+    (o.rx || []).forEach((r, i) => {
+      const x = o.rx.length === 1 ? W / 2 : W * (i ? 0.75 : 0.25);
+      s += `<g${P(r)}><text x="${n1(x)}" y="18" text-anchor="middle" class="petit t-doux">${r.qui}</text>`;
+      s += `<text x="${n1(x)}" y="46" text-anchor="middle" class="val c-${r.c}">${r.t}</text></g>`;
+    });
+    s += croix(Object.assign({}, C, { lignes: o.lignes, droit: o.droit }));
+    (o.arcs || []).forEach(a => {
+      s += `<g${P(a)}>${arc(C, a.r * R, a.de, a.a, `fleche mince c-${a.c}`)}`;
+      const [lx, ly] = pt(C, a.lab, a.r * R + 17);
+      s += `<text x="${n1(lx)}" y="${n1(ly + 5)}" text-anchor="middle" class="petit etiq c-${a.c}">${a.t}</text></g>`;
+    });
+    if (o.bas) { s += `<text x="${n1(W / 2)}" y="${n1(H)}" text-anchor="middle" class="petit t-doux"${P({ pas: o.pasBas })}>${o.bas}</text>`; H += 12; }
+    return svgW(W, H, s, o.label);
+  }
+
+  // Le même patient, deux prescripteurs, deux ordonnances.
+  function deuxPros(W) {
+    const m = 10, cw = (W - 3 * m) / 2, top = 40, ch = 104;
+    let s = `<text x="${n1(W / 2)}" y="18" text-anchor="middle" class="petit t-doux">le même patient</text>`;
+    s += `<path d="M ${n1(W / 2)} 25 V 31 M ${n1(m + cw / 2)} ${top} V 31 H ${n1(W - m - cw / 2)} V ${top}" class="base"/>`;
+    [{ x: m, qui: 'Optométriste', f: 'cylindre négatif', rx: '−6.00 −2.00 x 045', c: 'neg' },
+      { x: 2 * m + cw, qui: 'Ophtalmologiste', f: 'cylindre positif', rx: '−8.00 +2.00 x 135', c: 'pos' }].forEach(k => {
+      const cx = k.x + cw / 2;
+      s += `<rect x="${n1(k.x)}" y="${top}" width="${n1(cw)}" height="${ch}" rx="12" class="boite c-${k.c}"/>`;
+      s += `<text x="${n1(cx)}" y="${top + 28}" text-anchor="middle" class="titre-rang c-${k.c}">${k.qui}</text>`;
+      s += `<text x="${n1(cx)}" y="${top + 50}" text-anchor="middle" class="petit t-doux">${k.f}</text>`;
+      s += `<text x="${n1(cx)}" y="${top + 84}" text-anchor="middle" class="val c-${k.c}">${k.rx}</text>`;
+    });
+    return svgW(W, top + ch + 4, s, 'Le même patient : l’optométriste écrit −6.00 −2.00 x 045, l’ophtalmologiste −8.00 +2.00 x 135');
+  }
+
+  // Les parties d'une Rx et ce que chaque étape en fait : à gauche la Rx, à droite la transposée.
+  // nom : une colonne de noms à gauche (sinon, la Rx porte les noms elle-même).
+  function etapesRx(o, W) {
+    const n = o.lignes.length, rowH = 46, top = 40, nom = o.nom;
+    const xA = W * (nom ? 0.27 : 0.13), xF0 = W * (nom ? 0.40 : 0.25), xF1 = W * (nom ? 0.60 : 0.45);
+    const xB = W * (nom ? 0.78 : 0.5), ancB = nom ? 'middle' : 'start';
+    let s = `<text x="${n1(xA)}" y="20" text-anchor="middle" class="titre-rang c-${o.cA || 'emm'}">${o.tA}</text>`;
+    s += `<text x="${n1(xB)}" y="20" text-anchor="${ancB}" class="titre-rang c-${o.cB || 'emm'}">${o.tB}</text>`;
+    o.lignes.forEach((l, i) => {
+      const y = top + i * rowH + rowH / 2, ca = l.c || o.cA || 'emm', cb = l.c || o.cB || 'emm';
+      s += `<line x1="4" y1="${n1(y - rowH / 2)}" x2="${W - 4}" y2="${n1(y - rowH / 2)}" class="separe"/>`;
+      if (nom) s += `<text x="6" y="${n1(y + 5)}" class="petit t-doux">${l.nom}</text>`;
+      s += `<text x="${n1(xA)}" y="${n1(y + 6)}" text-anchor="middle" class="val c-${ca}">${l.a}</text>`;
+      s += `<g${P(l)}>${trait(xF0, y, xF1, y, 'fleche mince c-doux')}`;
+      const xm = (xF0 + xF1) / 2 - 6;
+      s += `<circle cx="${n1(xm)}" cy="${n1(y)}" r="11" class="pastille"/><text x="${n1(xm)}" y="${n1(y + 5)}" text-anchor="middle" class="petit etiq">${l.f}</text>`;
+      s += `<text x="${n1(xB)}" y="${n1(y + 6)}" text-anchor="${ancB}" class="val c-${cb}">${l.b}</text></g>`;
+    });
+    return svgW(W, top + n * rowH + 4, s, o.label);
+  }
+
+  // Une échelle verticale (le + en haut) : chaque mouvement part d'une sphère et ajoute le cylindre.
+  function echelle(o, W) {
+    const H = o.H || 290, top = 20, bas = 20;
+    const Y = v => top + (o.hi - v) / (o.hi - o.lo) * (H - top - bas);
+    const xa = W * 0.3;
+    const marques = [];
+    o.mvts.forEach(m => marques.push(m.de, m.a));
+    let s = '';
+    if (o.zero) {
+      s += `<line x1="${n1(xa)}" y1="${n1(Y(0))}" x2="${n1(W - 8)}" y2="${n1(Y(0))}" class="pointille"/>`;
+      if (o.zero.haut) {
+        s += `<g${P({ pas: o.zero.pas })}><text x="${n1(W - 8)}" y="${n1(Y(0) - 10)}" text-anchor="end" class="petit t-doux">${o.zero.haut}</text>`;
+        s += `<text x="${n1(W - 8)}" y="${n1(Y(0) + 22)}" text-anchor="end" class="petit t-doux">${o.zero.bas}</text></g>`;
+      }
+    }
+    s += `<line x1="${n1(xa)}" y1="${n1(Y(o.hi) - 6)}" x2="${n1(xa)}" y2="${n1(Y(o.lo) + 6)}" class="base"/>`;
+    for (let k = Math.ceil(o.lo * 4 - 1e-9); k <= Math.floor(o.hi * 4 + 1e-9); k++) {
+      const v = k / 4, maj = Math.abs(v / o.maj - Math.round(v / o.maj)) < 1e-9, y = Y(v);
+      s += `<line x1="${n1(xa - (maj ? 9 : 5))}" y1="${n1(y)}" x2="${n1(xa + (maj ? 9 : 5))}" y2="${n1(y)}" class="${maj ? 'base' : 'grille'}"/>`;
+      if (maj && !marques.some(h => Math.abs(h - v) < 0.3 * o.maj + 1e-9)) s += `<text x="${n1(xa - 16)}" y="${n1(y + 5)}" text-anchor="end" class="petit t-doux">${fmt(v)}</text>`;
+    }
+    const vus = new Set();
+    const point = (v, c, t, pas) => {
+      if (vus.has(v)) return '';
+      vus.add(v);
+      return `<g${P({ pas })}><circle cx="${n1(xa)}" cy="${n1(Y(v))}" r="6.5" class="plein c-${c}"/><text x="${n1(xa - 16)}" y="${n1(Y(v) + 6)}" text-anchor="end" class="val c-${c}">${t}</text></g>`;
+    };
+    o.mvts.forEach(m => {
+      const y0 = Y(m.de), y1 = Y(m.a), xm = xa + m.dx;
+      s += point(m.de, m.cDe, m.tDe, m.pasDe);
+      s += `<g${P(m)}><path d="M ${n1(xa + 9)} ${n1(y0)} C ${n1(xm)} ${n1(y0)} ${n1(xm)} ${n1(y1)} ${n1(xa + 11)} ${n1(y1)}" class="fleche c-${m.cFl}"/>`;
+      s += pointe(xa + 10, y1, -1, 0, `fleche c-${m.cFl}`);
+      const xl = 0.25 * xa + 0.75 * xm + 14, yl = (y0 + y1) / 2;
+      s += `<text x="${n1(xl)}" y="${n1(yl)}" class="val c-${m.cFl}">${m.lab}</text>`;
+      if (m.sous) s += `<text x="${n1(xl)}" y="${n1(yl + 20)}" class="petit t-doux">${m.sous}</text>`;
+      s += '</g>';
+      s += point(m.a, m.cA, m.tA, m.pasA !== undefined ? m.pasA : m.pas);
+    });
+    return svgW(W, H, s, o.label);
+  }
+
+  // Étape 2 : le cylindre change de signe.
+  function inverse(W) {
+    const o = { x0: W * 0.12, w: W * 0.76 }, xs = [0, 1, 2].map(i => o.x0 + o.w * (i + 0.5) / 3);
+    let s = `<text x="6" y="18" class="petit t-doux">la Rx</text>`;
+    s += rx([{ t: '−8.00', c: 'pos', lab: 'sphère' }, { t: '+2.00', c: 'pos', lab: 'cylindre' }, { t: 'x 135', c: 'pos', lab: 'axe' }], 50, o);
+    s += `<g data-pas="1">${trait(xs[1], 88, xs[1], 132, 'fleche c-neg')}`;
+    s += `<text x="${n1(xs[1] + 16)}" y="106" class="petit t-doux">même valeur,</text><text x="${n1(xs[1] + 16)}" y="124" class="petit t-doux">autre signe</text></g>`;
+    s += `<text x="6" y="140" class="petit t-doux">la transposée</text>`;
+    s += rx([{ t: '−6.00', c: 'neg' }, { t: '−2.00', c: 'neg', pas: 1 }, { t: 'x ?' }], 172, o);
+    return svgW(W, 184, s, 'Le cylindre +2.00 de −8.00 +2.00 x 135 devient −2.00 dans la transposée');
+  }
+
+  // Étape 3 : ± 090, et seuls les axes de 001 à 180 existent.
+  function bande(W) {
+    const x0 = 18, x1 = W - 18, lo = -100, hi = 280, top = 40, rowH = 74;
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+    const ax = v => (v < 0 ? '−' + -v : v === 0 ? '0' : String(v).padStart(3, '0'));
+    const rangs = [
+      { a: 135, m: [45, true], p: [225, false], pas: 1 },
+      { a: 90, m: [0, false], p: [180, true], pas: 3 },
+      { a: 25, m: [-65, false], p: [115, true], pas: 4 }];
+    const H = top + 3 * rowH + 24;
+    let s = `<rect x="${n1(X(1))}" y="${top - 10}" width="${n1(X(180) - X(1))}" height="${3 * rowH + 6}" rx="8" class="bande"/>`;
+    s += `<text x="${n1(X(90))}" y="20" text-anchor="middle" class="petit t-doux">les axes d’une Rx&#160;: de 001 à 180</text>`;
+    s += `<text x="${n1(X(1))}" y="${H - 4}" text-anchor="middle" class="petit t-doux">001</text>`;
+    s += `<text x="${n1(X(180))}" y="${H - 4}" text-anchor="middle" class="petit t-doux">180</text>`;
+    rangs.forEach((r, i) => {
+      const y = top + i * rowH + rowH / 2 + 2, xa = X(r.a);
+      s += `<g${P(r)}><line x1="${x0}" y1="${n1(y)}" x2="${x1}" y2="${n1(y)}" class="grille"/>`;
+      [[r.m, '− 090'], [r.p, '+ 090']].forEach(([[v, ok], t]) => {
+        const xb = X(v), dir = Math.sign(xb - xa);
+        s += trait(xa + dir * 10, y, xb - dir * 9, y, ok ? 'fleche mince c-emm' : 'fleche mince tirets c-doux');
+        s += `<text x="${n1((xa + xb) / 2)}" y="${n1(y - 10)}" text-anchor="middle" class="petit t-doux">${t}</text>`;
+        s += `<circle cx="${n1(xb)}" cy="${n1(y)}" r="6" class="${ok ? 'plein c-emm' : 'creux c-doux'}"/>`;
+        s += `<text x="${n1(xb)}" y="${n1(y + 26)}" text-anchor="middle" class="${ok ? 'val' : 'petit t-doux'}">${ax(v)}${ok ? '' : ' ✗'}</text>`;
+      });
+      s += `<circle cx="${n1(xa)}" cy="${n1(y)}" r="7" class="plein c-emm"/>`;
+      s += `<text x="${n1(xa)}" y="${n1(y - 14)}" text-anchor="middle" class="val">${ax(r.a)}</text></g>`;
+    });
+    return svgW(W, H, s, 'De 001 à 180 : 135 − 090 = 045, 135 + 090 = 225 trop grand ; 090 − 090 = 0, 090 + 090 = 180 ; 025 − 090 négatif, 025 + 090 = 115');
+  }
+
+  // La croix d'en haut, et les Rx qu'on en tire, dessous.
+  function croixRx(o, W) {
+    const R = Math.min(96, W * 0.2), cy = 44 + R;
+    const C = { cx: W / 2, cy, R };
+    let s = croix(Object.assign({}, C, { lignes: o.lignes, droit: 0 }));
+    let y = cy + R + 74, dernier = y;
+    o.rangs.forEach(rg => {
+      s += `<g${P(rg)}><text x="${n1(W / 2)}" y="${y - 28}" text-anchor="middle" class="petit t-doux">${rg.titre}</text>`;
+      s += rx(rg.parts, y, { x0: W * 0.14, w: W * 0.72 }) + '</g>';
+      dernier = y;
+      y += 64;
+    });
+    let H = dernier + 12;
+    if (o.bas) { s += `<text x="${n1(W / 2)}" y="${dernier + 36}" text-anchor="middle" class="petit t-doux"${P({ pas: o.pasBas })}>${o.bas}</text>`; H = dernier + 44; }
+    return svgW(W, H, s, o.label);
+  }
+
+  // La croix étiquetée comme sur le gabarit de la prof, et les deux flèches du cylindre.
+  function fleches(W) {
+    const R = Math.min(100, W * 0.22), cx = W / 2, cy = R + 62;
+    const C = { cx, cy, R };
+    let s = `<path d="M ${n1(cx)} ${n1(cy)} L ${n1(cx + R)} ${n1(cy)} A ${n1(R)} ${n1(R)} 0 0 1 ${n1(cx)} ${n1(cy + R)} Z" class="quart" data-pas="1"/>`;
+    s += croix(Object.assign({}, C, { lignes: [{ a: 180, t: '180', v: '−0.50', c: 'neg' }, { a: 90, t: '090', v: '−1.50', c: 'pos' }], droit: 0 }));
+    const xd = cx + R + 9;
+    s += `<text x="${n1(cx - R - 9)}" y="${n1(cy - 22)}" text-anchor="end" class="petit t-doux">Axe Horizontal</text>`;
+    s += xd + 136 < W - 4
+      ? `<text x="${n1(xd)}" y="${n1(cy - 22)}" class="petit t-doux">Pouvoir Horizontal</text>`
+      : `<text x="${n1(W - 4)}" y="${n1(cy - 22)}" text-anchor="end" class="petit t-doux">Pouvoir Horizontal</text>`;
+    s += `<text x="${n1(cx)}" y="${n1(cy - R - 38)}" text-anchor="middle" class="petit t-doux">Axe Vertical</text>`;
+    s += `<text x="${n1(cx)}" y="${n1(cy + R + 46)}" text-anchor="middle" class="petit t-doux">Pouvoir Vertical</text>`;
+    const lab = (r, t, c) => { const [x, y] = pt(C, -45, r); return `<text x="${n1(x)}" y="${n1(y + 5)}" text-anchor="middle" class="petit etiq c-${c}">${t}</text>`; };
+    s += `<g data-pas="2">${arc(C, 0.36 * R, -8, -82, 'fleche mince c-neg')}${lab(0.36 * R + 23, '−1.00', 'neg')}</g>`;
+    s += `<g data-pas="3">${arc(C, 0.84 * R, -82, -8, 'fleche mince c-pos')}${lab(0.84 * R + 22, '+1.00', 'pos')}</g>`;
+    return svgW(W, cy + R + 56, s, 'La croix étiquetée et les deux flèches du cylindre, −1.00 et +1.00');
+  }
+
+  // Avant tout : le cylindre décide si l'on analyse tout de suite.
+  function porte(W) {
+    const m = 14, g = 10, cw = (W - 2 * m - 2 * g) / 3, cx = W / 2;
+    const xs = [0, 1, 2].map(i => m + i * (cw + g) + cw / 2);
+    const boite = (x, y, w, h, c, t, cls = '') => `<rect x="${n1(x - w / 2)}" y="${y}" width="${n1(w)}" height="${h}" rx="10" class="boite c-${c}"/><text x="${n1(x)}" y="${y + h / 2 + 6}" text-anchor="middle" class="${cls}">${t}</text>`;
+    let s = boite(cx, 4, Math.min(W - 2 * m, 300), 38, 'emm', 'une Rx à analyser');
+    s += trait(cx, 44, cx, 62, 'fleche mince c-doux');
+    s += `<text x="${n1(cx)}" y="84" text-anchor="middle" class="titre-rang">son cylindre&#160;?</text>`;
+    const yb = 112, hb = 38, yt = 178, ya = 244;
+    s += `<path d="M ${n1(cx)} 92 V 98 M ${n1(xs[0])} 98 H ${n1(xs[2])}" class="base"/>`;
+    [{ t: 'aucun', c: 'emm' }, { t: 'négatif', c: 'neg' }, { t: 'positif', c: 'pos' }].forEach((b, i) => {
+      s += trait(xs[i], 98, xs[i], yb - 3, 'fleche mince c-doux');
+      s += boite(xs[i], yb, cw, hb, b.c, b.t, `etiq c-${b.c}`);
+    });
+    s += `<g data-pas="2">${trait(xs[2], yb + hb + 3, xs[2], yt - 3, 'fleche mince c-pos')}${boite(xs[2], yt, cw, hb, 'neg', 'transposer', 'etiq c-neg')}`;
+    s += trait(xs[2], yt + hb + 3, xs[2], ya - 3, 'fleche mince c-neg') + '</g>';
+    s += `<g data-pas="1">${trait(xs[0], yb + hb + 3, xs[0], ya - 3, 'fleche mince c-doux')}${trait(xs[1], yb + hb + 3, xs[1], ya - 3, 'fleche mince c-neg')}`;
+    s += boite(cx, ya, W - 2 * m, 40, 'emm', 'on analyse', 'etiq') + '</g>';
+    return svgW(W, ya + 44, s, 'Le cylindre : aucun ou négatif, on analyse ; positif, on transpose, puis on analyse');
+  }
+
+  // Les sept Rx du cours écrites en cylindre positif avec une sphère négative : de la sphère écrite à la transposée.
+  function sept(W) {
+    const xl = Math.max(W * 0.37, 152), x1 = W - 14, lo = -5.5, hi = 2, top = 32, rowH = 31;
+    const X = v => xl + (v - lo) / (hi - lo) * (x1 - xl);
+    const rangs = [
+      { rx: '−3.75 +4.00 x 166', de: -3.75, a: 0.25, pas: 1 },
+      { rx: '−3.25 +2.75 x 177', de: -3.25, a: -0.5, pas: 2 },
+      { rx: '−0.50 +1.00 x 090', de: -0.5, a: 0.5, pas: 1 },
+      { rx: '−1.00 +2.50 x 175', de: -1, a: 1.5, pas: 1 },
+      { rx: '−0.75 +2.00 x 177', de: -0.75, a: 1.25, pas: 1 },
+      { rx: '−4.75 +5.25 x 035', de: -4.75, a: 0.5, pas: 1 },
+      { rx: '−5.00 +5.00 x 047', de: -5, a: 0, pas: 2 }];
+    const bas = top + rangs.length * rowH, H = bas + 28;
+    let s = `<rect x="${n1(X(0))}" y="${top - 6}" width="${n1(x1 - X(0))}" height="${rangs.length * rowH + 6}" class="bande"/>`;
+    s += `<line x1="${n1(X(0))}" y1="${top - 10}" x2="${n1(X(0))}" y2="${bas + 2}" class="pointille"/>`;
+    s += `<text x="${n1(X(0))}" y="16" text-anchor="middle" class="petit t-doux">0</text>`;
+    s += `<text x="${n1(xl)}" y="16" class="petit t-doux">−</text><text x="${n1(x1)}" y="16" text-anchor="end" class="petit t-doux">+</text>`;
+    s += `<text x="${n1(x1)}" y="${H - 6}" text-anchor="end" class="petit t-doux">au-dessus de 0&#160;: hypermétrope</text>`;
+    rangs.forEach((r, i) => {
+      const y = top + i * rowH + rowH / 2;
+      s += `<text x="4" y="${n1(y + 5)}" class="petit etiq c-pos">${r.rx}</text>`;
+      s += `<line x1="${n1(xl)}" y1="${n1(y)}" x2="${n1(x1)}" y2="${n1(y)}" class="grille"/>`;
+      s += `<circle cx="${n1(X(r.de))}" cy="${n1(y)}" r="5.5" class="plein c-pos"/>`;
+      s += `<g${P(r)}>${trait(X(r.de) + 7, y, X(r.a) - 8, y, 'fleche mince c-pos')}<circle cx="${n1(X(r.a))}" cy="${n1(y)}" r="6" class="plein c-neg"/></g>`;
+    });
+    return svgW(W, H, s, 'Sept sphères négatives écrites en cylindre positif ; transposées, cinq passent au-dessus de 0');
+  }
+
+  // Les cinq étapes de l'analyse, pour l'OD et l'OS de l'exercice.
+  function cinq(W) {
+    const xQ = 36, xOD = W * 0.6, xOS = W * 0.86, top = 30, rowH = 48;
+    const rangs = [
+      { q: 'analyse possible&#160;?', od: ['+4.00', 'on transpose'], os: ['+2.75', 'on transpose'], c: 'pos' },
+      { q: 'signe de la sphère', od: ['+0.25', 'hypermétrope'], os: ['−0.50', 'myope'], c: 'neg' },
+      { q: 'astigmatisme&#160;?', od: ['torique'], os: ['torique'] },
+      { q: 'prisme&#160;?', od: ['non'], os: ['non'] },
+      { q: 'addition&#160;?', od: ['presbyte'], os: ['presbyte'] }];
+    let s = `<text x="${n1(xOD)}" y="18" text-anchor="middle" class="titre-rang">OD</text><text x="${n1(xOS)}" y="18" text-anchor="middle" class="titre-rang">OS</text>`;
+    const cell = (x, ym, v, c) => (v.length === 2
+      ? `<text x="${n1(x)}" y="${n1(ym - 3)}" text-anchor="middle" class="val c-${c}">${v[0]}</text><text x="${n1(x)}" y="${n1(ym + 16)}" text-anchor="middle" class="petit t-doux">${v[1]}</text>`
+      : `<text x="${n1(x)}" y="${n1(ym + 5)}" text-anchor="middle" class="${v[0] === 'non' ? 'petit t-doux' : 'petit etiq'}">${v[0]}</text>`);
+    rangs.forEach((r, i) => {
+      const y = top + i * rowH, ym = y + rowH / 2;
+      s += `<line x1="4" y1="${y}" x2="${W - 4}" y2="${y}" class="separe"/>`;
+      s += `<circle cx="16" cy="${n1(ym)}" r="11" class="pastille"/><text x="16" y="${n1(ym + 5)}" text-anchor="middle" class="petit etiq">${i + 1}</text>`;
+      s += `<text x="${xQ}" y="${n1(ym + 5)}" class="petit">${r.q}</text>`;
+      s += `<g data-pas="${i + 1}">${cell(xOD, ym, r.od, r.c)}${cell(xOS, ym, r.os, r.c)}</g>`;
+    });
+    return svgW(W, top + rangs.length * rowH + 4, s, 'Les cinq étapes pour OD et OS');
+  }
+
+  const FIG = {
+    'deux-pros': deuxPros, inverse, bande, fleches, porte, sept, cinq,
+    couverture: W => uneCroix({ label: 'Une croix, deux écritures',
+      rx: [{ qui: 'ophtalmologiste', t: '−1.50 +1.00 x 090', c: 'pos' }, { qui: 'optométriste', t: '−0.50 −1.00 x 180', c: 'neg' }],
+      lignes: [{ a: 180, t: '180', v: '−0.50', c: 'neg' }, { a: 90, t: '090', v: '−1.50', c: 'pos' }], droit: 0 }, W),
+    carte: W => etapesRx({ label: 'Les quatre étapes de la transposition', tA: 'Rx de départ', tB: 'Rx transposée',
+      lignes: [{ a: 'SPH', f: '1', b: 'SPH + CYL', pas: 1 }, { a: 'CYL', f: '2', b: 'CYL, signe inversé', pas: 2 },
+        { a: 'AXE', f: '3', b: 'AXE ± 090', pas: 3 }, { a: 'prisme', f: '4', b: 'le même', c: 'aide', pas: 4 },
+        { a: 'ADD', f: '4', b: 'la même', c: 'aide', pas: 4 }] }, W),
+    quatre: W => etapesRx({ label: '−1.00 −1.00 x 065 1△BU Add +1.50 devient −2.00 +1.00 x 155 1△BU Add +1.50', nom: true,
+      tA: 'Rx', tB: 'transposée', cA: 'neg', cB: 'pos',
+      lignes: [{ nom: 'SPH', a: '−1.00', f: '1', b: '−2.00', pas: 1 }, { nom: 'CYL', a: '−1.00', f: '2', b: '+1.00', pas: 2 },
+        { nom: 'AXE', a: 'x 065', f: '3', b: 'x 155', pas: 3 }, { nom: 'prisme', a: '1△BU', f: '4', b: '1△BU', c: 'aide', pas: 4 },
+        { nom: 'ADD', a: '+1.50', f: '4', b: '+1.50', c: 'aide', pas: 4 }] }, W),
+    'echelle-monte': W => echelle({ label: 'De −8.00, on monte de +2.00 : −6.00', lo: -10.5, hi: -4.5, maj: 1,
+      mvts: [{ de: -8, a: -6, tDe: '−8.00', tA: '−6.00', cDe: 'pos', cA: 'neg', cFl: 'pos', lab: '+2.00', sous: 'on monte', dx: 96, pas: 2 }] }, W),
+    'echelle-descend': W => echelle({ label: 'De +1.00, on descend de 0.75 : +0.25', lo: -0.5, hi: 1.5, maj: 0.5, zero: {},
+      mvts: [{ de: 1, a: 0.25, tDe: '+1.00', tA: '+0.25', cDe: 'neg', cA: 'pos', cFl: 'neg', lab: '−0.75', sous: 'on descend', dx: 96, pas: 1, pasA: 2 }] }, W),
+    'echelle-plano': W => echelle({ label: 'Plano ↔ −2.00', lo: -2.5, hi: 0.5, maj: 0.5,
+      mvts: [{ de: 0, a: -2, tDe: 'Plano', tA: '−2.00', cDe: 'neg', cA: 'pos', cFl: 'neg', lab: '−2.00', sous: 'on descend', dx: 74, pas: 1, pasA: 0 },
+        { de: -2, a: 0, cFl: 'pos', lab: '+2.00', sous: 'on monte', dx: W * 0.5, pas: 2 }] }, W),
+    'echelle-piege': W => echelle({ label: 'De −3.75, on monte de +4.00 : +0.25', lo: -4.25, hi: 0.75, maj: 1,
+      zero: { haut: 'sphère + : hypermétrope', bas: 'sphère − : myope', pas: 3 },
+      mvts: [{ de: -3.75, a: 0.25, tDe: '−3.75', tA: '+0.25', cDe: 'pos', cA: 'neg', cFl: 'pos', lab: '+4.00', sous: 'on monte', dx: 90, pas: 1 }] }, W),
+    spherique: W => uneCroix({ label: 'La Rx sphérique −1.00 : −1.00 sur les deux bras',
+      rx: [{ qui: 'Rx sphérique', t: '−1.00', c: 'emm' }],
+      lignes: [{ a: 180, t: '180', v: '−1.00', pasV: 3 }, { a: 90, t: '090', v: '−1.00', pasV: 3 }], droit: 0 }, W),
+    'meme-croix': W => uneCroix({ label: '−8.00 +2.00 x 135 et −6.00 −2.00 x 045 : la même croix', droit: 45,
+      rx: [{ qui: 'ophtalmologiste', t: '−8.00 +2.00 x 135', c: 'pos' }, { qui: 'optométriste', t: '−6.00 −2.00 x 045', c: 'neg' }],
+      lignes: [{ a: 135, t: '135', v: '−8.00', c: 'pos', pasC: 1, pasV: 1 }, { a: 45, t: '045', v: '−6.00', c: 'neg', pasC: 2, pasV: 1 }],
+      bas: 'une seule croix pour les deux écritures', pasBas: 3 }, W),
+    'deux-chemins': W => uneCroix({ label: 'Chaque écriture part d’un bras de la croix', droit: 45,
+      rx: [{ qui: 'ophtalmologiste', t: '−8.00 +2.00 x 135', c: 'pos' }, { qui: 'optométriste', t: '−6.00 −2.00 x 045', c: 'neg' }],
+      lignes: [{ a: 135, t: '135', v: '−8.00', c: 'pos' }, { a: 45, t: '045', v: '−6.00', c: 'neg' }],
+      arcs: [{ r: 0.36, de: -50, a: -130, lab: -90, t: '+2.00', c: 'pos', pas: 1 }, { r: 0.7, de: -130, a: -50, lab: -90, t: '−2.00', c: 'neg', pas: 2 }] }, W),
+    'croix-neg': W => croixRx({ label: 'La croix donne −0.50 −1.00 x 180',
+      lignes: [{ a: 180, t: '180', v: '−0.50', c: 'neg', pasC: 1 }, { a: 90, t: '090', v: '−1.50' }],
+      rangs: [{ titre: 'cylindre négatif', parts: [{ t: '−0.50', c: 'neg', pas: 1 }, { t: '−1.00', c: 'neg', pas: 2 }, { t: 'x 180', c: 'neg', pas: 1 }] }] }, W),
+    'croix-pos': W => croixRx({ label: 'La même croix donne −1.50 +1.00 x 090, la transposée de −0.50 −1.00 x 180',
+      lignes: [{ a: 180, t: '180', v: '−0.50', c: 'neg' }, { a: 90, t: '090', v: '−1.50', c: 'pos', pasC: 1 }],
+      rangs: [{ titre: 'cylindre négatif', parts: [{ t: '−0.50', c: 'neg' }, { t: '−1.00', c: 'neg' }, { t: 'x 180', c: 'neg' }] },
+        { titre: 'cylindre positif', parts: [{ t: '−1.50', c: 'pos', pas: 1 }, { t: '+1.00', c: 'pos', pas: 2 }, { t: 'x 090', c: 'pos', pas: 1 }] }],
+      bas: 'l’une est la transposée de l’autre', pasBas: 4 }, W)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', transposer: 'Transposer en 4 étapes', croix: 'Une croix, deux écritures', lire: 'De la croix aux deux Rx', analyser: 'Analyser une Rx', route: 'Pour la route' };
+  const CLE = 'diapos-bureau-m7t';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = '99a7c6bb95ac';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>
