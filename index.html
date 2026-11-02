@@ -596,6 +596,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['*'], t:'Sur un portable ou une tablette, la barre du haut ne déborde plus sur le côté : quand la place manque, ses boutons passent en icônes, et tout reste à portée de main.'},
     {d:'2026-11-02', p:['adm-m07'], t:'La transposition est arrivée dans l’atelier : passer une ordonnance du cylindre négatif au cylindre positif (et l’inverse), la croix d’une ordonnance d’ophtalmologiste, et nommer son type. C’est la partie 6 du plan ; « Au comptoir » devient la partie 7.'},
     {d:'2026-11-02', p:['adm-m07'], t:'« À toi » sur la transposition : des ordonnances toujours nouvelles, avec ou sans prisme et addition, jusqu’à trois justes de suite, puis à l’envers (retrouver l’ordonnance de départ). Aussi : les deux ordonnances d’une croix, et « Décris le type ».'},
     {d:'2026-11-02', p:['adm-m07'], t:'Le bouton « Survol » propose maintenant deux diaporamas : la croix optique et le comptoir, ou la transposition (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -730,7 +731,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '99a7c6bb95ac';
+  const ICI = '432b907a0bce';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

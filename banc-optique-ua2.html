@@ -1584,6 +1584,16 @@ html.ess .ess-replie .ess-ouvrir{display:inline-flex;align-items:center;margin:4
 .btn-survol svg .jouer{fill:var(--accent);stroke:none}
 @media (max-width:760px){ .btn-survol .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} }
 @media (max-width:420px){ .haut .btn .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} .btn-arene .n{display:none} }
+/* la barre se serre selon sa propre place (barreAjustee, demarrage.js) : 1. les outils en icônes (Convergence, Arène,
+   Tableau, Cocher, Sablier) ; 2. aussi Plan, Rappel et Notes, boutons resserrés ; 3. elle passe à la ligne. Les mots
+   cachés restent lus par les lecteurs d'écran. */
+.haut.serre-1 :is(.btn-cv, .btn-mq) > span,
+.haut.serre-1 :is(.btn-arene, .btn-tab, .btn-sablier) .mot,
+.haut.serre-2 .btn .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.haut.serre-1 .btn-sablier .mot{display:inline}
+.haut.serre-2{gap:6px}
+.haut.serre-2 .btn{padding:6px 10px;flex:none;white-space:nowrap}
+.haut.serre-3{flex-wrap:wrap;row-gap:6px}
 body.ar-ouverte{overflow:hidden}
 .ar{position:fixed;inset:0;z-index:320;display:flex;flex-direction:column;background:var(--bg);color:var(--ink)}
 .ar[hidden]{display:none}
@@ -15245,6 +15255,7 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['*'], t:'Sur un portable ou une tablette, la barre du haut ne déborde plus sur le côté : quand la place manque, ses boutons passent en icônes, et tout reste à portée de main.'},
     {d:'2026-11-02', p:['adm-m07'], t:'La transposition est arrivée dans l’atelier : passer une ordonnance du cylindre négatif au cylindre positif (et l’inverse), la croix d’une ordonnance d’ophtalmologiste, et nommer son type. C’est la partie 6 du plan ; « Au comptoir » devient la partie 7.'},
     {d:'2026-11-02', p:['adm-m07'], t:'« À toi » sur la transposition : des ordonnances toujours nouvelles, avec ou sans prisme et addition, jusqu’à trois justes de suite, puis à l’envers (retrouver l’ordonnance de départ). Aussi : les deux ordonnances d’une croix, et « Décris le type ».'},
     {d:'2026-11-02', p:['adm-m07'], t:'Le bouton « Survol » propose maintenant deux diaporamas : la croix optique et le comptoir, ou la transposition (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -15410,6 +15421,29 @@ function survol(){
   document.addEventListener('click', e => { if(!m.hidden && !boite.contains(e.target)) fermer(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !m.hidden){ fermer(); b.focus(); } });
 }
+/* la barre du haut tient sur une ligne (2 nov.) : elle se serre d'un cran tant que ses boutons débordent. La place
+   dépend de l'atelier (ses boutons), du plan à gauche (300 px dès 900 px) et des compteurs, pas seulement de l'écran :
+   les règles fixes laissaient déborder de 760 à 1250 px. Crans dans v2.css : serre-1 (les outils en icônes),
+   serre-2 (tous les mots, boutons resserrés), serre-3 (la barre passe à la ligne, dernier recours). */
+function barreAjustee(){
+  const b = $('.haut'); if(!b) return;
+  const CRANS = ['serre-1', 'serre-2', 'serre-3'];
+  let attente = 0;
+  const ajuster = () => {
+    attente = 0;
+    b.classList.remove(...CRANS);
+    for(const c of CRANS){ if(b.scrollWidth <= b.clientWidth + 1) break; b.classList.add(c); }
+  };
+  /* une minuterie plutôt qu'une image d'animation : un onglet caché ne dessine plus, et la barre resterait au mauvais cran */
+  const bientot = () => { if(!attente) attente = setTimeout(ajuster, 60); };
+  if(typeof ResizeObserver !== 'undefined') new ResizeObserver(bientot).observe(b);
+  window.addEventListener('resize', bientot);
+  /* un bouton ajouté plus tard, un compteur qui change, le nom de l'écran : on remesure (la classe de la barre n'est pas observée) */
+  if(typeof MutationObserver !== 'undefined') new MutationObserver(bientot).observe(b, {childList:true, subtree:true, characterData:true});
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(bientot);
+  ajuster();
+}
+
 function demarrer(){
   construireRail();
   initQCM(document);
@@ -15508,6 +15542,7 @@ function demarrer(){
   Pas.demarrer(); Rappel.demarrer(); Annot.demarrer(); Vivre.demarrer(); Sablier.demarrer(); Convergence.demarrer(); Marques.demarrer(); Tableau.demarrer(); Arene.demarrer(); Essentiel.demarrer();
   try{ survol(); }catch(e){ console.error(e); }
   try{ Nouveautes.demarrer(); }catch(e){ console.error(e); }
+  try{ barreAjustee(); }catch(e){ console.error(e); }
 
   lierNotes(document);
   majIndicateurs();
@@ -15522,7 +15557,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '99a7c6bb95ac';
+  const ICI = '432b907a0bce';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
