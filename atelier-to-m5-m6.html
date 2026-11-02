@@ -1,7 +1,7 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Atelier TO M5–M6</title>
+<title>Atelier TO M5–M7</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -604,6 +604,17 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
   .pied .btn{padding:7px 11px}
   .grand-chiffre{font-size:32px}
 }
+/* module 7 : listes de repères, réponses justes ou fausses, zones touchables, table de correction */
+.liste-num{margin:0;padding-left:22px}
+.fo-test,.ot-lettres{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px 12px}
+.fo-rep{display:flex;align-items:center;gap:8px;font-size:14.5px}
+.fo-rep span{font:600 13px var(--f-mono);min-width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;background:var(--panel-2);border:1px solid var(--line)}
+.fo-rep select{flex:1;min-width:0;font:inherit;padding:4px 6px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.fo-rep select.bon{border-color:var(--ok);background:var(--ok-soft)}
+.fo-rep select.faux{border-color:var(--bad);background:var(--bad-soft)}
+.zone-fo{cursor:pointer}
+.zone-fo:focus-visible,.zone-fo.sel{outline:none;stroke:#FFFFFF;stroke-width:2.5}
+.pr-table td.sel{background:var(--accent-soft);font-weight:700}
 
 /* ======================================================================
    v2 : pas et maîtrise, Rappel du jour, annotations, Vis-le, gestes,
@@ -1442,6 +1453,13 @@ body.ar-ouverte .tb.cote{z-index:335}
 .ar-q .ar-modele .px-etapes b{display:block;font-size:13.5px;color:var(--ink-2)}
 .ar-q .ar-modele .px-concept{margin:6px 0 0;font-size:14.5px;color:var(--ink-2)}
 @media (max-width:560px){ .ar-q .ar-avant svg{max-height:34vh} }
+/* « Survol » à plusieurs diaporamas (un par module) : le bouton ouvre un menu (demarrage.js, survol) */
+.survol-boite{position:relative;display:inline-flex}
+.survol-menu{position:absolute;top:calc(100% + 6px);left:0;z-index:330;min-width:230px;max-width:calc(100vw - 32px);display:flex;flex-direction:column;gap:2px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.survol-menu[hidden]{display:none}
+.survol-menu a{display:block;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14.5px;line-height:1.3}
+.survol-menu a:hover,.survol-menu a:focus-visible{background:var(--panel-2);outline:none}
+.survol-menu small{display:block;color:var(--ink-3);font-size:12.5px;font-weight:400;margin-top:2px}
 </style>
 <div class="app" id="app">
 
@@ -1473,9 +1491,9 @@ body.ar-ouverte .tb.cote{z-index:335}
 <!-- ===================================================================== ACCUEIL -->
 <section class="ecran" data-id="accueil" data-partie="Départ" data-titre="Bienvenue">
   <header class="tete">
-    <p class="eyebrow">Tests ophtalmiques (SAN 0010) · Modules 5 et 6</p>
-    <h2>Mesurer la cornée, lire les lunettes, regarder la rétine</h2>
-    <p class="chapeau">Les deux modules tiennent en une idée : <b>l'assistant recueille des mesures objectives (la courbure de la cornée, la puissance des lunettes, les couches de l'œil), les transcrit sans erreur et signale ce qui cloche ; il ne pose pas de diagnostic</b> <span class="deduit">déduit</span>. Cet atelier te fait parcourir les deux modules en 20 écrans courts.</p>
+    <p class="eyebrow">Tests ophtalmiques (SAN 0010) · Modules 5, 6 et 7</p>
+    <h2>Mesurer la cornée, lire les lunettes, photographier la rétine</h2>
+    <p class="chapeau">Les trois modules tiennent en une idée : <b>l'assistant recueille des mesures et des images fiables (la courbure de la cornée, la puissance des lunettes, le fond de l'œil, les couches de la rétine), les transcrit sans erreur et signale ce qui cloche ; il ne pose pas de diagnostic</b> <span class="deduit">déduit</span>. Cet atelier te fait parcourir les trois modules en 25 écrans courts.</p>
   </header>
 
   <div class="questions-ouvertes">
@@ -1494,10 +1512,15 @@ body.ar-ouverte .tb.cote{z-index:335}
       <blockquote>« Rouge peut indiquer que la structure sort des normes habituelles ou est difficile à mesurer. »</blockquote>
       <button type="button" class="btn" data-aller="oct-couleurs">Lire un rapport d'OCT →</button>
     </div>
+    <div class="carte-q">
+      <p class="lib">Module 7 · <span class="src">7.1-d3</span></p>
+      <blockquote>« Le technicien garantit la qualité technique »</blockquote>
+      <button type="button" class="btn" data-aller="camera">La caméra rétinienne →</button>
+    </div>
   </div>
 
   <div class="bloc">
-    <p class="lib">Les six idées des deux modules : tout le reste en découle</p>
+    <p class="lib">Les sept idées des trois modules : tout le reste en découle</p>
     <div class="idees">
       <div class="idee" style="--c:var(--accent)"><h4>1 · La cornée est un miroir</h4><p>mires → reflet sur la cornée (miroir convexe) → taille du reflet → rayon r.</p></div>
       <div class="idee" style="--c:var(--accent)"><h4>2 · ① Du rayon à la puissance</h4><p>D = (1,3375 − 1) / r, r en mètres : petit rayon, grande puissance.</p></div>
@@ -1505,6 +1528,7 @@ body.ar-ouverte .tb.cote{z-index:335}
       <div class="idee" style="--c:var(--plat)"><h4>4 · La carte</h4><p>le topographe lit toute la cornée : rouge cambré, bleu plat. La couleur situe ; elle ne diagnostique pas.</p></div>
       <div class="idee" style="--c:var(--os)"><h4>5 · Le kératocône</h4><p>le stroma s'amincit → cône → astigmatisme irrégulier → topographie, puis lentilles rigides.</p></div>
       <div class="idee" style="--c:var(--od)"><h4>6 · Lunettes et OCT</h4><p>Rx : sph cyl x axe (add) · mesurer la lunette actuelle · l'OCT fait une coupe de l'œil en lumière infrarouge.</p></div>
+      <div class="idee" style="--c:var(--accent)"><h4>7 · Une image fiable</h4><p>photo à travers la pupille · OCT : la fovéa et la papille, OD et OS · ⑦ la pression corrigée selon l'épaisseur · un artefact se reprend, 2 photos au plus.</p></div>
     </div>
   </div>
 
@@ -1529,14 +1553,14 @@ body.ar-ouverte .tb.cote{z-index:335}
       <div class="legende-codes">
         <span>« … »</span><span>les mots exacts de la prof, fautes comprises, marquées <span class="sic">(sic)</span>.</span>
         <span><span class="deduit">déduit</span></span><span>un lien qui découle des diapos, mais qu'elles ne font pas elles-mêmes.</span>
-        <span><span class="src">5.1-d32</span></span><span>deck et diapo. <b>5.1</b> kératométrie · <b>5.2</b> exercices · <b>5.3</b> topographe · <b>CM5</b> cartes mystères · <b>AK5</b> activité · <b>6.1</b> kératocône · <b>6.2</b> éléments d'une Rx · <b>6.3</b> lentimètre · <b>SC6</b> situations cliniques · <b>6.4</b> OCT.</span>
+        <span><span class="src">5.1-d32</span></span><span>deck et diapo. <b>5.1</b> kératométrie · <b>5.2</b> exercices · <b>5.3</b> topographe · <b>CM5</b> cartes mystères · <b>AK5</b> activité · <b>6.1</b> kératocône · <b>6.2</b> éléments d'une Rx · <b>6.3</b> lentimètre · <b>SC6</b> situations cliniques · <b>6.4</b> OCT · <b>7.1</b> caméra rétinienne · <b>7.2</b> OCT (suite) · <b>7.3</b> artefacts.</span>
         <span><span class="hors">hors cours</span></span><span>un ajout qui n'est pas dans les fichiers du cours.</span>
       </div>
     </div>
   </div>
 
   <div class="astuce">
-    <b>L'examen.</b> Examen UA2 : lundi 16 novembre 2026 à 10h00, 31 % de la note (planificateur). Format pas encore annoncé ; l'UA1 était « eCité QCM ». L'OCT et les éléments d'une Rx, prévus plus tard dans le plan, ont été donnés au module 6 : ils sont dans la matière.
+    <b>L'examen.</b> Examen UA2 : lundi 16 novembre 2026 à 10h00, 31 % de la note (planificateur). Format pas encore annoncé ; l'UA1 était « eCité QCM ». L'OCT et les éléments d'une Rx, prévus plus tard dans le plan, ont été donnés au module 6 : ils sont dans la matière, comme la caméra rétinienne, la suite de l'OCT et les artefacts du module 7.
   </div>
 
   <div class="ctrl" style="margin-top:22px">
@@ -2581,10 +2605,374 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
   </div>
 </section>
 
-<!-- ===================================================================== CARTES -->
-<section class="ecran" data-id="cartes" data-partie="6 · Révision" data-titre="Rappel du jour">
+<!-- ===================================================================== CAMÉRA (M7) -->
+<section class="ecran" data-id="camera" data-partie="6 · Caméra rétinienne (M7)" data-titre="Une photo à travers la pupille">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Révision</p>
+    <p class="eyebrow">Partie 6 · Caméra rétinienne · deck 7.1</p>
+    <h2>Une photo à travers la pupille</h2>
+    <p class="chapeau">« La caméra prend une photo à travers la pupille » <span class="src">7.1-d2</span>. Tout le reste en découle : il faut que la lumière du flash entre, et « Le technicien garantit la qualité technique » <span class="src">7.1-d3</span>.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« Quand on prend une photo il faut que la lumière du flash de l’appareil photo atteint <span class="sic">(sic)</span> le fond de l’œil. Si la pupille est trop petite, la photo sera sombre ou noire. Parfois on doit utiliser des gouttes pour dilater les pupilles afin d’avoir une image utilisable » <span class="src">7.1-d17</span></p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">La caméra, en simulation · règle la pièce et la pupille, puis prends la photo</p>
+    <div class="duo">
+      <figure class="fig"><svg id="cam-svg" viewBox="0 0 420 230" role="img" aria-label="La pupille du patient et la photo obtenue"></svg>
+        <figcaption>Simulation dessinée pour l'atelier. Pupille « Before Dilation 3-4 mm », « After Dilation 8 mm » <span class="src">7.1-d18</span>.</figcaption></figure>
+      <div>
+        <div class="puces" id="cam-lumiere" role="group" aria-label="Lumières de la pièce">
+          <button type="button" class="puce" data-l="on" aria-pressed="true">Lumières allumées</button>
+          <button type="button" class="puce" data-l="off" aria-pressed="false">Lumières éteintes</button>
+        </div>
+        <div class="ctrl" style="margin-top:10px">
+          <button type="button" class="btn" id="cam-attendre">Attendre quelques minutes</button>
+          <button type="button" class="btn" id="cam-gouttes">Gouttes (dilatation)</button>
+        </div>
+        <label class="case"><input type="checkbox" id="cam-opacite"> Le patient a une opacité (cataracte)</label>
+        <label class="case"><input type="checkbox" id="cam-cligne"> Il cligne pendant la capture</label>
+        <div class="ctrl" style="margin-top:10px">
+          <button type="button" class="btn plein" id="cam-photo">Prendre la photo</button>
+          <button type="button" class="btn" id="cam-nouveau">Nouveau patient</button>
+        </div>
+        <p class="retour" id="cam-retour" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Le rôle de l'assistant · <span class="src">7.1-d3</span></p>
+    <ol class="liste-num">
+      <li>« S’assurer que la photo correspond au bon patient (verifier <span class="sic">(sic)</span> le nom de la personne devant nous) »</li>
+      <li>« Bien positionner le patient et vérifier la fixation »</li>
+      <li>« Vérifier netteté, centrage et exposition »</li>
+    </ol>
+    <p style="margin:8px 0 0">En une phrase : « Le technicien garantit la qualité technique ». Il obtient une bonne image ; c'est l'optométriste qui l'interprète <span class="deduit">déduit</span>.</p>
+  </div>
+
+  <div class="duo egal" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">À quoi sert la photo · <span class="src">7.1-d4, d12</span></p>
+      <ul style="margin:0;padding-left:20px">
+        <li>« Rapidité de la capture de l’information »</li>
+        <li>« on peut placer les images une à côté de l’autre pour comparer d’un temps à un autre »</li>
+        <li>« Dépistage de risque de pathologie ou pathologies » ; « Suivi de l’évolution des pathologies »</li>
+        <li>« On peut parfois mieux voir des détails subtils manqués lors de l’examen du fond d’œil (surtout défauts des petits vaisseaux) »</li>
+      </ul>
+      <p style="margin:8px 0 0">Exemple du cours : « Une raison pour les photos est de suivre des naevus dans la choroïde. On ne veut pas voir d’évolution » <span class="src">7.1-d13</span>.</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Les limitations · <span class="src">7.1-d15</span></p>
+      <ul style="margin:0;padding-left:20px">
+        <li>« Patient a des difficultés a <span class="sic">(sic)</span> fixer »</li>
+        <li>« Pupilles trop petites pour que la lumière attaint <span class="sic">(sic)</span> la rétine »</li>
+        <li>« Opacités dans l’oeil »</li>
+      </ul>
+      <p style="margin:8px 0 0">La photo se prend « avec ou sans dilatation pupillaire » <span class="src">7.1-d4</span> : on ne dilate que si la pupille empêche la photo <span class="deduit">déduit</span>.</p>
+    </div>
+  </div>
+
+  <div class="piege"><b>Pas d'acharnement.</b> Une photo noire ne se règle pas en flashant encore : « Ne continuer <span class="sic">(sic)</span> pas à prendre des photos! On se limite à 2 photos » <span class="src">7.3-d12</span>. Chaque flash referme un peu plus la pupille : la photo d'écran de la diapo 7.1-d19 montre une série de photos de l'œil droit de plus en plus sombres. « Vous allez mieux comprendre ce problème après le laboratoire. On reviendra à ceci » <span class="src">7.1-d19</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="b" data-explique="« Si la pupille est trop petite, la photo sera sombre ou noire » (7.1-d17).">
+      <p>La pupille du patient est très petite. La photo sera…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">nette, mais plus petite</button><button type="button" class="puce" data-v="b">sombre ou noire</button><button type="button" class="puce" data-v="c">floue</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« S’assurer que la photo correspond au bon patient (verifier (sic) le nom de la personne devant nous) » (7.1-d3).">
+      <p>Avant la photo, la toute première chose que vérifie l'assistant :</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">la netteté</button><button type="button" class="puce" data-v="b">la dilatation</button><button type="button" class="puce" data-v="c">que c'est le bon patient</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« On se limite à 2 photos » (7.3-d12).">
+      <p>Combien de photos par œil, au plus, avant de s'arrêter ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">2</button><button type="button" class="puce" data-v="b">4</button><button type="button" class="puce" data-v="c">autant qu'il faut</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== FOND D'ŒIL (M7) -->
+<section class="ecran" data-id="fond" data-partie="6 · Caméra rétinienne (M7)" data-titre="Le fond d'œil normal">
+  <header class="tete">
+    <p class="eyebrow">Partie 6 · Caméra rétinienne · deck 7.1 · « Dessin du fond d’oeil »</p>
+    <h2>Le fond d'œil normal</h2>
+    <p class="chapeau">Sur la photo, cinq structures : « Fovea », « Macula », « Nerf optique », « Artère », « Veine » <span class="src">7.1-d5</span>. Et un fond peut être foncé, clair ou tigré tout en restant normal <span class="src">7.1-d8–d10</span>.</p>
+  </header>
+
+  <div class="bloc">
+    <p class="lib">Le fond d'œil · touche une structure, ou teste-toi</p>
+    <div class="puces" id="fo-mode" role="group" aria-label="Mode">
+      <button type="button" class="puce" data-m="explorer" aria-pressed="true">Explorer</button>
+      <button type="button" class="puce" data-m="test" aria-pressed="false">Teste-toi : nomme les cinq</button>
+      <button type="button" class="puce" data-m="fibres" aria-pressed="false">La couche de fibres nerveuses</button>
+    </div>
+    <div class="duo" style="margin-top:12px">
+      <figure class="fig"><svg id="fo-svg" viewBox="0 0 360 300" role="img" aria-label="Fond d'œil droit : papille, vaisseaux, macula, fovéa"></svg>
+        <figcaption>Fond d'œil droit, dessiné pour l'atelier : la papille du côté du nez, la macula du côté de la tempe.</figcaption></figure>
+      <div id="fo-panneau"><div class="fiche-verre"><h4>Touche une structure</h4><p style="margin:0;font-size:15px">Papille (le nerf optique), artère, veine, macula, fovéa.</p></div></div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Trois fonds normaux, et les jeunes · <span class="src">7.1-d8–d11</span></p>
+    <div class="puces" id="fo-pigment" role="group" aria-label="Pigmentation de la choroïde">
+      <button type="button" class="puce" data-p="fonce" aria-pressed="false">Choroïde plus pigmentée</button>
+      <button type="button" class="puce" data-p="clair" aria-pressed="true">Moins pigmentée</button>
+      <button type="button" class="puce" data-p="tigre" aria-pressed="false">Mixte (tigroïde)</button>
+      <button type="button" class="puce" data-p="jeune" aria-pressed="false">Enfant, adolescent</button>
+    </div>
+    <p class="retour" id="fo-pig-txt" aria-live="polite" style="margin-top:10px"></p>
+  </div>
+
+  <div class="piege"><b>Normal n'est pas uniforme.</b> Une macula plus foncée, des vaisseaux de la choroïde visibles en bandes ou un reflet brillant ne sont pas des anomalies : « Apparence normale » <span class="src">7.1-d8, d10</span>, et le reflet des jeunes est « typique d’une couche de fibres nerveuses en excellente santé » <span class="src">7.1-d11</span>. L'assistant ne juge pas le fond : il obtient une bonne photo <span class="deduit">déduit</span>.</div>
+
+  <div class="astuce"><b>Le dessin fait en classe.</b> Les diapos « Dessin du fond d’oeil » et « Dessin de la couche de fibres nerveuses » sont vides : le dessin s'est fait en classe <span class="src">7.1-d6, d7</span>. Refais-le de mémoire sur une feuille (papille, vaisseaux, macula, fovéa, puis les fibres qui rejoignent la papille), puis compare avec le mode “La couche de fibres nerveuses”. Rappel de l'Anatomie : la fovéa est le centre de la macula.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="a" data-explique="« Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » (7.1-d8).">
+      <p>La macula paraît plus foncée et la choroïde est très pigmentée. C'est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">une apparence normale</button><button type="button" class="puce" data-v="b">une anomalie à signaler</button><button type="button" class="puce" data-v="c">un artefact de la caméra</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="« reflet de la rétine plus brillante que les adultes qui est typique d’une couche de fibres nerveuses en excellente santé » (7.1-d11).">
+      <p>Chez un adolescent, la rétine brille plus que chez un adulte. Cela veut dire…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">un reflet de la caméra à reprendre</button><button type="button" class="puce" data-v="b">des fibres nerveuses en excellente santé</button><button type="button" class="puce" data-v="c">une opacité</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== OCT : LES DEUX TESTS (M7) -->
+<section class="ecran" data-id="oct-tests" data-partie="7 · OCT et pression (M7)" data-titre="Les deux tests de l'OCT">
+  <header class="tete">
+    <p class="eyebrow">Partie 7 · OCT (suite) · deck 7.2</p>
+    <h2>Les deux tests de l'OCT</h2>
+    <p class="chapeau">« Test 1: Rétine centrale sur OCT. On voit une dépression qui est la fovea. Présentation typique. Prendre OD et OS » <span class="src">7.2-d1</span>. « Test 2: Disc (papille, nerf optique) Apparence typique sur OCT. On devrait voir cette structure dans l’écran. Prendre OD et OS » <span class="src">7.2-d5</span>.</p>
+  </header>
+
+  <div class="bloc">
+    <p class="lib">Choisis un test · coupes dessinées pour l'atelier</p>
+    <div class="puces" id="ot-test" role="group" aria-label="Test OCT">
+      <button type="button" class="puce" data-t="t1" aria-pressed="true">Test 1 · rétine centrale</button>
+      <button type="button" class="puce" data-t="t2" aria-pressed="false">Test 2 · papille</button>
+      <button type="button" class="puce" data-t="rate" aria-pressed="false">Test 2, mais le patient ne fixe pas</button>
+    </div>
+    <figure class="fig" style="margin-top:12px"><svg id="ot-svg" viewBox="0 0 640 250" role="img" aria-label="Coupe OCT"></svg></figure>
+    <p class="retour" id="ot-txt" aria-live="polite"></p>
+  </div>
+
+  <div class="piege"><b>Un test 2 raté.</b> Au test 2, l'écran doit montrer la papille et le nerf optique. Si l'on voit les couches continues de la rétine avec le creux de la fovéa, le patient ne fixait pas : « l’instrument capte la macula et non le disc » <span class="src">7.3-d13</span>. On rappelle la cible et on refait <span class="deduit">déduit</span>.</div>
+
+  <div class="bloc">
+    <p class="lib">Les sept éléments de la fovéa · <span class="src">7.2-d2</span> · place chaque lettre sur la coupe</p>
+    <div class="ot-lettres" id="ot-lettres"></div>
+    <div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="ot-verif">Vérifier</button><button type="button" class="btn" id="ot-montrer">Montrer les réponses</button></div>
+    <p class="retour" id="ot-lettres-retour" aria-live="polite"></p>
+    <ul style="margin:12px 0 0;padding-left:20px">
+      <li>« F=foveola (centre de la fovea) »</li>
+      <li>« N=couche de fibres nerveuses (formeront le nerf optique) »</li>
+      <li>« G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) »</li>
+      <li>« P=photorécepteurs » · « E=épithélium pigmentaire » · « B=membrane de Bruch » · « C=choroide <span class="sic">(sic)</span> »</li>
+    </ul>
+    <p class="legende">La diapo n'a pas d'image : les lettres se posent sur la coupe de la diapo 7.2-d1, et l'ordre d'avant en arrière vient des figures 7.2-d3 et d4 <span class="deduit">déduit</span>. La diapo 7.2-d3 affiche 17 couches en anglais : « pas nécessaire de mémoriser ces couches » <span class="src">6.4-d4</span>.</p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">La cornée aussi · <span class="src">7.2-d7–d9</span></p>
+    <div class="duo">
+      <figure class="fig"><svg id="ot-cornee" viewBox="0 0 400 170" role="img" aria-label="Coupe OCT de la cornée : quatre couches nommées"></svg></figure>
+      <div>
+        <p style="margin:0">« Cornée (segment antérieur). On voit une bande illumine <span class="sic">(sic)</span> avec 4 des 5 couches visibles. »</p>
+        <p style="margin:8px 0 0">La figure nomme l'épithélium, la couche de Bowman, le stroma et l'endothélium ; la 5e, la membrane de Descemet, ne se voit pas <span class="deduit">déduit</span>.</p>
+        <p style="margin:8px 0 0">Une cornée anormale : « Anomalies de l’endothelium <span class="sic">(sic)</span> (1) visibles (moins lisse, manque des cellules). Stroma (2) moins dense (plus d’espaces noires <span class="sic">(sic)</span>) » <span class="src">7.2-d8</span>. L'OCT mesure aussi son épaisseur : c'est la pachymétrie <span class="src">7.2-d9</span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="b" data-explique="« Prendre OD et OS » (7.2-d1, d5).">
+      <p>Les tests OCT de base se font…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">à l'œil qui se plaint</button><button type="button" class="puce" data-v="b">aux deux yeux, OD et OS</button><button type="button" class="puce" data-v="c">à l'œil droit seulement</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc » (7.3-d13).">
+      <p>Au test 2, l'écran montre un creux régulier et aucun nerf optique. La cause probable ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">un nerf optique absent</button><button type="button" class="puce" data-v="b">une cornée trop mince</button><button type="button" class="puce" data-v="c">le patient ne fixe pas : l'appareil a capté la macula</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) » (7.2-d2).">
+      <p>Sur la coupe de la fovéa, G désigne…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">les cellules ganglionnaires</button><button type="button" class="puce" data-v="b">la membrane de Bruch</button><button type="button" class="puce" data-v="c">la choroïde</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== ÉPAISSEUR ET PRESSION (M7) -->
+<section class="ecran" data-id="pression" data-partie="7 · OCT et pression (M7)" data-titre="Épaisseur et pression">
+  <header class="tete">
+    <p class="eyebrow">Partie 7 · OCT et pression · équation ⑦ <span class="deduit">déduit</span></p>
+    <h2>L'épaisseur de la cornée corrige la pression</h2>
+    <p class="chapeau">« La plupart des tonomètres sont calibrés pour une épaisseur de cornée de 545microns (0.52mm) » <span class="src">7.2-d11</span>. Une cornée plus mince ou plus épaisse fausse la lecture : on corrige avec la table.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« Si la cornée est plus mince, la mesure sera sous-estimée » ; « Si la cornée est plus épaisse, la mesure sera sur-estimée » <span class="src">7.2-d11</span></p>
+    <p class="formule">⑦ PIO corrigée = PIO mesurée + correction (table) &nbsp;·&nbsp; mince → + &nbsp;·&nbsp; épaisse → −</p>
+    <p>La forme en équation n'est pas écrite sur la diapo <span class="deduit">déduit</span> : elle vient de l'exercice, où 20 mmHg avec une correction de +10 donne « 30mmHg » <span class="src">7.2-d13, d14</span>.</p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Calculatrice ⑦ · la table de la diapo 7.2-d12</p>
+    <div class="duo">
+      <div>
+        <div class="reglage"><label for="pr-mes">PIO mesurée au tonomètre</label><output id="pr-mes-out">20 mmHg</output>
+          <input type="range" id="pr-mes" min="8" max="35" step="1" value="20"></div>
+        <div class="reglage"><label for="pr-ep">Épaisseur centrale de la cornée</label><output id="pr-ep-out">545 µm</output>
+          <input type="range" id="pr-ep" min="0" max="27" step="1" value="17"></div>
+        <div class="calc" id="pr-calc"></div>
+      </div>
+      <div>
+        <p class="lib">PIO corrigée</p>
+        <div class="grand-chiffre" id="pr-res">—</div>
+        <p class="retour" id="pr-sens" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-wrap"><table class="pr-table" id="pr-table">
+    <thead><tr><th>Épaisseur (µm)</th><th>Correction (mmHg)</th><th>Épaisseur (µm)</th><th>Correction (mmHg)</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="legende">[Figure de la diapo] « Central corneal thickness (µm) » · « Correction value (mmHg) » <span class="src">7.2-d12</span>. Le signe + est ajouté ici pour la lecture ; la table l'omet.</p>
+
+  <div class="bloc">
+    <p class="lib">L'exercice du cours · « Si on mesure 20mmHg avec le tonomètre » <span class="src">7.2-d13, d14</span></p>
+    <div class="tab-wrap" style="margin-top:0"><table>
+      <thead><tr><th>Cornée</th><th>Sens</th><th>Table</th><th>Calcul</th><th>Réponse de la diapo</th></tr></thead>
+      <tbody>
+        <tr><td class="n">415 µm</td><td>plus mince : sous-estimée</td><td class="n">+10</td><td class="n">20 + 10</td><td>« 1. 30mmHg »</td></tr>
+        <tr><td class="n">545 µm</td><td>l'épaisseur du calibrage</td><td class="n">0</td><td class="n">20 + 0</td><td>« 2. 20mmHg »</td></tr>
+        <tr><td class="n">615 µm</td><td>plus épaisse : surestimée</td><td class="n">−5</td><td class="n">20 − 5</td><td>« 3. 15mmHg »</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="atoi-place" id="atoi-pression"></div>
+
+  <div class="piege"><b>Le piège de signe.</b> Mince = la lecture est trop basse, donc on <b>ajoute</b>. La table imprime « −5 » pour 615 µm : ajouter −5, c'est retrancher 5. Vérification rapide : environ 1 mmHg tous les 14 µm d'écart à 545 <span class="deduit">déduit</span>. Et la diapo écrit « 0.52mm » : 545 µm font 0,545 mm.</div>
+
+  <div class="astuce"><b>Le lien avec le kératocône.</b> Parmi ses signes, le module 6 donne une « Pression intraoculaire plus basse » <span class="src">6.1-d14</span>. Une cornée amincie fait lire une pression trop basse <span class="src">7.2-d11</span> : une partie de cette PIO basse peut venir de la cornée elle-même <span class="deduit">déduit</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="a" data-explique="« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11).">
+      <p>La cornée est plus mince que 545 µm. La lecture du tonomètre est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">sous-estimée : la vraie pression est plus haute</button><button type="button" class="puce" data-v="b">surestimée : la vraie pression est plus basse</button><button type="button" class="puce" data-v="c">juste</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="595 µm → −4 dans la table : 24 − 4 = 20 mmHg.">
+      <p>Lecture 24 mmHg, cornée de 595 µm. PIO corrigée ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">28 mmHg</button><button type="button" class="puce" data-v="b">20 mmHg</button><button type="button" class="puce" data-v="c">24 mmHg</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="545 µm = 0,545 mm ; la diapo écrit « 0.52mm », une erreur.">
+      <p>545 microns, en millimètres ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">0,52 mm</button><button type="button" class="puce" data-v="b">5,45 mm</button><button type="button" class="puce" data-v="c">0,545 mm</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== ARTEFACTS (M7) -->
+<section class="ecran" data-id="artefacts" data-partie="8 · Artefacts (M7)" data-titre="Artefact ou anomalie">
+  <header class="tete">
+    <p class="eyebrow">Partie 8 · Artefacts en instrumentation · deck 7.3</p>
+    <h2>Artefact ou anomalie</h2>
+    <p class="chapeau">« Artefact: n.m. Image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation. (Dictionnaire médicale <span class="sic">(sic)</span> Académie de médecine) » <span class="src">7.3-d2</span></p>
+  </header>
+
+  <div class="duo egal" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Un artefact peut imiter une lésion · <span class="src">7.3-d3, d7</span></p>
+      <p style="margin:0">« Parfois un artefact peut ressembler à quelque chose avec signification clinique ». Sur une radiographie, un appareil glissé pendant l'examen imite un dispositif cardiaque. À la caméra : « Camera artifacts producing the false impression of growth of choroidal melanocytic lesions » (figure en anglais).</p>
+      <p style="margin:8px 0 0">Or on photographie un naevus justement parce que « On ne veut pas voir d’évolution » <span class="src">7.1-d13</span> : une fausse croissance ferait croire le contraire <span class="deduit">déduit</span>.</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Les exemples du cours · <span class="src">7.3-d4–d11</span></p>
+      <ul style="margin:0;padding-left:20px">
+        <li>caméra : empreinte (« Fingerprint »), reflets (« Flares »), « Central Artifact » ; photos qui s'assombrissent d'une prise à l'autre</li>
+        <li>OCT : « L’appareil a suit <span class="sic">(sic)</span> le vitré au lieu des fibres nerveuses » ; « Artefacts macula »</li>
+        <li>en face : « Ici on a une anomalie réelle » <span class="src">7.3-d5</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Que fais-tu ? · les erreurs fréquentes · <span class="src">7.3-d12, d13</span></p>
+    <div class="puces" id="ar-cas"></div>
+    <div class="situation" id="ar-situation" style="margin-top:12px"></div>
+    <div class="puces" id="ar-choix" style="flex-direction:column;align-items:stretch;margin-top:10px"></div>
+    <p class="retour" id="ar-retour" aria-live="polite"></p>
+  </div>
+
+  <div class="tab-wrap"><table>
+    <thead><tr><th>Appareil</th><th>Erreur</th><th>Conduite</th></tr></thead>
+    <tbody>
+      <tr><td>Caméra</td><td>« Image trop sombre oeil droit »</td><td>« s’assurer que les lumières sont éteintes » ; dilater si la pupille est trop petite ; « On se limite à 2 photos »</td></tr>
+      <tr><td>Caméra</td><td>« Bonne image à droite mais image sombre à gauche »</td><td>photo prise « trop rapidement » ; « Dimimuer <span class="sic">(sic)</span> les lumières, attendre quelques minutes » ; le cache-œil pour la fixation</td></tr>
+      <tr><td>Caméra</td><td>« Clignement pendant la capture »</td><td>« Reprendre la photo »</td></tr>
+      <tr><td>Caméra</td><td>« Images toujours floues, pas capable de bien capter »</td><td>opacité possible (« cataracte, opacité ») ; « On se limite à 2 par oeil et on consulte avec l’optométriste »</td></tr>
+      <tr><td>OCT</td><td>« Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc »</td><td>refaire en vérifiant la fixation <span class="deduit">déduit</span></td></tr>
+      <tr><td>OCT</td><td>« L’instrument capte le cristallin ou <span class="sic">(sic)</span> lieu de la cornée »</td><td>« refaire le scan, s’assurer que la structure est la cornée »</td></tr>
+      <tr><td>OCT</td><td>« Image dégradée (QI dans le rouge) »</td><td>« Refaire »</td></tr>
+      <tr><td>OCT</td><td>patient « trop fatigue <span class="sic">(sic)</span> »</td><td>« on arrête le test. Ne pas dépasser 3-4 minutes. Voir l’optométriste. » ; « On peut refaire à une autre visite si necessaire <span class="sic">(sic)</span>. »</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="astuce"><b>Deux limites à retenir.</b> À la caméra, « On se limite à 2 photos » (2 par œil) ; à l'OCT, « Ne pas dépasser 3-4 minutes ». Au-delà, ou si l'image reste mauvaise, on passe la main à l'optométriste.</div>
+
+  <div class="bloc">
+    <p class="lib">À discuter · les questions de la prof · <span class="src">7.2-d15 ; 7.3-d9</span></p>
+    <p style="margin:0">« Pourquoi l’optométriste/ophtalmologiste demande un scan en particulier? » ; « Pourquoi ne pas faire tous les scans à tous les patients? » ; « Artefact ou anomalie? ». Aucune réponse n'est écrite. Pistes <span class="deduit">déduit</span> : chaque test vise une structure (la macula, la papille, la cornée), et le temps du patient est compté (« Ne pas dépasser 3-4 minutes »). Note ce que la classe a conclu dans tes notes.</p>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="b" data-explique="« Image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation. » (7.3-d2)">
+      <p>Un artefact, c'est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">une lésion difficile à voir</button><button type="button" class="puce" data-v="b">une image anormale créée par la technique, sans signification diagnostique</button><button type="button" class="puce" data-v="c">une image normale mal interprétée</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« Clignement pendant la capture: Reprendre la photo » (7.3-d12).">
+      <p>Le patient cligne pendant la capture. Tu…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">reprends la photo</button><button type="button" class="puce" data-v="b">dilates les pupilles</button><button type="button" class="puce" data-v="c">consultes l'optométriste</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« Image dégradée (QI dans le rouge). Refaire » (7.3-d13). Le rouge du QI parle de la qualité de l'image, pas des fibres (déduit).">
+      <p>À l'OCT, le QI est dans le rouge. Tu…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">notes des fibres trop minces</button><button type="button" class="puce" data-v="b">arrêtes le test</button><button type="button" class="puce" data-v="c">refais le scan</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== CARTES -->
+<section class="ecran" data-id="cartes" data-partie="9 · Révision" data-titre="Rappel du jour">
+  <header class="tete">
+    <p class="eyebrow">Partie 9 · Révision</p>
     <h2>Rappel du jour</h2>
     <p class="chapeau">Produis la réponse de mémoire, vérifie tout de suite, et continue jusqu’à réussir chaque carte une fois. Une carte réussie revient dans 1, 3, 7, 14 puis 30 jours ; une carte ratée revient demain. Quelques minutes par jour valent mieux qu’une longue relecture la veille.</p>
   </header>
@@ -2592,21 +2980,21 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
 </section>
 
 <!-- ===================================================================== QUESTIONS -->
-<section class="ecran" data-id="questions" data-partie="6 · Révision" data-titre="Questions d'entraînement">
+<section class="ecran" data-id="questions" data-partie="9 · Révision" data-titre="Questions d'entraînement">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Révision</p>
+    <p class="eyebrow">Partie 9 · Révision</p>
     <h2>Questions d'entraînement</h2>
-    <p class="chapeau">Trente-trois questions graduées (rappel → application → et si), 16 pour le module 5 et 17 pour le module 6. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
+    <p class="chapeau">Cinquante questions graduées (rappel → application → et si) : 16 pour le module 5, 17 pour le module 6 et 17 pour le module 7. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
   </header>
   <div class="bloc" id="questions-liste"></div>
 </section>
 
 <!-- ===================================================================== À VÉRIFIER -->
-<section class="ecran" data-id="verifier" data-partie="6 · Révision" data-titre="À vérifier en classe">
+<section class="ecran" data-id="verifier" data-partie="9 · Révision" data-titre="À vérifier en classe">
   <header class="tete">
-    <p class="eyebrow">Partie 6 · Révision</p>
+    <p class="eyebrow">Partie 9 · Révision</p>
     <h2>À vérifier en classe</h2>
-    <p class="chapeau">Les points où les fichiers se contredisent, se taisent ou renvoient à la classe : 15 pour le module 5, 17 pour le module 6. Coche-les à mesure, et note la réponse dans les notes de cet écran.</p>
+    <p class="chapeau">Les points où les fichiers se contredisent, se taisent ou renvoient à la classe : 15 pour le module 5, 17 pour le module 6, 12 pour le module 7. Coche-les à mesure, et note la réponse dans les notes de cet écran.</p>
   </header>
   <ul class="averifier" id="averifier" style="margin-top:20px"></ul>
 </section>
@@ -2688,7 +3076,13 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
       <li><b>6.4</b> · <code>TO6.4OCT (2026).pptx</code>, 14 diapos et notes : l'OCT.</li>
       <li>Rappels d'autres cours : Optique M4 (p. 26) et M6 (D56, exercices C6) ; Bureau M3 (<code>Notes_ Erreur de réfraction commune.pdf</code>).</li>
     </ul>
-    <p>Cet atelier suit les distillations des deux modules (<code>to-m05_distilled.md</code>, <code>to-m06_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les fichiers du cours, par script. Les liens marqués <span class="deduit">déduit</span> sont des raisonnements, pas des affirmations de la prof.</p>
+    <h3>Module 7</h3>
+    <ul>
+      <li><b>7.1</b> · <code>TO7.1Caméra (2026).pptx</code>, 19 diapos : la photographie rétinienne.</li>
+      <li><b>7.2</b> · <code>TO7.2OCTsuite (2026).pptx</code>, 15 diapos : l'OCT (suite), l'épaisseur de la cornée et la pression.</li>
+      <li><b>7.3</b> · <code>TO7.3artefact.pptx</code>, 13 diapos : les artefacts en instrumentation.</li>
+    </ul>
+    <p>Cet atelier suit les distillations des deux modules (<code>to-m05_distilled.md</code>, <code>to-m06_distilled.md</code>, <code>to-m07_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les fichiers du cours, par script. Les liens marqués <span class="deduit">déduit</span> sont des raisonnements, pas des affirmations de la prof.</p>
     <h3>Les images</h3>
     <p>Tous les schémas, cartes topographiques, verres, écrans de lentimètre et rapports d'OCT sont <b>dessinés ou calculés pour cet atelier</b>. Les cartes et les rapports sont des simulations : ce ne sont pas des examens réels. Les images des diapos du cours ne sont pas reprises ; les noms écrits sur certains schémas (« Mire », « Liquid Reservoir », « Macular hole »…) sont ceux des figures du cours.</p>
     <h3>Le tuteur</h3>
@@ -3113,21 +3507,146 @@ const AVERIFIER = [
   {m:'M6', t:'Le Kahoot de révision', p:'Au programme du jour selon eCité, il n’a laissé aucun fichier.'}
 ];
 
+/* ======================================================================
+   Module 7 (2 nov. 2026) : caméra rétinienne, OCT (suite), artefacts.
+   Contenu : distilled/to-m07_distilled.md ; cartes KC : analyse/to-m07_kc.md.
+   ====================================================================== */
+
+/* ---------- le fond d'œil (7.1-d5) : les cinq structures ---------- */
+const FOND_Z = {
+  papille:{t:'Nerf optique (papille)', p:'Sur la photo, « Nerf optique » ' + S('7.1-d5') + ' : le disque clair d’où sortent les vaisseaux. À l’OCT, « Disc (papille, nerf optique) » ' + S('7.2-d5') + '.'},
+  artere:{t:'Artère', p:'« Artère » ' + S('7.1-d5') + '. Plus fine et plus claire que la veine qui l’accompagne ' + HORS + '.'},
+  veine:{t:'Veine', p:'« Veine » ' + S('7.1-d5') + '. Plus large et plus foncée que l’artère ' + HORS + '.'},
+  macula:{t:'Macula', p:'« Macula » ' + S('7.1-d5') + ' : la zone plus foncée au centre, entre les arcades des vaisseaux. Une choroïde plus pigmentée la fait paraître encore plus foncée, et c’est normal ' + S('7.1-d8') + '.'},
+  fovea:{t:'Fovéa', p:'« Fovea » ' + S('7.1-d5') + ' : le centre de la macula. À l’OCT, c’est la dépression du test 1 : « On voit une dépression qui est la fovea » ' + S('7.2-d1') + '.'}
+};
+/* positions des cinq repères du mode « Teste-toi », dans l'ordre 1 à 5 */
+const FOND_TEST = ['fovea', 'papille', 'veine', 'macula', 'artere'];
+
+/* ---------- les fonds normaux (7.1-d8–d11) ---------- */
+const PIGMENTS = {
+  fonce:{fond:'#7A4A2E', centre:'#3E2416', txt:'« Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » ' + S('7.1-d8')},
+  clair:{fond:'#E0603E', centre:'#B2341E', txt:'« Œil avec moins de pigmentation dans la choroïde » ' + S('7.1-d9') + ' : les vaisseaux ressortent bien sur un fond orangé.'},
+  tigre:{fond:'#B8562E', centre:'#7A2E16', tigre:true, txt:'« Œil avec pigmentation mixte (tigroide ' + SIC + '). Apparence normale » ' + S('7.1-d10') + ' : on voit les vaisseaux de la choroïde, en bandes.'},
+  jeune:{fond:'#E0603E', centre:'#B2341E', jeune:true, txt:'« Les enfants et adolescents ont un reflet de la rétine plus brillante que les adultes qui est typique d’une couche de fibres nerveuses en excellente santé » ' + S('7.1-d11') + '.'}
+};
+
+/* ---------- les sept éléments de la fovéa (7.2-d2), de l'avant vers l'arrière (ordre déduit des figures 7.2-d3, d4) ;
+   « z » = le numéro de la zone sur la coupe ---------- */
+const OT_LETTRES = [
+  {l:'N', z:1, t:'« N=couche de fibres nerveuses (formeront le nerf optique) »'},
+  {l:'G', z:2, t:'« G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) »'},
+  {l:'F', z:3, t:'« F=foveola (centre de la fovea) »'},
+  {l:'P', z:4, t:'« P=photorécepteurs »'},
+  {l:'E', z:5, t:'« E=épithélium pigmentaire »'},
+  {l:'B', z:6, t:'« B=membrane de Bruch »'},
+  {l:'C', z:7, t:'« C=choroide ' + SIC + ' »'}
+];
+
+/* ---------- les erreurs fréquentes (7.3-d12, d13) : une situation, trois conduites, celle du cours ---------- */
+const SCEN_ART = [
+  {id:'sombre', app:'Caméra', t:'Photo sombre', s:'Première photo de l’œil droit : l’image est trop sombre. Les lumières de la salle sont allumées.',
+    choix:[['a', 'Éteindre les lumières, puis reprendre ; si la pupille reste trop petite, dilater'], ['b', 'Reprendre tout de suite, plusieurs fois, jusqu’à une bonne image'], ['c', 'Noter un fond d’œil foncé au dossier']], bon:'a',
+    e:'« Image trop sombre oeil droit: s’assurer que les lumières sont éteintes. Si la pupille est trop petite on va dilater les yeux pour prendre une meilleure photo. Ne continuer ' + SIC + ' pas à prendre des photos! On se limite à 2 photos » ' + S('7.3-d12')},
+  {id:'gauche', app:'Caméra', t:'Bon à droite, sombre à gauche', s:'L’œil droit est réussi. Tu enchaînes aussitôt avec l’œil gauche : la photo est sombre.',
+    choix:[['a', 'Dilater l’œil gauche'], ['b', 'Diminuer les lumières, attendre quelques minutes, vérifier la fixation (cache-œil), puis reprendre'], ['c', 'Garder la photo : c’est le même patient']], bon:'b',
+    e:'« On a pris la photo trop rapidement à gauche pendant que la pupille était en état de constriction. Dimimuer ' + SIC + ' les lumières, attendre quelques minutes. On peut aussi utiliser le cache-oeil pour s’assurer que le patient fixe correctement. On se limite à 2 photos » ' + S('7.3-d12') + '. Le flash de la première photo contracte aussi l’autre pupille ' + HORS + '.'},
+  {id:'cligne', app:'Caméra', t:'Un clignement', s:'Le patient cligne au moment du flash : la paupière couvre la moitié de l’image.',
+    choix:[['a', 'Dilater'], ['b', 'Consulter l’optométriste'], ['c', 'Reprendre la photo']], bon:'c',
+    e:'« Clignement pendant la capture: Reprendre la photo » ' + S('7.3-d12')},
+  {id:'floue', app:'Caméra', t:'Toujours floue', s:'Deux photos de l’œil gauche, et elles sont floues toutes les deux. La mise au point semble bonne. Le patient a 78 ans.',
+    choix:[['a', 'Arrêter : possible opacité des milieux ; on consulte l’optométriste'], ['b', 'Reprendre jusqu’à obtenir une photo nette'], ['c', 'Dilater et reprendre trois fois']], bon:'a',
+    e:'« Images toujours floues, pas capable de bien capter: c’est possible qu’il y a une manque ' + SIC + ' de transparence dans les medias ' + SIC + ' (cataracte, opacité). Ne continuer ' + SIC + ' pas à prendre des photos. On se limite à 2 par oeil et on consulte avec l’optométriste » ' + S('7.3-d12')},
+  {id:'fixe', app:'OCT', t:'Le disc, sans le disc', s:'Test 2 (papille) : l’écran montre un creux régulier et aucun nerf optique.',
+    choix:[['a', 'Noter un nerf optique anormal'], ['b', 'Le patient ne fixait pas : rappeler la cible et refaire le test 2'], ['c', 'Passer au test 1']], bon:'b',
+    e:'« Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc » ' + S('7.3-d13') + '. Refaire en vérifiant la fixation ' + DED + '.'},
+  {id:'cristallin', app:'OCT', t:'Le cristallin', s:'Scan de la cornée : la bande illuminée est loin derrière, et ce n’est pas la cornée.',
+    choix:[['a', 'Refaire le scan et s’assurer que la structure est la cornée'], ['b', 'Mesurer quand même l’épaisseur'], ['c', 'Arrêter le test']], bon:'a',
+    e:'« L’instrument capte le cristallin ou ' + SIC + ' lieu de la cornée (refaire le scan, s’assurer que la structure est la cornée) » ' + S('7.3-d13')},
+  {id:'qi', app:'OCT', t:'QI dans le rouge', s:'Le scan est terminé, mais l’indicateur de qualité de l’image est dans le rouge.',
+    choix:[['a', 'Noter des fibres trop minces'], ['b', 'Refaire'], ['c', 'Garder le scan : l’optométriste jugera']], bon:'b',
+    e:'« Image dégradée (QI dans le rouge). Refaire » ' + S('7.3-d13') + '. Ce rouge parle de la qualité de l’image, pas des fibres ' + DED + '.'},
+  {id:'fatigue', app:'OCT', t:'Patient épuisé', s:'Quatre minutes d’OCT : le patient est épuisé, et le scan n’est toujours pas bon.',
+    choix:[['a', 'Continuer : il ne reste qu’un test'], ['b', 'Arrêter, voir l’optométriste ; on pourra refaire à une autre visite'], ['c', 'Faire une pause de 30 secondes et continuer']], bon:'b',
+    e:'« Si le patient est trop fatigue ' + SIC + ' on arrête le test. Ne pas dépasser 3-4 minutes. Voir l’optométriste. » ; « On peut refaire à une autre visite si necessaire ' + SIC + '. » ' + S('7.3-d13')},
+  {id:'naevus', app:'Caméra', t:'Le naevus a grossi ?', s:'Suivi d’un naevus de la choroïde : sur la nouvelle photo, il semble plus grand que l’an dernier. La photo est un peu surexposée.',
+    choix:[['a', 'Annoncer au patient que le naevus grossit'], ['b', 'Effacer l’ancienne photo'], ['c', 'Reprendre une photo de qualité et signaler à l’optométriste, sans conclure']], bon:'c',
+    e:'« Parfois un artefact peut ressembler à quelque chose avec signification clinique » ' + S('7.3-d3') + ' ; figure : « Camera artifacts producing the false impression of growth of choroidal melanocytic lesions » ' + S('7.3-d7') + '. On suit le naevus parce qu’« On ne veut pas voir d’évolution » ' + S('7.1-d13') + ' : l’optométriste interprète ' + DED + '.'}
+];
+
+/* ---------- questions d'entraînement (distillation, annexe B) ---------- */
+QUESTIONS.push(
+  {g:'M7 · I1 · la caméra', n:'rappel', q:'Donne les quatre points du rôle de l’assistant à la caméra.',
+    r:'<p>« S’assurer que la photo correspond au bon patient (verifier ' + SIC + ' le nom de la personne devant nous) » ; « Bien positionner le patient et vérifier la fixation » ; « Vérifier netteté, centrage et exposition » ; « Le technicien garantit la qualité technique » ' + S('7.1-d3') + '.</p>'},
+  {g:'M7 · I1 · la caméra', n:'rappel', q:'Donne les trois limitations de la photo du fond d’œil.',
+    r:'<p>« Patient a des difficultés a ' + SIC + ' fixer » ; « Pupilles trop petites pour que la lumière attaint ' + SIC + ' la rétine » ; « Opacités dans l’oeil » ' + S('7.1-d15') + '.</p>'},
+  {g:'M7 · I1 · la caméra', n:'application', q:'La photo de l’œil droit sort noire ; la pupille fait environ 3 mm. Pourquoi, et que fais-tu, dans l’ordre ?',
+    r:'<p>« Si la pupille est trop petite, la photo sera sombre ou noire » ' + S('7.1-d17') + '. Éteindre les lumières ; si la pupille reste trop petite, dilater ; ne pas dépasser 2 photos ' + S('7.3-d12') + '.</p>'},
+  {g:'M7 · I1 · la caméra', n:'et si', q:'Sur la photo, la macula paraît plus foncée que d’habitude et la choroïde est très pigmentée. Est-ce une anomalie à signaler ?',
+    r:'<p>Non : « Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » ' + S('7.1-d8') + '.</p>'},
+  {g:'M7 · I2 · l’OCT', n:'rappel', q:'Quels sont les deux tests OCT de base, et à quels yeux ?',
+    r:'<p>Test 1, la rétine centrale (la fovéa) ; test 2, la papille (« Disc »). Les deux : « Prendre OD et OS » ' + S('7.2-d1, d5') + '.</p>'},
+  {g:'M7 · I2 · l’OCT', n:'rappel', q:'Que désignent F, N, G, P, E, B et C sur la coupe de la fovéa ?',
+    r:'<p>« F=foveola (centre de la fovea) » ; « N=couche de fibres nerveuses (formeront le nerf optique) » ; « G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) » ; « P=photorécepteurs » ; « E=épithélium pigmentaire » ; « B=membrane de Bruch » ; « C=choroide » ' + S('7.2-d2') + '.</p>'},
+  {g:'M7 · I2 · l’OCT', n:'application', q:'Le test de la papille affiche un creux régulier et aucun nerf optique. Que s’est-il passé, que faire ?',
+    r:'<p>L’appareil a capté la macula : « Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc » ' + S('7.3-d13') + '. Rappeler la cible et refaire ' + DED + '.</p>'},
+  {g:'M7 · I2 · l’OCT', n:'application', q:'Sur la coupe de la cornée, combien de couches voit-on, et laquelle manque ?',
+    r:'<p>« 4 des 5 couches » ' + S('7.2-d7') + ' : épithélium, Bowman, stroma, endothélium ; il manque la membrane de Descemet ' + DED + '.</p>'},
+  {g:'M7 · I3 · épaisseur et pression', n:'calcul', q:'Le tonomètre lit 18 mmHg ; la cornée mesure 485 µm. Valeur corrigée ?',
+    r:'<p>485 µm → +4 : 18 + 4 = <b>22 mmHg</b> (cornée mince, lecture sous-estimée) ' + S('7.2-d11, d12') + '.</p>'},
+  {g:'M7 · I3 · épaisseur et pression', n:'calcul', q:'Le tonomètre lit 24 mmHg ; la cornée mesure 595 µm. Valeur corrigée ?',
+    r:'<p>595 µm → −4 : 24 − 4 = <b>20 mmHg</b> (cornée épaisse, lecture surestimée) ' + S('7.2-d11, d12') + '.</p>'},
+  {g:'M7 · I3 · épaisseur et pression', n:'à rebours', q:'La valeur corrigée est 25 mmHg pour une cornée de 445 µm. Qu’avait lu le tonomètre ?',
+    r:'<p>445 µm → +7 : 25 − 7 = <b>18 mmHg</b> ' + DED + '.</p>'},
+  {g:'M7 · I3 · épaisseur et pression', n:'à rebours', q:'Le tonomètre lit 20 mmHg et la valeur corrigée est 23 mmHg. Quelle est l’épaisseur de la cornée selon la table ?',
+    r:'<p>Correction = 23 − 20 = +3 → <b>505 µm</b>, la seule ligne à +3 ' + S('7.2-d12') + ' ' + DED + '.</p>'},
+  {g:'M7 · I3 · épaisseur et pression', n:'et si', q:'Un patient atteint de kératocône a une cornée de 455 µm ; le tonomètre lit 12 mmHg. Valeur corrigée ? Pourquoi sa PIO « plus basse » (6.1-d14) est-elle à prendre avec prudence ?',
+    r:'<p>455 µm → +6 : 12 + 6 = <b>18 mmHg</b>. Une cornée amincie fait lire une pression trop basse ' + S('7.2-d11') + ' : une partie de la PIO basse du kératocône peut venir de la cornée elle-même ' + DED + '.</p>'},
+  {g:'M7 · I4 · les artefacts', n:'rappel', q:'Définis un artefact selon le cours.',
+    r:'<p>« Image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation. » ' + S('7.3-d2') + '</p>'},
+  {g:'M7 · I4 · les artefacts', n:'application', q:'Le patient cligne pendant la capture. Puis, après deux essais, les photos de l’œil gauche restent floues. Que fais-tu dans chaque cas ?',
+    r:'<p>Clignement : « Reprendre la photo ». Toujours flou : possible « manque ' + SIC + ' de transparence dans les medias ' + SIC + ' (cataracte, opacité) » ; arrêter : « On se limite à 2 par oeil et on consulte avec l’optométriste » ' + S('7.3-d12') + '.</p>'},
+  {g:'M7 · I4 · les artefacts', n:'application', q:'À l’OCT de la cornée, l’image montre le cristallin. Puis le QI est dans le rouge. Que fais-tu ?',
+    r:'<p>« refaire le scan, s’assurer que la structure est la cornée » ; QI dans le rouge : « Refaire » ' + S('7.3-d13') + '.</p>'},
+  {g:'M7 · I4 · les artefacts', n:'et si', q:'Après 4 minutes d’OCT, le patient est épuisé et le scan n’est toujours pas bon. Que fais-tu ?',
+    r:'<p>« on arrête le test. Ne pas dépasser 3-4 minutes. Voir l’optométriste. » ; « On peut refaire à une autre visite si necessaire ' + SIC + '. » ' + S('7.3-d13') + '</p>'}
+);
+
+/* ---------- à vérifier en classe (distillation, M7) ---------- */
+AVERIFIER.push(
+  {m:'M7', t:'7.2-d11 : 545 microns = 0,52 mm ?', p:'La diapo écrit « 545microns (0.52mm) » : 545 µm font 0,545 mm. Erreur de la diapo, à confirmer.'},
+  {m:'M7', t:'Entre deux lignes de la table', p:'La table saute de 10 en 10 µm après 445 (pas de 450, 610…). Pour 609 µm (la carte de 7.2-d9), prend-on la ligne la plus proche (605 → −4) ?'},
+  {m:'M7', t:'Où poser F, N, G, P, E, B, C', p:'7.2-d2 n’a pas d’image : les lettres vont-elles sur la coupe de 7.2-d1 ? L’ordre d’avant en arrière (N, G … P, E, B, C) est déduit des figures 7.2-d3 et d4.'},
+  {m:'M7', t:'Les dessins faits en classe', p:'7.1-d6 et d7 (« Dessin du fond d’oeil », « Dessin de la couche de fibres nerveuses ») sont vides : recopie le dessin de la classe dans tes notes. Sera-t-il demandé à l’examen ?'},
+  {m:'M7', t:'« Pourquoi mesurer l’épaisseur de la cornée en générale? »', p:'7.2-d10 n’a pas de réponse écrite. Piste ' + DED + ' : la pachymétrie du kératocône (6.1-d15) ; une cornée anormale (7.2-d8).'},
+  {m:'M7', t:'Pourquoi un scan en particulier ?', p:'« Pourquoi ne pas faire tous les scans à tous les patients? » (7.2-d15) : aucune réponse écrite ; discutée en « Situations cliniques en groupes de 2-4 ».'},
+  {m:'M7', t:'« Artefact ou anomalie? » (7.3-d9)', p:'Une papille floue, sans réponse dans les fichiers.'},
+  {m:'M7', t:'« à droite » ou « à gauche » (7.3-d12)', p:'L’œil droit et l’œil gauche, ou l’image de droite et celle de gauche à l’écran ? Lecture retenue : les deux yeux, photographiés l’un après l’autre.'},
+  {m:'M7', t:'Pourquoi la pupille gauche est contractée', p:HORS + ' : le flash de la première photo contracte les deux pupilles (réflexe consensuel). L’Anatomie M8 annonce les « réflexes pupillaires ».'},
+  {m:'M7', t:'L’étymologie d’« artefact »', p:'La diapo écrit « Factum (effet) Artis (artificial) » ; ' + HORS + ' : le latin est arte factum, “fait par l’art (la technique)”.'},
+  {m:'M7', t:'NACOR', p:'Le tableau rattache à son “module 7” 2.3.4 (entretien de l’équipement) et 2.4.4 (désinfection) : aucun deck du M7 n’en parle.'},
+  {m:'M7', t:'Le Kahoot', p:'Au programme du jour selon eCité ; aucun fichier.'}
+);
+
 /* ====== 21-config.js ====== */
 /* ======================================================================
-   L'atelier TO M5–M6 pour le moteur commun (Guides/_commun).
+   L'atelier TO M5–M7 pour le moteur commun (Guides/_commun).
    ====================================================================== */
 const ATELIER = {
   prefixe:'to-m56',                  // clés du navigateur et document du compte : ne pas changer
-  nom:'Atelier TO M5–M6',
+  nom:'Atelier TO M5–M7',
   fichier:'atelier-to-m5-m6',
   progression:'écrans, pas, rappel, situations, questions, cases cochées',
   premier:'miroir',
   examen:'2026-11-16',               // examen UA2 (planificateur) : le rappel ne saute jamais par-dessus
   verifierModule:m => 'Module ' + m.slice(1),
   verifierTitre:v => v.m + ' · ' + v.t,
-  /* « Survol » (bouton du haut) : les modules 5 et 6 en 22 diapos, Guides/UA2-Tests-Ophtalmiques/diapos-to-m5-m6.html */
-  survol:{url:'diapos-to-m5-m6.html', titre:'Survol : les modules 5 et 6 en 22 diapos, environ 15 minutes'},
+  /* « Survol » (bouton du haut) : un diaporama par module, au menu du bouton (recette §3.5) ;
+     Guides/UA2-Tests-Ophtalmiques/diapos-to-m5-m6.html et diapos-to-m7.html */
+  survol:[
+    {url:'diapos-to-m5-m6.html', titre:'Survol : les modules 5 et 6 en 22 diapos, environ 15 minutes', court:'Modules 5 et 6', detail:'kératométrie, topographie, kératocône, lunettes, OCT · 22 diapos, ≈ 15 min'},
+    {url:'diapos-to-m7.html', titre:'Survol : le module 7 en 21 diapos, environ 15 minutes', court:'Module 7', detail:'caméra rétinienne, OCT, pression, artefacts · 21 diapos, ≈ 15 min'}
+  ],
   /* les situations ont chacune leur note (sc-01…) */
   notesSup:[{prefixe:'sc-', ecran:'situations',
     liste:() => SITUATIONS.map(f => ({id:'sc-' + f.n, titre:'Situation ' + f.n + ' · ' + f.titre})),
@@ -3327,7 +3846,68 @@ const PAS = [
   {id:'oct-couleurs.4', ecran:'oct-couleurs', ancre:'on ne peut pas présumer que vert est toujours normal', titre:'Vert n’est pas une garantie', cle:['vert : dans la norme', 'mais pas toujours normal', 'c’est l’optométriste qui interprète <span class="deduit">déduit</span>'], explique:'Pourquoi un rapport tout vert ne permet-il pas de rassurer le patient à la place de l’optométriste ?',
    verif:{q:'Tout est vert. Peux-tu dire au patient que tout est normal ?', r:'Non : « on ne peut pas présumer que vert est toujours normal » (6.4-d11) ; c’est l’optométriste qui interprète.', points:['non', 'vert pas toujours normal'], qcm:{bon:'Non : on ne peut pas présumer que vert est toujours normal ; l’optométriste interprète', faux:['Oui : vert veut dire que tout est dans la norme, donc normal', 'Oui, à condition que la topographie soit verte elle aussi', 'Non : le vert veut dire que la mesure a échoué, il faut refaire le test avant d’en parler']}}, qcm:'Tout est vert. Peut-on dire au patient', src:['6.4-d11']},
   {id:'oct-couleurs.5', ecran:'oct-couleurs', ancre:'Ni diagnostic, ni garantie.', titre:'Un test parmi d’autres', cle:['un test parmi d’autres', 'pas de diagnostic dans tous les cas', 'l’optométriste interprète dans un contexte clinique <span class="deduit">déduit</span>', 'même prudence qu’avec la topographie'], explique:'Pourquoi le rouge d’une topographie et le rouge d’un OCT demandent-ils la même prudence ?',
-   verif:{q:'Pourquoi l’assistant ne conclut-il jamais à partir des couleurs d’un OCT ?', r:'Parce que c’est « Un test parmis <span class="sic">(sic)</span> d’autres. On ne peut pas nécessairement faire un diagnostic dans tous les cas. » (6.4-d14) ; l’optométriste interprète dans un plein contexte clinique <span class="deduit">déduit</span>.', points:['un test parmi d’autres', 'pas de diagnostic', 'l’optométriste interprète'], qcm:{bon:'C’est un test parmi d’autres, qui ne permet pas toujours un diagnostic ; l’optométriste interprète', faux:['Les couleurs de l’OCT ne veulent rien dire : seul l’examen au biomicroscope de l’optométriste compte', 'L’OCT ne sert qu’à mesurer l’épaisseur de la cornée, pas la rétine', 'Les couleurs ne servent qu’à repérer les erreurs de mesure de l’appareil']}}, src:['6.4-d14', '5.3-d6']}
+   verif:{q:'Pourquoi l’assistant ne conclut-il jamais à partir des couleurs d’un OCT ?', r:'Parce que c’est « Un test parmis <span class="sic">(sic)</span> d’autres. On ne peut pas nécessairement faire un diagnostic dans tous les cas. » (6.4-d14) ; l’optométriste interprète dans un plein contexte clinique <span class="deduit">déduit</span>.', points:['un test parmi d’autres', 'pas de diagnostic', 'l’optométriste interprète'], qcm:{bon:'C’est un test parmi d’autres, qui ne permet pas toujours un diagnostic ; l’optométriste interprète', faux:['Les couleurs de l’OCT ne veulent rien dire : seul l’examen au biomicroscope de l’optométriste compte', 'L’OCT ne sert qu’à mesurer l’épaisseur de la cornée, pas la rétine', 'Les couleurs ne servent qu’à repérer les erreurs de mesure de l’appareil']}}, src:['6.4-d14', '5.3-d6']},
+  /* ---------- camera (M7) ---------- */
+  {id:'camera.1', ecran:'camera', ancre:'La caméra prend une photo à travers la pupille', titre:'À travers la pupille', cle:['la caméra photographie le fond d’œil à travers la pupille', 'la lumière du flash doit atteindre le fond'], explique:'Pourquoi la taille de la pupille décide-t-elle de la qualité de la photo ?',
+   verif:{q:'Par où la caméra rétinienne prend-elle sa photo, et qu’est-ce que cela exige ?', r:'À travers la pupille : la lumière du flash doit atteindre le fond de l’œil (7.1-d2, d17).', points:['à travers la pupille', 'la lumière doit atteindre le fond'], qcm:{bon:'À travers la pupille : le flash doit atteindre le fond de l’œil', faux:['À travers la sclère : le flash doit traverser le blanc de l’œil', 'Sur la cornée : elle photographie son reflet, comme le kératomètre', 'À travers la pupille, mais seulement après une dilatation obligatoire']}}, src:['7.1-d2', '7.1-d17']},
+  {id:'camera.2', ecran:'camera', ancre:'Si la pupille est trop petite, la photo sera sombre ou noire', titre:'Pupille petite, photo noire', cle:['pupille trop petite → photo sombre ou noire', 'des gouttes peuvent dilater la pupille', 'pour obtenir une image utilisable'], explique:'Pourquoi des gouttes règlent-elles une photo noire, alors que reprendre la photo ne la règle pas ?',
+   verif:{q:'Que donne une pupille trop petite à la caméra, et que peut-on faire ?', r:'Une photo sombre ou noire ; parfois on dilate avec des gouttes pour avoir une image utilisable (7.1-d17).', points:['sombre ou noire', 'gouttes', 'dilater'], qcm:{bon:'Une photo sombre ou noire ; parfois on dilate avec des gouttes', faux:['Une photo floue ; on refait la mise au point', 'Une photo nette mais plus petite ; on agrandit l’image', 'Une photo trop claire ; on baisse le flash']}}, qcm:'La pupille du patient est très petite', src:['7.1-d16', '7.1-d17', '7.1-d18']},
+  {id:'camera.3', ecran:'camera', ancre:'Bien positionner le patient et vérifier la fixation', titre:'Le rôle de l’assistant', cle:['le bon patient (vérifier le nom)', 'position et fixation', 'netteté, centrage et exposition', 'le technicien garantit la qualité technique'], explique:'Pourquoi vérifier le nom avant la photo, alors que c’est la personne assise devant toi ?',
+   verif:{q:'Donne les points du rôle de l’assistant à la caméra.', r:'S’assurer que c’est le bon patient (vérifier le nom), bien le positionner et vérifier la fixation, vérifier netteté, centrage et exposition : le technicien garantit la qualité technique (7.1-d3).', points:['bon patient', 'fixation', 'netteté, centrage et exposition', 'qualité technique'], qcm:{bon:'Bon patient, position et fixation, netteté-centrage-exposition : la qualité technique', faux:['Dilater, photographier, puis interpréter la photo pour le patient', 'Bon patient, mesure de la pression, puis diagnostic de la rétine', 'Position et fixation, puis autant de photos qu’il faut pour une bonne image']}}, qcm:'Avant la photo, la toute première chose', src:['7.1-d3']},
+  {id:'camera.4', ecran:'camera', ancre:'Rapidité de la capture de l’information', titre:'À quoi sert la photo', cle:['capture rapide', 'comparer d’un temps à un autre', 'dépister et suivre les pathologies', 'suivre un naevus : on ne veut pas voir d’évolution'], explique:'Pourquoi une photo du fond d’œil est-elle plus utile la deuxième année que la première ?',
+   verif:{q:'Pourquoi photographier le fond d’œil ?', r:'Capture rapide, comparaison au fil du temps (images côte à côte), dépistage et suivi des pathologies ; par exemple suivre un naevus de la choroïde : on ne veut pas voir d’évolution (7.1-d4, d12, d13).', points:['rapide', 'comparer dans le temps', 'dépister, suivre', 'naevus'], qcm:{bon:'Documenter vite, comparer dans le temps, dépister et suivre (un naevus, par exemple)', faux:['Remplacer l’examen du fond d’œil par l’optométriste', 'Mesurer l’épaisseur de la cornée et la pression de l’œil en une seule image', 'Poser un diagnostic du fond d’œil sans attendre l’optométriste']}}, src:['7.1-d4', '7.1-d12', '7.1-d13']},
+  {id:'camera.5', ecran:'camera', ancre:'Pupilles trop petites pour que la lumière attaint', titre:'Les trois limitations', cle:['patient qui fixe mal', 'pupilles trop petites', 'opacités dans l’œil'], explique:'Laquelle des trois limitations ne se règle ni en éteignant ni en dilatant ? Pourquoi ?',
+   verif:{q:'Donne les trois limitations de la photo du fond d’œil.', r:'Un patient qui a du mal à fixer, des pupilles trop petites pour que la lumière atteigne la rétine, des opacités dans l’œil (7.1-d15).', points:['fixer', 'pupilles trop petites', 'opacités'], qcm:{bon:'Fixation difficile, pupilles trop petites, opacités dans l’œil', faux:['Cornée trop mince, pression trop haute, myopie forte', 'Fixation difficile, lumières éteintes, dilatation', 'Pupilles trop grandes, cils trop longs, larmes']}}, src:['7.1-d15']},
+  {id:'camera.6', ecran:'camera', ancre:'Pas d’acharnement.', titre:'Deux photos au plus', cle:['on se limite à 2 photos', 'chaque flash referme la pupille', 'au-delà : dilater ou consulter'], explique:'Pourquoi la 3e photo est-elle souvent pire que la 1re ?',
+   verif:{q:'Combien de photos par œil, au plus, et pourquoi pas davantage ?', r:'Deux : « On se limite à 2 photos ». Les flashs successifs referment la pupille, les photos s’assombrissent (7.3-d12 ; 7.1-d19).', points:['2 photos', 'la pupille se referme', 's’assombrissent'], qcm:{bon:'Deux : les flashs referment la pupille et les photos s’assombrissent', faux:['Quatre : il faut deux photos nettes par œil', 'Autant qu’il faut, jusqu’à obtenir une bonne image', 'Une seule, pour ne pas fatiguer le patient']}}, qcm:'Combien de photos par œil, au plus', src:['7.3-d12', '7.1-d19']},
+  /* ---------- fond (M7) ---------- */
+  {id:'fond.1', ecran:'fond', ancre:'Sur la photo, cinq structures', titre:'Cinq structures', cle:['fovéa', 'macula', 'nerf optique (papille)', 'artère et veine'], explique:'Comment retrouves-tu la papille et la macula sur une photo, sans légende ?',
+   verif:{q:'Nomme les cinq structures du fond d’œil de la diapo 7.1-d5.', r:'Fovéa, macula, nerf optique, artère, veine (7.1-d5).', points:['fovéa', 'macula', 'nerf optique', 'artère, veine'], qcm:{bon:'Fovéa, macula, nerf optique, artère, veine', faux:['Cornée, iris, cristallin, vitré, rétine', 'Fovéa, iris, nerf optique, choroïde, sclère', 'Macula, cristallin, papille, cornée, veine']}}, src:['7.1-d5']},
+  {id:'fond.2', ecran:'fond', ancre:'Le dessin fait en classe.', titre:'Le dessin du fond d’œil', cle:['la fovéa est le centre de la macula', 'les vaisseaux sortent de la papille', 'les fibres nerveuses rejoignent la papille'], explique:'Dans ton dessin, pourquoi la fovéa et la papille ne sont-elles jamais au même endroit ?',
+   verif:{q:'Où se trouve la fovéa, et vers où vont les fibres nerveuses ?', r:'La fovéa est le centre de la macula ; les fibres nerveuses rejoignent la papille et forment le nerf optique (7.1-d5 ; 7.2-d6).', points:['centre de la macula', 'rejoignent la papille', 'nerf optique'], qcm:{bon:'La fovéa au centre de la macula ; les fibres vont à la papille', faux:['La fovéa au centre de la papille ; les fibres vont à la macula', 'La fovéa sur une artère ; les fibres vont à la choroïde', 'La fovéa au bord de la rétine ; les fibres vont au cristallin']}}, src:['7.1-d5', '7.1-d6', '7.1-d7', '7.2-d6']},
+  {id:'fond.3', ecran:'fond', ancre:'Normal n’est pas uniforme.', titre:'Trois fonds normaux', cle:['choroïde plus pigmentée : macula plus foncée, normal', 'moins pigmentée : fond clair', 'mixte (tigroïde) : normal'], explique:'Pourquoi la même macula paraît-elle plus foncée chez un patient et plus claire chez un autre ?',
+   verif:{q:'Une macula plus foncée sur une choroïde très pigmentée : normal ou anomalie ?', r:'Normal : « Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » (7.1-d8).', points:['normal', 'choroïde plus pigmentée'], qcm:{bon:'Normal : une choroïde plus pigmentée rend la macula plus foncée', faux:['Une anomalie de la macula, à signaler à l’optométriste', 'Un artefact de la caméra, à reprendre tout de suite', 'Le signe d’une opacité dans l’œil, comme une cataracte']}}, qcm:'La macula paraît plus foncée et la choroïde', src:['7.1-d8', '7.1-d9', '7.1-d10']},
+  {id:'fond.4', ecran:'fond', ancre:'Trois fonds normaux, et les jeunes', titre:'Le reflet des jeunes', cle:['enfants et adolescents : reflet plus brillant', 'couche de fibres nerveuses en excellente santé'], explique:'Pourquoi un reflet brillant est-il ici un bon signe, et non un défaut de la photo ?',
+   verif:{q:'Que veut dire le reflet plus brillant de la rétine chez un adolescent ?', r:'Il est typique d’une couche de fibres nerveuses en excellente santé (7.1-d11).', points:['fibres nerveuses', 'excellente santé'], qcm:{bon:'Une couche de fibres nerveuses en excellente santé', faux:['Un reflet du flash à reprendre', 'Une opacité du cristallin chez un jeune', 'Une pupille trop dilatée pendant la photo']}}, qcm:'Chez un adolescent, la rétine brille', src:['7.1-d11']},
+  /* ---------- oct-tests (M7) ---------- */
+  {id:'oct-tests.1', ecran:'oct-tests', ancre:'Test 1: Rétine centrale sur OCT', titre:'Test 1 : la rétine centrale', cle:['la rétine centrale', 'une dépression : la fovéa', 'OD et OS'], explique:'Pourquoi le creux du test 1 est-il la preuve que l’appareil vise bien la macula ?',
+   verif:{q:'Que montre le test 1 de l’OCT, et à quels yeux ?', r:'La rétine centrale : on voit une dépression, la fovéa ; on prend OD et OS (7.2-d1).', points:['rétine centrale', 'dépression', 'fovéa', 'OD et OS'], qcm:{bon:'La rétine centrale, avec la dépression de la fovéa ; OD et OS', faux:['La papille, avec le nerf optique ; OD seulement', 'La cornée, avec ses cinq couches ; OD et OS', 'La rétine centrale ; seulement l’œil qui se plaint']}}, qcm:'Les tests OCT de base se font', src:['7.2-d1']},
+  {id:'oct-tests.2', ecran:'oct-tests', ancre:'Un test 2 raté.', titre:'Test 2 : la papille', cle:['le disc : papille, nerf optique', 'la structure doit être dans l’écran', 'OD et OS', 'mauvaise fixation → l’appareil capte la macula'], explique:'Comment sais-tu, d’un coup d’œil, que le test 2 a raté ?',
+   verif:{q:'Que vise le test 2, et que se passe-t-il si le patient ne fixe pas ?', r:'La papille (le nerf optique), OD et OS ; si le patient ne fixe pas la cible, l’instrument capte la macula et non le disc (7.2-d5 ; 7.3-d13).', points:['papille', 'OD et OS', 'macula au lieu du disc'], qcm:{bon:'La papille, OD et OS ; sans fixation, l’appareil capte la macula', faux:['La fovéa ; sans fixation, l’appareil capte la cornée', 'La papille ; sans fixation, l’image devient rouge', 'La choroïde ; sans fixation, il faut dilater']}}, qcm:'Au test 2, l’écran montre un creux', src:['7.2-d5', '7.3-d13']},
+  {id:'oct-tests.3', ecran:'oct-tests', ancre:'Les sept éléments de la fovéa', titre:'Sept lettres', cle:['F foveola, N fibres nerveuses, G cellules ganglionnaires', 'P photorécepteurs, E épithélium pigmentaire', 'B membrane de Bruch, C choroïde'], explique:'Pourquoi N « formeront le nerf optique » ? Relie-le au test 2.',
+   verif:{q:'Que désignent F, N, G, P, E, B et C ?', r:'Foveola, couche de fibres nerveuses, cellules ganglionnaires, photorécepteurs, épithélium pigmentaire, membrane de Bruch, choroïde (7.2-d2).', points:['foveola', 'fibres nerveuses', 'ganglionnaires', 'photorécepteurs', 'épithélium pigmentaire', 'Bruch', 'choroïde'], qcm:{bon:'Foveola, fibres nerveuses, ganglionnaires, photorécepteurs, épithélium pigmentaire, Bruch, choroïde', faux:['Fovéa, nerf optique, glande lacrymale, pupille, épithélium, Bowman, cornée', 'Foveola, fibres nerveuses, ganglionnaires, pigment, endothélium, Bowman, cristallin', 'Fond d’œil, nasal, glaucome, papille, épaisseur, Bruch, cornée centrale']}}, qcm:'Sur la coupe de la fovéa, G désigne', src:['7.2-d2']},
+  {id:'oct-tests.4', ecran:'oct-tests', ancre:'les lettres se posent sur la coupe', titre:'De l’avant vers l’arrière', cle:['N puis G en avant', 'P, E puis B en arrière', 'C, la choroïde, tout au fond'], explique:'Pourquoi la lumière traverse-t-elle les fibres et les cellules ganglionnaires avant d’atteindre les photorécepteurs ?',
+   verif:{q:'Range N, G, P, E, B, C de l’avant vers l’arrière.', r:'N, G, P, E, B, C (ordre déduit des figures 7.2-d3, d4).', points:['N, G', 'P, E', 'B, C'], qcm:{bon:'N, G, P, E, B, C', faux:['C, B, E, P, G, N', 'P, E, N, G, B, C', 'N, P, G, B, E, C']}}, src:['7.2-d2', '7.2-d3', '7.2-d4']},
+  {id:'oct-tests.5', ecran:'oct-tests', ancre:'On voit une bande illumine', titre:'La cornée : 4 des 5 couches', cle:['4 des 5 couches visibles', 'épithélium, Bowman, stroma, endothélium', 'Descemet ne se voit pas'], explique:'Pourquoi le stroma est-il la bande la plus épaisse ? Relie-le au kératocône.',
+   verif:{q:'Combien de couches de la cornée voit-on à l’OCT, et laquelle manque ?', r:'4 des 5 : épithélium, Bowman, stroma, endothélium ; Descemet ne se voit pas (7.2-d7, déduit).', points:['4 des 5', 'Descemet'], qcm:{bon:'Quatre sur cinq ; il manque la membrane de Descemet', faux:['Les cinq couches, toutes bien séparées', 'Trois ; il manque Bowman et Descemet', 'Quatre ; il manque le stroma, trop mince']}}, src:['7.2-d7']},
+  {id:'oct-tests.6', ecran:'oct-tests', ancre:'Une cornée anormale', titre:'Une cornée anormale', cle:['endothélium moins lisse, cellules manquantes', 'stroma moins dense : plus d’espaces noirs', 'l’OCT mesure aussi l’épaisseur'], explique:'Qu’est-ce qu’un stroma « moins dense » fait voir sur la coupe ?',
+   verif:{q:'Quelles anomalies de la cornée l’OCT montre-t-il sur la diapo 7.2-d8 ?', r:'Un endothélium moins lisse, avec des cellules manquantes ; un stroma moins dense, avec plus d’espaces noirs (7.2-d8).', points:['endothélium moins lisse', 'stroma moins dense', 'espaces noirs'], qcm:{bon:'Endothélium moins lisse ; stroma moins dense, plus d’espaces noirs', faux:['Épithélium trop épais ; stroma plus blanc', 'Bowman absente ; endothélium plus brillant', 'Stroma plus dense ; cornée beaucoup plus épaisse']}}, src:['7.2-d8', '7.2-d9']},
+  /* ---------- pression (M7) ---------- */
+  {id:'pression.1', ecran:'pression', ancre:'La plupart des tonomètres sont calibrés', titre:'Calibrés pour 545 µm', cle:['tonomètres calibrés pour 545 µm', '545 µm = 0,545 mm (la diapo écrit 0.52)'], explique:'Pourquoi un appareil calibré sur une épaisseur se trompe-t-il quand la cornée est différente ?',
+   verif:{q:'Pour quelle épaisseur de cornée la plupart des tonomètres sont-ils calibrés ?', r:'545 microns, soit 0,545 mm (la diapo écrit « 0.52mm », une erreur) (7.2-d11).', points:['545', '0,545 mm'], qcm:{bon:'545 µm, soit 0,545 mm', faux:['520 µm, soit 0,52 mm', '645 µm, soit 0,645 mm', '545 mm, soit 54,5 cm']}}, qcm:'545 microns, en millimètres', src:['7.2-d11']},
+  {id:'pression.2', ecran:'pression', ancre:'Si la cornée est plus mince, la mesure sera sous-estimée', titre:'Mince : sous-estimée', cle:['plus mince → sous-estimée', 'plus épaisse → surestimée'], explique:'Une cornée mince fait lire une pression trop basse : pourquoi est-ce le cas dangereux des deux ?',
+   verif:{q:'Une cornée plus mince que 545 µm : la lecture est sous-estimée ou surestimée ?', r:'Sous-estimée : la vraie pression est plus haute ; une cornée plus épaisse donne une lecture surestimée (7.2-d11).', points:['sous-estimée', 'plus haute'], qcm:{bon:'Sous-estimée : la vraie pression est plus haute', faux:['Surestimée : la vraie pression est plus basse', 'Juste : l’épaisseur ne change rien', 'Surestimée : il faut ajouter la correction']}}, qcm:'La cornée est plus mince que 545', src:['7.2-d11']},
+  {id:'pression.3', ecran:'pression', ancre:'PIO corrigée = PIO mesurée + correction (table)', titre:'⑦ Corriger avec la table', cle:['lire la correction de la table', 'PIO corrigée = mesurée + correction', 'mince : +, épaisse : −'], explique:'Dans ⑦, d’où vient le signe de la correction ?',
+   verif:{q:'Le tonomètre lit 20 mmHg, la cornée fait 415 µm. PIO corrigée ?', r:'415 µm → +10 : 20 + 10 = 30 mmHg (7.2-d13, d14).', points:['+10', '30 mmHg'], qcm:{bon:'30 mmHg (415 µm → +10)', faux:['10 mmHg (20 − 10)', '20 mmHg (pas de correction)', '25 mmHg (moitié de la correction)']}}, qcm:'Lecture 24 mmHg, cornée de 595', src:['7.2-d12', '7.2-d13', '7.2-d14']},
+  {id:'pression.4', ecran:'pression', ancre:'L’exercice du cours', titre:'Les trois cornées du cours', cle:['415 µm → 30 mmHg', '545 µm → 20 mmHg', '615 µm → 15 mmHg'], explique:'Pourquoi la cornée de 545 µm garde-t-elle exactement la lecture ?',
+   verif:{q:'Avec une lecture de 20 mmHg : 415, 545 et 615 µm donnent quelles valeurs corrigées ?', r:'30, 20 et 15 mmHg (7.2-d14).', points:['30', '20', '15'], qcm:{bon:'30, 20 et 15 mmHg', faux:['10, 20 et 25 mmHg', '30, 20 et 25 mmHg', '20, 20 et 20 mmHg']}}, src:['7.2-d13', '7.2-d14']},
+  {id:'pression.5', ecran:'pression', ancre:'Le piège de signe.', titre:'Le piège de signe', cle:['sous 545 µm : on ajoute', 'au-dessus : on retranche (ajouter −5 = retrancher 5)', 'environ 1 mmHg tous les 14 µm'], explique:'Comment vérifies-tu le sens de ta réponse sans relire la table ?',
+   verif:{q:'La table donne −5 pour 615 µm. Lecture 20 mmHg : 25 ou 15 ?', r:'15 mmHg : ajouter −5, c’est retrancher 5 ; une cornée épaisse surestime, la vraie pression est plus basse (7.2-d11, d14).', points:['15', 'retrancher', 'surestime'], qcm:{bon:'15 mmHg : cornée épaisse, lecture surestimée', faux:['25 mmHg : on ajoute toujours la correction', '20 mmHg : −5 est négligeable', '5 mmHg : on retranche deux fois']}}, src:['7.2-d11', '7.2-d14']},
+  {id:'pression.6', ecran:'pression', ancre:'Le lien avec le kératocône.', titre:'Kératocône et pression', cle:['le kératocône amincit la cornée', 'une cornée mince fait lire une pression trop basse'], explique:'Pourquoi une “pression plus basse” chez un patient atteint de kératocône peut-elle être en partie fausse ?',
+   verif:{q:'Pourquoi la PIO « plus basse » du kératocône est-elle à prendre avec prudence ?', r:'Le kératocône amincit la cornée, et une cornée mince fait lire une pression trop basse (6.1-d14 ; 7.2-d11 ; lien déduit).', points:['cornée amincie', 'lecture trop basse'], qcm:{bon:'Une cornée amincie fait lire une pression trop basse', faux:['Le kératocône fait vraiment baisser la pression', 'Le tonomètre ne fonctionne pas sur un cône', 'La pression basse cause le kératocône']}}, src:['6.1-d14', '7.2-d11']},
+  /* ---------- artefacts (M7) ---------- */
+  {id:'artefacts.1', ecran:'artefacts', ancre:'Image anormale créée par la technique', titre:'Ce qu’est un artefact', cle:['une image anormale créée par la technique', 'sans signification diagnostique', 'peut gêner l’interprétation'], explique:'Pourquoi un artefact « sans signification » est-il quand même un problème ?',
+   verif:{q:'Définis un artefact selon le cours.', r:'Une image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation (7.3-d2).', points:['créée par la technique', 'sans signification diagnostique', 'gêner l’interprétation'], qcm:{bon:'Une image anormale créée par la technique, sans valeur de diagnostic', faux:['Une lésion difficile à voir à l’examen du fond d’œil', 'Une image normale mal interprétée par l’optométriste', 'Une anomalie réelle cachée par une photo trop sombre']}}, qcm:'Un artefact, c’est', src:['7.3-d2']},
+  {id:'artefacts.2', ecran:'artefacts', ancre:'Un artefact peut imiter une lésion', titre:'Un artefact qui imite', cle:['un artefact peut ressembler à une lésion', 'fausse croissance d’un naevus', 'on suit un naevus pour ne pas voir d’évolution'], explique:'Pourquoi une fausse croissance est-elle plus grave qu’une photo simplement sombre ?',
+   verif:{q:'Donne un exemple d’artefact qui imite quelque chose de clinique.', r:'Des artefacts de caméra qui donnent la fausse impression qu’une lésion mélanocytaire de la choroïde grossit (7.3-d3, d7) ; or on suit un naevus pour ne pas voir d’évolution (7.1-d13).', points:['fausse croissance', 'naevus'], qcm:{bon:'Une fausse croissance d’un naevus de la choroïde', faux:['Une macula plus foncée sur un fond pigmenté', 'Le reflet brillant d’un adolescent', 'Le creux de la fovéa au test 1']}}, src:['7.3-d3', '7.3-d7', '7.1-d13']},
+  {id:'artefacts.3', ecran:'artefacts', ancre:'Les exemples du cours', titre:'Artefact ou anomalie réelle', cle:['empreinte, reflets, artefact central', 'segmentation qui suit le vitré', 'une anomalie réelle existe aussi'], explique:'Qu’est-ce qui distingue, en principe, un artefact d’une anomalie réelle ?',
+   verif:{q:'Nomme deux artefacts de la caméra et un artefact de l’OCT.', r:'Caméra : empreinte, reflets (« Flares »), artefact central, photos qui s’assombrissent ; OCT : l’appareil suit le vitré au lieu des fibres nerveuses (7.3-d6, d8, d10).', points:['empreinte ou reflets', 'suit le vitré'], qcm:{bon:'Empreinte et reflets (caméra) ; segmentation qui suit le vitré (OCT)', faux:['Choroïde pigmentée et fond tigroïde (les deux à la caméra)', 'Le creux de la fovéa et la papille (à l’OCT)', 'Kératocône et cataracte (des maladies de l’œil)']}}, src:['7.3-d4', '7.3-d5', '7.3-d6', '7.3-d10', '7.3-d11']},
+  {id:'artefacts.4', ecran:'artefacts', ancre:'Que fais-tu ? · les erreurs fréquentes', titre:'Les erreurs de la caméra', cle:['trop sombre : lumières éteintes, dilater si besoin', 'sombre à gauche : attendre quelques minutes', 'clignement : reprendre', 'toujours flou : 2 par œil, l’optométriste'], explique:'Pourquoi la photo de gauche est-elle sombre quand on l’enchaîne trop vite après celle de droite ?',
+   verif:{q:'Le patient cligne pendant la capture ; plus tard, les photos restent floues malgré tout. Que fais-tu ?', r:'Clignement : reprendre la photo. Toujours flou : possible opacité (cataracte) ; 2 photos par œil au plus, puis on consulte l’optométriste (7.3-d12).', points:['reprendre', 'opacité', '2 par œil', 'optométriste'], qcm:{bon:'Reprendre le clignement ; si c’est toujours flou, 2 par œil puis l’optométriste', faux:['Dilater dans les deux cas, puis reprendre autant qu’il faut', 'Reprendre jusqu’à obtenir une photo nette, sans limite', 'Noter une anomalie de la rétine au dossier, sans reprendre']}}, qcm:'Le patient cligne pendant la capture', src:['7.3-d12']},
+  {id:'artefacts.5', ecran:'artefacts', ancre:'Deux limites à retenir.', titre:'Les erreurs de l’OCT', cle:['mauvaise fixation : la macula au lieu du disc', 'le cristallin au lieu de la cornée : refaire', 'QI dans le rouge : refaire', 'patient fatigué : arrêter, 3-4 minutes au plus'], explique:'Pourquoi arrête-t-on l’OCT après 3-4 minutes au lieu d’insister ?',
+   verif:{q:'À l’OCT : QI dans le rouge, puis le patient s’épuise. Que fais-tu ?', r:'QI dans le rouge : refaire. Patient trop fatigué : on arrête, pas plus de 3-4 minutes, on voit l’optométriste ; on peut refaire à une autre visite (7.3-d13).', points:['refaire', 'arrêter', '3-4 minutes', 'autre visite'], qcm:{bon:'Refaire le scan ; si le patient s’épuise, arrêter et voir l’optométriste', faux:['Noter des fibres trop minces, puis continuer', 'Continuer le scan jusqu’à obtenir une image toute verte', 'Dilater les yeux, puis refaire le scan jusqu’à dix minutes']}}, qcm:'À l’OCT, le QI est dans le rouge', src:['7.3-d13']},
+  {id:'artefacts.6', ecran:'artefacts', ancre:'À discuter · les questions de la prof', titre:'Pourquoi ce scan', cle:['chaque test vise une structure', 'le temps du patient est compté'], explique:'Pourquoi ne fait-on pas tous les scans à tous les patients ?',
+   verif:{q:'Pourquoi ne pas faire tous les scans à tous les patients ? (piste déduite)', r:'Chaque test vise une structure (macula, papille, cornée) et le temps du patient est compté (3-4 minutes au plus) ; la question reste à discuter en classe (7.2-d15 ; 7.3-d13).', points:['une structure par test', 'temps compté'], qcm:{bon:'Chaque scan vise une structure, et le temps du patient est compté', faux:['Les scans sont dangereux pour la rétine', 'L’OCT ne peut faire qu’un test par jour', 'Seul l’optométriste a le droit de lancer un scan']}}, src:['7.2-d15', '7.3-d13']},
 ];
 
 const CARTES2 = [
@@ -3566,7 +4146,50 @@ const CARTES2 = [
   {id:'c-oct-couleurs-01', type:'libre', pas:['oct-couleurs.1', 'oct-couleurs.2'], q:'Un secteur rouge ?', r:'Plus mince que la moyenne, ou difficile à mesurer : « N’indique pas nécessairement un problème de pathologie. » <span class="src">6.4-d9, d14</span>', points:['plus mince ou difficile à mesurer', 'pas forcément une pathologie'], src:['6.4-d9', '6.4-d14'], qcm:{bon:'Plus mince que la moyenne, ou difficile à mesurer ; pas forcément une pathologie', faux:['Plus cambré que la moyenne, comme en topographie ; une anomalie à signaler au patient', 'Plus mince que la moyenne : un glaucome certain, à annoncer au patient', 'Plus épais que la moyenne ; toujours sans pathologie']}},
   {id:'c-oct-couleurs-02', type:'libre', pas:['oct-couleurs.4'], q:'Tout est vert ?', r:'« on ne peut pas présumer que vert est toujours normal » <span class="src">6.4-d11</span>', points:['pas toujours normal', 'on ne peut pas présumer'], src:['6.4-d11'], qcm:{bon:'On ne peut pas présumer que vert est toujours normal', faux:['Tout est normal : on peut rassurer le patient tout de suite', 'La mesure a échoué : il faut refaire le test', 'Les fibres sont plus épaisses que la moyenne']}},
   {id:'c-oct-couleurs-03', type:'discrim', pas:['oct-couleurs.5', 'oct.1'], q:'Laquelle de ces deux cartes en couleurs montre les couches internes de la rétine ?', choix:['le rapport d’OCT', 'la carte topographique'], bonne:0, r:'Topographie : la surface avant de la cornée ; OCT : les couches internes de la rétine (et la pachymétrie). Dans les deux cas, la couleur ne diagnostique pas.', src:['6.4-d2', '5.3-d6', '6.4-d14']},
-  {id:'c-oct-couleurs-04', type:'application', pas:['oct-couleurs.1', 'oct-couleurs.2'], q:'Le rapport des fibres nerveuses d’un patient montre un secteur rouge. Que peut-il vouloir dire, et que fais-tu ?', r:'Des fibres plus minces que la moyenne, ou une mesure difficile ; causes possibles : « Erreur de mesure, forme de nerf optique inhabituelle ou autre » (6.4-d9). Je vérifie que l’image est fiable et je rapporte à l’optométriste, sans conclure (6.4-d13, d14).', points:['plus mince ou difficile à mesurer', 'image fiable', 'rapporter sans conclure'], src:['6.4-d9', '6.4-d13', '6.4-d14'], qcm:{bon:'Fibres plus minces ou mesure difficile ; je vérifie que l’image est fiable, je rapporte sans conclure', faux:['Un glaucome ; je l’annonce au patient et je l’inscris au dossier', 'Une erreur de l’appareil ; je refais le test autant de fois qu’il le faut pour obtenir enfin du vert', 'Une cornée trop cambrée, comme en topographie ; je demande une pachymétrie']}}
+  {id:'c-oct-couleurs-04', type:'application', pas:['oct-couleurs.1', 'oct-couleurs.2'], q:'Le rapport des fibres nerveuses d’un patient montre un secteur rouge. Que peut-il vouloir dire, et que fais-tu ?', r:'Des fibres plus minces que la moyenne, ou une mesure difficile ; causes possibles : « Erreur de mesure, forme de nerf optique inhabituelle ou autre » (6.4-d9). Je vérifie que l’image est fiable et je rapporte à l’optométriste, sans conclure (6.4-d13, d14).', points:['plus mince ou difficile à mesurer', 'image fiable', 'rapporter sans conclure'], src:['6.4-d9', '6.4-d13', '6.4-d14'], qcm:{bon:'Fibres plus minces ou mesure difficile ; je vérifie que l’image est fiable, je rapporte sans conclure', faux:['Un glaucome ; je l’annonce au patient et je l’inscris au dossier', 'Une erreur de l’appareil ; je refais le test autant de fois qu’il le faut pour obtenir enfin du vert', 'Une cornée trop cambrée, comme en topographie ; je demande une pachymétrie']}},
+  /* ---------- camera (M7) ---------- */
+  {id:'c-camera-01', type:'libre', pas:['camera.3'], q:'Le rôle de l’assistant à la caméra rétinienne ?', r:'« S’assurer que la photo correspond au bon patient (verifier <span class="sic">(sic)</span> le nom de la personne devant nous) » ; « Bien positionner le patient et vérifier la fixation » ; « Vérifier netteté, centrage et exposition » ; « Le technicien garantit la qualité technique » <span class="src">7.1-d3</span>', points:['bon patient', 'fixation', 'netteté, centrage, exposition'], src:['7.1-d3'], qcm:{bon:'Bon patient, position et fixation, netteté-centrage-exposition', faux:['Dilater, photographier, puis interpréter la photo', 'Bon patient, mesure de la pression, diagnostic', 'Fixation, puis autant de photos qu’il faut']}},
+  {id:'c-camera-02', type:'libre', pas:['camera.5'], q:'Les trois limitations de la photo du fond d’œil ?', r:'« Patient a des difficultés a <span class="sic">(sic)</span> fixer » ; « Pupilles trop petites pour que la lumière attaint <span class="sic">(sic)</span> la rétine » ; « Opacités dans l’oeil » <span class="src">7.1-d15</span>', points:['fixer', 'pupilles trop petites', 'opacités'], src:['7.1-d15'], qcm:{bon:'Fixation difficile, pupilles trop petites, opacités', faux:['Cornée mince, pression haute, myopie', 'Fixation, lumières éteintes, dilatation', 'Pupilles trop grandes, cils, larmes']}},
+  {id:'c-camera-03', type:'chaine', pas:['camera.3', 'camera.6'], q:'Remets dans l’ordre la prise d’une photo du fond d’œil.', items:['vérifier que c’est le bon patient (son nom)', 'bien le positionner et vérifier la fixation', 'prendre la photo', 'vérifier netteté, centrage et exposition', 'au besoin, reprendre : 2 photos au plus'], src:['7.1-d3', '7.3-d12'], qcm:{q:'Quelle est la première étape avant une photo du fond d’œil ?', bon:'Vérifier que c’est le bon patient, par son nom', faux:['Dilater les deux pupilles du patient', 'Vérifier la netteté de la photo', 'Prendre deux photos pour comparer']}},
+  {id:'c-camera-04', type:'application', pas:['camera.2', 'camera.6'], q:'Première photo de l’œil droit : elle est noire. Les lumières de la salle sont allumées et la pupille est petite. Que fais-tu, dans l’ordre ?', r:'Éteindre les lumières et attendre ; si la pupille reste trop petite, dilater ; ne pas dépasser 2 photos (7.1-d17 ; 7.3-d12).', points:['éteindre les lumières', 'dilater si besoin', '2 photos'], src:['7.1-d17', '7.3-d12'], qcm:{bon:'Éteindre, attendre ; dilater si besoin ; 2 photos au plus', faux:['Reprendre tout de suite plusieurs photos', 'Noter un fond d’œil foncé au dossier', 'Augmenter le flash et reprendre cinq fois']}},
+  {id:'c-camera-05', type:'libre', pas:['camera.4'], q:'Une raison de photographier un naevus de la choroïde ?', r:'« Une raison pour les photos est de suivre des naevus dans la choroïde. On ne veut pas voir d’évolution » <span class="src">7.1-d13</span>', points:['suivre', 'pas d’évolution'], src:['7.1-d13'], qcm:{bon:'Le suivre dans le temps : on ne veut pas voir d’évolution', faux:['Le mesurer pour que l’optométriste le retire', 'Le faire pâlir avec le flash de la caméra', 'Mesurer l’épaisseur de la choroïde à cet endroit']}},
+  {id:'c-camera-06', type:'discrim', pas:['camera.2', 'camera.5'], q:'La photo du fond d’œil se prend…', choix:['avec ou sans dilatation pupillaire', 'toujours après une dilatation'], bonne:0, r:'« Prendre une photo du fond de l’œil avec ou sans dilatation pupillaire » (7.1-d4) : on dilate seulement si la pupille empêche la photo.', src:['7.1-d4', '7.1-d17']},
+  /* ---------- fond (M7) ---------- */
+  {id:'c-fond-01', type:'libre', pas:['fond.1'], q:'Les cinq structures du fond d’œil de la diapo 7.1-d5 ?', r:'Fovéa, macula, nerf optique, artère, veine <span class="src">7.1-d5</span>', points:['fovéa', 'macula', 'nerf optique', 'artère, veine'], src:['7.1-d5'], qcm:{bon:'Fovéa, macula, nerf optique, artère, veine', faux:['Cornée, iris, cristallin, vitré, rétine', 'Fovéa, iris, papille, choroïde, sclère', 'Macula, cristallin, papille, cornée, veine']}},
+  {id:'c-fond-02', type:'discrim', pas:['fond.2'], q:'Le centre de la macula, c’est…', choix:['la fovéa', 'la papille'], bonne:0, r:'La fovéa est au centre de la macula ; la papille est le départ du nerf optique, ailleurs sur la rétine (7.1-d5 ; Anatomie 4.2).', src:['7.1-d5']},
+  {id:'c-fond-03', type:'application', pas:['fond.3'], q:'Patient à la choroïde très pigmentée : sur la photo, sa macula paraît bien plus foncée que sur l’affiche de la clinique. Il s’inquiète. Que lui dis-tu, et que notes-tu ?', r:'C’est une apparence normale : une choroïde plus pigmentée fait paraître la macula plus foncée (7.1-d8). L’assistant ne pose pas de diagnostic : il s’assure d’une bonne photo, l’optométriste l’interprète (déduit).', points:['apparence normale', 'choroïde plus pigmentée', 'l’optométriste interprète'], src:['7.1-d8'], qcm:{bon:'Apparence normale ; l’optométriste interprète la photo', faux:['Une anomalie de la macula, à reprendre en photo', 'Un artefact de la caméra, à effacer', 'Une cataracte probable, à signaler tout de suite']}},
+  {id:'c-fond-04', type:'libre', pas:['fond.4'], q:'Le reflet brillant de la rétine des jeunes ?', r:'« Les enfants et adolescents ont un reflet de la rétine plus brillante que les adultes qui est typique d’une couche de fibres nerveuses en excellente santé » <span class="src">7.1-d11</span>', points:['fibres nerveuses', 'excellente santé'], src:['7.1-d11'], qcm:{bon:'Des fibres nerveuses en excellente santé', faux:['Un reflet du flash à reprendre', 'Une opacité du cristallin', 'Une pupille trop dilatée']}},
+  /* ---------- oct-tests (M7) ---------- */
+  {id:'c-oct-tests-01', type:'libre', pas:['oct-tests.1', 'oct-tests.2'], q:'Les deux tests OCT de base ?', r:'« Test 1: Rétine centrale sur OCT » et « Test 2: Disc (papille, nerf optique) » ; les deux : « Prendre OD et OS » <span class="src">7.2-d1, d5</span>', points:['rétine centrale', 'papille', 'OD et OS'], src:['7.2-d1', '7.2-d5'], qcm:{bon:'La rétine centrale et la papille, OD et OS', faux:['La cornée et le cristallin, OD seulement', 'La rétine centrale et la pression, OD et OS', 'La papille et la choroïde, l’œil qui se plaint']}},
+  {id:'c-oct-tests-02', type:'chaine', pas:['oct-tests.4'], q:'Range les couches de la coupe de la fovéa, de l’avant vers l’arrière.', items:['N, la couche de fibres nerveuses', 'G, les cellules ganglionnaires', 'P, les photorécepteurs', 'E, l’épithélium pigmentaire', 'B, la membrane de Bruch', 'C, la choroïde'], src:['7.2-d2', '7.2-d3', '7.2-d4'], qcm:{q:'Sur la coupe de la fovéa, quelle couche est la plus en avant ?', bon:'N, la couche de fibres nerveuses', faux:['C, la choroïde, tout au fond', 'P, les photorécepteurs', 'B, la membrane de Bruch']}},
+  {id:'c-oct-tests-03', type:'libre', pas:['oct-tests.3'], q:'F, N et G sur la coupe de la fovéa ?', r:'« F=foveola (centre de la fovea) » ; « N=couche de fibres nerveuses (formeront le nerf optique) » ; « G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) » <span class="src">7.2-d2</span>', points:['foveola', 'fibres nerveuses', 'ganglionnaires'], src:['7.2-d2'], qcm:{bon:'Foveola, fibres nerveuses, cellules ganglionnaires', faux:['Fovéa, nerf optique, glande lacrymale', 'Fond d’œil, côté nasal, glaucome', 'Foveola, nerf optique, membrane de Bruch']}},
+  {id:'c-oct-tests-04', type:'discrim', pas:['oct-tests.1', 'oct-tests.2'], q:'Un creux régulier au centre de la coupe OCT, c’est…', choix:['la fovéa (test 1)', 'la papille (test 2)'], bonne:0, r:'Le test 1 montre « une dépression qui est la fovea » (7.2-d1) ; au test 2, on doit voir la papille et le nerf optique. Un creux régulier au test 2 : l’appareil a capté la macula (7.3-d13).', src:['7.2-d1', '7.2-d5', '7.3-d13']},
+  {id:'c-oct-tests-05', type:'libre', pas:['oct-tests.5'], q:'La cornée à l’OCT ?', r:'« Cornée (segment antérieur). On voit une bande illumine <span class="sic">(sic)</span> avec 4 des 5 couches visibles. » <span class="src">7.2-d7</span>', points:['4 des 5 couches'], src:['7.2-d7'], qcm:{bon:'Une bande illuminée, 4 des 5 couches visibles', faux:['Une bande noire, les 5 couches visibles', 'Trois couches seulement, sans Bowman', 'Le cristallin et la cornée ensemble']}},
+  /* ---------- pression (M7) ---------- */
+  {id:'c-pression-01', type:'libre', pas:['pression.1'], q:'Pour quelle épaisseur de cornée les tonomètres sont-ils calibrés ?', r:'« La plupart des tonomètres sont calibrés pour une épaisseur de cornée de 545microns (0.52mm) » <span class="src">7.2-d11</span> ; 545 µm font 0,545 mm.', points:['545', '0,545 mm'], src:['7.2-d11'], qcm:{bon:'545 µm (0,545 mm)', faux:['520 µm (0,52 mm)', '645 µm (0,645 mm)', '545 mm (54,5 cm)']}},
+  {id:'c-pression-02', type:'discrim', pas:['pression.2'], q:'Une cornée plus épaisse que 545 µm donne une lecture…', choix:['surestimée', 'sous-estimée'], bonne:0, r:'« Si la cornée est plus épaisse, la mesure sera sur-estimée » (7.2-d11) : la correction est négative.', src:['7.2-d11']},
+  {id:'c-pression-03', type:'calcul', pas:['pression.3'], q:'Le tonomètre lit … mmHg ; la cornée mesure … µm. PIO corrigée ?', src:['7.2-d12', '7.2-d14'],
+   gen:() => {
+     const T = [[415, 10], [425, 9], [435, 8], [445, 7], [465, 6], [475, 5], [485, 4], [505, 3], [515, 2], [525, 1], [555, -1], [575, -2], [585, -3], [595, -4], [615, -5], [625, -6], [645, -7]];
+     const [e, c] = T[Math.floor(Math.random() * T.length)], m = 10 + Math.floor(Math.random() * 19);
+     /* faux : le signe inversé ; la correction oubliée ; la correction comptée deux fois */
+     return {q:'Le tonomètre lit ' + m + ' mmHg ; la cornée mesure ' + e + ' µm. PIO corrigée ?', r:(m + c) + ' mmHg (table : ' + (c > 0 ? '+' : '−') + Math.abs(c) + ')', faux:[(m - c) + ' mmHg', m + ' mmHg', (m + 2 * c) + ' mmHg'], tol:0.4};
+   }},
+  {id:'c-pression-04', type:'calcul', pas:['pression.4'], q:'PIO corrigée … mmHg, cornée de … µm. Qu’avait lu le tonomètre ?', src:['7.2-d12'],
+   gen:() => {
+     const T = [[415, 10], [435, 8], [455, 6], [485, 4], [515, 2], [575, -2], [595, -4], [615, -5], [645, -7]];
+     const [e, c] = T[Math.floor(Math.random() * T.length)], m = 10 + Math.floor(Math.random() * 19), cor = m + c;
+     /* faux : ajouter au lieu de retirer ; garder la valeur corrigée ; retirer deux fois */
+     return {q:'PIO corrigée ' + cor + ' mmHg, cornée de ' + e + ' µm. Qu’avait lu le tonomètre ?', r:m + ' mmHg (' + cor + (c > 0 ? ' − ' : ' + ') + Math.abs(c) + ')', faux:[(cor + c) + ' mmHg', cor + ' mmHg', (m - c) + ' mmHg'], tol:0.4};
+   }},
+  {id:'c-pression-05', type:'application', pas:['pression.6', 'pression.3'], q:'Mathis, 23 ans, suspect de kératocône : pachymétrie 485 µm, tonomètre 14 mmHg. Quelle est sa PIO corrigée, et pourquoi sa lecture est-elle trop basse ?', r:'485 µm → +4 : 14 + 4 = 18 mmHg. Sa cornée amincie fait lire une pression sous-estimée (7.2-d11, d12 ; lien avec le kératocône déduit).', points:['+4', '18 mmHg', 'cornée mince, sous-estimée'], src:['7.2-d11', '7.2-d12', '6.1-d14'], qcm:{bon:'18 mmHg : sa cornée mince fait lire trop bas', faux:['10 mmHg : on retire la correction', '14 mmHg : la lecture est juste', '22 mmHg : on ajoute deux fois']}},
+  /* ---------- artefacts (M7) ---------- */
+  {id:'c-artefacts-01', type:'libre', pas:['artefacts.1'], q:'Définition d’un artefact ?', r:'« Image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation. » <span class="src">7.3-d2</span>', points:['créée par la technique', 'sans signification diagnostique', 'gêner l’interprétation'], src:['7.3-d2'], qcm:{bon:'Une image anormale créée par la technique, sans valeur de diagnostic', faux:['Une lésion difficile à voir, qu’il faut signaler', 'Une image normale mal interprétée par l’optométriste', 'Une anomalie réelle cachée sous une image normale']}},
+  {id:'c-artefacts-02', type:'application', pas:['artefacts.4'], q:'Tu photographies l’œil droit (bonne image), puis aussitôt l’œil gauche : la photo est sombre. Pourquoi, et que fais-tu ?', r:'La photo a été prise trop vite, pendant que la pupille était contractée : diminuer les lumières, attendre quelques minutes, utiliser le cache-œil pour la fixation ; 2 photos au plus (7.3-d12).', points:['trop vite', 'pupille contractée', 'attendre quelques minutes', '2 photos'], src:['7.3-d12'], qcm:{bon:'Pupille encore contractée : diminuer les lumières, attendre, puis reprendre', faux:['Dilater l’œil gauche tout de suite, sans attendre', 'Garder la photo sombre : c’est le même patient', 'Reprendre cinq fois de suite, sans changer la lumière']}},
+  {id:'c-artefacts-03', type:'application', pas:['artefacts.5'], q:'Scan de la cornée : la bande illuminée est loin derrière. Tu refais : le QI est dans le rouge. Que fais-tu à chaque fois ?', r:'Le cristallin a été capté au lieu de la cornée : refaire le scan et s’assurer que la structure est la cornée ; QI dans le rouge : refaire (7.3-d13).', points:['cristallin', 'refaire', 'QI rouge : refaire'], src:['7.3-d13'], qcm:{bon:'Refaire en visant la cornée ; QI rouge : refaire encore', faux:['Mesurer quand même l’épaisseur sur ce scan', 'Noter des fibres nerveuses trop minces', 'Arrêter le test et dilater les yeux']}},
+  {id:'c-artefacts-04', type:'discrim', pas:['artefacts.1', 'artefacts.3'], q:'Une image anormale « créée par la technique », c’est…', choix:['un artefact', 'une anomalie réelle'], bonne:0, r:'L’artefact vient de la technique et n’a pas de signification diagnostique (7.3-d2) ; « Ici on a une anomalie réelle » (7.3-d5) vient de l’œil.', src:['7.3-d2', '7.3-d5']},
+  {id:'c-artefacts-05', type:'libre', pas:['artefacts.4', 'artefacts.5'], q:'Les deux limites à ne pas dépasser, caméra et OCT ?', r:'Caméra : « On se limite à 2 photos » <span class="src">7.3-d12</span> ; OCT : « Ne pas dépasser 3-4 minutes » <span class="src">7.3-d13</span>', points:['2 photos', '3-4 minutes'], src:['7.3-d12', '7.3-d13'], qcm:{bon:'2 photos par œil ; 3-4 minutes d’OCT', faux:['4 photos par œil ; 10 minutes d’OCT', '1 photo par œil ; 30 secondes d’OCT', 'Autant qu’il faut dans les deux cas']}},
+  {id:'c-artefacts-06', type:'application', pas:['artefacts.2'], q:'Suivi d’un naevus : sur la nouvelle photo, un peu surexposée, il paraît plus grand que l’an dernier. Que fais-tu ?', r:'Reprendre une photo de qualité et signaler à l’optométriste, sans conclure : un artefact peut donner la fausse impression d’une croissance (7.3-d3, d7 ; 7.1-d13).', points:['reprendre une bonne photo', 'signaler', 'sans conclure'], src:['7.3-d3', '7.3-d7', '7.1-d13'], qcm:{bon:'Reprendre une photo de qualité et signaler, sans conclure', faux:['Annoncer au patient que le naevus grossit', 'Effacer l’ancienne photo du dossier', 'Dilater et prendre cinq photos de suite']}},
 ];
 
 const VISLE = {
@@ -3620,7 +4243,22 @@ const VISLE = {
     prediction:{q:'Pour voir les couches sous la surface de la rétine, l’OCT utilise…', choix:['de la lumière infrarouge', 'des ultrasons', 'des gouttes et un contact avec l’œil'], bonne:0, retour:'Il « Utilise la lumière infrarouge pour visualiser les couches internes de la rétine » ; « Comparable à une échographie, mais avec de la lumière » (6.4-d2).'}},
   'oct-couleurs':{genre:'comptoir', titre:'Mathis voit du rouge',
     texte:'Mathis passe l’OCT comme mesure de base. Sur le rapport de son nerf optique, un secteur sort en rouge. Il a déjà vu du rouge sur sa topographie, et il s’inquiète : “Encore du rouge ? C’est grave ?”',
-    prediction:{q:'Que lui réponds-tu ?', choix:['“Le rouge veut dire que la mesure sort de la moyenne, ou qu’elle a été difficile ; l’optométriste va l’interpréter avec le reste de l’examen.”', '“Oui, le rouge veut dire une maladie.”', '“Non, c’est sûrement une erreur de l’appareil.”'], bonne:0, retour:'« Rouge peut indiquer que la structure sort des normes habituelles ou est difficile à mesurer. N’indique pas nécessairement un problème de pathologie. » (6.4-d14) Comme sur sa topographie : la couleur situe, elle ne diagnostique pas.'}}
+    prediction:{q:'Que lui réponds-tu ?', choix:['“Le rouge veut dire que la mesure sort de la moyenne, ou qu’elle a été difficile ; l’optométriste va l’interpréter avec le reste de l’examen.”', '“Oui, le rouge veut dire une maladie.”', '“Non, c’est sûrement une erreur de l’appareil.”'], bonne:0, retour:'« Rouge peut indiquer que la structure sort des normes habituelles ou est difficile à mesurer. N’indique pas nécessairement un problème de pathologie. » (6.4-d14) Comme sur sa topographie : la couleur situe, elle ne diagnostique pas.'}},
+  camera:{genre:'sur-toi', titre:'Ta pupille dans le noir',
+    texte:'Devant un miroir, dans une pièce bien éclairée, regarde la taille de ta pupille. Puis tamise la lumière et attends une minute en regardant toujours ton reflet. La caméra rétinienne photographie le fond de l’œil à travers ce trou : plus il est petit, moins le flash y entre.',
+    prediction:{q:'Dans une pièce plus sombre, ta pupille…', choix:['grandit', 'rapetisse', 'ne change pas'], bonne:0, retour:'Elle grandit <span class="hors">hors cours</span> : c’est pourquoi, devant une photo trop sombre, on doit d’abord « s’assurer que les lumières sont éteintes » (7.3-d12).'}},
+  fond:{genre:'comptoir', titre:'La macula foncée de Mathis',
+    texte:'Mathis regarde la photo de son fond d’œil sur l’écran. Sa macula paraît bien plus foncée que sur l’affiche de la clinique, et sa choroïde est très pigmentée. Il te demande si c’est grave.',
+    prediction:{q:'Sur ce point précis, la photo montre…', choix:['une apparence normale', 'une anomalie de la macula', 'un artefact à reprendre'], bonne:0, retour:'« Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » (7.1-d8). Et c’est l’optométriste qui interprète la photo.'}},
+  'oct-tests':{genre:'comptoir', titre:'Mathis regarde ailleurs',
+    texte:'Tu lances le test 2 de l’OCT, la papille, sur l’œil droit de Mathis. Pendant la capture, il regarde ailleurs que la cible.',
+    prediction:{q:'L’écran montrera plutôt…', choix:['la macula, avec le creux de la fovéa', 'la papille quand même', 'une image toute noire'], bonne:0, retour:'« Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc » (7.3-d13) : on rappelle la cible et on refait.'}},
+  pression:{genre:'comptoir', titre:'La cornée mince de Mathis',
+    texte:'Au module 6, Mathis avait les signes d’un kératocône. Sa pachymétrie donne 485 µm, et le tonomètre lit 14 mmHg. L’appareil, lui, est réglé pour une cornée de 545 µm.',
+    prediction:{q:'La vraie pression de Mathis est…', choix:['plus haute que 14 mmHg', 'plus basse que 14 mmHg', 'exactement 14 mmHg'], bonne:0, retour:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11) : 485 µm → +4, donc 18 mmHg.'}},
+  artefacts:{genre:'comptoir', titre:'Une tache de trop',
+    texte:'Un an plus tard, Mathis revient pour son suivi. Sur la nouvelle photo, prise un peu vite, une tache sombre semble plus grande que l’an dernier. Il voit ton air et demande ce qui se passe.',
+    prediction:{q:'Ta première action ?', choix:['vérifier la qualité de l’image, reprendre, puis signaler à l’optométriste', 'lui dire que la tache grossit', 'effacer l’ancienne photo'], bonne:0, retour:'« Parfois un artefact peut ressembler à quelque chose avec signification clinique » (7.3-d3) : on obtient d’abord une image fiable, et l’optométriste juge.'}}
 };
 
 const GESTES = [
@@ -3734,7 +4372,15 @@ const PREDIRE = [
   {id:'p-oct-trou', ecran:'oct', cible:'#trou-btn', q:'Pourquoi l’OCT montre-t-il bien un trou dans la macula ?', choix:['il fait une coupe sous la surface de la rétine', 'il touche la rétine', 'il utilise des ultrasons'], bonne:0,
    retour:'« OCT est très utilise <span class="sic">(sic)</span> pour trouver des problèmes qui se trouvent cachés sous la surface de la rétine » (6.4-d6) ; « On peut comparer ce que l’on voit avec la photo et la vue interne du même problème » (6.4-d7).'},
   {id:'p-rapport-mince', ecran:'oct-couleurs', cible:'#rn-cas [data-r="mince"]', q:'Un secteur sort en rouge sur ce rapport. Que fait l’assistant ?', choix:['il rapporte à l’optométriste, sans conclure', 'il annonce un glaucome au patient', 'il refait le test jusqu’à obtenir du vert'], bonne:0,
-   retour:'Le rouge « N’indique pas nécessairement un problème de pathologie » ; c’est « Un test parmis <span class="sic">(sic)</span> d’autres » (6.4-d14) : l’optométriste interprète.'}
+   retour:'Le rouge « N’indique pas nécessairement un problème de pathologie » ; c’est « Un test parmis <span class="sic">(sic)</span> d’autres » (6.4-d14) : l’optométriste interprète.'},
+  {id:'p-camera-photo', ecran:'camera', cible:'#cam-photo', q:'La pièce est éclairée et la pupille petite. La photo sera…', choix:['sombre ou noire', 'nette', 'floue'], bonne:0,
+   retour:'« Si la pupille est trop petite, la photo sera sombre ou noire » (7.1-d17).'},
+  {id:'p-fond-jeune', ecran:'fond', cible:'#fo-pigment [data-p="jeune"]', q:'Chez un enfant, la rétine brille plus que chez l’adulte. C’est…', choix:['normal : des fibres en excellente santé', 'un reflet du flash à reprendre', 'une anomalie'], bonne:0,
+   retour:'« typique d’une couche de fibres nerveuses en excellente santé » (7.1-d11).'},
+  {id:'p-oct-rate', ecran:'oct-tests', cible:'#ot-test [data-t="rate"]', q:'Au test 2, le patient ne fixe pas la cible. L’écran montrera…', choix:['la macula, avec son creux', 'la papille quand même', 'un écran noir'], bonne:0,
+   retour:'« l’instrument capte la macula et non le disc » (7.3-d13).'},
+  {id:'p-pression-ep', ecran:'pression', cible:'#pr-ep', q:'Si la cornée devient plus mince que 545 µm, la PIO corrigée sera…', choix:['plus haute que la lecture', 'plus basse que la lecture', 'égale à la lecture'], bonne:0,
+   retour:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11) : la correction est positive.'}
 ];
 
 /* ====== _commun/moteur.js ====== */
@@ -5310,6 +5956,253 @@ INIT['oct-couleurs'] = root => {
 };
 
 /* ======================================================================
+   Module 7 : les écrans camera, fond, oct-tests, pression, artefacts, et
+   « À toi » pour ⑦ (analyse/to-m07_kc.md : T7.11, T7.12). Tous les dessins
+   sont calculés ici ; aucune photo des diapos n'est reprise.
+   ====================================================================== */
+
+/* ---------- caméra : la pupille, la pièce, le flash ---------- */
+INIT.camera = root => {
+  const st = {lum:'on', attendu:false, dilate:false, photos:0, derniere:null};
+  const pupille = () => st.dilate ? 8 : st.lum === 'off' && st.attendu ? 5.5 : 3.5;     // mm, pour le dessin
+  function rendre(){
+    $$('[data-l]', $('#cam-lumiere')).forEach(b => b.setAttribute('aria-pressed', b.dataset.l === st.lum ? 'true' : 'false'));
+    const p = pupille(), rP = 7 + p * 5.2;
+    let h = '<rect x="0" y="0" width="420" height="230" fill="transparent"/>';
+    /* l'œil vu de face */
+    h += '<path d="M20 115 Q105 35 190 115 Q105 195 20 115 Z" class="d-doux" stroke-width="1.5"/>';
+    h += '<circle cx="105" cy="115" r="56" fill="#5B7FA6"/><circle cx="105" cy="115" r="' + rP.toFixed(1) + '" fill="#0E0E14"/>';
+    h += '<text x="105" y="210" text-anchor="middle" class="d-txt">' + (st.dilate ? 'pupille dilatée : « 8 mm »' : st.lum === 'off' && st.attendu ? 'pupille plus grande (pièce sombre)' : 'pupille petite (« 3-4 mm »)') + '</text>';
+    /* la photo */
+    h += '<rect x="230" y="20" width="170" height="170" rx="8" fill="#0B0B10"/>';
+    const d = st.derniere;
+    if(d){
+      const lum = d.etat === 'noire' ? 0.12 : d.etat === 'sombre' ? 0.42 : 1;
+      h += '<defs><filter id="cam-flou"><feGaussianBlur stdDeviation="' + (d.flou ? 5 : 0) + '"/></filter></defs>';
+      h += '<g filter="url(#cam-flou)" opacity="' + lum + '"><circle cx="315" cy="105" r="72" fill="#D9643F"/><circle cx="340" cy="100" r="13" fill="#F4D27A"/>';
+      h += '<circle cx="290" cy="108" r="17" fill="#A9381F" opacity=".7"/>';
+      [[-1, '#8E1F14'], [1, '#B8402A']].forEach(([s, c]) => { h += '<path d="M340 ' + (100 + s * 6) + ' Q300 ' + (100 + s * 50) + ' 255 ' + (100 + s * 42) + '" stroke="' + c + '" stroke-width="3" fill="none"/>'; });
+      h += '</g>';
+      if(d.cligne) h += '<path d="M243 20 L387 20 L387 96 Q315 120 243 96 Z" fill="#C9A38A"/>';
+      h += '<text x="315" y="210" text-anchor="middle" class="d-txt">photo ' + st.photos + ' : ' + d.mot + '</text>';
+    } else h += '<text x="315" y="110" text-anchor="middle" class="d-txt2" style="fill:#9a98a8">aucune photo</text>';
+    $('#cam-svg').innerHTML = h;
+  }
+  function photo(){
+    const opac = $('#cam-opacite').checked, cligne = $('#cam-cligne').checked;
+    if(st.photos >= 2){
+      dire($('#cam-retour'), opac ? '« On se limite à 2 par oeil et on consulte avec l’optométriste » (7.3-d12).' : '« Ne continuer (sic) pas à prendre des photos! On se limite à 2 photos » (7.3-d12). Si la pupille reste trop petite : « on va dilater les yeux pour prendre une meilleure photo » (7.3-d12).', 'bad');
+      return;
+    }
+    st.photos++;
+    const etat = st.dilate || (st.lum === 'off' && st.attendu) ? 'bonne' : st.lum === 'off' ? 'sombre' : 'noire';
+    st.derniere = {etat, flou:opac, cligne, mot:cligne ? 'clignement' : opac ? 'floue' : etat === 'bonne' ? 'utilisable' : etat};
+    let m;
+    if(cligne) m = '« Clignement pendant la capture: Reprendre la photo » (7.3-d12).';
+    else if(opac) m = 'Floue malgré une bonne pupille : « c’est possible qu’il y a une manque (sic) de transparence dans les medias (sic) (cataracte, opacité) » (7.3-d12).';
+    else if(etat === 'noire') m = '« Si la pupille est trop petite, la photo sera sombre ou noire » (7.1-d17). D’abord : « s’assurer que les lumières sont éteintes » (7.3-d12).';
+    else if(etat === 'sombre') m = 'Lumières éteintes, mais la pupille n’a pas eu le temps de grandir : « attendre quelques minutes » (7.3-d12).';
+    else m = 'Image utilisable. Reste à « Vérifier netteté, centrage et exposition » (7.1-d3).';
+    /* le flash referme la pupille : il faudra attendre de nouveau (déduit de 7.3-d12) */
+    if(!st.dilate) st.attendu = false;
+    dire($('#cam-retour'), m + (st.photos === 2 && (cligne || opac || etat !== 'bonne') ? ' C’était la 2e photo : on s’arrête là.' : ''), etat === 'bonne' && !cligne && !opac ? 'ok' : 'bad');
+    rendre();
+  }
+  $('#cam-lumiere').addEventListener('click', e => { const b = e.target.closest('[data-l]'); if(!b) return; st.lum = b.dataset.l; if(st.lum === 'on') st.attendu = false; rendre(); });
+  $('#cam-attendre').addEventListener('click', () => {
+    st.attendu = true; rendre();
+    dire($('#cam-retour'), st.lum === 'off' ? 'Dans le noir, la pupille grandit en quelques minutes ' + '(déduit de 7.3-d12).' : 'Attendre ne sert à rien si la pièce reste éclairée : « s’assurer que les lumières sont éteintes » (7.3-d12).');
+  });
+  $('#cam-gouttes').addEventListener('click', () => {
+    st.dilate = true; st.photos = 0; rendre();
+    dire($('#cam-retour'), '« Parfois on doit utiliser des gouttes pour dilater les pupilles afin d’avoir une image utilisable » (7.1-d17) : « Before Dilation 3-4 mm », « After Dilation 8 mm » (7.1-d18).');
+  });
+  $('#cam-photo').addEventListener('click', photo);
+  $('#cam-nouveau').addEventListener('click', () => {
+    Object.assign(st, {lum:'on', attendu:false, dilate:false, photos:0, derniere:null});
+    $('#cam-opacite').checked = false; $('#cam-cligne').checked = false; dire($('#cam-retour'), ''); rendre();
+  });
+  rendre();
+};
+
+/* ---------- le fond d'œil : explorer, se tester, les fibres ; les fonds normaux ---------- */
+INIT.fond = root => {
+  let mode = 'explorer', pig = 'clair', sel = null;
+  const PAP = [262, 150], MAC = [140, 152];
+  /* les quatre arcades : artère (claire, fine) et veine (foncée, large), en haut et en bas */
+  const arcade = (s, dy) => 'M' + (PAP[0] - 4) + ' ' + (PAP[1] + s * 4) + ' C ' + (PAP[0] - 40) + ' ' + (PAP[1] + s * (52 + dy)) + ', ' + (MAC[0] + 25) + ' ' + (MAC[1] + s * (64 + dy)) + ', ' + (MAC[0] - 72) + ' ' + (MAC[1] + s * (40 + dy));
+  const POS = {fovea:[MAC[0], MAC[1]], papille:[PAP[0] + 22, PAP[1] - 26], veine:[196, 72], macula:[MAC[0] - 34, MAC[1] + 30], artere:[200, 224]};
+  function rendre(){
+    $$('[data-m]', $('#fo-mode')).forEach(b => b.setAttribute('aria-pressed', b.dataset.m === mode ? 'true' : 'false'));
+    $$('[data-p]', $('#fo-pigment')).forEach(b => b.setAttribute('aria-pressed', b.dataset.p === pig ? 'true' : 'false'));
+    const P = PIGMENTS[pig];
+    let h = '<defs><clipPath id="fo-clip"><circle cx="180" cy="150" r="140"/></clipPath>' +
+      '<radialGradient id="fo-mac"><stop offset="0" stop-color="' + P.centre + '"/><stop offset="1" stop-color="' + P.fond + '" stop-opacity="0"/></radialGradient></defs>';
+    h += '<rect width="360" height="300" fill="#0B0B10"/><g clip-path="url(#fo-clip)"><circle cx="180" cy="150" r="140" fill="' + P.fond + '"/>';
+    if(P.tigre) for(let k = 0; k < 14; k++){ const y = 30 + k * 19; h += '<path d="M40 ' + y + ' Q120 ' + (y + 14) + ' 200 ' + (y - 6) + ' T340 ' + (y + 4) + '" stroke="#E07A4E" stroke-width="7" fill="none" opacity=".55"/>'; }
+    h += '<circle cx="' + MAC[0] + '" cy="' + MAC[1] + '" r="46" fill="url(#fo-mac)"' + (mode === 'explorer' ? ' class="zone-fo' + (sel === 'macula' ? ' sel' : '') + '" data-z="macula" tabindex="0" role="button" aria-label="Macula"' : '') + '/>';
+    if(mode === 'fibres') for(let k = -6; k <= 6; k++){ if(!k) continue; const y = PAP[1] + k * 18; h += '<path d="M' + (PAP[0] + 4) + ' ' + PAP[1] + ' Q' + (PAP[0] - 70) + ' ' + y + ' ' + (MAC[0] - 30 + Math.abs(k) * 4) + ' ' + (MAC[1] + k * 22) + '" stroke="#F6E2B8" stroke-width="1.2" fill="none" opacity=".7"/>'; }
+    [[-1, 0], [1, 6]].forEach(([s, dy]) => {
+      h += '<path d="' + arcade(s, dy + 8) + '" stroke="#7C1A10" stroke-width="6" fill="none"' + (mode === 'explorer' ? ' class="zone-fo' + (sel === 'veine' ? ' sel' : '') + '" data-z="veine" tabindex="0" role="button" aria-label="Veine"' : '') + '/>';
+      h += '<path d="' + arcade(s, dy - 6) + '" stroke="#C4472E" stroke-width="3.5" fill="none"' + (mode === 'explorer' ? ' class="zone-fo' + (sel === 'artere' ? ' sel' : '') + '" data-z="artere" tabindex="0" role="button" aria-label="Artère"' : '') + '/>';
+    });
+    if(P.jeune) [[150, 100], [205, 150], [150, 205], [110, 150]].forEach(([x, y]) => { h += '<ellipse cx="' + x + '" cy="' + y + '" rx="34" ry="9" fill="#FFF6E8" opacity=".35" transform="rotate(' + (x === 150 ? 0 : 90) + ' ' + x + ' ' + y + ')"/>'; });
+    h += '<circle cx="' + PAP[0] + '" cy="' + PAP[1] + '" r="20" fill="#F2D27C"' + (mode === 'explorer' ? ' class="zone-fo' + (sel === 'papille' ? ' sel' : '') + '" data-z="papille" tabindex="0" role="button" aria-label="Nerf optique (papille)"' : '') + '/>';
+    h += '<circle cx="' + MAC[0] + '" cy="' + MAC[1] + '" r="6" fill="' + P.centre + '" stroke="#2A0E06" stroke-width="1"' + (mode === 'explorer' ? ' class="zone-fo' + (sel === 'fovea' ? ' sel' : '') + '" data-z="fovea" tabindex="0" role="button" aria-label="Fovéa"' : '') + '/>';
+    h += '</g>';
+    if(mode === 'test') FOND_TEST.forEach((z, k) => { const [x, y] = POS[z]; h += '<circle cx="' + x + '" cy="' + y + '" r="11" fill="#FFFFFF" stroke="#1B1930" stroke-width="1.5"/><text x="' + x + '" y="' + (y + 4) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#1B1930">' + (k + 1) + '</text>'; });
+    if(mode === 'fibres') h += '<text x="180" y="292" text-anchor="middle" class="d-txt2" style="fill:#e8e4f2">les fibres convergent vers la papille</text>';
+    $('#fo-svg').innerHTML = h;
+    $('#fo-pig-txt').innerHTML = P.txt;
+  }
+  function panneau(){
+    const el = $('#fo-panneau');
+    if(mode === 'explorer'){
+      el.innerHTML = sel ? '<div class="fiche-verre"><h4>' + esc(FOND_Z[sel].t) + '</h4><p style="margin:0;font-size:15px">' + FOND_Z[sel].p + '</p></div>'
+        : '<div class="fiche-verre"><h4>Touche une structure</h4><p style="margin:0;font-size:15px">Papille (le nerf optique), artère, veine, macula, fovéa.</p></div>';
+    } else if(mode === 'test'){
+      const opts = '<option value="">—</option>' + Object.keys(FOND_Z).map(z => '<option value="' + z + '">' + esc(FOND_Z[z].t) + '</option>').join('');
+      el.innerHTML = '<div class="fo-test">' + FOND_TEST.map((z, k) => '<label class="fo-rep"><span>' + (k + 1) + '</span><select data-k="' + k + '" aria-label="Repère ' + (k + 1) + '">' + opts + '</select></label>').join('') +
+        '</div><div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="fo-verif">Vérifier</button></div><p class="retour" id="fo-test-retour" aria-live="polite"></p>';
+      $('#fo-verif').addEventListener('click', () => {
+        let ok = 0;
+        $$('select[data-k]', el).forEach(s => { const bon = s.value === FOND_TEST[+s.dataset.k]; ok += bon; s.classList.toggle('bon', bon); s.classList.toggle('faux', !bon && !!s.value); });
+        dire($('#fo-test-retour'), ok + ' sur 5.' + (ok === 5 ? ' Les cinq structures de la diapo 7.1-d5.' : ' Rappel : la fovéa est le centre de la macula ; la papille est le disque clair d’où sortent les vaisseaux.'), ok === 5 ? 'ok' : 'bad');
+      });
+    } else el.innerHTML = '<div class="fiche-verre"><h4>La couche de fibres nerveuses</h4><p style="margin:0;font-size:15px">« Les fibres nerveuses qui forment le nerf optique » ' + S('7.2-d6') + '. Elles courent à la surface de la rétine et rejoignent toutes la papille ; à l’OCT, c’est la couche N, qui « formeront le nerf optique » ' + S('7.2-d2') + '. Le tracé est schématique ' + DED + ' : le dessin fait en classe ' + S('7.1-d7') + ' fait foi.</p></div>';
+  }
+  $('#fo-mode').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if(!b) return; mode = b.dataset.m; sel = null; rendre(); panneau(); });
+  $('#fo-pigment').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if(!b) return; pig = b.dataset.p; rendre(); });
+  const choisir = z => { sel = z; rendre(); panneau(); };
+  $('#fo-svg').addEventListener('click', e => { const g = e.target.closest('[data-z]'); if(g) choisir(g.dataset.z); });
+  $('#fo-svg').addEventListener('keydown', e => { const g = e.target.closest('[data-z]'); if(g && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); choisir(g.dataset.z); } });
+  rendre(); panneau();
+};
+
+/* ---------- OCT : test 1, test 2, la fixation ratée ; les sept lettres ; la cornée ---------- */
+INIT['oct-tests'] = root => {
+  let test = 't1', montrer = false;
+  /* la coupe de la macula : bandes de l'avant (haut) vers l'arrière (bas), creux de la fovéa au centre */
+  const fov = x => Math.exp(-((x - 320) ** 2) / (2 * 46 * 46));
+  /* [épaisseur, couleur, part amincie à la fovéa] : N, G, (couches internes), P, E, B, C ; chaque bande commence où
+     finit la précédente, et le creux se résorbe vers l'arrière : l'épithélium, Bruch et la choroïde restent plats */
+  const BANDES = [[14, '#E9E4D6', 1], [22, '#9F9AA6', 1], [26, '#6E6A78', 0.55], [12, '#C9C2B4', 0.15], [8, '#F7F2E6', 0], [3, '#FFFFFF', 0], [40, '#55505F', 0]];
+  const CREUX = BANDES.reduce((s, b) => s + b[0] * b[2], 0);
+  function macula(h){
+    let y0 = 60, creux = CREUX;
+    BANDES.forEach(([ep, c, a]) => {
+      const yA = y0, cA = creux, top = x => yA + cA * fov(x), bas = x => top(x) + ep * (1 - a * fov(x));
+      let d = 'M20 ' + top(20).toFixed(1);
+      for(let x = 26; x <= 620; x += 6) d += ' L' + x + ' ' + top(x).toFixed(1);
+      for(let x = 620; x >= 20; x -= 6) d += ' L' + x + ' ' + bas(x).toFixed(1);
+      h.push('<path d="' + d + ' Z" fill="' + c + '"/>');
+      y0 += ep; creux -= ep * a;
+    });
+  }
+  /* centres des sept zones sur la coupe de la macula (numéros 1 à 7) */
+  const ZONES = {1:[120, 67], 2:[200, 85], 3:[320, 60 + CREUX - 6], 4:[440, 128], 5:[500, 138], 6:[560, 143], 7:[380, 175]};
+  function rendre(){
+    $$('[data-t]', $('#ot-test')).forEach(b => b.setAttribute('aria-pressed', b.dataset.t === test ? 'true' : 'false'));
+    /* au téléphone, la coupe rétrécit : repères et textes grossissent d'autant, pour rester lisibles (au moins 10 px) */
+    const k = Math.max(1, (10 / 11.5) * 640 / Math.max(280, $('#ot-svg').clientWidth || 640)), fs = (n => 'font-size="' + (n * k).toFixed(1) + '"');
+    const h = ['<rect width="640" height="250" fill="#0B0B10"/>'];
+    if(test === 't2'){
+      /* la papille : les couches profondes de la rétine s'arrêtent au bord du disque ; seules les fibres (N)
+         plongent dans l'excavation et descendent en nerf optique */
+      const cup = x => 78 * Math.exp(-((x - 320) ** 2) / (2 * 30 * 30));
+      const bord = x => 6 * Math.exp(-((x - 320) ** 2) / (2 * 40 * 40));
+      const coupe = (y0, ep, c) => [[20, 284], [356, 620]].map(([a, b]) => { let d = 'M' + a + ' ' + (y0 + bord(a)).toFixed(1); for(let x = a; x <= b; x += 6) d += ' L' + x + ' ' + (y0 + bord(x)).toFixed(1); for(let x = b; x >= a; x -= 6) d += ' L' + x + ' ' + (y0 + bord(x) + ep).toFixed(1); return '<path d="' + d + ' Z" fill="' + c + '"/>'; }).join('');
+      h.push('<path d="M296 112 L280 246 L360 246 L344 112 Z" fill="#CFC8BA" opacity=".45"/>');
+      let fib = 'M20 60'; for(let x = 20; x <= 620; x += 6) fib += ' L' + x + ' ' + (60 + cup(x)).toFixed(1); for(let x = 620; x >= 20; x -= 6) fib += ' L' + x + ' ' + (80 + cup(x) * 0.9).toFixed(1);
+      h.push('<path d="' + fib + ' Z" fill="#E9E4D6"/>', coupe(80, 40, '#7D7887'), coupe(120, 8, '#F7F2E6'), coupe(128, 46, '#55505F'));
+      h.push('<text x="620" y="40" text-anchor="end" class="d-txt" style="fill:#F2EDE4;font-size:' + (12 * k).toFixed(1) + 'px">papille : la rétine s’interrompt</text><text x="372" y="232" class="d-txt" style="fill:#F2EDE4;font-size:' + (12 * k).toFixed(1) + 'px">nerf optique</text>');
+    } else {
+      macula(h);
+      h.push('<text x="320" y="36" text-anchor="middle" class="d-txt" style="fill:#F2EDE4;font-size:' + (12 * k).toFixed(1) + 'px">' + (test === 'rate' ? 'test 2 demandé… mais c’est la macula' : 'la fovéa : une dépression') + '</text>');
+      if(test === 'rate') h.push('<rect x="4" y="4" width="632" height="242" fill="none" stroke="#D9473A" stroke-width="4" rx="6"/>');
+      else Object.keys(ZONES).forEach(n => {
+        const [x, y] = ZONES[n], lettre = OT_LETTRES.find(o => o.z === +n).l;
+        h.push('<circle cx="' + x + '" cy="' + y + '" r="' + (10 * k).toFixed(1) + '" fill="#FFFFFF" stroke="#1B1930" stroke-width="1.5"/><text x="' + x + '" y="' + (y + 4 * k).toFixed(1) + '" text-anchor="middle" ' + fs(11.5) + ' font-weight="700" fill="#1B1930">' + (montrer ? lettre : n) + '</text>');
+      });
+    }
+    $('#ot-svg').innerHTML = h.join('');
+    $('#ot-txt').innerHTML = test === 't1' ? '« Test 1: Rétine centrale sur OCT. On voit une dépression qui est la fovea. Présentation typique. Prendre OD et OS » ' + S('7.2-d1')
+      : test === 't2' ? '« Test 2: Disc (papille, nerf optique) Apparence typique sur OCT. On devrait voir cette structure dans l’écran. Prendre OD et OS » ' + S('7.2-d5')
+      : 'Le creux régulier, c’est la fovéa : « Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc » ' + S('7.3-d13') + '. On rappelle la cible et on refait le test 2 ' + DED + '.';
+  }
+  /* les lettres : un choix par zone */
+  const opts = '<option value="">—</option>' + OT_LETTRES.map(o => '<option value="' + o.l + '">' + o.l + '</option>').join('');
+  $('#ot-lettres').innerHTML = Object.keys(ZONES).map(n => '<label class="fo-rep"><span>' + n + '</span><select data-z="' + n + '" aria-label="Zone ' + n + '">' + opts + '</select></label>').join('');
+  $('#ot-verif').addEventListener('click', () => {
+    if(test !== 't1'){ test = 't1'; rendre(); }
+    let ok = 0;
+    $$('select[data-z]', $('#ot-lettres')).forEach(s => { const bon = OT_LETTRES.find(o => o.z === +s.dataset.z).l === s.value; ok += bon; s.classList.toggle('bon', bon); s.classList.toggle('faux', !bon && !!s.value); });
+    dire($('#ot-lettres-retour'), ok + ' sur 7.' + (ok === 7 ? ' De l’avant vers l’arrière : N, G, P, E, B, C ; F au fond du creux.' : ' Indice : la lumière traverse d’abord les fibres (N) et les cellules ganglionnaires (G) ; les photorécepteurs (P) sont en arrière, sur l’épithélium pigmentaire (E).'), ok === 7 ? 'ok' : 'bad');
+  });
+  $('#ot-montrer').addEventListener('click', () => { montrer = !montrer; test = 't1'; rendre();
+    dire($('#ot-lettres-retour'), montrer ? OT_LETTRES.map(o => o.z + ' = ' + o.t).join(' · ') : ''); });
+  $('#ot-test').addEventListener('click', e => { const b = e.target.closest('[data-t]'); if(b){ test = b.dataset.t; rendre(); } });
+  /* la cornée : quatre couches nommées (7.2-d7) */
+  /* une bande bombée vers le haut (x de 20 à 290), quatre couches ; les noms à droite, reliés par un trait */
+  const yC = (y0, x) => y0 + 0.0016 * (x - 170) ** 2;
+  const courbe = y0 => { let d = ''; for(let x = 20; x <= 290; x += 6) d += (x === 20 ? 'M' : ' L') + x + ' ' + yC(y0, x).toFixed(1); return d; };
+  let c = '<rect width="400" height="170" fill="#0B0B10"/>';
+  const COUCHES = [['épithélium', 44, 8, '#F7F2E6', 30], ['Bowman', 50.5, 1.5, '#CFC8BA', 56], ['stroma', 74, 44, '#8D8797', 92], ['endothélium', 98, 3, '#E9E4D6', 128]];
+  COUCHES.forEach(([t, y0, ep, col, yl]) => {
+    c += '<path d="' + courbe(y0) + '" stroke="' + col + '" stroke-width="' + ep + '" fill="none"/>';
+    c += '<line x1="292" y1="' + yC(y0, 290).toFixed(1) + '" x2="312" y2="' + (yl - 4) + '" stroke="#B9B4C6" stroke-width="1"/><text x="316" y="' + yl + '" class="d-txt" style="fill:#F2EDE4">' + t + '</text>';
+  });
+  c += '<text x="20" y="160" class="d-txt2" style="fill:#b9b4c6">la 5e couche, Descemet, ne se voit pas</text>';
+  $('#ot-cornee').innerHTML = c;
+  rendre();
+  /* la largeur change (téléphone tourné, panneau ouvert) : on redessine, une image plus tard */
+  if(typeof ResizeObserver !== 'undefined') new ResizeObserver(() => requestAnimationFrame(rendre)).observe($('#ot-svg'));
+};
+
+/* ---------- ⑦ épaisseur et pression : la table, la calculatrice ---------- */
+INIT.pression = root => {
+  const tb = $('#pr-table tbody'), moitie = TABLE_PIO.length / 2, signeC = c => (c > 0 ? '+' : c < 0 ? '−' : '') + Math.abs(c);
+  tb.innerHTML = Array.from({length:moitie}, (_, k) => {
+    const a = TABLE_PIO[k], b = TABLE_PIO[k + moitie];
+    return '<tr><td class="n" data-e="' + a[0] + '">' + a[0] + '</td><td class="n" data-e="' + a[0] + '">' + signeC(a[1]) + '</td><td class="n" data-e="' + b[0] + '">' + b[0] + '</td><td class="n" data-e="' + b[0] + '">' + signeC(b[1]) + '</td></tr>';
+  }).join('');
+  function rendre(){
+    const mes = +$('#pr-mes').value, [e, c] = TABLE_PIO[+$('#pr-ep').value], cor = mes + c;
+    $('#pr-mes-out').textContent = mes + ' mmHg'; $('#pr-ep-out').textContent = e + ' µm';
+    $('#pr-res').innerHTML = cor + '<small>mmHg</small>';
+    $('#pr-calc').innerHTML = 'Table : ' + e + ' µm → ' + signeC(c) + '<br>⑦ ' + mes + (c >= 0 ? ' + ' : ' − ') + Math.abs(c) + ' = <b>' + cor + ' mmHg</b>';
+    dire($('#pr-sens'), e < 545 ? 'Plus mince que 545 µm : « la mesure sera sous-estimée » (7.2-d11). On ajoute.'
+      : e > 545 ? 'Plus épaisse que 545 µm : « la mesure sera sur-estimée » (7.2-d11). On retranche.' : '545 µm : l’épaisseur du calibrage. Aucune correction.');
+    $$('td[data-e]', tb).forEach(td => td.classList.toggle('sel', +td.dataset.e === e));
+  }
+  ['pr-mes', 'pr-ep'].forEach(id => $('#' + id).addEventListener('input', rendre));
+  rendre();
+  blocsAToi('pression', $('#atoi-pression'));
+};
+
+/* ---------- artefacts : que fais-tu ? ---------- */
+INIT.artefacts = root => {
+  let cas = SCEN_ART[0].id, fait = false;
+  $('#ar-cas').innerHTML = SCEN_ART.map(s => '<button type="button" class="puce" data-s="' + s.id + '">' + esc(s.app + ' · ' + s.t) + '</button>').join('');
+  function rendre(){
+    const S0 = SCEN_ART.find(s => s.id === cas); fait = false;
+    $$('[data-s]', $('#ar-cas')).forEach(b => b.setAttribute('aria-pressed', b.dataset.s === cas ? 'true' : 'false'));
+    $('#ar-situation').innerHTML = '<p style="margin:0"><b>' + esc(S0.app) + '.</b> ' + esc(S0.s) + ' Que fais-tu ?</p>';
+    $('#ar-choix').innerHTML = S0.choix.map(c => '<button type="button" class="puce" data-c="' + c[0] + '" style="text-align:left;border-radius:10px">' + esc(c[1]) + '</button>').join('');
+    dire($('#ar-retour'), '');
+  }
+  $('#ar-cas').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if(b){ cas = b.dataset.s; rendre(); } });
+  $('#ar-choix').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if(!b || fait) return;
+    const S0 = SCEN_ART.find(s => s.id === cas), ok = b.dataset.c === S0.bon; fait = true;
+    b.classList.add(ok ? 'bon' : 'faux'); if(!ok) $('[data-c="' + S0.bon + '"]', $('#ar-choix')).classList.add('bon');
+    dire($('#ar-retour'), (ok ? 'Oui. ' : 'Non. ') + S0.e, ok ? 'ok' : 'bad');
+    if(typeof Pratique !== 'undefined') Pratique.noter(S0.app === 'OCT' ? 'T7.15' : 'T7.14', {premier:ok, aide:false, resolu:ok, err:ok ? [] : ['art.' + S0.id]});
+  });
+  rendre();
+};
+
+/* ======================================================================
    À TOI et ARÈNE (learning-blueprint.md §4 et §4.7), d'après l'analyse :
    analyse/to-m05_kc.md (T5.5, T5.10 à T5.13) et analyse/to-profil.md §9.
    Le moteur est commun (_commun/pratique.js, _commun/arene.js). Ici, ce qui
@@ -5478,7 +6371,7 @@ const GEN_TO = {
 
 /* ---------- lire et juger une réponse ---------- */
 function lireNb(t){
-  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/(dioptries?|mm|m|d)$/i, '');
+  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/(dioptries?|mmhg|µm|um|microns?|mm|m|d)$/i, '');
   return /^[+-]?(\d+\.?\d*|\.\d+)$/.test(s) ? parseFloat(s) : null;
 }
 function lireMer(t){
@@ -5671,6 +6564,61 @@ const ARENE = {
     return out;
   }
 };
+/* ---------- module 7 : ⑦ (T7.11, T7.12) ---------- */
+/* ---------- 7.2-d12 : « Table de valeurs corrigées du tonomètre » (µm → mmHg), recopiée de l'image,
+   vérifiée par build/distill-m7/recalcul_to7.py ---------- */
+const TABLE_PIO = [[410, 10], [415, 10], [420, 9], [425, 9], [430, 8], [435, 8], [440, 7], [445, 7], [455, 6], [465, 6],
+  [475, 5], [485, 4], [495, 4], [505, 3], [515, 2], [525, 1], [535, 1], [545, 0], [555, -1], [565, -1], [575, -2],
+  [585, -3], [595, -4], [605, -4], [615, -5], [625, -6], [635, -6], [645, -7]];
+/* ---------- ⑦ : les générateurs (T7.11, T7.12) ---------- */
+const UNIQUES_PIO = TABLE_PIO.filter(l => TABLE_PIO.filter(m => m[1] === l[1]).length === 1);   // 475, 505, 515, 545, 575, 585, 615, 645
+const sensPIO = e => e < 545 ? 'plus mince que 545 µm : lecture sous-estimée, on ajoute' : e > 545 ? 'plus épaisse que 545 µm : lecture surestimée, on retranche' : '545 µm : l’épaisseur du calibrage, aucune correction';
+const opPIO = (a, c) => a + (c >= 0 ? ' + ' : ' − ') + Math.abs(c);
+const voisinPIO = e => { const k = TABLE_PIO.findIndex(l => l[0] === e); return [TABLE_PIO[k - 1], TABLE_PIO[k + 1]].filter(Boolean); };
+Object.assign(GEN_TO, {
+  'pio-cor': () => {
+    const [e, c] = auHasard(TABLE_PIO.filter(l => l[0] !== 545)), mes = 10 + Math.floor(Math.random() * 19), rep = mes + c;
+    const pieges = [{id:'signe', v:mes - c, t:0.4, m:'Signe inversé : ' + sensPIO(e) + ' (7.2-d11). La table donne ' + (c > 0 ? '+' : '−') + Math.abs(c) + '.'},
+      {id:'oubli', v:mes, t:0.4, m:'Tu as gardé la lecture : ⑦ lui ajoute la correction de la table.'}];
+    voisinPIO(e).forEach(l => { if(l[1] !== c) pieges.push({id:'voisin', v:mes + l[1], t:0.4, m:'Ligne voisine (' + l[0] + ' µm) : relis la ligne de ' + e + ' µm.'}); });
+    return {kc:'T7.11', type:'nombre', u:'mmHg', rep, tol:0.4, pieges,
+      q:'Le tonomètre lit <b>' + mes + ' mmHg</b> ; la cornée mesure <b>' + e + ' µm</b>. Quelle est la PIO corrigée, en mmHg ?',
+      dem:['Le sens : ' + sensPIO(e), 'Table : ' + e + ' µm → ' + (c > 0 ? '+' : '−') + Math.abs(c), '⑦ ' + opPIO(mes, c) + ' = ' + rep + ' mmHg', rep + ' mmHg : ' + (c > 0 ? 'plus haut' : 'plus bas') + ' que la lecture, comme prévu'],
+      etapes:['Le sens', 'La ligne de la table', '⑦ Ajouter la correction', 'Vérifier le sens'], res:2, affiche:rep + ' mmHg',
+      concept:'« Si la cornée est plus mince, la mesure sera sous-estimée » ; « Si la cornée est plus épaisse, la mesure sera sur-estimée » (7.2-d11) : la table donne de quoi corriger.'};
+  },
+  'pio-mes': () => {
+    const [e, c] = auHasard(TABLE_PIO.filter(l => l[0] !== 545)), mes = 10 + Math.floor(Math.random() * 19), cor = mes + c;
+    return {kc:'T7.12', type:'nombre', u:'mmHg', rep:mes, tol:0.4,
+      pieges:[{id:'ajoute', v:cor + c, t:0.4, m:'À rebours, on retire la correction : mesurée = corrigée − correction (déduit).'}, {id:'oubli', v:cor, t:0.4, m:'C’est la valeur corrigée : la lecture du tonomètre est avant la correction.'}],
+      q:'La PIO corrigée est <b>' + cor + ' mmHg</b> pour une cornée de <b>' + e + ' µm</b>. Qu’avait lu le tonomètre, en mmHg ?',
+      dem:['⑦ à rebours : mesurée = corrigée − correction', 'Table : ' + e + ' µm → ' + (c > 0 ? '+' : '−') + Math.abs(c), cor + (c > 0 ? ' − ' : ' + ') + Math.abs(c) + ' = ' + mes + ' mmHg', 'Contrôle : ' + opPIO(mes, c) + ' = ' + cor],
+      etapes:['Isoler la mesure', 'La ligne de la table', 'Retirer la correction', 'Contrôler dans le bon sens'], res:2, affiche:mes + ' mmHg',
+      concept:'⑦ lue à l’envers (déduit) : la lecture du tonomètre est la valeur avant correction.'};
+  },
+  'pio-ep': () => {
+    const [e, c] = auHasard(UNIQUES_PIO.filter(l => l[0] !== 545)), mes = 12 + Math.floor(Math.random() * 15), cor = mes + c;
+    const oppose = TABLE_PIO.find(l => l[1] === -c);
+    const pieges = oppose ? [{id:'sens', v:oppose[0], t:0.5, m:'Sens inversé : une correction ' + (c > 0 ? 'positive vient d’une cornée plus mince' : 'négative vient d’une cornée plus épaisse') + ' que 545 µm (7.2-d11).'}] : [];
+    return {kc:'T7.12', type:'nombre', u:'µm', rep:e, tol:0.5, pieges,
+      q:'Le tonomètre lit <b>' + mes + ' mmHg</b> ; la PIO corrigée est <b>' + cor + ' mmHg</b>. Quelle est l’épaisseur de la cornée selon la table, en µm ?',
+      dem:['La correction : ' + cor + ' − ' + mes + ' = ' + (c > 0 ? '+' : '−') + Math.abs(c), 'Le sens : ' + (c > 0 ? 'positive → cornée plus mince que 545 µm' : 'négative → cornée plus épaisse que 545 µm'), 'Table : ' + (c > 0 ? '+' : '−') + Math.abs(c) + ' → ' + e + ' µm (la seule ligne)', e + ' µm'],
+      etapes:['La correction', 'Le sens', 'La ligne de la table', 'L’épaisseur'], res:2, affiche:e + ' µm',
+      concept:'Une correction positive vient d’une cornée mince, une négative d’une cornée épaisse (7.2-d11, d12).'};
+  }
+});
+POURQUOI_TO['T7.11'] = [
+  () => ({id:'pq-mince', q:'Pourquoi ajoute-t-on la correction quand la cornée est mince ?', choix:['la lecture est sous-estimée : la vraie pression est plus haute', 'la lecture est surestimée', 'pour arrondir'], ok:0,
+    concept:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11).'}),
+  () => ({id:'pq-545', q:'Pourquoi la table donne-t-elle 0 à 545 µm ?', choix:['les tonomètres sont calibrés pour 545 µm', '545 µm est la cornée la plus mince', 'c’est la moyenne des patients du cours'], ok:0,
+    concept:'« La plupart des tonomètres sont calibrés pour une épaisseur de cornée de 545microns (0.52mm) » (7.2-d11) ; 545 µm font 0,545 mm.'})
+];
+POURQUOI_TO['T7.12'] = POURQUOI_TO['T7.11'];
+A_TOI.pression = [{kc:'T7.11', titre:'⑦ Corriger une pression avec la table', gens:[{id:'pio-cor', pas:'pression.3'}]},
+  {kc:'T7.12', titre:'⑦ à rebours : la lecture, ou l’épaisseur', gens:[{id:'pio-mes', inv:true, pas:'pression.4'}, {id:'pio-ep', inv:true, pas:'pression.4'}]}];
+Object.assign(ARENE_GENS, {pression:['pio-cor', 'pio-mes', 'pio-ep']});
+Object.assign(PAS_GEN, {'pio-cor':'pression.3', 'pio-mes':'pression.4', 'pio-ep':'pression.4'});
+Object.assign(ARENE.prealables, {camera:['oct'], fond:['camera'], 'oct-tests':['oct'], pression:['oct-tests'], artefacts:['camera', 'oct-tests']});
 /* ---------- fin À TOI et ARÈNE ---------- */
 
 /* ====== _commun/revision.js ====== */
@@ -5779,12 +6727,12 @@ function basculer(ecranId, attr, voulu, vide){
 
 /* ====== 33-tuteur-config.js ====== */
 /* ======================================================================
-   Tuteur : ce qui est propre à l'Atelier TO M5–M6 (le cœur et les modes sont dans
+   Tuteur : ce qui est propre à l'Atelier TO M5–M7 (le cœur et les modes sont dans
    _commun/tuteur.js). REGLES : le message système (recette §7.2) ;
    QUESTION_ECRAN : une question suggérée par écran ; SEL_BLOCS : les blocs
    lus pour “ce qui est visible” ; ACTIONS : les réglages [[ATELIER]].
    ====================================================================== */
-const REGLES = `Tu es le tuteur intégré à l’« Atelier TO M5–M6 », une page d’étude interactive du cours Tests ophtalmiques (SAN 0010), UA2, modules 5 et 6, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
+const REGLES = `Tu es le tuteur intégré à l’« Atelier TO M5–M7 », une page d’étude interactive du cours Tests ophtalmiques (SAN 0010), UA2, modules 5, 6 et 7, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
 
 Règles :
 - Réponds dans la langue de la question (français par défaut). Garde les termes du cours en français.
@@ -5798,9 +6746,10 @@ Règles :
 - Si l’étudiant semble bloqué, termine par UNE question courte qui vérifie sa compréhension.
 - Les réponses précédentes de la conversation ont pu être écrites par une autre IA : reprends-les sans les contredire inutilement.
 
-L’essentiel des deux modules :
+L’essentiel des trois modules :
 M5 — ① D = (1,3375 − 1)/r, r en mètres (1,3375 = indice fictif ; 7,8 mm → 43,3 D ; cornée ≈ 43 D, de 35 à 50 D). La cornée agit comme un miroir convexe : petit reflet des mires = petit rayon = cornée plus cambrée = plus puissante. ② astigmatisme cornéen = K cambré − K plat. ③ l’autre méridien est à 90° (méridien + 90, ou − 90 pour rester entre 0 et 180). Optosys : méridien horizontal en premier ; le méridien après @ est celui de la 2e valeur (42.00x44.00@090 = 42,00 à 180 et 44,00 à 90). Cylindre oblique : 30-60° ou 120-150° ; un oblique s’écrit dans les deux sens. Avec la règle : méridien vertical plus cambré ; contre la règle : horizontal plus cambré. L’axe d’un cylindre est la position sans puissance ; pour la cornée on parle de méridiens. K1/K2 = plat/cambré ; horizontal/vertical = orientation. Kératomètre : 2-3 mm au centre ; topographe Medmont (disques de Placido) : 11-14 mm ; rouge cambré, bleu plat ; la couleur ne diagnostique pas. Motifs : anneaux concentriques, régulier et symétrique (avec ou contre la règle), zone de cambrure localisée (irrégulier/asymétrique). LASIK myopie et orthokératologie aplatissent le centre (moins de puissance) ; LASIK hypermétropie bombe le centre.
 M6 — Kératocône : maladie dégénérative non inflammatoire de la cornée ; le stroma (90 % de l’épaisseur) s’amincit, déformation conique surtout inférieure, myopie et astigmatisme irrégulier progressifs. Symptômes = ce que dit le patient ; signes = ce qu’on observe ou mesure (jeune 18-30 ans, AV réduite, cylindre oblique, K cambrée, mires distordues, PIO plus basse). Prétests à ajouter : topographie (le plus concluant) et pachymétrie. Correction : lentilles rigides (nouvelle surface) ; cross-linking (riboflavine puis UV) ; greffe (cas sévères). Verres : simple vision ; doubles foyers ; anti-fatigue 20-38 ans, addition 0,50 à 1,00 D ; progressifs 38 ans+ (presbytie) ; dégressifs (intermédiaire et près) pour presbytes avancés de 52 ans et plus. Multifoyer : la force change quand on descend le verre au lentimètre. Même Rx avec addition : “lunettes de lecture” → dégressif ; “vision de loin” → anti-fatigue ou progressifs. Puissance du bas = puissance du haut + addition (déduit ; l’addition est définie au cours d’Optique). Erreurs fréquentes : ne pas demander s’il a ses lunettes, ni quand il les porte ; multifoyer saisi en simple foyer ; OD et OS mélangés ; + écrit au lieu de –. Lentimètre : R = OD, L = OS ; mire impossible à centrer → prisme possible, à faire vérifier par l’opticien ou l’optométriste. OCT : tomographie par cohérence optique, lumière infrarouge, comparable à une échographie mais avec de la lumière, environ 5 microns ; fibres nerveuses (N, S, T, I), cellules ganglionnaires et IPL (risque de glaucome), pachymétrie ; rouge = hors norme ou difficile à mesurer, pas forcément une pathologie ; vert n’est pas toujours normal ; aucune goutte, test dans l’obscurité.
+M7 — Caméra rétinienne : la photo se prend à travers la pupille ; pupille trop petite = photo sombre ou noire ; lumières éteintes, attendre quelques minutes, dilater si besoin (3-4 mm → 8 mm) ; 2 photos par œil au plus. Rôle de l’assistant : bon patient (vérifier le nom), position et fixation, netteté, centrage, exposition ; le technicien garantit la qualité technique, l’optométriste interprète. Limitations : fixation, pupilles trop petites, opacités. Fond d’œil : fovéa, macula, nerf optique, artère, veine ; choroïde plus pigmentée (macula plus foncée), moins pigmentée, tigroïde : apparences normales ; reflet brillant des jeunes = fibres nerveuses en excellente santé ; on suit un naevus pour ne pas voir d’évolution. OCT : test 1 rétine centrale (la fovéa, une dépression), test 2 papille (disc), OD et OS ; F foveola, N fibres nerveuses, G cellules ganglionnaires, P photorécepteurs, E épithélium pigmentaire, B membrane de Bruch, C choroïde ; cornée : 4 des 5 couches visibles. Pression : les tonomètres sont calibrés pour 545 µm (0,545 mm ; la diapo écrit 0.52mm, une erreur) ; cornée plus mince = lecture sous-estimée (on ajoute la correction), plus épaisse = surestimée (on retranche) ; PIO corrigée = PIO mesurée + correction de la table (forme déduite) ; 20 mmHg → 30 (415 µm), 20 (545), 15 (615). Artefact : image anormale créée par la technique, sans signification diagnostique, qui peut imiter une lésion (fausse croissance d’un naevus). Erreurs : trop sombre → lumières éteintes, dilater si besoin, 2 photos ; sombre à gauche après la droite → attendre quelques minutes ; clignement → reprendre ; toujours flou → opacité possible, 2 par œil, l’optométriste ; OCT : mauvaise fixation (la macula au lieu du disc), le cristallin au lieu de la cornée → refaire, QI dans le rouge → refaire, patient fatigué → arrêter, 3-4 minutes au plus, autre visite.
 Examen UA2 : lundi 16 novembre 2026, 10h00.
 
 DÉMONSTRATION DANS L’ATELIER (facultatif) — si régler un écran aiderait l’étudiant à VOIR ce que tu expliques, termine ta réponse par une seule ligne exactement de cette forme :
@@ -5822,7 +6771,7 @@ Les autres écrans se donnent par leur seul nom : miroir, instruments, mysteres,
 N’ajoute cette ligne que si elle sert vraiment ; l’étudiant cliquera pour l’appliquer.`;
 
 const QUESTION_ECRAN = {
-  accueil:'Par où commencer pour réviser les modules 5 et 6 ?',
+  accueil:'Par où commencer pour réviser les modules 5, 6 et 7 ?',
   miroir:'Pourquoi un petit reflet veut-il dire une cornée plus cambrée ?',
   formule:'Pourquoi faut-il mettre le rayon en mètres ?',
   meridiens:'Comment trouver le deuxième méridien et l’astigmatisme ?',
@@ -5840,6 +6789,11 @@ const QUESTION_ECRAN = {
   situations:'Aide-moi à raisonner sur cette situation sans me donner la réponse.',
   oct:'Explique-moi l’OCT comme je l’expliquerais à un patient.',
   'oct-couleurs':'Pourquoi un secteur rouge n’est-il pas un diagnostic ?',
+  camera:'Pourquoi une petite pupille donne-t-elle une photo noire, et que faire ?',
+  fond:'Comment reconnaître un fond d’œil normal, même foncé ou tigré ?',
+  'oct-tests':'Comment savoir si l’OCT a bien capté la papille au test 2 ?',
+  pression:'Pourquoi ajoute-t-on la correction quand la cornée est mince ?',
+  artefacts:'Comment savoir si c’est un artefact ou une vraie anomalie ?',
   cartes:'Pose-moi trois questions de rappel sur ce que j’ai déjà vu.',
   questions:'Guide-moi sur une question sans me donner la réponse.',
   verifier:'Aide-moi à transformer ces points en questions pour la prof.'
@@ -14005,6 +14959,9 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['to-m56'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 5 et 6, ou le module 7 seul (21 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
+    {d:'2026-11-02', p:['to-m56'], t:'« À toi » sur la table de correction de la pression : des lectures et des cornées toujours nouvelles, jusqu’à trois justes de suite, puis à l’envers (retrouver la lecture, ou l’épaisseur de la cornée).'},
+    {d:'2026-11-02', p:['to-m56'], t:'Le module 7 est arrivé dans l’atelier : la caméra rétinienne, le fond d’œil normal, les deux tests de l’OCT, la pression corrigée selon l’épaisseur de la cornée, et que faire devant une photo ou un scan ratés. Ce sont les parties 6 à 8 du plan.'},
     {d:'2026-11-01', p:['opt-ua2', 'to-m56', 'anat-m6', 'adm-m07'], t:'Dans le « Survol », les diapos tiennent mieux sur un téléphone, et quand une étape apparaît plus bas que l’écran, la diapo descend toute seule pour te la montrer.'},
     {d:'2026-11-01', p:['to-m56', 'anat-m6', 'adm-m07'], t:'Nouveau : le bouton « Survol », en haut de l’atelier. Tout le module en une vingtaine de diapos, environ 15 minutes : une idée par diapo, des schémas et des exemples résolus pas à pas. Commence par là, puis entraîne-toi dans l’atelier.'},
     {d:'2026-11-01', p:['opt-ua2'], t:'Nouveau : le bouton « Survol », en haut du Banc. Tout le module 6 et 7 en 22 diapos, environ 15 minutes : une idée par diapo, des schémas et des exemples résolus pas à pas. Commence par là, puis entraîne-toi dans le Banc.'},
@@ -14133,15 +15090,34 @@ body.ar-ouverte .qdn-btn{display:none}
 function redessinerTheme(){ RAFRAICHIR_THEME.forEach(f => { try{ f(); }catch(e){ console.error(e); } }); }
 /* « Survol » : le module en diapos, une idée par diapo (1er nov.), en tête des outils du haut quand l'atelier en a
    (ATELIER.survol). Le lien est l'adresse de l'artefact ; Lumiere/construire.py le change en lien vers la copie du site. */
+/* « Survol » (recette §3.5) : ATELIER.survol = {url, titre} pour un diaporama, ou une liste [{url, titre, court, detail}]
+   quand l'atelier en a plusieurs (un par module) : le bouton ouvre alors un petit menu */
 function survol(){
-  const s = ATELIER.survol; if(!s || !s.url || $('#btn-survol')) return;
+  const L = [].concat(ATELIER.survol || []).filter(s => s && s.url);
+  if(!L.length || $('#btn-survol')) return;
   const ref = $('#btn-cv') || $('#btn-arene') || $('#btn-tableau-haut') || $('#btn-notes'); if(!ref) return;
-  const a = document.createElement('a');
-  a.className = 'btn btn-survol'; a.id = 'btn-survol'; a.href = s.url;
-  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path class="jouer" d="M10.2 7.6v5.3l4.4-2.65z"/><path d="M12 16.5v3.5M8.5 20h7"/></svg><span class="mot">Survol</span>';
-  a.title = s.titre || 'Survol : tout le module en diapos';
-  a.setAttribute('aria-label', a.title);
-  ref.before(a);
+  const ICONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path class="jouer" d="M10.2 7.6v5.3l4.4-2.65z"/><path d="M12 16.5v3.5M8.5 20h7"/></svg><span class="mot">Survol</span>';
+  if(L.length === 1){
+    const a = document.createElement('a');
+    a.className = 'btn btn-survol'; a.id = 'btn-survol'; a.href = L[0].url;
+    a.innerHTML = ICONE;
+    a.title = L[0].titre || 'Survol : tout le module en diapos';
+    a.setAttribute('aria-label', a.title);
+    ref.before(a);
+    return;
+  }
+  const boite = document.createElement('span'); boite.className = 'survol-boite';
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'btn btn-survol'; b.id = 'btn-survol'; b.innerHTML = ICONE;
+  b.title = 'Survol : les modules en diapos'; b.setAttribute('aria-label', b.title);
+  b.setAttribute('aria-haspopup', 'true'); b.setAttribute('aria-expanded', 'false');
+  const m = document.createElement('div'); m.className = 'survol-menu'; m.id = 'survol-menu'; m.hidden = true;
+  m.innerHTML = L.map(s => '<a href="' + esc(s.url) + '" title="' + esc(s.titre || '') + '"><b>' + esc(s.court || s.titre || 'Survol') + '</b>' + (s.detail ? '<small>' + esc(s.detail) + '</small>' : '') + '</a>').join('');
+  boite.append(b, m); ref.before(boite);
+  const fermer = () => { m.hidden = true; b.setAttribute('aria-expanded', 'false'); };
+  b.addEventListener('click', e => { e.stopPropagation(); m.hidden = !m.hidden; b.setAttribute('aria-expanded', m.hidden ? 'false' : 'true'); if(!m.hidden) m.querySelector('a').focus(); });
+  document.addEventListener('click', e => { if(!m.hidden && !boite.contains(e.target)) fermer(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !m.hidden){ fermer(); b.focus(); } });
 }
 function demarrer(){
   construireRail();
@@ -14255,7 +15231,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'feb0b0b20e5c';
+  const ICI = '50b4d26c2004';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

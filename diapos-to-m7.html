@@ -1,0 +1,1470 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diapos TO M7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos TO M7 : le « Survol » de Tests ophtalmiques (SAN 0010), module 7 (2 nov. 2026) : la caméra rétinienne,
+  l'OCT (suite), l'épaisseur de la cornée et la pression, les artefacts.
+  Contenu : uniquement Guides/UA2-Tests-Ophtalmiques/distilled/to-m07_distilled.md (citations et nombres vérifiés
+  par script là-bas) ; l'ordre et les pièges suivent analyse/to-m07_kc.md.
+  Valeurs et liens déduits, signalés sur leur diapo (.note) : 545 µm = 0,545 mm (la diapo du cours écrit 0.52mm,
+  diapo 13) ; la formule PIO corrigée = PIO mesurée + correction, que le cours n'écrit pas (diapo 15) ; l'ordre des
+  sept lettres, lu sur les figures (diapo 11) ; le repère fovéa / papille, lu sur les figures (diapo 10) ; Descemet,
+  nommée par l'Anatomie M7 (diapo 12) ; refaire le scan en vérifiant la fixation (diapo 19).
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; une seule
+  phrase « À retenir »; au plus un piège, tiré des cartes KC; aucune citation de source ni point en attente; un seul
+  bouton utile : Suite. Code couleur constant :
+  cyan = une bonne image, ce qui est normal   orange = une image ratée, un artefact   violet = ce que fait l'assistant.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : une salle d'examen dans la pénombre. Une diapo = un écran; le schéma à gauche, le texte à droite
+   sur grand écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --bon: #56d3ea;
+  --rate: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --disque: #f3e2a0;
+  --pigment: #04070d;
+  --nuit: #03060b;
+  --reflet: #ffffff;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --bon: #077d93; --rate: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --disque: #fbefc0; --pigment: #2a1a22; --nuit: #1b1e25; --reflet: #ffffff;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --bon: #077d93; --rate: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --disque: #fbefc0; --pigment: #2a1a22; --nuit: #1b1e25; --reflet: #ffffff;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.bon { color: var(--bon); }
+.rate { color: var(--rate); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- rangées : un petit dessin à côté de deux lignes ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+@media (min-width: 880px) {
+  .rang { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
+  .rangs.deux { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+  .rangs.deux .rang { grid-template-columns: minmax(0, 42%) minmax(0, 1fr); }
+}
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- les sept lettres ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; margin: 0; align-items: baseline; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-bon { --c: var(--bon); } .c-rate { --c: var(--rate); } .c-aide { --c: var(--aide); } .c-emm { --c: var(--encre); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--encre); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .lien { stroke: var(--encre); stroke-width: 1.5; fill: none; }
+svg .pt-lien { fill: var(--encre); }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 2.5; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .eclaire { fill: none; stroke: var(--rayon); stroke-width: 10; stroke-opacity: .45; stroke-linecap: round; }
+svg .iris { fill: none; stroke: var(--doux); stroke-width: 5; stroke-linecap: round; }
+svg .verre { fill: var(--c); fill-opacity: .16; stroke: var(--c); stroke-width: 2; }
+svg .palier-fond { fill: var(--fond-2); }
+svg .efface { fill: var(--fond); }
+svg .courbe { fill: none; stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+svg .pt-courbe { fill: var(--encre); }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+svg .barre-d { fill: var(--encre); }
+svg .cou { fill: var(--c); }
+/* la photo du fond d'œil (dessinée en unités du rayon : les épaisseurs de trait sont des attributs) */
+svg .fondo { fill: var(--retine); }
+svg .vx { fill: none; stroke: var(--retine); stroke-linecap: round; }
+svg .disque { fill: var(--disque); stroke: var(--rayon); }
+svg .pig { fill: var(--pigment); }
+svg .pig-t { fill: none; stroke: var(--pigment); stroke-linecap: round; }
+svg .lum { fill: var(--reflet); }
+svg .lum-t { fill: none; stroke: var(--reflet); stroke-linecap: round; }
+svg .nuit { fill: var(--nuit); }
+svg .anneau { fill: none; stroke: var(--c, var(--trait)); }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.8; }
+svg .iris-f { fill: var(--doux); fill-opacity: .55; }
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+  .rangs { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-to-m5-m6.html" title="Retour à l'Atelier TO">← Atelier</a>
+      <p class="marque">TO M7 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 21</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Tests ophtalmiques · SAN 0010 · module 7</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>La caméra, l’OCT et les images ratées</h1>
+            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo. Ensuite, l’atelier sert à t’entraîner.</p>
+            <p class="meta">21 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-bon">une bonne image, ce qui est normal</li>
+              <li class="c-rate">une image ratée, un artefact</li>
+              <li class="c-aide">ce que fait l’assistant</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l’écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="Une photo du fond de l’œil trop sombre, ratée ; l’assistant corrige et reprend ; la nouvelle photo est bonne"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Une image ne sert que si elle est fiable</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fil" aria-label="La caméra ou l’OCT fait une image. Bonne : au dossier, pour l’optométriste. Ratée : l’assistant corrige la cause et reprend"></figure>
+          <div class="texte">
+            <p class="sous">Le module en quatre parties&nbsp;:</p>
+            <ol class="trois">
+              <li><b>La caméra</b>&nbsp;: une photo du fond de l’œil.</li>
+              <li><b>L’OCT</b>&nbsp;: des coupes de la rétine et de la cornée.</li>
+              <li><b>Épaisseur et pression</b>&nbsp;: la cornée fausse la lecture du tonomètre.</li>
+              <li><b>Les artefacts</b>&nbsp;: les images ratées, et quoi faire.</li>
+            </ol>
+            <p>L’assistant obtient une bonne image, reconnaît une image ratée et la reprend, sans s’acharner.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Le technicien garantit la qualité technique&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 3 · à travers la pupille -->
+    <section class="diapo" id="d3" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La caméra rétinienne</p>
+        <h2>La caméra photographie le fond de l’œil à travers la pupille</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="pupille" aria-label="Coupe de l’œil : le flash de la caméra passe par la pupille et éclaire le fond de l’œil ; la caméra en fait une photo"></figure>
+          <div class="texte">
+            <p>«&nbsp;La caméra prend une photo à travers la pupille&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le flash entre par la <b>pupille</b>.</span></li>
+              <li data-pas="2"><span>Il éclaire le <b>fond de l’œil</b>, la rétine.</span></li>
+              <li data-pas="3"><span>La caméra en prend une <b>photo</b>, avec ou sans dilatation de la pupille.</span></li>
+            </ol>
+            <p class="note">Son avantage&nbsp;: «&nbsp;Rapidité de la capture de l’information&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le flash doit atteindre le fond de l’œil&nbsp;: sinon, pas de photo.</p>
+      </div>
+    </section>
+
+    <!-- 4 · le rôle de l'assistant -->
+    <section class="diapo" id="d4" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La caméra rétinienne</p>
+        <h2>L’assistant garantit une photo nette, centrée et bien exposée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="controles" aria-label="Une photo nette, centrée et bien exposée ; trois photos ratées : floue, décentrée, sombre"></figure>
+          <div class="texte">
+            <p class="sous">Son rôle, dans l’ordre&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>S’assurer que c’est le <b>bon patient</b>&nbsp;: vérifier le nom de la personne devant nous.</span></li>
+              <li data-pas="2"><span>Bien <b>positionner</b> le patient et vérifier la <b>fixation</b>.</span></li>
+              <li data-pas="3"><span>«&nbsp;Vérifier netteté, centrage et exposition&nbsp;».</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span><b class="bon">Nette, centrée, bien exposée</b>&nbsp;: c’est le travail de <b class="aide">l’assistant</b>.</p>
+      </div>
+    </section>
+
+    <!-- 5 · à quoi sert la photo -->
+    <section class="diapo" id="d5" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La caméra rétinienne</p>
+        <h2>Une photo se compare d’une visite à l’autre</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="suivi" aria-label="Deux photos du même œil, à deux visites : le naevus a la même taille, pas d’évolution"></figure>
+          <div class="texte">
+            <p>La photo sert à <b>documenter</b>, à <b>comparer</b> au fil du temps, à <b>dépister</b> un risque de pathologie et à <b>suivre</b> son évolution.</p>
+            <ol class="etapes">
+              <li><span>On photographie un <b>naevus</b> de la choroïde.</span></li>
+              <li data-pas="1"><span>À la visite suivante, on place les deux photos côte à côte.</span></li>
+              <li data-pas="2"><span>Il a la même taille&nbsp;: «&nbsp;On ne veut pas voir d’évolution&nbsp;».</span></li>
+            </ol>
+            <p class="note">La photo montre parfois des détails manqués à l’examen du fond d’œil, surtout les défauts des petits vaisseaux.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La photo garde une trace&nbsp;: on compare le même œil d’une visite à l’autre.</p>
+      </div>
+    </section>
+
+    <!-- 6 · trois limites -->
+    <section class="diapo" id="d6" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La caméra rétinienne</p>
+        <h2>Trois choses gâchent une photo&nbsp;: la fixation, la pupille, les opacités</h2>
+        <div class="corps plein">
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="lim-fixation" aria-label="Un œil qui regarde de côté donne une photo décentrée"></figure>
+              <div><h3 class="rate">Le patient fixe mal</h3><p>Il a de la difficulté à fixer&nbsp;: la photo est décentrée.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="lim-pupille" aria-label="Une toute petite pupille donne une photo sombre"></figure>
+              <div><h3 class="rate">La pupille est trop petite</h3><p>La lumière n’atteint pas la rétine&nbsp;: «&nbsp;la photo sera sombre ou noire&nbsp;».</p></div>
+            </div>
+            <div class="rang" data-pas="2">
+              <figure class="visuel" data-fig="lim-opacite" aria-label="Un œil avec une opacité donne une photo floue et voilée"></figure>
+              <div><h3 class="rate">Une opacité dans l’œil</h3><p>Une cataracte, par exemple&nbsp;: la photo reste floue.</p></div>
+            </div>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une photo ratée a une cause&nbsp;: trouve-la avant de reprendre.</p>
+      </div>
+    </section>
+
+    <!-- 7 · un cas : la pupille trop petite -->
+    <section class="diapo" id="d7" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La caméra rétinienne · un cas</p>
+        <h2>La photo sort noire&nbsp;: la pupille est trop petite</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="dilatation" aria-label="Avant : pupille de 3-4 mm, photo sombre. Après dilatation avec des gouttes : pupille de 8 mm, bonne photo"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>La photo de l’œil droit est noire&nbsp;: le flash n’atteint pas le fond.</span></li>
+              <li data-pas="2"><span>D’abord, <b class="aide">«&nbsp;s’assurer que les lumières sont éteintes&nbsp;»</b>.</span></li>
+              <li data-pas="3"><span>Toujours trop petite&nbsp;: <b class="aide">«&nbsp;on va dilater les yeux pour prendre une meilleure photo&nbsp;»</b>. Les gouttes la font passer de 3-4&nbsp;mm à 8&nbsp;mm.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Reprendre photo sur photo n’ouvre pas la pupille&nbsp;: «&nbsp;On se limite à 2 photos&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Photo sombre&nbsp;: on éteint les lumières, puis on dilate, de 3-4&nbsp;mm à 8&nbsp;mm.</p>
+      </div>
+    </section>
+
+    <!-- 8 · le fond d'œil -->
+    <section class="diapo" id="d8" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fond d’œil</p>
+        <h2>Sur la photo, on repère cinq structures</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fond" aria-label="Photo du fond de l’œil : le nerf optique, ou papille ; une artère et une veine ; la macula ; la fovéa au centre de la macula"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Le <b>nerf optique</b>&nbsp;: le disque pâle, la papille. Les vaisseaux en partent.</span></li>
+              <li data-pas="2"><span>Les <b>artères</b> et les <b>veines</b>.</span></li>
+              <li data-pas="3"><span>La <b>macula</b>&nbsp;: la rétine centrale, un peu plus foncée.</span></li>
+              <li data-pas="4"><span>La <b>fovéa</b>&nbsp;: le centre de la macula.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Les vaisseaux partent du nerf optique&nbsp;; la fovéa est au centre de la macula.</p>
+      </div>
+    </section>
+
+    <!-- 9 · les fonds normaux -->
+    <section class="diapo" id="d9" data-acte="camera" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fond d’œil</p>
+        <h2>Foncé, pâle ou rayé&nbsp;: la pigmentation de la choroïde varie</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="pigments" aria-label="Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b>Choroïde plus pigmentée</b>&nbsp;: «&nbsp;la macula parait plus foncée. Apparence normale&nbsp;».</li>
+              <li data-pas="1"><b>Moins de pigmentation</b>&nbsp;: un fond plus pâle.</li>
+              <li data-pas="2"><b>Pigmentation mixte</b>, tigroïde&nbsp;: un fond rayé. «&nbsp;Apparence normale&nbsp;».</li>
+              <li data-pas="3"><b>Chez les jeunes</b>&nbsp;: un reflet plus brillant, «&nbsp;typique d’une couche de fibres nerveuses en excellente santé&nbsp;».</li>
+            </ul>
+            <p class="piege"><b>Piège</b>Une macula foncée n’est pas une maladie&nbsp;: sur une choroïde pigmentée, c’est normal.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une macula foncée, un fond rayé, un reflet brillant chez un jeune&nbsp;: <b class="bon">normal</b>.</p>
+      </div>
+    </section>
+
+    <!-- 10 · les deux tests de l'OCT -->
+    <section class="diapo" id="d10" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L’OCT</p>
+        <h2>Deux tests de base&nbsp;: la rétine centrale et la papille, aux deux yeux</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="deux-tests" aria-label="Deux coupes : test 1, la rétine centrale, un creux peu profond, la fovéa ; test 2, la papille, où les couches plongent vers le nerf optique. Chaque test : OD et OS"></figure>
+          <div class="texte">
+            <p>L’OCT montre les couches de la rétine en coupe, avec de la lumière infrarouge.</p>
+            <ol class="etapes">
+              <li><span><b>Test 1, la rétine centrale</b>&nbsp;: «&nbsp;On voit une dépression qui est la fovea&nbsp;».</span></li>
+              <li data-pas="1"><span><b>Test 2, la papille</b>, le nerf optique&nbsp;: «&nbsp;On devrait voir cette structure dans l’écran&nbsp;».</span></li>
+              <li data-pas="2"><span>Pour chacun&nbsp;: «&nbsp;Prendre OD et OS&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="1">Sous la fovéa, les couches continuent&nbsp;; à la papille, elles s’arrêtent et plongent vers le nerf optique. Ce repère est lu sur les figures du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Test 1, la fovéa&nbsp;; test 2, la papille&nbsp;; toujours OD et OS.</p>
+      </div>
+    </section>
+
+    <!-- 11 · les sept lettres -->
+    <section class="diapo" id="d11" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L’OCT · la rétine centrale</p>
+        <h2>Sur la coupe de la fovéa, sept lettres, de l’avant vers l’arrière</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="sept" aria-label="Coupe de la macula : de l’avant vers l’arrière, N les fibres nerveuses, G les cellules ganglionnaires, P les photorécepteurs, E l’épithélium pigmentaire, B la membrane de Bruch, C la choroïde ; F au fond du creux"></figure>
+          <div class="texte">
+            <dl class="defs">
+              <dt data-pas="1">N</dt><dd data-pas="1">couche de fibres nerveuses, qui formeront le nerf optique</dd>
+              <dt data-pas="1">G</dt><dd data-pas="1">cellules ganglionnaires</dd>
+              <dt data-pas="2">P</dt><dd data-pas="2">photorécepteurs</dd>
+              <dt data-pas="3">E</dt><dd data-pas="3">épithélium pigmentaire</dd>
+              <dt data-pas="3">B</dt><dd data-pas="3">membrane de Bruch</dd>
+              <dt data-pas="4">C</dt><dd data-pas="4">choroïde</dd>
+              <dt data-pas="5">F</dt><dd data-pas="5">fovéola, le centre de la fovéa, au fond du creux</dd>
+            </dl>
+            <p class="note">L’ordre, de l’avant vers l’arrière, est lu sur les figures du cours.</p>
+            <p class="piege"><b>Piège</b>La grande coupe du cours numérote 17 couches en anglais&nbsp;: «&nbsp;pas nécessaire de mémoriser ces couches&nbsp;». Retiens les sept lettres.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>N, G, P, E, B, C, de l’avant vers l’arrière&nbsp;; F au fond du creux.</p>
+      </div>
+    </section>
+
+    <!-- 12 · la cornée à l'OCT -->
+    <section class="diapo" id="d12" data-acte="oct" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L’OCT · la cornée</p>
+        <h2>La cornée à l’OCT&nbsp;: une bande claire, quatre couches sur cinq</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cornee-oct" aria-label="La cornée en coupe : l’épithélium, la couche de Bowman, le stroma, l’endothélium ; Descemet ne se voit pas ; l’OCT mesure aussi son épaisseur"></figure>
+          <div class="texte">
+            <p>L’OCT montre la cornée comme une bande claire, avec «&nbsp;4 des 5 couches visibles&nbsp;»&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>l’<b>épithélium</b> et la couche de <b>Bowman</b>, devant&nbsp;;</span></li>
+              <li data-pas="2"><span>le <b>stroma</b>&nbsp;;</span></li>
+              <li data-pas="3"><span>l’<b>endothélium</b>, derrière. La 5e, la membrane de Descemet, ne se voit pas.</span></li>
+              <li data-pas="4"><span>L’OCT mesure aussi son <b>épaisseur</b>&nbsp;: la pachymétrie.</span></li>
+            </ol>
+            <p class="note" data-pas="3">Le nom de la couche absente vient du cours d’anatomie, module 7.</p>
+            <p class="note" data-pas="4">Une cornée anormale&nbsp;: un endothélium «&nbsp;moins lisse, manque des cellules&nbsp;», un stroma moins dense.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;4 des 5 couches visibles&nbsp;», et l’épaisseur de la cornée.</p>
+      </div>
+    </section>
+
+    <!-- 13 · calibré pour 545 µm -->
+    <section class="diapo" id="d13" data-acte="pression" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Épaisseur et pression</p>
+        <h2>Le tonomètre est calibré pour une cornée de 545&nbsp;µm</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="calibre" aria-label="Trois cornées sous le tonomètre : 415 µm, plus mince, lecture trop basse ; 545 µm, le calibrage, lecture juste ; 615 µm, plus épaisse, lecture trop haute"></figure>
+          <div class="texte">
+            <p>La plupart des tonomètres sont calibrés pour une cornée de <b>545&nbsp;µm</b>. Ailleurs, la lecture se trompe&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Plus mince&nbsp;: «&nbsp;la mesure sera sous-estimée&nbsp;». La vraie pression est plus haute.</span></li>
+              <li data-pas="2"><span>Plus épaisse&nbsp;: «&nbsp;la mesure sera sur-estimée&nbsp;». La vraie pression est plus basse.</span></li>
+            </ol>
+            <p class="note">La diapo du cours écrit «&nbsp;0.52mm&nbsp;»&nbsp;: c’est une erreur. 545&nbsp;µm = 0,545&nbsp;mm.</p>
+            <p class="piege"><b>Piège</b>Une cornée mince ne fait pas lire trop haut&nbsp;: elle fait lire trop <b>bas</b>.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Cornée mince, lecture trop basse&nbsp;; cornée épaisse, lecture trop haute.</p>
+      </div>
+    </section>
+
+    <!-- 14 · la table -->
+    <section class="diapo" id="d14" data-acte="pression" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Épaisseur et pression</p>
+        <h2>La table donne la correction&nbsp;: positive sous 545&nbsp;µm, négative au-dessus</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="table" aria-label="La table en barres : +10 mmHg à 410 et 415 µm, la correction baisse jusqu’à 0 à 545 µm, puis devient négative jusqu’à −7 à 645 µm"></figure>
+          <div class="texte">
+            <p>La «&nbsp;Table de valeurs corrigées du tonomètre&nbsp;» donne une correction pour chaque épaisseur.</p>
+            <ul class="points">
+              <li><b>545&nbsp;µm</b>&nbsp;: 0, rien à corriger.</li>
+              <li data-pas="1">De 410 à 415&nbsp;µm&nbsp;: <b>+10</b>. Plus la cornée est mince, plus on ajoute.</li>
+              <li data-pas="2">À 645&nbsp;µm&nbsp;: <b>−7</b>. Plus elle est épaisse, plus on retranche.</li>
+            </ul>
+            <p class="note" data-pas="1">La table du cours n’écrit pas le +&nbsp;: sous 545&nbsp;µm, ses nombres s’ajoutent.</p>
+            <p class="piege"><b>Piège</b>La table imprime «&nbsp;−5&nbsp;»&nbsp;: ajouter −5, c’est retrancher 5.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Mince, on ajoute&nbsp;; épaisse, on retranche&nbsp;; à 545&nbsp;µm, rien.</p>
+      </div>
+    </section>
+
+    <!-- 15 · l'exercice du cours -->
+    <section class="diapo" id="d15" data-acte="pression" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Épaisseur et pression · l’exercice du cours</p>
+        <h2>Le tonomètre lit 20&nbsp;mmHg&nbsp;: la pression corrigée dépend de la cornée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="exercice" aria-label="La même lecture, 20 mmHg, sur trois cornées : 415 µm, +10, 30 mmHg ; 545 µm, 0, 20 mmHg ; 615 µm, −5, 15 mmHg"></figure>
+          <div class="texte">
+            <p class="formule">PIO corrigée = PIO mesurée + correction</p>
+            <p class="note">La formule résume l’exercice du cours&nbsp;; la diapo ne l’écrit pas.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>415&nbsp;µm</b>, plus mince&nbsp;: la table donne +10. 20 + 10 = <b>30&nbsp;mmHg</b>.</span></li>
+              <li data-pas="2"><span><b>545&nbsp;µm</b>, l’épaisseur du calibrage&nbsp;: 0. <b>20&nbsp;mmHg</b>.</span></li>
+              <li data-pas="3"><span><b>615&nbsp;µm</b>, plus épaisse&nbsp;: −5. 20 − 5 = <b>15&nbsp;mmHg</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Même lecture, trois pressions&nbsp;: c’est l’épaisseur de la cornée qui décide.</p>
+      </div>
+    </section>
+
+    <!-- 16 · artefact ou anomalie -->
+    <section class="diapo" id="d16" data-acte="artefacts" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les artefacts</p>
+        <h2>Un artefact vient de la technique, pas de l’œil</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="artefact" aria-label="À gauche, un artefact : un reflet et une empreinte de doigt ; on reprend. À droite, une anomalie réelle : des lésions pâles fléchées ; on signale"></figure>
+          <div class="texte">
+            <p>«&nbsp;Image anormale créée par la technique, sans signification diagnostique, mais pouvant gêner l’interprétation.&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Un reflet, une empreinte de doigt&nbsp;: des artefacts. On <b class="aide">reprend</b> l’image.</span></li>
+              <li data-pas="2"><span>«&nbsp;Ici on a une anomalie réelle&nbsp;»&nbsp;: elle est dans l’œil. On la <b class="aide">signale</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un <b class="rate">artefact</b>, on le reprend&nbsp;; une anomalie réelle, on la signale&nbsp;; dans le doute, l’optométriste.</p>
+      </div>
+    </section>
+
+    <!-- 17 · une fausse croissance -->
+    <section class="diapo" id="d17" data-acte="artefacts" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les artefacts</p>
+        <h2>Un artefact peut imiter une lésion&nbsp;: un naevus qui semble grossir</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fausse-croissance" aria-label="Trois photos : le naevus ; une nouvelle photo ratée où il paraît plus grand, une fausse croissance ; la photo reprise"></figure>
+          <div class="texte">
+            <p>«&nbsp;Parfois un artefact peut ressembler à quelque chose avec signification clinique&nbsp;».</p>
+            <ol class="etapes">
+              <li><span>On suit un naevus&nbsp;: «&nbsp;On ne veut pas voir d’évolution&nbsp;».</span></li>
+              <li data-pas="1"><span>Sur une nouvelle photo, la caméra le fait paraître <b class="rate">plus grand</b>&nbsp;: une fausse croissance.</span></li>
+              <li data-pas="2"><span>L’assistant <b class="aide">reprend</b> la photo&nbsp;; dans le doute, l’optométriste.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Un artefact ne veut rien dire, mais il ne s’ignore pas&nbsp;: il peut faire croire qu’une lésion grossit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un artefact ne veut rien dire, mais il peut ressembler à quelque chose.</p>
+      </div>
+    </section>
+
+    <!-- 18 · les erreurs de la caméra -->
+    <section class="diapo" id="d18" data-acte="artefacts" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les artefacts · la caméra</p>
+        <h2>Chaque photo ratée a sa conduite</h2>
+        <div class="corps plein">
+          <div class="rangs deux">
+            <div class="rang">
+              <figure class="visuel" data-fig="err-sombre" aria-label="Une photo trop sombre, puis une bonne photo"></figure>
+              <div><h3 class="rate">Trop sombre</h3><p><b class="aide">Lumières éteintes</b>&nbsp;; pupille trop petite&nbsp;: <b class="aide">on dilate</b>.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="err-vite" aria-label="Une bonne photo, puis une photo sombre prise trop vite, puis une bonne photo"></figure>
+              <div><h3 class="rate">Bonne, puis sombre</h3><p>Prise «&nbsp;trop rapidement&nbsp;»&nbsp;: <b class="aide">diminuer les lumières, «&nbsp;attendre quelques minutes&nbsp;»</b>, cache-œil.</p></div>
+            </div>
+            <div class="rang" data-pas="2">
+              <figure class="visuel" data-fig="err-cligne" aria-label="Une photo cachée en haut par la paupière, puis une bonne photo"></figure>
+              <div><h3 class="rate">Clignement</h3><p><b class="aide">«&nbsp;Reprendre la photo&nbsp;»</b>.</p></div>
+            </div>
+            <div class="rang" data-pas="3">
+              <figure class="visuel" data-fig="err-flou" aria-label="Une photo toujours floue, puis un arrêt"></figure>
+              <div><h3 class="rate">Toujours floue</h3><p>Une opacité, une cataracte peut-être&nbsp;: <b class="aide">arrêter</b>, et «&nbsp;on consulte avec l’optométriste&nbsp;».</p></div>
+            </div>
+          </div>
+          <p class="piege" data-pas="3"><b>Piège</b>Toujours floue&nbsp;: ce n’est pas la mise au point, c’est peut-être l’œil. N’insiste pas.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>Corrige la cause, reprends, et arrête-toi à <b class="aide">2 photos par œil</b>.</p>
+      </div>
+    </section>
+
+    <!-- 19 · un cas à l'OCT -->
+    <section class="diapo" id="d19" data-acte="artefacts" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les artefacts · l’OCT · un cas</p>
+        <h2>Le test de la papille montre la fovéa&nbsp;: le patient ne fixait pas la cible</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fixation-ratee" aria-label="Test 2 obtenu : un creux peu profond, couches continues, la fovéa. Test 2 refait : la papille, où les couches s’arrêtent"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Un creux peu profond, et les couches continuent dessous&nbsp;: c’est la <b>fovéa</b>, pas la papille.</span></li>
+              <li data-pas="1"><span>«&nbsp;Le patient ne fixe pas la cible et l’instrument capte la macula et non le disc&nbsp;».</span></li>
+              <li data-pas="2"><span>On <b class="aide">refait</b> le scan en vérifiant la fixation.</span></li>
+            </ol>
+            <p class="note" data-pas="2">La diapo donne la cause&nbsp;; la conduite en est déduite.</p>
+            <p class="sous" data-pas="3">Les autres erreurs de l’OCT&nbsp;:</p>
+            <ul class="points" data-pas="3">
+              <li>il capte le cristallin au lieu de la cornée&nbsp;: «&nbsp;refaire le scan, s’assurer que la structure est la cornée&nbsp;»&nbsp;;</li>
+              <li>«&nbsp;Image dégradée (QI dans le rouge)&nbsp;»&nbsp;: «&nbsp;Refaire&nbsp;».</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>L’OCT doit montrer la bonne structure&nbsp;: sinon, <b class="aide">on refait</b>.</p>
+      </div>
+    </section>
+
+    <!-- 20 · deux limites -->
+    <section class="diapo" id="d20" data-acte="artefacts" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les artefacts · les limites</p>
+        <h2>Deux limites&nbsp;: 2 photos par œil, 3-4 minutes d’OCT</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="limites" aria-label="Une photo L 45 correcte, puis cinq photos R 45 de plus en plus sombres : la limite est de 2 par œil, trois de trop. À l’OCT, on arrête entre 3 et 4 minutes"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Caméra&nbsp;: «&nbsp;On se limite à 2 photos&nbsp;», 2 par œil.</span></li>
+              <li data-pas="1"><span>Une capture d’écran du cours&nbsp;: «&nbsp;L 45&nbsp;» correcte, puis cinq «&nbsp;R 45&nbsp;» de plus en plus sombres. <b class="rate" data-pas="2">Trois de trop.</b></span></li>
+              <li data-pas="3"><span>OCT, patient trop fatigué&nbsp;: <b class="aide">«&nbsp;on arrête le test. Ne pas dépasser 3-4 minutes. Voir l’optométriste.&nbsp;»</b></span></li>
+            </ol>
+            <p class="note" data-pas="3">On peut refaire à une autre visite.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>À la limite, on s’arrête et on voit l’optométriste&nbsp;: 2 photos par œil, 3-4 minutes d’OCT.</p>
+      </div>
+    </section>
+
+    <!-- 21 · la méthode -->
+    <section class="diapo" id="d21" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La méthode</p>
+        <h2>Tout le module tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">La caméra</p><p class="fiche-f">à travers la pupille</p><p class="fiche-n">pupille trop petite&nbsp;: photo sombre</p></div>
+          <div class="fiche"><p class="fiche-nom">L’assistant</p><p class="fiche-f bon">nette, centrée, exposée</p><p class="fiche-n">le bon patient, la fixation</p></div>
+          <div class="fiche"><p class="fiche-nom">Fond normal</p><p class="fiche-f bon">macula foncée, tigroïde</p><p class="fiche-n">et le reflet brillant des jeunes</p></div>
+          <div class="fiche"><p class="fiche-nom">L’OCT</p><p class="fiche-f">fovéa, papille, cornée</p><p class="fiche-n">toujours OD et OS</p></div>
+          <div class="fiche"><p class="fiche-nom">La fovéa</p><p class="fiche-f">N G P E B C</p><p class="fiche-n">de l’avant vers l’arrière&nbsp;; F au fond du creux</p></div>
+          <div class="fiche"><p class="fiche-nom">La pression</p><p class="fiche-f">corrigée = mesurée + correction</p><p class="fiche-n">545&nbsp;µm&nbsp;: 0&nbsp;; mince +, épaisse −</p></div>
+          <div class="fiche"><p class="fiche-nom">Un artefact</p><p class="fiche-f rate">créé par la technique</p><p class="fiche-n">il peut imiter une lésion&nbsp;: on reprend</p></div>
+          <div class="fiche"><p class="fiche-nom">Les limites</p><p class="fiche-f aide">2 photos par œil · 3-4&nbsp;min</p><p class="fiche-n">puis l’optométriste</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-to-m5-m6.html">L’atelier TO</a>, pour t’entraîner&nbsp;: à la pression, «&nbsp;À toi&nbsp;» te donne des lectures à corriger jusqu’à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const n3 = v => String(Math.round(v * 1000) / 1000);
+  const RAD = Math.PI / 180;
+  let uid = 0;
+  const nid = () => 'fx' + (++uid);
+  const pts = a => a.map(q => n1(q[0]) + ' ' + n1(q[1])).join(' L ');
+
+  // Coupe de l'œil sans rayons, la lumière vient de la gauche (même géométrie que les autres diaporamas).
+  // Repère local 480 × 200 ; place() le pose dans la figure, à l'échelle k.
+  function coupe() {
+    const cy = 100, ry = 82, dy = 40, xg = 140, xr = 372;
+    const cx = (xg + xr) / 2, rx = (xr - xg) / 2;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2), ctrl = xe - 54;
+    const pe = t => [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+    const ps = t => pe(t).map(n1).join(' ');
+    const a = 50 * RAD;
+    let s = `<path d="M ${n1(xe)} ${cy - dy} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - dy} Z" class="globe"/>`;
+    s += `<path d="M ${ps(-a)} A ${rx} ${ry} 0 0 1 ${ps(a)}" class="retine"/>`;
+    s += `<ellipse cx="${n1(xe + 28)}" cy="${cy}" rx="12" ry="33" class="cristallin"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + dy}" class="cornee"/>`;
+    return { s, cy, rx, ry, apex: (xe + ctrl) / 2, xe, xr, pe, ps, haut: cy - ry, bas: cy + ry };
+  }
+  const place = (tx, ty, k) => ({ g: s => `<g transform="translate(${n1(tx)} ${n1(ty)}) scale(${k})">${s}</g>`, X: x => tx + x * k, Y: y => ty + y * k });
+
+  // Flèche droite, colorée par son groupe.
+  function fleche(x1, y1, x2, y2, cls = 'fleche') {
+    const a = Math.atan2(y2 - y1, x2 - x1), h = 9;
+    const p = da => `${n1(x2 - h * Math.cos(a + da))} ${n1(y2 - h * Math.sin(a + da))}`;
+    return `<path d="M ${n1(x1)} ${n1(y1)} L ${n1(x2)} ${n1(y2)} M ${p(.5)} L ${n1(x2)} ${n1(y2)} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Flèche à coudes : une ligne brisée, la pointe sur le dernier segment.
+  function coude(q, cls = 'fleche') {
+    const [a, b] = q.slice(-2), ang = Math.atan2(b[1] - a[1], b[0] - a[0]), h = 9;
+    const p = da => `${n1(b[0] - h * Math.cos(ang + da))} ${n1(b[1] - h * Math.sin(ang + da))}`;
+    return `<path d="M ${pts(q)} M ${p(.5)} L ${n1(b[0])} ${n1(b[1])} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Flèche courbe (une quadratique), la pointe dans la direction d'arrivée.
+  function arc(x1, y1, qx, qy, x2, y2, cls = 'fleche') {
+    const a = Math.atan2(y2 - qy, x2 - qx), h = 9;
+    const p = da => `${n1(x2 - h * Math.cos(a + da))} ${n1(y2 - h * Math.sin(a + da))}`;
+    return `<path d="M ${n1(x1)} ${n1(y1)} Q ${n1(qx)} ${n1(qy)} ${n1(x2)} ${n1(y2)} M ${p(.5)} L ${n1(x2)} ${n1(y2)} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Un trait de rappel, avec un point sur la cible.
+  const lien = (x1, y1, x2, y2) => `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="lien"/><circle cx="${n1(x1)}" cy="${n1(y1)}" r="3" class="pt-lien"/>`;
+
+  /* ---- la photo du fond d'œil (œil droit : la papille à droite, la macula à gauche) ----
+     Le contenu est dessiné en unités du rayon (centre 0,0, rayon 1), puis mis à l'échelle. */
+  const VEINES = [
+    'M .34 -.06 C .28 -.36 -.05 -.56 -.42 -.52 C -.58 -.5 -.7 -.42 -.76 -.3',
+    'M .34 .02 C .28 .36 -.05 .56 -.42 .52 C -.58 .5 -.7 .42 -.76 .3',
+    'M .4 -.04 C .55 -.12 .66 -.28 .74 -.38',
+    'M .4 .04 C .54 .14 .6 .4 .58 .56'];
+  const ARTERES = [
+    'M .36 -.08 C .32 -.42 0 -.66 -.36 -.66 C -.52 -.65 -.64 -.58 -.7 -.5',
+    'M .36 .08 C .32 .42 0 .66 -.36 .66 C -.52 .65 -.64 .58 -.7 .5',
+    'M .41 0 C .58 .06 .68 .22 .76 .3',
+    'M .39 -.08 C .5 -.25 .52 -.48 .5 -.62',
+    'M -.2 -.5 C -.22 -.38 -.28 -.3 -.34 -.24',
+    'M -.2 .5 C -.22 .38 -.28 .3 -.34 .24'];
+  const DISQUE = [.34, -.02], MAC = [-.24, .04];
+  function contenu(o) {
+    const pig = o.pig || 'n';
+    let s = '';
+    if (pig === 'tigre') {
+      for (let a = 0; a < 360; a += 24) {
+        const c = Math.cos(a * RAD), sn = Math.sin(a * RAD), c2 = Math.cos((a + 10) * RAD), s2 = Math.sin((a + 10) * RAD);
+        s += `<path d="M ${n3(.4 * c)} ${n3(.4 * sn)} Q ${n3(.7 * c2)} ${n3(.7 * s2)} ${n3(.93 * c)} ${n3(.93 * sn)}" class="pig-t" stroke-width=".075" stroke-opacity=".42"/>`;
+      }
+    }
+    const mo = pig === 'fonce' ? 2.4 : pig === 'pale' ? .55 : 1;
+    if (pig === 'fonce') s += '<circle r="1" class="pig" fill-opacity=".2"/>';
+    s += `<circle cx="${MAC[0]}" cy="${MAC[1]}" r=".22" class="pig" fill-opacity="${n3(.13 * mo)}"/><circle cx="${MAC[0]}" cy="${MAC[1]}" r=".13" class="pig" fill-opacity="${n3(.15 * mo)}"/>`;
+    s += VEINES.map(d => `<path d="${d}" class="vx" stroke-width=".034"/>`).join('');
+    s += ARTERES.map(d => `<path d="${d}" class="vx" stroke-width=".02" stroke-opacity=".72"/>`).join('');
+    s += `<circle cx="${DISQUE[0]}" cy="${DISQUE[1]}" r=".12" class="disque" stroke-width=".012"/>`;
+    s += `<circle cx="${DISQUE[0] + .01}" cy="${DISQUE[1]}" r=".05" class="lum" fill-opacity=".45"/>`;
+    s += `<circle cx="${MAC[0]}" cy="${MAC[1]}" r=".025" class="lum" fill-opacity=".75"/>`;
+    if (pig === 'jeune') {
+      s += `<g transform="translate(0 -.045)"><path d="${VEINES[0]}" class="lum-t" stroke-width=".028" stroke-opacity=".6"/></g>`;
+      s += `<g transform="translate(0 .045)"><path d="${VEINES[1]}" class="lum-t" stroke-width=".028" stroke-opacity=".6"/></g>`;
+      s += `<circle cx="${MAC[0]}" cy="${MAC[1]}" r=".2" class="lum-t" stroke-width=".02" stroke-opacity=".5"/>`;
+      s += `<path d="M .5 -.2 C .58 -.1 .6 .1 .52 .22" class="lum-t" stroke-width=".022" stroke-opacity=".45"/>`;
+    }
+    if (o.naevus) s += `<ellipse cx="-.02" cy=".4" rx="${n3(o.naevus)}" ry="${n3(o.naevus * .78)}" class="pig" fill-opacity=".8"/>`;
+    if (o.lesions) for (const [u, v] of [[.06, -.34], [-.5, .3], [.18, .38]]) s += `<ellipse cx="${u}" cy="${v}" rx=".07" ry=".055" class="lum" fill-opacity=".62"/>`;
+    return { s, fond: pig === 'pale' ? .2 : pig === 'fonce' ? .55 : .45 };
+  }
+  // Le croissant noir d'une photo décentrée : le cadre moins le cercle du contenu, décalé de dx rayons.
+  function croissant(cx, cy, R, dx) {
+    const d = Math.abs(dx) * R, sg = Math.sign(dx), xi = cx + sg * d / 2, h = Math.sqrt(R * R - d * d / 4);
+    const sw = sg < 0 ? 1 : 0;
+    return `<path d="M ${n1(xi)} ${n1(cy - h)} A ${n1(R)} ${n1(R)} 0 1 ${sw} ${n1(xi)} ${n1(cy + h)} A ${n1(R)} ${n1(R)} 0 0 ${1 - sw} ${n1(xi)} ${n1(cy - h)} Z" class="nuit" fill-opacity=".92"/>`;
+  }
+  // o : pig, sombre (0–1), flou (en rayons), voile, dx (décentrée), cligne (0–1), reflet, doigt, naevus, lesions, cadre ('bon' | 'rate')
+  function photo(cx, cy, R, o = {}) {
+    const id = nid(), dx = o.dx || 0, c = contenu(o);
+    let defs = `<clipPath id="c${id}"><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}"/></clipPath>`;
+    if (o.flou) defs += `<filter id="b${id}"><feGaussianBlur stdDeviation="${n1(o.flou * R)}"/></filter>`;
+    let g = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="palier-fond"/>`;
+    g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="fondo" fill-opacity="${c.fond}"/>`;
+    if (dx) g += croissant(cx, cy, R, dx);
+    let dedans = `<g transform="translate(${n1(cx + dx * R)} ${n1(cy)}) scale(${n3(R)})">${c.s}</g>`;
+    if (o.flou) dedans = `<g filter="url(#b${id})">${dedans}</g>`;
+    g += dedans;
+    if (o.voile) g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="lum" fill-opacity="${o.voile}"/>`;
+    if (o.sombre) g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="nuit" fill-opacity="${o.sombre}"/>`;
+    if (o.cligne) {
+      const yb = cy - R + o.cligne * 2 * R;
+      g += `<rect x="${n1(cx - R)}" y="${n1(cy - R)}" width="${n1(2 * R)}" height="${n1(yb - cy + R)}" class="nuit" fill-opacity=".93"/>`;
+      g += `<rect x="${n1(cx - R)}" y="${n1(yb)}" width="${n1(2 * R)}" height="${n1(R * .14)}" class="nuit" fill-opacity=".5"/>`;
+    }
+    if (o.reflet) {
+      g += `<ellipse cx="${n1(cx + .55 * R)}" cy="${n1(cy - .5 * R)}" rx="${n1(.3 * R)}" ry="${n1(.2 * R)}" class="lum" fill-opacity=".45"/>`;
+      g += `<ellipse cx="${n1(cx + .6 * R)}" cy="${n1(cy - .55 * R)}" rx="${n1(.13 * R)}" ry="${n1(.08 * R)}" class="lum" fill-opacity=".75"/>`;
+    }
+    if (o.doigt) for (let i = 1; i <= 5; i++) g += `<ellipse cx="${n1(cx - .32 * R)}" cy="${n1(cy + .3 * R)}" rx="${n1(.055 * R * i)}" ry="${n1(.042 * R * i)}" class="lum-t" stroke-width="${n1(Math.max(1, R * .014))}" stroke-opacity=".42"/>`;
+    const cad = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="anneau${o.cadre ? ' c-' + o.cadre : ''}" stroke-width="${n1(Math.max(3, R * .05))}"/>`;
+    return `<defs>${defs}</defs><g clip-path="url(#c${id})">${g}</g>${cad}`;
+  }
+
+  // Un œil vu de face ; o.p : la pupille, en fraction de l'iris ; o.regard : l'iris décalé ; o.opaque : une opacité.
+  function oeilFace(cx, cy, rx, o = {}) {
+    const id = nid(), ry = rx * .56, ir = ry * .82, ix = cx + (o.regard || 0) * rx;
+    const amande = `M ${n1(cx - rx)} ${n1(cy)} Q ${n1(cx)} ${n1(cy - 2 * ry)} ${n1(cx + rx)} ${n1(cy)} Q ${n1(cx)} ${n1(cy + 2 * ry)} ${n1(cx - rx)} ${n1(cy)} Z`;
+    let s = `<defs><clipPath id="o${id}"><path d="${amande}"/></clipPath></defs><path d="${amande}" class="oeil-g"/>`;
+    s += `<g clip-path="url(#o${id})"><circle cx="${n1(ix)}" cy="${n1(cy)}" r="${n1(ir)}" class="iris-f"/>`;
+    s += `<circle cx="${n1(ix)}" cy="${n1(cy)}" r="${n1(ir * (o.p || .35))}" class="nuit"/>`;
+    if (o.opaque) s += `<circle cx="${n1(ix)}" cy="${n1(cy)}" r="${n1(ir * (o.p || .35))}" class="lum" fill-opacity=".55"/>`;
+    return s + `</g><path d="${amande}" class="oeil-g" fill="none" style="fill:none"/>`;
+  }
+
+  // Une coupe d'OCT schématique : type 'fovea' (test 1) ou 'papille' (test 2). Les couches en niveaux de gris.
+  function bscan(x, y, w, h, type) {
+    const xm = x + w / 2, N = 60, X = i => x + w * i / N;
+    const band = (f1, f2, cls, op, x0 = x, x1 = x + w) => {
+      const a = [], b = [];
+      for (let i = 0; i <= N; i++) { const xx = x0 + (x1 - x0) * i / N; a.push([xx, f1(xx)]); b.unshift([xx, f2(xx)]); }
+      return `<path d="M ${pts(a)} L ${pts(b)} Z" class="cou ${cls}" fill-opacity="${op}"/>`;
+    };
+    const yC2 = y + h - 4, yB = yC2 - .2 * h, yE = yB - .05 * h, I0 = .3 * h, tN = .07 * h, tG = .1 * h;
+    let s = `<rect x="${n1(x)}" y="${n1(y)}" width="${n1(w)}" height="${n1(h)}" rx="6" class="palier-fond"/>`;
+    const choroide = (x0, x1) => {
+      let c = band(() => yB + 2.5, () => yC2, 'c-doux', .32, x0, x1);
+      const n = Math.max(2, Math.round((x1 - x0) / (w / 9)));
+      for (let i = 0; i < n; i++) c += `<ellipse cx="${n1(x0 + (x1 - x0) * (i + .5) / n)}" cy="${n1((yB + yC2) / 2 + 2)}" rx="${n1(Math.min(w * .022, (x1 - x0) / n * .3))}" ry="${n1(.045 * h)}" class="palier-fond" fill-opacity=".6"/>`;
+      return c;
+    };
+    const dehors = (x0, x1, yP) => choroide(x0, x1) + band(() => yB, () => yB + 2.5, 'c-emm', .95, x0, x1)
+      + band(() => yE, () => yB, 'c-emm', .7, x0, x1) + band(yP, () => yE, 'c-doux', .22, x0, x1);
+    if (type === 'fovea') {
+      const g = xx => Math.exp(-(((xx - xm) / (w * .11)) ** 2));
+      const yP = xx => yE - .14 * h * (1 + .25 * g(xx)), y0 = xx => yP(xx) - I0 * (1 - .88 * g(xx));
+      const yN = xx => y0(xx) + tN * (1 - g(xx)), yG = xx => yN(xx) + tG * (1 - g(xx));
+      s += dehors(x, x + w, yP);
+      s += band(yG, yP, 'c-doux', .12) + band(yN, yG, 'c-doux', .42) + band(y0, yN, 'c-emm', .5);
+      return { s, xm, y0, yN, yG, yP, yE, yB, yC2 };
+    }
+    const g = xx => Math.exp(-(((xx - xm) / (w * .1)) ** 2));
+    const r = xx => Math.exp(-(((Math.abs(xx - xm) - .17 * w) / (.07 * w)) ** 2));
+    const yPb = yE - .14 * h, y0 = xx => yPb - I0 * (1 + .35 * r(xx)) + .38 * h * g(xx);
+    const tF = xx => tN * (1 + 1.5 * r(xx)), bord = .12 * w;
+    s += dehors(x, xm - bord, () => yPb) + dehors(xm + bord, x + w, () => yPb);
+    s += band(xx => y0(xx) + tF(xx), () => yPb, 'c-doux', .2, x, xm - bord) + band(xx => y0(xx) + tF(xx), () => yPb, 'c-doux', .2, xm + bord, x + w);
+    // les fibres : une couche claire qui s'épaissit au bord de la papille, puis plonge dans le nerf optique
+    const a = [], b = [];
+    for (let i = 0; i <= N; i++) {
+      const xx = X(i);
+      a.push([xx, y0(xx)]);
+      b.unshift([xx, Math.abs(xx - xm) < bord ? y + h : y0(xx) + tF(xx)]);
+    }
+    s += `<path d="M ${pts(a)} L ${pts(b)} Z" class="cou c-emm" fill-opacity=".45"/>`;
+    return { s, xm, y0, nerf: [xm, y + h - 10] };
+  }
+
+  /* ---- les figures ---- */
+
+  function couverture(W) {
+    const R = Math.min(W * .19, 110), x1 = W * .26, x2 = W * .74, top = 58, cy = top + R, H = cy + R + 38;
+    let s = photo(x1, cy, R, { sombre: .8, cadre: 'rate' }) + photo(x2, cy, R, { cadre: 'bon' });
+    const ya = cy - R * .9 - 4;
+    s += `<g class="c-aide">${arc(x1 + R * .45, ya, W / 2, top - 46, x2 - R * .45, ya)}<text x="${n1(W / 2)}" y="18" text-anchor="middle" class="etiq">l’assistant corrige et reprend</text></g>`;
+    s += `<text x="${n1(x1)}" y="${n1(cy + R + 28)}" text-anchor="middle" class="etiq c-rate">image ratée</text>`;
+    s += `<text x="${n1(x2)}" y="${n1(cy + R + 28)}" text-anchor="middle" class="etiq c-bon">bonne image</text>`;
+    return svgW(W, H, s, 'Une photo du fond de l’œil trop sombre, ratée ; l’assistant corrige et reprend ; la nouvelle photo est bonne');
+  }
+
+  // Le fil : une image, bonne ou ratée ; ratée, l'assistant corrige et reprend.
+  function fil(W) {
+    const m = 8, x0 = m, x1 = W - 32, wt = x1 - x0, gap = 12, cw = (wt - gap) / 2;
+    const yA = 4, hA = 44, yB = 84, hB = 76, yD = yB + hB + 34, hD = 54, H = yD + hD + 6;
+    const xb = x0, xc = x0 + cw + gap;
+    let s = `<rect x="${x0}" y="${yA}" width="${n1(wt)}" height="${hA}" rx="12" class="globe"/>`;
+    s += `<text x="${n1(x0 + wt / 2)}" y="${yA + 28}" text-anchor="middle">La caméra ou l’OCT fait une image</text>`;
+    let g1 = fleche(xb + cw / 2, yA + hA + 2, xb + cw / 2, yB - 4, 'fleche c-bon') + fleche(xc + cw / 2, yA + hA + 2, xc + cw / 2, yB - 4, 'fleche c-rate');
+    g1 += `<g class="c-bon"><rect x="${n1(xb)}" y="${yB}" width="${n1(cw)}" height="${hB}" rx="12" class="verre"/><text x="${n1(xb + 14)}" y="${yB + 26}" class="etiq">Bonne</text>`;
+    g1 += `<text x="${n1(xb + 14)}" y="${yB + 47}" class="petit t-doux">nette, centrée,</text><text x="${n1(xb + 14)}" y="${yB + 65}" class="petit t-doux">bien exposée</text></g>`;
+    g1 += `<g class="c-rate"><rect x="${n1(xc)}" y="${yB}" width="${n1(cw)}" height="${hB}" rx="12" class="verre"/><text x="${n1(xc + 14)}" y="${yB + 26}" class="etiq">Ratée</text>`;
+    g1 += `<text x="${n1(xc + 14)}" y="${yB + 47}" class="petit t-doux">sombre, floue,</text><text x="${n1(xc + 14)}" y="${yB + 65}" class="petit t-doux">décentrée</text></g>`;
+    s += `<g${P({ pas: 1 })}>${g1}</g>`;
+    let g2 = fleche(xb + cw / 2, yB + hB + 2, xb + cw / 2, yD - 4, 'fleche c-doux');
+    g2 += `<rect x="${n1(xb)}" y="${yD}" width="${n1(cw)}" height="${hD}" rx="12" class="globe"/>`;
+    g2 += `<text x="${n1(xb + 14)}" y="${yD + 23}" class="petit">Au dossier, pour</text><text x="${n1(xb + 14)}" y="${yD + 42}" class="petit">l’optométriste</text>`;
+    g2 += `<g class="c-aide">${fleche(xc + cw / 2, yB + hB + 2, xc + cw / 2, yD - 4)}<rect x="${n1(xc)}" y="${yD}" width="${n1(cw)}" height="${hD}" rx="12" class="verre"/>`;
+    g2 += `<text x="${n1(xc + 14)}" y="${yD + 23}" class="petit etiq">L’assistant corrige</text><text x="${n1(xc + 14)}" y="${yD + 42}" class="petit etiq">la cause et reprend</text>`;
+    g2 += coude([[x1 + 2, yD + hD / 2], [W - 12, yD + hD / 2], [W - 12, yA + hA / 2], [x1 + 4, yA + hA / 2]]) + '</g>';
+    s += `<g${P({ pas: 2 })}>${g2}</g>`;
+    return svgW(W, H, s, 'La caméra ou l’OCT fait une image. Bonne : au dossier, pour l’optométriste. Ratée : l’assistant corrige la cause et reprend');
+  }
+
+  // La caméra : le flash passe par la pupille, éclaire le fond, et la caméra en fait une photo.
+  function pupille(W) {
+    const e = coupe(), k = Math.min(1.55, (W - 176) / 244.3), eyeW = (e.xr - e.apex) * k, tot = 164 + eyeW;
+    const x0 = Math.max(4, (W - tot) / 2), top = 30;
+    const L = place(x0 + 164 - e.apex * k, top - e.haut * k, k), yc = L.Y(e.cy), H = Math.round(L.Y(e.bas) + 38);
+    const xi = 166, p = 12;
+    let s = L.g(e.s + `<path d="M 157 62 L ${xi} ${e.cy - p} M 157 138 L ${xi} ${e.cy + p}" class="iris"/>`);
+    // la caméra
+    const cl = x0 + 84;
+    s += `<rect x="${n1(x0 + 6)}" y="${n1(yc - 30)}" width="62" height="60" rx="8" class="globe"/><rect x="${n1(x0 + 68)}" y="${n1(yc - 18)}" width="16" height="36" rx="3" class="globe"/>`;
+    s += `<text x="${n1(x0 + 37)}" y="${n1(yc + 52)}" text-anchor="middle" class="petit t-doux">caméra</text>`;
+    // pas 1 : le flash
+    const pup = [L.X(xi), yc];
+    let r = '';
+    for (const [dy, t] of [[-14, .3], [0, 0], [14, -.3]]) {
+      const q = e.pe(t);
+      r += `<path d="M ${n1(cl)} ${n1(yc + dy)} L ${n1(pup[0])} ${n1(pup[1])} L ${n1(L.X(q[0]))} ${n1(L.Y(q[1]))}" class="rayon"/>`;
+    }
+    s += `<g${P({ pas: 1 })}>${r}<text x="${n1((cl + L.X(e.apex)) / 2)}" y="${n1(yc - 24)}" text-anchor="middle" class="petit t-doux">flash</text></g>`;
+    // pas 2 : le fond éclairé
+    s += `<g${P({ pas: 2 })}>${L.g(`<path d="M ${e.ps(-.45)} A ${e.rx} ${e.ry} 0 0 1 ${e.ps(.45)}" class="eclaire"/>`)}`;
+    const f = e.pe(.75);
+    const xf = Math.min(L.X(330), W - 64);   // l'étiquette reste dans la figure quand elle est étroite (téléphone)
+    s += `<line x1="${n1(L.X(f[0]))}" y1="${n1(L.Y(f[1]))}" x2="${n1(xf)}" y2="${n1(H - 28)}" class="pointille"/>`;
+    s += `<text x="${n1(xf)}" y="${n1(H - 10)}" text-anchor="middle" class="petit etiq">fond de l’œil</text></g>`;
+    // la pupille
+    s += `<line x1="${n1(pup[0])}" y1="${n1(L.Y(e.cy + p + 3))}" x2="${n1(pup[0])}" y2="${n1(H - 28)}" class="pointille"/>`;
+    s += `<text x="${n1(pup[0])}" y="${n1(H - 10)}" text-anchor="middle" class="petit etiq">pupille</text>`;
+    // pas 3 : la photo
+    const pc = [x0 + 37, 40];
+    s += `<g${P({ pas: 3 })}>${photo(pc[0], pc[1], 26, { cadre: 'bon' })}<line x1="${n1(pc[0])}" y1="${n1(yc - 32)}" x2="${n1(pc[0])}" y2="${n1(pc[1] + 30)}" class="pointille"/>`;
+    s += `<text x="${n1(pc[0] + 36)}" y="${n1(pc[1] + 6)}" class="petit etiq c-bon">la photo</text></g>`;
+    return svgW(W, H, s, 'Coupe de l’œil : le flash de la caméra passe par la pupille et éclaire le fond de l’œil ; la caméra en fait une photo');
+  }
+
+  // Le rôle de l'assistant : une photo nette, centrée, exposée ; trois photos ratées, chacune par un contrôle.
+  function controles(W) {
+    const cw = W / 2, R = Math.min(cw * .3, 68), ch = 2 * R + 52, H = 2 * ch;
+    const T = [[{ cadre: 'bon' }, 'Bonne', 'nette, centrée, exposée', 'bon', 0], [{ flou: .06, cadre: 'rate' }, 'Floue', 'la netteté', 'rate', 3],
+      [{ dx: -.32, cadre: 'rate' }, 'Décentrée', 'le centrage', 'rate', 3], [{ sombre: .74, cadre: 'rate' }, 'Sombre', 'l’exposition', 'rate', 3]];
+    let s = '';
+    T.forEach(([o, nom, sous, c, pas], i) => {
+      const cx = cw * (i % 2) + cw / 2, cy = ch * Math.floor(i / 2) + 6 + R;
+      const g = photo(cx, cy, R, o) + `<text x="${n1(cx)}" y="${n1(cy + R + 24)}" text-anchor="middle" class="etiq c-${c}">${nom}</text>`
+        + `<text x="${n1(cx)}" y="${n1(cy + R + 43)}" text-anchor="middle" class="petit t-doux">${sous}</text>`;
+      s += pas ? `<g${P({ pas })}>${g}</g>` : g;
+    });
+    return svgW(W, H, s, 'Une photo nette, centrée et bien exposée ; trois photos ratées : floue, décentrée, sombre');
+  }
+
+  // Le suivi d'un naevus : deux visites, la même taille.
+  function suivi(W) {
+    const R = Math.min(W * .2, 100), x1 = W * .27, x2 = W * .73, cy = 32 + R, H = cy + R + 44, nv = .11;
+    let s = `<text x="${n1(x1)}" y="18" text-anchor="middle" class="petit t-doux">1re visite</text>` + photo(x1, cy, R, { naevus: nv, cadre: 'bon' });
+    s += `<g${P({ pas: 1 })}><text x="${n1(x2)}" y="18" text-anchor="middle" class="petit t-doux">visite suivante</text>${photo(x2, cy, R, { naevus: nv, cadre: 'bon' })}</g>`;
+    const yn = cy + .4 * R;
+    s += `<g${P({ pas: 2 })}><line x1="${n1(x1 + (nv - .02) * R + 4)}" y1="${n1(yn)}" x2="${n1(x2 - (nv + .02) * R - 4)}" y2="${n1(yn)}" class="pointille"/>`;
+    s += `<text x="${n1(W / 2)}" y="${n1(H - 12)}" text-anchor="middle" class="etiq c-bon">même taille : pas d’évolution</text></g>`;
+    return svgW(W, H, s, 'Deux photos du même œil, à deux visites : le naevus a la même taille, pas d’évolution');
+  }
+
+  // Petites rangées : à gauche la cause ou la photo ratée, une flèche, à droite le résultat.
+  function mini(W, gauche, droite, fl, label) {
+    const cy = 90;
+    return svgW(W, 180, gauche(Math.min(90, W * .21), cy) + fleche(W * .43, cy, W * .56, cy, 'fleche ' + fl) + droite(W - 88, cy), label);
+  }
+  const vers = o => (cx, cy) => photo(cx, cy, 74, o);
+  const oeil = o => (cx, cy) => oeilFace(cx, cy, 78, o);
+  const stop = (cx, cy) => {
+    let q = [];
+    for (let i = 0; i < 8; i++) { const a = (22.5 + 45 * i) * RAD; q.push([cx + 62 * Math.cos(a), cy + 62 * Math.sin(a)]); }
+    return `<g class="c-aide"><path d="M ${pts(q)} Z" class="verre"/><line x1="${n1(cx - 32)}" y1="${cy}" x2="${n1(cx + 32)}" y2="${cy}" class="fleche" style="stroke-width:10"/></g>`;
+  };
+
+  // Le cas de la petite pupille : 3-4 mm, photo sombre ; 8 mm après les gouttes, bonne photo.
+  function dilatation(W) {
+    const cw = W / 2, rx = Math.min(cw * .38, 92), ry = rx * .56, R = Math.min(cw * .3, 72);
+    const ye = 50 + ry, cyp = ye + ry + 34 + R, H = cyp + R + 8;
+    const col = (i, p, titre, mm, o) => {
+      const cx = cw * i + cw / 2;
+      return `<text x="${n1(cx)}" y="18" text-anchor="middle" class="etiq">${titre}</text><text x="${n1(cx)}" y="40" text-anchor="middle" class="valeur">${mm}</text>`
+        + oeilFace(cx, ye, rx, { p }) + fleche(cx, ye + ry + 4, cx, ye + ry + 28, 'fleche c-doux') + photo(cx, cyp, R, o);
+    };
+    let s = col(0, 3.5 / 12, 'Avant', '3-4 mm', { sombre: .82, cadre: 'rate' });
+    s += `<g${P({ pas: 3 })}>${col(1, 8 / 12, 'Après dilatation', '8 mm', { cadre: 'bon' })}`;
+    s += `<g class="c-aide">${fleche(cw - 18, ye, cw + 18, ye)}<text x="${n1(cw)}" y="${n1(ye - 14)}" text-anchor="middle" class="petit etiq">gouttes</text></g></g>`;
+    return svgW(W, H, s, 'Avant : pupille de 3-4 mm, photo sombre. Après dilatation avec des gouttes : pupille de 8 mm, bonne photo');
+  }
+
+  // Le fond d'œil et ses cinq structures.
+  function fond(W) {
+    const R = Math.min(W * .24, 150), cx = W * .45, cy = R + 14, H = 2 * R + 28;
+    const X = u => cx + u * R, Y = v => cy + v * R, xr = cx + R + 12, xl = cx - R - 10;
+    let s = photo(cx, cy, R, {});
+    s += `<g${P({ pas: 1 })}>${lien(X(.46), Y(-.02), xr - 4, cy - 1)}<text x="${n1(xr)}" y="${n1(cy + 4)}" class="petit etiq">Nerf optique</text><text x="${n1(xr)}" y="${n1(cy + 22)}" class="petit t-doux">la papille</text></g>`;
+    s += `<g${P({ pas: 2 })}>${lien(X(.674), Y(-.296), xr - 4, Y(-.5) - 5)}<text x="${n1(xr)}" y="${n1(Y(-.5))}" class="petit etiq">Veine</text>`;
+    s += `${lien(X(.696), Y(.228), xr - 4, Y(.5) - 5)}<text x="${n1(xr)}" y="${n1(Y(.5))}" class="petit etiq">Artère</text></g>`;
+    s += `<g${P({ pas: 3 })}>${lien(X(-.39), Y(-.11), xl + 4, Y(-.32) - 5)}<text x="${n1(xl)}" y="${n1(Y(-.32))}" text-anchor="end" class="petit etiq">Macula</text></g>`;
+    s += `<g${P({ pas: 4 })}>${lien(X(-.24), Y(.04), xl + 4, Y(.38) - 5)}<text x="${n1(xl)}" y="${n1(Y(.38))}" text-anchor="end" class="petit etiq">Fovéa</text></g>`;
+    return svgW(W, H, s, 'Photo du fond de l’œil : le nerf optique, ou papille ; une artère et une veine ; la macula ; la fovéa au centre de la macula');
+  }
+
+  // Les fonds normaux : plus pigmenté, moins pigmenté, tigroïde, le reflet des jeunes.
+  function pigments(W) {
+    const cw = W / 2, R = Math.min(cw * .3, 70), ch = 2 * R + 54, H = 2 * ch;
+    const T = [['fonce', 'Plus pigmentée', 'Apparence normale', 'bon'], ['pale', 'Moins pigmentée', 'un fond plus pâle', ''],
+      ['tigre', 'Mixte, tigroïde', 'Apparence normale', 'bon'], ['jeune', 'Reflet des jeunes', 'en excellente santé', 'bon']];
+    let s = '';
+    T.forEach(([pig, nom, tag, c], i) => {
+      const cx = cw * (i % 2) + cw / 2, cy = ch * Math.floor(i / 2) + 6 + R;
+      const g = photo(cx, cy, R, { pig }) + `<text x="${n1(cx)}" y="${n1(cy + R + 24)}" text-anchor="middle" class="titre-rang">${nom}</text>`
+        + `<text x="${n1(cx)}" y="${n1(cy + R + 43)}" text-anchor="middle" class="petit ${c ? 'etiq c-' + c : 't-doux'}">${tag}</text>`;
+      s += i ? `<g${P({ pas: i })}>${g}</g>` : g;
+    });
+    return svgW(W, H, s, 'Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant');
+  }
+
+  // Les deux tests de base de l'OCT.
+  function deuxTests(W) {
+    const m = 8, gap = 18, pw = (W - 2 * m - gap) / 2, ph = Math.round(pw * .6), top = 50, x2 = m + pw + gap;
+    const a = bscan(m, top, pw, ph, 'fovea'), b = bscan(x2, top, pw, ph, 'papille');
+    let s = `<text x="${n1(m + pw / 2)}" y="18" text-anchor="middle" class="etiq">Test 1</text><text x="${n1(m + pw / 2)}" y="38" text-anchor="middle" class="petit t-doux">la rétine centrale</text>`;
+    s += a.s + `<line x1="${n1(a.xm)}" y1="${n1(top + 22)}" x2="${n1(a.xm)}" y2="${n1(a.y0(a.xm) - 3)}" class="lien"/><text x="${n1(a.xm)}" y="${n1(top + 17)}" text-anchor="middle" class="petit etiq">la fovéa</text>`;
+    let g = `<text x="${n1(x2 + pw / 2)}" y="18" text-anchor="middle" class="etiq">Test 2</text><text x="${n1(x2 + pw / 2)}" y="38" text-anchor="middle" class="petit t-doux">la papille</text>`;
+    g += b.s + `<line x1="${n1(b.xm)}" y1="${n1(top + ph - 8)}" x2="${n1(b.xm)}" y2="${n1(top + ph + 8)}" class="lien"/><text x="${n1(b.xm)}" y="${n1(top + ph + 24)}" text-anchor="middle" class="petit etiq">le nerf optique</text>`;
+    s += `<g${P({ pas: 1 })}>${g}</g>`;
+    s += `<g${P({ pas: 2 })}><text x="${n1(m + pw / 2)}" y="${n1(top + ph + 50)}" text-anchor="middle" class="valeur">OD et OS</text><text x="${n1(x2 + pw / 2)}" y="${n1(top + ph + 50)}" text-anchor="middle" class="valeur">OD et OS</text></g>`;
+    return svgW(W, top + ph + 58, s, 'Deux coupes : test 1, la rétine centrale, un creux peu profond, la fovéa ; test 2, la papille, où les couches plongent vers le nerf optique. Chaque test : OD et OS');
+  }
+
+  // La coupe de la fovéa et ses sept lettres.
+  function sept(W) {
+    const x = 8, w = W - 8 - 66, h = Math.min(300, Math.round(w * .6)), y = 8;
+    const b = bscan(x, y, w, h, 'fovea'), xe = x + w - 10;
+    let s = b.s;
+    const C = [['N', (b.y0(xe) + b.yN(xe)) / 2, 1], ['G', (b.yN(xe) + b.yG(xe)) / 2, 1], ['P', (b.yP(xe) + b.yE) / 2, 2],
+      ['E', (b.yE + b.yB) / 2, 3], ['B', b.yB + 1.2, 3], ['C', (b.yB + b.yC2) / 2 + 2, 4]];
+    const cxL = x + w + 34, y1 = y + .3 * h, y2 = y + h - 14;
+    C.forEach(([t, yy, pas], i) => {
+      const yc = y1 + (y2 - y1) * i / (C.length - 1);
+      s += `<g${P({ pas })}>${lien(xe, yy, cxL - 13, yc)}<circle cx="${n1(cxL)}" cy="${n1(yc)}" r="13" class="creux c-emm"/><text x="${n1(cxL)}" y="${n1(yc + 6)}" text-anchor="middle" class="etiq">${t}</text></g>`;
+    });
+    const fx = b.xm + 50, fy = y + 24;
+    s += `<g${P({ pas: 5 })}>${lien(b.xm, b.y0(b.xm) - 2, fx - 11, fy + 7)}<circle cx="${n1(fx)}" cy="${n1(fy)}" r="13" class="creux c-emm"/><text x="${n1(fx)}" y="${n1(fy + 6)}" text-anchor="middle" class="etiq">F</text></g>`;
+    s += `<text x="${x}" y="${n1(y + h + 22)}" class="petit t-doux">en haut, l’avant de l’œil ; en bas, l’arrière</text>`;
+    return svgW(W, y + h + 32, s, 'Coupe de la macula : de l’avant vers l’arrière, N les fibres nerveuses, G les cellules ganglionnaires, P les photorécepteurs, E l’épithélium pigmentaire, B la membrane de Bruch, C la choroïde ; F au fond du creux');
+  }
+
+  // La cornée à l'OCT : quatre couches visibles sur cinq, et son épaisseur.
+  function corneeOct(W) {
+    const xl = W - 160, x0 = 12, x1 = xl - 26, xc = (x0 + x1) / 2, half = (x1 - x0) / 2, sag = 22, top = 26;
+    const off = xx => sag * ((xx - xc) / half) ** 2, yb = (k, xx) => top + off(xx) + k;
+    const band = (k1, k2, cls, op) => {
+      const a = [], b = [];
+      for (let i = 0; i <= 40; i++) { const xx = x0 + (x1 - x0) * i / 40; a.push([xx, yb(k1, xx)]); b.unshift([xx, yb(k2, xx)]); }
+      return `<path d="M ${pts(a)} L ${pts(b)} Z" class="cou ${cls}" fill-opacity="${op}"/>`;
+    };
+    const ligne = (k, cls) => { const a = []; for (let i = 0; i <= 40; i++) { const xx = x0 + (x1 - x0) * i / 40; a.push([xx, yb(k, xx)]); } return `<path d="M ${pts(a)}" class="${cls}"/>`; };
+    let s = band(0, 20, 'c-emm', .55) + band(20, 25, 'c-emm', .95) + band(25, 117, 'c-doux', .3) + band(120, 126, 'c-emm', .8);
+    const xt = x1 - 14, lab = (k, ly, t, sous, pas) => `<g${P({ pas })}>${lien(xt, yb(k, xt), xl - 6, ly - 5)}<text x="${xl}" y="${ly}" class="petit etiq">${t}</text>`
+      + (sous ? `<text x="${xl}" y="${ly + 18}" class="petit t-doux">${sous}</text>` : '') + '</g>';
+    s += lab(10, top + 8, 'Épithélium', '', 1) + lab(22.5, top + 40, 'Bowman', '', 1) + lab(71, top + 80, 'Stroma', '', 2);
+    s += `<g${P({ pas: 3 })}>${ligne(118.5, 'pointille')}</g>` + lab(118.5, top + 114, 'Descemet', 'ne se voit pas', 3) + lab(123, top + 162, 'Endothélium', '', 3);
+    s += `<g${P({ pas: 4 })}>${fleche(xc, top + 63, xc, top + 3, 'fleche c-emm')}${fleche(xc, top + 63, xc, top + 123, 'fleche c-emm')}`;
+    s += `<text x="${n1(xc)}" y="${n1(top + 126 + sag + 30)}" text-anchor="middle" class="petit etiq">épaisseur : pachymétrie</text></g>`;
+    return svgW(W, top + 126 + sag + 42, s, 'La cornée en coupe : l’épithélium, la couche de Bowman, le stroma, l’endothélium ; Descemet ne se voit pas ; l’OCT mesure aussi son épaisseur');
+  }
+
+  // Trois cornées sous le tonomètre : 415, 545, 615 µm.
+  function calibre(W) {
+    const cw = W / 3, k = .15, top = 46, sag = 7;
+    const C = [[415, 'plus mince', ['lecture', 'trop basse'], 1], [545, 'calibrage', ['lecture', 'juste'], 0], [615, 'plus épaisse', ['lecture', 'trop haute'], 2]];
+    const ybas = top + 615 * k + sag;
+    let s = `<line x1="8" y1="${n1(top + 545 * k)}" x2="${n1(W - 8)}" y2="${n1(top + 545 * k)}" class="pointille"/>`;
+    s += `<text x="${n1(cw / 2 + 12)}" y="22" class="petit t-doux">tonomètre</text>`;
+    C.forEach(([um, nom, lec, pas], i) => {
+      const cx = cw * i + cw / 2, hw = Math.min(cw * .36, 70), t = um * k;
+      const f = xx => top + sag * ((xx - cx) / hw) ** 2, a = [], b = [];
+      for (let j = 0; j <= 20; j++) { const xx = cx - hw + 2 * hw * j / 20; a.push([xx, f(xx)]); b.unshift([xx, f(xx) + t]); }
+      s += `<path d="M ${pts(a)} L ${pts(b)} Z" class="verre c-emm"/>`;
+      s += fleche(cx, 8, cx, top - 6, 'fleche c-emm');
+      s += `<text x="${n1(cx)}" y="${n1(ybas + 26)}" text-anchor="middle" class="valeur">${um} µm</text><text x="${n1(cx)}" y="${n1(ybas + 46)}" text-anchor="middle" class="petit t-doux">${nom}</text>`;
+      const g = `<text x="${n1(cx)}" y="${n1(ybas + 72)}" text-anchor="middle" class="petit etiq">${lec[0]}</text><text x="${n1(cx)}" y="${n1(ybas + 90)}" text-anchor="middle" class="petit etiq">${lec[1]}</text>`;
+      s += pas ? `<g${P({ pas })}>${g}</g>` : g;
+    });
+    return svgW(W, ybas + 98, s, 'Trois cornées sous le tonomètre : 415 µm, plus mince, lecture trop basse ; 545 µm, le calibrage, lecture juste ; 615 µm, plus épaisse, lecture trop haute');
+  }
+
+  // La table de correction du tonomètre, en barres : chaque barre est une ligne de la table.
+  const TABLE = [[410, 10], [415, 10], [420, 9], [425, 9], [430, 8], [435, 8], [440, 7], [445, 7], [455, 6], [465, 6], [475, 5], [485, 4], [495, 4], [505, 3],
+    [515, 2], [525, 1], [535, 1], [545, 0], [555, -1], [565, -1], [575, -2], [585, -3], [595, -4], [605, -4], [615, -5], [625, -6], [635, -6], [645, -7]];
+  const signe = v => (v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0');
+  function table(W) {
+    const l = 46, r = W - 14, top = 40, u = 13, y0 = top + 10 * u + 6, ybas = y0 + 7 * u, H = ybas + 62;
+    const X = um => l + (um - 405) / 245 * (r - l), Y = v => y0 - v * u, bw = Math.max(4, (r - l) / 49 * .72);
+    let s = `<text x="6" y="16" class="petit t-doux">correction (mmHg)</text>`;
+    for (const v of [10, 5, -5]) s += `<line x1="${l}" y1="${n1(Y(v))}" x2="${n1(r)}" y2="${n1(Y(v))}" class="grille"/><text x="${l - 8}" y="${n1(Y(v) + 5)}" text-anchor="end" class="petit t-doux">${signe(v)}</text>`;
+    s += `<text x="${l - 8}" y="${n1(y0 + 5)}" text-anchor="end" class="petit t-doux">0</text>`;
+    const barre = ([um, v]) => `<rect x="${n1(X(um) - bw / 2)}" y="${n1(v > 0 ? Y(v) : y0)}" width="${n1(bw)}" height="${n1(Math.abs(v) * u)}" class="barre-d"/>`;
+    s += `<g${P({ pas: 1 })}>${TABLE.filter(q => q[1] > 0).map(barre).join('')}`;
+    s += `<text x="${n1(X(412.5))}" y="${n1(Y(10) - 7)}" text-anchor="middle" class="valeur">+10</text>`;
+    s += `<text x="${n1(X(462))}" y="${n1(Y(9.3))}" class="petit etiq">plus mince : on ajoute</text></g>`;
+    s += `<g${P({ pas: 2 })}>${TABLE.filter(q => q[1] < 0).map(barre).join('')}`;
+    s += `<text x="${n1(X(645))}" y="${n1(ybas + 17)}" text-anchor="middle" class="valeur">−7</text>`;
+    s += `<text x="${n1(X(605))}" y="${n1(Y(-5.6))}" text-anchor="end" class="petit etiq">plus épaisse : on retranche</text></g>`;
+    s += `<line x1="${l}" y1="${n1(y0)}" x2="${n1(r)}" y2="${n1(y0)}" class="courbe" style="stroke-width:2"/>`;
+    s += `<circle cx="${n1(X(545))}" cy="${n1(y0)}" r="6" class="pt-courbe"/><text x="${n1(X(545) - 8)}" y="${n1(y0 + 22)}" text-anchor="end" class="valeur">545 µm : 0</text>`;
+    for (const um of [410, 545, 645]) s += `<text x="${n1(X(um))}" y="${n1(ybas + 38)}" text-anchor="middle" class="petit t-doux">${um}</text>`;
+    s += `<text x="${n1(r)}" y="${n1(H - 4)}" text-anchor="end" class="petit t-doux">épaisseur de la cornée (µm)</text>`;
+    return svgW(W, H, s, 'La table en barres : +10 mmHg à 410 et 415 µm, la correction baisse jusqu’à 0 à 545 µm, puis devient négative jusqu’à −7 à 645 µm');
+  }
+
+  // L'exercice du cours : 20 mmHg lus sur trois cornées.
+  function exercice(W) {
+    const l = 44, r = W - 10, u = 6.2, top = 26, yb = top + 32 * u, cw = (r - l) / 3, bw = Math.min(cw * .42, 64), H = yb + 58;
+    const Y = v => yb - v * u;
+    let s = `<text x="6" y="14" class="petit t-doux">mmHg</text>`;
+    for (const v of [10, 20, 30]) s += `<line x1="${l}" y1="${n1(Y(v))}" x2="${n1(r)}" y2="${n1(Y(v))}" class="grille"/><text x="${l - 8}" y="${n1(Y(v) + 5)}" text-anchor="end" class="petit t-doux">${v}</text>`;
+    s += `<line x1="${l}" y1="${n1(yb)}" x2="${n1(r)}" y2="${n1(yb)}" class="base"/><text x="${l - 8}" y="${n1(yb + 5)}" text-anchor="end" class="petit t-doux">0</text>`;
+    [[415, 10, 1], [545, 0, 2], [615, -5, 3]].forEach(([um, c, pas], i) => {
+      const cx = l + cw * i + cw / 2, x0 = cx - bw / 2, xd = cx + bw / 2 + 6;
+      s += `<rect x="${n1(x0)}" y="${n1(Y(20))}" width="${n1(bw)}" height="${n1(20 * u)}" rx="3" class="verre c-doux"/>`;
+      s += `<text x="${n1(cx)}" y="${n1(Y(10) + 6)}" text-anchor="middle" class="petit">20</text>`;
+      s += `<text x="${n1(cx)}" y="${n1(yb + 22)}" text-anchor="middle" class="valeur">${um} µm</text>`;
+      let g = '';
+      if (c > 0) g += `<rect x="${n1(x0)}" y="${n1(Y(20 + c))}" width="${n1(bw)}" height="${n1(c * u)}" rx="3" class="barre-d"/><text x="${n1(xd)}" y="${n1(Y(20 + c / 2) + 5)}" class="valeur">${signe(c)}</text>`;
+      if (c < 0) g += `<rect x="${n1(x0 - 1)}" y="${n1(Y(20) - 1)}" width="${n1(bw + 2)}" height="${n1(-c * u + 1)}" class="efface"/><rect x="${n1(x0)}" y="${n1(Y(20))}" width="${n1(bw)}" height="${n1(-c * u)}" class="pointille"/><text x="${n1(xd)}" y="${n1(Y(20 + c / 2) + 5)}" class="valeur">${signe(c)}</text>`;
+      if (c === 0) g += `<text x="${n1(xd)}" y="${n1(Y(20) + 5)}" class="valeur">0</text>`;
+      g += `<text x="${n1(cx)}" y="${n1(yb + 46)}" text-anchor="middle" class="etiq">${20 + c} mmHg</text>`;
+      s += `<g${P({ pas })}>${g}</g>`;
+    });
+    return svgW(W, H, s, 'La même lecture, 20 mmHg, sur trois cornées : 415 µm, +10, 30 mmHg ; 545 µm, 0, 20 mmHg ; 615 µm, −5, 15 mmHg');
+  }
+
+  // Artefact ou anomalie réelle.
+  function artefact(W) {
+    const R = Math.min(W * .2, 100), x1 = W * .27, x2 = W * .73, cy = 40 + R, H = cy + R + 44;
+    let s = `<text x="${n1(x1)}" y="22" text-anchor="middle" class="etiq c-rate">Artefact</text>` + photo(x1, cy, R, { reflet: true, doigt: true, cadre: 'rate' });
+    s += `<text x="${n1(x1)}" y="${n1(cy + R + 30)}" text-anchor="middle" class="etiq c-aide"${P({ pas: 1 })}>on reprend</text>`;
+    let g = `<text x="${n1(x2)}" y="22" text-anchor="middle" class="etiq">Anomalie réelle</text>` + photo(x2, cy, R, { lesions: true });
+    for (const [u, v] of [[.06, -.34], [-.5, .3], [.18, .38]]) g += fleche(x2 + (u + .26) * R, cy + (v - .2) * R, x2 + (u + .08) * R, cy + (v - .06) * R, 'fleche c-emm');
+    g += `<text x="${n1(x2)}" y="${n1(cy + R + 30)}" text-anchor="middle" class="etiq c-aide">on signale</text>`;
+    s += `<g${P({ pas: 2 })}>${g}</g>`;
+    return svgW(W, H, s, 'À gauche, un artefact : un reflet et une empreinte de doigt ; on reprend. À droite, une anomalie réelle : des lésions pâles fléchées ; on signale');
+  }
+
+  // Une fausse croissance de naevus, puis la photo reprise.
+  function fausse(W) {
+    const cell = (W - 16) / 3, R = Math.min(cell * .41, 88), cy = 32 + R, H = cy + R + 36;
+    const T = [['1re photo', { naevus: .11, cadre: 'bon' }, 'le naevus', 't-doux', 0], ['nouvelle photo', { naevus: .2, flou: .025, reflet: true, cadre: 'rate' }, 'fausse croissance', 'etiq c-rate', 1],
+      ['reprise', { naevus: .11, cadre: 'bon' }, 'on reprend', 'etiq c-aide', 2]];
+    let s = '';
+    T.forEach(([t, o, sous, c, pas], i) => {
+      const cx = 8 + cell * i + cell / 2;
+      const g = `<text x="${n1(cx)}" y="18" text-anchor="middle" class="petit t-doux">${t}</text>` + photo(cx, cy, R, o) + `<text x="${n1(cx)}" y="${n1(cy + R + 26)}" text-anchor="middle" class="petit ${c}">${sous}</text>`;
+      s += pas ? `<g${P({ pas })}>${g}</g>` : g;
+    });
+    return svgW(W, H, s, 'Trois photos : le naevus ; une nouvelle photo ratée où il paraît plus grand, une fausse croissance ; la photo reprise');
+  }
+
+  // Un test 2 raté : la fovéa au lieu de la papille, puis le scan refait.
+  function fixationRatee(W) {
+    const m = 8, gap = 18, pw = (W - 2 * m - gap) / 2, ph = Math.round(pw * .6), top = 50, x2 = m + pw + gap;
+    const a = bscan(m, top, pw, ph, 'fovea'), b = bscan(x2, top, pw, ph, 'papille');
+    const bord = (x, c) => `<rect x="${n1(x)}" y="${top}" width="${n1(pw)}" height="${ph}" rx="6" class="anneau c-${c}" stroke-width="3"/>`;
+    let s = `<text x="${n1(m + pw / 2)}" y="18" text-anchor="middle" class="etiq c-rate">Test 2, obtenu</text><text x="${n1(m + pw / 2)}" y="38" text-anchor="middle" class="petit t-doux">la fovéa</text>`;
+    s += a.s + bord(m, 'rate') + `<text x="${n1(m + pw / 2)}" y="${n1(top + ph + 24)}" text-anchor="middle" class="petit">couches continues</text>`;
+    let g = `<text x="${n1(x2 + pw / 2)}" y="18" text-anchor="middle" class="etiq c-bon">Test 2, refait</text><text x="${n1(x2 + pw / 2)}" y="38" text-anchor="middle" class="petit t-doux">la papille</text>`;
+    g += b.s + bord(x2, 'bon') + `<text x="${n1(x2 + pw / 2)}" y="${n1(top + ph + 24)}" text-anchor="middle" class="petit">elles s’arrêtent</text>`;
+    s += `<g${P({ pas: 2 })}>${g}</g>`;
+    return svgW(W, top + ph + 34, s, 'Test 2 obtenu : un creux peu profond, couches continues, la fovéa. Test 2 refait : la papille, où les couches s’arrêtent');
+  }
+
+  // Les deux limites : la série qui s'assombrit (2 par œil), et 3-4 minutes d'OCT.
+  function limites(W) {
+    const n = 6, cell = (W - 16) / n, R = Math.min(cell * .4, 48), cy = 30 + R;
+    const S = [['L 45', 'bon', 0, 0], ['R 45', 'rate', .3, 1], ['R 45', 'rate', .45, 1], ['R 45', 'rate', .6, 2], ['R 45', 'rate', .72, 2], ['R 45', 'rate', .84, 2]];
+    let s = '';
+    S.forEach(([t, c, sb, pas], i) => {
+      const cx = 8 + cell * i + cell / 2;
+      const g = `<text x="${n1(cx)}" y="16" text-anchor="middle" class="petit t-doux">${t}</text>` + photo(cx, cy, R, { sombre: sb, cadre: c });
+      s += pas ? `<g${P({ pas })}>${g}</g>` : g;
+    });
+    const xl = 8 + cell * 3, yb = cy + R + 10, xb = W - 10;
+    s += `<g${P({ pas: 2 })}><g class="c-rate"><path d="M ${n1(xl + 4)} ${n1(yb)} L ${n1(xl + 4)} ${n1(yb + 8)} L ${n1(xb)} ${n1(yb + 8)} L ${n1(xb)} ${n1(yb)}" class="fleche"/>`;
+    s += `<text x="${n1((xl + xb) / 2)}" y="${n1(yb + 30)}" text-anchor="middle" class="petit etiq">trois de trop</text></g>`;
+    s += `<g class="c-aide"><line x1="${n1(xl)}" y1="${n1(cy - R - 2)}" x2="${n1(xl)}" y2="${n1(yb + 8)}" class="fleche"/><text x="${n1(xl - 6)}" y="${n1(yb + 30)}" text-anchor="end" class="petit etiq">2 photos par œil</text></g></g>`;
+    const y2 = yb + 76, xa = 64, xz = W - 18, X = t => xa + t / 5 * (xz - xa);
+    let g = `<text x="8" y="${n1(y2 + 6)}" class="etiq">OCT</text>`;
+    g += `<line x1="${n1(X(0))}" y1="${n1(y2)}" x2="${n1(X(5))}" y2="${n1(y2)}" class="base"/><line x1="${n1(X(0))}" y1="${n1(y2)}" x2="${n1(X(3))}" y2="${n1(y2)}" class="courbe"/>`;
+    g += `<g class="c-aide"><rect x="${n1(X(3))}" y="${n1(y2 - 9)}" width="${n1(X(4) - X(3))}" height="18" rx="4" class="verre"/><text x="${n1(X(3.5))}" y="${n1(y2 - 17)}" text-anchor="middle" class="petit etiq">on arrête</text></g>`;
+    for (let t = 0; t <= 4; t++) g += `<line x1="${n1(X(t))}" y1="${n1(y2 + 9)}" x2="${n1(X(t))}" y2="${n1(y2 + 14)}" class="base"/><text x="${n1(X(t))}" y="${n1(y2 + 32)}" text-anchor="middle" class="petit t-doux">${t === 4 ? '4 min' : t}</text>`;
+    s += `<g${P({ pas: 3 })}>${g}</g>`;
+    return svgW(W, y2 + 40, s, 'Une photo L 45 correcte, puis cinq photos R 45 de plus en plus sombres : la limite est de 2 par œil, trois de trop. À l’OCT, on arrête entre 3 et 4 minutes');
+  }
+
+  const FIG = {
+    couverture, fil, pupille, controles, suivi, dilatation, fond, pigments, 'deux-tests': deuxTests, sept, 'cornee-oct': corneeOct,
+    calibre, table, exercice, artefact, 'fausse-croissance': fausse, 'fixation-ratee': fixationRatee, limites,
+    'lim-fixation': W => mini(W, oeil({ p: .38, regard: .42 }), vers({ dx: -.3, cadre: 'rate' }), 'c-doux', 'Un œil qui regarde de côté donne une photo décentrée'),
+    'lim-pupille': W => mini(W, oeil({ p: .14 }), vers({ sombre: .82, cadre: 'rate' }), 'c-doux', 'Une toute petite pupille donne une photo sombre'),
+    'lim-opacite': W => mini(W, oeil({ p: .42, opaque: true }), vers({ flou: .07, voile: .3, cadre: 'rate' }), 'c-doux', 'Un œil avec une opacité donne une photo floue et voilée'),
+    'err-sombre': W => mini(W, vers({ sombre: .82, cadre: 'rate' }), vers({ cadre: 'bon' }), 'c-aide', 'Une photo trop sombre, puis une bonne photo'),
+    'err-vite': W => mini(W, (cx, cy) => photo(cx - 32, cy - 30, 40, { cadre: 'bon' }) + photo(cx + 30, cy + 22, 58, { sombre: .72, cadre: 'rate' }), vers({ cadre: 'bon' }), 'c-aide', 'Une bonne photo, puis une photo sombre prise trop vite, puis une bonne photo'),
+    'err-cligne': W => mini(W, vers({ cligne: .42, cadre: 'rate' }), vers({ cadre: 'bon' }), 'c-aide', 'Une photo cachée en haut par la paupière, puis une bonne photo'),
+    'err-flou': W => mini(W, vers({ flou: .07, voile: .3, cadre: 'rate' }), stop, 'c-aide', 'Une photo toujours floue, puis un arrêt')
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', camera: 'La caméra et le fond d’œil', oct: 'L’OCT', pression: 'Épaisseur et pression', artefacts: 'Les artefacts', route: 'La méthode' };
+  const CLE = 'diapos-to-m7';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = '50b4d26c2004';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

@@ -276,8 +276,8 @@ const PAGES = {
     {g:'Guide', t:'Anatomie oculaire UA1', u:'anatomie-oculaire-ua1.html', ua:1, d:'Le guide d’étude de l’UA1.'}
   ],
   to:[
-    {g:'Atelier', t:'Atelier TO M5–M6', u:'atelier-to-m5-m6.html', v:true, ua:2,
-     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre et OCT. Rappel du jour, guide pas à pas, annotations et tuteur.'}
+    {g:'Atelier', t:'Atelier TO M5–M7', u:'atelier-to-m5-m6.html', v:true, ua:2,
+     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre, OCT, caméra rétinienne et pression corrigée. Rappel du jour, guide pas à pas, annotations et tuteur.'}
   ]
 };
 const NOTES_UA1 = [
@@ -596,6 +596,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['to-m56'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 5 et 6, ou le module 7 seul (21 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
+    {d:'2026-11-02', p:['to-m56'], t:'« À toi » sur la table de correction de la pression : des lectures et des cornées toujours nouvelles, jusqu’à trois justes de suite, puis à l’envers (retrouver la lecture, ou l’épaisseur de la cornée).'},
+    {d:'2026-11-02', p:['to-m56'], t:'Le module 7 est arrivé dans l’atelier : la caméra rétinienne, le fond d’œil normal, les deux tests de l’OCT, la pression corrigée selon l’épaisseur de la cornée, et que faire devant une photo ou un scan ratés. Ce sont les parties 6 à 8 du plan.'},
     {d:'2026-11-01', p:['opt-ua2', 'to-m56', 'anat-m6', 'adm-m07'], t:'Dans le « Survol », les diapos tiennent mieux sur un téléphone, et quand une étape apparaît plus bas que l’écran, la diapo descend toute seule pour te la montrer.'},
     {d:'2026-11-01', p:['to-m56', 'anat-m6', 'adm-m07'], t:'Nouveau : le bouton « Survol », en haut de l’atelier. Tout le module en une vingtaine de diapos, environ 15 minutes : une idée par diapo, des schémas et des exemples résolus pas à pas. Commence par là, puis entraîne-toi dans l’atelier.'},
     {d:'2026-11-01', p:['opt-ua2'], t:'Nouveau : le bouton « Survol », en haut du Banc. Tout le module 6 et 7 en 22 diapos, environ 15 minutes : une idée par diapo, des schémas et des exemples résolus pas à pas. Commence par là, puis entraîne-toi dans le Banc.'},
@@ -722,7 +725,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'feb0b0b20e5c';
+  const ICI = '50b4d26c2004';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
