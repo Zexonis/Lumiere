@@ -2730,7 +2730,7 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
     <p class="retour" id="fo-pig-txt" aria-live="polite" style="margin-top:10px"></p>
   </div>
 
-  <div class="piege"><b>Normal n'est pas uniforme.</b> Une macula plus foncée, des vaisseaux de la choroïde visibles en bandes ou un reflet brillant ne sont pas des anomalies : « Apparence normale » <span class="src">7.1-d8, d10</span>, et le reflet des jeunes est « typique d’une couche de fibres nerveuses en excellente santé » <span class="src">7.1-d11</span>. L'assistant ne juge pas le fond : il obtient une bonne photo <span class="deduit">déduit</span>.</div>
+  <div class="piege"><b>Normal n'est pas uniforme.</b> Une macula plus foncée, un fond pâle, des vaisseaux de la choroïde visibles en bandes ou un reflet brillant ne sont pas des anomalies : « Apparence normale » <span class="src">7.1-d8, d10</span>, et le reflet des jeunes est « typique d’une couche de fibres nerveuses en excellente santé » <span class="src">7.1-d11</span>. Le fond le plus pâle (« moins de pigmentation », <span class="src">7.1-d9</span>) : en classe, il illustrait les personnes plus jeunes, pas une mauvaise santé <span class="src">en classe, 2 nov.</span> L'assistant ne juge pas le fond : il obtient une bonne photo <span class="deduit">déduit</span>.</div>
 
   <div class="astuce"><b>Le dessin fait en classe.</b> Les diapos « Dessin du fond d’oeil » et « Dessin de la couche de fibres nerveuses » sont vides : le dessin s'est fait en classe <span class="src">7.1-d6, d7</span>. Refais-le de mémoire sur une feuille (papille, vaisseaux, macula, fovéa, puis les fibres qui rejoignent la papille), puis compare avec le mode “La couche de fibres nerveuses”. Rappel de l'Anatomie : la fovéa est le centre de la macula.</div>
 
@@ -2772,17 +2772,21 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
   <div class="piege"><b>Un test 2 raté.</b> Au test 2, l'écran doit montrer la papille et le nerf optique. Si l'on voit les couches continues de la rétine avec le creux de la fovéa, le patient ne fixait pas : « l’instrument capte la macula et non le disc » <span class="src">7.3-d13</span>. On rappelle la cible et on refait <span class="deduit">déduit</span>.</div>
 
   <div class="bloc">
-    <p class="lib">Les sept éléments de la fovéa · <span class="src">7.2-d2</span> · place chaque lettre sur la coupe</p>
-    <div class="ot-lettres" id="ot-lettres"></div>
-    <div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="ot-verif">Vérifier</button><button type="button" class="btn" id="ot-montrer">Montrer les réponses</button></div>
-    <p class="retour" id="ot-lettres-retour" aria-live="polite"></p>
+    <p class="lib">Les sept éléments de la fovéa · <span class="src">7.2-d2</span> · les lettres sont sur la coupe du test 1, en haut</p>
     <ul style="margin:12px 0 0;padding-left:20px">
       <li>« F=foveola (centre de la fovea) »</li>
       <li>« N=couche de fibres nerveuses (formeront le nerf optique) »</li>
       <li>« G=Cellules ganglionnaires (juste avant la formation de fibres nerveuses) »</li>
       <li>« P=photorécepteurs » · « E=épithélium pigmentaire » · « B=membrane de Bruch » · « C=choroide <span class="sic">(sic)</span> »</li>
     </ul>
-    <p class="legende">La diapo n'a pas d'image : les lettres se posent sur la coupe de la diapo 7.2-d1, et l'ordre d'avant en arrière vient des figures 7.2-d3 et d4 <span class="deduit">déduit</span>. La diapo 7.2-d3 affiche 17 couches en anglais : « pas nécessaire de mémoriser ces couches » <span class="src">6.4-d4</span>.</p>
+    <p class="legende">La diapo n'a pas d'image : la coupe et ses lettres sont dessinées pour l’atelier, sur le modèle de la coupe de 7.2-d1 ; l'ordre d'avant en arrière vient des figures 7.2-d3 et d4 <span class="deduit">déduit</span>. La diapo 7.2-d3 affiche 17 couches en anglais : « pas nécessaire de mémoriser ces couches » <span class="src">6.4-d4</span>.</p>
+    <div class="ctrl" style="margin-top:12px"><button type="button" class="btn plein" id="ot-tester" aria-pressed="false">Me tester : cacher les lettres</button></div>
+    <div id="ot-quiz" hidden>
+      <p class="lib" style="margin-top:12px">Place chaque lettre : un numéro par zone de la coupe</p>
+      <div class="ot-lettres" id="ot-lettres"></div>
+      <div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="ot-verif">Vérifier</button></div>
+    </div>
+    <p class="retour" id="ot-lettres-retour" aria-live="polite"></p>
   </div>
 
   <div class="bloc">
@@ -3526,7 +3530,7 @@ const FOND_TEST = ['fovea', 'papille', 'veine', 'macula', 'artere'];
 /* ---------- les fonds normaux (7.1-d8–d11) ---------- */
 const PIGMENTS = {
   fonce:{fond:'#7A4A2E', centre:'#3E2416', txt:'« Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » ' + S('7.1-d8')},
-  clair:{fond:'#E0603E', centre:'#B2341E', txt:'« Œil avec moins de pigmentation dans la choroïde » ' + S('7.1-d9') + ' : les vaisseaux ressortent bien sur un fond orangé.'},
+  clair:{fond:'#E0603E', centre:'#B2341E', txt:'« Œil avec moins de pigmentation dans la choroïde » ' + S('7.1-d9') + ' : le plus pâle des trois. En classe, il illustrait les personnes plus jeunes : ce n’est pas un signe de mauvaise santé ' + S('en classe, 2 nov.')},
   tigre:{fond:'#B8562E', centre:'#7A2E16', tigre:true, txt:'« Œil avec pigmentation mixte (tigroide ' + SIC + '). Apparence normale » ' + S('7.1-d10') + ' : on voit les vaisseaux de la choroïde, en bandes.'},
   jeune:{fond:'#E0603E', centre:'#B2341E', jeune:true, txt:'« Les enfants et adolescents ont un reflet de la rétine plus brillante que les adultes qui est typique d’une couche de fibres nerveuses en excellente santé » ' + S('7.1-d11') + '.'}
 };
@@ -3616,7 +3620,7 @@ QUESTIONS.push(
 AVERIFIER.push(
   {m:'M7', t:'7.2-d11 : 545 microns = 0,52 mm ?', p:'La diapo écrit « 545microns (0.52mm) » : 545 µm font 0,545 mm. Erreur de la diapo, à confirmer.'},
   {m:'M7', t:'Entre deux lignes de la table', p:'La table saute de 10 en 10 µm après 445 (pas de 450, 610…). Pour 609 µm (la carte de 7.2-d9), prend-on la ligne la plus proche (605 → −4) ?'},
-  {m:'M7', t:'Où poser F, N, G, P, E, B, C', p:'7.2-d2 n’a pas d’image : les lettres vont-elles sur la coupe de 7.2-d1 ? L’ordre d’avant en arrière (N, G … P, E, B, C) est déduit des figures 7.2-d3 et d4.'},
+  {m:'M7', t:'Les lettres F, N, G, P, E, B, C', p:'7.2-d2 n’a pas d’image : l’atelier a dessiné la coupe et ses lettres, sur le modèle de 7.2-d1 ; l’ordre d’avant en arrière (N, G … P, E, B, C) est déduit des figures 7.2-d3 et d4. Compare avec le dessin fait en classe.'},
   {m:'M7', t:'Les dessins faits en classe', p:'7.1-d6 et d7 (« Dessin du fond d’oeil », « Dessin de la couche de fibres nerveuses ») sont vides : recopie le dessin de la classe dans tes notes. Sera-t-il demandé à l’examen ?'},
   {m:'M7', t:'« Pourquoi mesurer l’épaisseur de la cornée en générale? »', p:'7.2-d10 n’a pas de réponse écrite. Piste ' + DED + ' : la pachymétrie du kératocône (6.1-d15) ; une cornée anormale (7.2-d8).'},
   {m:'M7', t:'Pourquoi un scan en particulier ?', p:'« Pourquoi ne pas faire tous les scans à tous les patients? » (7.2-d15) : aucune réponse écrite ; discutée en « Situations cliniques en groupes de 2-4 ».'},
@@ -3865,7 +3869,7 @@ const PAS = [
    verif:{q:'Nomme les cinq structures du fond d’œil de la diapo 7.1-d5.', r:'Fovéa, macula, nerf optique, artère, veine (7.1-d5).', points:['fovéa', 'macula', 'nerf optique', 'artère, veine'], qcm:{bon:'Fovéa, macula, nerf optique, artère, veine', faux:['Cornée, iris, cristallin, vitré, rétine', 'Fovéa, iris, nerf optique, choroïde, sclère', 'Macula, cristallin, papille, cornée, veine']}}, src:['7.1-d5']},
   {id:'fond.2', ecran:'fond', ancre:'Le dessin fait en classe.', titre:'Le dessin du fond d’œil', cle:['la fovéa est le centre de la macula', 'les vaisseaux sortent de la papille', 'les fibres nerveuses rejoignent la papille'], explique:'Dans ton dessin, pourquoi la fovéa et la papille ne sont-elles jamais au même endroit ?',
    verif:{q:'Où se trouve la fovéa, et vers où vont les fibres nerveuses ?', r:'La fovéa est le centre de la macula ; les fibres nerveuses rejoignent la papille et forment le nerf optique (7.1-d5 ; 7.2-d6).', points:['centre de la macula', 'rejoignent la papille', 'nerf optique'], qcm:{bon:'La fovéa au centre de la macula ; les fibres vont à la papille', faux:['La fovéa au centre de la papille ; les fibres vont à la macula', 'La fovéa sur une artère ; les fibres vont à la choroïde', 'La fovéa au bord de la rétine ; les fibres vont au cristallin']}}, src:['7.1-d5', '7.1-d6', '7.1-d7', '7.2-d6']},
-  {id:'fond.3', ecran:'fond', ancre:'Normal n’est pas uniforme.', titre:'Trois fonds normaux', cle:['choroïde plus pigmentée : macula plus foncée, normal', 'moins pigmentée : fond clair', 'mixte (tigroïde) : normal'], explique:'Pourquoi la même macula paraît-elle plus foncée chez un patient et plus claire chez un autre ?',
+  {id:'fond.3', ecran:'fond', ancre:'Normal n’est pas uniforme.', titre:'Trois fonds normaux', cle:['choroïde plus pigmentée : macula plus foncée, normal', 'moins pigmentée : fond plus pâle, normal aussi (en classe : les plus jeunes)', 'mixte (tigroïde) : normal'], explique:'Pourquoi la même macula paraît-elle plus foncée chez un patient et plus claire chez un autre ?',
    verif:{q:'Une macula plus foncée sur une choroïde très pigmentée : normal ou anomalie ?', r:'Normal : « Œil avec choroïde plus pigmentée alors la macula parait plus foncée. Apparence normale » (7.1-d8).', points:['normal', 'choroïde plus pigmentée'], qcm:{bon:'Normal : une choroïde plus pigmentée rend la macula plus foncée', faux:['Une anomalie de la macula, à signaler à l’optométriste', 'Un artefact de la caméra, à reprendre tout de suite', 'Le signe d’une opacité dans l’œil, comme une cataracte']}}, qcm:'La macula paraît plus foncée et la choroïde', src:['7.1-d8', '7.1-d9', '7.1-d10']},
   {id:'fond.4', ecran:'fond', ancre:'Trois fonds normaux, et les jeunes', titre:'Le reflet des jeunes', cle:['enfants et adolescents : reflet plus brillant', 'couche de fibres nerveuses en excellente santé'], explique:'Pourquoi un reflet brillant est-il ici un bon signe, et non un défaut de la photo ?',
    verif:{q:'Que veut dire le reflet plus brillant de la rétine chez un adolescent ?', r:'Il est typique d’une couche de fibres nerveuses en excellente santé (7.1-d11).', points:['fibres nerveuses', 'excellente santé'], qcm:{bon:'Une couche de fibres nerveuses en excellente santé', faux:['Un reflet du flash à reprendre', 'Une opacité du cristallin chez un jeune', 'Une pupille trop dilatée pendant la photo']}}, qcm:'Chez un adolescent, la rétine brille', src:['7.1-d11']},
@@ -3876,7 +3880,7 @@ const PAS = [
    verif:{q:'Que vise le test 2, et que se passe-t-il si le patient ne fixe pas ?', r:'La papille (le nerf optique), OD et OS ; si le patient ne fixe pas la cible, l’instrument capte la macula et non le disc (7.2-d5 ; 7.3-d13).', points:['papille', 'OD et OS', 'macula au lieu du disc'], qcm:{bon:'La papille, OD et OS ; sans fixation, l’appareil capte la macula', faux:['La fovéa ; sans fixation, l’appareil capte la cornée', 'La papille ; sans fixation, l’image devient rouge', 'La choroïde ; sans fixation, il faut dilater']}}, qcm:'Au test 2, l’écran montre un creux', src:['7.2-d5', '7.3-d13']},
   {id:'oct-tests.3', ecran:'oct-tests', ancre:'Les sept éléments de la fovéa', titre:'Sept lettres', cle:['F foveola, N fibres nerveuses, G cellules ganglionnaires', 'P photorécepteurs, E épithélium pigmentaire', 'B membrane de Bruch, C choroïde'], explique:'Pourquoi N « formeront le nerf optique » ? Relie-le au test 2.',
    verif:{q:'Que désignent F, N, G, P, E, B et C ?', r:'Foveola, couche de fibres nerveuses, cellules ganglionnaires, photorécepteurs, épithélium pigmentaire, membrane de Bruch, choroïde (7.2-d2).', points:['foveola', 'fibres nerveuses', 'ganglionnaires', 'photorécepteurs', 'épithélium pigmentaire', 'Bruch', 'choroïde'], qcm:{bon:'Foveola, fibres nerveuses, ganglionnaires, photorécepteurs, épithélium pigmentaire, Bruch, choroïde', faux:['Fovéa, nerf optique, glande lacrymale, pupille, épithélium, Bowman, cornée', 'Foveola, fibres nerveuses, ganglionnaires, pigment, endothélium, Bowman, cristallin', 'Fond d’œil, nasal, glaucome, papille, épaisseur, Bruch, cornée centrale']}}, qcm:'Sur la coupe de la fovéa, G désigne', src:['7.2-d2']},
-  {id:'oct-tests.4', ecran:'oct-tests', ancre:'les lettres se posent sur la coupe', titre:'De l’avant vers l’arrière', cle:['N puis G en avant', 'P, E puis B en arrière', 'C, la choroïde, tout au fond'], explique:'Pourquoi la lumière traverse-t-elle les fibres et les cellules ganglionnaires avant d’atteindre les photorécepteurs ?',
+  {id:'oct-tests.4', ecran:'oct-tests', ancre:'la coupe et ses lettres sont dessinées pour l’atelier', titre:'De l’avant vers l’arrière', cle:['N puis G en avant', 'P, E puis B en arrière', 'C, la choroïde, tout au fond'], explique:'Pourquoi la lumière traverse-t-elle les fibres et les cellules ganglionnaires avant d’atteindre les photorécepteurs ?',
    verif:{q:'Range N, G, P, E, B, C de l’avant vers l’arrière.', r:'N, G, P, E, B, C (ordre déduit des figures 7.2-d3, d4).', points:['N, G', 'P, E', 'B, C'], qcm:{bon:'N, G, P, E, B, C', faux:['C, B, E, P, G, N', 'P, E, N, G, B, C', 'N, P, G, B, E, C']}}, src:['7.2-d2', '7.2-d3', '7.2-d4']},
   {id:'oct-tests.5', ecran:'oct-tests', ancre:'On voit une bande illumine', titre:'La cornée : 4 des 5 couches', cle:['4 des 5 couches visibles', 'épithélium, Bowman, stroma, endothélium', 'Descemet ne se voit pas'], explique:'Pourquoi le stroma est-il la bande la plus épaisse ? Relie-le au kératocône.',
    verif:{q:'Combien de couches de la cornée voit-on à l’OCT, et laquelle manque ?', r:'4 des 5 : épithélium, Bowman, stroma, endothélium ; Descemet ne se voit pas (7.2-d7, déduit).', points:['4 des 5', 'Descemet'], qcm:{bon:'Quatre sur cinq ; il manque la membrane de Descemet', faux:['Les cinq couches, toutes bien séparées', 'Trois ; il manque Bowman et Descemet', 'Quatre ; il manque le stroma, trop mince']}}, src:['7.2-d7']},
@@ -6081,7 +6085,7 @@ INIT.fond = root => {
 
 /* ---------- OCT : test 1, test 2, la fixation ratée ; les sept lettres ; la cornée ---------- */
 INIT['oct-tests'] = root => {
-  let test = 't1', montrer = false;
+  let test = 't1', montrer = true;   // la coupe montre ses lettres ; « Me tester » les cache
   /* la coupe de la macula : bandes de l'avant (haut) vers l'arrière (bas), creux de la fovéa au centre */
   const fov = x => Math.exp(-((x - 320) ** 2) / (2 * 46 * 46));
   /* [épaisseur, couleur, part amincie à la fovéa] : N, G, (couches internes), P, E, B, C ; chaque bande commence où
@@ -6139,8 +6143,14 @@ INIT['oct-tests'] = root => {
     $$('select[data-z]', $('#ot-lettres')).forEach(s => { const bon = OT_LETTRES.find(o => o.z === +s.dataset.z).l === s.value; ok += bon; s.classList.toggle('bon', bon); s.classList.toggle('faux', !bon && !!s.value); });
     dire($('#ot-lettres-retour'), ok + ' sur 7.' + (ok === 7 ? ' De l’avant vers l’arrière : N, G, P, E, B, C ; F au fond du creux.' : ' Indice : la lumière traverse d’abord les fibres (N) et les cellules ganglionnaires (G) ; les photorécepteurs (P) sont en arrière, sur l’épithélium pigmentaire (E).'), ok === 7 ? 'ok' : 'bad');
   });
-  $('#ot-montrer').addEventListener('click', () => { montrer = !montrer; test = 't1'; rendre();
-    dire($('#ot-lettres-retour'), montrer ? OT_LETTRES.map(o => o.z + ' = ' + o.t).join(' · ') : ''); });
+  $('#ot-tester').addEventListener('click', () => {
+    montrer = !montrer; test = 't1'; rendre();
+    $('#ot-quiz').hidden = montrer;
+    $('#ot-tester').textContent = montrer ? 'Me tester : cacher les lettres' : 'Revoir les lettres';
+    $('#ot-tester').setAttribute('aria-pressed', montrer ? 'false' : 'true');
+    dire($('#ot-lettres-retour'), '');
+    if(!montrer) $('#ot-svg').scrollIntoView({block:'nearest', behavior:'smooth'});
+  });
   $('#ot-test').addEventListener('click', e => { const b = e.target.closest('[data-t]'); if(b){ test = b.dataset.t; rendre(); } });
   /* la cornée : quatre couches nommées (7.2-d7) */
   /* une bande bombée vers le haut (x de 20 à 290), quatre couches ; les noms à droite, reliés par un trait */
@@ -14959,6 +14969,8 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-02', p:['to-m56'], t:'Sur l’écran des deux tests de l’OCT, la coupe de la fovéa montre maintenant ses sept lettres (F, N, G, P, E, B, C). « Me tester » les cache pour que tu les replaces de mémoire.'},
+    {d:'2026-11-02', p:['to-m56'], t:'Le fond d’œil le plus pâle est normal lui aussi : en classe, on l’a vu chez les plus jeunes. L’écran du fond d’œil et le Survol du module 7 le disent maintenant.'},
     {d:'2026-11-02', p:['to-m56'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 5 et 6, ou le module 7 seul (21 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
     {d:'2026-11-02', p:['to-m56'], t:'« À toi » sur la table de correction de la pression : des lectures et des cornées toujours nouvelles, jusqu’à trois justes de suite, puis à l’envers (retrouver la lecture, ou l’épaisseur de la cornée).'},
     {d:'2026-11-02', p:['to-m56'], t:'Le module 7 est arrivé dans l’atelier : la caméra rétinienne, le fond d’œil normal, les deux tests de l’OCT, la pression corrigée selon l’épaisseur de la cornée, et que faire devant une photo ou un scan ratés. Ce sont les parties 6 à 8 du plan.'},
@@ -15231,7 +15243,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '50b4d26c2004';
+  const ICI = 'de7d7b7811a4';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

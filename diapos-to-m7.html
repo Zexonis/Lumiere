@@ -1,4 +1,6 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Diapos TO M7</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
@@ -448,15 +450,15 @@ svg .iris-f { fill: var(--doux); fill-opacity: .55; }
         <p class="kicker">Le fond d’œil</p>
         <h2>Foncé, pâle ou rayé&nbsp;: la pigmentation de la choroïde varie</h2>
         <div class="corps">
-          <figure class="visuel" data-fig="pigments" aria-label="Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant"></figure>
+          <figure class="visuel" data-fig="pigments" aria-label="Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle, normal chez les plus jeunes ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant"></figure>
           <div class="texte">
             <ul class="points">
               <li><b>Choroïde plus pigmentée</b>&nbsp;: «&nbsp;la macula parait plus foncée. Apparence normale&nbsp;».</li>
-              <li data-pas="1"><b>Moins de pigmentation</b>&nbsp;: un fond plus pâle.</li>
+              <li data-pas="1"><b>Moins de pigmentation</b>&nbsp;: un fond plus pâle, normal lui aussi. On le voit chez les plus jeunes.</li>
               <li data-pas="2"><b>Pigmentation mixte</b>, tigroïde&nbsp;: un fond rayé. «&nbsp;Apparence normale&nbsp;».</li>
               <li data-pas="3"><b>Chez les jeunes</b>&nbsp;: un reflet plus brillant, «&nbsp;typique d’une couche de fibres nerveuses en excellente santé&nbsp;».</li>
             </ul>
-            <p class="piege"><b>Piège</b>Une macula foncée n’est pas une maladie&nbsp;: sur une choroïde pigmentée, c’est normal.</p>
+            <p class="piege"><b>Piège</b>Ni une macula foncée ni un fond pâle ne sont une maladie&nbsp;: ce sont des fonds normaux.</p>
           </div>
         </div>
         <p class="retiens"><span>À retenir</span>Une macula foncée, un fond rayé, un reflet brillant chez un jeune&nbsp;: <b class="bon">normal</b>.</p>
@@ -1066,7 +1068,7 @@ svg .iris-f { fill: var(--doux); fill-opacity: .55; }
   // Les fonds normaux : plus pigmenté, moins pigmenté, tigroïde, le reflet des jeunes.
   function pigments(W) {
     const cw = W / 2, R = Math.min(cw * .3, 70), ch = 2 * R + 54, H = 2 * ch;
-    const T = [['fonce', 'Plus pigmentée', 'Apparence normale', 'bon'], ['pale', 'Moins pigmentée', 'un fond plus pâle', ''],
+    const T = [['fonce', 'Plus pigmentée', 'Apparence normale', 'bon'], ['pale', 'Moins pigmentée', 'normal, chez les plus jeunes', 'bon'],
       ['tigre', 'Mixte, tigroïde', 'Apparence normale', 'bon'], ['jeune', 'Reflet des jeunes', 'en excellente santé', 'bon']];
     let s = '';
     T.forEach(([pig, nom, tag, c], i) => {
@@ -1075,7 +1077,7 @@ svg .iris-f { fill: var(--doux); fill-opacity: .55; }
         + `<text x="${n1(cx)}" y="${n1(cy + R + 43)}" text-anchor="middle" class="petit ${c ? 'etiq c-' + c : 't-doux'}">${tag}</text>`;
       s += i ? `<g${P({ pas: i })}>${g}</g>` : g;
     });
-    return svgW(W, H, s, 'Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant');
+    return svgW(W, H, s, 'Quatre fonds : plus pigmenté, macula plus foncée, apparence normale ; moins pigmenté, plus pâle, normal chez les plus jeunes ; mixte, tigroïde, apparence normale ; chez un jeune, un reflet brillant');
   }
 
   // Les deux tests de base de l'OCT.
@@ -1446,7 +1448,7 @@ svg .iris-f { fill: var(--doux); fill-opacity: .55; }
 </script>
 <script>
 (() => {
-  const ICI = '50b4d26c2004';
+  const ICI = 'de7d7b7811a4';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
