@@ -1178,7 +1178,7 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .cv-espace{flex:1}
 .cv-badge{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:6px;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--on-accent);font:700 11px var(--f-mono)}
 .cv-badge[hidden]{display:none}
-.cv-avis{position:fixed;z-index:310;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;max-width:min(560px,calc(100vw - 24px));
+.cv-avis{position:fixed;z-index:350;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;max-width:min(560px,calc(100vw - 24px));
   background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:9px 12px;box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25));font-size:14.5px}
 .cv-avis[hidden]{display:none}
 .cv-avis .btn{font-size:13px;padding:4px 11px;flex:none}
@@ -1312,7 +1312,7 @@ button.cv-duo:hover{background:var(--panel-2)}
 .cv-fn{flex:1;min-width:0;overflow-wrap:anywhere;text-align:left;font-weight:700}
 .cv-voile .cv-fn{color:#F3F5FB}
 .cv-file .cv-btn{padding:5px 12px;font-size:13.5px}
-.cv-portes{position:fixed;z-index:309;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(420px,calc(100vw - 24px));display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25))}
+.cv-portes{position:fixed;z-index:349;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(420px,calc(100vw - 24px));display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25))}
 .cv-portes-t{margin:0;font-weight:700}
 .cv-portes .btn{font-size:13px;padding:4px 11px}
 .cv-portes .btn.plein{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
@@ -1758,6 +1758,52 @@ body.ar-ouverte .tb.cote{z-index:335}
 .survol-menu a{display:block;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14.5px;line-height:1.3}
 .survol-menu a:hover,.survol-menu a:focus-visible{background:var(--panel-2);outline:none}
 .survol-menu small{display:block;color:var(--ink-3);font-size:12.5px;font-weight:400;margin-top:2px}
+
+/* ---------- 3 nov. : la séance par-dessus l'arène et le tableau ----------
+   L'avis (350), la carte des demandes (349) et « Ajouter quelqu’un » (348) passent au-dessus de l'arène (320), du
+   tableau (330 ; 335 côte à côte dans l'arène) et du croquis (330), pour que la porte se voie où que l'on soit. */
+.cv-ajout{position:fixed;z-index:348;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 80px);overflow:auto;
+  display:flex;flex-direction:column;gap:10px;padding:12px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.28));font-size:14px}
+.cv-ajout .lib{margin:0;font:600 11.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.cv-ajout-code{margin:0;text-align:center;font:700 clamp(30px,9vw,40px)/1.1 var(--f-mono);letter-spacing:.14em;color:var(--ink)}
+.cv-ajout-qr{align-self:center;width:min(200px,56vw);aspect-ratio:1;border-radius:10px;background:#fff;overflow:hidden;display:grid;place-items:center;color:#05070D;font-size:13px}
+.cv-ajout-qr svg{display:block;width:100%;height:100%}
+.cv-ajout-qr.rate{aspect-ratio:auto;padding:12px;line-height:1.4;width:100%}
+.cv-ajout-aide,.cv-ajout-note{margin:0;color:var(--ink-2);font-size:13px;line-height:1.45}
+.cv-ajout .ctrl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.cv-ajout .ctrl:last-child{justify-content:flex-end}
+.cv-ajout .btn{font-size:13px;padding:5px 12px}
+.cv-ajout .btn.plein{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.cv-ajout .cv-file .btn{padding:4px 10px}
+.cv-ajout .tu-switch{align-self:flex-start}
+.cv-barre .cv-ajouter{border-color:var(--accent);font-weight:700}
+/* l'arène : « Ajouter quelqu’un » (en séance) et « Tableau » ; au téléphone, l'icône seule */
+.ar-b-tab,.ar-b-inviter{display:inline-flex;align-items:center;gap:6px}
+.ar-b-tab svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ar-b-inviter{border-color:var(--accent)}
+.ar-b-inviter .cv-badge{margin-left:0}
+@media (max-width:560px){ .ar-b-tab .mot,.ar-b-inviter .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap} }
+/* les actions de l'arène : en ligne sur grand écran ; au téléphone, une rangée sous le titre qui défile de côté,
+   pour que l'en-tête reste à deux rangées (titre, jauge et ✕ ; puis les actions) même en séance */
+.ar-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+@media (max-width:560px){
+  .ar-x{order:2}
+  .ar-espace{display:none}
+  .ar-total{flex:1 1 0;min-width:0}
+  .ar-jauge{flex:1 1 auto;width:auto;min-width:36px}
+  .ar-compte{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ar-actions{order:3;flex:1 0 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px;padding-bottom:2px}
+  .ar-actions::-webkit-scrollbar{display:none}
+  .ar-actions .ar-b{flex:none;white-space:nowrap;padding:5px 10px}
+}
+/* le tableau côte à côte dans l'arène (dès 900 px) : l'arène se replie dans la partie gauche et reste utilisable ;
+   la carte des blocs se range tant qu'il manque de place (comme avec le tuteur) */
+body.ar-ouverte.tb-cote .ar{right:min(48vw,860px)}
+@media (min-width:900px) and (max-width:999px){ body.ar-ouverte .tb-large{display:inline-block} }
+@media (max-width:1599px){
+  body.ar-ouverte.tb-cote .ar.avec-carte .ar-corps{grid-template-columns:minmax(0,1fr)}
+  body.ar-ouverte.tb-cote .ar.avec-carte .ar-carte{display:none}
+}
 </style>
 
 <div class="app" id="app">
@@ -9934,10 +9980,16 @@ const Arene = (() => {
       '<header class="ar-tete"><b id="ar-titre" class="ar-titre">Arène</b>' +
         '<div class="ar-total"><span class="ar-pc">0 %</span><span class="ar-jauge" aria-hidden="true"><i></i><b></b></span><small class="ar-compte"></small></div>' +
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
+        /* les actions en un groupe : au téléphone, une seule rangée qui défile de côté sous le titre (sinon l'en-tête montait à 4 rangées en séance) */
+        '<div class="ar-actions">' +
         '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
+        /* en séance Convergence : inviter quelqu'un sans quitter l'arène (convergence.js ouvre le panneau ; la pastille compte qui attend à la porte) */
+        '<button type="button" class="ar-b ar-b-inviter" data-a="inviter" hidden aria-label="Ajouter quelqu’un à la séance" title="Ajouter quelqu’un à la séance : le code, le lien, le code QR"><span aria-hidden="true">＋</span><span class="mot">Ajouter quelqu’un</span><span class="cv-badge" hidden></span></button>' +
         '<button type="button" class="ar-b" data-a="round" hidden>Dernier round</button>' +
         '<button type="button" class="ar-b" data-a="ecrire" aria-pressed="false" title="Répondre en écrivant de mémoire, au lieu de choisir parmi quatre réponses">✎ Écrire</button>' +
         '<button type="button" class="ar-b" data-a="carte" aria-pressed="false">Carte</button>' +
+        (typeof Tableau !== 'undefined' ? '<button type="button" class="ar-b ar-b-tab" data-a="tableau" aria-label="Tableau blanc" title="Le tableau de l’écran de cette question (touche B, sauf pendant un choix A–D) ; en séance, celui du groupe. L’arène reste où elle en est."><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M7 12.5l3-3 2.5 2 4-4.5M9 20.5l3-4 3 4"/></svg><span class="mot">Tableau</span></button>' : '') +
+        '</div>' +
         '<button type="button" class="ar-x" data-a="fermer" aria-label="Fermer l’arène" title="Fermer (Échap)">✕</button></header>' +
       '<div class="ar-corps"><nav class="ar-carte" aria-label="Les blocs, du niveau A au sommet"></nav>' +
         '<main class="ar-scene"><p class="ar-ou"></p><div class="ar-annonce" aria-live="polite" hidden></div><div class="ar-item"></div></main></div></section>');
@@ -9959,6 +10011,8 @@ const Arene = (() => {
       else if(a === 'arplus') basculerGroupe();
       else if(a === 'gpret') pretGroupe();
       else if(a === 'gtableau') tableauGroupe();
+      else if(a === 'tableau') ouvrirTableau();
+      else if(a === 'inviter'){ if(typeof Convergence !== 'undefined' && Convergence.inviter) Convergence.inviter(b); }
       else if(a === 'auto'){ R.bloc = ''; R.revoir = ''; suivant(); }
       else if(a === 'portee'){ R.portee = b.dataset.p || ''; R.bloc = ''; R.revoir = ''; R.courant = null; majCarte(); suivant(); }
       else if(a === 'round'){ if(lancerRound()) suivant(); }
@@ -9966,6 +10020,12 @@ const Arene = (() => {
     ui.addEventListener('keydown', e => {
       if(e.key === 'Escape'){ e.preventDefault(); demanderFermer(); return; }
       e.stopPropagation();
+      /* B : le tableau, comme sur la page (3 nov.). Pendant un choix A–D, B reste la réponse B : les tuiles ont déjà pris la touche */
+      if((e.key === 'b' || e.key === 'B') && !e.defaultPrevented && !e.ctrlKey && !e.metaKey && !e.altKey && typeof Tableau !== 'undefined'){
+        const t = e.target && e.target.closest ? e.target : null;
+        if(t && t.closest('input, textarea, select, [contenteditable="true"]')) return;
+        e.preventDefault(); ouvrirTableau();
+      }
     });
     $('[data-a="ecrire"]', ui).setAttribute('aria-pressed', String(ecrire()));
     if(window.innerWidth >= 900){ ui.classList.add('avec-carte'); $('[data-a="carte"]', ui).setAttribute('aria-pressed', 'true'); }
@@ -10077,7 +10137,7 @@ const Arene = (() => {
     const z = $('.ar-item', ui);
     z.innerHTML = '<div class="ar-fin">' + h + '<div class="ar-ctrl ar-centre">' + boutons.map(([t, f, plein], k) => '<button type="button" class="btn' + (plein ? ' plein' : '') + '" data-k="' + k + '">' + t + '</button>').join('') + '</div></div>';
     $$('[data-k]', z).forEach(b => b.addEventListener('click', () => boutons[+b.dataset.k][1]()));
-    const b0 = $('[data-k="0"]', z); if(b0) b0.focus({preventScroll:true});
+    focaliser($('[data-k="0"]', z));
   }
 
   /* ---------- une question ---------- */
@@ -10117,6 +10177,7 @@ const Arene = (() => {
   function montrer(it, b){
     R.courant = it ? [it, b] : null;
     R.aide = false; R.repondu = false;
+    if(it && typeof Tableau !== 'undefined' && Tableau.ouvert()) Tableau.voirEcran(ecranQuestion());
     majTete(); majCarte();
     const z = $('.ar-item', ui), ou = $('.ar-ou', ui);
     if(!it){
@@ -10174,7 +10235,7 @@ const Arene = (() => {
       if(it.pas) p.insertAdjacentHTML('afterbegin', pointDuCours(it.pas, compte));
       art.appendChild(p);
       if(!groupe) $('.ar-suiv', p).addEventListener('click', suivant);
-      $('.ar-suiv', p).focus({preventScroll:true});
+      focaliser($('.ar-suiv', p));
       p.scrollIntoView({block:'nearest'});
       if(groupe){ majGroupeUI(); piloter(); }
     };
@@ -10222,7 +10283,7 @@ const Arene = (() => {
         const k = '1234'.indexOf(e.key) >= 0 ? '1234'.indexOf(e.key) : 'abcd'.indexOf(String(e.key).toLowerCase());
         if(k >= 0 && k < o.choix.length && !art.dataset.fait){ e.preventDefault(); choisir(k); }
       });
-      const b0 = $('.ar-tuile', art); if(b0) b0.focus({preventScroll:true});
+      focaliser($('.ar-tuile', art));
       return;
     }
     if(it.type === 'discrim' || it.type === 'qcm'){
@@ -10248,7 +10309,7 @@ const Arene = (() => {
           fini(ok);
         });
       });
-      const b0 = $('.ar-c', art); if(b0) b0.focus({preventScroll:true});
+      focaliser($('.ar-c', art));
       return;
     }
     if(it.type === 'calcul'){
@@ -10287,7 +10348,7 @@ const Arene = (() => {
       $('[data-v="ok"]', art).addEventListener('click', () => corriger(false));
       $('[data-v="sais"]', art).addEventListener('click', () => corriger(true));
       inp.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); corriger(false); } });
-      inp.focus({preventScroll:true});
+      focaliser(inp);
       return;
     }
     /* de mémoire : pas, libre, application, chaine. On écrit, puis on coche ce que la réponse contenait */
@@ -10330,7 +10391,7 @@ const Arene = (() => {
     $('[data-v="ok"]', art).addEventListener('click', () => corriger(false));
     $('[data-v="sais"]', art).addEventListener('click', () => corriger(true));
     ta.addEventListener('keydown', e => { if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); corriger(false); } });
-    ta.focus({preventScroll:true});
+    focaliser(ta);
   }
 
   /* ---------- l'arène à plusieurs (Convergence ; learning-blueprint §5.7) ----------
@@ -10460,12 +10521,14 @@ const Arene = (() => {
   function majGroupeUI(){
     const z = ui && $('.ar-gr', ui); if(!z || !GR.actif || !GR.q) return;
     const n = GR.q.n, P = participants(), tousRep = P.every(p => repondu(p, n)), tousCor = P.every(p => corrige(p, n));
+    /* ma correction est ouverte : les réponses déjà données restent visibles, même si quelqu'un vient d'entrer dans l'arène du groupe */
+    const vues = tousRep || (R.repondu && !!GR.mien && GR.mien.n === n);
     const ligne = p => {
       const r = repondu(p, n) ? p.ar.r : null;
-      const e = !r ? '<span class="ar-gr-e">réfléchit…</span>' : !tousRep ? '<span class="ar-gr-e">a répondu</span>'
+      const e = !r ? '<span class="ar-gr-e">réfléchit…</span>' : !vues ? '<span class="ar-gr-e">a répondu</span>'
         : r.ok === null ? '<span class="ar-gr-e">se corrige…</span>' : r.ok ? '<span class="ar-gr-e ok">✓' + (r.a ? ' avec un indice' : '') + '</span>' : '<span class="ar-gr-e bad">✗</span>';
       return '<li><i style="background:' + esc(p.c) + '"></i><b>' + esc(p.nom) + (p.moi ? ' (toi)' : '') + '</b> ' + e +
-        (corrige(p, n) && p.ar.pret >= n ? ' <span class="ar-gr-p">prêt·e</span>' : '') + (tousRep && r && r.t ? '<span class="ar-gr-t">« ' + esc(r.t) + ' »</span>' : '') + '</li>';
+        (corrige(p, n) && p.ar.pret >= n ? ' <span class="ar-gr-p">prêt·e</span>' : '') + (vues && r && r.t ? '<span class="ar-gr-t">« ' + esc(r.t) + ' »</span>' : '') + '</li>';
     };
     let bilan = '';
     if(tousCor){
@@ -10483,6 +10546,7 @@ const Arene = (() => {
   function majBoutonGroupe(){
     const bg = ui && $('[data-a="arplus"]', ui); if(!bg) return;
     const g = GR.seance, autres = g ? g.membres.length - 1 : 0;
+    $('[data-a="inviter"]', ui).hidden = !g;
     bg.hidden = autres < 1;
     if(autres < 1) return;
     const dedans = g.membres.filter(m => m.ar && m.ar.h === HASH).length;
@@ -10521,9 +10585,24 @@ const Arene = (() => {
   /* expliquer au tableau : celui de l'écran de la question, ouvert pour le groupe */
   function tableauGroupe(){
     if(typeof Tableau === 'undefined') return;
-    const c = R.courant; if(c && c[0]){ const p = c[0].pas && Pas.get(c[0].pas); aller(p ? p.ecran : c[1].id); }
-    Tableau.ouvrir('groupe');
+    Tableau.ouvrir('groupe', ecranQuestion());
   }
+  /* le tableau depuis l'arène (3 nov.) : celui de l'écran de la question, sinon celui de l'écran de la page. Il s'ouvre
+     par-dessus (côte à côte sur un grand écran) sans changer l'écran de la page ni toucher à l'arène : la question, la
+     réponse choisie, l'attente du groupe restent telles quelles, et le fermer ramène exactement ici */
+  function ecranQuestion(){
+    const c = R.courant; if(!c) return ICI ? ICI.id : '';
+    const p = c[0] && c[0].pas && Pas.get(c[0].pas);
+    return p ? p.ecran : c[1] ? c[1].id : ICI ? ICI.id : '';
+  }
+  function ouvrirTableau(){
+    if(typeof Tableau === 'undefined') return;
+    if(Tableau.ouvert()){ Tableau.fermer(); return; }
+    Tableau.ouvrir(undefined, ecranQuestion());
+  }
+  /* le focus ne quitte pas le tableau ni les panneaux de la séance quand l'arène avance (une correction qui s'ouvre, une question qui arrive) */
+  const focusAilleurs = () => { const a = document.activeElement; return !!(a && a.closest && a.closest('.tb, .cv-ajout, .cv-portes')); };
+  const focaliser = el => { if(el && !focusAilleurs()) el.focus({preventScroll:true}); };
 
   /* ---------- les quatre tuiles : d'où viennent les choix ---------- */
   const CLE_ECRIRE = 'lumiere-arene-ecrire';
@@ -10600,6 +10679,7 @@ const Arene = (() => {
     if(!B) construire();
     if(!ui) construireUI();
     ui.hidden = false; document.body.classList.add('ar-ouverte');
+    if(typeof Tableau !== 'undefined' && Tableau.replacer) Tableau.replacer();
     if(!R.retour && !R.round && preparerRetour()){ R.courant = null; suivant(); return; }
     if(!R.courant) suivant(); else { majTete(); majCarte(); }
   }
@@ -10620,6 +10700,7 @@ const Arene = (() => {
     if(!ui || ui.hidden) return;
     if(GR.actif) quitterGroupe(true);
     ui.hidden = true; document.body.classList.remove('ar-ouverte'); sansTuteur();
+    if(typeof Tableau !== 'undefined' && Tableau.replacer) Tableau.replacer();
     if(!R.round) R.courant = R.courant && R.courant[0] && !acquis(R.courant[0]) ? R.courant : null;
     const b = $('#btn-arene'); if(b) b.focus({preventScroll:true});
   }
@@ -14610,7 +14691,8 @@ const Tableau = (() => {
     if(lectureSeule()) outil = 'main'; else if(outil === 'main' && !espace) outil = 'stylo';
     reprendreCadre(); majTete(); majOutils(); dessiner(); signaler('ouvert');
   }
-  const large = () => window.innerWidth >= 1000;
+  /* côte à côte : dès 1000 px sur la page (elle se replie dans la moitié gauche) ; dans l'arène, dès 900 px (3 nov.) */
+  const large = () => window.innerWidth >= (document.body.classList.contains('ar-ouverte') ? 900 : 1000);
   function disposer(){
     if(!ui) return;
     const d = cote && large() && !ui.el.hidden;
@@ -14620,11 +14702,13 @@ const Tableau = (() => {
     $('[data-o="cote"]', ui.el).setAttribute('aria-pressed', String(cote));
     requestAnimationFrame(() => { mesurer(); dessiner(); });
   }
-  function ouvrir(v){
-    if(!ICI) return;
+  /* id : le tableau d'un autre écran que celui de la page (l'arène ouvre celui de sa question, sans changer d'écran) */
+  function ouvrir(v, id){
+    const e = (id && ecran(id)) || ICI;
+    if(!e) return;
     if(!ui) construire();
     lireTheme();
-    ecranVu = ICI.id;
+    ecranVu = e.id;
     vue = v === 'seance' || v === 'moi' ? v : ctx ? 'groupe' : 'moi';
     if(vue === 'seance' && !(L[ecranVu] && L[ecranVu].seance)) vue = 'moi';
     ui.el.hidden = false;
@@ -14638,8 +14722,25 @@ const Tableau = (() => {
     if(cours) finirTrait();
     geste = null; pointeurs.clear(); espace = false;
     ui.el.hidden = true; document.body.classList.remove('tb-cote');
+    /* ouvert sur l'écran d'une question de l'arène : le tableau du groupe écouté revient à l'écran de la page */
+    if(ctx && ICI && gEcran !== ICI.id) suivre(ICI.id);
     signaler('ouvert');
-    const b = $('#btn-tableau'); if(b) b.focus({preventScroll:true});
+    const b = $('.ar:not([hidden]) [data-a="tableau"]') || $('#btn-tableau'); if(b) b.focus({preventScroll:true});
+  }
+  /* l'arène passe à une question d'un autre écran : le tableau ouvert la suit (comme il suit la page) */
+  function voirEcran(id){
+    if(!ui || ui.el.hidden || !id || id === ecranVu || !ecran(id)) return;
+    if(saisie) fermerSaisie(true);
+    if(cours) finirTrait();
+    ecranVu = id;
+    if(vue === 'seance' && !(L[ecranVu] && L[ecranVu].seance)) vue = 'moi';
+    changerVue(vue);
+  }
+  /* l'arène se ferme : le côte à côte reprend la règle de la page, et le tableau revient à l'écran de la page */
+  function replacer(){
+    if(!ui || ui.el.hidden) return;
+    disposer();
+    if(ICI && ICI.id !== ecranVu) voirEcran(ICI.id);
   }
   /* l'écran change pendant que le tableau est ouvert (côte à côte) : il suit ; un téléphone relié le suit aussi tableau fermé */
   function suivreEcran(){
@@ -14821,7 +14922,7 @@ const Tableau = (() => {
     majOutils(); dessiner();
   }
 
-  return {demarrer, ouvrir, fermer, seance, membres:membresMaj, couleur, ecouter:f => { ecoute = f; }, nonVus,
+  return {demarrer, ouvrir, fermer, voirEcran, replacer, ouvert:() => !!ui && !ui.el.hidden, seance, membres:membresMaj, couleur, ecouter:f => { ecoute = f; }, nonVus,
     ouvertSur:() => ui && !ui.el.hidden && vue === 'groupe' ? ecranVu : '',
     /* l'ordinateur d'un téléphone relié (tablette.js) */
     tablette:{brancher:f => { telClic = f; if(ui) majTete(); }, suivre:f => { tab = f; }, montrer:telMontrer, fin:telFin, etat:telEtat, apercu:telApercu, trait:telTrait,
@@ -14892,7 +14993,36 @@ const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', c
   depuis:0,                                  // quand j'ai rejoint la convergence (l'ordre du groupe)
   admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false, demandes:[], porte:'', vuN:0,
   repere:{e:'', n:0, auto:false, par:''}, pret:0, desab:[], envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'',
-  decalage:0, entree:0, sig:''};
+  decalage:0, entree:0, sig:'',
+  enLigne:false, coupe:false, reparation:false, tReparer:0, dernierM:{},   // la présence se refait après une coupure (3 nov.)
+  dernier:{vue:null, coches:null, ar:null},  // le regard, les coches et l'arène publiés en dernier : remis avec la présence
+  annonces:new Set(),                        // les demandes déjà annoncées (un avis et le titre de l'onglet, une fois chacune)
+  jeton:'', sceau:''};                       // le jeton de cet appareil pour cette séance, et son empreinte publiée
+/* revenir dans la séance (3 nov.) : qui a convergé une fois revient sans attendre la porte. Son uid suffit après un
+   rechargement ou une coupure (la connexion anonyme vit dans l'onglet) ; un onglet fermé puis rouvert a un autre uid,
+   alors l'appareil garde un jeton secret par séance (localStorage, 6 h) et publie, une fois lié, son empreinte (sceau).
+   En revenant, il montre le jeton dans sa demande ; un membre qui connaît l'empreinte l'accueille d'office. */
+const CLE_RETOUR = P + '-cv-retour', RETOUR_MAX = 6 * 3600000, HACHES = new Map();
+const jetonOk = j => typeof j === 'string' && /^[A-Za-z0-9_-]{16,64}$/.test(j);
+function retourDe(code){
+  const r = lireJSON(CLE_RETOUR, null);
+  return r && r.code === code && jetonOk(r.jeton) && Date.now() - (+r.t || 0) < RETOUR_MAX ? r : null;
+}
+async function hacher(j){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('lumiere-cv|' + j));
+  return Array.from(new Uint8Array(b).slice(0, 16), x => x.toString(16).padStart(2, '0')).join('');
+}
+function garderRetour(){
+  if(S.etat !== 'lie' || !S.code) return;
+  let r = retourDe(S.code);
+  if(!r){ const a = new Uint8Array(18); crypto.getRandomValues(a); r = {code:S.code, jeton:btoa(String.fromCharCode(...a)).replace(/\+/g, '-').replace(/\//g, '_')}; }
+  r.nom = S.nom; r.raie = S.raie; r.t = Date.now();
+  memo.set(CLE_RETOUR, JSON.stringify(r));
+  if(S.jeton !== r.jeton){
+    const j = r.jeton; S.jeton = j; S.sceau = '';
+    try{ hacher(j).then(h => { if(S.jeton === j && S.etat === 'lie'){ S.sceau = h; publier(); } }, () => {}); }catch(e){}
+  }
+}
 const maintenant = () => Date.now() + S.decalage;   // l'heure du relais
 
 /* ---------- le groupe : qui est là, et dans quel ordre ---------- */
@@ -14949,7 +15079,26 @@ function moi(){
   return {v:2, nom:S.nom, raie:S.raie, role:S.role, etat:S.etat === 'lie' || accueil ? 'lie' : S.etat, lie:S.etat === 'lie',
     avec:S.avec, refus:S.refusUid, refuses:S.refuses, admis:S.admis, ouvert:S.ouvert, plein:S.plein, depuis:S.depuis, at:P,
     ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto, par:S.repere.par || ''}, pret:S.pret,
-    tuteur:monTuteur(), suit:maCible(), tab:typeof Tableau !== 'undefined' ? Tableau.ouvertSur() : '', t:Date.now()};
+    tuteur:monTuteur(), suit:maCible(), tab:typeof Tableau !== 'undefined' ? Tableau.ouvertSur() : '', t:Date.now(),
+    /* null efface le champ (publier fait un update) : le sceau seulement une fois lié, le jeton seulement en demandant */
+    sceau:S.etat === 'lie' && S.sceau ? S.sceau : null, jeton:S.etat === 'demande' && retourDe(S.code) ? retourDe(S.code).jeton : null};
+}
+/* la présence a disparu du relais (une coupure : téléphone en veille, changement d'application, réseau ; ou l'onDisconnect
+   d'un onglet rechargé qui arrive après coup) : on la remet, avec le regard, les coches et l'arène, et on réarme
+   l'onDisconnect, que la coupure a consommé. Au plus une fois toutes les 3 s. */
+async function reparer(){
+  if(!S.refMoi || S.reparation || Date.now() - S.tReparer < 3000) return;
+  S.reparation = true; S.tReparer = Date.now();
+  const r = S.refMoi;
+  try{
+    await S.F.onDisconnect(r).remove();
+    if(S.refMoi !== r) return;
+    const o = moi();
+    if(S.etat === 'lie'){ ['vue', 'coches', 'ar'].forEach(k => { if(S.dernier[k]) o[k] = S.dernier[k]; }); }
+    await S.F.update(r, o);
+    if(MIR.actif && S.refMoi === r) ecrireMiroir();
+  }catch(e){}
+  finally{ S.reparation = false; }
 }
 let tPres = null;
 function publier(){
@@ -14962,7 +15111,8 @@ function sauverSeance(){
   try{
     if(S.etat === 'lie'){
       const m = {};
-      Object.keys(S.membres).slice(-MAX_GROUPE * 2).forEach(u => { const x = S.membres[u]; m[u] = {nom:x.nom, raie:x.raie, role:x.role || 'invite', depuis:x.depuis || 0}; });
+      Object.keys(S.membres).slice(-MAX_GROUPE * 2).forEach(u => { const x = S.membres[u]; m[u] = {nom:x.nom, raie:x.raie, role:x.role || 'invite', depuis:x.depuis || 0, sceau:x.sceau || ''}; });
+      garderRetour();
       sessionStorage.setItem(CLE_SEANCE, JSON.stringify({v:2, code:S.code, role:S.role, nom:S.nom, raie:S.raie, depuis:S.depuis, membres:m,
         ouvert:S.ouvert, choix:S.choix, cible:S.cible, repere:S.repere, pret:S.pret}));
     } else sessionStorage.removeItem(CLE_SEANCE);
@@ -14985,28 +15135,41 @@ async function entrer(role, code, reprise){
   S.entree = Date.now();
   const perdu = () => toast('La séance a été coupée par le relais. Quitte, puis recommence.');
   S.desab.push(F.onValue(F.ref(db, '.info/serverTimeOffset'), s => { S.decalage = +s.val() || 0; }));
+  /* la connexion revient après une coupure : la présence est remise (reparer) */
+  S.enLigne = true; S.coupe = false;
+  S.desab.push(F.onValue(F.ref(db, '.info/connected'), s => {
+    if(s.val() !== true){ if(S.enLigne) S.coupe = true; S.enLigne = false; return; }
+    S.enLigne = true;
+    if(S.coupe){ S.coupe = false; S.tReparer = 0; reparer(); }
+  }));
   S.desab.push(F.onValue(F.ref(db, S.base + '/membres'), s => surMembres(s.val() || {}), perdu));
   S.desab.push(F.onChildAdded(F.ref(db, S.base + '/flux'), s => surFlux(s.key, s.val()), perdu));
   S.desab.push(F.onChildRemoved(F.ref(db, S.base + '/flux'), s => surRetrait(s.key, s.val())));
   return true;
 }
-async function quitter(){
+/* garder : la séance n'est pas quittée exprès (une reprise qui échoue) ; le jeton de retour reste */
+async function quitter(garder){
+  if(garder !== true) memo.set(CLE_RETOUR, '');
   S.desab.forEach(f => { try{ f(); }catch(e){} }); S.desab = [];
   if(MIR.actif || (typeof Tuteur !== 'undefined' && Tuteur.enRelais())){ MIR.actif = false; Tuteur.relais(null); Tuteur.suivi(null); Tuteur.duo(null); }
   Object.assign(MIR, {suiveurs:'', suit:''});
   Object.keys(S.auGroupe).forEach(k => { clearTimeout(S.auGroupe[k]); if(S.F) S.F.remove(S.F.ref(S.db, S.base + '/flux/' + k)).catch(() => {}); });
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', membres:{}, depuis:0, admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false,
-    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:''});
+    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:'',
+    enLigne:false, coupe:false, dernierM:{}, dernier:{vue:null, coches:null, ar:null}, annonces:new Set(), jeton:'', sceau:''});
   sauverSeance(); majRail(); majChoixSuivi();
   if(typeof Marques !== 'undefined'){ Marques.partager(false); couleurMarques(); }
   brancherTableau(); majArene();
-  Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); montrerDemandes([]);
+  Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); fermerAjout(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
 
 /* ---------- la poignée de main ---------- */
 function surMembres(m){
+  S.dernierM = m;
+  /* ma présence a disparu alors que la connexion est là : on la remet */
+  if(S.refMoi && S.enLigne && S.etat !== 'repos' && !m[S.uid]) reparer();
   const autres = Object.entries(m).filter(([u]) => u !== S.uid).map(([u, p]) => Object.assign({}, p && typeof p === 'object' ? p : {}, {uid:u}));
   if(S.etat === 'lie'){
     /* le regard change à chaque défilement : si rien d'autre n'a bougé, on ne redessine que les yeux et les coches */
@@ -15031,7 +15194,8 @@ function noter(p){
   Object.assign(x, {nom:nomDe(p), raie:raieOk(p.raie), role:p.role === 'hote' ? 'hote' : 'invite', depuis:+p.depuis || 0, v:+p.v || 1,
     ecran:typeof p.ecran === 'string' ? p.ecran : '', pret:typeof p.pret === 'number' ? p.pret : 0,
     tuteur:['propre', 'copie', 'mien', 'relais'].includes(p.tuteur) ? p.tuteur : '', suit:typeof p.suit === 'string' ? p.suit : null,
-    miroir:p.miroir && typeof p.miroir === 'object' ? p.miroir : null, tab:typeof p.tab === 'string' ? p.tab.slice(0, 40) : '', vu:Date.now()});
+    miroir:p.miroir && typeof p.miroir === 'object' ? p.miroir : null, tab:typeof p.tab === 'string' ? p.tab.slice(0, 40) : '', vu:Date.now(),
+    sceau:typeof p.sceau === 'string' && /^[0-9a-f]{32}$/.test(p.sceau) ? p.sceau : x.sceau || ''});
   return x;
 }
 function surGroupe(autres){
@@ -15040,7 +15204,10 @@ function surGroupe(autres){
     vus[p.uid] = true;
     const avant = S.membres[p.uid] ? S.membres[p.uid].la : undefined, x = noter(p);
     x.la = true;
-    if(avant === undefined) arrives.push(x.nom);           // null : après un rechargement, on constate sans annoncer
+    /* revenu par un autre onglet (même jeton, autre uid) : c'est la même personne, l'ancienne fiche s'efface */
+    const ancien = avant === undefined && x.sceau ? Object.keys(S.membres).find(u => u !== p.uid && S.membres[u].la === false && S.membres[u].sceau === x.sceau) : '';
+    if(ancien){ delete S.membres[ancien]; toast('« ' + x.nom + ' » est de retour.'); sauverSeance(); }
+    else if(avant === undefined) arrives.push(x.nom);           // null : après un rechargement, on constate sans annoncer
     else if(avant === false) toast('« ' + x.nom + ' » est de retour.');
   });
   Object.keys(S.membres).forEach(u => {
@@ -15066,6 +15233,8 @@ function garderPorte(autres){
   let change = false;
   /* l'accueil est fait : le nouveau venu est lié, ou il est reparti */
   Object.keys(S.admis).forEach(u => { const p = ici[u]; if(!p || estLie(p)){ delete S.admis[u]; change = true; } });
+  /* qui a déjà convergé dans cette séance revient sans attendre : tout membre lié le reconnaît, pas seulement la porte */
+  if(reconnaitre(autres)) change = true;
   if(!estPilote()){
     if(S.plein){ S.plein = false; change = true; }
     if(change) publier();
@@ -15079,6 +15248,34 @@ function garderPorte(autres){
   if(change) publier();
   S.demandes = ds;
   montrerDemandes(ds);
+  /* une nouvelle demande se voit où que soit la porte : la carte passe par-dessus l'arène et le tableau, un avis
+     l'annonce, et dans un onglet en arrière-plan le titre appelle (3 nov.) */
+  const neufs = ds.filter(d => !S.annonces.has(d.uid));
+  ds.forEach(d => S.annonces.add(d.uid));
+  if(neufs.length){
+    toast(listeNoms(neufs.map(nomDe)) + (neufs.length > 1 ? ' veulent' : ' veut') + ' rejoindre la convergence.', neufs.length > 1 ? 'Tout accueillir' : 'Converger',
+      () => accepter(S.demandes.filter(d => neufs.some(x => x.uid === d.uid))));
+    appeler();
+  }
+}
+/* le retour d'un membre : son uid est connu (il a déjà convergé dans cette séance), ou son jeton a l'empreinte d'un
+   membre connu ; accueilli d'office, sauf séance complète ou refus */
+function reconnaitre(autres){
+  if(presents().length + 1 >= MAX_GROUPE) return false;
+  let change = false;
+  autres.forEach(p => {
+    if(p.role !== 'invite' || p.etat !== 'demande' || p.at !== P || estLie(p) || S.admis[p.uid] || S.refuses[p.uid]) return;
+    if(S.membres[p.uid]){ S.admis[p.uid] = 1; change = true; return; }
+    if(!jetonOk(p.jeton)) return;
+    const h = HACHES.get(p.jeton);
+    if(h === undefined){
+      HACHES.set(p.jeton, '');
+      try{ hacher(p.jeton).then(x => { HACHES.set(p.jeton, x); if(S.etat === 'lie'){ S.sig = ''; surMembres(S.dernierM); } }, () => {}); }catch(e){}
+      return;
+    }
+    if(h && Object.keys(S.membres).some(u => u !== p.uid && S.membres[u].sceau === h)){ S.admis[p.uid] = 1; change = true; }
+  });
+  return change;
 }
 function hoteVoit(autres){
   const ici = {}; autres.forEach(p => { ici[p.uid] = p; });
@@ -15159,7 +15356,11 @@ function lier(ps, aussi){
     fermerVoile(); setTimeout(() => Rac.arreter(), 950); montrerBarre();
     /* le groupe tel qu'il est au bout de l'animation : d'autres accueillis ont pu confirmer entre-temps */
     const la = presents(), l = la.length ? la : ps.map(p => p.uid);
-    toast((l.length <= 3 ? 'Convergence établie avec ' + listeNoms(l.map(nomU)) : 'Convergence établie : vous êtes ' + (l.length + 1)) + '. Chacun va où il veut ; le repère garde votre étape.');
+    const fait = (l.length <= 3 ? 'Convergence établie avec ' + listeNoms(l.map(nomU)) : 'Convergence établie : vous êtes ' + (l.length + 1)) + '.';
+    /* le groupe est déjà dans l'arène à plusieurs : l'invitation vient ici (celle du lien arrivait sous le voile, puis cet avis la remplaçait) */
+    const arene = typeof Arene !== 'undefined' && Arene.enGroupe && !Arene.enGroupe() && la.some(u => S.membres[u].ar && S.membres[u].ar.on === 1);
+    if(arene) toast(fait + ' Le groupe est dans l’arène à plusieurs.', 'Rejoindre l’arène', () => Arene.rejoindre());
+    else toast(fait + ' Chacun va où il veut ; le repère garde votre étape.');
   });
 }
 
@@ -15576,7 +15777,11 @@ function lireLienBalise(){
 }
 function ouvrirRejoindre(code){
   if(S.etat !== 'repos' || code.length !== 6) return;
+  /* une séance où cet appareil a déjà convergé : le même surnom et la même couleur (et son jeton le fera accueillir d'office) */
+  const r = retourDe(code);
+  if(r && RAIES[r.raie] && !voile) choisirRaie(r.raie);
   ouvrir(); if(!voile) return;
+  if(r && propre(r.nom, 24)){ const n0 = $('.cv-nom', voile); if(n0) n0.value = propre(r.nom, 24); }
   const t = $('.cv-onglets [data-o="rejoindre"]', voile); if(t) t.click();
   const i = $('.cv-code-in', voile); if(i) i.value = code.slice(0, 3) + '-' + code.slice(3);
   etatVoile('Choisis ton surnom et ta couleur, puis « Rejoindre ».');
@@ -15624,6 +15829,8 @@ function demandesVoile(ds){
 }
 let portes = null;
 function demandesPage(ds){
+  majBadgesPorte(); majAjout();
+  if(ajout) ds = [];                                 // « Ajouter quelqu’un » est ouvert : la liste y est déjà
   if(!ds.length){ if(portes){ portes.remove(); portes = null; } return; }
   const cle = ds.map(d => d.uid).join();
   if(portes && portes.dataset.cle === cle) return;
@@ -15640,6 +15847,91 @@ function demandesPage(ds){
   portes.append(t, l, pied);
 }
 /* dans Claude, la page ne peut joindre aucun relais : Convergence vit sur le site */
+/* ---------- « Ajouter quelqu’un » (3 nov.) : le code en grand, le lien d'invitation et son code QR ; pour qui garde la
+   porte, « Accueillir d’office » et la file d'attente. N'importe quel membre l'ouvre pour partager le code. Par-dessus
+   l'arène et le tableau, comme la carte des demandes (qu'il remplace tant qu'il est ouvert). ---------- */
+let ajout = null, ajoutH = '', ajoutAncre = null;
+function lienInvitation(){
+  const page = /^https?:$/.test(location.protocol) ? location.origin + location.pathname + location.search : LUMIERE + (ATELIER.fichier || '') + '.html';
+  return page + '#rejoindre=' + S.code;
+}
+function copierTexte(texte, ok, sinon){
+  (navigator.clipboard ? navigator.clipboard.writeText(texte) : Promise.reject()).then(() => toast(ok), () => toast(sinon));
+}
+function fermerAjout(){
+  if(!ajout) return;
+  ajout.remove(); ajout = null; ajoutH = '';
+  if(S.etat === 'lie') demandesPage(S.demandes);
+  const a = ajoutAncre; ajoutAncre = null;
+  if(a && a.isConnected && a.offsetParent) a.focus({preventScroll:true});
+}
+function ouvrirAjout(ancre){
+  if(ajout){ fermerAjout(); return; }
+  if(S.etat !== 'lie' || !S.code) return;
+  fermerGpop();
+  ajoutAncre = ancre || null;
+  const lien = lienInvitation(), code = codeAffiche();
+  const a = ajout = H('<div class="cv-ajout v2-hors-texte" role="dialog" aria-labelledby="cv-ajout-t">' +
+    '<p class="lib" id="cv-ajout-t">Ajouter quelqu’un</p>' +
+    '<p class="cv-ajout-code"></p>' +
+    '<div class="cv-ajout-qr"><span>Code QR…</span></div>' +
+    '<p class="cv-ajout-aide">Avec l’appareil photo du téléphone, ou par le lien : la page s’ouvre sur « Rejoindre », le code déjà écrit. Sinon, le code suffit.</p>' +
+    '<div class="ctrl"><button type="button" class="btn plein" data-j="lien">Copier le lien</button><button type="button" class="btn" data-j="code">Copier le code</button></div>' +
+    '<div class="cv-ajout-porte"></div>' +
+    '<div class="ctrl"><button type="button" class="btn" data-j="fermer">Fermer</button></div></div>');
+  $('.cv-ajout-code', a).textContent = code;
+  $('.cv-ajout-code', a).setAttribute('aria-label', 'Code de la séance : ' + code.split('').join(' '));
+  document.body.appendChild(a);
+  const z = $('.cv-ajout-qr', a);
+  z.dataset.lien = lien;
+  const rate = () => { if(ajout === a){ z.classList.add('rate'); z.textContent = 'Le code QR n’a pas pu se charger : envoie le lien, ou donne le code.'; } };
+  if(typeof Tablette !== 'undefined' && Tablette.qr) Tablette.qr.charger().then(q => { if(ajout === a) z.innerHTML = Tablette.qr.svg(q, lien, 'Code QR du lien pour rejoindre la séance ' + code); }, rate);
+  else rate();
+  a.addEventListener('click', e => {
+    const b = e.target.closest('[data-j]'); if(!b) return;
+    const j = b.dataset.j, d = b.dataset.u ? S.demandes.find(x => x.uid === b.dataset.u) : null;
+    if(j === 'fermer') fermerAjout();
+    else if(j === 'lien') copierTexte(lien, 'Lien copié : envoie-le, il ouvre « Rejoindre » avec le code.', 'Le lien : ' + lien);
+    else if(j === 'code') copierTexte(code, 'Code copié : ' + code + '.', 'Le code de la séance : ' + code + '.');
+    else if(j === 'office'){ const o = !S.ouvert; basculerPorte(o); if(o && S.demandes.length) accepter(S.demandes.slice()); majAjout(); }
+    else if(j === 'oui' && d) accepter([d]);
+    else if(j === 'non' && d) refuser(d);
+    else if(j === 'tous' && S.demandes.length) accepter(S.demandes.slice());
+  });
+  a.addEventListener('keydown', e => { if(e.key === 'Escape'){ e.preventDefault(); fermerAjout(); } e.stopPropagation(); });
+  majAjout();
+  demandesPage(S.demandes);
+  const f = $('[data-j="lien"]', a); if(f) f.focus({preventScroll:true});
+}
+function majAjout(){
+  if(!ajout) return;
+  if(S.etat !== 'lie'){ fermerAjout(); return; }
+  let h;
+  if(estPilote()){
+    const ds = S.demandes;
+    h = '<div class="cv-gsec"><p>La porte</p>' +
+      '<button type="button" class="tu-switch" role="switch" data-j="office" aria-checked="' + S.ouvert + '"><i></i>Accueillir d’office</button>' +
+      '<small>' + (S.ouvert ? 'Qui entre le code rejoint sans attendre.' : 'Tu accueilles chaque nouveau venu.') + ' Qui a déjà convergé dans cette séance revient sans attendre.</small></div>' +
+      '<div class="cv-gsec"><p>À la porte' + (ds.length ? ' · ' + ds.length : '') + '</p>' +
+      (ds.length ? '<ul class="cv-file">' + ds.map(d => '<li><i class="cv-pt" style="--c:' + couleur(d.raie) + '"></i><span class="cv-fn">« ' + esc(nomDe(d)) + ' »</span>' +
+          '<button type="button" class="btn" data-j="non" data-u="' + esc(d.uid) + '">Refuser</button><button type="button" class="btn plein" data-j="oui" data-u="' + esc(d.uid) + '">Converger</button></li>').join('') + '</ul>' +
+          (ds.length > 1 ? '<div class="ctrl"><button type="button" class="btn" data-j="tous">Tout accueillir (' + ds.length + ')</button></div>' : '')
+        : '<small>Personne n’attend pour l’instant.</small>') + '</div>';
+  } else h = '<p class="cv-ajout-note">« ' + esc(nomU(rang()[0])) + ' » accueille les nouveaux venus : donne-leur le code ou le lien.</p>';
+  if(h === ajoutH) return;
+  ajoutH = h; $('.cv-ajout-porte', ajout).innerHTML = h;
+}
+/* qui attend à la porte : une pastille sur « Ajouter quelqu’un », dans la barre et dans l'arène (pour qui garde la porte) */
+function majBadgesPorte(){
+  const n = S.etat === 'lie' && estPilote() ? S.demandes.length : 0;
+  [barre && $('[data-a="ajouter"] .cv-badge', barre), $('.ar [data-a="inviter"] .cv-badge')].forEach(b => { if(b){ b.hidden = !n; b.textContent = n; } });
+}
+/* revenir dans une séance quittée en fermant l'onglet : « Rejoindre », avec le même surnom et la même couleur */
+function revenir(code){
+  if(S.etat !== 'repos') return;
+  ouvrirRejoindre(code);
+  const g = voile && $('.cv-go', voile); if(g && !g.hidden) g.click();
+}
 let popC = null;
 function popClaude(){
   if(popC){ popC.remove(); popC = null; return; }
@@ -15665,6 +15957,7 @@ function montrerBarre(){
         '<span class="cv-paire"><i class="cv-moi"></i><span class="cv-fil" aria-hidden="true"></span><i class="cv-lui"></i><b class="cv-pnom"></b><small class="cv-ou"></small></span>' +
         '<span class="cv-foule" hidden><svg class="cv-etoile" viewBox="-12 -12 24 24" aria-hidden="true"></svg><b class="cv-nb"></b></span>' +
       '</button>' +
+      '<button type="button" class="btn cv-b cv-ajouter" data-a="ajouter" aria-haspopup="dialog" title="Ajouter quelqu’un à la séance : le code, le lien, le code QR">＋ Ajouter quelqu’un<span class="cv-badge" hidden></span></button>' +
       '<span class="cv-rep">Repère : <b class="cv-rep-t"></b></span>' +
       '<button type="button" class="btn cv-b" data-a="recentrer">Recentrer</button>' +
       '<button type="button" class="btn cv-b" data-a="placer" title="Placer le repère commun sur cet écran">Repère ici</button>' +
@@ -15678,7 +15971,7 @@ function montrerBarre(){
       '<button type="button" class="btn cv-b" data-a="quitter">Quitter</button></div>');
     barre.addEventListener('click', e => {
       const b = e.target.closest('[data-a]'); if(!b) return;
-      ({groupe:() => ouvrirGpop(b), recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), tableau:() => Tableau.ouvrir('groupe'),
+      ({groupe:() => ouvrirGpop(b), ajouter:() => ouvrirAjout(b), recentrer, placer:placerRepere, pret:basculerPret, tuteur:basculerTuteur, messages:() => basculerPanneau(), croquis:() => ouvrirPad(), tableau:() => Tableau.ouvrir('groupe'),
         quitter:() => { if(confirm('Quitter la séance ? Les messages et les croquis de la séance seront effacés de cette page. Le tableau du groupe reste en copie sur cet appareil (Tableau → Séance).')) quitter(); }})[b.dataset.a]();
     });
     const haut = $('.haut');
@@ -15743,7 +16036,7 @@ function majBarre(){
     const n = Tableau.nonVus(); bt.hidden = !n; bt.textContent = n > 99 ? '99+' : n;
     bt.parentNode.title = n ? n + ' ajout' + (n > 1 ? 's' : '') + ' au tableau du groupe pour cet écran' : 'Le tableau du groupe pour cet écran : tout le monde y dessine et écrit, en direct';
   }
-  majRail(); majPuceTuteur(); majPanneau(); majGpop();
+  majRail(); majPuceTuteur(); majPanneau(); majGpop(); majAjout(); majBadgesPorte();
 }
 
 /* ---------- le groupe en détail : qui est où, le code pour inviter, la porte, le tuteur à suivre ---------- */
@@ -15762,6 +16055,7 @@ function ouvrirGpop(ancre){
     else if(g === 'office') basculerPorte(true);
     else if(g === 'tuteur') suivreTuteur(b.dataset.u || '');
     else if(g === 'balise') lancerBalise(b, null);
+    else if(g === 'ajout'){ fermerGpop(); ouvrirAjout(barre && $('[data-a="ajouter"]', barre)); }
     else if(g === 'copier'){
       const c = S.code.slice(0, 3) + '-' + S.code.slice(3);
       (navigator.clipboard ? navigator.clipboard.writeText(c) : Promise.reject()).then(() => toast('Code copié : ' + c + '.'), () => toast('Le code de la séance : ' + c + '.'));
@@ -15793,7 +16087,7 @@ function majGpop(){
   const ligne = (u, parti) => '<li' + (parti ? ' class="parti"' : '') + '><i class="cv-pt" style="--c:' + couleur(raieU(u)) + '"></i><b>' + esc(nomU(u)) + '</b><small>' +
     esc(parti ? 'parti·e' : [ou(u), fiche(u).role === 'hote' ? 'hôte' : u === pilote ? 'accueille' : '', pret(u) ? 'prêt·e ✓' : '', tut(u)].filter(Boolean).join(' · ')) + '</small></li>';
   let h = '<p class="lib">Convergence · ' + tous.length + '</p>' +
-    '<p class="cv-gcode">Code <b>' + esc(S.code.slice(0, 3) + '-' + S.code.slice(3)) + '</b><button type="button" class="btn" data-g="copier">Copier</button>' +
+    '<p class="cv-gcode">Code <b>' + esc(S.code.slice(0, 3) + '-' + S.code.slice(3)) + '</b><button type="button" class="btn" data-g="copier">Copier</button><button type="button" class="btn" data-g="ajout">Lien et code QR</button>' +
       (balisePossible() ? '<button type="button" class="btn" data-g="balise" title="Un message dans le Discord de la classe, avec un lien pour te rejoindre">📡 Balise</button>' : '') + '<small>pour inviter quelqu’un</small></p>' +
     '<ul class="cv-gl">' + tous.map(u => ligne(u, false)).join('') + partis.map(u => ligne(u, true)).join('') + '</ul>';
   if(estPilote()) h += '<div class="cv-gsec"><p>Nouveaux venus</p><div class="cv-seg">' +
@@ -16000,10 +16294,8 @@ function majRelais(){
   /* servir : quelqu'un a choisi de me suivre, ou n'a pas d'IA face à la mienne (en copier-coller, je colle chaque réponse) */
   const sv = lie ? suiveurs() : [], cle = sv.join();
   if(sv.length && !MIR.actif){
-    MIR.actif = true; MIR.ids = []; MIR.suiveurs = '';
-    const tours = {};
-    Tuteur.historique(6).forEach((h, i) => { const id = 'h' + i; tours[id] = {q:h.q.slice(0, 2000), r:h.r.slice(0, 12000), m:h.m, fini:true, t:i}; MIR.ids.push(id); });
-    S.F.set(refMir(), {actif:true, prive:MIR.prive, tours}).catch(() => {});
+    MIR.actif = true; MIR.suiveurs = '';
+    ecrireMiroir();
     const noms = listeNoms(sv.map(nomU)), pl = sv.length > 1;
     toast(noms + (pl ? ' suivent' : ' suit') + ' maintenant ton tuteur : ' + (pl ? 'leurs' : 'ses') + ' questions t’arrivent comme des cartes.' + (aTuteur() ? '' : ' En copier-coller, colle chaque réponse dans le panneau pour la partager.'));
   } else if(!sv.length && MIR.actif){
@@ -16024,6 +16316,13 @@ function majRelais(){
     Tuteur.miroir({prive:!!m.prive, tours:toursDe(m.tours)});
   } else if(Tuteur.enRelais()) Tuteur.relais(null);
   majPuceTuteur(); majChoixSuivi();
+}
+/* le miroir de mon tuteur, depuis l'historique (en commençant à servir, ou quand la présence revient après une coupure) */
+function ecrireMiroir(){
+  MIR.ids = [];
+  const tours = {};
+  Tuteur.historique(6).forEach((h, i) => { const id = 'h' + i; tours[id] = {q:h.q.slice(0, 2000), r:h.r.slice(0, 12000), m:h.m, fini:true, t:i}; MIR.ids.push(id); });
+  S.F.set(refMir(), {actif:true, prive:MIR.prive, tours}).catch(() => {});
 }
 /* la puce « Tuteur » de la barre : dit qui sert qui, et laisse choisir */
 function majPuceTuteur(){
@@ -16118,6 +16417,7 @@ function majMarques(){
   Marques.autres(S.etat === 'lie' ? presents().map(u => { const x = S.membres[u]; return {uid:u, nom:x.nom, c:couleur(x.raie), vue:x.vue || null, coches:x.coches || []}; }) : []);
 }
 function surMarque(ev){
+  if(ev.type === 'vue') S.dernier.vue = ev.vue || null; else S.dernier.coches = ev.coches || null;
   if(S.etat !== 'lie' || !S.refMoi) return;
   const vue = ev.type === 'vue';
   S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + (vue ? '/vue' : '/coches')), vue ? ev.vue : ev.coches).catch(() => {});
@@ -16145,6 +16445,7 @@ function majArene(){
   });
 }
 function surArene(ar){
+  S.dernier.ar = ar || null;
   if(S.etat !== 'lie' || !S.refMoi) return;
   S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + '/ar'), ar || null).catch(() => {});
 }
@@ -16299,6 +16600,7 @@ function demarrer(){
   }
   CROCHETS.apresAller.push(() => { if(S.etat === 'lie'){ publier(); majBarre(); } });
   document.addEventListener('pointerdown', e => { if(gpop && !gpop.contains(e.target) && !e.target.closest('.cv-duo, .cv-tut')) fermerGpop(); }, true);
+  document.addEventListener('pointerdown', e => { if(ajout && !ajout.contains(e.target) && !e.target.closest('[data-a="ajouter"], [data-a="inviter"], .cv-avis, .cv-portes')) fermerAjout(); }, true);
   if(typeof Tuteur !== 'undefined') Tuteur.ecouter(surTuteur);
   if(!memo.get(CLE_RAIE)) memo.set(CLE_RAIE, raie);        // une couleur tirée au hasard reste : les coches la gardent
   if(typeof Marques !== 'undefined'){ Marques.ecouter(surMarque); couleurMarques(); }
@@ -16308,7 +16610,14 @@ function demarrer(){
   const lien = lireLienBalise();
   window.addEventListener('hashchange', () => { const c = lireLienBalise(); if(c) ouvrirRejoindre(c); });
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
-  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)){ if(lien) setTimeout(() => ouvrirRejoindre(lien), 400); return; }
+  if(!s || typeof s.code !== 'string' || !/^[A-Z0-9]{6}$/.test(s.code)){
+    if(lien){ setTimeout(() => ouvrirRejoindre(lien), 400); return; }
+    /* un onglet fermé pendant une séance : on propose d'y revenir (le jeton de l'appareil le fait accueillir d'office) */
+    const r = lireJSON(CLE_RETOUR, null);
+    if(r && typeof r.code === 'string' && /^[A-Z0-9]{6}$/.test(r.code) && retourDe(r.code))
+      setTimeout(() => { if(S.etat === 'repos') toast('Ta séance ' + r.code.slice(0, 3) + '-' + r.code.slice(3) + ' continue peut-être.', 'Revenir', () => revenir(r.code)); }, 700);
+    return;
+  }
   let ms = s.membres && typeof s.membres === 'object' ? s.membres : null;
   if(!ms && typeof s.part === 'string' && s.part) ms = {[s.part]:{nom:s.pNom, raie:s.pRaie}};      // une séance de la version à deux
   if(!ms || !Object.keys(ms).length) return;
@@ -16316,14 +16625,14 @@ function demarrer(){
   Object.keys(ms).forEach(u => {
     const m = ms[u] || {};
     S.membres[u] = {nom:propre(m.nom, 24) || 'Partenaire', raie:raieOk(m.raie), role:m.role === 'hote' ? 'hote' : 'invite', depuis:+m.depuis || 0,
-      la:null, ecran:'', pret:0, tuteur:'', suit:null, miroir:null, v:2, vu:0};
+      la:null, ecran:'', pret:0, tuteur:'', suit:null, miroir:null, v:2, vu:0, sceau:typeof m.sceau === 'string' && /^[0-9a-f]{32}$/.test(m.sceau) ? m.sceau : ''};
   });
   Object.assign(S, {nom:propre(s.nom, 24) || 'Photon', raie:raieOk(s.raie), etat:'lie', depuis:+s.depuis || Date.now(), ouvert:!!s.ouvert,
     choix:['auto', 'mien', 'suivre'].includes(s.choix) ? s.choix : 'auto', cible:typeof s.cible === 'string' ? s.cible : '',
     repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false, par:typeof s.repere.par === 'string' ? s.repere.par : ''} : {e:'', n:0, auto:false, par:''}, pret:s.pret | 0});
   entrer(s.role === 'hote' ? 'hote' : 'invite', s.code, true).then(ok => {
-    if(!ok){ quitter(); return; }
-    montrerBarre();
+    if(!ok){ quitter(true); return; }
+    montrerBarre(); garderRetour();
     if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
     brancherTableau(); majArene();
   });
@@ -16333,7 +16642,7 @@ function demarrer(){
    tableau du groupe sous mon nom) ; le site et l'alphabet des codes */
 async function relais(){ await connecter(); return {F:S.F, db:S.db, uid:S.uid}; }
 
-return {demarrer, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0, relais, dansClaude, LUMIERE, ALPHA};
+return {demarrer, inviter:a => ouvrirAjout(a), etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0, relais, dansClaude, LUMIERE, ALPHA};
 })();
 
 /* ====== _commun/tablette.js ====== */
@@ -16394,7 +16703,7 @@ function chargerQR(){
   return chargementQR;
 }
 /* noir sur blanc, avec sa marge de quatre modules, quel que soit le thème : c'est ce que lisent les appareils photo */
-function svgQR(qrcode, texte){
+function svgQR(qrcode, texte, nom){
   const q = qrcode(0, 'M'); q.addData(texte); q.make();
   const n = q.getModuleCount(), m = 4;
   let d = '';
@@ -16407,7 +16716,7 @@ function svgQR(qrcode, texte){
     }
   }
   const t = n + 2 * m;
-  return '<svg viewBox="0 0 ' + t + ' ' + t + '" shape-rendering="crispEdges" role="img" aria-label="Code QR du lien de la tablette"><rect width="' + t + '" height="' + t + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
+  return '<svg viewBox="0 0 ' + t + ' ' + t + '" shape-rendering="crispEdges" role="img" aria-label="' + (nom || 'Code QR du lien de la tablette') + '"><rect width="' + t + '" height="' + t + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
 }
 
 /* ======================================================================
@@ -17144,7 +17453,8 @@ function demarrer(){
   else session(CLE_PC, null);
 }
 
-return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? (T.fini ? 'fini' : relie() ? 'relie' : 'attente') : ''})};
+/* le code QR, prêté à Convergence (« Ajouter quelqu’un » : le lien d’invitation) */
+return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? (T.fini ? 'fini' : relie() ? 'relie' : 'attente') : ''})};
 })();
 
 /* ====== _commun/nouveautes.js ====== */
@@ -17166,6 +17476,8 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Dans l’Arène, le bouton « Tableau » (ou la touche B) ouvre le tableau sans quitter ta question ; sur un grand écran, il se met à côté et tu peux répondre en même temps. En séance, c’est le tableau du groupe.'},
+    {d:'2026-11-03', p:['*'], t:'Convergence : « ＋ Ajouter quelqu’un » donne le code, un lien et un code QR pour inviter un ami en pleine séance, sans tout recommencer. Les demandes s’affichent même pendant l’Arène ou au tableau, et quelqu’un qui recharge sa page revient tout seul.'},
     {d:'2026-11-03', p:['*'], t:'Dans « Prédis d’abord » et les cartes « Distinguer », la bonne réponse n’est plus toujours la première : les choix sont mélangés à chaque fois.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Dans les exercices du Banc, une mauvaise réponse te laisse maintenant réessayer une fois avant de voir la correction. Tes réponses écrites comme au tableau (« 66,7 cm devant lui », « 28 cm derrière », « 13 mm ») sont aussi mieux comprises.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le module 8 est arrivé dans le Banc : le Pr et le Pp selon l’amétropie (avec le tableau du cours), la formation d’image par les trois rayons, et la taille de l’image selon le vertex. Ce sont les chapitres du module 8, à la fin du plan.'},
@@ -17473,7 +17785,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '3c0d74c7b2ae';
+  const ICI = '27f2265164b4';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
