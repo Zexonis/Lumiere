@@ -596,6 +596,8 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Le Survol se fait maintenant à plusieurs. En séance Convergence, ouvre-le : tes amis reçoivent « Rejoindre ». Dans « ✎ Notes », « Notes du groupe » vous fait écrire ensemble, ligne par ligne, les notes de chaque diapo. Le repère garde votre diapo commune : « Recentrer » t’y ramène et « Prêt·e » vous fait avancer ensemble. Sans atelier, le bouton « Convergence » du Survol crée un groupe avec un code.'},
+    {d:'2026-11-03', p:['*'], t:'Sablier : un nouveau rythme rapide, 5 minutes de travail, 5 minutes de pause. Choisis-le dans le Sablier de ton atelier : la pause tombe à la seconde, même en pleine Arène. En Convergence, tout le groupe a le même rythme, et personne ne peut écourter la pause pour les autres.'},
     {d:'2026-11-03', p:['*'], t:'Dans le Survol, « ✎ Notes » (en haut) ouvre une fenêtre pour écrire une note sur chaque diapo. « Enregistrer » la garde en fichier texte sur ton appareil, « Tout enregistrer » met toutes tes notes du diaporama dans un seul fichier. Sur un grand écran, la fenêtre se met à droite des diapos.'},
     {d:'2026-11-03', p:['*'], t:'Dans l’Arène, le bouton « Tableau » (ou la touche B) ouvre le tableau sans quitter ta question ; sur un grand écran, il se met à côté et tu peux répondre en même temps. En séance, c’est le tableau du groupe.'},
     {d:'2026-11-03', p:['*'], t:'Convergence : « ＋ Ajouter quelqu’un » donne le code, un lien et un code QR pour inviter un ami en pleine séance, sans tout recommencer. Les demandes s’affichent même pendant l’Arène ou au tableau, et quelqu’un qui recharge sa page revient tout seul.'},
@@ -739,7 +741,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '06c96e71c8eb';
+  const ICI = '93f51b90205d';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

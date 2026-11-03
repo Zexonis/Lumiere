@@ -1447,7 +1447,7 @@ svg .iris-f { fill: var(--doux); fill-opacity: .55; }
 })();
 </script>
 
-<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py -->
+<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py. Le groupe (Convergence) vit dans survol-groupe.js, chargé seulement à la demande. -->
 <style id="notes-survol-css">
 /* une colonne à droite qui prend sa place dès 1200 px (les diapos se redessinent dans les ≥ 860 px qui restent :
    audit sans problème) ; de 900 à 1199 px, le même panneau passe par-dessus la droite de la diapo (à 900 px, une
@@ -1473,9 +1473,27 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
 .ns-panneau button { min-height: 38px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
 .ns-panneau .ns-reduire { min-width: 38px; padding: 0 10px; }
 .ns-etat { margin: 0; min-height: 1.3em; font-size: var(--t-xs); color: var(--doux); }
+/* Convergence : le bouton du haut, l'interrupteur « Notes du groupe », et la place des lignes (survol-groupe.js les dessine) */
+.ns-cv svg { width: 22px; height: 11px; flex: none; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
+.ns-panneau .ns-sw { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 2px; border: 0; background: none; font-size: var(--t-xs); }
+.ns-sw i { position: relative; flex: none; width: 32px; height: 18px; border-radius: 9px; background: var(--trait); }
+.ns-sw i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--fond-2); box-shadow: 0 0 0 1px var(--doux); }
+.ns-sw[aria-checked="true"] i { background: var(--encre); }
+.ns-sw[aria-checked="true"] i::after { transform: translateX(14px); box-shadow: none; }
+.ns-lignes { flex: 1; min-height: 120px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
+.ns-garde { margin: 0; flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--t-s); line-height: 1.5; }
 @media (max-width: 899px) {
   .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
     box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+}
+/* au téléphone, le bouton Convergence prend sa place : le retour à l'atelier se coupe plutôt que de passer dessous */
+@media (max-width: 480px) {
+  .haut:has(.ns-cv:not([hidden])) .haut-gauche { flex: 1 1 0; }
+  .haut:has(.ns-cv:not([hidden])) .marque { display: none; }
+  .haut:has(.ns-cv:not([hidden])) .vers-banc { flex: 0 1 auto; min-width: 0; display: block; line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+}
+@media (max-width: 899px) {
+  .ns-cv .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 @media (max-width: 600px) {
   .ns-bouton { padding: 0 10px; }
@@ -1519,25 +1537,69 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
   p.innerHTML =
     '<div class="ns-tete"><h2 class="ns-titre" id="ns-titre">✎ Mes notes</h2>' +
     '<button type="button" class="ns-reduire" aria-label="Réduire les notes" title="Réduire (Échap)">—</button></div>' +
+    '<button type="button" class="ns-sw" id="ns-sw" role="switch" aria-checked="false" hidden><i></i><span>Notes du groupe</span></button>' +
     '<p class="ns-ou" id="ns-ou"></p>' +
     '<label class="ns-ou" for="ns-texte" hidden>Note de cette diapo</label>' +
     '<textarea class="ns-texte" id="ns-texte" spellcheck="true" placeholder="Ta note sur cette diapo : ce que tu retiens, une question pour le cours…"></textarea>' +
+    '<div class="ns-lignes" id="ns-lignes" hidden></div>' +
     '<div class="ns-actions"><button type="button" data-ns="une" title="Enregistre la note de cette diapo en fichier .txt sur ton appareil">Enregistrer</button>' +
-    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button></div>' +
+    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button>' +
+    '<button type="button" data-ns="copier" title="Ajoute les notes du groupe de cette diapo à ta note à toi" hidden>Copier dans mes notes</button></div>' +
     '<p class="ns-etat" id="ns-etat" aria-live="polite">Tes notes restent sur cet appareil.</p>';
   document.body.appendChild(p);
   const zone = p.querySelector('#ns-texte'), ou = p.querySelector('#ns-ou'), etat = p.querySelector('#ns-etat'), point = bouton.querySelector('.ns-point');
+  const lignes = p.querySelector('#ns-lignes'), sw = p.querySelector('#ns-sw'), titreP = p.querySelector('#ns-titre'), copier = p.querySelector('[data-ns="copier"]');
 
   let ici = -1, tempo = 0;
   const dire = t => { etat.textContent = t; };
+
+  /* la source des notes montrées : null, mes notes ; sinon le groupe en direct (vivant, survol-groupe.js) ou la dernière
+     copie gardée ici après une séance. Une source : {lignes(i) → textes, peindre(i), avant() : écrire ce qui attend, focus()} */
+  const CLE_G = 'survol-notes-groupe:' + fichier;
+  let source = null, vivant = null;
+  const texteG = i => source ? source.lignes(i).filter(x => x.trim()).join('\n') : '';
+  const majPoint = () => { point.hidden = !(source ? texteG(ici) : texteDe(ici)).trim(); };
+  function copieGardee() {
+    let c = null;
+    try { c = JSON.parse(lire(CLE_G) || 'null'); } catch (e) {}
+    if (!c || !c.n) return null;
+    return {
+      lignes: i => (c.n[cles[i]] && c.n[cles[i]].l) || [],
+      peindre(i) {
+        lignes.textContent = '';
+        const d = document.createElement('p'); d.className = 'ns-garde';
+        d.textContent = this.lignes(i).join('\n') || 'Aucune note du groupe sur cette diapo.';
+        lignes.appendChild(d);
+      }
+    };
+  }
+  /* hors d'un groupe, l'interrupteur n'apparaît que s'il reste une copie : les notes du groupe survivent à la séance */
+  function majInterrupteur() {
+    const c = !vivant && copieGardee(), dit = sw.querySelector('span');
+    sw.hidden = !vivant && !c;
+    dit.textContent = vivant ? 'Notes du groupe' : 'Copie des notes du groupe';
+    sw.title = vivant ? 'Les notes de tout le groupe sur cette diapo, ligne par ligne' : 'Les notes du groupe de ta dernière séance, gardées sur cet appareil';
+  }
+  function montrerSource(s) {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    source = s;
+    zone.hidden = !!s; lignes.hidden = !s; copier.hidden = !s;
+    sw.setAttribute('aria-checked', String(!!s));
+    titreP.textContent = s ? '✎ Notes du groupe' : '✎ Mes notes';
+    if (s) s.peindre(ici);
+    majPoint();
+    dire(s ? (s === vivant ? 'Tout le groupe voit ces lignes en direct.' : 'Une copie, gardée sur cet appareil.') : 'Tes notes restent sur cet appareil.');
+  }
   function garder() {
     clearTimeout(tempo); tempo = 0;
     if (ici < 0) return;
     const k = cles[ici], x = zone.value;
     if (x.trim()) notes[k] = { i: ici + 1, x, m: new Date().toISOString() }; else delete notes[k];
     dire(ecrire(CLE, JSON.stringify(notes)) ? 'Gardée sur cet appareil.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
-    point.hidden = !texteDe(ici).trim();
+    majPoint();
   }
+  const surDiapo = [];
   function suivre() {
     const n = cur();
     if (n === ici) return;
@@ -1545,7 +1607,9 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
     ici = n;
     zone.value = texteDe(n);
     ou.textContent = 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + (titreDe(diapos[n]) || '');
-    point.hidden = !zone.value.trim();
+    if (source) source.peindre(n);
+    majPoint();
+    surDiapo.forEach(f => f(n));
   }
   zone.addEventListener('input', () => { clearTimeout(tempo); tempo = setTimeout(garder, 400); });
   zone.addEventListener('blur', () => { if (tempo) garder(); });
@@ -1561,19 +1625,30 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
   }
   function une() {
     if (tempo) garder();
-    const n = cur(), x = zone.value.trim();
-    if (!x) { dire('Cette diapo n’a pas encore de note.'); return; }
-    telecharger('notes-' + fichier + '-diapo-' + (n + 1) + '.txt',
-      'Survol · ' + titreDiapo + '\nDiapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
-    dire('Fichier enregistré : notes-' + fichier + '-diapo-' + (n + 1) + '.txt');
+    if (source && source.avant) source.avant();
+    const n = cur(), x = (source ? texteG(n) : zone.value).trim(), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '-diapo-' + (n + 1) + '.txt';
+    if (!x) { dire(source ? 'Cette diapo n’a pas encore de notes du groupe.' : 'Cette diapo n’a pas encore de note.'); return; }
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe · ' : '') + 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
+    dire('Fichier enregistré : ' + nom);
   }
   function toutes() {
     if (tempo) garder();
-    const avec = diapos.map((d, i) => ({ i, x: texteDe(i).trim() })).filter(o => o.x);
+    if (source && source.avant) source.avant();
+    const avec = diapos.map((d, i) => ({ i, x: (source ? texteG(i) : texteDe(i)).trim() })).filter(o => o.x), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '.txt';
     if (!avec.length) { dire('Aucune note à enregistrer pour l’instant.'); return; }
     const corps = avec.map(o => '── Diapo ' + (o.i + 1) + ' · ' + titreDe(diapos[o.i]) + '\n\n' + o.x).join('\n\n');
-    telecharger('notes-' + fichier + '.txt', 'Survol · ' + titreDiapo + '\nMes notes, ' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
-    dire('Fichier enregistré : notes-' + fichier + '.txt (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe, ' : 'Mes notes, ') + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
+    dire('Fichier enregistré : ' + nom + ' (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+  }
+  /* « Copier dans mes notes » : les lignes du groupe de cette diapo, ajoutées à ma note */
+  function copierDansMes() {
+    if (source && source.avant) source.avant();
+    const n = cur(), x = texteG(n).trim(), a = texteDe(n).trim();
+    if (!x) { dire('Cette diapo n’a pas encore de notes du groupe.'); return; }
+    if (a.includes(x)) { dire('Ces lignes sont déjà dans tes notes.'); return; }
+    notes[cles[n]] = { i: n + 1, x: a ? a + '\n\n' + x : x, m: new Date().toISOString() };
+    zone.value = notes[cles[n]].x;
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Copié dans tes notes de cette diapo.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
   }
 
   /* ouvrir, réduire, et la place : en colonne dès 1200 px (les diapos se redessinent), par-dessus en dessous */
@@ -1584,17 +1659,25 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
     p.hidden = !ouvert;
     bouton.setAttribute('aria-expanded', String(ouvert));
     const dock = ouvert && large.matches;
+    document.body.classList.toggle('ns-ouvert', ouvert);
     if (document.body.classList.contains('ns-dock') !== dock) {
       document.body.classList.toggle('ns-dock', dock);
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);      // le diaporama redessine ses figures à la nouvelle largeur
     }
-    if (ouvert) { suivre(); if (focus) zone.focus(); }
+    if (ouvert) { suivre(); if (focus) { if (source && source.focus) source.focus(); else zone.focus(); } }
   }
   function basculer(v, focus) { if (!v && tempo) garder(); ouvert = v; ecrire(CLE_OUVERT, v ? '1' : '0'); placer(focus); }
   bouton.addEventListener('click', e => { e.stopPropagation(); basculer(!ouvert, !ouvert); });
   p.querySelector('.ns-reduire').addEventListener('click', () => { basculer(false); bouton.focus(); });
   p.querySelector('[data-ns="une"]').addEventListener('click', une);
   p.querySelector('[data-ns="toutes"]').addEventListener('click', toutes);
+  copier.addEventListener('click', copierDansMes);
+  sw.addEventListener('click', () => {
+    const on = !source;
+    montrerSource(on ? vivant || copieGardee() : null);
+    if (vivant && vivant.memo) vivant.memo(on);
+    if (on && source && source.focus) source.focus();
+  });
   /* les touches tapées dans les notes ne font pas avancer le diaporama */
   p.addEventListener('keydown', e => {
     if (e.key === 'Escape') { e.preventDefault(); basculer(false); bouton.focus(); }
@@ -1606,12 +1689,52 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
   window.addEventListener('pagehide', () => { if (tempo) garder(); });
 
   ici = -1; suivre(); placer(false);
+  majInterrupteur();
+
+  /* Convergence : suivre le Survol à plusieurs. Tout le groupe vit dans survol-groupe.js, copié à la racine du site et chargé
+     seulement ici : seul·e, aucun appel au relais. Dans Claude il n'y a pas de relais, donc pas de bouton ; si le fichier ne se
+     charge pas, le bouton s'efface et les notes continuent. Un lien ?cv=<salle>, ou un rechargement en plein groupe, le charge. */
+  if (window.claude) return;
+  const cv = document.createElement('button');
+  cv.type = 'button'; cv.className = 'ns-bouton ns-cv'; cv.id = 'ns-cv';
+  cv.title = 'Convergence : suivre ce Survol à plusieurs, chacun sur son appareil';
+  cv.setAttribute('aria-label', cv.title);
+  cv.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span class="ns-mot">Convergence</span>';
+  if (haut) haut.insertBefore(cv, bouton); else document.body.appendChild(cv);
+  const API = {
+    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, lire, ecrire, cur, dire, majPoint, CLE_G,
+    surDiapo: f => surDiapo.push(f),
+    /* le groupe arrive ou repart : o = sa source, ou null */
+    groupe(o) { vivant = o; if (!o && source && source.vivant) montrerSource(null); majInterrupteur(); },
+    montrer: montrerSource, source: () => source
+  };
+  let chargement = null;
+  function chargerGroupe() {
+    if (!chargement) chargement = new Promise((ok, non) => {
+      const sources = (/^https?:$/.test(location.protocol) ? ['survol-groupe.js'] : []).concat('https://zexonis.github.io/Lumiere/survol-groupe.js');
+      const essai = k => {
+        if (k >= sources.length) { chargement = null; non(new Error('groupe')); return; }
+        const s = document.createElement('script');
+        s.src = sources[k];
+        s.onload = () => { if (window.SurvolGroupe) ok(window.SurvolGroupe.brancher(API)); else essai(k + 1); };
+        s.onerror = () => { s.remove(); essai(k + 1); };
+        document.head.appendChild(s);
+      };
+      essai(0);
+    });
+    return chargement;
+  }
+  const rate = () => { cv.hidden = true; };
+  cv.addEventListener('click', () => chargerGroupe().then(g => g.ouvrir(), rate));
+  let salle = '', repris = false;
+  try { salle = (new URLSearchParams(location.search).get('cv') || '').toLowerCase(); repris = !!sessionStorage.getItem('survol-cv:' + fichier); } catch (e) {}
+  if (/^[a-z0-9]{6}$/.test(salle) || repris) chargerGroupe().then(g => g.arriver(salle), rate);
 })();
 </script>
 <!-- notes-survol:fin -->
 <script>
 (() => {
-  const ICI = '06c96e71c8eb';
+  const ICI = '93f51b90205d';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

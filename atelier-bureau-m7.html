@@ -831,19 +831,41 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .sablier-mini .s-verre{fill:none;stroke:currentColor;stroke-width:9;opacity:.75}
 .btn-sablier[aria-pressed="false"] .s-haut{opacity:.35}
 .btn-sablier[aria-pressed="true"]{border-color:var(--accent)}
-.btn-sablier.du{animation:sablier-du 1.8s ease-in-out infinite}
+.btn-sablier.du,.btn-sablier.proche{animation:sablier-du 1.8s ease-in-out infinite}
 @keyframes sablier-du{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 4px var(--accent-soft)}}
 @media (max-width:700px){ .btn-sablier .mot{display:none} .btn-sablier{padding-inline:10px} }
 .sablier-pop{position:fixed;z-index:95;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:12px 14px;box-shadow:0 14px 36px var(--ombre,rgba(0,0,0,.25))}
 .sablier-pop .legende{margin:6px 0 10px}
 .sablier-pop .puces{display:flex;flex-direction:column;align-items:stretch;gap:6px}
 .sablier-pop .puce{text-align:left;border-radius:10px}
-.sablier-voile{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:20px;overflow:auto;
+/* le réglage du sablier : au-dessus du voile (on peut changer le rythme du groupe pendant une pause) et de l'arène */
+.sablier-reglage{z-index:348;max-height:calc(100vh - 24px);overflow:auto}
+.sablier-pop .puce small{display:block;margin-top:1px;font-size:12px;font-weight:500;opacity:.85}
+.sablier-etat{margin:0 0 8px;font-size:13.5px;font-weight:600}
+.sablier-reglage .legende + .ctrl{margin-top:8px}
+/* le décompte d'un rythme (5·5 ou séance) : dans un attribut (sablier.js dit pourquoi), à la place du mot */
+.sablier-temps{font:600 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sablier-temps::after{content:attr(data-t)}
+.btn-sablier.en-pause .sablier-temps::before{content:'Pause '}
+/* au téléphone, la barre est déjà pleine : le décompte se pose sous l'icône au lieu de la faire passer à la ligne */
+@media (max-width:420px){
+  .btn-sablier.rythme{position:relative}
+  .btn-sablier .sablier-temps{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);padding:0 3px;border:1px solid var(--accent);border-radius:5px;background:var(--panel);color:var(--ink);font-size:10px;line-height:13px}
+  .btn-sablier.en-pause .sablier-temps::before{content:none}
+}
+.btn-sablier.rythme .mot{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ar-b-sablier{display:inline-flex;align-items:center;gap:6px}
+.ar-b-sablier .sablier-mini{width:11px;height:18px;flex:none}
+.ar-b-sablier .t{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.ar-b-sablier.proche{border-color:var(--accent);background:var(--accent-soft)}
+/* z 347 : par-dessus l'arène (320), le tableau et le croquis (330), la tablette (340) ; sous la carte de la porte (349) et les avis (350) */
+.sablier-voile{position:fixed;inset:0;z-index:347;display:grid;place-items:center;padding:20px;overflow:auto;
   background:color-mix(in srgb, var(--bg) 50%, transparent);-webkit-backdrop-filter:blur(12px) saturate(.85);backdrop-filter:blur(12px) saturate(.85);animation:sablier-entre .5s ease both}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){ .sablier-voile{background:color-mix(in srgb, var(--bg) 93%, transparent)} }
 @keyframes sablier-entre{from{opacity:0}to{opacity:1}}
 .sablier-voile.part{opacity:0;transition:opacity .5s ease}
 .sablier-carte{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;max-width:440px}
+.sablier-carte .ctrl{justify-content:center}
 .sablier-tourne{transition:transform .6s cubic-bezier(.6,.05,.3,1)}
 .sablier-voile.fini .sablier-tourne{transform:rotate(180deg)}
 .sablier-svg{display:block;width:min(150px, 34vw);height:auto;margin:6px 0;filter:drop-shadow(0 0 24px color-mix(in srgb, var(--accent) 45%, transparent))}
@@ -856,7 +878,7 @@ mark.annot.fin:not(.t-surligne)::after{content:attr(data-icone);font-size:.78em;
 .sablier-compte{margin:4px 0 0;font:600 clamp(40px, 9vw, 64px)/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);letter-spacing:.02em}
 .sablier-carte h2{font:600 24px/1.25 var(--f-display);margin:10px 0 0}
 .sablier-conseil{color:var(--ink-2);max-width:42ch;margin:4px 0 8px;line-height:1.5}
-@media (prefers-reduced-motion: reduce){ .sablier-voile{animation:none} .sablier-tourne{transition:none} .btn-sablier.du{animation:none} }
+@media (prefers-reduced-motion: reduce){ .sablier-voile{animation:none} .sablier-tourne{transition:none} .btn-sablier.du,.btn-sablier.proche{animation:none} }
 
 /* ---------- Convergence : étudier à deux (DESIGN-convergence.md). Le voile est toujours sombre : la lumière dans le noir, comme le hub ---------- */
 .btn-cv{display:inline-flex;align-items:center;gap:7px}
@@ -10029,6 +10051,8 @@ const Arene = (() => {
         '<span class="ar-seance" aria-live="polite"></span><span class="ar-espace"></span>' +
         /* les actions en un groupe : au téléphone, une seule rangée qui défile de côté sous le titre (sinon l'en-tête montait à 4 rangées en séance) */
         '<div class="ar-actions">' +
+        /* le décompte du sablier en rythme, l'arène couvrant la barre du haut (sablier.js le remplit) : en tête du groupe, visible sans défiler au téléphone */
+        '<button type="button" class="ar-b ar-b-sablier" data-a="sablier" aria-haspopup="dialog" hidden></button>' +
         '<button type="button" class="ar-b ar-b-groupe" data-a="arplus" hidden aria-pressed="false">À plusieurs</button>' +
         /* en séance Convergence : inviter quelqu'un sans quitter l'arène (convergence.js ouvre le panneau ; la pastille compte qui attend à la porte) */
         '<button type="button" class="ar-b ar-b-inviter" data-a="inviter" hidden aria-label="Ajouter quelqu’un à la séance" title="Ajouter quelqu’un à la séance : le code, le lien, le code QR"><span aria-hidden="true">＋</span><span class="mot">Ajouter quelqu’un</span><span class="cv-badge" hidden></span></button>' +
@@ -10060,6 +10084,7 @@ const Arene = (() => {
       else if(a === 'gtableau') tableauGroupe();
       else if(a === 'tableau') ouvrirTableau();
       else if(a === 'inviter'){ if(typeof Convergence !== 'undefined' && Convergence.inviter) Convergence.inviter(b); }
+      else if(a === 'sablier'){ if(typeof Sablier !== 'undefined') Sablier.reglages(b); }
       else if(a === 'auto'){ R.bloc = ''; R.revoir = ''; suivant(); }
       else if(a === 'portee'){ R.portee = b.dataset.p || ''; R.bloc = ''; R.revoir = ''; R.courant = null; majCarte(); suivant(); }
       else if(a === 'round'){ if(lancerRound()) suivant(); }
@@ -10224,6 +10249,8 @@ const Arene = (() => {
   function montrer(it, b){
     R.courant = it ? [it, b] : null;
     R.aide = false; R.repondu = false;
+    /* l'arène ne change pas d'écran : c'est entre deux questions que tombe une pause classique du sablier (un rythme, lui, coupe à l'heure) */
+    if(it && typeof Sablier !== 'undefined') Sablier.entreQuestions();
     if(it && typeof Tableau !== 'undefined' && Tableau.ouvert()) Tableau.voirEcran(ecranQuestion());
     majTete(); majCarte();
     const z = $('.ar-item', ui), ou = $('.ar-ou', ui);
@@ -10647,8 +10674,8 @@ const Arene = (() => {
     if(Tableau.ouvert()){ Tableau.fermer(); return; }
     Tableau.ouvrir(undefined, ecranQuestion());
   }
-  /* le focus ne quitte pas le tableau ni les panneaux de la séance quand l'arène avance (une correction qui s'ouvre, une question qui arrive) */
-  const focusAilleurs = () => { const a = document.activeElement; return !!(a && a.closest && a.closest('.tb, .cv-ajout, .cv-portes')); };
+  /* le focus ne quitte pas le tableau, la pause du sablier ni les panneaux de la séance quand l'arène avance (une correction qui s'ouvre, une question qui arrive) */
+  const focusAilleurs = () => { const a = document.activeElement; return !!(a && a.closest && a.closest('.tb, .cv-ajout, .cv-portes, .sablier-voile, .sablier-pop')); };
   const focaliser = el => { if(el && !focusAilleurs()) el.focus({preventScroll:true}); };
 
   /* ---------- les quatre tuiles : d'où viennent les choix ---------- */
@@ -10727,6 +10754,7 @@ const Arene = (() => {
     if(!ui) construireUI();
     ui.hidden = false; document.body.classList.add('ar-ouverte');
     if(typeof Tableau !== 'undefined' && Tableau.replacer) Tableau.replacer();
+    if(typeof Sablier !== 'undefined') Sablier.maj();
     if(!R.retour && !R.round && preparerRetour()){ R.courant = null; suivant(); return; }
     if(!R.courant) suivant(); else { majTete(); majCarte(); }
   }
@@ -13409,20 +13437,74 @@ return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, gu
 
 /* ====== _commun/sablier.js ====== */
 /* ======================================================================
-   Le sablier : des pauses entre les idées, jamais au milieu.
-   Éteint par défaut. Allumé, il compte le temps d'étude (page visible) ;
-   le temps écoulé, la pause tombe au prochain changement d'écran : le
-   nouvel écran se floute derrière un sablier animé aux couleurs de
-   l'atelier (--accent, sa raie du prisme), avec un décompte exact.
-   Réglage propre à cet appareil (navigateur), comme le thème.
+   Le sablier : des pauses entre les idées, ou à la seconde près.
+   Éteint par défaut. Réglage propre à cet appareil (navigateur), comme le
+   thème. Deux façons de couper :
+   - Classique (25·5, 45·10, 15·3, seul·e) : il compte le temps d'étude
+     (page visible) ; le temps écoulé, la pause tombe au prochain
+     changement d'écran, ou à la prochaine question dans l'arène.
+   - Rythme (le 5·5, seul·e ou à plusieurs, et tout réglage choisi pour
+     une séance Convergence) : seule l'horloge décide. La phase est une
+     fonction pure de (maintenant − d) : t minutes de travail, p minutes
+     de pause, en boucle ; la pause tombe à la seconde près, où qu'on
+     soit, même en pleine question.
+   Dans les deux cas, l'écran se floute derrière un sablier animé aux
+   couleurs de l'atelier (--accent, sa raie du prisme), avec un décompte
+   exact, par-dessus l'arène et le tableau.
+   En séance, le rythme vit dans la présence (champ sablier, accordé comme
+   le repère : convergence.js). Il passe avant le réglage de l'appareil
+   sans l'écraser : quitter la séance le rend.
    ====================================================================== */
 const Sablier = (() => {
   const CLE_S = P + '-sablier';
-  const REGLAGES = [[25, 5], [45, 10], [15, 3]];
+  const REGLAGES = [[5, 5], [25, 5], [45, 10], [15, 3]];
   const NS = 'http://www.w3.org/2000/svg';
-  let st = Object.assign({on:false, travail:25, pause:5, cumul:0, fin:0, duree:0}, lireJSON(CLE_S, {}));
+  const AVANT = 30000;                                 // l'avis qui précède une pause de rythme
+  /* d : le départ du rythme seul (5·5) ; vu : la dernière fois que ce rythme a tourné ici ; seul : le cycle dont cet appareil a écourté la pause */
+  let st = Object.assign({on:false, travail:25, pause:5, cumul:0, fin:0, duree:0, d:0, vu:0, seul:''}, lireJSON(CLE_S, {}));
   const sauver = () => memo.set(CLE_S, JSON.stringify(st));
   const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- le rythme : des règles pures, à recopier telles quelles (un Survol suit le même rythme) ----------
+     r = {n, on, t, p, d} : t minutes de travail puis p minutes de pause, en boucle depuis d (en ms). Deux pages qui ont le
+     même r et la même horloge calculent la même phase, sans rien échanger d'autre. maintenant est sur l'horloge de d :
+     en séance celle du relais (Date.now() + décalage), seul·e celle de l'appareil. */
+  function phaseRythme(r, maintenant){
+    const T = r.t * 60000, C = T + r.p * 60000, e = maintenant - r.d, x = ((e % C) + C) % C;
+    return {pause:x >= T, reste:x < T ? T - x : C - x, cycle:Math.floor(e / C)};
+  }
+  /* deux rythmes pour une séance : le n le plus haut gagne ; à égalité, celui du premier membre dans l'ordre du groupe
+     (cle : uid → rang), comme le repère. Rend true si r remplace mien. */
+  function rythmeGagne(r, mien, cle){
+    if(r.n !== mien.n) return r.n > mien.n;
+    if(r.on === mien.on && r.t === mien.t && r.p === mien.p && r.d === mien.d) return false;
+    const a = cle(r.par), b = cle(mien.par);
+    return a < b || (a === b && r.par < mien.par);
+  }
+  /* ce qui vient de la présence n'est jamais cru tel quel */
+  function lireRythme(x){
+    if(!x || typeof x !== 'object') return null;
+    const n = +x.n, t = +x.t, p = +x.p, d = +x.d;
+    if(!(Number.isInteger(n) && n > 0 && t > 0 && t <= 180 && p > 0 && p <= 60 && d > 0 && Number.isFinite(d))) return null;
+    return {n, on:x.on === true, t, p, d, par:typeof x.par === 'string' ? x.par.slice(0, 128) : ''};
+  }
+  const cleCycle = (r, ph) => r.d + ':' + ph.cycle;
+  /* le 5·5 coupe à l'heure, même seul·e ; les autres réglages restent classiques hors séance */
+  const coupe = (t, p) => t === 5 && p === 5;
+  /* le classique : le temps d'étude compte page visible, hors pause et hors rythme ; la pause est due une fois ce temps écoulé */
+  const tempsCompte = (s, cache, actif) => s.on && !s.fin && !cache && !actif;
+  const pauseDue = (s, actif) => s.on && !s.fin && !actif && s.cumul >= s.travail * 60000;
+  const texteR = r => r.t + ' min · pause ' + r.p;
+
+  /* ---------- le rythme actif : celui de la séance d'abord, sinon celui de l'appareil ---------- */
+  let SE = null, gr = null;                            // la séance (convergence.js) : {heure, changer, nom} ; son rythme
+  function rythme(){
+    if(gr && gr.on) return gr;
+    if(st.on && st.d && coupe(st.travail, st.pause)) return {n:0, on:true, t:st.travail, p:st.pause, d:st.d, par:''};
+    return null;
+  }
+  const heure = r => r && r.n && SE ? SE.heure() : Date.now();
+  const dire = t => typeof Convergence !== 'undefined' && Convergence.avis ? Convergence.avis(t) : true;
 
   /* ---------- la forme du verre, et l'aire de sable à chaque hauteur (pour un sable « exact ») ----------
      u = 0 au col, 1 au bout du bulbe ; demi-largeur w(u) ; un bulbe fait 84 unités de haut. */
@@ -13467,74 +13549,181 @@ const Sablier = (() => {
       '<path class="s-verre" d="' + CONTOUR + '"/>' + '</svg>';
   }
 
-  /* ---------- le bouton de la barre du haut ---------- */
-  let bouton = null, pop = null;
+  /* ---------- le bouton de la barre du haut, et son pendant dans l'en-tête de l'arène ---------- */
+  let bouton = null, pop = null, ancre = null;
   function majBouton(){
+    const r = rythme(), ph = r ? phaseRythme(r, heure(r)) : null;
+    const seul = !!ph && ph.pause && st.seul === cleCycle(r, ph), proche = !!ph && !ph.pause && ph.reste <= AVANT;
+    const dit = !ph ? '' : seul ? 'Tu continues seul·e : ' + (r.n ? 'le groupe reprend' : 'reprise') + ' dans ' + mmss(ph.reste)
+      : ph.pause ? 'Pause : encore ' + mmss(ph.reste) : (r.n ? 'Sablier du groupe (' : 'Sablier (') + texteR(r) + ') : pause dans ' + mmss(ph.reste);
+    const f = !ph ? 0 : ph.pause ? 1 - ph.reste / (r.p * 60000) : ph.reste / (r.t * 60000);
+    const chip = $('.ar [data-a="sablier"]');
+    if(chip){
+      if(!chip.firstChild) chip.innerHTML = verre(true) + '<span class="t"></span>';
+      chip.hidden = !r && !SE;
+      chip.classList.toggle('proche', proche);
+      $('.t', chip).textContent = !ph ? 'Sablier' : (ph.pause ? 'Pause ' : '') + mmss(ph.reste);
+      chip.title = dit || 'Sablier de la séance : un rythme pour tout le groupe';
+      chip.setAttribute('aria-label', chip.title);
+      dessinerSable($('svg', chip), ph ? f : 1, false);
+    }
     if(!bouton) return;
+    bouton.classList.toggle('rythme', !!r); bouton.classList.toggle('proche', proche); bouton.classList.toggle('en-pause', !!ph && ph.pause);
+    /* le décompte passe par un attribut (lu par le CSS) : la barre du haut se remesure à chaque changement de texte
+       (barreAjustee), pas question de le faire chaque seconde ; ajouter ou ôter le span, lui, la fait remesurer */
+    let sp = $('.sablier-temps', bouton);
+    if(r && !sp){ sp = document.createElement('span'); sp.className = 'sablier-temps'; sp.setAttribute('aria-hidden', 'true'); bouton.appendChild(sp); }
+    else if(!r && sp) sp.remove();
+    if(r){
+      sp.dataset.t = mmss(ph.reste);
+      bouton.setAttribute('aria-pressed', 'true'); bouton.classList.remove('du');
+      bouton.title = dit; bouton.setAttribute('aria-label', dit);
+      dessinerSable(bouton.querySelector('svg'), f, false);
+      return;
+    }
     bouton.setAttribute('aria-pressed', String(st.on));
     const du = st.on && st.cumul >= st.travail * 60000;
     bouton.classList.toggle('du', du);
     const reste = Math.max(0, Math.ceil((st.travail * 60000 - st.cumul) / 60000));
-    bouton.title = !st.on ? 'Sablier : des pauses entre les écrans (éteint)' : du ? 'Pause au prochain changement d’écran' : 'Sablier : prochaine pause dans ' + reste + ' min';
+    bouton.title = !st.on ? 'Sablier : des pauses entre les écrans (éteint)' : du ? 'Pause au prochain changement d’écran, ou à la prochaine question dans l’arène' : 'Sablier : prochaine pause dans ' + reste + ' min';
     bouton.setAttribute('aria-label', bouton.title);
     dessinerSable(bouton.querySelector('svg'), st.on ? Math.max(0, 1 - st.cumul / (st.travail * 60000)) : 1, false);
   }
-  function fermerPop(){ if(pop){ pop.remove(); pop = null; } }
-  function ouvrirPop(){
-    fermerPop();
-    pop = document.createElement('div');
-    pop.className = 'sablier-pop v2-hors-texte'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Sablier');
-    pop.innerHTML = '<p class="lib">Sablier allumé</p>' +
-      '<p class="legende">Quand ton temps d’étude est écoulé, la pause tombe au <b>prochain changement d’écran</b> : jamais au milieu d’une idée.</p>' +
-      '<div class="puces" role="group" aria-label="Étude, puis pause">' + REGLAGES.map(([t, p]) =>
-        '<button type="button" class="puce" data-r="' + t + '-' + p + '" aria-pressed="' + (st.travail === t && st.pause === p) + '">' + t + ' min · pause ' + p + '</button>').join('') + '</div>' +
+  function fermerPop(){ if(pop){ pop.remove(); pop = null; ancre = null; } }
+  const puces = (t, p) => REGLAGES.map(([a, b]) => '<button type="button" class="puce" data-r="' + a + '-' + b + '" aria-pressed="' + (a === t && b === p) + '">' + a + ' min · pause ' + b +
+    (coupe(a, b) ? '<small>Le rythme rapide, à plusieurs : coupe à la seconde</small>' : '') + '</button>').join('');
+  function remplirPop(){
+    if(!pop) return;
+    const dedans = pop.contains(document.activeElement), g = gr && gr.on ? gr : null, mien = st.travail + ' min · pause ' + st.pause;
+    if(SE) pop.innerHTML = '<p class="lib">Sablier de la séance</p>' +
+      '<p class="legende">Un rythme pour tout le groupe : la pause tombe à la même seconde pour tout le monde, où que chacun soit, même en pleine question. Personne ne peut finir la pause des autres.</p>' +
+      (g ? '<p class="sablier-etat">' + esc(texteR(g)) + ', lancé par « ' + esc(SE.nom(g.par)) + ' ».</p>' : '') +
+      '<div class="puces" role="group" aria-label="Le rythme de la séance : travail, puis pause">' + puces(g ? g.t : 0, g ? g.p : 0) + '</div>' +
+      (!st.on ? '' : '<p class="legende">' + (g ? 'Ton réglage à toi (' + mien + ') reprend quand le rythme du groupe s’arrête.' : 'Ton sablier à toi (' + mien + ') reste allumé, pour toi seul·e.') + '</p>') +
+      '<div class="ctrl">' + (g ? '<button type="button" class="btn" data-s="arret">Arrêter pour tout le monde</button>'
+        : st.on ? '<button type="button" class="btn" data-s="perso">Éteindre le mien</button><button type="button" class="btn" data-s="maintenant">Pause maintenant</button>' : '') +
+      '<button type="button" class="btn" data-s="ok">OK</button></div>';
+    else pop.innerHTML = '<p class="lib">Sablier allumé</p>' +
+      '<p class="legende">Quand ton temps d’étude est écoulé, la pause tombe au <b>prochain changement d’écran</b> (dans l’arène, à la <b>prochaine question</b>) : jamais au milieu d’une idée. Le <b>5 · 5</b>, lui, coupe à l’heure : la pause tombe à la seconde près, même en pleine question.</p>' +
+      '<div class="puces" role="group" aria-label="Étude, puis pause">' + puces(st.travail, st.pause) + '</div>' +
       '<div class="ctrl"><button type="button" class="btn" data-s="maintenant">Pause maintenant</button><button type="button" class="btn" data-s="ok">OK</button></div>';
-    document.body.appendChild(pop);
-    const r = bouton.getBoundingClientRect(), pw = Math.min(320, window.innerWidth - 24);
+    if(dedans) $('[data-r][aria-pressed="true"]', pop)?.focus({preventScroll:true});
+  }
+  function placerPop(){
+    if(!pop) return;
+    const r = (ancre && ancre.isConnected ? ancre : bouton).getBoundingClientRect(), pw = Math.min(320, window.innerWidth - 24);
     pop.style.width = pw + 'px';
     pop.style.left = Math.round(Math.min(Math.max(12, r.right - pw), window.innerWidth - pw - 12)) + 'px';
-    pop.style.top = Math.round(r.bottom + 8) + 'px';
+    pop.style.top = Math.round(Math.max(12, Math.min(r.bottom + 8, window.innerHeight - pop.offsetHeight - 12))) + 'px';
+  }
+  function ouvrirPop(a){
+    fermerPop();
+    ancre = a || bouton;
+    pop = document.createElement('div');
+    pop.className = 'sablier-pop sablier-reglage v2-hors-texte'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Sablier');
+    document.body.appendChild(pop);
+    remplirPop(); placerPop();
     pop.addEventListener('click', e => {
       const reg = e.target.closest('[data-r]');
-      if(reg){ const [t, p] = reg.dataset.r.split('-').map(Number); st.travail = t; st.pause = p; sauver(); $$('[data-r]', pop).forEach(b => b.setAttribute('aria-pressed', String(b === reg))); majBouton(); return; }
+      if(reg){ const [t, p] = reg.dataset.r.split('-').map(Number); choisir(t, p); return; }
       const b = e.target.closest('[data-s]'); if(!b) return;
+      const s = b.dataset.s;
       fermerPop();
-      if(b.dataset.s === 'maintenant') commencerPause();
+      if(s === 'arret'){ if(SE) SE.changer({on:false}); }
+      else if(s === 'maintenant') pauseMaintenant();
+      else if(s === 'perso'){ st.on = false; st.cumul = 0; st.fin = 0; st.d = 0; sauver(); tempo(); }
     });
-    $('[data-r][aria-pressed="true"]', pop)?.focus({preventScroll:true});
+    ($('[data-r][aria-pressed="true"]', pop) || $('[data-r]', pop))?.focus({preventScroll:true});
+  }
+  /* en séance, un réglage part pour tout le monde ; seul·e, il reste sur l'appareil */
+  function choisir(t, p){
+    if(SE){ if(!(gr && gr.on && gr.t === t && gr.p === p)) SE.changer({on:true, t, p}); return; }
+    if(st.travail === t && st.pause === p) return;
+    const rapide = coupe(t, p) || coupe(st.travail, st.pause);
+    st.travail = t; st.pause = p;
+    if(rapide){ st.cumul = 0; st.d = coupe(t, p) ? Date.now() : 0; st.vu = Date.now(); st.seul = ''; }
+    sauver();
+    $$('[data-r]', pop).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.r === t + '-' + p)));
+    tempo();
   }
   function basculer(){
-    st.on = !st.on; st.cumul = 0; st.fin = 0; sauver(); majBouton();
+    st.on = !st.on; st.cumul = 0; st.fin = 0; st.seul = ''; st.d = st.on && coupe(st.travail, st.pause) ? Date.now() : 0; st.vu = Date.now(); sauver(); tempo();
     if(st.on) ouvrirPop(); else fermerPop();
   }
+  /* en séance le bouton ouvre le réglage du groupe : ni allumer ni éteindre sans le voir */
+  function reglages(a){ if(pop) fermerPop(); else ouvrirPop(a); }
+  function clicBouton(){ if(SE) reglages(bouton); else basculer(); }
 
-  /* ---------- le temps d'étude : seulement quand la page est visible ---------- */
+  /* ---------- le temps d'étude (classique) : seulement quand la page est visible ---------- */
   let dernier = Date.now(), cacheDepuis = 0;
   function tic(){
     const t = Date.now(), d = Math.min(5000, t - dernier); dernier = t;
-    if(!st.on || st.fin || document.hidden) return;
+    if(!tempsCompte(st, document.hidden, rythme())) return;
     st.cumul += d;
     if(Math.floor((st.cumul - d) / 15000) !== Math.floor(st.cumul / 15000)) sauver();
     majBouton();
   }
   document.addEventListener('visibilitychange', () => {
-    if(document.hidden){ cacheDepuis = Date.now(); sauver(); return; }
+    if(document.hidden){ cacheDepuis = Date.now(); st.vu = cacheDepuis; sauver(); return; }
     dernier = Date.now();
-    /* une absence plus longue que la pause vaut une pause */
-    if(st.on && !st.fin && cacheDepuis && Date.now() - cacheDepuis >= st.pause * 60000){ st.cumul = 0; sauver(); majBouton(); }
+    /* une absence plus longue que la pause vaut une pause (le 5·5 seul : on repart d'une phase de travail neuve) */
+    if(st.on && !st.fin && cacheDepuis && Date.now() - cacheDepuis >= st.pause * 60000){ if(st.d) st.d = Date.now(); st.cumul = 0; sauver(); majBouton(); }
     cacheDepuis = 0;
+    tempo();
   });
 
+  /* ---------- le rythme : tempo se cale sur la seconde de la phase ; il ne dépend ni de l'écran ni d'une image d'animation ---------- */
+  let tR = 0, averti = '';
+  function tempo(){
+    clearTimeout(tR); tR = 0;
+    const r = rythme();
+    if(!r){ if(voile && pa.rythme) finir(false); majBouton(); return; }
+    const ph = phaseRythme(r, heure(r)), cle = cleCycle(r, ph);
+    if(ph.pause && st.seul !== cle){
+      pa.fin = Date.now() + ph.reste; pa.duree = r.p * 60000;
+      if(voile && (!pa.rythme || pa.groupe !== !!r.n)) couper();
+      if(voile) peindre(); else montrer(r);
+    } else if(voile && pa.rythme) finir(false);
+    /* l'avis, une fois par cycle ; si un avis attend une réponse (quelqu'un à la porte), il repasse à la seconde suivante */
+    if(!voile && !ph.pause && ph.reste <= AVANT && ph.reste > 2000 && r.t * 60000 > AVANT && averti !== cle)
+      if(dire((r.n ? 'Pause du groupe dans ' : 'Pause dans ') + Math.ceil(ph.reste / 1000) + ' secondes.')) averti = cle;
+    if(!r.n && Date.now() - st.vu > 15000){ st.vu = Date.now(); sauver(); }
+    majBouton();
+    tR = setTimeout(tempo, (ph.reste % 1000 || 1000) + 15);
+  }
+  /* la séance (convergence.js) : o = {heure : l'heure du relais, changer({on, t, p}) : le groupe change de rythme, nom(uid)} ; null en partant */
+  function seance(o){
+    const avant = gr && gr.on;
+    SE = o || null;
+    if(!SE){
+      adopter(null);
+      if(avant) dire(st.on ? 'Le rythme de la séance s’arrête ici : ton sablier à toi reprend.' : 'Le rythme de la séance s’arrête ici.');
+    } else majBouton();
+    remplirPop();
+  }
+  /* le rythme de la séance, tel qu'accordé (ou null). Il passe avant le réglage de l'appareil et ne l'écrase pas */
+  function adopter(r){
+    const avant = gr && gr.on;
+    gr = r && r.n ? lireRythme(r) : null;
+    const apres = gr && gr.on;
+    if(apres && voile && !pa.rythme) couper();                 // une pause classique en cours cède la place
+    if(avant && !apres && st.d){ st.d = Date.now(); st.vu = st.d; sauver(); }   // le 5·5 de l'appareil repart d'une phase de travail
+    tempo(); remplirPop();
+  }
+
   /* ---------- la pause : l'écran se floute, le sable coule ---------- */
-  let voile = null, raf = 0, derniereSeconde = -1, tFin = 0;
+  let voile = null, raf = 0, derniereSeconde = -1, tFin = 0, focusAvant = null;
+  const pa = {fin:0, duree:0, rythme:false, groupe:false};     // la pause en cours : classique (st.fin) ou de rythme (tempo tient fin à jour)
   const CONSEILS = [
     'Regarde un objet à six mètres ou plus pendant vingt secondes : au loin, A = 1/d tend vers 0 et ton cristallin se relâche (Optique M6).',
     'Ferme les yeux vingt secondes, puis cligne lentement quelques fois : le clignement répartit le film lacrymal (Anatomie M6).',
     'Lève-toi, étire-toi, bois un verre d’eau. Le sable s’occupe du reste.'
   ];
-  function conseil(){
+  function conseil(r){
     const l = CONSEILS.slice(), g = (GESTES || []).filter(x => ETAT.vus.includes(x.ecran));
     if(g.length){ const x = g[Math.floor(Math.random() * g.length)]; l.push('Refais le geste « ' + String(x.titre).replace(/<[^>]+>/g, '') + ' », de mémoire, en disant chaque mot.'); }
+    /* une pause de rythme est courte et revient vite : on quitte vraiment l'écran */
+    if(r) l.push(r.p + ' minutes pour bouger, rire, boire de l’eau. ' + (r.n ? 'Le groupe reprend à la même seconde.' : 'Le prochain tour commence à l’heure.'));
     return l[Math.floor(Math.random() * l.length)];
   }
   const mmss = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
@@ -13542,30 +13731,46 @@ const Sablier = (() => {
     st.duree = st.pause * 60000; st.fin = Date.now() + st.duree; sauver();
     montrer();
   }
-  function montrer(){
+  /* « Pause maintenant » : un rythme seul avance son départ pour que la pause commence ici ; celui du groupe ne se déplace pas */
+  function pauseMaintenant(){
+    const r = rythme();
+    if(r && r.n) return;
+    if(r){ st.d = Date.now() - r.t * 60000; st.seul = ''; sauver(); tempo(); return; }
+    commencerPause();
+  }
+  function montrer(r){
     if(voile) return;
     fermerPop();
+    const groupe = !!(r && r.n);
+    pa.rythme = !!r; pa.groupe = groupe;
+    if(!r){ pa.fin = st.fin; pa.duree = st.duree; }
     voile = document.createElement('div');
     voile.className = 'sablier-voile v2-hors-texte'; voile.setAttribute('role', 'dialog'); voile.setAttribute('aria-modal', 'true'); voile.setAttribute('aria-labelledby', 'sablier-titre');
-    voile.innerHTML = '<div class="sablier-carte"><p class="lib">Pause · ' + st.pause + ' min</p>' +
+    voile.innerHTML = '<div class="sablier-carte"><p class="lib">' + (groupe ? 'Pause du groupe · ' : 'Pause · ') + (r ? r.p : st.pause) + ' min</p>' +
       '<div class="sablier-tourne">' + verre(false) + '</div>' +
       '<p class="sablier-compte" aria-hidden="true"></p><p class="sr" aria-live="polite" id="sablier-annonce"></p>' +
-      '<h2 id="sablier-titre">Le sable coule : laisse reposer.</h2><p class="sablier-conseil">' + esc(conseil()) + '</p>' +
-      '<div class="ctrl"><button type="button" class="btn" data-s="fin">Reprendre maintenant</button></div></div>';
+      '<h2 id="sablier-titre">Le sable coule : laisse reposer.</h2><p class="sablier-conseil">' + esc(conseil(r)) + '</p>' +
+      '<div class="ctrl">' + (groupe ? '<button type="button" class="btn" data-s="seul" title="Pour toi seul·e, et pour cette pause : le groupe reste en pause et le prochain tour repart ensemble">Continuer seul·e</button>' +
+        '<button type="button" class="btn" data-s="reglages" title="Changer ou arrêter le rythme pour tout le monde : le groupe verra ton nom">Changer le rythme</button>'
+        : '<button type="button" class="btn" data-s="fin">Reprendre maintenant</button>') + '</div></div>';
     document.body.appendChild(voile);
     voile.classList.toggle('coule', !reduit());
-    $('[data-s="fin"]', voile).addEventListener('click', () => finir(true));
-    setTimeout(() => { if(voile) $('[data-s="fin"]', voile).focus({preventScroll:true}); }, 30);
+    voile.addEventListener('click', e => {
+      const b = e.target.closest('[data-s]'); if(!b) return;
+      if(b.dataset.s === 'fin') finir(true);
+      else if(b.dataset.s === 'seul') continuerSeul();
+      else if(b.dataset.s === 'reglages') reglages(b);
+    });
+    /* la main reviendra là où elle est dans un instant : l'arène peut être en train de poser sa question */
+    setTimeout(() => { if(voile){ focusAvant = document.activeElement; $('.ctrl .btn', voile).focus({preventScroll:true}); } }, 30);
     derniereSeconde = -1;
     animer();
-    /* l'animation s'arrête quand l'onglet est caché : une minuterie garde l'heure de fin quoi qu'il arrive */
+    /* l'animation s'arrête quand l'onglet est caché : une minuterie garde l'heure de fin quoi qu'il arrive (en rythme, c'est tempo) */
     clearTimeout(tFin);
-    tFin = setTimeout(() => { if(voile && Date.now() >= st.fin) finir(false); }, Math.max(0, st.fin - Date.now()) + 60);
+    if(!r) tFin = setTimeout(() => { if(voile && Date.now() >= st.fin) finir(false); }, Math.max(0, st.fin - Date.now()) + 60);
   }
-  function animer(){
-    raf = 0;
-    if(!voile) return;
-    const reste = st.fin - Date.now(), f = Math.max(0, Math.min(1, reste / (st.duree || 1)));
+  function peindre(){
+    const reste = pa.fin - Date.now(), f = Math.max(0, Math.min(1, reste / (pa.duree || 1)));
     dessinerSable($('svg', voile), f, !reduit());
     const s = Math.ceil(Math.max(0, reste) / 1000);
     if(s !== derniereSeconde){
@@ -13573,27 +13778,64 @@ const Sablier = (() => {
       $('.sablier-compte', voile).textContent = mmss(reste);
       if(s % 60 === 0 && s > 0) $('#sablier-annonce', voile).textContent = 'Encore ' + (s / 60) + ' minute' + (s > 60 ? 's' : '') + ' de pause.';
     }
-    if(reste <= 0){ finir(false); return; }
+    return reste;
+  }
+  function animer(){
+    raf = 0;
+    if(!voile) return;
+    const reste = peindre();
+    if(reste <= 0){ if(!pa.rythme) finir(false); return; }     // en rythme, l'horloge de tempo décide
     raf = reduit() ? setTimeout(animer, 250) : requestAnimationFrame(animer);
+  }
+  /* la main revient où elle était : une réponse à moitié tapée dans l'arène, par exemple */
+  function rendreFocus(v){
+    const f = focusAvant, a = document.activeElement; focusAvant = null;
+    if(f && f.isConnected && f !== document.body && (!a || a === document.body || v.contains(a))) f.focus({preventScroll:true});
   }
   function finir(passee){
     if(!voile) return;
     cancelAnimationFrame(raf); clearTimeout(raf); clearTimeout(tFin); raf = 0;
-    st.fin = 0; st.cumul = 0; sauver(); majBouton();
+    if(!pa.rythme){ st.fin = 0; st.cumul = 0; }
+    else if(passee && !pa.groupe){ st.d = Date.now(); st.vu = st.d; }     // seul·e : un tour neuf commence ici
+    sauver();
     const v = voile; voile = null;
+    majBouton();
     $('#sablier-annonce', v).textContent = passee ? 'Pause écourtée.' : 'Pause finie : on reprend.';
+    rendreFocus(v);
+    if(passee && pa.rythme) tempo();
     if(reduit()){ v.remove(); return; }
     v.classList.add('fini');                           // le sablier se retourne, puis le flou se lève
     setTimeout(() => v.classList.add('part'), 650);
     setTimeout(() => v.remove(), 1150);
   }
-  /* pendant la pause, le clavier ne fait pas changer d'écran derrière le voile */
+  /* en séance, la pause ne se finit pour personne d'autre : cet appareil seulement, ce tour seulement */
+  function continuerSeul(){
+    const r = rythme(); if(!r) return;
+    const ph = phaseRythme(r, heure(r));
+    st.seul = cleCycle(r, ph);
+    finir(true);
+    dire('Tu continues seul·e. Le groupe reprend dans ' + mmss(ph.reste) + ', et toi avec lui.');
+  }
+  /* une pause qui n'a plus lieu d'être (le rythme de la séance arrive) : sans cérémonie */
+  function couper(){
+    if(!voile) return;
+    cancelAnimationFrame(raf); clearTimeout(raf); clearTimeout(tFin); raf = 0;
+    if(!pa.rythme){ st.fin = 0; st.cumul = 0; sauver(); }
+    const v = voile; voile = null;
+    v.remove();
+  }
+  /* pendant la pause, le clavier ne fait pas changer d'écran ni répondre derrière le voile ; le réglage, la porte et les
+     avis restent par-dessus : le clavier y travaille */
   document.addEventListener('keydown', e => {
     if(!voile) return;
-    if(e.key === 'Tab' || ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('.sablier-voile'))) return;
+    const t = e.target && e.target.closest ? e.target : null;
+    if(t && t.closest('.sablier-pop, .cv-portes, .cv-ajout, .cv-avis')) return;
+    if(e.key === 'Tab' || ((e.key === 'Enter' || e.key === ' ') && t && t.closest('.sablier-voile'))) return;
     e.stopPropagation(); if(e.key !== 'Escape') e.preventDefault();
   }, true);
 
+  /* la pause classique tombe entre deux idées : au changement d'écran ou, dans l'arène, entre deux questions */
+  function entreQuestions(){ if(pauseDue(st, rythme())) commencerPause(); }
   function demarrer(){
     const notes = $('#btn-notes');
     if(notes && !$('#btn-sablier')){
@@ -13601,24 +13843,29 @@ const Sablier = (() => {
       bouton.type = 'button'; bouton.className = 'btn btn-sablier'; bouton.id = 'btn-sablier';
       bouton.innerHTML = verre(true) + '<span class="mot">Sablier</span>';
       (($('#btn-rappel') || notes)).before(bouton);
-      bouton.addEventListener('click', basculer);
+      bouton.addEventListener('click', clicBouton);
     }
-    document.addEventListener('pointerdown', e => { if(pop && !pop.contains(e.target) && !e.target.closest('#btn-sablier')) fermerPop(); });
+    document.addEventListener('pointerdown', e => { if(pop && !pop.contains(e.target) && !e.target.closest('#btn-sablier, [data-a="sablier"], [data-s="reglages"]')) fermerPop(); });
     document.addEventListener('keydown', e => { if(e.key === 'Escape') fermerPop(); });
     /* la pause tombe au changement d'écran, jamais au milieu */
     let ecranPrec = null;
     CROCHETS.apresAller.push(e => {
       const change = ecranPrec !== null && ecranPrec !== e.id;
       ecranPrec = e.id;
-      if(change && st.on && !st.fin && st.cumul >= st.travail * 60000) commencerPause();
+      if(change) entreQuestions();
     });
     /* une pause en cours survit au rechargement de la page */
     if(st.fin && st.fin > Date.now()) montrer();
     else if(st.fin){ st.fin = 0; st.cumul = 0; sauver(); }
-    majBouton();
+    /* le 5·5 seul survit aussi ; après une absence plus longue que la pause, un tour neuf */
+    if(st.on && coupe(st.travail, st.pause) && (!st.d || Date.now() - (+st.vu || 0) >= st.pause * 60000)){ st.d = Date.now(); st.vu = st.d; sauver(); }
+    tempo();
     setInterval(tic, 1000);
   }
-  return {demarrer, commencerPause, etat:() => Object.assign({}, st)};
+  /* pour un Survol, qui recopie phaseRythme, rythmeGagne et lireRythme : rythme() rend le rythme actif {n, on, t, p, d, par}, d sur
+     l'horloge du relais si n > 0, de l'appareil sinon ; adopter(r) pose celui d'une séance (un r de n = 0, ou null, le retire) */
+  return {demarrer, commencerPause:pauseMaintenant, etat:() => Object.assign({}, st), rythme:() => { const r = rythme(); return r ? Object.assign({}, r) : null; },
+    adopter, seance, reglages, entreQuestions, maj:majBouton, phase:phaseRythme, gagne:rythmeGagne, lire:lireRythme};
 })();
 
 /* ====== _commun/marques.js ====== */
@@ -15040,7 +15287,8 @@ const S = {F:null, app:null, auth:null, db:null, uid:'', refMoi:null, base:'', c
   depuis:0,                                  // quand j'ai rejoint la convergence (l'ordre du groupe)
   admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false, demandes:[], porte:'', vuN:0,
   repere:{e:'', n:0, auto:false, par:''}, pret:0, desab:[], envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'',
-  decalage:0, entree:0, sig:'',
+  sablier:{n:0, on:false, t:5, p:5, d:0, par:''},   // le rythme de la séance (sablier.js) : d est sur l'horloge du relais ; accordé comme le repère
+  decalage:0, entree:0, sig:'', survol:null,
   enLigne:false, coupe:false, reparation:false, tReparer:0, dernierM:{},   // la présence se refait après une coupure (3 nov.)
   dernier:{vue:null, coches:null, ar:null},  // le regard, les coches et l'arène publiés en dernier : remis avec la présence
   annonces:new Set(),                        // les demandes déjà annoncées (un avis et le titre de l'onglet, une fois chacune)
@@ -15127,6 +15375,7 @@ function moi(){
     avec:S.avec, refus:S.refusUid, refuses:S.refuses, admis:S.admis, ouvert:S.ouvert, plein:S.plein, depuis:S.depuis, at:P,
     ecran:ICI ? ICI.id : '', repere:{e:S.repere.e || '', n:S.repere.n, auto:!!S.repere.auto, par:S.repere.par || ''}, pret:S.pret,
     tuteur:monTuteur(), suit:maCible(), tab:typeof Tableau !== 'undefined' ? Tableau.ouvertSur() : '', t:Date.now(),
+    sablier:S.sablier.n ? S.sablier : null, survol:S.survol,
     /* null efface le champ (publier fait un update) : le sceau seulement une fois lié, le jeton seulement en demandant */
     sceau:S.etat === 'lie' && S.sceau ? S.sceau : null, jeton:S.etat === 'demande' && retourDe(S.code) ? retourDe(S.code).jeton : null};
 }
@@ -15161,7 +15410,7 @@ function sauverSeance(){
       Object.keys(S.membres).slice(-MAX_GROUPE * 2).forEach(u => { const x = S.membres[u]; m[u] = {nom:x.nom, raie:x.raie, role:x.role || 'invite', depuis:x.depuis || 0, sceau:x.sceau || ''}; });
       garderRetour();
       sessionStorage.setItem(CLE_SEANCE, JSON.stringify({v:2, code:S.code, role:S.role, nom:S.nom, raie:S.raie, depuis:S.depuis, membres:m,
-        ouvert:S.ouvert, choix:S.choix, cible:S.cible, repere:S.repere, pret:S.pret}));
+        ouvert:S.ouvert, choix:S.choix, cible:S.cible, repere:S.repere, pret:S.pret, sablier:S.sablier, decalage:S.decalage}));
     } else sessionStorage.removeItem(CLE_SEANCE);
   }catch(e){}
 }
@@ -15170,6 +15419,7 @@ async function entrer(role, code, reprise){
   S.role = role; S.code = code; S.base = 'cv/' + code.toLowerCase();
   if(!reprise){
     S.etat = role === 'hote' ? 'attente' : 'demande'; S.membres = {}; S.repere = {e:'', n:0, auto:false, par:''}; S.pret = 0;
+    S.sablier = {n:0, on:false, t:5, p:5, d:0, par:''}; S.survol = null;
     S.depuis = role === 'hote' ? Date.now() : 0;
   }
   try{ await connecter(); }
@@ -15203,11 +15453,11 @@ async function quitter(garder){
   Object.keys(S.auGroupe).forEach(k => { clearTimeout(S.auGroupe[k]); if(S.F) S.F.remove(S.F.ref(S.db, S.base + '/flux/' + k)).catch(() => {}); });
   if(S.refMoi){ const r = S.refMoi; S.refMoi = null; try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   Object.assign(S, {etat:'repos', role:'', code:'', base:'', membres:{}, depuis:0, admis:{}, refuses:{}, refusUid:'', avec:'', ouvert:false, plein:false,
-    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:'',
+    demandes:[], porte:'', vuN:0, repere:{e:'', n:0, auto:false, par:''}, pret:0, sablier:{n:0, on:false, t:5, p:5, d:0, par:''}, survol:null, envois:{}, auGroupe:{}, vus:{}, nonLus:0, choix:'auto', cible:'', entree:0, sig:'',
     enLigne:false, coupe:false, dernierM:{}, dernier:{vue:null, coches:null, ar:null}, annonces:new Set(), jeton:'', sceau:''});
   sauverSeance(); majRail(); majChoixSuivi();
   if(typeof Marques !== 'undefined'){ Marques.partager(false); couleurMarques(); }
-  brancherTableau(); majArene();
+  brancherTableau(); majArene(); brancherSablier();
   Rac.arreter(); fermerVoile(); cacherBarre(); fermerPanneau(); fermerPad(); fermerGpop(); fermerAjout(); montrerDemandes([]);
   $('#cv-liste') && ($('#cv-liste').innerHTML = '');
 }
@@ -15229,7 +15479,7 @@ function surMembres(m){
   S.sig = '';
   if(S.role === 'hote') hoteVoit(autres); else if(S.role === 'invite') inviteVoit(autres);
 }
-/* une présence sans le regard, les coches ni le texte du miroir (sa longueur suffit à voir qu'il avance) */
+/* une présence sans le regard, les coches ni le texte du miroir (sa longueur suffit à voir qu'il avance) ; le sablier y reste : il passe par la logique du groupe */
 function signature(p){
   const m = p.miroir && typeof p.miroir === 'object' ? p.miroir : null, t = m && m.tours && typeof m.tours === 'object' ? m.tours : {};
   const o = Object.assign({}, p); delete o.vue; delete o.coches; delete o.miroir; delete o.ar;
@@ -15268,6 +15518,8 @@ function surGroupe(autres){
     sauverSeance();
   }
   lies.forEach(accorderRepere);
+  lies.forEach(p => accorderSablier(p));
+  lies.forEach(lireSurvol);
   garderPorte(autres);
   verifierPrets();
   majBarre();
@@ -15393,6 +15645,8 @@ function lier(ps, aussi){
     if(S.role === 'hote') S.repere = {e:ICI && !ICI.hors ? ICI.id : PARCOURS[0].id, n:1, auto:false, par:S.uid};
     else ps.forEach(accorderRepere);
   }
+  brancherSablier();
+  ps.forEach(p => accorderSablier(p, true));          // le rythme du groupe s'adopte en arrivant, sans avis (le dernier avis le dit)
   publier(); sauverSeance();
   if(typeof Marques !== 'undefined'){ couleurMarques(); Marques.partager(true); }
   brancherTableau(); majArene();
@@ -15406,8 +15660,9 @@ function lier(ps, aussi){
     const fait = (l.length <= 3 ? 'Convergence établie avec ' + listeNoms(l.map(nomU)) : 'Convergence établie : vous êtes ' + (l.length + 1)) + '.';
     /* le groupe est déjà dans l'arène à plusieurs : l'invitation vient ici (celle du lien arrivait sous le voile, puis cet avis la remplaçait) */
     const arene = typeof Arene !== 'undefined' && Arene.enGroupe && !Arene.enGroupe() && la.some(u => S.membres[u].ar && S.membres[u].ar.on === 1);
-    if(arene) toast(fait + ' Le groupe est dans l’arène à plusieurs.', 'Rejoindre l’arène', () => Arene.rejoindre());
-    else toast(fait + ' Chacun va où il veut ; le repère garde votre étape.');
+    const sablier = S.sablier.on ? ' Le groupe suit le sablier : ' + texteSablier(S.sablier) + '.' : '';
+    if(arene) toast(fait + ' Le groupe est dans l’arène à plusieurs.' + sablier, 'Rejoindre l’arène', () => Arene.rejoindre());
+    else toast(fait + (sablier || ' Chacun va où il veut ; le repère garde votre étape.'));
   });
 }
 
@@ -16161,6 +16416,11 @@ function toast(t, action, fn){
   if(action){ const b = H('<button type="button" class="btn"></button>'); b.textContent = action; b.addEventListener('click', () => { fn(); avis.hidden = true; }); avis.appendChild(b); }
   avis.hidden = false; clearTimeout(tAvis); tAvis = setTimeout(() => { avis.hidden = true; }, action ? 9000 : 5000);
 }
+/* un avis qui n'écrase pas celui qui attend une réponse (quelqu'un à la porte, « Rejoindre ») : false si la place est prise */
+function avisDiscret(t){
+  if(avis && !avis.hidden && $('button', avis)) return false;
+  toast(t); return true;
+}
 
 /* ---------- messages et croquis ---------- */
 let panneau = null;
@@ -16496,6 +16756,94 @@ function surArene(ar){
   if(S.etat !== 'lie' || !S.refMoi) return;
   S.F.set(S.F.ref(S.db, S.base + '/membres/' + S.uid + '/ar'), ar || null).catch(() => {});
 }
+/* ---------- le sablier de la séance (sablier.js), dans la présence : membres/<uid>/sablier = {n, on, t, p, d, par} ----------
+   Accordé comme le repère : le n le plus haut gagne ; à égalité, le premier du groupe. d est sur l'horloge du relais, donc
+   toutes les pages calculent la même phase, même si l'heure d'un appareil est fausse. Chacun republie ce qu'il adopte :
+   le rythme survit au départ de qui l'a lancé, et un nouveau venu le trouve chez n'importe quel membre. */
+function brancherSablier(){
+  if(typeof Sablier === 'undefined') return;
+  Sablier.seance(S.etat === 'lie' ? {heure:maintenant, changer:changerSablier, nom:nomU} : null);
+  if(S.etat === 'lie') Sablier.adopter(S.sablier);
+}
+const texteSablier = r => r.t + ' min · pause ' + r.p;
+function accorderSablier(p, sansAvis){
+  if(typeof Sablier === 'undefined') return;
+  const r = Sablier.lire(p.sablier); if(!r) return;
+  if(!r.par) r.par = p.uid;
+  const ordreG = rang(), cle = u => { const i = ordreG.indexOf(u); return i < 0 ? 1e6 : i; };
+  if(!Sablier.gagne(r, Object.assign({}, S.sablier, {par:S.sablier.par || S.uid}), cle)) return;
+  const avant = S.sablier;
+  S.sablier = r;
+  publier(); sauverSeance();
+  Sablier.adopter(r);
+  rythmeVersSurvol();
+  if(sansAvis) return;
+  const qui = '« ' + nomU(r.par) + ' »';
+  toast(!r.on ? qui + ' a arrêté le sablier pour tout le monde.' : qui + (avant.on ? ' a changé le sablier : ' : ' a lancé le sablier : ') + texteSablier(r) + '.');
+}
+/* depuis le réglage du sablier : c = {on:true, t, p} lance ou change le rythme pour tout le monde, {on:false} l'arrête */
+function changerSablier(c){
+  if(S.etat !== 'lie') return;
+  const a = S.sablier, t0 = maintenant();
+  /* changer le rythme pendant une pause ne l'écourte pas : le nouveau commence à la fin de la pause en cours */
+  const ph = a.on && c.on ? Sablier.phase(a, t0) : null, apres = ph && ph.pause ? ph.reste : 0;
+  S.sablier = {n:a.n + 1, on:c.on, t:c.on ? c.t : a.t, p:c.on ? c.p : a.p, d:c.on ? t0 + apres : a.d, par:S.uid};
+  publier(); sauverSeance();
+  Sablier.adopter(S.sablier);
+  rythmeVersSurvol();
+  toast(!c.on ? 'Sablier arrêté pour tout le monde.' : (a.on ? 'Sablier changé pour tout le monde : ' : 'Sablier lancé pour tout le monde : ') + texteSablier(S.sablier) + (apres ? ', après cette pause.' : '.'));
+}
+/* ---------- le Survol en séance (DESIGN-convergence §3.11, survol-groupe.js) : chaque diaporama a sa salle, tirée du code de la séance et
+   du nom du fichier. Le surnom, la couleur et le rythme passent par le navigateur (lumiere-cv-passe), jamais par l'adresse ; la présence
+   dit qui ouvre quoi (survol = {f, t}), et les autres ouvrent la même salle. Un diaporama s'ouvre dans un nouvel onglet : la séance
+   reste vivante ici. ---------- */
+const CLE_PASSE = 'lumiere-cv-passe', CLE_RYTHME = 'lumiere-cv-rythme';
+function salleSurvol(code, fichier){
+  const A = 'abcdefghjkmnpqrstuvwxyz23456789', s = String(code).toLowerCase() + '|' + String(fichier).toLowerCase();
+  let a = 0x811c9dc5, b = 0x9e3779b9, r = '';
+  for(let i = 0; i < s.length; i++){ const c = s.charCodeAt(i); a = Math.imul(a ^ c, 16777619); b = Math.imul(b + c, 0x5bd1e995) ^ (b >>> 15); }
+  a >>>= 0; b >>>= 0;
+  for(let i = 0; i < 3; i++){ r += A[a % 31] + A[b % 31]; a = Math.floor(a / 31); b = Math.floor(b / 31); }
+  return r;
+}
+const fichierSurvol = url => { const m = /([^\/?#]+)\.html?(?:[?#].*)?$/i.exec(String(url || '')); return m ? decodeURIComponent(m[1]) : ''; };
+/* rend false hors séance : le lien fait alors ce qu'il a toujours fait */
+function ouvrirSurvol(url){
+  if(S.etat !== 'lie') return false;
+  const f = fichierSurvol(url);
+  if(!f){ window.open(url, '_blank', 'noopener'); return true; }
+  const room = salleSurvol(S.code, f);
+  memo.set(CLE_PASSE, JSON.stringify({nom:S.nom, raie:S.raie, room, rythme:S.sablier.n ? S.sablier : null, t:Date.now()}));
+  window.open(url + (url.includes('?') ? '&' : '?') + 'cv=' + room, '_blank', 'noopener');
+  S.survol = {f, t:maintenant()};
+  publier();
+  return true;
+}
+/* qui ouvre un Survol : un avis et « Rejoindre ». L'adresse vient de mon atelier, jamais de la présence d'un autre ;
+   un avis déjà vu ne revient pas, et un Survol ouvert il y a plus d'une demi-heure n'appelle plus */
+const SURVOLS_VUS = {};
+function lireSurvol(p){
+  const s = p.survol;
+  if(!s || typeof s !== 'object' || typeof s.f !== 'string' || !Number.isFinite(s.t) || SURVOLS_VUS[p.uid] === s.t) return;
+  SURVOLS_VUS[p.uid] = s.t;
+  const d = [].concat(ATELIER.survol || []).find(x => x && x.url && fichierSurvol(x.url) === s.f);
+  if(!d || maintenant() - s.t > 1800000 || Date.now() - S.entree < 3000) return;
+  toast('« ' + nomU(p.uid) + ' » ouvre le Survol' + (d.court ? ' : ' + d.court : '') + '.', 'Rejoindre', () => ouvrirSurvol(d.url));
+}
+/* l'onglet de la séance et celui du Survol, sur un même appareil, gardent le même rythme */
+function rythmeVersSurvol(){ if(S.code && S.sablier.n) memo.set(CLE_RYTHME, JSON.stringify({de:'atelier', code:S.code, r:S.sablier, t:Date.now()})); }
+function rythmeDepuisSurvol(e){
+  if(e.key !== CLE_RYTHME || !e.newValue || S.etat !== 'lie' || typeof Sablier === 'undefined') return;
+  let x = null; try{ x = JSON.parse(e.newValue); }catch(err){ return; }
+  if(!x || x.de !== 'survol' || salleSurvol(S.code, x.f) !== x.s) return;
+  const r = Sablier.lire(x.r), a = S.sablier;
+  if(!r || (r.on === a.on && r.t === a.t && r.p === a.p && r.d === a.d)) return;
+  S.sablier = Object.assign(r, {n:Math.max(a.n + 1, r.n), par:S.uid});
+  publier(); sauverSeance();
+  Sablier.adopter(S.sablier);
+  toast(r.on ? 'Sablier changé depuis le Survol : ' + texteSablier(r) + '.' : 'Sablier arrêté depuis le Survol.');
+}
+
 /* ---------- le tableau du groupe (tableau.js) : le relais, et qui l'a ouvert sur quel écran ---------- */
 function brancherTableau(){
   if(typeof Tableau === 'undefined') return;
@@ -16654,6 +17002,7 @@ function demarrer(){
   if(typeof Arene !== 'undefined' && Arene.ecouterGroupe) Arene.ecouterGroupe(surArene);
   if(typeof Tableau !== 'undefined') Tableau.ecouter(ev => { if(S.etat !== 'lie') return; if(ev.type === 'ouvert') publier(); else majBarre(); });
   if(dansClaude()) return;
+  window.addEventListener('storage', rythmeDepuisSurvol);
   const lien = lireLienBalise();
   window.addEventListener('hashchange', () => { const c = lireLienBalise(); if(c) ouvrirRejoindre(c); });
   let s = null; try{ s = JSON.parse(sessionStorage.getItem(CLE_SEANCE) || 'null'); }catch(e){}
@@ -16676,7 +17025,11 @@ function demarrer(){
   });
   Object.assign(S, {nom:propre(s.nom, 24) || 'Photon', raie:raieOk(s.raie), etat:'lie', depuis:+s.depuis || Date.now(), ouvert:!!s.ouvert,
     choix:['auto', 'mien', 'suivre'].includes(s.choix) ? s.choix : 'auto', cible:typeof s.cible === 'string' ? s.cible : '',
-    repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false, par:typeof s.repere.par === 'string' ? s.repere.par : ''} : {e:'', n:0, auto:false, par:''}, pret:s.pret | 0});
+    repere:s.repere && ecran(s.repere.e) ? {e:s.repere.e, n:s.repere.n | 0, auto:false, par:typeof s.repere.par === 'string' ? s.repere.par : ''} : {e:'', n:0, auto:false, par:''}, pret:s.pret | 0,
+    /* le rythme revient sans attendre le relais ; le dernier décalage connu le garde juste jusqu'à ce que le relais réponde */
+    decalage:+s.decalage || 0});
+  if(typeof Sablier !== 'undefined' && Sablier.lire(s.sablier)) S.sablier = Sablier.lire(s.sablier);
+  brancherSablier();
   entrer(s.role === 'hote' ? 'hote' : 'invite', s.code, true).then(ok => {
     if(!ok){ quitter(true); return; }
     montrerBarre(); garderRetour();
@@ -16689,7 +17042,7 @@ function demarrer(){
    tableau du groupe sous mon nom) ; le site et l'alphabet des codes */
 async function relais(){ await connecter(); return {F:S.F, db:S.db, uid:S.uid}; }
 
-return {demarrer, inviter:a => ouvrirAjout(a), etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0, relais, dansClaude, LUMIERE, ALPHA};
+return {demarrer, inviter:a => ouvrirAjout(a), ouvrirSurvol, etat:() => S.etat, taille:() => S.etat === 'lie' ? presents().length + 1 : 0, relais, dansClaude, avis:avisDiscret, LUMIERE, ALPHA};
 })();
 
 /* ====== _commun/tablette.js ====== */
@@ -17523,6 +17876,8 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Le Survol se fait maintenant à plusieurs. En séance Convergence, ouvre-le : tes amis reçoivent « Rejoindre ». Dans « ✎ Notes », « Notes du groupe » vous fait écrire ensemble, ligne par ligne, les notes de chaque diapo. Le repère garde votre diapo commune : « Recentrer » t’y ramène et « Prêt·e » vous fait avancer ensemble. Sans atelier, le bouton « Convergence » du Survol crée un groupe avec un code.'},
+    {d:'2026-11-03', p:['*'], t:'Sablier : un nouveau rythme rapide, 5 minutes de travail, 5 minutes de pause. Choisis-le dans le Sablier de ton atelier : la pause tombe à la seconde, même en pleine Arène. En Convergence, tout le groupe a le même rythme, et personne ne peut écourter la pause pour les autres.'},
     {d:'2026-11-03', p:['*'], t:'Dans le Survol, « ✎ Notes » (en haut) ouvre une fenêtre pour écrire une note sur chaque diapo. « Enregistrer » la garde en fichier texte sur ton appareil, « Tout enregistrer » met toutes tes notes du diaporama dans un seul fichier. Sur un grand écran, la fenêtre se met à droite des diapos.'},
     {d:'2026-11-03', p:['*'], t:'Dans l’Arène, le bouton « Tableau » (ou la touche B) ouvre le tableau sans quitter ta question ; sur un grand écran, il se met à côté et tu peux répondre en même temps. En séance, c’est le tableau du groupe.'},
     {d:'2026-11-03', p:['*'], t:'Convergence : « ＋ Ajouter quelqu’un » donne le code, un lien et un code QR pour inviter un ami en pleine séance, sans tout recommencer. Les demandes s’affichent même pendant l’Arène ou au tableau, et quelqu’un qui recharge sa page revient tout seul.'},
@@ -17675,12 +18030,18 @@ function survol(){
   if(!L.length || $('#btn-survol')) return;
   const ref = $('#btn-cv') || $('#btn-arene') || $('#btn-tableau-haut') || $('#btn-notes'); if(!ref) return;
   const ICONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path class="jouer" d="M10.2 7.6v5.3l4.4-2.65z"/><path d="M12 16.5v3.5M8.5 20h7"/></svg><span class="mot">Survol</span>';
+  /* en séance, un diaporama s'ouvre dans un nouvel onglet, dans la salle du groupe : la séance reste vivante ici (convergence.js) */
+  const enSeance = e => {
+    const a = e.target.closest('a[href]');
+    if(a && !e.ctrlKey && !e.metaKey && !e.shiftKey && Convergence.ouvrirSurvol(a.getAttribute('href'))) e.preventDefault();
+  };
   if(L.length === 1){
     const a = document.createElement('a');
     a.className = 'btn btn-survol'; a.id = 'btn-survol'; a.href = L[0].url;
     a.innerHTML = ICONE;
     a.title = L[0].titre || 'Survol : tout le module en diapos';
     a.setAttribute('aria-label', a.title);
+    a.addEventListener('click', enSeance);
     ref.before(a);
     return;
   }
@@ -17693,6 +18054,7 @@ function survol(){
   m.innerHTML = L.map(s => '<a href="' + esc(s.url) + '" title="' + esc(s.titre || '') + '"><b>' + esc(s.court || s.titre || 'Survol') + '</b>' + (s.detail ? '<small>' + esc(s.detail) + '</small>' : '') + '</a>').join('');
   boite.append(b, m); ref.before(boite);
   const fermer = () => { m.hidden = true; b.setAttribute('aria-expanded', 'false'); };
+  m.addEventListener('click', e => { enSeance(e); if(e.defaultPrevented) fermer(); });
   b.addEventListener('click', e => { e.stopPropagation(); m.hidden = !m.hidden; b.setAttribute('aria-expanded', m.hidden ? 'false' : 'true'); if(!m.hidden) m.querySelector('a').focus(); });
   document.addEventListener('click', e => { if(!m.hidden && !boite.contains(e.target)) fermer(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !m.hidden){ fermer(); b.focus(); } });
@@ -17833,7 +18195,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '06c96e71c8eb';
+  const ICI = '93f51b90205d';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
