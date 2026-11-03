@@ -1538,12 +1538,119 @@ body.ar-ouverte.tb-cote .ar{right:min(48vw,860px)}
   body.ar-ouverte.tb-cote .ar.avec-carte .ar-corps{grid-template-columns:minmax(0,1fr)}
   body.ar-ouverte.tb-cote .ar.avec-carte .ar-carte{display:none}
 }
+
+/* ---------- l'écran d'entrée : Efficace ou Complet (recette §3.6) ---------- */
+html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
+.entree[hidden]{display:none}
+.entree{position:fixed;inset:0;z-index:360;display:flex;overflow:auto;background:var(--bg);color:var(--ink);transition:opacity .38s ease;
+  padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.entree.sort{opacity:0;pointer-events:none}
+.en-fond{position:fixed;inset:0;overflow:hidden;pointer-events:none;
+  background:radial-gradient(70vmax 70vmax at 88% 2%,var(--accent-soft),transparent 68%),radial-gradient(56vmax 56vmax at 4% 100%,var(--accent-soft),transparent 66%)}
+/* chaque forme est son propre calque : le navigateur la fait tourner sans rien redessiner */
+.en-fond svg{position:absolute;display:block;overflow:visible;fill:none;stroke:var(--accent);will-change:transform;transform-origin:50% 50%;opacity:var(--o,.3);animation:var(--mv),en-vient 2.4s ease-out backwards}
+.en-cadran.en-a{--mv:en-tour 300s linear infinite;width:112vmax;height:112vmax;top:-58vmax;right:-46vmax}
+.en-cadran.en-b{--mv:en-tour 420s linear infinite reverse;--o:.26;width:64vmax;height:64vmax;bottom:-30vmax;left:-24vmax}
+.en-rayons{--mv:en-pivote 64s ease-in-out infinite alternate;--o:.14;width:max(120vw,760px);height:auto;left:-10vw;top:46%;margin-top:calc(max(120vw,760px) * -.1875);transform-origin:47.5% 50%}
+.en-prisme.en-p1{--mv:en-derive-a 88s ease-in-out infinite alternate;width:clamp(120px,21vmin,240px);height:clamp(120px,21vmin,240px);left:7vw;top:9vh}
+.en-prisme.en-p2{--mv:en-derive-b 104s ease-in-out infinite alternate;--o:.34;width:clamp(64px,11vmin,130px);height:clamp(64px,11vmin,130px);right:12vw;bottom:11vh}
+.en-prisme.en-p3{--mv:en-derive-a 72s ease-in-out infinite alternate-reverse;width:clamp(40px,6vmin,76px);height:clamp(40px,6vmin,76px);left:42vw;bottom:5vh}
+.en-prisme.en-h1{--mv:en-derive-b 96s ease-in-out infinite alternate-reverse;--o:.22;width:clamp(54px,9vmin,110px);height:clamp(54px,9vmin,110px);right:30vw;top:6vh}
+@keyframes en-tour{to{transform:rotate(360deg)}}
+@keyframes en-pivote{from{transform:rotate(-3.5deg)}to{transform:rotate(3.5deg)}}
+@keyframes en-derive-a{from{transform:translate(-2.5vmin,-1.5vmin) rotate(-16deg)}to{transform:translate(4.5vmin,5vmin) rotate(44deg)}}
+@keyframes en-derive-b{from{transform:translate(3vmin,2vmin) rotate(20deg)}to{transform:translate(-5vmin,-4vmin) rotate(-52deg)}}
+@keyframes en-vient{from{opacity:0}}
+.en-contenu{position:relative;width:min(860px,100%);margin:auto;display:flex;flex-direction:column;align-items:center;gap:26px;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.entree.prete .en-contenu{opacity:1;transform:none}
+.en-tete{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-width:0}
+.en-titre{margin:4px 0 0;font:600 clamp(34px,6.2vw,60px)/1.06 var(--f-display);letter-spacing:-.015em;text-wrap:balance}
+.en-titre span{display:block;margin-top:6px;font-style:italic;font-weight:400;font-size:.46em;line-height:1.2;letter-spacing:0;color:var(--accent)}
+.en-tete h2{margin:18px 0 0;font:400 clamp(18px,2.6vw,22px)/1.3 var(--f-body);color:var(--ink-2)}
+.en-choix{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.en-carte{min-width:0;display:flex;flex-direction:column;gap:10px;padding:20px 20px 18px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 22px 44px -32px var(--ombre,rgba(0,0,0,.5))}
+.en-haut{display:flex;align-items:center;gap:10px}
+.en-haut svg{width:24px;height:24px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.en-carte h3{margin:0;font:600 27px/1.1 var(--f-display)}
+.en-carte p{margin:0;font-size:15.5px;line-height:1.45;color:var(--ink-2)}
+.en-outils{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.en-outils li{padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);font-size:13.5px;line-height:1.35;color:var(--ink-2)}
+.en-liens{margin-top:auto;padding-top:6px;display:flex;flex-direction:column;gap:8px}
+.en-go{width:100%;min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.en-go:hover{border-color:var(--accent);transform:translateY(-1px)}
+.en-go.en-plein{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.en-go.en-plein:hover{filter:brightness(1.08)}
+.en-go:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.en-mots{min-width:0;display:flex;flex-direction:column;gap:1px}
+.en-mots b{font-size:16px;line-height:1.25}
+.en-mots small{font-size:13px;line-height:1.3;opacity:.86}
+.en-fleche{flex:none;font-size:18px;transition:transform .15s}
+.en-go:hover .en-fleche{transform:translateX(3px)}
+.en-note{margin:0;text-align:center;font-size:14.5px;line-height:1.4;color:var(--ink-2);text-wrap:balance}
+@media (max-width:640px){
+  /* les deux choix tiennent sur un écran de téléphone : Complet ne doit pas se cacher sous le pli */
+  .en-contenu{gap:14px}
+  .en-titre{font-size:clamp(30px,8.4vw,38px)}
+  .en-outils,.en-plein small{display:none}
+  .en-go{min-height:46px;padding:7px 14px}
+  .en-choix{grid-template-columns:minmax(0,1fr);gap:12px}
+  .en-carte{padding:14px 16px;gap:6px}
+  .en-carte p{font-size:15px;line-height:1.35}
+  .en-carte h3{font-size:24px}
+  .en-tete h2{margin-top:8px}
+  .en-note{font-size:13.5px}
+  .en-fond{--e:.72}
+  .en-fond svg{opacity:calc(var(--o,.3) * var(--e))}
+}
+@media (prefers-reduced-motion:reduce){
+  .entree,.en-contenu{transition:none}
+  .en-contenu{transform:none}
+  .en-fond svg{animation:none;will-change:auto}
+  .en-go,.en-fleche{transition:none}
+}
+@media print{ .entree{display:none} }
 </style>
+<!-- ===================================================================== L'ENTRÉE
+     L'écran d'entrée, Efficace ou Complet (recette §3.6). construire_commun.py le met en tête du corps de tout atelier
+     qui a un Survol. Son fond est ici, en dur, pour qu'il se dessine avant même que le gros script de la page arrive ;
+     entree.js y écrit le titre et les deux choix. Les formes tournent en CSS, sur leur propre calque : rien à recalculer. -->
+<div class="entree" id="entree" role="dialog" aria-modal="true" aria-labelledby="en-question" hidden>
+  <div class="en-fond" aria-hidden="true">
+    <svg class="en-cadran en-a" viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" stroke-width="5" stroke-dasharray=".5 4.631"/><circle cx="100" cy="100" r="93" stroke-width=".35"/><circle cx="100" cy="100" r="66" stroke-width=".25"/><path stroke-width=".25" d="M7 100h186M100 7v186"/></svg>
+    <svg class="en-cadran en-b" viewBox="0 0 200 200"><circle cx="100" cy="100" r="98" stroke-width="3" stroke-dasharray=".6 9.68"/><circle cx="100" cy="100" r="80" stroke-width=".35" stroke-dasharray="3 3"/><circle cx="100" cy="100" r="44" stroke-width=".3"/><path stroke-width=".3" d="M20 100h160"/></svg>
+    <svg class="en-rayons" viewBox="0 0 800 300"><g stroke-width=".8"><path d="M0 70H380L640 150"/><path d="M0 110H380L640 150"/><path d="M0 150H640"/><path d="M0 190H380L640 150"/><path d="M0 230H380L640 150"/><path stroke-dasharray="4 6" d="M640 150L800 199M640 150L800 101"/></g><path stroke-width="1.1" d="M380 50Q420 150 380 250Q340 150 380 50Z"/></svg>
+    <svg class="en-prisme en-p1" viewBox="0 0 100 100"><path stroke-width=".9" d="M50 8L96 88H4Z"/><path stroke-width=".6" d="M0 62L27 48L74 54L100 72"/></svg>
+    <svg class="en-prisme en-p2" viewBox="0 0 100 100"><path stroke-width="1.4" d="M50 8L96 88H4Z"/></svg>
+    <svg class="en-prisme en-p3" viewBox="0 0 100 100"><path stroke-width="2" d="M50 8L96 88H4Z"/></svg>
+    <svg class="en-prisme en-h1" viewBox="0 0 100 100"><path stroke-width="1.2" d="M50 4L90 27V73L50 96L10 73V27Z"/></svg>
+  </div>
+  <div class="en-contenu" id="en-contenu"></div>
+</div>
+<script>
+/* avant le premier dessin : le thème de cet atelier, et faut-il poser la question ? Elle ne revient pas tant qu'on n'a pas quitté
+   la page plus de 4 h (la clé de cet onglet, écrite par entree.js). Un lien avec un # (une invitation, une tablette) et le retour
+   d'un Survol vont droit à l'atelier. Si le script de la page échoue, l'écran s'efface : il ne bloque jamais l'atelier. */
+(function(){
+  var d = document.documentElement, e = document.getElementById('entree'), k = 'lumiere-entree:' + location.pathname, t = 0;
+  try{ var th = localStorage.getItem('to-m56-theme'); if(th) d.setAttribute('data-theme', th); }catch(x){}
+  try{ t = +sessionStorage.getItem(k) || 0; }catch(x){}
+  if(location.hash || /\/diapos-[^\/?#]*(?:[?#]|$)/.test(document.referrer) || Date.now() - t < 144e5){
+    try{ sessionStorage.setItem(k, String(Date.now())); }catch(x){}
+    e.parentNode.removeChild(e);
+    return;
+  }
+  e.hidden = false;
+  d.classList.add('entree-ouverte');
+  window.addEventListener('load', function(){
+    if(e.parentNode && !e.classList.contains('prete')){ e.parentNode.removeChild(e); d.classList.remove('entree-ouverte'); }
+  });
+})();
+</script>
 <div class="app" id="app">
 
 <nav class="rail" id="rail" aria-label="Fil des modules">
   <div class="marque">
-    <p class="eyebrow">Tests ophtalmiques · M5 et M6</p>
+    <p class="eyebrow">Tests ophtalmiques · M5 à M7</p>
     <h1>Cornée, lunettes, OCT<span>l'atelier</span></h1>
   </div>
   <div class="avance" aria-live="polite">
@@ -15645,6 +15752,7 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'En ouvrant un atelier ou le Banc, tu choisis maintenant ton chemin. « Efficace » t’amène droit au Survol, « Complet » ouvre l’atelier comme d’habitude. Tu passes de l’un à l’autre quand tu veux.'},
     {d:'2026-11-03', p:['*'], t:'Le Survol se fait maintenant à plusieurs. En séance Convergence, ouvre-le : tes amis reçoivent « Rejoindre ». Dans « ✎ Notes », « Notes du groupe » vous fait écrire ensemble, ligne par ligne, les notes de chaque diapo. Le repère garde votre diapo commune : « Recentrer » t’y ramène et « Prêt·e » vous fait avancer ensemble. Sans atelier, le bouton « Convergence » du Survol crée un groupe avec un code.'},
     {d:'2026-11-03', p:['*'], t:'Sablier : un nouveau rythme rapide, 5 minutes de travail, 5 minutes de pause. Choisis-le dans le Sablier de ton atelier : la pause tombe à la seconde, même en pleine Arène. En Convergence, tout le groupe a le même rythme, et personne ne peut écourter la pause pour les autres.'},
     {d:'2026-11-03', p:['*'], t:'Dans le Survol, « ✎ Notes » (en haut) ouvre une fenêtre pour écrire une note sur chaque diapo. « Enregistrer » la garde en fichier texte sur ton appareil, « Tout enregistrer » met toutes tes notes du diaporama dans un seul fichier. Sur un grand écran, la fenêtre se met à droite des diapos.'},
@@ -15783,6 +15891,98 @@ body.ar-ouverte .qdn-btn{display:none}
     majBouton();
   }
   return {demarrer, liste:() => LISTE.slice()};
+})();
+
+/* ====== _commun/entree.js ====== */
+/* ======================================================================
+   L'écran d'entrée : Efficace ou Complet (recette §3.6)
+   Une page qu'on ouvre pose d'abord une seule question, pour que personne
+   ne se perde en arrivant. « Efficace » va droit au Survol, « Complet »
+   ouvre l'atelier comme d'habitude. Rien n'est verrouillé : le bouton
+   Survol et les liens des diapos font passer de l'un à l'autre.
+   L'atelier se charge déjà dessous, à sa place habituelle ; cet écran le
+   recouvre et s'efface. Son fond et la décision de se montrer sont dans
+   entree.html ; ici, le titre, les deux choix et le clavier.
+   ====================================================================== */
+const Entree = (() => {
+  const CLE_CHOIX = P + '-entree';                                 // le dernier choix : c'est lui qui a le focus la fois suivante
+  const CLE_ONGLET = 'lumiere-entree:' + location.pathname;        // la même que dans entree.html
+  const FLECHE = '<span class="en-fleche" aria-hidden="true">→</span>';
+  const ICONES = {
+    efficace:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M10.2 7.6v5.3l4.4-2.65z"/><path d="M12 16.5v3.5M8.5 20h7"/></svg>',
+    complet:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M12 9h6M12 13h6M12 17h3"/></svg>'
+  };
+  const OUTILS = ['L’Arène', 'Le Rappel du jour', 'Le tableau', 'Le tuteur', 'Convergence'];
+  let R = null, options = [];
+  const marquer = () => { try{ sessionStorage.setItem(CLE_ONGLET, String(Date.now())); }catch(e){} };
+  const ouverte = () => !!R && document.documentElement.classList.contains('entree-ouverte');
+
+  /* un bouton du Survol : son court nom et son détail s'il en a, sinon ce que dit son titre */
+  function lienSurvol(s){
+    const detail = s.detail || String(s.titre || '').replace(/^Survol\s*:\s*/, '').replace(/^./, c => c.toUpperCase());
+    return '<a class="en-go en-plein" href="' + esc(s.url) + '" data-choix="efficace"><span class="en-mots"><b>' + esc(s.court || 'Ouvrir le Survol') + '</b>' +
+      (detail ? '<small>' + esc(detail) + '</small>' : '') + '</span>' + FLECHE + '</a>';
+  }
+  function boutonComplet(){
+    const ici = ICI && ICI.id !== 'accueil' ? ICI.titre : '';
+    const nom = /^banc/i.test(ATELIER.nom || '') ? 'le Banc' : 'l’atelier';
+    return '<button type="button" class="en-go" data-choix="complet"><span class="en-mots"><b>' + (ici ? 'Reprendre' : 'Ouvrir ' + nom) + '</b>' +
+      (ici ? '<small>Tu en étais à : ' + esc(ici) + '</small>' : '') + '</span>' + FLECHE + '</button>';
+  }
+  function remplir(L){
+    const m = $('.marque'), eb = m && m.querySelector('.eyebrow'), h = m && m.querySelector('h1');
+    $('#en-contenu').innerHTML =
+      '<header class="en-tete">' + (eb ? '<p class="eyebrow">' + eb.innerHTML + '</p>' : '') +
+        '<p class="en-titre">' + (h ? h.innerHTML : esc(ATELIER.nom || '')) + '</p>' +
+        '<h2 id="en-question">Comment veux-tu étudier aujourd’hui&nbsp;?</h2></header>' +
+      '<div class="en-choix">' +
+        '<section class="en-carte en-efficace" aria-labelledby="en-t-e"><div class="en-haut">' + ICONES.efficace + '<h3 id="en-t-e">Efficace</h3></div>' +
+          '<p>Droit au Survol : tout le module en diapos, une idée à la fois.</p>' +
+          '<div class="en-liens">' + L.map(lienSurvol).join('') + '</div></section>' +
+        '<section class="en-carte en-complet" aria-labelledby="en-t-c"><div class="en-haut">' + ICONES.complet + '<h3 id="en-t-c">Complet</h3></div>' +
+          '<p>Le cours écran par écran, avec tous les outils.</p>' +
+          '<ul class="en-outils">' + OUTILS.map(o => '<li>' + o + '</li>').join('') + '</ul>' +
+          '<div class="en-liens">' + boutonComplet() + '</div></section>' +
+      '</div>' +
+      '<p class="en-note">Première fois sur un module&nbsp;? Commence par Efficace. Tu passeras de l’un à l’autre quand tu veux.</p>';
+    options = $$('[data-choix]', R);
+  }
+  function fermer(){
+    if(!ouverte()) return;
+    document.removeEventListener('keydown', clavier, true);
+    document.documentElement.classList.remove('entree-ouverte');
+    R.classList.add('sort');
+    const e = R; R = null;
+    /* une minuterie, pas la fin de la transition : un onglet caché ne l'annonce jamais, et l'écran resterait devant l'atelier */
+    setTimeout(() => e.remove(), matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 420);
+  }
+  function retenir(choix){ memo.set(CLE_CHOIX, choix); marquer(); }
+  /* tant que l'écran est là, aucune touche n'atteint l'atelier dessous ; Entrée sur le choix qui a le focus marche quand même */
+  function clavier(e){
+    e.stopPropagation();
+    const i = options.indexOf(document.activeElement), n = options.length;
+    if(e.key === 'Escape'){ e.preventDefault(); retenir('complet'); fermer(); return; }
+    if(e.key === 'Tab'){ e.preventDefault(); options[(i + (e.shiftKey ? n - 1 : 1) + n) % n].focus(); return; }
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){ e.preventDefault(); options[(i + 1) % n].focus(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); options[(i + n - 1 + (i < 0 ? 1 : 0)) % n].focus(); }
+  }
+  function demarrer(){
+    R = $('#entree');
+    if(!R) return;
+    const L = [].concat(ATELIER.survol || []).filter(s => s && s.url);
+    if(!L.length){ R.remove(); R = null; document.documentElement.classList.remove('entree-ouverte'); return; }
+    remplir(L);
+    R.classList.add('prete');
+    R.addEventListener('click', e => {
+      const o = e.target.closest('[data-choix]'); if(!o) return;
+      retenir(o.dataset.choix);
+      if(o.dataset.choix === 'complet') fermer();         // le lien du Survol, lui, part tout seul : l'écran reste jusqu'au changement de page
+    });
+    document.addEventListener('keydown', clavier, true);
+    window.addEventListener('pagehide', () => { if(!ouverte()) marquer(); });
+    (memo.get(CLE_CHOIX) === 'complet' ? options[options.length - 1] : options[0]).focus({preventScroll:true});
+  }
+  return {demarrer};
 })();
 
 /* ====== _commun/demarrage.js ====== */
@@ -15955,6 +16155,7 @@ function demarrer(){
   majIndicateurs();
   majNuage();
   aller(memo.get(CLE.ici) || 'accueil', {initial:true});
+  try{ Entree.demarrer(); }catch(e){ console.error(e); }
   if(large() && memo.get(CLE.tiroir) === '1') ouvrirTiroir(true);
   nuage.demarrer().catch(() => {});
   window.addEventListener('pagehide', () => { if(tPersist){ clearTimeout(tPersist); tPersist = null; ecrireLocal(); } });
@@ -15964,7 +16165,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '93f51b90205d';
+  const ICI = '2ab56a360ae7';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
