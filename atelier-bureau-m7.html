@@ -17523,6 +17523,7 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Dans le Survol, « ✎ Notes » (en haut) ouvre une fenêtre pour écrire une note sur chaque diapo. « Enregistrer » la garde en fichier texte sur ton appareil, « Tout enregistrer » met toutes tes notes du diaporama dans un seul fichier. Sur un grand écran, la fenêtre se met à droite des diapos.'},
     {d:'2026-11-03', p:['*'], t:'Dans l’Arène, le bouton « Tableau » (ou la touche B) ouvre le tableau sans quitter ta question ; sur un grand écran, il se met à côté et tu peux répondre en même temps. En séance, c’est le tableau du groupe.'},
     {d:'2026-11-03', p:['*'], t:'Convergence : « ＋ Ajouter quelqu’un » donne le code, un lien et un code QR pour inviter un ami en pleine séance, sans tout recommencer. Les demandes s’affichent même pendant l’Arène ou au tableau, et quelqu’un qui recharge sa page revient tout seul.'},
     {d:'2026-11-03', p:['*'], t:'Dans « Prédis d’abord » et les cartes « Distinguer », la bonne réponse n’est plus toujours la première : les choix sont mélangés à chaque fois.'},
@@ -17832,7 +17833,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '27f2265164b4';
+  const ICI = '06c96e71c8eb';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

@@ -1214,9 +1214,172 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
   else demarrer((hot && hot.data) || {});
 })();
 </script>
+
+<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py -->
+<style id="notes-survol-css">
+/* une colonne à droite qui prend sa place dès 1200 px (les diapos se redessinent dans les ≥ 860 px qui restent :
+   audit sans problème) ; de 900 à 1199 px, le même panneau passe par-dessus la droite de la diapo (à 900 px, une
+   colonne laissait 560 px et faisait déborder deux diapos) ; au téléphone, une feuille par-dessus le bas.
+   Réduite, elle se rouvre par « ✎ Notes » en haut. */
+:root { --ns-w: 340px; }
+body.ns-dock { padding-right: var(--ns-w); }
+.ns-bouton { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; position: relative; }
+.ns-bouton[aria-expanded="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--encre); }
+.ns-bouton .ns-point { width: 7px; height: 7px; border-radius: 50%; background: var(--encre); }
+.ns-bouton .ns-point[hidden] { display: none; }
+.ns-bouton:focus-visible, .ns-panneau button:focus-visible, .ns-texte:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.ns-panneau { position: fixed; top: 0; right: 0; bottom: 0; width: var(--ns-w); z-index: 15; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
+  background: var(--fond-2); color: var(--encre); border-left: 1px solid var(--trait); font: 400 var(--t-s)/1.45 var(--f-texte); }
+.ns-panneau[hidden] { display: none; }
+body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
+.ns-tete { display: flex; align-items: center; gap: 8px; }
+.ns-titre { margin: 0; flex: 1; min-width: 0; font-size: var(--t-s); font-weight: 800; letter-spacing: .02em; }
+.ns-ou { margin: 0; font-size: var(--t-xs); color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ns-texte { flex: 1; min-height: 120px; width: 100%; box-sizing: border-box; resize: none; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); line-height: 1.5; }
+.ns-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ns-panneau button { min-height: 38px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
+.ns-panneau .ns-reduire { min-width: 38px; padding: 0 10px; }
+.ns-etat { margin: 0; min-height: 1.3em; font-size: var(--t-xs); color: var(--doux); }
+@media (max-width: 899px) {
+  .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+}
+@media (max-width: 600px) {
+  .ns-bouton { padding: 0 10px; }
+  .ns-bouton .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media print { .ns-panneau, .ns-bouton { display: none !important; } body.ns-dock { padding-right: 0; } }
+</style>
+<script id="notes-survol">
+(() => {
+  'use strict';
+  const diapos = [...document.querySelectorAll('.diapo')];
+  if (!diapos.length || document.getElementById('ns-panneau')) return;
+  const fichier = (decodeURIComponent(location.pathname.split('/').pop() || '') || 'diapos').replace(/\.html?$/i, '') || 'diapos';
+  const CLE = 'survol-notes:' + fichier, CLE_OUVERT = 'survol-notes-ouvert';
+  const lire = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const ecrire = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+  const net = s => String(s || '').replace(/\s+/g, ' ').trim();
+  const titreDe = d => net((d.querySelector('h2, h1') || {}).textContent) || '';
+  const titreDiapo = net(document.title).replace(/^Survol\s*·\s*/i, '') || fichier;
+
+  /* une note par diapo, rangée sous le titre de la diapo (elle suit sa diapo si l'ordre change) ;
+     deux titres pareils : le second prend son numéro */
+  const vus = {};
+  const cles = diapos.map((d, i) => { let k = titreDe(d) || 'Diapo ' + (i + 1); if (vus[k]) k += ' (' + (i + 1) + ')'; vus[k] = 1; return k; });
+  let notes = {};
+  try { notes = JSON.parse(lire(CLE) || '{}') || {}; } catch (e) { notes = {}; }
+  const texteDe = i => (notes[cles[i]] && notes[cles[i]].x) || '';
+  const cur = () => Math.max(0, diapos.findIndex(d => !d.hidden));
+
+  /* le bouton, en haut à droite, à côté du plan */
+  const haut = document.querySelector('.haut-droite') || document.querySelector('.haut');
+  const bouton = document.createElement('button');
+  bouton.type = 'button'; bouton.className = 'ns-bouton'; bouton.id = 'ns-bouton';
+  bouton.setAttribute('aria-controls', 'ns-panneau'); bouton.setAttribute('aria-expanded', 'false');
+  bouton.title = 'Mes notes : une note par diapo, gardée sur cet appareil';
+  bouton.innerHTML = '<span aria-hidden="true">✎</span><span class="ns-mot">Notes</span><i class="ns-point" hidden></i>';
+  if (haut) haut.insertBefore(bouton, haut.firstChild); else document.body.appendChild(bouton);
+
+  const p = document.createElement('aside');
+  p.className = 'ns-panneau'; p.id = 'ns-panneau'; p.hidden = true; p.setAttribute('aria-labelledby', 'ns-titre');
+  p.innerHTML =
+    '<div class="ns-tete"><h2 class="ns-titre" id="ns-titre">✎ Mes notes</h2>' +
+    '<button type="button" class="ns-reduire" aria-label="Réduire les notes" title="Réduire (Échap)">—</button></div>' +
+    '<p class="ns-ou" id="ns-ou"></p>' +
+    '<label class="ns-ou" for="ns-texte" hidden>Note de cette diapo</label>' +
+    '<textarea class="ns-texte" id="ns-texte" spellcheck="true" placeholder="Ta note sur cette diapo : ce que tu retiens, une question pour le cours…"></textarea>' +
+    '<div class="ns-actions"><button type="button" data-ns="une" title="Enregistre la note de cette diapo en fichier .txt sur ton appareil">Enregistrer</button>' +
+    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button></div>' +
+    '<p class="ns-etat" id="ns-etat" aria-live="polite">Tes notes restent sur cet appareil.</p>';
+  document.body.appendChild(p);
+  const zone = p.querySelector('#ns-texte'), ou = p.querySelector('#ns-ou'), etat = p.querySelector('#ns-etat'), point = bouton.querySelector('.ns-point');
+
+  let ici = -1, tempo = 0;
+  const dire = t => { etat.textContent = t; };
+  function garder() {
+    clearTimeout(tempo); tempo = 0;
+    if (ici < 0) return;
+    const k = cles[ici], x = zone.value;
+    if (x.trim()) notes[k] = { i: ici + 1, x, m: new Date().toISOString() }; else delete notes[k];
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Gardée sur cet appareil.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+    point.hidden = !texteDe(ici).trim();
+  }
+  function suivre() {
+    const n = cur();
+    if (n === ici) return;
+    if (tempo) garder();
+    ici = n;
+    zone.value = texteDe(n);
+    ou.textContent = 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + (titreDe(diapos[n]) || '');
+    point.hidden = !zone.value.trim();
+  }
+  zone.addEventListener('input', () => { clearTimeout(tempo); tempo = setTimeout(garder, 400); });
+  zone.addEventListener('blur', () => { if (tempo) garder(); });
+
+  /* enregistrer en .txt : la diapo, ou toutes celles qui ont une note */
+  const dateLisible = () => new Date().toLocaleString('fr-CA', { dateStyle: 'long', timeStyle: 'short' });
+  function telecharger(nom, texte) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + texte.replace(/\r?\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
+    a.download = nom; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function une() {
+    if (tempo) garder();
+    const n = cur(), x = zone.value.trim();
+    if (!x) { dire('Cette diapo n’a pas encore de note.'); return; }
+    telecharger('notes-' + fichier + '-diapo-' + (n + 1) + '.txt',
+      'Survol · ' + titreDiapo + '\nDiapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
+    dire('Fichier enregistré : notes-' + fichier + '-diapo-' + (n + 1) + '.txt');
+  }
+  function toutes() {
+    if (tempo) garder();
+    const avec = diapos.map((d, i) => ({ i, x: texteDe(i).trim() })).filter(o => o.x);
+    if (!avec.length) { dire('Aucune note à enregistrer pour l’instant.'); return; }
+    const corps = avec.map(o => '── Diapo ' + (o.i + 1) + ' · ' + titreDe(diapos[o.i]) + '\n\n' + o.x).join('\n\n');
+    telecharger('notes-' + fichier + '.txt', 'Survol · ' + titreDiapo + '\nMes notes, ' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
+    dire('Fichier enregistré : notes-' + fichier + '.txt (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+  }
+
+  /* ouvrir, réduire, et la place : en colonne dès 1200 px (les diapos se redessinent), par-dessus en dessous */
+  const large = matchMedia('(min-width: 1200px)');
+  const memo = lire(CLE_OUVERT);
+  let ouvert = memo === '1' ? true : memo === '0' ? false : large.matches;
+  function placer(focus) {
+    p.hidden = !ouvert;
+    bouton.setAttribute('aria-expanded', String(ouvert));
+    const dock = ouvert && large.matches;
+    if (document.body.classList.contains('ns-dock') !== dock) {
+      document.body.classList.toggle('ns-dock', dock);
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 0);      // le diaporama redessine ses figures à la nouvelle largeur
+    }
+    if (ouvert) { suivre(); if (focus) zone.focus(); }
+  }
+  function basculer(v, focus) { if (!v && tempo) garder(); ouvert = v; ecrire(CLE_OUVERT, v ? '1' : '0'); placer(focus); }
+  bouton.addEventListener('click', e => { e.stopPropagation(); basculer(!ouvert, !ouvert); });
+  p.querySelector('.ns-reduire').addEventListener('click', () => { basculer(false); bouton.focus(); });
+  p.querySelector('[data-ns="une"]').addEventListener('click', une);
+  p.querySelector('[data-ns="toutes"]').addEventListener('click', toutes);
+  /* les touches tapées dans les notes ne font pas avancer le diaporama */
+  p.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); basculer(false); bouton.focus(); }
+    e.stopPropagation();
+  });
+  p.addEventListener('click', e => e.stopPropagation());
+  if (large.addEventListener) large.addEventListener('change', () => placer(false));
+  diapos.forEach(d => new MutationObserver(suivre).observe(d, { attributes: true, attributeFilter: ['hidden'] }));
+  window.addEventListener('pagehide', () => { if (tempo) garder(); });
+
+  ici = -1; suivre(); placer(false);
+})();
+</script>
+<!-- notes-survol:fin -->
 <script>
 (() => {
-  const ICI = '27f2265164b4';
+  const ICI = '06c96e71c8eb';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
