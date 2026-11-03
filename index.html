@@ -596,6 +596,8 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Dans « Prédis d’abord » et les cartes « Distinguer », la bonne réponse n’est plus toujours la première : les choix sont mélangés à chaque fois.'},
+    {d:'2026-11-03', p:['opt-ua2'], t:'Dans les exercices du Banc, une mauvaise réponse te laisse maintenant réessayer une fois avant de voir la correction. Tes réponses écrites comme au tableau (« 66,7 cm devant lui », « 28 cm derrière », « 13 mm ») sont aussi mieux comprises.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le module 8 est arrivé dans le Banc : le Pr et le Pp selon l’amétropie (avec le tableau du cours), la formation d’image par les trois rayons, et la taille de l’image selon le vertex. Ce sont les chapitres du module 8, à la fin du plan.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'« À toi » sur le Pr et le Pp (comme au tableau), sur le grossissement d’image et sur l’aniséiconie : des nombres toujours nouveaux, jusqu’à trois justes de suite, puis à l’envers. Bon entraînement pour le travail en classe du 10 novembre.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le bouton « Survol » du Banc propose maintenant deux diaporamas : les modules 6 et 7, ou le module 8 seul (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -734,7 +736,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'bbc7d422c877';
+  const ICI = '3c0d74c7b2ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

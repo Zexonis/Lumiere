@@ -10279,7 +10279,8 @@ const Arene = (() => {
       $('.ar-qq', art).innerHTML = it.type === 'qcm' ? esc(it.q) : c.q;
       art._q = texte($('.ar-qq', art).innerHTML);
       art._ref = 'bonne réponse : ' + texte(choix[bonne]) + ((it.type === 'qcm' ? it.r : c.r) ? ' (' + texte(it.type === 'qcm' ? it.r : c.r) + ')' : '');
-      choix.forEach((t, i) => { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-c'; bt.innerHTML = t; bt.dataset.i = i; $('.ar-choix', art).appendChild(bt); });
+      /* l'ordre à l'écran est mélangé ; data-i garde l'indice d'origine (la bonne réponse est souvent écrite en premier) */
+      melanger(choix.map((t, i) => i)).forEach(i => { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-c'; bt.innerHTML = choix[i]; bt.dataset.i = i; $('.ar-choix', art).appendChild(bt); });
       $('.ar-choix', art).addEventListener('click', e => {
         const bt = e.target.closest('.ar-c'); if(!bt || art.dataset.fait) return;
         art.dataset.fait = '1'; art._rep = texte(bt.innerHTML);
@@ -10813,7 +10814,8 @@ const Rappel = (() => {
       carte = c; c._g = g || {q:c.q, r:'', tol:0}; q = c._g.q;
     }
     if(c.type === 'discrim'){
-      corps = '<div class="puces rap-choix">' + c.choix.map((x, i) => '<button type="button" class="puce" data-choix="' + i + '">' + x + '</button>').join('') + '</div>';
+      /* l'ordre à l'écran est mélangé ; data-choix garde l'indice d'origine (la bonne réponse est souvent écrite en premier) */
+      corps = '<div class="puces rap-choix">' + melange(c.choix.map((x, i) => i)).map(i => '<button type="button" class="puce" data-choix="' + i + '">' + c.choix[i] + '</button>').join('') + '</div>';
     } else if(c.type === 'geste'){
       const g = (GESTES || []).find(x => x.id === c.geste);
       corps = '<p class="legende">Fais le geste maintenant, de mémoire, en disant chaque mot à voix haute. Puis vérifie.</p>' +
@@ -11358,7 +11360,8 @@ const Vivre = (() => {
     const qui = v.genre === 'comptoir' && PATIENT && PATIENT.nom ? ' · <span class="patient" title="' + esc(PATIENT.portrait || '') + '">' + esc(PATIENT.nom) + '</span>' : '';
     a.innerHTML = '<p class="lib">Vis-le · ' + (GENRE[v.genre] || '') + qui + '</p><h3>' + v.titre + '</h3><p>' + v.texte + '</p>' +
       (p ? '<div class="prediction"><p class="q"><b>Prédis avant de lire :</b> ' + p.q + '</p><div class="puces">' +
-        p.choix.map((c, i) => '<button type="button" class="puce" data-pred="' + i + '">' + c + '</button>').join('') + '</div><p class="pred-note" aria-live="polite" hidden></p></div>' : '');
+        /* l'ordre à l'écran est mélangé (les données mettent souvent la bonne réponse en premier) ; data-pred garde l'indice d'origine */
+        melange(p.choix.map((c, i) => i)).map(i => '<button type="button" class="puce" data-pred="' + i + '">' + p.choix[i] + '</button>').join('') + '</div><p class="pred-note" aria-live="polite" hidden></p></div>' : '');
     tete.after(a);
     if(!p) return;
     const fin = document.createElement('div');
@@ -11438,7 +11441,7 @@ const Vivre = (() => {
     pop = document.createElement('div');
     pop.className = 'predire-pop v2-hors-texte'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Prédis d’abord');
     pop.innerHTML = '<p class="lib">Prédis d’abord</p><p class="q">' + g.q + '</p><div class="puces">' +
-      g.choix.map((c, i) => '<button type="button" class="puce" data-c="' + i + '">' + c + '</button>').join('') + '</div>' +
+      melange(g.choix.map((c, i) => i)).map(i => '<button type="button" class="puce" data-c="' + i + '">' + g.choix[i] + '</button>').join('') + '</div>' +
       '<div class="ctrl"><button type="button" class="lien-btn" data-c="-1">Passer</button><button type="button" class="lien-btn" data-c="x">Annuler</button></div>';
     document.body.appendChild(pop);
     const r = el.getBoundingClientRect(), w = Math.min(340, window.innerWidth - 24);
@@ -17210,6 +17213,8 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Dans « Prédis d’abord » et les cartes « Distinguer », la bonne réponse n’est plus toujours la première : les choix sont mélangés à chaque fois.'},
+    {d:'2026-11-03', p:['opt-ua2'], t:'Dans les exercices du Banc, une mauvaise réponse te laisse maintenant réessayer une fois avant de voir la correction. Tes réponses écrites comme au tableau (« 66,7 cm devant lui », « 28 cm derrière », « 13 mm ») sont aussi mieux comprises.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le module 8 est arrivé dans le Banc : le Pr et le Pp selon l’amétropie (avec le tableau du cours), la formation d’image par les trois rayons, et la taille de l’image selon le vertex. Ce sont les chapitres du module 8, à la fin du plan.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'« À toi » sur le Pr et le Pp (comme au tableau), sur le grossissement d’image et sur l’aniséiconie : des nombres toujours nouveaux, jusqu’à trois justes de suite, puis à l’envers. Bon entraînement pour le travail en classe du 10 novembre.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le bouton « Survol » du Banc propose maintenant deux diaporamas : les modules 6 et 7, ou le module 8 seul (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -17515,7 +17520,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'bbc7d422c877';
+  const ICI = '3c0d74c7b2ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

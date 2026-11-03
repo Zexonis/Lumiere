@@ -435,7 +435,7 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
             <ol class="etapes">
               <li data-pas="1"><span>Le rayon de B qui passe par <b>O</b> continue tout droit.</span></li>
               <li data-pas="2"><span>Celui qui passe par <b>F</b> ressort parallèle à l'axe.</span></li>
-              <li data-pas="3"><span>Ils se croisent en <b>B′</b>, à la hauteur de F′&nbsp;: l'image A′B′ est dans le plan focal, renversée.</span></li>
+              <li data-pas="3"><span>Ils se croisent en <b>B′</b>, sous l'axe, à l'aplomb de F′&nbsp;: l'image A′B′ est dans le plan focal, renversée.</span></li>
             </ol>
           </div>
         </div>
@@ -470,9 +470,9 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
         <p class="kicker">Former une image · Plus près</p>
         <h2>Entre f et 2f&nbsp;: l'image est plus loin et plus grande</h2>
         <div class="corps">
-          <figure class="visuel" data-fig="objet-f2f" aria-label="Objet entre F et 2f : les deux rayons se croisent au-delà de 2f derrière la lentille ; l'image est réelle, renversée et plus grande que l'objet"></figure>
+          <figure class="visuel" data-fig="objet-f2f" aria-label="Objet entre f et 2f : les deux rayons se croisent au-delà de 2f derrière la lentille ; l'image est réelle, renversée et plus grande que l'objet"></figure>
           <div class="texte">
-            <p>On rapproche l'objet, entre F et 2f. Même construction&nbsp;:</p>
+            <p>On rapproche l'objet, entre f et 2f. Même construction&nbsp;:</p>
             <ol class="etapes">
               <li data-pas="1"><span>Parallèle à l'axe → ressort par F′.</span></li>
               <li data-pas="2"><span>Par O → tout droit.</span></li>
@@ -623,7 +623,7 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
         <div class="corps">
           <figure class="visuel" data-fig="deux-e" aria-label="La même lettre E vue par l'œil droit et par l'œil gauche, à deux tailles différentes"></figure>
           <div class="texte">
-            <p>Si les deux yeux n'ont pas la même correction, chaque verre change la taille de l'image à sa façon. Le cerveau reçoit deux images de tailles différentes.</p>
+            <p>Si les deux yeux n'ont pas la même correction, chaque verre change la taille de l'image à sa façon&nbsp;: les deux yeux ont des images de tailles différentes.</p>
             <ol class="etapes">
               <li data-pas="1"><span>Un pourcentage par œil.</span></li>
               <li data-pas="2"><span>La <b>différence</b>&nbsp;: le plus grand moins le plus petit.</span></li>
@@ -1216,7 +1216,7 @@ svg .separe { stroke: var(--trait); stroke-width: 1; }
 </script>
 <script>
 (() => {
-  const ICI = 'bbc7d422c877';
+  const ICI = '3c0d74c7b2ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

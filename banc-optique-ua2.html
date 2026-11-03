@@ -874,7 +874,6 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
 .ch-corps .schema .courbe.pos{stroke:var(--ray)}
 .ch-corps .schema .courbe.neg{stroke:var(--ray-2);stroke-dasharray:6 4}
 .ch-corps .schema .grille{stroke:var(--line);stroke-width:1}
-.ch-corps .schema .cote{stroke:var(--ink-3);stroke-width:1.2}
 .ch-corps .schema .cote{stroke:var(--ink);stroke-width:1.2}
 .ch-corps .schema .cote.c2{stroke:var(--ray-2)}
 .ch-corps .examen{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ray);border-radius:var(--r);padding:14px 18px;margin-top:22px}
@@ -2213,7 +2212,7 @@ body.ar-ouverte .tb.cote{z-index:335}
       <li><b>D1–D31</b> · <code>Module_8_formation_image.pdf</code> : le Pr et le Pp selon l’amétropie, la formation d’image, le vertex et le grossissement, l’aniséiconie.</li>
       <li><b>C1–C7</b> · <code>Exercices module 8 corrigé.pdf</code> : le corrigé des trois exercices des D29–D31 (un fichier de 2025).</li>
       <li><b>X1–X9</b> · <code>Questions extra Pp et Pr et accommodation.pdf</code> : quatre cas, matière du module 7 (un fichier de 2024).</li>
-      <li><b>TAB</b> · la photo du tableau du 3 novembre : l’exemple de la D5, fait en classe. Ce qui ne s’y lit pas avec certitude est marqué déduit.</li>
+      <li><b>TAB</b> · la photo du tableau du 3 novembre : l’exemple de la D5, fait en classe. Ce qui ne s’y lit pas avec certitude est marqué <span class="deduit">inféré</span>.</li>
     </ul>
     <p>Ce banc suit les distillations des trois modules (<code>opt-m06_distilled.md</code>, <code>opt-m07_distilled.md</code>, <code>opt-m08_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les PDF, et chaque nombre recalculé par script. Ce que le banc déduit sans que les diapos le disent est marqué <span class="deduit">déduit</span>.</p>
     <h3>Les schémas</h3>
@@ -2415,7 +2414,7 @@ const AVERIFIER = [
   {m:'M8', t:'Le signe du pourcentage', p:'« −11,5 % d’agrandissement » (D27 : signé) ; « 14.4% plus petit » (C5 : sans signe, avec des mots). Le banc écrit les deux : −14,4 % (plus petit).'},
   {m:'M8', t:'Les lettres changent d’une figure à l’autre', p:'D13 : B au sommet de l’objet, A sur l’axe ; D15 : A au sommet, B sur l’axe ; D14 : A et B sont deux objets. Foyers : F, F′ (D11–D13), mais F₁, F₂ (D15). Le banc suit les lettres de chaque diapo.'},
   {m:'M8', t:'L’astigmatisme', p:'Il est au programme du module 8 au tableau chronologique, mais le deck n’en parle pas, comme au module 7.'},
-  {m:'M8', t:'Le vertex et la puissance', p:'La NACOR 2.2.3 cite : « Peut décrire les effets des distances verre-œil sur la puissance des verres. » Le module 8 ne traite le vertex que pour la taille de l’image <span class="hors">hors cours</span>. L’examen en tiendra-t-il compte ?'},
+  {m:'M8', t:'Le vertex et la puissance', p:'La NACOR 2.2.3 cite : « Peut décrire les effets des distances verre-œil sur la puissance des verres. » Le module 8 ne traite le vertex que pour la taille de l’image ; la compensation de puissance n’est dans aucun fichier <span class="hors">hors cours</span>. L’examen en tiendra-t-il compte ?'},
   {m:'M8', t:'Ce que le banc infère du tableau', p:'« toujours une distance » se lit bien ; son sens (répondre par une distance, pas en dioptries) est inféré. En marge, « -7.00 20 » et « -8.00 50 » sont lus comme une myopie et un âge ; à gauche, « 25 ans », « Hypermétrope +3.00 », « Am=8.5 ».'},
   {m:'M8', t:'Les réponses de la D4 (Am = 0)', p:'Elles n’ont pas été photographiées. Le banc les calcule : Pp à l’infini (emmétrope), Pp = Pr = 40 cm (myope), aucun Pp réel (hypermétrope). Compare avec tes notes, surtout pour l’hypermétrope.'},
   {m:'M8', t:'Le sujet du travail en classe du 10 nov.', p:'La D2 l’annonce sans sujet ; « Pr et Pp selon l’amétropie » est le titre de la D3 qui suit. Le lien vient de l’ordre des diapos et des exemples au tableau : à confirmer.'},
@@ -2443,13 +2442,13 @@ const ATELIER = {
     {url:'diapos-m8.html', titre:'Survol : le module 8 en 20 diapos, environ 15 minutes', court:'Module 8', detail:'Pr et Pp selon l’amétropie, formation d’image, grossissement et vertex · 20 diapos, ≈ 15 min'}
   ],
   /* l'essentiel (_commun/essentiel.js) : dans le texte d'un chapitre, on garde les titres, les points clés (les pas),
-     les exemples résolus, les pièges et les conventions de signe ; le second schéma se replie, le geste se replie
+     les exemples résolus, les pièges et les conventions de signe ; le second schéma se replie (avec ses boutons, .reg-second), le geste se replie
      sur son titre. Les écrans au cœur de l'évaluation UA2 (analyse/opt-profil.md) le disent en tête ; au module 8, le Pr et le Pp
      (tableau8, voir8 : le travail en classe du 10 nov. et le calcul du 17 nov.) ; Gi et l'aniséiconie ne sont pas annoncés à l'examen. */
   essentiel:{ecrans:['lunetier', 'cornee', 'modele', 'ametropie', 'causes', 'accommodation', 'donders', 'addition',
       'formule', 'pr', 'pp', 'piege', 'lentilles', 'correction',
       'tableau8', 'voir8', 'image8', 'vertex8', 'gi8', 'anis8'], texte:'.ch-corps .texte', garder:'h3, h4, .a-pas, pre.calcul, .piege, .signe, .formule, .eq',
-    plier:'.ch-corps > .paillasse ~ .paillasse', replier:'aside.geste', replierTexte:'Faire ce geste', sources:'header .eyebrow',
+    plier:'.ch-corps > .paillasse ~ .paillasse, .ch-corps .reg-second', replier:'aside.geste', replierTexte:'Faire ce geste', sources:'header .eyebrow',
     examen:['accommodation', 'donders', 'addition', 'formule', 'pr', 'pp', 'piege', 'correction', 'tableau8', 'voir8'], vitesse:150}
 };
 
@@ -4221,7 +4220,7 @@ const GESTES = [
      {fais:'Retends le bras.', dis:'Plus loin : l’angle et l’image rétinienne rapetissent.'}
    ],
    sentir:'Ton pouce n’a pas changé de taille, mais il cache beaucoup plus de la porte quand il est proche : c’est l’angle qui fait la taille de l’image sur la rétine.',
-   lien:'« l’objet A est plus rapproché de l’oeil et l’angle est plus grande » <span class="sic">(sic)</span> : à taille égale, l’objet le plus proche donne une image rétinienne plus grande (D14).',
+   lien:'« l’objet A est plus rapproché de l’œil et l’angle est plus grande » <span class="sic">(sic)</span> : à taille égale, l’objet le plus proche donne une image rétinienne plus grande (D14).',
    src:['M8 D14']}
 ];
 
@@ -5515,7 +5514,8 @@ class LigneVision {
         // sous la ligne quand il tomberait sur l'étiquette du Pr (au-dessus), sauf s'il y retrouve celle du Pp (module 8 : l'objet au Pr même)
         // coincé entre les deux étiquettes (feuille étroite) : un petit triangle posé sur la ligne même
         const sur = sp => !!sp && xo + 8 > sp[0] && xo - 8 < sp[1], deux = sur(spanPr) && sur(spanPp), dessous = sur(spanPr) && !deux;
-        S('path', { d: deux ? `M${xo},${y - 6} l-6,12 h12 z` : dessous ? `M${xo},${y + 4} l-6,12 h12 z` : `M${xo},${y - 4} l-6,-12 h12 z`, class: 'lv-objet ' + (net ? 'net' : 'flou') }, g);
+        // coincé : centré dans le blanc entre les deux étiquettes (le Pr au-dessus descend plus près de la ligne que le Pp en dessous)
+        S('path', { d: deux ? `M${xo},${y - 3} l-5,10 h10 z` : dessous ? `M${xo},${y + 4} l-6,12 h12 z` : `M${xo},${y - 4} l-6,-12 h12 z`, class: 'lv-objet ' + (net ? 'net' : 'flou') }, g);
       }
     });
     // l'échelle commune, et la convention de signe
@@ -5641,7 +5641,7 @@ class BancVertex extends Feuille {
   constructor(host, legende){ super(host, 'banc-vertex', 230, legende); }
   dessiner(Fl, mm){
     const g = this.debut([Fl, mm], 230), W = this.W, et = this.etroit;
-    const Y = 112, re = et ? 62 : 80, xe = W - (et ? 84 : 124), k = et ? 5.5 : 8.5, h0 = et ? 18 : 22;
+    const Y = 112, re = et ? 62 : 80, xe = W - (et ? 84 : 124), k = et ? 5.5 : 8.5, h0 = re * 0.42;
     const xc = xe - re * 0.835, apex = xc - 11, xl = apex - 6 - mm * k, Gi = grossissement(mm / 1000, Fl);
     S('line', { x1: 0, y1: Y, x2: W, y2: Y, class: 'axe' }, g);
     S('circle', { cx: xe, cy: Y, r: re, class: 'globe' }, g);
@@ -5670,9 +5670,10 @@ class BancVertex extends Feuille {
     S('path', { d: `M${xl - 14},${Y} l-10,-5 v10 z`, class: 'objet-pointe' }, g);
     if (xl - 18 > 110) T(g, xa, Y - 8, 'lumière', 'lbl');
     // sur la rétine : l'image de référence (Gi = 1, pointillée) et l'image avec le verre ; écart exagéré × 3
-    const hv = h0 * Math.max(0.2, Math.min(2.4, 1 + 3 * (Gi - 1)));
-    fleche(g, xe + re * 0.52, Y, Y + h0, 'image-ref');
-    fleche(g, xe + re * 0.68, Y, Y + hv, 'image');
+    // assez grandes pour se comparer au téléphone, et toujours dans le globe
+    const hv = Math.min(re * 0.75 - 3, h0 * Math.max(0.2, 1 + 3 * (Gi - 1)));
+    fleche(g, xe + re * 0.5, Y, Y + h0, 'image-ref');
+    fleche(g, xe + re * 0.66, Y, Y + hv, 'image');
     g.setAttribute('aria-label', `Verre de ${dpt(Fl)} D à ${mm} mm de la cornée : Gi = ${nf(Gi, 3)}, image ${motTaille(Gi)} sur la rétine.`);
     return Gi;
   }
@@ -5764,7 +5765,8 @@ const decDe = x => { let d = 2; while (d < 4 && Math.abs(Math.round(x * Math.pow
 const nm = x => nf(x, decDe(Math.abs(x)));                                  // mètres : 0,08 · 0,0866 · 0,3333
 const sg = x => (x > 0 ? '+' : x < 0 ? MOINS : '') + nf(Math.abs(x), Number.isInteger(x) ? 0 : 1);
 const sgm = x => (x < 0 ? MOINS : '') + nm(Math.abs(x));
-const par = s => s.charAt(0) === MOINS ? '(' + s + ')' : s;
+// un nombre signé dans un produit ou sous une barre de fraction, comme le corrigé : « 0.01×(+2.5) » (M8 C7) ; jamais « × +2,50 »
+const par = s => s.charAt(0) === MOINS || s.charAt(0) === '+' ? '(' + s + ')' : s;
 const dp = x => dpt(x, Math.abs(x * 100 - Math.round(x * 100)) > 1e-6 ? 3 : 2);
 const amDe = age => DONDERS.find(d => d[0] === age)[1];
 const cmTxt = x => nf(x, Math.abs(x - Math.round(x)) > 1e-6 ? 1 : 0);
@@ -5986,8 +5988,14 @@ function tirer(filtre, type, dernier){
   if (autres.length) pool = autres;
   const x = choisir(pool);
   if (x.g) return tirerGen(x.g.id);
-  const p = x.p;
-  return { id: p.id, r: p.r, sens: 'pourquoi', q: p.q, choix: p.choix, ok: p.ok, dem: p.dem, concept: p.concept, deduit: !!p.deduit };
+  const p = x.p, m = melangerChoix(p.choix, p.ok);
+  return { id: p.id, r: p.r, sens: 'pourquoi', q: p.q, choix: m.choix, ok: m.ok, dem: p.dem, concept: p.concept, deduit: !!p.deduit };
+}
+/* la bonne réponse est écrite en premier dans les données : on mélange à l'affichage, l'indice suit */
+function melangerChoix(choix, ok){
+  const o = choix.map((c, i) => i);
+  for (let i = o.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; }
+  return { choix: o.map(i => choix[i]), ok: o.indexOf(ok) };
 }
 /* un problème d'un générateur précis (la jumelle d'un problème raté) ; chaque piège reçoit un id, pour le journal */
 function tirerGen(id){
@@ -6004,7 +6012,7 @@ function tirerGen(id){
 }
 function lireNombre(t){
   // « Pp = 15 cm », « −66,7 cm devant lui », « 28 cm derrière » : l'étiquette, l'unité et le côté s'enlèvent
-  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/^[a-zA-ZÀ-ÿ]+=/, '').replace(/[a-zA-ZÀ-ÿœ%×'’]+$/, '');
+  const s = String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/^[a-zA-ZÀ-ÿ]+=/, '').replace(/[a-zA-ZÀ-ÿœ%×'’.;!]+$/, '');
   if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(s)) return null;
   return parseFloat(s);
 }
@@ -6501,7 +6509,7 @@ POURQUOI.push(
   { id: 'q8-2f', r: 'r13', q: 'Objet à 2f d’une lentille convergente : l’image est…', choix: ['à 2f, réelle, renversée, de même grandeur', 'au foyer, droite, plus petite', 'à l’infini'], ok: 0,
     dem: ['parallèle → F′ ; par O → tout droit', 'ils se croisent à 2f, sous l’axe'], concept: 'D15 : « l’image est la même grandeur » ; ces images sont « réelles, mais inversées ».' },
   { id: 'q8-angle', r: 'r13', q: 'Deux objets de même taille, l’un plus proche de l’œil. Le plus proche donne une image rétinienne :', choix: ['plus grande : l’angle est plus grand', 'plus petite', 'de même taille'], ok: 0,
-    dem: ['même taille, plus près', '→ angle plus grand → image plus grande (D14)'], concept: '« l’objet A est plus rapproché de l’oeil et l’angle est plus grande » (sic, D14).' }
+    dem: ['même taille, plus près', '→ angle plus grand → image plus grande (D14)'], concept: '« l’objet A est plus rapproché de l’œil et l’angle est plus grande » (sic, D14).' }
 );
 /*FIN-RACINES*/
 
@@ -6521,36 +6529,48 @@ function exosListe(root, EX, intro){
   const etat = EX.map(() => null);
   root.innerHTML = intro + `<div class="tableau-score"><span class="score" id="ex-s"></span><button type="button" class="bascule" id="ex-raz">Recommencer</button></div><div class="exos" id="ex-l"></div>`;
   const L = $('#ex-l', root);
-  const lire = t => { const v = parseFloat(String(t).replace(/\s/g, '').replace(/[−–]/g, '-').replace(',', '.').replace(/[a-zA-Z]+$/, '')); return isNaN(v) ? null : v; };
+  // mêmes formats qu'« À toi » : « 6,5 cm », « Pp = 15 cm », « 0,065 m » (converti vers l'unité de la question)
+  const lire = (t, u) => { let v = lireNombre(t); if (v === null) return null; const un = uniteEcrite(t); if (un && EN_CM[u] && un !== u) v = v * EN_CM[un] / EN_CM[u]; return v; };
   function score(){ const j = etat.filter(x => x === true).length, f = etat.filter(x => x !== null).length; $('#ex-s', root).textContent = `${j} juste${j > 1 ? 's' : ''} sur ${f} répondu${f > 1 ? 's' : ''} · ${EX.length} au total`; }
   function rendre(){
     L.innerHTML = '';
     EX.forEach((x, i) => {
       const c = H(`<div class="exo"><span class="num-q">${x.vf !== undefined ? 'Vrai ou faux' : 'Question'} ${i + 1}</span><p class="q">${x.q}</p><div class="rep"></div><p class="retour"></p><details><summary>Voir la démarche</summary><pre class="calcul">${x.d}</pre></details></div>`);
-      const rep = c.querySelector('.rep'), ret = c.querySelector('.retour');
-      const conclure = (ok, txt) => { etat[i] = ok; c.classList.toggle('juste', ok); c.classList.toggle('faux', !ok); ret.className = 'retour ' + (ok ? 'ok' : 'bad'); ret.textContent = txt; score(); };
+      const rep = c.querySelector('.rep'), ret = c.querySelector('.retour'), det = c.querySelector('details');
+      /* l'échelle des essais (learning-blueprint.md §4.3) : jamais la réponse au premier échec ; seule la première réponse compte */
+      let essais = 0;
+      const conclure = (ok, txt) => { if (etat[i] === null) etat[i] = ok && !det.open; c.classList.toggle('juste', ok); c.classList.toggle('faux', !ok); ret.className = 'retour ' + (ok ? 'ok' : 'bad'); ret.textContent = txt; score(); };
       if (x.choix || x.vf !== undefined){
         const opts = x.choix || ['Vrai', 'Faux'];
         const bonne = x.choix ? x.r : (x.vf ? 0 : 1);
-        rep.innerHTML = '<div class="choix">' + opts.map((o, k) => `<button type="button" data-k="${k}">${o}</button>`).join('') + '</div>';
+        // les choix dans le désordre : la bonne réponse est écrite en premier dans les données
+        const ordre = opts.map((o, k) => k); if (x.choix) for (let k = ordre.length - 1; k > 0; k--){ const j = Math.floor(Math.random() * (k + 1)); [ordre[k], ordre[j]] = [ordre[j], ordre[k]]; }
+        rep.innerHTML = '<div class="choix">' + ordre.map(k => `<button type="button" data-k="${k}">${opts[k]}</button>`).join('') + '</div>';
         rep.addEventListener('click', e => {
-          const b = e.target.closest('button'); if (!b) return;
-          rep.querySelectorAll('button').forEach(z => z.classList.remove('juste', 'faux'));
+          const b = e.target.closest('button'); if (!b || b.disabled) return;
+          essais++;
           const k = +b.dataset.k, ok = k === bonne;
+          rep.querySelectorAll('button').forEach(z => z.classList.remove('juste'));
           b.classList.add(ok ? 'juste' : 'faux');
-          if (!ok) rep.querySelectorAll('button')[bonne].classList.add('juste');
-          conclure(ok, ok ? 'Juste.' : 'La bonne réponse : ' + opts[bonne] + '.');
+          // un vrai-faux n'a qu'une autre réponse : on la montre ; un choix multiple laisse un second essai
+          if (!ok && (x.vf !== undefined || essais > 1 || det.open)){ rep.querySelector(`button[data-k="${bonne}"]`).classList.add('juste'); rep.querySelectorAll('button').forEach(z => { z.disabled = true; }); conclure(false, 'La bonne réponse : ' + opts[bonne] + '.'); return; }
+          if (!ok){ b.disabled = true; conclure(false, 'Pas celle-là. Relis l’énoncé et réessaie.'); return; }
+          rep.querySelectorAll('button').forEach(z => { z.disabled = true; });
+          conclure(true, essais > 1 ? 'Juste, au second essai.' : 'Juste.');
         });
       } else {
         const iid = 'ex-' + i;
         rep.innerHTML = `<label class="unite" for="${iid}">Réponse</label><input type="text" id="${iid}" inputmode="decimal" autocomplete="off"><span class="unite">${x.u}</span><button type="button" class="verif">Vérifier</button>`;
         const inp = rep.querySelector('input');
         const verif = () => {
-          const v = lire(inp.value); if (v === null){ ret.className = 'retour bad'; ret.textContent = 'Écris un nombre, par exemple +1,50.'; return; }
+          const v = lire(inp.value, x.u); if (v === null){ ret.className = 'retour bad'; ret.textContent = 'Écris un nombre, par exemple +1,50.'; return; }
           const ok = Math.abs(v - x.r) <= (x.tol || 0.006);
           const att = x.att || (x.u === 'cm' ? cmTxt(x.r) + ' cm' : dpt(x.r, Math.abs(x.r * 100 % 1) > 1e-6 ? 3 : 2) + ' D');
           const signe = !ok && Math.abs(x.r) > 0.01 && Math.abs(Math.abs(v) - Math.abs(x.r)) <= (x.tol || 0.006);
-          conclure(ok, ok ? 'Juste : ' + att + '.' : (signe ? 'Bonne valeur, mauvais signe. ' : '') + 'Attendu : ' + att + '.');
+          essais++;
+          if (ok) conclure(true, 'Juste : ' + att + '.' + (essais > 1 ? ' Trouvé au ' + essais + 'e essai.' : ''));
+          else if (essais === 1 && !det.open) conclure(false, (signe ? 'Bonne valeur, mauvais signe. ' : 'Pas encore. ') + 'Réessaie, ou ouvre la démarche.');
+          else conclure(false, (signe ? 'Bonne valeur, mauvais signe. ' : '') + 'Attendu : ' + att + '.');
         };
         rep.querySelector('.verif').addEventListener('click', verif);
         inp.addEventListener('keydown', e => { if (e.key === 'Enter') verif(); });
@@ -6804,7 +6824,7 @@ const ARENE = {
         const pb = tirerGen(g);
         Pratique.exercice(el, pb, { kc: KC_GEN[g], etapes: etapesDe(pb), resultat: resultatDe(pb), juger, repTxt, fin: r => fini(r.premier && !r.aide) });
       } }));
-    POURQUOI.filter(p => ARENE_RACINE[p.r] === id).forEach(p => out.push({ id: 'q:' + p.id, type: 'qcm', q: p.q, choix: p.choix, ok: p.ok, r: p.concept }));
+    POURQUOI.filter(p => ARENE_RACINE[p.r] === id).forEach(p => { const m = melangerChoix(p.choix, p.ok); out.push({ id: 'q:' + p.id, type: 'qcm', q: p.q, choix: m.choix, ok: m.ok, r: p.concept }); });
     return out;
   }
 };
@@ -8298,7 +8318,7 @@ Object.assign({ id: 'racines7', module: 7, groupe: 'Pratique', titre: 'Les racin
       <h3>Sans amplitude : la diapo 4</h3>
       <p>Avec Am = 0 et ±2,50, le myope ne voit net qu’à 40 cm, où son Pp et son Pr se confondent ; l’hypermétrope n’a aucun Pp réel ; l’emmétrope ne voit net qu’à l’infini <span class="deduit">déduit</span>. Les réponses du tableau n’ont pas été photographiées : compare avec tes notes.</p>
       <h3>En marge du tableau</h3>
-      <p>Trois cas à faire, lus en marge <span class="deduit">déduit</span> : un myope de −7,00 à 20 ans, un myope de −8,00 à 50 ans, un hypermétrope de +3,00 à 25 ans (Am 8,5). Ce sont les questions 2 à 4 des questions d’entraînement.</p>`;
+      <p>Trois cas à faire, lus en marge et sur la gauche du tableau <span class="deduit">inféré</span> : un myope de −7,00 à 20 ans, un myope de −8,00 à 50 ans, un hypermétrope de +3,00 à 25 ans (Am 8,5). Ce sont les questions 2 à 4 des questions d’entraînement.</p>`;
     const iam = $('#ta-am', R), ir = $('#ta-r', R), bC = $('#ta-corr', R);
     function maj(){
       const Am = E.Am, a = E.r;
@@ -8425,7 +8445,7 @@ Object.assign({ id: 'racines7', module: 7, groupe: 'Pratique', titre: 'Les racin
       ${curseur('im-p', 'Distance de l’objet (en f)', 1.35, 3.8, 0.05)}
       <div class="groupe-reglage"><span class="lib">Les rayons</span><div class="preset" id="im-ray">${bascule('im-r1', 'Parallèle → F′')}${bascule('im-r2', 'Par O')}${bascule('im-r3', 'Par F → parallèle')}</div></div>
       <div class="mesures" id="im-m"></div>
-      <div class="groupe-reglage"><span class="lib">Second schéma : foyer réel ou virtuel</span><div class="preset" id="im-lent"><button type="button" data-l="conv">Convergente</button><button type="button" data-l="div">Divergente</button></div></div>`;
+      <div class="groupe-reglage reg-second"><span class="lib">Second schéma : foyer réel ou virtuel</span><div class="preset" id="im-lent"><button type="button" data-l="conv">Convergente</button><button type="button" data-l="div">Divergente</button></div></div>`;
     X.innerHTML = `
       <h3>Trois rayons principaux</h3>
       ${diapo('Rayons principaux dans une lentille convergente', 'D12')}
@@ -8451,7 +8471,7 @@ Object.assign({ id: 'racines7', module: 7, groupe: 'Pratique', titre: 'Les racin
       <h3>Foyer réel, foyer virtuel</h3>
       <p>Convergente : les rayons parallèles se coupent en F′, « foyer réel et image réelle » (D7). Divergente : ils s’écartent ; leurs prolongements se coupent en F′, devant la lentille, « foyer virtuel et image virtuelle » (D8).</p>
       <h3>La taille sur la rétine : l’angle</h3>
-      ${diapo('l’objet A est plus rapproché de l’oeil et l’angle est plus grande', 'D14 (sic)')}
+      ${diapo('l’objet A est plus rapproché de l’œil et l’angle est plus grande', 'D14 (sic)')}
       <p>À taille égale, l’objet le plus proche sous-tend un angle plus grand : son image sur la rétine est plus grande. Dans l’œil, chaque point de la lettre E est une source de rayons, focalisée en un point de la rétine (D9).</p>`;
     const ip = $('#im-p', R), rays = ['im-r1', 'im-r2', 'im-r3'].map(k => $('#' + k, R));
     function maj(){
@@ -8974,9 +8994,12 @@ const BANC = {
   anis8: { etat: 'anis8', cles: { od: [-15, 15], os: [-15, 15], d: [0, 20] } },
 };
 
+/* module 8 : le pas de chaque curseur (un âge entier, des quarts de dioptrie) ; sans lui, « 43.7 ans » s'afficherait
+   et aucun cas du cours ne s'allumerait */
+const PAS_BANC = { tableau8: { Am: 0.5, r: 0.25 }, voir8: { r: 0.25, age: 1 }, image8: { p: 0.05 }, vertex8: { fl: 0.25 }, gi8: { fl: 0.25 }, anis8: { od: 0.25, os: 0.25 } };
 function validerBanc(o){
   const def = o && BANC[o.chapitre]; if (!def) return null;
-  const v = {}, morceaux = [];
+  const v = {}, morceaux = [], pas = PAS_BANC[o.chapitre] || {};
   for (const k in def.cles){
     if (!(k in o)) continue;
     const regle = def.cles[k], x = o[k];
@@ -8989,7 +9012,8 @@ function validerBanc(o){
     else if (typeof regle[0] === 'string'){ if (regle.includes(x)){ v[k] = x; morceaux.push(String(x)); } }
     else if (regle.length === 3){ const n = Number(x); if (isFinite(n)){ const p = regle.reduce((a, b) => Math.abs(b - n) < Math.abs(a - n) ? b : a); v[k] = p; morceaux.push(k + ' ' + nf(p, p % 1 ? 2 : 0)); } }
     else { const n = Number(x); if (isFinite(n)){
-      const c = Math.min(regle[1], Math.max(regle[0], n));
+      let c = Math.min(regle[1], Math.max(regle[0], n));
+      if (pas[k]) c = +(Math.round(c / pas[k]) * pas[k]).toFixed(2);
       v[k] = (k === 'nAv' || k === 'nAr') ? (c > 1.15 ? 1.33 : 1) : c; morceaux.push(k + ' ' + nf(v[k], v[k] % 1 ? 2 : 0)); } }
   }
   if (o.chapitre === 'ametropie' && v.preset) v.L = { emm: 24, myo: 25, hyp: 23 }[v.preset];
@@ -10208,7 +10232,8 @@ const Arene = (() => {
       $('.ar-qq', art).innerHTML = it.type === 'qcm' ? esc(it.q) : c.q;
       art._q = texte($('.ar-qq', art).innerHTML);
       art._ref = 'bonne réponse : ' + texte(choix[bonne]) + ((it.type === 'qcm' ? it.r : c.r) ? ' (' + texte(it.type === 'qcm' ? it.r : c.r) + ')' : '');
-      choix.forEach((t, i) => { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-c'; bt.innerHTML = t; bt.dataset.i = i; $('.ar-choix', art).appendChild(bt); });
+      /* l'ordre à l'écran est mélangé ; data-i garde l'indice d'origine (la bonne réponse est souvent écrite en premier) */
+      melanger(choix.map((t, i) => i)).forEach(i => { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'ar-c'; bt.innerHTML = choix[i]; bt.dataset.i = i; $('.ar-choix', art).appendChild(bt); });
       $('.ar-choix', art).addEventListener('click', e => {
         const bt = e.target.closest('.ar-c'); if(!bt || art.dataset.fait) return;
         art.dataset.fait = '1'; art._rep = texte(bt.innerHTML);
@@ -10742,7 +10767,8 @@ const Rappel = (() => {
       carte = c; c._g = g || {q:c.q, r:'', tol:0}; q = c._g.q;
     }
     if(c.type === 'discrim'){
-      corps = '<div class="puces rap-choix">' + c.choix.map((x, i) => '<button type="button" class="puce" data-choix="' + i + '">' + x + '</button>').join('') + '</div>';
+      /* l'ordre à l'écran est mélangé ; data-choix garde l'indice d'origine (la bonne réponse est souvent écrite en premier) */
+      corps = '<div class="puces rap-choix">' + melange(c.choix.map((x, i) => i)).map(i => '<button type="button" class="puce" data-choix="' + i + '">' + c.choix[i] + '</button>').join('') + '</div>';
     } else if(c.type === 'geste'){
       const g = (GESTES || []).find(x => x.id === c.geste);
       corps = '<p class="legende">Fais le geste maintenant, de mémoire, en disant chaque mot à voix haute. Puis vérifie.</p>' +
@@ -11287,7 +11313,8 @@ const Vivre = (() => {
     const qui = v.genre === 'comptoir' && PATIENT && PATIENT.nom ? ' · <span class="patient" title="' + esc(PATIENT.portrait || '') + '">' + esc(PATIENT.nom) + '</span>' : '';
     a.innerHTML = '<p class="lib">Vis-le · ' + (GENRE[v.genre] || '') + qui + '</p><h3>' + v.titre + '</h3><p>' + v.texte + '</p>' +
       (p ? '<div class="prediction"><p class="q"><b>Prédis avant de lire :</b> ' + p.q + '</p><div class="puces">' +
-        p.choix.map((c, i) => '<button type="button" class="puce" data-pred="' + i + '">' + c + '</button>').join('') + '</div><p class="pred-note" aria-live="polite" hidden></p></div>' : '');
+        /* l'ordre à l'écran est mélangé (les données mettent souvent la bonne réponse en premier) ; data-pred garde l'indice d'origine */
+        melange(p.choix.map((c, i) => i)).map(i => '<button type="button" class="puce" data-pred="' + i + '">' + p.choix[i] + '</button>').join('') + '</div><p class="pred-note" aria-live="polite" hidden></p></div>' : '');
     tete.after(a);
     if(!p) return;
     const fin = document.createElement('div');
@@ -11367,7 +11394,7 @@ const Vivre = (() => {
     pop = document.createElement('div');
     pop.className = 'predire-pop v2-hors-texte'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Prédis d’abord');
     pop.innerHTML = '<p class="lib">Prédis d’abord</p><p class="q">' + g.q + '</p><div class="puces">' +
-      g.choix.map((c, i) => '<button type="button" class="puce" data-c="' + i + '">' + c + '</button>').join('') + '</div>' +
+      melange(g.choix.map((c, i) => i)).map(i => '<button type="button" class="puce" data-c="' + i + '">' + g.choix[i] + '</button>').join('') + '</div>' +
       '<div class="ctrl"><button type="button" class="lien-btn" data-c="-1">Passer</button><button type="button" class="lien-btn" data-c="x">Annuler</button></div>';
     document.body.appendChild(pop);
     const r = el.getBoundingClientRect(), w = Math.min(340, window.innerWidth - 24);
@@ -17139,6 +17166,8 @@ return {demarrer, etat:() => ({ordinateur:PC.etat, code:PC.code, telephone:tt ? 
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Dans « Prédis d’abord » et les cartes « Distinguer », la bonne réponse n’est plus toujours la première : les choix sont mélangés à chaque fois.'},
+    {d:'2026-11-03', p:['opt-ua2'], t:'Dans les exercices du Banc, une mauvaise réponse te laisse maintenant réessayer une fois avant de voir la correction. Tes réponses écrites comme au tableau (« 66,7 cm devant lui », « 28 cm derrière », « 13 mm ») sont aussi mieux comprises.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le module 8 est arrivé dans le Banc : le Pr et le Pp selon l’amétropie (avec le tableau du cours), la formation d’image par les trois rayons, et la taille de l’image selon le vertex. Ce sont les chapitres du module 8, à la fin du plan.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'« À toi » sur le Pr et le Pp (comme au tableau), sur le grossissement d’image et sur l’aniséiconie : des nombres toujours nouveaux, jusqu’à trois justes de suite, puis à l’envers. Bon entraînement pour le travail en classe du 10 novembre.'},
     {d:'2026-11-03', p:['opt-ua2'], t:'Le bouton « Survol » du Banc propose maintenant deux diaporamas : les modules 6 et 7, ou le module 8 seul (20 diapos, environ 15 minutes). Touche « Survol », puis choisis.'},
@@ -17444,7 +17473,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'bbc7d422c877';
+  const ICI = '3c0d74c7b2ae';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
