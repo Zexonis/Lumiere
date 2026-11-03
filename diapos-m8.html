@@ -1,0 +1,1240 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survol · Optique, module 8</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Survol · Optique (SCI 23546), module 8 : Pr et Pp selon l'amétropie, formation d'image, vertex et grossissement
+  (cours du 3 nov. 2026). Écrit le 3 nov. 2026.
+  Contenu : uniquement Guides/UA2-Optique/distilled/opt-m08_distilled.md (citations vérifiées par
+  build/distill-m8/verif_opt8.py ; nombres recalculés par build/distill-m8/recalcul_opt8.py). Pas encore de cartes KC
+  pour le M8 : les pièges sont ceux que la distillation nomme (← Piège) et ceux de sa liste « à vérifier » n° 2.
+  Codes des sources (jamais affichés, comme le veut le format) : en commentaire au-dessus de chaque diapo.
+  D = Module_8_formation_image.pdf ; C = Exercices module 8 corrigé.pdf ; X = Questions extra Pp et Pr ;
+  TAB = photo du tableau du 3 nov. (Classes/Optique/Module 08/tableau_Pp-Pr_2026-11-03.webp).
+  Arrondis : le tableau tronque (« 66cm » pour 66,7 ; « 28cm » pour 28,6) et la D25 aussi (1,077 et 7,7 % pour 1,0776
+  et 7,76 %) ; le diaporama donne les valeurs exactes, et une .note discrète dit ce qu'écrit le cours.
+  Écarté exprès : un cas pile à 3 % (le seuil « 3% ou plus » / « plus grands que 3% » est à vérifier en classe) ;
+  l'angle de la D14 ; les cas Am = 0 de la D4 (réponses non photographiées) ; le confort de lecture (X9), déjà au M7.
+  Moteur, styles et navigation : copiés tels quels de diapos-m6-m7.html (même cours, même allure) et du moteur de
+  diapos-bureau-m7t.html (correctif `button, a`, viewBox arrondie).
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; une seule
+  phrase « À retenir »; au plus un piège; aucune citation de source ni point en attente; un seul bouton utile : Suite.
+  Code couleur constant :
+  cyan = myope · devant l'œil · verre −   orange = hypermétrope · derrière l'œil · verre +   violet = avec les lunettes.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un banc d'optique la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --myo: #56d3ea;
+  --hyp: #f4a640;
+  --aide: #b8a4ff;
+  --retine: #d27a98;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --myo: #077d93; --hyp: #b25a00; --aide: #6448c9; --retine: #a8466b; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--myo); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.myo { color: var(--myo); }
+.hyp { color: var(--hyp); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- rangées : un petit schéma, deux lignes de texte ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+@media (min-width: 880px) { .rang { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); } }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- définitions ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-myo { --c: var(--myo); } .c-hyp { --c: var(--hyp); } .c-emm { --c: var(--encre); } .c-aide { --c: var(--aide); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 16px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .titre-panneau { font-size: 15px; font-weight: 700; }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .axe { stroke: var(--doux); stroke-width: 1.4; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .ref { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+svg .plan-f { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 3 5; fill: none; }
+svg .zone { fill: var(--c); fill-opacity: .3; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 3; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .objet { fill: none; stroke: var(--encre); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+svg .grosse { fill: none; stroke: var(--c); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pt-f { fill: var(--encre); }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.6; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 5; stroke-linecap: round; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .virtuel { stroke-dasharray: 4 5; stroke-width: 1.8; }
+svg .verre { fill: var(--c); fill-opacity: .18; stroke: var(--c); stroke-width: 2; }
+svg .barre-h { fill: var(--c); }
+svg .barre-seuil { fill: none; stroke: var(--doux); stroke-width: 2; stroke-dasharray: 6 4; }
+svg .cadre-e { fill: var(--fond-2); stroke: var(--trait); stroke-width: 1.5; }
+svg .lettre { font-family: var(--f-titre); font-weight: 800; fill: var(--encre); }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="banc-optique-ua2.html" title="Retour au Banc d'optique UA2">← Banc</a>
+      <p class="marque">Optique M8 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 20</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture (D16–D20 : le verre devant l'œil) -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Optique · SCI 23546 · module 8</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Où l'œil voit net, et la taille de l'image</h1>
+            <p class="chapeau">Tout le module en 15 minutes, une idée par diapo. Ensuite, le Banc sert à t'entraîner.</p>
+            <p class="meta">20 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-myo">myope · devant l'œil · verre −</li>
+              <li class="c-hyp">hypermétrope · derrière l'œil · verre +</li>
+              <li class="c-aide">avec les lunettes</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="Un verre convexe devant l'œil : les rayons traversent le verre, puis l'œil, et se rejoignent sur la rétine"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil (D2, D3, D16 ; carte des racines : ①–③ du M7, trois rayons, ④ Gi, ⑤ %) -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Deux questions&nbsp;: où l'œil voit net, et quelle taille a l'image</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fil" aria-label="À gauche, une règle : l'œil voit net entre son Pp et son Pr. À droite, un verre devant l'œil forme une image sur la rétine"></figure>
+          <div class="texte">
+            <p>Le module 8 reprend le Pr et le Pp du module 7, puis pose un verre devant l'œil.</p>
+            <ol class="trois">
+              <li><b>Où voit-il net</b>, selon son amétropie&nbsp;? <span>le Pr et le Pp, au tableau</span></li>
+              <li><b>Comment une lentille forme une image</b>&nbsp;? <span>trois rayons suffisent</span></li>
+              <li><b>Quelle taille a l'image</b> sur la rétine&nbsp;? <span>le vertex, Gi, l'aniséiconie</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le verre corrige la vue, mais il change aussi la taille de l'image.</p>
+      </div>
+    </section>
+
+    <!-- 3 · le Pr au tableau (TAB, l'exemple de la D5 ; M7 ② R = 1/Pr ; D3 ; tableau : « 0.66 », « 66cm », tronqués) -->
+    <section class="diapo" id="d3" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pr et Pp · Le tableau du 3 novembre</p>
+        <h2>Le Pr&nbsp;: l'œil au repos, R = 1/Pr</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-pr" aria-label="Le Pr de trois yeux : emmétrope à l'infini ; myope −1,50 à 66,7 cm devant l'œil ; hypermétrope +1,50 à 66,7 cm derrière l'œil"></figure>
+          <div class="texte">
+            <p>Au tableau, trois yeux de même amplitude, Am = 5. Le Pr ne dépend que de l'amétropie R.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Emmétrope&nbsp;: R = 0 → Pr à l'<b>infini</b>.</span></li>
+              <li data-pas="2"><span><span class="myo">Myope −1,50</span>&nbsp;: 1&nbsp;/&nbsp;1,50 = 0,667&nbsp;m → <b>66,7&nbsp;cm devant</b> l'œil.</span></li>
+              <li data-pas="3"><span><span class="hyp">Hypermétrope +1,50</span>&nbsp;: même distance, mais <b>66,7&nbsp;cm derrière</b> l'œil.</span></li>
+            </ol>
+            <p class="note" data-pas="3">Le tableau écrit 66&nbsp;cm&nbsp;: il arrondit vers le bas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Myope&nbsp;: Pr devant. Hypermétrope&nbsp;: Pr derrière. Emmétrope&nbsp;: à l'infini.</p>
+      </div>
+    </section>
+
+    <!-- 4 · le Pp au tableau (TAB ; M7 ③ 1/Pp = Am − R ; pièges du Moteur I1 : signe, et 1/Pp écrit comme réponse) -->
+    <section class="diapo" id="d4" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pr et Pp · Le tableau du 3 novembre</p>
+        <h2>Le Pp&nbsp;: toute l'amplitude, 1/Pp = Am − R</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-pp" aria-label="Le Pp de trois yeux avec Am = 5 : myope à 15,4 cm, emmétrope à 20 cm, hypermétrope à 28,6 cm, tous devant l'œil"></figure>
+          <div class="texte">
+            <p>Le Pp dépense <b>toute</b> l'amplitude&nbsp;: ici Am = 5.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Emmétrope&nbsp;: 1/Pp = 5 → 1&nbsp;/&nbsp;5 = 0,2&nbsp;m → <b>20&nbsp;cm</b> devant.</span></li>
+              <li data-pas="2"><span><span class="myo">Myope −1,50</span>&nbsp;: 5 − (−1,50) = 5 + 1,50 = 6,5 → 1&nbsp;/&nbsp;6,5 = 0,154&nbsp;m → <b>15,4&nbsp;cm</b>.</span></li>
+              <li data-pas="3"><span><span class="hyp">Hypermétrope +1,50</span>&nbsp;: 5 − 1,50 = 3,5 → 1&nbsp;/&nbsp;3,5 = 0,286&nbsp;m → <b>28,6&nbsp;cm</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="3">Le tableau écrit 15&nbsp;cm et 28&nbsp;cm.</p>
+            <p class="piege"><b>Piège</b>6,5 n'est pas le Pp&nbsp;: c'est 1/Pp, en dioptries. Au tableau&nbsp;: «&nbsp;toujours une distance&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La myopie s'ajoute à l'amplitude&nbsp;; l'hypermétropie s'en retire.</p>
+      </div>
+    </section>
+
+    <!-- 5 · la zone de vision distincte (D3 « zone verte : vision distincte » ; TAB ; carte des racines ② + ③ ; X5) -->
+    <section class="diapo" id="d5" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pr et Pp · Où l'œil voit net</p>
+        <h2>La zone nette va du Pp au Pr, ou du Pp à l'infini</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-zone" aria-label="Zones nettes avec Am = 5 : myope de 15,4 à 66,7 cm devant ; emmétrope de 20 cm à l'infini ; hypermétrope de 28,6 cm à l'infini, son Pr 66,7 cm derrière l'œil"></figure>
+          <div class="texte">
+            <p>Sur la diapo du cours&nbsp;: «&nbsp;zone verte : vision distincte&nbsp;». Mêmes yeux, Am = 5.</p>
+            <ul class="points">
+              <li data-pas="1"><b class="myo">Myope</b>&nbsp;: de 15,4 à 66,7&nbsp;cm, les deux devant. Plus loin que son Pr, c'est flou.</li>
+              <li data-pas="2"><b>Emmétrope</b>&nbsp;: de 20&nbsp;cm jusqu'à l'infini.</li>
+              <li data-pas="3"><b class="hyp">Hypermétrope</b>&nbsp;: de 28,6&nbsp;cm jusqu'à l'infini. Son Pr est <b>derrière</b> l'œil&nbsp;: il ne borne pas la zone.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plus près que le Pp, c'est flou, même un instant.</p>
+      </div>
+    </section>
+
+    <!-- 6 · avec lunettes : Paul (X5, cas 2 ; X3 « Pr est à l'infini », Pp = 1/Am ; Donders 40 ans = 4,5) -->
+    <section class="diapo" id="d6" data-acte="prpp" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pr et Pp · Un cas des questions extra</p>
+        <h2>Paul, +2,50, 40&nbsp;ans&nbsp;: ses lunettes rapprochent son Pp</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="axe-paul" aria-label="Paul sans lunettes : Pr 40 cm derrière l'œil, Pp à 50 cm, l'objet à 40 cm est trop près. Avec ses lunettes : Pp à 22 cm, Pr à l'infini, l'objet est dans la zone nette"></figure>
+          <div class="texte">
+            <p>À 40&nbsp;ans, Donders donne Am = 4,5. Voit-il net un objet à 40&nbsp;cm&nbsp;?</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Pr = 1&nbsp;/&nbsp;2,50 = 0,40&nbsp;m → <b>40&nbsp;cm derrière</b> l'œil.</span></li>
+              <li data-pas="2"><span>Sans lunettes&nbsp;: 1/Pp = 4,5 − 2,5 = 2 → Pp = <b>50&nbsp;cm</b>. L'objet, à 40&nbsp;cm, est plus près&nbsp;: <b>non</b>.</span></li>
+              <li data-pas="3"><span>Avec ses lunettes, R = 0&nbsp;: Pp = 1&nbsp;/&nbsp;4,5 = 0,22&nbsp;m → <b class="aide">22&nbsp;cm</b>. <b class="aide">Oui</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Avec ses lunettes, l'œil est comme un emmétrope&nbsp;: Pr à l'infini, Pp = 1/Am.</p>
+      </div>
+    </section>
+
+    <!-- 7 · foyer réel, foyer virtuel (D7, D8) -->
+    <section class="diapo" id="d7" data-acte="image" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Former une image · Les foyers</p>
+        <h2>Le foyer est réel là où les rayons se croisent vraiment</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="foyers" aria-label="Lentille convergente : les rayons parallèles se croisent en F′, derrière elle, foyer réel. Lentille divergente : les rayons s'écartent, seuls leurs prolongements se croisent en F′, devant elle, foyer virtuel"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b class="hyp">Convergente (+)</b>&nbsp;: les rayons parallèles se croisent en F′, derrière la lentille. C'est le «&nbsp;foyer réel et image réelle&nbsp;».</li>
+              <li data-pas="1"><b class="myo">Divergente (−)</b>&nbsp;: les rayons s'écartent. Seuls leurs <b>prolongements</b>, en pointillé, se croisent en F′, devant la lentille&nbsp;: un foyer virtuel.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Réel&nbsp;: les rayons s'y croisent. Virtuel&nbsp;: seulement leurs prolongements.</p>
+      </div>
+    </section>
+
+    <!-- 8 · les trois rayons principaux d'une lentille convergente (D11, D12 ; annexe A2) -->
+    <section class="diapo" id="d8" data-acte="image" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Former une image · Les trois rayons</p>
+        <h2>Trois rayons suffisent pour tracer une image</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="trois-rayons" aria-label="Trois rayons dans une lentille convergente : par le centre O, tout droit ; parallèle à l'axe, il ressort par F′ ; par F, il ressort parallèle à l'axe"></figure>
+          <div class="texte">
+            <p>Une lentille convergente a trois points&nbsp;: le centre <b>O</b>, le foyer objet <b>F</b> devant, le foyer image <b>F′</b> derrière, à la même distance.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Par O</b>&nbsp;: les rayons «&nbsp;ne sont pas déviés&nbsp;».</span></li>
+              <li data-pas="2"><span><b>Parallèle à l'axe</b>&nbsp;: il ressort en passant par F′.</span></li>
+              <li data-pas="3"><span><b>Par F</b>&nbsp;: il ressort parallèle à l'axe.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Par O&nbsp;: tout droit. Parallèle&nbsp;: vers F′. Par F&nbsp;: ressort parallèle.</p>
+      </div>
+    </section>
+
+    <!-- 9 · objet à l'infini (D13 ; sur cette figure, B est le sommet de l'objet, A sur l'axe) -->
+    <section class="diapo" id="d9" data-acte="image" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Former une image · Un objet très loin</p>
+        <h2>Un objet très loin fait son image dans le plan focal</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="infini" aria-label="Objet à l'infini : les rayons du sommet B arrivent parallèles entre eux et inclinés ; celui qui passe par O et celui qui passe par F se croisent en B′, dans le plan focal ; l'image A′B′ est renversée, A′ sur F′"></figure>
+          <div class="texte">
+            <p>«&nbsp;Les rayons qui parviennent sur la lentille sont alors parallèles entre eux.&nbsp;» Ceux du sommet B arrivent inclinés.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le rayon de B qui passe par <b>O</b> continue tout droit.</span></li>
+              <li data-pas="2"><span>Celui qui passe par <b>F</b> ressort parallèle à l'axe.</span></li>
+              <li data-pas="3"><span>Ils se croisent en <b>B′</b>, à la hauteur de F′&nbsp;: l'image A′B′ est dans le plan focal, renversée.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Objet à l'infini&nbsp;: l'image tombe dans le plan du foyer image F′.</p>
+      </div>
+    </section>
+
+    <!-- 10 · objet à 2f, exemple résolu (D15 ; F′ = F₂ sur la figure ; piège du Moteur I2 : F et F′) -->
+    <section class="diapo" id="d10" data-acte="image" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Former une image · Un exemple résolu</p>
+        <h2>Objet à 2f&nbsp;: image à 2f, de même taille, renversée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="objet-2f" aria-label="Objet à 2f devant une lentille convergente : le rayon parallèle ressort par F′, le rayon par O passe tout droit ; ils se croisent à 2f derrière la lentille, sous l'axe : image réelle, renversée, de même taille"></figure>
+          <div class="texte">
+            <p>Un objet à deux distances focales devant la lentille. Deux rayons partent de son sommet.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le rayon <b>parallèle</b> à l'axe ressort par F′.</span></li>
+              <li data-pas="2"><span>Le rayon par <b>O</b> passe tout droit.</span></li>
+              <li data-pas="3"><span>Ils se croisent à 2f derrière la lentille, sous l'axe&nbsp;: image <b>réelle</b>, <b>renversée</b>, de <b>même grandeur</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>F est du côté de l'objet, F′ de l'autre. Le rayon parallèle passe par F′&nbsp;; celui qui passe par F ressort parallèle.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le croisement de deux rayons donne le sommet de l'image.</p>
+      </div>
+    </section>
+
+    <!-- 11 · objet entre f et 2f (D15) -->
+    <section class="diapo" id="d11" data-acte="image" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Former une image · Plus près</p>
+        <h2>Entre f et 2f&nbsp;: l'image est plus loin et plus grande</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="objet-f2f" aria-label="Objet entre F et 2f : les deux rayons se croisent au-delà de 2f derrière la lentille ; l'image est réelle, renversée et plus grande que l'objet"></figure>
+          <div class="texte">
+            <p>On rapproche l'objet, entre F et 2f. Même construction&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Parallèle à l'axe → ressort par F′.</span></li>
+              <li data-pas="2"><span>Par O → tout droit.</span></li>
+              <li data-pas="3"><span>Croisement au-delà de 2f&nbsp;: «&nbsp;l'image est plus grande que l'objet&nbsp;».</span></li>
+            </ol>
+            <p data-pas="3">Dans les deux cas, ces images sont «&nbsp;réelles, mais inversées&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>À 2f&nbsp;: même taille. Entre f et 2f&nbsp;: plus grande. Toujours réelle et renversée.</p>
+      </div>
+    </section>
+
+    <!-- 12 · « Pourquoi ? » : le verre change la taille de l'image (D16, D17, D18 « +60D force de l'oeil », D19) -->
+    <section class="diapo" id="d12" data-acte="verre" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le verre et l'image · Pourquoi&nbsp;?</p>
+        <h2>Le verre devant l'œil change la taille de l'image</h2>
+        <div class="corps plein">
+          <p>Le prof demande&nbsp;: «&nbsp;Quelle est la pertinence pour nous comme opticien/assistant?&nbsp;»</p>
+          <div class="rangs">
+            <div class="rang">
+              <figure class="visuel" data-fig="mini-sans" aria-label="Œil sans verre : une image de taille normale sur la rétine"></figure>
+              <div><h3>Sans verre</h3><p>L'œil, environ «&nbsp;+60D&nbsp;», forme seul l'image sur la rétine.</p></div>
+            </div>
+            <div class="rang" data-pas="1">
+              <figure class="visuel" data-fig="mini-neg" aria-label="Verre concave devant l'œil : l'image sur la rétine est plus petite"></figure>
+              <div><h3 class="myo">Verre concave (−)</h3><p>«&nbsp;Les verres concaves diminuent la taille de l'image&nbsp;».</p></div>
+            </div>
+            <div class="rang" data-pas="2">
+              <figure class="visuel" data-fig="mini-pos" aria-label="Verre convexe devant l'œil : l'image sur la rétine est plus grande"></figure>
+              <div><h3 class="hyp">Verre convexe (+)</h3><p>Les verres convexes, eux, «&nbsp;augmentent la taille de l'image&nbsp;».</p></div>
+            </div>
+          </div>
+          <p class="note" data-pas="3">Et plus le verre est loin de l'œil, plus l'effet est grand.</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;La distance entre le verre et l'œil (vertex) influence notamment la taille de l'image formée sur la rétine.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 13 · la formule Gi (D20 lue à l'image ; C3, C5, C7 ; piège d'unité du Moteur I3) -->
+    <section class="diapo" id="d13" data-acte="verre" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le verre et l'image · La formule</p>
+        <h2>Gi = 1 / (1 − d·Fl)&nbsp;: le facteur de taille de l'image</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="vertex" aria-label="Un verre de force Fl, à la distance d de la cornée : le vertex"></figure>
+          <div class="texte">
+            <p class="formule">Gi = 1 / (1 − d · Fl)</p>
+            <dl class="defs">
+              <dt>Gi</dt><dd>le grossissement d'image&nbsp;: 1 = même taille.</dd>
+              <dt>d</dt><dd>le vertex, de la cornée au verre, <b>en mètres</b>.</dd>
+              <dt>Fl</dt><dd>la force du verre, <b>avec son signe</b>.</dd>
+            </dl>
+            <p class="note">Le modèle traite le verre comme «&nbsp;une lentille mince (sans forme ou épaisseur)&nbsp;».</p>
+            <p class="piege"><b>Piège</b>d en mètres&nbsp;: 12&nbsp;mm = 0,012&nbsp;m. Avec 0,12, tout est faux.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Gi plus grand que 1&nbsp;: image plus grande. Plus petit que 1&nbsp;: plus petite.</p>
+      </div>
+    </section>
+
+    <!-- 14 · exemple résolu, verres + (D25 ; la diapo tronque : 1,077 et 7,7 % pour 1,0776 et 7,76 %) -->
+    <section class="diapo" id="d14" data-acte="verre" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le verre et l'image · Un exemple du cours</p>
+        <h2>OD +6,00, OS +2,00, vertex 12&nbsp;mm&nbsp;: deux images agrandies</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="tailles-plus" aria-label="Taille de l'image, à l'échelle : sans verre 1 ; OD +6,00 1,078 ; OS +2,00 1,025"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>d = 12&nbsp;mm = <b>0,012&nbsp;m</b>.</span></li>
+              <li data-pas="2"><span><span class="hyp">OD</span>&nbsp;: 1 − 0,012 × 6,00 = 0,928 → Gi = 1&nbsp;/&nbsp;0,928 = <b>1,0776</b>, environ 1,078.</span></li>
+              <li data-pas="3"><span><span class="hyp">OS</span>&nbsp;: 1 − 0,012 × 2,00 = 0,976 → Gi = 1&nbsp;/&nbsp;0,976 = <b>1,0246</b>, environ 1,025.</span></li>
+            </ol>
+            <p class="note" data-pas="2">La diapo du cours écrit 1,077&nbsp;: elle coupe au lieu d'arrondir.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Verre +&nbsp;: Gi plus grand que 1, l'image grandit.</p>
+      </div>
+    </section>
+
+    <!-- 15 · exemple résolu, verres − (D27 ; piège de signe du Moteur I3) -->
+    <section class="diapo" id="d15" data-acte="verre" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le verre et l'image · Un exemple du cours</p>
+        <h2>OD −10,00, OS −3,00, vertex 13&nbsp;mm&nbsp;: deux images réduites</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="tailles-moins" aria-label="Taille de l'image, à l'échelle : sans verre 1 ; OD −10,00 0,885 ; OS −3,00 0,962"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>d = 13&nbsp;mm = <b>0,013&nbsp;m</b>.</span></li>
+              <li data-pas="2"><span><span class="myo">OD</span>&nbsp;: 1 − (0,013 × −10,00) = 1 + 0,13 = 1,13 → Gi = 1&nbsp;/&nbsp;1,13 = <b>0,885</b>.</span></li>
+              <li data-pas="3"><span><span class="myo">OS</span>&nbsp;: 1 − (0,013 × −3,00) = 1 + 0,039 = 1,039 → Gi = 1&nbsp;/&nbsp;1,039 = <b>0,962</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Moins par moins&nbsp;: 1 − (0,013 × −10) = 1 <b>+</b> 0,13. Garde les parenthèses.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Verre −&nbsp;: Gi plus petit que 1, l'image rapetisse.</p>
+      </div>
+    </section>
+
+    <!-- 16 · plus le vertex est grand, plus l'effet est grand (D19, D23 ; C3, exercice 1, OS +6,00 : 13 mm puis 8 mm) -->
+    <section class="diapo" id="d16" data-acte="verre" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le verre et l'image · Le vertex</p>
+        <h2>Plus le verre est loin de l'œil, plus l'effet est grand</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="tailles-vertex" aria-label="OS +6,00, taille de l'image à l'échelle : sans verre 1 ; vertex 8 mm 1,050 ; vertex 13 mm 1,085"></figure>
+          <div class="texte">
+            <p>Exercice 1 du cours&nbsp;: OS <span class="hyp">+6,00</span>. On ne change que la monture.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Vertex 13&nbsp;mm&nbsp;: 1 − 0,013 × 6,00 = 0,922 → Gi = <b>1,085</b>.</span></li>
+              <li data-pas="2"><span>Monture à 8&nbsp;mm&nbsp;: 1 − 0,008 × 6,00 = 0,952 → Gi = <b>1,050</b>.</span></li>
+              <li data-pas="3"><span>Toujours agrandie, mais moins&nbsp;: rapprocher le verre réduit l'effet.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Petit vertex&nbsp;: Gi près de 1. Grand vertex&nbsp;: Gi loin de 1.</p>
+      </div>
+    </section>
+
+    <!-- 17 · du facteur au pourcentage (D21 ; valeurs D25, D27 ; piège : C7 lit 3 % sur le facteur arrondi « 1.03 ») -->
+    <section class="diapo" id="d17" data-acte="anis" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pourcentage et aniséiconie · Le pourcentage</p>
+        <h2>Moins 1, fois 100&nbsp;: le facteur devient un pourcentage</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle" aria-label="Deux échelles alignées : le facteur Gi en haut, le pourcentage en bas. 1,0776 donne +7,8 %, plus grande ; 0,885 donne −11,5 %, plus petite"></figure>
+          <div class="texte">
+            <p class="formule">% = (Gi − 1) × 100</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;Soustraire 1 du facteur obtenu.&nbsp;» 1,0776 − 1 = 0,0776.</span></li>
+              <li data-pas="2"><span>Fois 100&nbsp;: <b class="hyp">+7,8&nbsp;%</b>. Positif&nbsp;: image plus grande.</span></li>
+              <li data-pas="3"><span>Verre −&nbsp;: 0,885 − 1 = −0,115 → <b class="myo">−11,5&nbsp;%</b>. Négatif&nbsp;: plus petite.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Prends le facteur entier&nbsp;: 1&nbsp;/&nbsp;0,975 = 1,0256 → 2,56&nbsp;%. Arrondi à 1,03, il donnerait 3&nbsp;%.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le signe dit le sens&nbsp;: + plus grande, − plus petite.</p>
+      </div>
+    </section>
+
+    <!-- 18 · l'aniséiconie et son seuil (D22 ; D23 ; la différence : C7, forme déduite) -->
+    <section class="diapo" id="d18" data-acte="anis" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pourcentage et aniséiconie · Deux yeux</p>
+        <h2>Deux images de tailles différentes&nbsp;: l'aniséiconie</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="deux-e" aria-label="La même lettre E vue par l'œil droit et par l'œil gauche, à deux tailles différentes"></figure>
+          <div class="texte">
+            <p>Si les deux yeux n'ont pas la même correction, chaque verre change la taille de l'image à sa façon. Le cerveau reçoit deux images de tailles différentes.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Un pourcentage par œil.</span></li>
+              <li data-pas="2"><span>La <b>différence</b>&nbsp;: le plus grand moins le plus petit.</span></li>
+              <li data-pas="3"><span>«&nbsp;Si la différence entre les grandeurs est de 3% ou plus, l'aniséiconie peut se produire.&nbsp;»</span></li>
+            </ol>
+            <p class="note" data-pas="3">L'opticien peut alors modifier certains paramètres du verre pour tenter de réduire cette différence.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>On compare les deux yeux&nbsp;: 3&nbsp;% de différence, et l'aniséiconie peut se produire.</p>
+      </div>
+    </section>
+
+    <!-- 19 · exemple résolu : exercice 3 (C7 ; le corrigé arrondit d'abord : « 1.03 », « Différence ≈ 5 % » ; piège du Moteur I4) -->
+    <section class="diapo" id="d19" data-acte="anis" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pourcentage et aniséiconie · Un exercice du cours</p>
+        <h2>OD −2,00, OS +2,50, vertex 10&nbsp;mm&nbsp;: risque d'aniséiconie&nbsp;?</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="ecart" aria-label="OD : −1,96 %, plus petite. OS : +2,56 %, plus grande. La différence, 4,52 %, est plus longue que le seuil de 3 %"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><span class="myo">OD</span>&nbsp;: 1 − (0,010 × −2,00) = 1,02 → Gi = 0,9804 → <b>−1,96&nbsp;%</b>.</span></li>
+              <li data-pas="2"><span><span class="hyp">OS</span>&nbsp;: 1 − 0,010 × 2,50 = 0,975 → Gi = 1,0256 → <b>+2,56&nbsp;%</b>.</span></li>
+              <li data-pas="3"><span>Différence&nbsp;: 2,56 − (−1,96) = 2,56 + 1,96 = <b>4,52&nbsp;%</b>.</span></li>
+              <li data-pas="4"><span>4,5&nbsp;% dépasse 3&nbsp;%&nbsp;: <b>aniséiconie possible</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Un œil réduit, l'autre agrandit&nbsp;: les deux écarts s'additionnent. 2,56 − 1,96 = 0,6 serait faux.</p>
+            <p class="note" data-pas="4">Le corrigé arrondit d'abord et trouve environ 5&nbsp;%&nbsp;: même conclusion.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La différence, c'est le plus grand % moins le plus petit, avec leurs signes.</p>
+      </div>
+    </section>
+
+    <!-- 20 · la carte et « Et maintenant » (sections 2 à 4 de la distillation) -->
+    <section class="diapo" id="d20" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout le module 8 tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Au repos</p><p class="fiche-f">R = 1 / Pr</p><p class="fiche-n"><span class="myo">myope devant</span>, <span class="hyp">hypermétrope derrière</span></p></div>
+          <div class="fiche"><p class="fiche-nom">Effort maximal</p><p class="fiche-f">1 / Pp = Am − R</p><p class="fiche-n">toute l'amplitude&nbsp;; le Pp est une distance</p></div>
+          <div class="fiche"><p class="fiche-nom">Avec lunettes</p><p class="fiche-f aide">R = 0</p><p class="fiche-n">Pr à l'infini, Pp = 1 / Am</p></div>
+          <div class="fiche"><p class="fiche-nom">Trois rayons</p><p class="fiche-f">O · F′ · F</p><p class="fiche-n">par O tout droit&nbsp;; parallèle → F′&nbsp;; par F → parallèle</p></div>
+          <div class="fiche"><p class="fiche-nom">Les images</p><p class="fiche-f">2f → 2f</p><p class="fiche-n">même taille&nbsp;; entre f et 2f, plus grande&nbsp;; renversées</p></div>
+          <div class="fiche"><p class="fiche-nom">Le verre</p><p class="fiche-f">Gi = 1 / (1 − d·Fl)</p><p class="fiche-n">d en mètres, Fl avec son signe</p></div>
+          <div class="fiche"><p class="fiche-nom">Pourcentage</p><p class="fiche-f">(Gi − 1) × 100</p><p class="fiche-n">+ plus grande, − plus petite</p></div>
+          <div class="fiche"><p class="fiche-nom">Aniséiconie</p><p class="fiche-f">3&nbsp;% ou plus</p><p class="fiche-n">le plus grand % moins le plus petit</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="banc-optique-ua2.html">Le Banc d'optique UA2</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const G = (pas, s) => (pas ? `<g data-pas="${pas}">${s}</g>` : s);
+  const T = (x, y, t, cls = '', anc = 'middle') => `<text x="${n1(x)}" y="${n1(y)}" text-anchor="${anc}"${cls ? ` class="${cls}"` : ''}>${t}</text>`;
+
+  // Petit œil vu de côté, sur un axe.
+  const oeilGlyphe = (x, y) => `<path d="M ${n1(x - 13)} ${y} Q ${n1(x)} ${y - 11} ${n1(x + 13)} ${y} Q ${n1(x)} ${y + 11} ${n1(x - 13)} ${y} Z" class="oeil-g"/><circle cx="${n1(x)}" cy="${y}" r="4" class="pupille"/>`;
+
+  // Coupe de l'œil (la lumière vient de la gauche), de xg à xr ; ry : demi-hauteur ; dy : demi-hauteur de la cornée.
+  function coupeOeil(xg, xr, cy, ry, dy) {
+    const cx = (xg + xr) / 2, rx = (xr - xg) / 2;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2);
+    const ctrl = xe - dy * 1.35;
+    const a = 50 * Math.PI / 180;
+    const pe = t => `${n1(cx + rx * Math.cos(t))} ${n1(cy + ry * Math.sin(t))}`;
+    const lx = xe + dy * 0.7, lrx = dy * 0.3, lry = dy * 0.82;
+    let s = `<path d="M ${n1(xe)} ${n1(cy - dy)} A ${n1(rx)} ${n1(ry)} 0 1 1 ${n1(xe)} ${n1(cy + dy)} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${n1(cy - dy)} Z" class="globe"/>`;
+    s += `<path d="M ${pe(-a)} A ${n1(rx)} ${n1(ry)} 0 0 1 ${pe(a)}" class="retine"/>`;
+    s += `<ellipse cx="${n1(lx)}" cy="${cy}" rx="${n1(lrx)}" ry="${n1(lry)}" class="cristallin"/>`;
+    s += `<path d="M ${n1(xe)} ${n1(cy - dy)} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${n1(cy + dy)}" class="cornee"/>`;
+    const xc = y => { const t = (y - cy + dy) / (2 * dy); return xe + 2 * t * (1 - t) * (ctrl - xe); };
+    return { s, xe, apex: (xe + ctrl) / 2, xRet: xr - 2, xc, cx, rx };
+  }
+
+  // Une lentille mince vue de côté : convergente (convexe, orange) ou divergente (concave, cyan).
+  const lentille = (cx, cy, h, conv) => (conv
+    ? `<path d="M ${n1(cx)} ${n1(cy - h)} Q ${n1(cx + h * 0.42)} ${n1(cy)} ${n1(cx)} ${n1(cy + h)} Q ${n1(cx - h * 0.42)} ${n1(cy)} ${n1(cx)} ${n1(cy - h)} Z" class="verre c-hyp"/>`
+    : `<path d="M ${n1(cx - 13)} ${n1(cy - h)} L ${n1(cx + 13)} ${n1(cy - h)} Q ${n1(cx + 1)} ${n1(cy)} ${n1(cx + 13)} ${n1(cy + h)} L ${n1(cx - 13)} ${n1(cy + h)} Q ${n1(cx - 1)} ${n1(cy)} ${n1(cx - 13)} ${n1(cy - h)} Z" class="verre c-myo"/>`);
+
+  // Une flèche verticale de y0 (pied) à y1 (pointe).
+  const fleche = (x, y0, y1, cls = 'objet', t = 7) => {
+    const s = y1 < y0 ? 1 : -1;
+    return `<path d="M ${n1(x)} ${n1(y0)} L ${n1(x)} ${n1(y1)} M ${n1(x - t)} ${n1(y1 + t * 1.4 * s)} L ${n1(x)} ${n1(y1)} L ${n1(x + t)} ${n1(y1 + t * 1.4 * s)}" class="${cls}"/>`;
+  };
+  const point = (x, y) => `<circle cx="${n1(x)}" cy="${n1(y)}" r="4" class="pt-f"/>`;
+
+  // Axes signés : l'œil à 0, devant à gauche (négatif), derrière à droite (positif). Une rangée par œil.
+  function axes(o, W) {
+    const rowH = 84, top = o.reperes ? 30 : 4, bas = 24;
+    const H = top + o.rangs.length * rowH + bas;
+    const x0 = 30, x1 = W - 22;
+    const k = (x1 - x0 - 16) / (o.avant + o.arriere);
+    const xe = x0 + 16 + o.avant * k;
+    const X = cm => (cm === -Infinity ? x0 : xe + cm * k);
+    let s = '';
+    (o.reperes || []).forEach(r => {
+      s += `<text x="${n1(X(r.cm))}" y="${top - 10}" text-anchor="middle" class="petit t-doux">${r.t}</text>`;
+    });
+    o.rangs.forEach((rg, i) => {
+      const y = top + i * rowH, yl = y + 50;
+      if (rg.titre) s += `<text x="${x0}" y="${y + 14}" class="titre-rang c-${rg.c}">${rg.titre}</text>`;
+      (o.reperes || []).forEach(r => {
+        s += `<line x1="${n1(X(r.cm))}" y1="${yl - 26}" x2="${n1(X(r.cm))}" y2="${yl + 12}" class="pointille"/>`;
+      });
+      s += `<line x1="${x0}" y1="${yl}" x2="${x1}" y2="${yl}" class="base"/>`;
+      for (let c = -Math.floor(o.avant / 10) * 10; c <= o.arriere; c += 10) {
+        if (c) s += `<line x1="${n1(X(c))}" y1="${yl - 4}" x2="${n1(X(c))}" y2="${yl + 4}" class="base"/>`;
+      }
+      s += `<text x="${x0 - 22}" y="${yl + 6}" class="t-doux">∞</text>`;
+      (rg.zones || []).forEach(z => {
+        const a = X(z.de), b = X(z.a);
+        s += `<rect x="${n1(Math.min(a, b))}" y="${yl - 7}" width="${n1(Math.abs(b - a))}" height="14" rx="7" class="zone c-${z.c}"${P(z)}/>`;
+      });
+      s += oeilGlyphe(xe, yl);
+      (rg.pts || []).forEach(p => {
+        const inf = p.cm === -Infinity, x = inf ? x0 : X(p.cm), anc = inf ? 'start' : 'middle';
+        s += `<g class="c-${p.c}"${P(p)}>`;
+        s += inf ? `<path d="M ${x0 + 13} ${yl - 9} L ${x0} ${yl} L ${x0 + 13} ${yl + 9}" class="fleche"/>`
+                 : `<circle cx="${n1(x)}" cy="${yl}" r="7.5" class="${p.creux ? 'creux' : 'plein'}"/>`;
+        s += `<text x="${n1(x)}" y="${yl - 15}" text-anchor="${anc}" class="etiq">${p.t}</text>`;
+        s += `<text x="${n1(x)}" y="${yl + 27}" text-anchor="${anc}" class="valeur">${p.v}</text>`;
+        s += `</g>`;
+      });
+    });
+    s += `<text x="${x0}" y="${H - 4}" class="petit t-doux">← devant l’œil · négatif</text>`;
+    if (o.arriere >= 20) s += `<text x="${x1}" y="${H - 4}" text-anchor="end" class="petit t-doux">derrière · positif →</text>`;
+    return svgW(W, H, s, o.label);
+  }
+
+  // Un verre devant l'œil : rayons parallèles → verre → œil → rétine. o.labels : Fl, d, œil.
+  function systeme(W, o = {}) {
+    const lab = !!o.labels, cy = lab ? 116 : 104, H = lab ? 250 : 208;
+    const xr = W - 14, xg = xr - Math.min(260, W * 0.5);
+    const E = coupeOeil(xg, xr, cy, 82, 40);
+    const dpx = Math.min(130, W * 0.2), xL = E.apex - dpx, hL = 58;
+    let s = E.s + lentille(xL, cy, hL, true);
+    for (const y0 of [cy - 26, cy, cy + 26]) {
+      const y1 = cy + (y0 - cy) * 0.86;
+      s += `<path d="M 8 ${y0} L ${n1(xL)} ${y0} L ${n1(E.xc(y1))} ${n1(y1)} L ${n1(E.xRet)} ${cy}" class="rayon"/>`;
+    }
+    if (lab) {
+      s += T(xL, cy - hL - 12, 'verre · Fl', 'etiq c-hyp');
+      s += T(E.cx, cy - 82 - 10, 'œil', 't-doux');
+      const yd = cy + hL + 22;
+      s += `<line x1="${n1(xL)}" y1="${yd - 9}" x2="${n1(xL)}" y2="${yd + 9}" class="axe"/><line x1="${n1(E.apex)}" y1="${yd - 9}" x2="${n1(E.apex)}" y2="${yd + 9}" class="axe"/>`;
+      s += `<line x1="${n1(xL)}" y1="${yd}" x2="${n1(E.apex)}" y2="${yd}" class="axe"/>`;
+      s += T((xL + E.apex) / 2, yd + 26, 'd : le vertex', 'etiq');
+    }
+    return svgW(W, H, s, o.label || 'Un verre devant l’œil');
+  }
+
+  // Le fil : où l'œil voit net (une règle) ; quelle taille a l'image (un verre devant l'œil).
+  function fil(W) {
+    const H = 214, pw = W / 2, cy = 110;
+    let s = `<line x1="${n1(pw)}" y1="34" x2="${n1(pw)}" y2="${H - 34}" class="separe"/>`;
+    // panneau 1
+    s += T(pw / 2, 20, 'Où voit-il net ?', 'titre-panneau');
+    const xe = pw - 30, a = 26, b = pw - 78;
+    s += `<line x1="10" y1="${cy}" x2="${n1(xe - 14)}" y2="${cy}" class="base"/>` + oeilGlyphe(xe, cy);
+    s += `<g class="c-myo"><rect x="${a}" y="${cy - 7}" width="${n1(b - a)}" height="14" rx="7" class="zone"/>`;
+    s += `<circle cx="${a}" cy="${cy}" r="7" class="plein"/><circle cx="${n1(b)}" cy="${cy}" r="7" class="plein"/>`;
+    s += T(a, cy - 16, 'Pr', 'etiq') + T(b, cy - 16, 'Pp', 'etiq') + '</g>';
+    s += T(pw / 2, H - 12, 'le Pr et le Pp', 'petit t-doux');
+    // panneau 2
+    s += T(pw + pw / 2, 20, 'Quelle taille a l’image ?', 'titre-panneau');
+    const E = coupeOeil(pw + pw * 0.38, W - 8, cy, 58, 28), xL = pw + 34;
+    s += E.s + lentille(xL, cy, 40, true);
+    for (const y0 of [cy - 18, cy + 18]) {
+      const y1 = cy + (y0 - cy) * 0.86;
+      s += `<path d="M ${n1(pw + 8)} ${y0} L ${n1(xL)} ${y0} L ${n1(E.xc(y1))} ${n1(y1)} L ${n1(E.xRet)} ${cy}" class="rayon"/>`;
+    }
+    s += fleche(E.xRet - 9, cy, cy + 26, 'objet', 6);
+    s += T(pw + pw / 2, H - 12, 'le verre et l’image', 'petit t-doux');
+    return svgW(W, H, s, 'Les deux questions du module');
+  }
+
+  // Petits yeux pour « Pourquoi ? » : sans verre, verre −, verre + ; la flèche = l'image sur la rétine.
+  function miniVerre(type) {
+    const W = 300, H = 112, cy = 56;
+    const E = coupeOeil(118, 292, cy, 54, 26);
+    const h = { aucun: 30, neg: 19, pos: 43 }[type];
+    let s = E.s;
+    if (type !== 'aucun') s += lentille(50, cy, 40, type === 'pos');
+    const xa = E.cx + E.rx * 0.4;   // dans le globe, assez loin du bord pour que la grande flèche tienne
+    if (type !== 'aucun') s += `<line x1="${n1(xa - 30)}" y1="${cy + 30}" x2="${n1(xa + 10)}" y2="${cy + 30}" class="ref"/>`;
+    s += `<g class="c-emm">${fleche(xa, cy, cy + h, 'grosse', 8)}</g>`;
+    return svgW(W, H, s, type === 'aucun' ? 'Sans verre' : type === 'neg' ? 'Verre concave : image plus petite' : 'Verre convexe : image plus grande');
+  }
+
+  // Foyer réel (convergente) et foyer virtuel (divergente).
+  function foyers(W) {
+    const H = 236, pw = W / 2, cy = 112;
+    const pan = (x0, conv) => {
+      const cx = x0 + pw * (conv ? 0.36 : 0.56), f = pw * (conv ? 0.42 : 0.34), xFin = x0 + pw - 10;
+      let s = `<g class="c-${conv ? 'hyp' : 'myo'}"${conv ? '' : ' data-pas="1"'}>`;
+      s += T(x0 + pw / 2, 22, conv ? 'Convergente · +' : 'Divergente · −', 'etiq');
+      s += lentille(cx, cy, 64, conv);
+      for (const y0 of [cy - 28, cy, cy + 28]) {
+        s += `<path d="M ${n1(x0 + 10)} ${y0} L ${n1(cx)} ${y0}" class="rayon"/>`;
+        const pente = conv ? (cy - y0) / f : (y0 - cy) / f;
+        s += `<path d="M ${n1(cx)} ${y0} L ${n1(xFin)} ${n1(y0 + pente * (xFin - cx))}" class="rayon"/>`;
+        if (!conv && y0 !== cy) s += `<path d="M ${n1(cx)} ${y0} L ${n1(cx - f)} ${cy}" class="rayon virtuel"/>`;
+      }
+      const xF = conv ? cx + f : cx - f;
+      s += `<circle cx="${n1(xF)}" cy="${cy}" r="5.5" class="${conv ? 'plein' : 'creux'}"/>`;
+      s += conv ? T(xF, cy + 27, 'F′', 'etiq') : T(xF - 9, cy - 10, 'F′', 'etiq', 'end');
+      s += T(x0 + pw / 2, H - 28, conv ? 'les rayons s’y croisent' : 'seuls les prolongements', 'petit');
+      s += T(x0 + pw / 2, H - 8, conv ? 'foyer réel' : 'foyer virtuel', 'petit t-doux');
+      return s + '</g>';
+    };
+    return svgW(W, H, pan(0, true) + pan(pw, false) + `<line x1="${n1(pw)}" y1="34" x2="${n1(pw)}" y2="${H - 50}" class="separe"/>`, 'Foyer réel, foyer virtuel');
+  }
+
+  // Les trois rayons principaux, un par rangée.
+  function troisRayons(W) {
+    const rowH = 104, H = 3 * rowH + 4, f = W * 0.2, cx = W * 0.5, x0 = 8, x1 = W - 8;
+    let s = '';
+    for (let i = 0; i < 3; i++) {
+      const cy = i * rowH + 54;
+      s += `<line x1="${x0}" y1="${cy}" x2="${x1}" y2="${cy}" class="axe"/>` + lentille(cx, cy, 44, true);
+      s += point(cx - f, cy) + point(cx + f, cy) + T(cx - f, cy + 24, 'F', 'etiq') + T(cx + f + 5, cy - 10, 'F′', 'etiq', 'start');
+      if (i === 0) s += T(cx - 18, cy + 24, 'O', 'etiq', 'end');
+      let r;
+      if (i === 0) r = `<path d="M ${x0} ${cy - 36} L ${n1(x1)} ${n1(cy + 36 * (x1 - cx) / (cx - x0))}" class="rayon"/>`;
+      else if (i === 1) r = `<path d="M ${x0} ${cy - 30} L ${n1(cx)} ${cy - 30} L ${n1(x1)} ${n1(cy - 30 + (x1 - cx) * 30 / f)}" class="rayon"/>`;
+      else r = `<path d="M ${x0} ${n1(cy - (cx - f - x0) * 30 / f)} L ${n1(cx)} ${cy + 30} L ${n1(x1)} ${cy + 30}" class="rayon"/>`;
+      s += G(i + 1, r);
+    }
+    return svgW(W, H, s, 'Les trois rayons principaux');
+  }
+
+  // Objet à l'infini (D13) : B, le sommet, envoie des rayons parallèles inclinés ; l'image A′B′ est dans le plan focal.
+  function infini(W) {
+    const f = W * 0.27, cx = W * 0.47, sl = 0.34, top = 30;
+    const cy = top + sl * (cx - 10) + 6, hL = sl * f + 22, H = cy + hL + 34;
+    const xF = cx - f, xFp = cx + f, yB = cy + sl * f, xEnd = Math.min(W - 8, xFp + 0.4 * f);
+    let s = `<line x1="6" y1="${n1(cy)}" x2="${W - 6}" y2="${n1(cy)}" class="axe"/>`;
+    s += `<line x1="${n1(xFp)}" y1="${n1(cy - hL)}" x2="${n1(xFp)}" y2="${n1(yB + 6)}" class="plan-f"/>`;
+    s += T(xFp, cy - hL - 8, 'plan focal', 'petit t-doux');
+    s += T(10, 20, 'B à l’infini ↖', 'petit t-doux', 'start');
+    s += lentille(cx, cy, hL, true);
+    s += point(xF, cy) + point(xFp, cy) + T(xF, cy + 24, 'F', 'etiq') + T(xFp - 7, cy - 10, 'F′', 'etiq', 'end') + T(cx - 18, cy + 22, 'O', 'etiq', 'end');
+    s += G(1, `<path d="M 10 ${n1(cy - sl * (cx - 10))} L ${n1(xEnd)} ${n1(cy + sl * (xEnd - cx))}" class="rayon"/>`);
+    s += G(2, `<path d="M 10 ${n1(cy - sl * (xF - 10))} L ${n1(cx)} ${n1(yB)} L ${n1(xEnd)} ${n1(yB)}" class="rayon"/>`);
+    s += G(3, fleche(xFp, cy, yB) + T(xFp + 7, cy - 10, 'A′', 'etiq', 'start') + T(xFp, yB + 24, 'B′', 'etiq'));
+    return svgW(W, H, s, 'Image d’un objet à l’infini');
+  }
+
+  // Objet à k·f d'une lentille convergente : deux rayons de son sommet, puis l'image (1/p + 1/p′ = 1/f).
+  function imageLentille(W, k, h0) {
+    const kp = k / (k - 1), m = kp / k;
+    const gauche = Math.max(k, 2) + 0.18, droite = Math.max(kp, 2) + 0.3;
+    const f = (W - 24) / (gauche + droite), cx = 12 + gauche * f;
+    const top = 34, cy = top + h0 + 18, hL = h0 + 20, yImg = cy + h0 * m;
+    const xo = cx - k * f, xi = cx + kp * f, xEnd = Math.min(W - 6, xi + 0.22 * f);
+    const H = Math.max(cy + hL, yImg + 30) + 8;
+    let s = `<line x1="6" y1="${cy}" x2="${W - 6}" y2="${cy}" class="axe"/>`;
+    s += lentille(cx, cy, hL, true);
+    s += point(cx - f, cy) + point(cx + f, cy) + point(cx - 2 * f, cy) + point(cx + 2 * f, cy);
+    s += T(cx - f, cy + 24, 'F', 'etiq') + T(cx + f + 6, cy - 10, 'F′', 'etiq', 'start') + T(cx - 18, cy + 24, 'O', 'etiq', 'end');
+    s += T(cx - 2 * f, cy + 24, '2f', 'petit t-doux') + T(cx + 2 * f, cy - 10, '2f', 'petit t-doux');
+    s += fleche(xo, cy, cy - h0) + T(xo, cy - h0 - 12, 'objet', 'etiq');
+    s += G(1, `<path d="M ${n1(xo)} ${n1(cy - h0)} L ${n1(cx)} ${n1(cy - h0)} L ${n1(xEnd)} ${n1(cy - h0 + (xEnd - cx) * h0 / f)}" class="rayon"/>`);
+    s += G(2, `<path d="M ${n1(xo)} ${n1(cy - h0)} L ${n1(xEnd)} ${n1(cy - h0 + (xEnd - xo) * h0 / (k * f))}" class="rayon"/>`);
+    s += G(3, fleche(xi, cy, yImg) + T(xi - 10, yImg + 20, 'image', 'etiq', 'end'));
+    return svgW(W, H, s, k === 2 ? 'Objet à 2f' : 'Objet entre f et 2f');
+  }
+
+  // La taille de l'image, à l'échelle : une flèche par cas, la référence « sans verre » en pointillé.
+  function tailles(W, items, label) {
+    const H = 262, yb = 210, H0 = 150, n = items.length, pas = W / n;
+    let s = `<line x1="10" y1="${yb}" x2="${W - 10}" y2="${yb}" class="base"/>`;
+    s += `<line x1="10" y1="${yb - H0}" x2="${W - 10}" y2="${yb - H0}" class="ref"/>`;
+    items.forEach((it, i) => {
+      const x = pas * (i + 0.5);
+      const g = `<g class="c-${it.c}">` + fleche(x, yb, yb - H0 * it.g, 'grosse', 10) + T(x, 26, it.v, 'valeur') + T(x, yb + 26, it.t, 'etiq') + '</g>';
+      s += G(it.pas, g);
+    });
+    return svgW(W, H, s, label);
+  }
+
+  // Deux échelles alignées : le facteur Gi en haut, le pourcentage en bas.
+  function echelle(W) {
+    const x0 = 44, x1 = W - 18, gmin = 0.85, gmax = 1.10, y1 = 62, y2 = 160, H = 216;
+    const X = g => x0 + (g - gmin) / (gmax - gmin) * (x1 - x0);
+    let s = `<line x1="${x0}" y1="${y1}" x2="${n1(x1)}" y2="${y1}" class="base"/><line x1="${x0}" y1="${y2}" x2="${n1(x1)}" y2="${y2}" class="base"/>`;
+    s += T(10, y1 + 6, 'Gi', 'etiq', 'start') + T(10, y2 + 6, '%', 'etiq', 'start');
+    for (const g of [0.85, 0.90, 0.95, 1.00, 1.05, 1.10]) {
+      s += `<line x1="${n1(X(g))}" y1="${y1 - 5}" x2="${n1(X(g))}" y2="${y1 + 5}" class="base"/><line x1="${n1(X(g))}" y1="${y2 - 5}" x2="${n1(X(g))}" y2="${y2 + 5}" class="base"/>`;
+    }
+    [[0.90, '0,90', '−10'], [1.00, '1', '0'], [1.10, '1,10', '+10']].forEach(([g, a, b]) => {
+      s += T(X(g), y1 - 12, a, 'petit t-doux') + T(X(g), y2 + 25, b, 'petit t-doux');
+    });
+    s += `<line x1="${n1(X(1))}" y1="${y1}" x2="${n1(X(1))}" y2="${y2}" class="pointille"/>`;
+    s += T(X(1), 20, 'même taille', 'petit t-doux');
+    s += T(x0, H - 6, '← plus petite', 'petit t-doux', 'start') + T(x1, H - 6, 'plus grande →', 'petit t-doux', 'end');
+    const paire = (g, a, b, c, droite, pasA, pasB) => {
+      const x = X(g), dx = droite ? -8 : 8, anc = droite ? 'end' : 'start';
+      return G(pasA, `<g class="c-${c}"><circle cx="${n1(x)}" cy="${y1}" r="6.5" class="plein"/>${T(x + dx, y1 + 26, a, 'valeur', anc)}</g>`)
+           + G(pasB, `<g class="c-${c}"><line x1="${n1(x)}" y1="${y1 + 8}" x2="${n1(x)}" y2="${y2 - 8}" class="pointille"/><circle cx="${n1(x)}" cy="${y2}" r="6.5" class="plein"/>${T(x + dx, y2 - 14, b, 'valeur', anc)}</g>`);
+    };
+    s += paire(1.0776, '1,0776', '+7,8 %', 'hyp', true, 1, 2);
+    s += paire(0.885, '0,885', '−11,5 %', 'myo', false, 3, 3);
+    return svgW(W, H, s, 'Du facteur au pourcentage');
+  }
+
+  // La même lettre, vue par chaque œil à une taille différente.
+  function deuxE(W) {
+    const H = 222, pw = W / 2;
+    let s = '';
+    [['œil droit', 86], ['œil gauche', 112]].forEach(([t, fs], i) => {
+      const x0 = i * pw;
+      s += T(x0 + pw / 2, 20, t, 'titre-panneau');
+      s += `<rect x="${n1(x0 + 14)}" y="34" width="${n1(pw - 28)}" height="148" rx="12" class="cadre-e"/>`;
+      s += `<text x="${n1(x0 + pw / 2)}" y="${n1(108 + fs * 0.36)}" text-anchor="middle" class="lettre" style="font-size:${fs}px">E</text>`;
+    });
+    s += T(W / 2, H - 8, 'la même lettre, deux tailles', 'petit t-doux');
+    return svgW(W, H, s, 'Deux images de tailles différentes');
+  }
+
+  // Exercice 3 : un pourcentage par œil, leur différence, le seuil de 3 %.
+  function ecart(W) {
+    const pmin = -4.6, pmax = 5.6, x0 = 16, x1 = W - 16, rowH = 58, top = 34;
+    const X = p => x0 + (p - pmin) / (pmax - pmin) * (x1 - x0);
+    const H = top + 4 * rowH + 4;
+    let s = `<line x1="${n1(X(0))}" y1="${top - 6}" x2="${n1(X(0))}" y2="${H - 4}" class="pointille"/>` + T(X(0), top - 14, '0', 'petit t-doux');
+    [
+      { t: 'OD −2,00', de: 0, a: -1.96, v: '−1,96 %', c: 'myo', pas: 1 },
+      { t: 'OS +2,50', de: 0, a: 2.56, v: '+2,56 %', c: 'hyp', pas: 2 },
+      { t: 'différence', de: -1.96, a: 2.56, v: '4,52 %', c: 'emm', pas: 3 },
+      { t: 'seuil', de: -1.96, a: 1.04, v: '3 %', c: 'doux', seuil: true, pas: 4 }
+    ].forEach((r, i) => {
+      const y = top + i * rowH, xa = X(Math.min(r.de, r.a)), xb = X(Math.max(r.de, r.a));
+      let g = `<g class="c-${r.c}">` + T(x0, y + 14, r.t, 'titre-rang', 'start');
+      g += `<rect x="${n1(xa)}" y="${y + 24}" width="${n1(xb - xa)}" height="18" rx="4" class="${r.seuil ? 'barre-seuil' : 'barre-h'}"/>`;
+      g += r.a < r.de ? T(xa - 8, y + 39, r.v, 'valeur', 'end') : T(xb + 8, y + 39, r.v, 'valeur', 'start');
+      s += G(r.pas, g + '</g>');
+    });
+    return svgW(W, H, s, 'Exercice 3 : la différence entre les deux yeux');
+  }
+
+  const INF = -Infinity;
+  const FIG = {
+    couverture: W => systeme(W, { label: 'Un verre devant l’œil' }),
+    vertex: W => systeme(W, { labels: true, label: 'Le vertex d, entre la cornée et le verre de force Fl' }),
+    fil,
+    'mini-sans': () => miniVerre('aucun'),
+    'mini-neg': () => miniVerre('neg'),
+    'mini-pos': () => miniVerre('pos'),
+    foyers,
+    'trois-rayons': troisRayons,
+    infini,
+    'objet-2f': W => imageLentille(W, 2, 52),
+    'objet-f2f': W => imageLentille(W, 1.5, 36),
+    'tailles-plus': W => tailles(W, [
+      { t: 'sans verre', g: 1, v: '1', c: 'emm' },
+      { t: 'OD +6,00', g: 1.0776, v: '1,078', c: 'hyp', pas: 2 },
+      { t: 'OS +2,00', g: 1.0246, v: '1,025', c: 'hyp', pas: 3 }], 'Taille de l’image avec des verres +'),
+    'tailles-moins': W => tailles(W, [
+      { t: 'sans verre', g: 1, v: '1', c: 'emm' },
+      { t: 'OD −10,00', g: 0.885, v: '0,885', c: 'myo', pas: 2 },
+      { t: 'OS −3,00', g: 0.9625, v: '0,962', c: 'myo', pas: 3 }], 'Taille de l’image avec des verres −'),
+    'tailles-vertex': W => tailles(W, [
+      { t: 'sans verre', g: 1, v: '1', c: 'emm' },
+      { t: 'à 8 mm', g: 1.0504, v: '1,050', c: 'hyp', pas: 2 },
+      { t: 'à 13 mm', g: 1.0846, v: '1,085', c: 'hyp', pas: 1 }], 'OS +6,00 : la taille de l’image selon le vertex'),
+    echelle,
+    'deux-e': deuxE,
+    ecart,
+    'axe-pr': W => axes({ avant: 75, arriere: 75, label: 'Le Pr de trois yeux', rangs: [
+      { titre: 'Emmétrope', c: 'emm', pts: [{ cm: INF, t: 'Pr', v: 'à l’infini', c: 'emm', pas: 1 }] },
+      { titre: 'Myope −1,50', c: 'myo', pts: [{ cm: -66.7, t: 'Pr', v: '−66,7 cm', c: 'myo', pas: 2 }] },
+      { titre: 'Hypermétrope +1,50', c: 'hyp', pts: [{ cm: 66.7, t: 'Pr', v: '+66,7 cm', c: 'hyp', creux: true, pas: 3 }] }] }, W),
+    'axe-pp': W => axes({ avant: 35, arriere: 6, label: 'Le Pp de trois yeux, Am = 5', rangs: [
+      { titre: 'Emmétrope', c: 'emm', pts: [{ cm: -20, t: 'Pp', v: '20 cm', c: 'emm', pas: 1 }] },
+      { titre: 'Myope −1,50', c: 'myo', pts: [{ cm: -15.4, t: 'Pp', v: '15,4 cm', c: 'myo', pas: 2 }] },
+      { titre: 'Hypermétrope +1,50', c: 'hyp', pts: [{ cm: -28.6, t: 'Pp', v: '28,6 cm', c: 'hyp', pas: 3 }] }] }, W),
+    'axe-zone': W => axes({ avant: 75, arriere: 75, label: 'Zones nettes de trois yeux, Am = 5', rangs: [
+      { titre: 'Myope −1,50', c: 'myo', zones: [{ de: -66.7, a: -15.4, c: 'myo', pas: 1 }],
+        pts: [{ cm: -15.4, t: 'Pp', v: '15,4', c: 'myo' }, { cm: -66.7, t: 'Pr', v: '−66,7', c: 'myo', pas: 1 }] },
+      { titre: 'Emmétrope', c: 'emm', zones: [{ de: INF, a: -20, c: 'emm', pas: 2 }],
+        pts: [{ cm: -20, t: 'Pp', v: '20', c: 'emm' }, { cm: INF, t: 'Pr', v: '', c: 'emm', pas: 2 }] },
+      { titre: 'Hypermétrope +1,50', c: 'hyp', zones: [{ de: INF, a: -28.6, c: 'hyp', pas: 3 }],
+        pts: [{ cm: -28.6, t: 'Pp', v: '28,6', c: 'hyp' }, { cm: 66.7, t: 'Pr', v: '+66,7', c: 'hyp', creux: true, pas: 3 }] }] }, W),
+    'axe-paul': W => axes({ avant: 60, arriere: 50, label: 'Paul, sans et avec ses lunettes', reperes: [{ cm: -40, t: 'objet · 40 cm' }], rangs: [
+      { titre: 'Sans lunettes', c: 'hyp', zones: [{ de: INF, a: -50, c: 'hyp', pas: 2 }],
+        pts: [{ cm: 40, t: 'Pr', v: '+40 cm', c: 'hyp', creux: true, pas: 1 }, { cm: -50, t: 'Pp', v: '50 cm', c: 'hyp', pas: 2 }] },
+      { titre: 'Avec ses lunettes', c: 'aide', zones: [{ de: INF, a: -22.2, c: 'aide', pas: 3 }],
+        pts: [{ cm: INF, t: 'Pr', v: '', c: 'aide', pas: 3 }, { cm: -22.2, t: 'Pp', v: '22 cm', c: 'aide', pas: 3 }] }] }, W)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', prpp: 'Pr et Pp', image: 'Former une image', verre: 'Le verre et l’image', anis: 'Pourcentage et aniséiconie', route: 'Pour la route' };
+  const CLE = 'diapos-opt-m8';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'bbc7d422c877';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>
