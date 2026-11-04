@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qui peut m’aider ? · Lumière</title>
+<!-- un guide non officiel n'a rien à faire dans les résultats de recherche : on y arrive par le hub ou par un lien partagé -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap">
+<style>
+/* « Qui peut m'aider ? » : un arbre qui relaie, il ne conseille pas. Il mène à un service officiel, chaque information a sa
+   source et sa date, et rien n'est gardé ni envoyé. Les règles du contenu : Protocols.md, et test_qui_peut_aider.js les vérifie.
+   Le monde du hub : la lumière dans le noir, un seul thème. */
+:root{color-scheme:dark;--nuit:#05070D;--nuit-2:#0B0F1A;--nuit-3:#111728;--trait:#1C2437;--trait-2:#2A3450;--blanc:#F3F5FB;--gris:#AEB7C9;--gris-2:#828CA2;--bleu:#34C6FF;--rouge:#FF5A4A;--jaune:#FFD23F;
+  --f-titre:"Bodoni Moda","Bodoni 72",Didot,Georgia,serif;--f-texte:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;--f-mono:"Atkinson Hyperlegible Mono",ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--nuit);color:var(--blanc)}
+body{font:17px/1.55 var(--f-texte);-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+a{color:var(--bleu)}
+:focus-visible{outline:2px solid var(--blanc);outline-offset:3px;border-radius:6px}
+button,input{font:inherit;color:inherit}
+
+/* l'urgence reste en haut, à chaque étape */
+.urgence{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 14px;background:#2A0E0E;border-bottom:1px solid #5B2020;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));padding-top:calc(8px + env(safe-area-inset-top,0px));font-size:15px;line-height:1.3;text-align:center}
+.urgence a{color:var(--blanc);font-weight:700}
+.urgence button{border:0;background:none;padding:0;color:var(--blanc);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+.page{max-width:720px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px))}
+.retour{font:600 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--gris-2)}
+.sur{margin:18px 0 0;font:600 12px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gris-2)}
+h1{font:500 clamp(36px,7vw,56px)/1.05 var(--f-titre);margin:6px 0 8px;letter-spacing:-.01em}
+.chapeau{color:var(--gris);font-size:18px;line-height:1.5;max-width:56ch;margin:0}
+.vieux{margin:14px 0 0;padding:10px 14px;border-left:3px solid var(--jaune);background:rgba(255,210,63,.08);border-radius:0 12px 12px 0;font-size:15.5px}
+
+.chercher{display:block;margin:20px 0 0}
+.chercher span{display:block;margin-bottom:5px;font-size:14.5px;color:var(--gris)}
+.chercher input{width:100%;min-height:46px;padding:9px 13px;border:1px solid var(--trait-2);border-radius:12px;background:var(--nuit-2)}
+.chercher input::placeholder{color:var(--gris-2)}
+
+.fil{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:18px 0 0;font-size:14.5px;color:var(--gris-2)}
+.fil button{border:0;background:none;padding:2px 0;color:var(--gris);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.fil b{font-weight:400;color:var(--gris)}
+
+#etape{margin-top:16px;outline:none}
+#etape h2{font:500 clamp(25px,4.6vw,32px)/1.15 var(--f-titre);margin:0 0 12px;outline:none}
+.choix{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+.choix button{width:100%;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px 10px 16px;text-align:left;cursor:pointer;
+  background:var(--nuit-2);border:1px solid var(--trait);border-radius:13px;transition:border-color .15s,background .15s}
+.choix button:hover{border-color:var(--gris-2);background:var(--nuit-3)}
+.choix .mots{min-width:0;display:flex;flex-direction:column;gap:1px}
+.choix b{font-size:17px;line-height:1.3}
+.choix small{font-size:14.5px;line-height:1.3;color:var(--gris)}
+.choix .fleche{flex:none;color:var(--gris-2)}
+.vide{color:var(--gris);margin:0}
+
+/* un résultat : un service, ce que disent ses pages, comment le joindre */
+.intro{margin:0 0 12px;color:var(--gris)}
+.service{margin:0 0 12px;padding:16px;background:var(--nuit-2);border:1px solid var(--trait);border-radius:14px}
+.service h3{font:700 19px/1.25 var(--f-texte);margin:0}
+.service .role{margin:3px 0 0;color:var(--gris);font-size:16px}
+.faits{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.faits li{position:relative;padding-left:14px;font-size:16px;line-height:1.45}
+.faits li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--gris-2)}
+.src{margin-left:2px;font:600 11.5px var(--f-mono);letter-spacing:.04em;white-space:nowrap}
+.joindre{margin:12px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 12px;font-size:15.5px}
+.joindre dt{color:var(--gris-2)}
+.joindre dd{margin:0;overflow-wrap:anywhere}
+.go{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;margin-top:14px;padding:9px 14px;border-radius:11px;background:var(--blanc);color:var(--nuit);font-weight:700;text-decoration:none;text-align:center}
+.go:hover{background:#fff}
+.borne{margin:4px 0 0;font-size:14.5px;line-height:1.4;color:var(--gris)}
+.bas{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.bas button{min-height:40px;padding:6px 12px;border:1px solid var(--trait-2);border-radius:10px;background:none;cursor:pointer}
+.bas button:hover{border-color:var(--gris-2)}
+.etat{min-height:1.3em;margin:6px 0 0;font-size:14.5px;color:var(--gris)}
+
+.dates{margin-top:28px}
+.dates h2{font:600 12px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gris-2);margin:0 0 8px}
+.dates ul{list-style:none;margin:0;padding:0;border:1px solid var(--trait);border-radius:13px;overflow:hidden}
+.dates li{display:grid;grid-template-columns:108px minmax(0,1fr);gap:10px;padding:9px 13px;border-bottom:1px solid var(--trait);font-size:15.5px;line-height:1.4}
+.dates li:last-child{border-bottom:0}
+.dates time{font-weight:700}
+.dates .borne{margin-top:6px}
+
+.avis{margin-top:30px;padding-top:16px;border-top:1px solid var(--trait);font-size:14.5px;line-height:1.5;color:var(--gris)}
+.avis h2{font:600 12px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gris-2);margin:0 0 8px}
+.avis p{margin:0 0 7px}
+@media (max-width:520px){
+  body{font-size:16.5px}
+  .chapeau{font-size:17px}
+  .dates li{grid-template-columns:minmax(0,1fr);gap:0}
+}
+@media (prefers-reduced-motion:reduce){ .choix button{transition:none} }
+@media print{ .urgence{position:static} .chercher,.bas{display:none} }
+</style>
+</head>
+<body>
+<div class="urgence">
+  <span>Danger immédiat : <a href="tel:911">911</a></span>
+  <button type="button" data-vers="urgence">Lignes d’aide et de crise</button>
+</div>
+<main class="page">
+  <a class="retour" href="./">← Lumière</a>
+  <p class="sur">Guide étudiant non officiel</p>
+  <h1>Qui peut m’aider&nbsp;?</h1>
+  <p class="chapeau">Choisis ce qui te préoccupe. Ce guide t’indique le service de La Cité à contacter et la page officielle à lire. Il ne répond pas à sa place.</p>
+  <p class="vieux" id="vieux" role="status" hidden></p>
+  <label class="chercher"><span>Ou cherche un mot</span><input id="cherche" type="search" autocomplete="off" spellcheck="false" placeholder="RAFEO, cSanté, relevé de notes…"></label>
+  <nav class="fil" id="fil" aria-label="Ton chemin" hidden></nav>
+  <section id="etape" aria-live="polite"></section>
+  <section class="dates" id="dates" aria-labelledby="t-dates" hidden>
+    <h2 id="t-dates">Dates du calendrier officiel</h2>
+    <ul id="dates-liste"></ul>
+    <p class="borne" id="dates-note"></p>
+  </section>
+  <footer class="avis">
+    <h2>À savoir</h2>
+    <p>Ce guide est fait par un étudiant, à titre personnel. Il n’est ni produit ni approuvé par La Cité collégiale, l’Association étudiante ou un autre service.</p>
+    <p>Il ne donne aucun conseil financier, médical, juridique ou scolaire, et il ne dit pas si tu as droit à quelque chose. Seul le service concerné peut répondre pour ton dossier.</p>
+    <p>Chaque information vient d’une page officielle, avec son lien et sa date de vérification. Elle peut avoir changé depuis : si ça diffère, c’est la page officielle qui compte.</p>
+    <p>Ce que tu choisis ici n’est ni enregistré ni envoyé. Ce guide ne permet pas de joindre qui que ce soit : pour une demande, passe par le service.</p>
+  </footer>
+</main>
+<script>
+(() => {
+'use strict';
+/* ====== contenu : début (chaque ajout : une source officielle, vérifiée sur la page, notée dans qui-peut-aider-sources.md) ====== */
+const VERIFIE = '2026-11-03';            // la dernière vérification sur les pages officielles (qui-peut-aider-sources.md)
+const A_REVOIR_APRES = 120;              // jours : au-delà, la page avertit qu'elle peut être dépassée
+const C = 'https://www.collegelacite.ca/', AIDE = 'https://aide.collegelacite.ca/s/', AE = 'https://www.aecite.ca/';
+const P_APPUI = C + 'journee-accueil/services-appui-reussite', P_PRETS = C + 'bourses-aides/prets_aide.htm', P_ADM = C + 'admissions', P_PAIE = C + 'paiement-de-vos-frais',
+  P_SERV = C + 'services-aux-etudiants', P_CAL = C + 'calendrier-scolaire', P_FORM = AIDE + 'createrecord/New_Community_Case?language=fr_CA',
+  P_MEMO = AIDE + 'article/Aide-m%C3%A9moire-du-Bureau-des-admissions-rentr%C3%A9e?language=fr_CA', P_ACCES = AIDE + 'article/Acc%C3%A8s-au-portail-Mot-de-passe?language=fr_CA',
+  D_01 = C + 'directives-pedagogiques/inscription-ajout-retrait-abandon-et-transfert', D_06 = C + 'directives-pedagogiques/evaluation-apprentissages-etudiant',
+  D_13 = C + 'directives-pedagogiques/demande-de-revision-de-notes-finales', D_14 = C + 'directives-pedagogiques/appel-une-decision-ordre-scolaire',
+  D_04 = C + 'directives-pedagogiques/aide-pedagogique', D_RH14 = C + 'directives/humaines/rh-14', D_RH06 = C + 'directives/humaines/rh-06',
+  ON_APRES = 'https://www.ontario.ca/page/after-you-apply-osap', ON_OSAP = 'https://www.ontario.ca/page/learn-about-osap',
+  SOV = 'https://trade.transitions.com/CanadaPro/fr/StudentsofVision', OAC = 'https://opticians.ca/Web/Web/AboutUs/AwardsScholarshipsBursaries-BySchools/CollegeLaCite.aspx';
+const LIGNE = '+16137422483';
+
+const SERVICES = {
+  specialiste:{nom:'Spécialiste expérience étudiante', role:'La personne qui oriente. Chaque école ou institut en a une, pour toute question sur ton programme ou tout souci pendant tes études.', page:P_APPUI,
+    joindre:[{t:'Sur place', v:'Sans rendez-vous, dans ton secteur'}, {t:'À distance', v:'Rendez-vous Teams par Bookings, dans le Portail'}]},
+  aidefin:{nom:'Service d’aide financière', role:'Aide à s’y retrouver dans les régimes d’aide et accompagne les demandes.', page:P_PRETS,
+    joindre:[{t:'Local', v:'A1130'}, {t:'Téléphone', v:'613 742-2483, option 2', tel:LIGNE}]},
+  registraire:{nom:'Bureau des admissions et du registraire', role:'Ton dossier scolaire, ton horaire, tes paiements.', page:P_ADM,
+    joindre:[{t:'Local', v:'A1130'}, {t:'Téléphone', v:'613 742-2483', tel:LIGNE}, {t:'Sans frais', v:'1 800 267-2483', tel:'+18002672483'}]},
+  zone:{nom:'La Zone réussite', role:'Centres d’aide en français, anglais, mathématiques, sciences, bureautique et informatique, Appui académique, Appui en informatique et Bibliothèque.', page:C + 'zone-reussite',
+    joindre:[{t:'Lieu', v:'2e étage du pavillon A'}]},
+  boussole:{nom:'La Boussole', role:'Soutien psychologique et accommodements. Services gratuits pour la communauté collégiale.', page:C + 'laboussole',
+    joindre:[{t:'Local', v:'C1030'}, {t:'Ligne directe', v:'343 804-0313', tel:'+13438040313'}]},
+  csante:{nom:'Clinique médicale CSanté', role:'La clinique du campus, pour les étudiants et les employés de La Cité. Ce n’est pas une assurance.', page:'https://www.csante.info/',
+    joindre:[{t:'Local', v:'B1060'}, {t:'Courriel', v:'cliniquemedicale@csante.info', mail:'cliniquemedicale@csante.info'}]},
+  ae:{nom:'Association étudiante de La Cité (AÉ)', role:'Assurance étudiante, Banque alimentaire, activités, et représentation des droits et intérêts des étudiants.', page:AE + 'services',
+    joindre:[{t:'Local', v:'G2060'}, {t:'Heures', v:'Lundi au jeudi, 9 h à 16 h'}, {t:'Téléphone', v:'613 742-2483, poste 2020', tel:LIGNE}, {t:'Courriel', v:'aecite@lacitec.on.ca', mail:'aecite@lacitec.on.ca'}]},
+  banque:{nom:'Banque alimentaire de l’AÉ', role:'Service d’urgence pour les étudiants en insécurité alimentaire, ouvert à tous les inscrits de 2026-2027.', page:AE + 'banque-alimentaire-1',
+    joindre:[{t:'Local', v:'H0070, sous-sol du bâtiment H'}, {t:'Accès', v:'Sur rendez-vous, du lundi au vendredi'}]},
+  philanthropie:{nom:'Secteur Philanthropie • Diplômés', role:'Le secteur qui gère les bourses de La Cité.', page:C + 'bourses',
+    joindre:[{t:'Local', v:'C1080'}, {t:'Courriel', v:'donner@collegelacite.ca', mail:'donner@collegelacite.ca'}]},
+  vision:{nom:'Vision d’étudiants (Students of Vision)', role:'Bourses d’études pour les étudiants en optique, en optométrie ou en assistance en optométrie au Canada.', page:SOV,
+    joindre:[{t:'Questions', v:'StudentsofVision@Transitions.com', mail:'StudentsofVision@Transitions.com'}]},
+  oac:{nom:'Opticians Association of Canada', role:'Son site liste les bourses par école, dont La Cité.', page:OAC},
+  respect:{nom:'Bureau du respect de la personne', role:'Un endroit sécuritaire et confidentiel pour les situations de discrimination, de harcèlement ou de violence à caractère sexuel.', page:P_SERV,
+    joindre:[{t:'Local', v:'D3250'}, {t:'Courriel', v:'respect@collegelacite.ca', mail:'respect@collegelacite.ca'}]},
+  securite:{nom:'Service de sécurité', role:'Sur place 24 heures sur 24, 7 jours par semaine.', page:P_SERV,
+    joindre:[{t:'Local', v:'A1100'}, {t:'Téléphone', v:'613 742-2483, poste 3000', tel:LIGNE}]},
+  urgence:{nom:'Lignes d’aide et de crise', role:'Les numéros que La Cité publie sur sa page d’urgence, et le 9-8-8.', page:C + 'urgence',
+    joindre:[{t:'Aide urgente', v:'911', tel:'911'}, {t:'Ligne de crise, Ontario', v:'613 722-6914', tel:'+16137226914'}, {t:'Ligne de crise, Québec', v:'1 866 277-3553', tel:'+18662773553'},
+      {t:'Allo J’écoute', v:'1 866 925-5454', tel:'+18669255454'}, {t:'Allo J’écoute, texto', v:'ALLOJECOUTEON au 686868'}, {t:'9-8-8, appel ou texto', v:'988', tel:'988'}]},
+  emploi:{nom:'Services d’emploi et COOP', role:'Les stages COOP et la recherche d’emploi.', page:C + 'informations-pour-etudiants',
+    joindre:[{t:'Local', v:'B1015'}, {t:'Téléphone', v:'613 742-2483, poste 2477', tel:LIGNE}, {t:'Courriel', v:'emploi-coop@collegelacite.ca', mail:'emploi-coop@collegelacite.ca'}]},
+  sai:{nom:'Service d’accompagnement international', role:'Information et orientation sur l’assurance, les permis d’études, l’immigration, l’installation, le logement et la gestion de l’argent.', page:C + 'service-accompagnement-international',
+    joindre:[{t:'Local', v:'A2060, dans La Zone'}, {t:'Heures', v:'Lundi au vendredi, 8 h 30 à 16 h'}, {t:'Téléphone', v:'613 742-2483, poste 2998', tel:LIGNE}, {t:'Courriel', v:'sai@collegelacite.ca', mail:'sai@collegelacite.ca'}]},
+  mino:{nom:'Centre Mino Pimatisiwin', role:'Un espace culturel, avec des activités éducatives et de ressourcement pour les étudiants des Premières Nations, métis et inuits.', page:C + 'centre-mino-pimatisiwin',
+    joindre:[{t:'Local', v:'F1020'}, {t:'Téléphone', v:'1 800 267-2483, poste 2689', tel:'+18002672483'}]},
+  prof:{nom:'Ton professeur ou ta professeure', role:'Le premier contact que nomment les directives.', page:D_13},
+  acces:{nom:'Aide en ligne de La Cité', role:'Les articles d’aide officiels pour accéder au Portail.', page:P_ACCES},
+  ecite:{nom:'Aide en ligne : eCité', role:'Les articles d’aide officiels sur eCité.', page:AIDE + 'topic/0TO1J0000019LSGWA2/ecit%C3%A9?language=fr_CA'},
+  statut:{nom:'Statut de l’infrastructure informatique', role:'Page publique qui suit le Portail, eCité, le courriel, les réseaux, l’impression et le téléphone.', page:'https://statut.collegelacite.ca/'}
+};
+
+const NOEUDS = {
+  debut:{q:'De quoi as-tu besoin ?', choix:[
+    {vers:'argent', t:'L’argent', s:'RAFEO, bourses, frais, aide alimentaire'},
+    {vers:'sante', t:'La santé', s:'Clinique, assurance, soutien psychologique'},
+    {vers:'cours', t:'Mes cours et mes notes', s:'Abandon, note contestée, évaluation manquée, aide pour étudier'},
+    {vers:'outils', t:'Les outils', s:'Portail, mot de passe, eCité, panne'},
+    {vers:'dossier', t:'Mon dossier', s:'Dossier scolaire, horaire, formulaire de demande'},
+    {vers:'respect', t:'Harcèlement, discrimination ou violence', s:'Du soutien, une plainte, un signalement'},
+    {vers:'emploi', t:'COOP et emploi', s:'Stages et recherche d’emploi'},
+    {vers:'communaute', t:'Étudiant international ou autochtone', s:'Les services qui t’accompagnent'},
+    {vers:'perdu', t:'Je ne sais pas par où commencer', s:'La personne qui oriente tout le monde'}
+  ]},
+
+  /* ---------- l'argent ---------- */
+  argent:{q:'Qu’est-ce qui te préoccupe ?', choix:[
+    {vers:'rafeo', t:'Le RAFEO (OSAP)', s:'Une demande, un dossier, un changement'},
+    {vers:'bourses', t:'Une bourse'},
+    {vers:'frais', t:'Payer mes frais', s:'Paiement, entente de paiement'},
+    {vers:'manque', t:'Je manque d’argent pour manger'}
+  ]},
+  rafeo:{titre:'Le RAFEO (OSAP)', mots:'osap rafeo pret bourse aide financiere gouvernement dossier', services:[{s:'aidefin', faits:[
+    {t:'La demande se fait auprès du ministère de l’éducation postsecondaire de ta province de résidence, pas auprès de La Cité.', u:P_PRETS},
+    {t:'Sur place, le service reçoit sur rendez-vous seulement. Les plages ouvrent 24 heures à l’avance.', u:P_PRETS},
+    {t:'Par téléphone, le personnel n’a pas accès à ton dossier d’aide financière.', u:P_PRETS},
+    {t:'Ton portail du RAFEO montre le dernier état de ta demande.', u:P_MEMO},
+    {t:'L’Ontario indique que tout changement à ta demande ou à ta charge de cours entraîne une réévaluation.', u:ON_APRES},
+    {t:'L’Ontario indique que, pour les programmes qui commencent à partir du 1er août 2026, les étudiants des collèges publics reçoivent une plus grande part de l’aide provinciale en prêts.', u:ON_OSAP}
+  ]}]},
+  bourses:{q:'Quelle sorte de bourse ?', choix:[
+    {vers:'bourses-cite', t:'Les bourses de La Cité'},
+    {vers:'bourses-optique', t:'Les bourses en optique'}
+  ]},
+  'bourses-cite':{titre:'Les bourses de La Cité', mots:'bourse philanthropie diplomes premiere generation', services:[{s:'philanthropie', faits:[
+    {t:'Les demandes passent par le Portail étudiant.', u:C + 'bourses'},
+    {t:'La page ne donne pas les dates de 2026. Les étudiants sont avisés par courriel et dans le Portail quand les demandes ouvrent.', u:C + 'bourses'},
+    {t:'Les critères changent selon la bourse : ils sont sur la page.', u:C + 'bourses'},
+    {t:'La page présente aussi la Bourse Première Génération de l’Ontario.', u:C + 'bourses'}
+  ]}]},
+  'bourses-optique':{titre:'Les bourses en optique', mots:'bourse optique opticien students of vision transitions association opticiens', services:[
+    {s:'vision', faits:[
+      {t:'Trois bourses : 2 000 $, 1 500 $ et 1 000 $.', u:SOV},
+      {t:'La date limite tombe à la fin de novembre 2026. La date exacte et les règles sont sur la page du programme.', u:SOV, fin:'2026-11-30'}
+    ]},
+    {s:'oac', faits:[{t:'L’association liste deux bourses de 500 $ pour La Cité en 2026-2027. Elle renvoie à l’école pour les détails.', u:OAC}]}
+  ]},
+  frais:{titre:'Payer mes frais', mots:'frais scolarite paiement entente depot facture banque', services:[{s:'registraire', page:P_PAIE, faits:[
+    {t:'La page officielle décrit le paiement par ta banque : bénéficiaire La Cité collégiale, numéro de compte égal à ton numéro d’étudiant.', u:P_PAIE},
+    {t:'Un paiement met de 2 à 4 jours ouvrables à apparaître.', u:P_PAIE},
+    {t:'Une entente de paiement passe par un formulaire en ligne.', u:P_PAIE},
+    {t:'Après la date limite, des frais administratifs s’ajoutent et certains services sont restreints.', u:P_MEMO}
+  ]}]},
+  manque:{titre:'Je manque d’argent pour manger', mots:'nourriture faim banque alimentaire urgence argent', services:[
+    {s:'banque', faits:[
+      {t:'Ouverte du 9 septembre au 11 décembre 2026 et du 11 janvier au 23 avril 2027.', u:AE + 'banque-alimentaire-1'},
+      {t:'La première visite de l’année demande le formulaire de demande d’aide.', u:AE + 'banque-alimentaire-1'}
+    ]},
+    {s:'specialiste', faits:[{t:'La page officielle dit que ce ou cette spécialiste oriente aussi vers l’aide financière et l’aide alimentaire.', u:P_APPUI}]}
+  ]},
+
+  /* ---------- la santé ---------- */
+  sante:{q:'Qu’est-ce que tu cherches ?', choix:[
+    {vers:'clinique', t:'Un rendez-vous médical', s:'CSanté, la clinique du campus'},
+    {vers:'assurance', t:'L’assurance santé et dentaire'},
+    {vers:'parler', t:'Ça ne va pas, je veux parler à quelqu’un'},
+    {vers:'accommodement', t:'Un accommodement', s:'Pour une limitation, confirmée ou non'}
+  ]},
+  clinique:{titre:'Un rendez-vous médical', mots:'csante cSanté clinique medecin vaccin immunisation contraception sante', services:[{s:'csante', faits:[
+    {t:'La clinique demande d’ouvrir un dossier avant de prendre rendez-vous.', u:'https://www.csante.info/'},
+    {t:'Elle offre notamment des soins aigus, la vaccination, le dossier d’immunisation, la contraception et le dépistage des ITSS.', u:'https://csante.info/nos-services/'},
+    {t:'Elle accepte notamment l’OHIP, la RAMQ et MorCare. Sans couverture, des frais s’appliquent.', u:'https://www.csante.info/'},
+    {t:'Annuler moins de 24 heures à l’avance entraîne des frais.', u:'https://csante.info/qr/'}
+  ]}]},
+  assurance:{titre:'L’assurance santé et dentaire', mots:'assurance plan major dentaire lunettes regime soins sante exemption', services:[{s:'ae', page:AE + 'assurances', faits:[
+    {t:'Selon l’AÉ, le régime couvre les étudiants à temps plein, et à temps partiel avec deux cours ou plus.', u:AE + 'assurances'},
+    {t:'Selon l’AÉ, les résidents canadiens sont inscrits lorsqu’ils acquittent leurs frais de scolarité en totalité.', u:AE + 'assurances'},
+    {t:'Selon l’AÉ, la couverture d’hiver 2027 va du 11 janvier au 25 avril 2027, avec une période de modification du 11 au 31 janvier.', u:AE + 'assurances', fin:'2027-01-31'},
+    {t:'Les montants couverts sont sur la page de l’AÉ. Les questions vont à Plan Major : 1 877 976-2567.', u:AE + 'assurances'},
+    {t:'La directive PED-01-01 (§1.7.2) dit que le Régime de soins de santé et de soins dentaires est facultatif, et que l’exemption passe par le formulaire du courriel de facturation, avant le 10e jour du trimestre.', u:D_01},
+    {t:'La page de l’AÉ ne décrit pas d’exemption, et la directive ne nomme pas l’AÉ : la façon de faire se confirme auprès de l’AÉ.', u:AE + 'assurances'}
+  ]}]},
+  parler:{titre:'Ça ne va pas, je veux parler à quelqu’un', mots:'sante mentale psychologue stress anxiete depression crise boussole soutien', services:[
+    {s:'boussole', page:C + 'sante-mentale', faits:[{t:'La Boussole offre des rencontres ponctuelles, une thérapie brève jusqu’à 8 rencontres, de l’intervention de crise et de l’orientation.', u:C + 'sante-mentale'}]},
+    {s:'urgence'}
+  ]},
+  accommodement:{titre:'Un accommodement', mots:'accommodement handicap limitation pri plan de reussite examen boussole', services:[{s:'boussole', page:D_04, faits:[
+    {t:'Selon la directive PED-01-04 (§4.3), tout commence quand tu communiques avec La Boussole, que la limitation soit confirmée ou non.', u:D_04},
+    {t:'La directive parle du formulaire de consentement dans le Portail, ou d’un rendez-vous directement avec La Boussole.', u:D_04},
+    {t:'La Boussole transmet le plan (PRI) par eCité à chaque session : ce n’est pas à toi de prévenir les professeurs.', u:D_04},
+    {t:'La directive précise que le PRI pourrait ne pas s’appliquer aux stages.', u:D_04}
+  ]}]},
+
+  /* ---------- les cours ---------- */
+  cours:{q:'Qu’est-ce qui se passe ?', choix:[
+    {vers:'abandon', t:'Je pense abandonner un cours'},
+    {vers:'note', t:'Je conteste une note ou une décision'},
+    {vers:'manquee', t:'J’ai manqué une évaluation'},
+    {vers:'etudier', t:'Je veux de l’aide pour étudier', s:'Centres d’aide, Appui académique'},
+    {vers:'accommodement', t:'J’ai besoin d’un accommodement'}
+  ]},
+  abandon:{titre:'Je pense abandonner un cours', mots:'abandon retrait echec ec mention cours programme remboursement', services:[
+    {s:'specialiste', faits:[
+      {t:'La directive PED-01-01 (§1.5.2) encourage à rencontrer le ou la spécialiste du programme avant de décider.', u:D_01},
+      {t:'Elle précise (§1.5) que c’est à l’étudiant de se renseigner sur les effets d’un changement.', u:D_01},
+      {t:'Le calendrier fixe au lundi 9 novembre 2026 le dernier jour de retrait officiel sans mention d’échec, sauf si une note a déjà été rapportée.', u:P_CAL, fin:'2026-11-09'},
+      {t:'Le calendrier fixait au 21 septembre 2026 le remboursement partiel de l’automne.', u:P_CAL, fin:'2026-12-20'},
+      {t:'Pour l’hiver, le calendrier fixe au vendredi 22 janvier 2027 le dernier retrait avec remboursement partiel.', u:P_CAL, fin:'2027-01-22'},
+      {t:'Pour l’hiver, le calendrier fixe au lundi 22 mars 2027 le dernier retrait sans mention d’échec.', u:P_CAL, fin:'2027-03-22'},
+      {t:'Retirer tous ses cours demande le formulaire de retrait officiel de programme (§1.5.2).', u:D_01}
+    ]},
+    {s:'aidefin', faits:[
+      {t:'La directive (§1.5.2) dit qu’un passage à temps partiel peut faire perdre l’accès aux régimes d’aide financière.', u:D_01},
+      {t:'L’Ontario indique qu’un changement de charge de cours entraîne une réévaluation du RAFEO, et demande de communiquer avec le bureau d’aide financière, à l’avance si possible.', u:ON_APRES}
+    ]}
+  ]},
+  note:{titre:'Je conteste une note ou une décision', mots:'note revision appel contestation coordination decision echec', services:[{s:'prof', faits:[
+    {t:'Note en cours de session : la directive PED-01-06 (§6.3) nomme le ou la professeure d’abord, puis la coordination au besoin, puis la direction.', u:D_06},
+    {t:'Note finale : PED-01-13 (§13.3) nomme aussi le ou la professeure d’abord, puis la coordination.', u:D_13},
+    {t:'La demande de révision se fait dans les 10 jours ouvrables suivant l’affichage de la note au Portail, par le formulaire « Demande de révision de notes » de la FAQ (§13.5).', u:D_13},
+    {t:'Le calendrier fixe au 8 janvier 2027 la limite pour les notes de l’automne 2026.', u:P_CAL, fin:'2027-01-08'},
+    {t:'La directive demande que les dettes envers le Collège soient payées avant la demande. Des frais sont perçus, et remboursés si la décision est favorable (§13.5).', u:D_13},
+    {t:'L’appel vient après la révision : PED-01-14 donne 10 jours ouvrables après la décision écrite pour remettre le formulaire de la FAQ (§14.2).', u:D_14},
+    {t:'Une personne de ton choix peut t’accompagner, si elle est déclarée par écrit 48 heures avant (§14.3).', u:D_14}
+  ]}]},
+  manquee:{titre:'J’ai manqué une évaluation', mots:'evaluation examen absence reprise manque malade', services:[{s:'prof', page:D_06, faits:[
+    {t:'Selon la directive PED-01-06 (§6.4), pour une évaluation de 15 % ou moins, le ou la professeure choisit entre une reprise et une nouvelle pondération.', u:D_06},
+    {t:'Au-delà de 15 %, la directive réserve la reprise aux circonstances exceptionnelles, comme un décès dans la famille ou une maladie grave. Les vacances n’en font pas partie.', u:D_06},
+    {t:'Pour ces évaluations, elle demande d’aviser le ou la professeure avant le début de l’évaluation.', u:D_06},
+    {t:'Elle prévoit au plus trois reprises par trimestre, hors droits de reprise, sauf circonstances exceptionnelles.', u:D_06},
+    {t:'Manquer la reprise elle-même donne une note de zéro.', u:D_06}
+  ]}]},
+  etudier:{titre:'Je veux de l’aide pour étudier', mots:'tutorat aide cours francais maths sciences centre d aide bibliotheque zone', services:[{s:'zone', faits:[{t:'Appui en informatique est au local A2060.', u:C + 'plan_campus'}]}]},
+
+  /* ---------- les outils ---------- */
+  outils:{q:'Quel outil ?', choix:[
+    {vers:'portail', t:'Le Portail ou mon mot de passe'},
+    {vers:'ecite', t:'eCité', s:'Mes cours en ligne'},
+    {vers:'panne', t:'Quelque chose ne marche pas', s:'Une panne, peut-être'}
+  ]},
+  portail:{titre:'Le Portail ou mon mot de passe', mots:'portail mot de passe connexion numero etudiant compte', services:[
+    {s:'acces', faits:[
+      {t:'Le Portail est à monportail.collegelacite.ca.', u:P_ACCES},
+      {t:'Le nom d’utilisateur est ton numéro d’étudiant de 7 chiffres.', u:P_ACCES},
+      {t:'La marche à suivre pour le mot de passe est sur cette page officielle.', u:P_ACCES}
+    ]},
+    {s:'zone', faits:[{t:'Pour un problème de connexion, l’article d’aide renvoie à La Zone réussite.', u:P_ACCES}]}
+  ]},
+  ecite:{titre:'eCité', mots:'ecite cours en ligne plateforme connexion', services:[{s:'ecite'}, {s:'zone'}]},
+  panne:{titre:'Quelque chose ne marche pas', mots:'panne wifi reseau impression courriel statut', services:[{s:'statut'}, {s:'zone', faits:[{t:'Appui en informatique est au local A2060.', u:C + 'plan_campus'}]}]},
+
+  /* ---------- le reste ---------- */
+  dossier:{titre:'Mon dossier', mots:'dossier scolaire horaire releve de notes attestation formulaire registraire', services:[{s:'registraire', faits:[
+    {t:'Le formulaire en ligne du Bureau propose notamment : Dossier scolaire, Horaire, Paiement et entente de paiement, Reconnaissance des acquis et équivalences.', u:P_FORM},
+    {t:'Par écrit, la page Admission et registraire passe par son formulaire « Contactez-nous ».', u:P_ADM}
+  ]}]},
+  respect:{titre:'Harcèlement, discrimination ou violence', intro:'En cas de danger immédiat : 911.', mots:'harcelement discrimination violence sexuelle agression plainte signalement respect intimidation', services:[
+    {s:'respect', faits:[
+      {t:'La directive RH-06 (§7.1.1) invite toute personne qui a une plainte à rencontrer un coordonnateur ou une coordonnatrice de ce bureau.', u:D_RH06},
+      {t:'Selon la directive RH-14 (§3.1), la décision de signaler appartient à la personne survivante, et le Bureau donne accès à des accommodements, des services et du soutien.', u:D_RH14},
+      {t:'Pour des soins médicaux urgents, RH-14 nomme la clinique du local B1060 ou l’urgence de l’hôpital le plus près.', u:D_RH14},
+      {t:'RH-14 nomme aussi le CALACS francophone d’Ottawa : 613 789-8096.', u:D_RH14},
+      {t:'RH-14 (§3.3) dit qu’un membre de la communauté collégiale qui apprend un cas touchant un autre membre doit le signaler à la Sécurité ou au Bureau, en gardant l’anonymat de la personne survivante sauf si elle consent.', u:D_RH14}
+    ]},
+    {s:'securite', faits:[{t:'La Sécurité peut guider une personne vers le Bureau du respect de la personne.', u:P_SERV}]}
+  ]},
+  emploi:{titre:'COOP et emploi', mots:'coop stage emploi travail cv', services:[{s:'emploi', faits:[{t:'Pour le programme Opticien, la page situe le COOP à l’étape 2 et à l’étape 4, au printemps.', u:C + 'informations-pour-etudiants'}]}]},
+  communaute:{q:'Lequel te concerne ?', choix:[
+    {vers:'international', t:'Étudiant international'},
+    {vers:'autochtone', t:'Étudiant des Premières Nations, métis ou inuit'}
+  ]},
+  international:{titre:'Étudiant international', mots:'international permis etudes immigration visa assurance logement', services:[{s:'sai', faits:[{t:'Des rendez-vous virtuels ou téléphoniques se prennent depuis la page.', u:C + 'service-accompagnement-international'}]}]},
+  autochtone:{titre:'Étudiant des Premières Nations, métis ou inuit', mots:'autochtone premieres nations metis inuit mino pimatisiwin', services:[{s:'mino'}]},
+  perdu:{titre:'Je ne sais pas par où commencer', mots:'perdu aide question orientation specialiste', services:[{s:'specialiste'}]},
+  urgence:{titre:'Lignes d’aide et de crise', mots:'urgence crise suicide aide 911 988 allo ecoute', services:[{s:'urgence', faits:[{t:'La ligne de crise est disponible en tout temps, et Allo J’écoute s’adresse aux étudiants du postsecondaire de l’Ontario.', u:C + 'urgence'}, {t:'Le 9-8-8 répond 24 heures sur 24, chaque jour de l’année.', u:'https://988.ca/fr'}]}, {s:'securite'}]}
+};
+
+/* relevées mot pour mot dans le calendrier scolaire ; une date passée se cache toute seule */
+const DATES = [
+  {d:'2026-11-09', t:'Dernier jour de retrait officiel d’un programme ou d’un cours sans mention d’échec au relevé de notes, sauf si une note a déjà été rapportée. Pour le remboursement et le RAFEO, voir « Je pense abandonner un cours ».', u:P_CAL},
+  {d:'2026-11-11', t:'Activation et pré-inscription à l’hiver 2027 pour les étudiants qui ont une entente annuelle signée.', u:P_CAL},
+  {d:'2026-12-02', t:'Frais de l’hiver 2027, ou dépôt avec entente annuelle, pour les étudiants déjà inscrits aux « étapes avancées ».', u:P_CAL},
+  {d:'2026-12-20', t:'Fin du trimestre d’automne 2026.', u:P_CAL},
+  {d:'2026-12-24', t:'Publication des notes finales de l’automne 2026.', u:P_CAL},
+  {d:'2027-01-08', t:'Limite pour une demande de révision de notes de l’automne 2026.', u:P_CAL},
+  {d:'2027-01-11', t:'Début des cours de l’hiver 2027.', u:P_CAL},
+  {d:'2027-01-22', t:'Dernier versement des frais de l’hiver 2027 pour les ententes de paiement, et dernier retrait avec remboursement partiel.', u:P_CAL},
+  {d:'2027-02-15', t:'Début de la semaine d’études de l’hiver 2027.', u:P_CAL},
+  {d:'2027-03-22', t:'Dernier jour de retrait sans mention d’échec pour l’hiver 2027.', u:P_CAL},
+  {d:'2027-04-25', t:'Fin du trimestre d’hiver 2027.', u:P_CAL},
+  {d:'2027-04-30', t:'Publication des notes finales de l’hiver 2027.', u:P_CAL}
+];
+/* ====== contenu : fin ====== */
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+const dehors = (u, t, c) => '<a' + (c ? ' class="' + c + '"' : '') + ' href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>';
+const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+const enLettres = iso => { const [a, m, j] = iso.split('-').map(Number); return (j === 1 ? '1er' : j) + ' ' + MOIS[m - 1] + ' ' + a; };
+const aujourdhui = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+
+/* le chemin se déduit de l'arbre : un lien partagé montre où on est, et le bouton Retour ne dépend d'aucune mémoire */
+const PARENT = {}, ETIQUETTE = {};
+(function parcourir(id){ (NOEUDS[id].choix || []).forEach(c => { if(!(c.vers in PARENT) && c.vers !== 'debut'){ PARENT[c.vers] = id; ETIQUETTE[c.vers] = c.t; parcourir(c.vers); } }); })('debut');
+const chemin = id => { const l = [id]; while(PARENT[l[0]]) l.unshift(PARENT[l[0]]); return l; };
+const titreDe = id => ETIQUETTE[id] || NOEUDS[id].titre || NOEUDS[id].q;
+const LECONS = Object.keys(NOEUDS).filter(id => NOEUDS[id].services);
+const plat = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+const etape = $('#etape'), fil = $('#fil'), cherche = $('#cherche');
+let ici = 'debut';
+/* le chemin vit ici seulement : l'historique du navigateur ne reçoit qu'un rang, jamais un choix, et un rechargement repart du début */
+const pile = [];
+
+function ligneChoix(vers, t, s){
+  return '<li><button type="button" data-vers="' + esc(vers) + '"><span class="mots"><b>' + esc(t) + '</b>' + (s ? '<small>' + esc(s) + '</small>' : '') + '</span><span class="fleche" aria-hidden="true">→</span></button></li>';
+}
+function peindreFil(id){
+  const l = chemin(id);
+  fil.hidden = l.length < 2;
+  fil.innerHTML = l.map((x, i) => i === l.length - 1 ? '<b>' + esc(x === 'debut' ? 'Début' : titreDe(x)) + '</b>'
+    : '<button type="button" data-vers="' + esc(x) + '">' + esc(x === 'debut' ? 'Début' : titreDe(x)) + '</button><span aria-hidden="true">›</span>').join('');
+}
+function peindreService(c){
+  const s = SERVICES[c.s] || {};
+  const j = aujourdhui(), faits = (c.faits || []).filter(f => !f.fin || f.fin >= j);
+  return '<article class="service"><h3>' + esc(s.nom) + '</h3>' + (s.role ? '<p class="role">' + esc(s.role) + '</p>' : '') +
+    (faits.length ? '<ul class="faits">' + faits.map(f => '<li>' + esc(f.t) + ' ' + dehors(f.u, 'source', 'src') + '</li>').join('') + '</ul>' : '') +
+    (s.joindre && s.joindre.length ? '<dl class="joindre">' + s.joindre.map(j => '<dt>' + esc(j.t) + '</dt><dd>' + (j.tel ? '<a href="tel:' + esc(j.tel) + '">' + esc(j.v) + '</a>' : j.mail ? '<a href="mailto:' + esc(j.mail) + '">' + esc(j.v) + '</a>' : esc(j.v)) + '</dd>').join('') + '</dl>' : '') +
+    dehors(c.page || s.page, 'Ouvrir la page officielle ↗', 'go') + '</article>';
+}
+function peindre(id){
+  const n = NOEUDS[id];
+  ici = id;
+  peindreFil(id);
+  if(n.services){
+    etape.innerHTML = '<h2 tabindex="-1">' + esc(n.titre) + '</h2>' + (n.intro ? '<p class="intro">' + esc(n.intro) + '</p>' : '') + n.services.map(peindreService).join('') +
+      '<p class="borne">Vérifié le ' + enLettres(VERIFIE) + '. Seul le service peut répondre pour ton dossier.</p>' +
+      '<div class="bas"><button type="button" id="copier">Copier le lien de cette page</button><button type="button" data-vers="debut">Recommencer</button></div><p class="etat" id="etat" role="status"></p>';
+  } else {
+    etape.innerHTML = '<h2 tabindex="-1">' + esc(n.q) + '</h2><ul class="choix">' + n.choix.map(c => ligneChoix(c.vers, c.t, c.s)).join('') + '</ul>';
+  }
+  $('#dates').hidden = id !== 'debut' || !peindreDates();
+}
+function peindreDates(){
+  const j = aujourdhui(), l = DATES.filter(d => d.d >= j).slice(0, 4);
+  $('#dates-liste').innerHTML = l.map(d => '<li><time datetime="' + d.d + '">' + enLettres(d.d).replace(/ \d{4}$/, '') + '</time><span>' + esc(d.t) + ' ' + dehors(d.u, 'source', 'src') + '</span></li>').join('');
+  $('#dates-note').textContent = 'Relevé le ' + enLettres(VERIFIE) + '. Confirme sur le calendrier officiel avant d’agir.';
+  return l.length > 0;
+}
+function aller(id, pousser){
+  if(!NOEUDS[id]) id = 'debut';
+  cherche.value = '';
+  if(pousser){ pile.push(ici); try{ history.pushState({n:pile.length}, ''); }catch(e){} }
+  peindre(id);
+  const h = $('h2', etape);
+  window.scrollTo(0, 0);
+  if(h && pousser) h.focus({preventScroll:true});
+}
+function chercher(){
+  const m = plat(cherche.value).trim();
+  if(!m){ peindre(ici); return; }
+  fil.hidden = true; $('#dates').hidden = true;
+  const l = LECONS.filter(id => plat(NOEUDS[id].titre + ' ' + (NOEUDS[id].mots || '') + ' ' + NOEUDS[id].services.map(c => SERVICES[c.s].nom).join(' ')).includes(m));
+  etape.innerHTML = l.length ? '<h2 tabindex="-1">' + l.length + (l.length > 1 ? ' résultats' : ' résultat') + '</h2><ul class="choix">' + l.map(id => ligneChoix(id, NOEUDS[id].titre, NOEUDS[id].services.map(c => SERVICES[c.s].nom).join(' · '))).join('') + '</ul>'
+    : '<h2 tabindex="-1">Rien pour ce mot</h2><p class="vide">Essaie un autre mot, ou commence par le service qui oriente tout le monde.</p><ul class="choix" style="margin-top:12px">' + ligneChoix('perdu', titreDe('perdu')) + '</ul>';
+}
+/* le lien d'une étape se copie à la demande ; l'adresse de la page, elle, ne change jamais : rien ne reste dans l'historique */
+async function copier(){
+  const u = location.origin + location.pathname + '#' + ici, e = $('#etat');
+  try{ await navigator.clipboard.writeText(u); e.textContent = 'Lien copié.'; }
+  catch(err){ e.textContent = u; }
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-vers]');
+  if(b){ aller(b.dataset.vers, true); return; }
+  if(ev.target.closest('#copier')) copier();
+});
+cherche.addEventListener('input', chercher);
+window.addEventListener('popstate', e => {
+  const n = e.state && e.state.n || 0;
+  if(n >= pile.length) return;
+  const id = pile[n];
+  pile.length = n;
+  aller(id, false);
+});
+
+const jours = (Date.now() - new Date(VERIFIE + 'T12:00:00').getTime()) / 864e5;
+if(jours > A_REVOIR_APRES){
+  const v = $('#vieux');
+  v.textContent = 'Attention : ce guide a été vérifié pour la dernière fois le ' + enLettres(VERIFIE) + '. Il peut être dépassé : fie-toi aux pages officielles.';
+  v.hidden = false;
+}
+const lien = location.hash.slice(1);
+try{ history.replaceState({n:0}, '', location.pathname + location.search); }catch(e){}
+aller(NOEUDS[lien] ? lien : 'debut', false);
+})();
+</script>
+<script>
+(() => {
+  const ICI = '6b85837221d7';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body>
+</html>
