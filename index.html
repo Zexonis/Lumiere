@@ -59,6 +59,7 @@ h1 em{display:inline;font-style:italic;font-weight:500;color:var(--blanc);text-s
   border-radius:999px;padding:7px 14px;font-size:14.5px;color:var(--blanc)}
 .reprendre span{color:var(--gris-2);font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 .reprendre:hover{border-color:var(--gris)}
+.raccourcis{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
 .scene{display:none}
 
 .ports{display:flex;flex-direction:column;justify-content:center;gap:12px;padding-block:6px;min-width:0}
@@ -189,7 +190,10 @@ h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px)
       <p class="sur">Lumière · Techniques d’opticien</p>
       <h1 id="salut"><span class="mot" id="salut-mot">Bonjour,</span> <em>cher rayon<br> de lumière.</em></h1>
       <p class="sous">Ton métier : offrir aux autres la lumière d’une vision nette. Ici, elle traverse ce prisme et ressort en cinq raies : une par cours, à toi de choisir.</p>
-      <a class="reprendre" id="reprendre" href="#" target="_blank" rel="noopener" hidden><span>Reprendre</span><b id="reprendre-titre"></b> ↗</a>
+      <div class="raccourcis">
+        <a class="reprendre" id="reprendre" href="#" target="_blank" rel="noopener" hidden><span>Reprendre</span><b id="reprendre-titre"></b> ↗</a>
+        <a class="reprendre" href="qui-peut-aider.html" target="_blank" rel="noopener"><span>Besoin d’aide</span><b>Qui peut m’aider ?</b> ↗</a>
+      </div>
     </div>
     <div class="scene" id="scene" aria-hidden="true"></div>
     <nav class="ports" id="ports" aria-label="Les cinq cours"></nav>
@@ -597,7 +601,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
-    {d:'2026-11-03', p:['*'], t:'« Qui peut m’aider ? » est sur la page d’accueil de Lumière. Choisis ce qui te préoccupe (bourses, santé, notes, outils) et le guide t’indique le service de La Cité à contacter, avec sa page officielle. C’est un guide étudiant non officiel : il ne donne pas de conseils.'},
+    {d:'2026-11-03', p:['*'], t:'« Qui peut m’aider ? » est sur la page d’accueil de Lumière, juste sous le message de bienvenue. Choisis ce qui te préoccupe (bourses, santé, notes, outils) et le guide t’indique le service de La Cité à contacter, avec sa page officielle. C’est un guide étudiant non officiel : il ne donne pas de conseils.'},
     {d:'2026-11-03', p:['*'], t:'Le Sablier marche maintenant dans le Survol, même seul·e : le bouton est en haut, à côté de Convergence. C’est le même sablier que dans tes ateliers : il te suit de l’un à l’autre, et sa pause tombe à la prochaine diapo, ou à la seconde près en 5 · 5.'},
     {d:'2026-11-03', p:['*'], t:'En ouvrant un atelier ou le Banc, tu choisis maintenant ton chemin. « Efficace » t’amène droit au Survol, « Complet » ouvre l’atelier comme d’habitude. Tu passes de l’un à l’autre quand tu veux.'},
     {d:'2026-11-03', p:['*'], t:'Le Survol se fait maintenant à plusieurs. En séance Convergence, ouvre-le : tes amis reçoivent « Rejoindre ». Dans « ✎ Notes », « Notes du groupe » vous fait écrire ensemble, ligne par ligne, les notes de chaque diapo. Le repère garde votre diapo commune : « Recentrer » t’y ramène et « Prêt·e » vous fait avancer ensemble. Sans atelier, le bouton « Convergence » du Survol crée un groupe avec un code.'},
@@ -745,7 +749,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '6b85837221d7';
+  const ICI = 'afe77d8e235e';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
