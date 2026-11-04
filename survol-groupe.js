@@ -32,6 +32,7 @@ const RAIES = {C:['656,3', '#FF5A4A'], d:['587,6', '#FFD23F'], e:['546,1', '#9BF
 const NOMS = ['Photon', 'Prisme', 'Lumen', 'Iris', 'Halo', 'Zénith', 'Aurore', 'Spectre', 'Éclat', 'Quanta'];
 const ALPHA = 'abcdefghjkmnpqrstuvwxyz23456789';
 const CLE_PASSE = 'lumiere-cv-passe', CLE_RAIE = 'lumiere-cv-raie', CLE_NOM = 'lumiere-cv-nom', CLE_RYTHME = 'lumiere-cv-rythme';
+const CLE_SOLO = 'lumiere-sablier';         // le sablier de l'appareil, le même que dans les ateliers (sablier.js)
 const VIE_PASSE = 600000;                  // le passage de l'atelier au Survol : 10 minutes
 const ECRITURE = 250, VERROU = 4500, MAX_LIGNES = 200, MAX_TEXTE = 2000, MAX_GROUPE = 32;
 const AVANT = 30000;                       // l'avis qui précède une pause
@@ -155,13 +156,16 @@ function avancePret(rep, moi, prets, N){
     return {n, on:x.on === true, t, p, d, par:typeof x.par === 'string' ? x.par.slice(0, 128) : ''};
   }
 const cleCycle = (r, ph) => r.d + ':' + ph.cycle;
+  const coupe = (t, p) => t === 5 && p === 5;
+  const tempsCompte = (s, cache, actif) => s.on && !s.fin && !cache && !actif;
+  const pauseDue = (s, actif) => s.on && !s.fin && !actif && s.cumul >= s.travail * 60000;
 /* changer le rythme pendant une pause ne l'écourte pas : le nouveau commence à la fin de la pause en cours (changerSablier, convergence.js) */
 function rythmeChange(a, c, t0, moi){
   const ph = a.on && c.on ? phaseRythme(a, t0) : null, apres = ph && ph.pause ? ph.reste : 0;
   return {r:{n:a.n + 1, on:c.on, t:c.on ? c.t : a.t, p:c.on ? c.p : a.p, d:c.on ? t0 + apres : a.d, par:moi}, apres};
 }
 const PUR = {salleSurvol, cleDiapo, cleEntre, lireLigne, plierLignes, verrouDe, lirePoste, ordreGroupe, repereGagne, lireRepere, avancePret,
-  phaseRythme, rythmeGagne, lireRythme, cleCycle, rythmeChange, VERROU, FIREBASE, SDK_FIREBASE, RAIES};
+  phaseRythme, rythmeGagne, lireRythme, cleCycle, coupe, tempsCompte, pauseDue, rythmeChange, VERROU, FIREBASE, SDK_FIREBASE, RAIES};
 
 /* ---------- la page ---------- */
 let api = null;                            // ce que prête le bloc des notes (notes-survol.html)
@@ -284,6 +288,7 @@ async function entrer(salle, o){
   api.groupe(V);
   if(S.notes) api.montrer(V);
   adresse(salle); sauver();
+  if(voile && !pa.groupe) couper();
   tempo();
   return true;
 }
@@ -303,6 +308,8 @@ async function quitter(){
   N.rows.clear();
   if(N.liste) N.liste.textContent = '';
   Object.assign(S, {membres:{}, repere:VIDE_R(), pret:0, sablier:VIDE_S(), maLigne:null, notes:false, atelier:false});
+  if(so.d){ so.d = Date.now(); so.vu = so.d; sauverSeul(); }      // comme dans l'atelier : le 5·5 de l'appareil repart d'une phase de travail
+  tempo();
   if(r){ try{ await S.F.onDisconnect(r).cancel(); await S.F.remove(r); }catch(e){} }
   toast('Tu as quitté le groupe. Ses notes restent en copie sur cet appareil.', 'Revenir', () => entrer(salle, {nom, raie}));
 }
@@ -897,16 +904,21 @@ function verre(petit){
 }
 const mmss = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const texteR = r => r.t + ' min · pause ' + r.p;
-const rythme = () => S.sablier.n && S.sablier.on ? S.sablier : null;
+/* en groupe, le rythme du groupe ; seul·e, celui de l'appareil, dont seul le 5·5 coupe à l'heure */
+const rythmeSeul = () => so.on && so.d && coupe(so.travail, so.pause) ? {n:0, on:true, t:so.travail, p:so.pause, d:so.d, par:''} : null;
+const rythme = () => S.actif ? (S.sablier.n && S.sablier.on ? S.sablier : null) : rythmeSeul();
+const heureDe = r => r.n ? maintenant() : Date.now();
 const CONSEILS = [
   'Regarde un objet à six mètres ou plus pendant vingt secondes : au loin, A = 1/d tend vers 0 et ton cristallin se relâche (Optique M6).',
   'Ferme les yeux vingt secondes, puis cligne lentement quelques fois : le clignement répartit le film lacrymal (Anatomie M6).',
   'Lève-toi, étire-toi, bois un verre d’eau. Le sable s’occupe du reste.'
 ];
-let tR = 0, averti = '', seulC = '', voile = null, raf = 0, derniereS = -1, focusAvant = null;
-const pa = {fin:0, duree:0};
+let tR = 0, tFin = 0, averti = '', seulC = '', voile = null, raf = 0, derniereS = -1, focusAvant = null;
+const pa = {fin:0, duree:0, rythme:false, groupe:false};
+const so = {on:false, travail:25, pause:5, cumul:0, fin:0, duree:0, d:0, vu:0, seul:''};
 function majSablier(){
-  if(!barre) return;
+  majBoutonSeul();
+  if(!barre || !S.actif) return;
   const r = rythme(), b = $('.sg-sab', barre), ph = r ? phaseRythme(r, maintenant()) : null, seul = !!ph && ph.pause && seulC === cleCycle(r, ph);
   const f = !ph ? 1 : ph.pause ? 1 - ph.reste / (r.p * 60000) : ph.reste / (r.t * 60000);
   const dit = !ph ? 'Sablier du groupe : un rythme pour tout le monde' : seul ? 'Tu continues seul·e : le groupe reprend dans ' + mmss(ph.reste)
@@ -920,38 +932,46 @@ function majSablier(){
 /* tempo se cale sur la seconde de la phase : les pages basculent ensemble */
 function tempo(){
   clearTimeout(tR); tR = 0;
-  if(!S.actif) return;
   const r = rythme();
-  if(!r){ if(voile) finir(false); majSablier(); return; }
-  const ph = phaseRythme(r, maintenant()), cle = cleCycle(r, ph);
+  if(!r){ if(voile && pa.rythme) finir(false); majSablier(); return; }
+  const ph = phaseRythme(r, heureDe(r)), cle = cleCycle(r, ph);
   if(ph.pause && seulC !== cle){
     pa.fin = Date.now() + ph.reste; pa.duree = r.p * 60000;
+    if(voile && (!pa.rythme || pa.groupe !== !!r.n)) couper();
     if(voile) peindreVoile(); else montrerVoile(r);
-  } else if(voile) finir(false);
+  } else if(voile && pa.rythme) finir(false);
   if(!voile && !ph.pause && ph.reste <= AVANT && ph.reste > 2000 && r.t * 60000 > AVANT && averti !== cle){
-    averti = cle; toast('Pause du groupe dans ' + Math.ceil(ph.reste / 1000) + ' secondes.');
+    averti = cle; toast((r.n ? 'Pause du groupe dans ' : 'Pause dans ') + Math.ceil(ph.reste / 1000) + ' secondes.');
   }
+  if(!r.n && !document.hidden && Date.now() - so.vu > 15000){ so.vu = Date.now(); sauverSeul(); }
   majSablier();
   tR = setTimeout(tempo, (ph.reste % 1000 || 1000) + 15);
 }
 function montrerVoile(r){
   if(voile) return;
   fermerPop();
-  const l = CONSEILS.concat(r.p + ' minutes pour bouger, rire, boire de l’eau. Le groupe reprend à la même seconde.');
-  voile = H('<div class="sablier-voile" role="dialog" aria-modal="true" aria-labelledby="sablier-titre"><div class="sablier-carte"><p class="lib">Pause du groupe · ' + r.p + ' min</p>' +
+  const groupe = !!(r && r.n);
+  pa.rythme = !!r; pa.groupe = groupe;
+  if(!r){ pa.fin = so.fin; pa.duree = so.duree; }
+  const l = CONSEILS.concat(r ? r.p + ' minutes pour bouger, rire, boire de l’eau. ' + (groupe ? 'Le groupe reprend à la même seconde.' : 'Le prochain tour commence à l’heure.') : []);
+  voile = H('<div class="sablier-voile" role="dialog" aria-modal="true" aria-labelledby="sablier-titre"><div class="sablier-carte"><p class="lib">' + (groupe ? 'Pause du groupe · ' : 'Pause · ') + (r ? r.p : so.pause) + ' min</p>' +
     '<div class="sablier-tourne">' + verre(false) + '</div><p class="sablier-compte" aria-hidden="true"></p><p class="sg-sr" aria-live="polite" id="sablier-annonce"></p>' +
     '<h2 id="sablier-titre">Le sable coule : laisse reposer.</h2><p class="sablier-conseil">' + esc(l[Math.floor(Math.random() * l.length)]) + '</p>' +
-    '<div class="sg-pop-b"><button type="button" data-s="seul" title="Pour toi seul·e, et pour cette pause : le groupe reste en pause et le prochain tour repart ensemble">Continuer seul·e</button>' +
-    '<button type="button" data-s="reglages" title="Changer ou arrêter le rythme pour tout le monde : le groupe verra ton nom">Changer le rythme</button></div></div></div>');
+    '<div class="sg-pop-b">' + (groupe ? '<button type="button" data-s="seul" title="Pour toi seul·e, et pour cette pause : le groupe reste en pause et le prochain tour repart ensemble">Continuer seul·e</button>' +
+      '<button type="button" data-s="reglages" title="Changer ou arrêter le rythme pour tout le monde : le groupe verra ton nom">Changer le rythme</button>'
+      : '<button type="button" data-s="fin">Reprendre maintenant</button>') + '</div></div></div>');
   document.body.appendChild(voile);
   voile.classList.toggle('coule', !reduit());
   voile.addEventListener('click', e => {
     const b = e.target.closest('[data-s]'); if(!b) return;
-    if(b.dataset.s === 'seul') continuerSeul(); else ouvrirSablier(b);
+    if(b.dataset.s === 'fin') finir(true); else if(b.dataset.s === 'seul') continuerSeul(); else ouvrirSablier(b);
   });
   setTimeout(() => { if(voile){ focusAvant = document.activeElement; $('button', voile).focus({preventScroll:true}); } }, 30);
   derniereS = -1;
   animer();
+  /* l'animation s'arrête quand l'onglet est caché : une minuterie garde l'heure de fin (en rythme, c'est tempo) */
+  clearTimeout(tFin);
+  if(!r) tFin = setTimeout(() => { if(voile && Date.now() >= so.fin) finir(false); }, Math.max(0, so.fin - Date.now()) + 60);
 }
 function peindreVoile(){
   const reste = pa.fin - Date.now(), f = Math.max(0, Math.min(1, reste / (pa.duree || 1)));
@@ -967,6 +987,7 @@ function animer(){
   raf = 0;
   if(!voile) return;
   peindreVoile();
+  if(pa.fin <= Date.now() && !pa.rythme){ finir(false); return; }
   raf = reduit() ? setTimeout(animer, 250) : requestAnimationFrame(animer);
 }
 function rendreFocus(v){
@@ -975,19 +996,26 @@ function rendreFocus(v){
 }
 function finir(passee){
   if(!voile) return;
-  cancelAnimationFrame(raf); clearTimeout(raf); raf = 0;
+  cancelAnimationFrame(raf); clearTimeout(raf); clearTimeout(tFin); raf = 0;
+  if(!pa.groupe){
+    if(!pa.rythme){ so.fin = 0; so.cumul = 0; }
+    else if(passee){ so.d = Date.now(); so.vu = so.d; }     // seul·e : un tour neuf commence ici
+    sauverSeul();
+  }
   const v = voile; voile = null;
   $('#sablier-annonce', v).textContent = passee ? 'Pause écourtée.' : 'Pause finie : on reprend.';
   rendreFocus(v);
+  if(passee && pa.rythme && !pa.groupe) tempo(); else majBoutonSeul();
   if(reduit()){ v.remove(); return; }
   v.classList.add('fini');
   setTimeout(() => v.classList.add('part'), 650);
   setTimeout(() => v.remove(), 1150);
 }
-/* en sortant du groupe : sans cérémonie */
+/* une pause qui n'a plus lieu d'être (on sort du groupe, on y entre) : sans cérémonie */
 function couper(){
   if(!voile) return;
-  cancelAnimationFrame(raf); clearTimeout(raf); raf = 0;
+  cancelAnimationFrame(raf); clearTimeout(raf); clearTimeout(tFin); raf = 0;
+  if(!pa.rythme && !pa.groupe){ so.fin = 0; so.cumul = 0; sauverSeul(); }
   const v = voile; voile = null;
   v.remove();
 }
@@ -1041,6 +1069,96 @@ function remplirSablier(){
     '<div class="sg-puces" role="group" aria-label="Le rythme du groupe : travail, puis pause">' + REGLAGES.map(([t, p]) => '<button type="button" data-r="' + t + '-' + p + '" aria-pressed="' + !!(g && g.t === t && g.p === p) + '">' + t + ' min · pause ' + p + '</button>').join('') + '</div>' +
     '<div class="sg-pop-b">' + (g ? '<button type="button" data-c="arret">Arrêter pour tout le monde</button>' : '') + '<button type="button" data-c="ok">OK</button></div>';
 }
+/* ---------- le sablier seul : celui de l'appareil. Même clé et mêmes règles que sablier.js : il suit de l'atelier à son Survol, et retour.
+   Le classique attend la diapo suivante, le 5·5 coupe à l'heure. En groupe il attend : le bouton du haut s'efface, le rythme du groupe décide. ---------- */
+const sauverSeul = () => api.ecrire(CLE_SOLO, JSON.stringify(so));
+const lireSeul = () => Object.assign(so, lireObjet(CLE_SOLO) || {});
+function majBoutonSeul(){
+  const b = api && api.sablier; if(!b) return;
+  b.hidden = S.actif;
+  if(S.actif) return;
+  const r = rythmeSeul(), ph = r ? phaseRythme(r, Date.now()) : null, T = so.travail * 60000, du = !r && so.on && so.cumul >= T;
+  const f = ph ? (ph.pause ? 1 - ph.reste / (r.p * 60000) : ph.reste / (r.t * 60000)) : so.on ? Math.max(0, 1 - so.cumul / T) : 1;
+  const dit = !so.on ? 'Sablier : des pauses entre les diapos' : ph ? (ph.pause ? 'Pause : encore ' + mmss(ph.reste) : 'Sablier (' + texteR(r) + ') : pause dans ' + mmss(ph.reste))
+    : du ? 'Pause à la prochaine diapo' : 'Sablier : prochaine pause dans ' + mmss(T - so.cumul);
+  b.title = dit; b.setAttribute('aria-label', dit);
+  b.setAttribute('aria-pressed', String(so.on));
+  b.classList.toggle('proche', !!ph && !ph.pause && ph.reste <= AVANT);
+  $('.ns-temps', b).textContent = !so.on ? '' : du ? 'Pause' : mmss(ph ? ph.reste : T - so.cumul);
+  dessinerSable($('svg', b), f, false);
+}
+function commencerPause(){ so.duree = so.pause * 60000; so.fin = Date.now() + so.duree; sauverSeul(); montrerVoile(null); }
+/* « Pause maintenant » : un rythme avance son départ pour que la pause commence ici */
+function pauseMaintenant(){
+  const r = rythmeSeul();
+  if(r){ so.d = Date.now() - r.t * 60000; so.seul = ''; sauverSeul(); tempo(); return; }
+  commencerPause();
+}
+function choisirSeul(t, p){
+  if(so.travail === t && so.pause === p) return;
+  const rapide = coupe(t, p) || coupe(so.travail, so.pause);
+  so.travail = t; so.pause = p;
+  if(rapide){ so.cumul = 0; so.d = coupe(t, p) ? Date.now() : 0; so.vu = Date.now(); so.seul = ''; }
+  sauverSeul(); tempo();
+}
+function allumerSeul(on){
+  Object.assign(so, {on, cumul:0, fin:0, seul:'', d:on && coupe(so.travail, so.pause) ? Date.now() : 0, vu:Date.now()});
+  sauverSeul(); tempo();
+}
+/* éteint, le bouton l'allume et montre les réglages ; allumé, il montre les réglages : pas d'arrêt par mégarde */
+function clicSablier(){
+  if(S.actif) return;
+  if(popSorte === 'seul'){ fermerPop(); return; }
+  if(!so.on) allumerSeul(true);
+  if(!ouvrirPop('seul', api.sablier, 'Sablier')) return;
+  pop.innerHTML = '<p class="sg-pop-t">Sablier</p><p class="sg-aide">Quand ton temps d’étude est écoulé, la pause tombe à la <b>prochaine diapo</b> : jamais au milieu d’une idée. Le <b>5 · 5</b>, lui, coupe à l’heure, à la seconde près. Le sablier te suit de l’atelier au Survol.</p>' +
+    '<div class="sg-puces" role="group" aria-label="Étude, puis pause">' + REGLAGES.map(([t, p]) => '<button type="button" data-r="' + t + '-' + p + '" aria-pressed="' + (so.travail === t && so.pause === p) + '">' + t + ' min · pause ' + p + '</button>').join('') + '</div>' +
+    '<div class="sg-pop-b"><button type="button" data-c="maintenant">Pause maintenant</button><button type="button" data-c="eteindre">Éteindre</button><button type="button" data-c="ok">OK</button></div>';
+  placerPop();
+  pop.addEventListener('click', e => {
+    const r = e.target.closest('[data-r]');
+    if(r){ const [t, p] = r.dataset.r.split('-').map(Number); choisirSeul(t, p); fermerPop(); return; }
+    const b = e.target.closest('[data-c]'); if(!b) return;
+    const c = b.dataset.c;
+    fermerPop();
+    if(c === 'maintenant') pauseMaintenant(); else if(c === 'eteindre') allumerSeul(false);
+  });
+  const f = $('[aria-pressed="true"]', pop) || $('[data-r]', pop); if(f) f.focus({preventScroll:true});
+}
+/* le temps d'étude du classique : seulement page visible, comme dans l'atelier */
+let dernierT = Date.now(), cacheDepuis = 0;
+function ticSeul(){
+  const t = Date.now(), d = Math.min(5000, t - dernierT); dernierT = t;
+  if(!tempsCompte(so, document.hidden, S.actif || rythmeSeul())) return;
+  so.cumul += d;
+  if(Math.floor((so.cumul - d) / 15000) !== Math.floor(so.cumul / 15000)){ so.vu = t; sauverSeul(); }
+  majBoutonSeul();
+}
+/* une absence plus longue que la pause vaut une pause (vu : la dernière page qui a compté, celle-ci ou une autre) */
+function surVisibilite(){
+  if(document.hidden){ cacheDepuis = Date.now(); if(so.on && !S.actif){ so.vu = cacheDepuis; sauverSeul(); } return; }
+  dernierT = Date.now();
+  if(!S.actif && so.on && !so.fin && cacheDepuis && Date.now() - Math.max(cacheDepuis, +so.vu || 0) >= so.pause * 60000){ if(so.d) so.d = Date.now(); so.cumul = 0; sauverSeul(); }
+  cacheDepuis = 0;
+  tempo();
+}
+/* une autre page de cet appareil a touché au sablier : un atelier ouvert à côté, ou un autre Survol */
+function suivreSeul(){
+  if(!rythmeSeul() && so.fin > Date.now()){ if(!voile) montrerVoile(null); }
+  else if(voile && !pa.rythme && !pa.groupe && !so.fin) finir(false);
+  tempo();
+}
+function demarrerSeul(){
+  lireSeul();
+  if(api.sablier){ $('svg', api.sablier).outerHTML = verre(true); api.sablier.hidden = false; }
+  document.documentElement.style.setProperty('--sg-a', couleur(api.lire(CLE_RAIE)));
+  /* une pause en cours survit au rechargement et au passage de l'atelier au Survol ; le 5·5, s'il n'a pas dormi plus longtemps que sa pause */
+  if(so.fin > Date.now()) montrerVoile(null);
+  else if(so.fin){ so.fin = 0; so.cumul = 0; sauverSeul(); }
+  if(so.on && coupe(so.travail, so.pause) && (!so.d || Date.now() - (+so.vu || 0) >= so.pause * 60000)){ so.d = Date.now(); so.vu = so.d; sauverSeul(); }
+  setInterval(ticSeul, 1000);
+  tempo();
+}
 /* en groupe, un lien du diaporama ne remplace jamais la page, sinon il ferait quitter le groupe. « ← Atelier » ferme l'onglet quand
    l'atelier attend derrière, toujours en séance ; un onglet que le navigateur refuse de fermer, ou arrivé par un code, ouvre un nouvel onglet. */
 function surLien(ev){
@@ -1057,6 +1175,7 @@ function versAtelier(){
   if(S.sablier.n) api.ecrire(CLE_RYTHME, JSON.stringify({de:'survol', f:api.fichier, s:S.salle, r:S.sablier, t:Date.now()}));
 }
 function surStockage(e){
+  if(e.key === CLE_SOLO && e.newValue){ lireSeul(); if(!S.actif) suivreSeul(); return; }
   if(e.key !== CLE_RYTHME || !e.newValue || !S.actif) return;
   let x = null; try{ x = JSON.parse(e.newValue); }catch(err){ return; }
   if(!x || x.de !== 'atelier' || salleSurvol(x.code, api.fichier) !== S.salle) return;
@@ -1088,7 +1207,7 @@ body.sg-groupe .diapo::-webkit-scrollbar{display:none}
 .sg-espace{flex:1;min-width:0}
 .sg-rang .sg-sab{display:inline-flex;align-items:center;gap:5px;padding:0 8px;flex:none}
 .sg-sab-t{font-variant-numeric:tabular-nums}
-.sg-sab.proche{border-color:var(--encre);box-shadow:0 0 0 2px var(--trait)}
+.sg-sab.proche,.ns-sablier.proche{border-color:var(--encre);box-shadow:0 0 0 2px var(--trait)}
 .sablier-mini{width:11px;height:18px;flex:none}
 .sablier-mini .s-verre{fill:none;stroke:currentColor;stroke-width:9;opacity:.75}
 .sg-court{display:none}
@@ -1183,7 +1302,8 @@ function brancher(a){
   connus = new Set(ecrans);
   const st = document.createElement('style'); st.id = 'survol-groupe-css'; st.textContent = CSS;
   document.head.appendChild(st);
-  api.surDiapo(() => { if(S.actif){ publier(); majBarre(); majPop(); } });
+  /* la pause classique tombe entre deux diapos, jamais au milieu d'une */
+  api.surDiapo(() => { if(S.actif){ publier(); majBarre(); majPop(); } else if(pauseDue(so, rythmeSeul())) commencerPause(); });
   /* pendant la pause, le clavier ne fait pas tourner les diapos derrière le voile ; le réglage du sablier et les avis restent par-dessus */
   document.addEventListener('keydown', e => {
     if(!voile) return;
@@ -1192,19 +1312,20 @@ function brancher(a){
     if(e.key === 'Tab' || ((e.key === 'Enter' || e.key === ' ') && t && t.closest('.sablier-voile'))) return;
     e.stopPropagation(); if(e.key !== 'Escape') e.preventDefault();
   }, true);
-  document.addEventListener('pointerdown', e => { if(pop && !pop.contains(e.target) && !e.target.closest('.sg-rang [aria-haspopup], [data-s="reglages"]')) fermerPop(); });
+  document.addEventListener('pointerdown', e => { if(pop && !pop.contains(e.target) && !e.target.closest('.sg-rang [aria-haspopup], [data-s="reglages"], #ns-sablier')) fermerPop(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') fermerPop(); });
   window.addEventListener('resize', placerPop);
   window.addEventListener('storage', surStockage);
   document.addEventListener('click', surLien);
-  document.addEventListener('visibilitychange', () => { if(!document.hidden && S.actif) tempo(); });
+  document.addEventListener('visibilitychange', surVisibilite);
   window.addEventListener('pagehide', () => { if(S.actif){ toutEcrire(); garderCopie(true); sauver(); } });
+  demarrerSeul();
   return PUBLIC;
 }
 function ouvrir(){
   if(S.actif) ouvrirGroupe(barre && $('[data-a="groupe"]', barre)); else ouvrirPorte('');
 }
-const PUBLIC = {brancher, ouvrir, arriver};
+const PUBLIC = {brancher, ouvrir, arriver, sablier:clicSablier};
 if(typeof window !== 'undefined') window.SurvolGroupe = PUBLIC;
 return Object.assign({PUR}, PUBLIC);
 })();

@@ -1482,6 +1482,13 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
 .ns-sw[aria-checked="true"] i::after { transform: translateX(14px); box-shadow: none; }
 .ns-lignes { flex: 1; min-height: 120px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
 .ns-garde { margin: 0; flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--t-s); line-height: 1.5; }
+/* le sablier seul : son bouton est ici, tout le reste dans survol-groupe.js, chargé au premier clic ou s'il est déjà allumé */
+.ns-sablier[hidden] { display: none; }
+.ns-sablier > svg { width: 12px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ns-sablier > svg.sablier-mini { width: 11px; stroke: none; }
+.ns-sablier .ns-temps { font-variant-numeric: tabular-nums; }
+.ns-sablier .ns-temps:empty { display: none; }
+.ns-sablier[aria-pressed="true"] .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (max-width: 899px) {
   .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
     box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
@@ -1493,12 +1500,15 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
   .haut:has(.ns-cv:not([hidden])) .vers-banc { flex: 0 1 auto; min-width: 0; display: block; line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 }
 @media (max-width: 899px) {
-  .ns-cv .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ns-cv .ns-mot, .ns-sablier .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 @media (max-width: 600px) {
   .ns-bouton { padding: 0 10px; }
   .ns-bouton .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
+/* au plus petit téléphone, le décompte seul : le sablier ne pousse pas le retour à l'atelier hors de la barre */
+@media (max-width: 480px) { .ns-sablier[aria-pressed="true"] > svg { display: none; } }
+@media (max-width: 359px) { .haut-droite { gap: 6px; } .ns-bouton { padding: 0 8px; } }
 @media print { .ns-panneau, .ns-bouton { display: none !important; } body.ns-dock { padding-right: 0; } }
 </style>
 <script id="notes-survol">
@@ -1700,9 +1710,14 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
   cv.title = 'Convergence : suivre ce Survol à plusieurs, chacun sur son appareil';
   cv.setAttribute('aria-label', cv.title);
   cv.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span class="ns-mot">Convergence</span>';
-  if (haut) haut.insertBefore(cv, bouton); else document.body.appendChild(cv);
+  const sb = document.createElement('button');
+  sb.type = 'button'; sb.className = 'ns-bouton ns-sablier'; sb.id = 'ns-sablier';
+  sb.title = 'Sablier : des pauses entre les diapos';
+  sb.setAttribute('aria-label', sb.title); sb.setAttribute('aria-haspopup', 'dialog');
+  sb.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3v3c0 3 3.5 4.5 5 6-1.5 1.5-5 3-5 6v3M17 3v3c0 3-3.5 4.5-5 6 1.5 1.5 5 3 5 6v3"/></svg><span class="ns-mot">Sablier</span><span class="ns-temps"></span>';
+  if (haut) { haut.insertBefore(sb, bouton); haut.insertBefore(cv, bouton); } else { document.body.appendChild(sb); document.body.appendChild(cv); }
   const API = {
-    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, lire, ecrire, cur, dire, majPoint, CLE_G,
+    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, sablier: sb, lire, ecrire, cur, dire, majPoint, CLE_G,
     surDiapo: f => surDiapo.push(f),
     /* le groupe arrive ou repart : o = sa source, ou null */
     groupe(o) { vivant = o; if (!o && source && source.vivant) montrerSource(null); majInterrupteur(); },
@@ -1724,17 +1739,21 @@ body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
     });
     return chargement;
   }
-  const rate = () => { cv.hidden = true; };
+  const rate = () => { cv.hidden = true; sb.hidden = true; };
   cv.addEventListener('click', () => chargerGroupe().then(g => g.ouvrir(), rate));
+  sb.addEventListener('click', () => chargerGroupe().then(g => g.sablier(), rate));
   let salle = '', repris = false;
   try { salle = (new URLSearchParams(location.search).get('cv') || '').toLowerCase(); repris = !!sessionStorage.getItem('survol-cv:' + fichier); } catch (e) {}
+  let allume = false;
+  try { allume = !!(JSON.parse(lire('lumiere-sablier')) || {}).on; } catch (e) {}
   if (/^[a-z0-9]{6}$/.test(salle) || repris) chargerGroupe().then(g => g.arriver(salle), rate);
+  else if (allume) chargerGroupe().catch(rate);
 })();
 </script>
 <!-- notes-survol:fin -->
 <script>
 (() => {
-  const ICI = '2ab56a360ae7';
+  const ICI = 'e85c288f97cc';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

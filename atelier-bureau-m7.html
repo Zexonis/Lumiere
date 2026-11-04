@@ -13545,8 +13545,9 @@ return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, gu
 /* ====== _commun/sablier.js ====== */
 /* ======================================================================
    Le sablier : des pauses entre les idées, ou à la seconde près.
-   Éteint par défaut. Réglage propre à cet appareil (navigateur), comme le
-   thème. Deux façons de couper :
+   Éteint par défaut. Réglage propre à cet appareil (navigateur), pour
+   toutes ses pages : il suit d'un atelier à l'autre et dans les Survols
+   (survol-groupe.js, même clé). Deux façons de couper :
    - Classique (25·5, 45·10, 15·3, seul·e) : il compte le temps d'étude
      (page visible) ; le temps écoulé, la pause tombe au prochain
      changement d'écran, ou à la prochaine question dans l'arène.
@@ -13563,12 +13564,12 @@ return {ouvrir:ouvrirTuteur, demander, majContexte, majFab, mode:choisirMode, gu
    sans l'écraser : quitter la séance le rend.
    ====================================================================== */
 const Sablier = (() => {
-  const CLE_S = P + '-sablier';
+  const CLE_S = 'lumiere-sablier', CLE_AVANT = P + '-sablier';      // avant le 3 nov., un réglage par atelier
   const REGLAGES = [[5, 5], [25, 5], [45, 10], [15, 3]];
   const NS = 'http://www.w3.org/2000/svg';
   const AVANT = 30000;                                 // l'avis qui précède une pause de rythme
   /* d : le départ du rythme seul (5·5) ; vu : la dernière fois que ce rythme a tourné ici ; seul : le cycle dont cet appareil a écourté la pause */
-  let st = Object.assign({on:false, travail:25, pause:5, cumul:0, fin:0, duree:0, d:0, vu:0, seul:''}, lireJSON(CLE_S, {}));
+  let st = Object.assign({on:false, travail:25, pause:5, cumul:0, fin:0, duree:0, d:0, vu:0, seul:''}, lireJSON(CLE_S, null) || lireJSON(CLE_AVANT, {}));
   const sauver = () => memo.set(CLE_S, JSON.stringify(st));
   const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -13767,14 +13768,15 @@ const Sablier = (() => {
     const t = Date.now(), d = Math.min(5000, t - dernier); dernier = t;
     if(!tempsCompte(st, document.hidden, rythme())) return;
     st.cumul += d;
-    if(Math.floor((st.cumul - d) / 15000) !== Math.floor(st.cumul / 15000)) sauver();
+    if(Math.floor((st.cumul - d) / 15000) !== Math.floor(st.cumul / 15000)){ st.vu = t; sauver(); }
     majBouton();
   }
   document.addEventListener('visibilitychange', () => {
     if(document.hidden){ cacheDepuis = Date.now(); st.vu = cacheDepuis; sauver(); return; }
     dernier = Date.now();
-    /* une absence plus longue que la pause vaut une pause (le 5·5 seul : on repart d'une phase de travail neuve) */
-    if(st.on && !st.fin && cacheDepuis && Date.now() - cacheDepuis >= st.pause * 60000){ if(st.d) st.d = Date.now(); st.cumul = 0; sauver(); majBouton(); }
+    /* une absence plus longue que la pause vaut une pause (le 5·5 seul : on repart d'une phase de travail neuve) ; vu : la dernière
+       page qui a compté, celle-ci ou une autre, car on a pu étudier dans un Survol pendant que cet onglet dormait */
+    if(st.on && !st.fin && cacheDepuis && Date.now() - Math.max(cacheDepuis, +st.vu || 0) >= st.pause * 60000){ if(st.d) st.d = Date.now(); st.cumul = 0; sauver(); majBouton(); }
     cacheDepuis = 0;
     tempo();
   });
@@ -13794,7 +13796,7 @@ const Sablier = (() => {
     /* l'avis, une fois par cycle ; si un avis attend une réponse (quelqu'un à la porte), il repasse à la seconde suivante */
     if(!voile && !ph.pause && ph.reste <= AVANT && ph.reste > 2000 && r.t * 60000 > AVANT && averti !== cle)
       if(dire((r.n ? 'Pause du groupe dans ' : 'Pause dans ') + Math.ceil(ph.reste / 1000) + ' secondes.')) averti = cle;
-    if(!r.n && Date.now() - st.vu > 15000){ st.vu = Date.now(); sauver(); }
+    if(!r.n && !document.hidden && Date.now() - st.vu > 15000){ st.vu = Date.now(); sauver(); }
     majBouton();
     tR = setTimeout(tempo, (ph.reste % 1000 || 1000) + 15);
   }
@@ -13954,6 +13956,15 @@ const Sablier = (() => {
     }
     document.addEventListener('pointerdown', e => { if(pop && !pop.contains(e.target) && !e.target.closest('#btn-sablier, [data-a="sablier"], [data-s="reglages"]')) fermerPop(); });
     document.addEventListener('keydown', e => { if(e.key === 'Escape') fermerPop(); });
+    /* une autre page de cet appareil a touché au sablier : un Survol ouvert à côté, un autre atelier */
+    window.addEventListener('storage', e => {
+      if(e.key !== CLE_S || !e.newValue) return;
+      Object.assign(st, lireJSON(CLE_S, {}));
+      if(!rythme() && st.fin > Date.now()){ if(!voile) montrer(); }
+      else if(voile && !pa.rythme && !st.fin) finir(false);
+      tempo(); remplirPop();
+    });
+    if(!memo.get(CLE_S) && memo.get(CLE_AVANT)) sauver();
     /* la pause tombe au changement d'écran, jamais au milieu */
     let ecranPrec = null;
     CROCHETS.apresAller.push(e => {
@@ -17983,6 +17994,7 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-03', p:['*'], t:'Le Sablier marche maintenant dans le Survol, même seul·e : le bouton est en haut, à côté de Convergence. C’est le même sablier que dans tes ateliers : il te suit de l’un à l’autre, et sa pause tombe à la prochaine diapo, ou à la seconde près en 5 · 5.'},
     {d:'2026-11-03', p:['*'], t:'En ouvrant un atelier ou le Banc, tu choisis maintenant ton chemin. « Efficace » t’amène droit au Survol, « Complet » ouvre l’atelier comme d’habitude. Tu passes de l’un à l’autre quand tu veux.'},
     {d:'2026-11-03', p:['*'], t:'Le Survol se fait maintenant à plusieurs. En séance Convergence, ouvre-le : tes amis reçoivent « Rejoindre ». Dans « ✎ Notes », « Notes du groupe » vous fait écrire ensemble, ligne par ligne, les notes de chaque diapo. Le repère garde votre diapo commune : « Recentrer » t’y ramène et « Prêt·e » vous fait avancer ensemble. Sans atelier, le bouton « Convergence » du Survol crée un groupe avec un code.'},
     {d:'2026-11-03', p:['*'], t:'Sablier : un nouveau rythme rapide, 5 minutes de travail, 5 minutes de pause. Choisis-le dans le Sablier de ton atelier : la pause tombe à la seconde, même en pleine Arène. En Convergence, tout le groupe a le même rythme, et personne ne peut écourter la pause pour les autres.'},
@@ -18396,7 +18408,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '2ab56a360ae7';
+  const ICI = 'e85c288f97cc';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
