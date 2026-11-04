@@ -179,6 +179,7 @@ const SERVICES = {
   prof:{nom:'Ton professeur ou ta professeure', role:'Le premier contact que nomment les directives.', page:D_13},
   acces:{nom:'Aide en ligne de La Cité', role:'Les articles d’aide officiels pour accéder au Portail.', page:P_ACCES},
   ecite:{nom:'Aide en ligne : eCité', role:'Les articles d’aide officiels sur eCité.', page:AIDE + 'topic/0TO1J0000019LSGWA2/ecit%C3%A9?language=fr_CA'},
+  faq:{nom:'Foire aux questions de La Cité', role:'Les articles d’aide officiels, classés par catégorie, avec une recherche et « Contactez-nous ».', page:AIDE + '?language=fr_CA'},
   statut:{nom:'Statut de l’infrastructure informatique', role:'Page publique qui suit le Portail, eCité, le courriel, les réseaux, l’impression et le téléphone.', page:'https://statut.collegelacite.ca/'}
 };
 
@@ -353,7 +354,7 @@ const NOEUDS = {
   ]},
   international:{titre:'Étudiant international', mots:'international permis etudes immigration visa assurance logement', services:[{s:'sai', faits:[{t:'Des rendez-vous virtuels ou téléphoniques se prennent depuis la page.', u:C + 'service-accompagnement-international'}]}]},
   autochtone:{titre:'Étudiant des Premières Nations, métis ou inuit', mots:'autochtone premieres nations metis inuit mino pimatisiwin', services:[{s:'mino'}]},
-  perdu:{titre:'Je ne sais pas par où commencer', mots:'perdu aide question orientation specialiste', services:[{s:'specialiste'}]},
+  perdu:{titre:'Je ne sais pas par où commencer', mots:'perdu aide question orientation specialiste faq foire aux questions', services:[{s:'specialiste'}, {s:'faq'}]},
   urgence:{titre:'Lignes d’aide et de crise', mots:'urgence crise suicide aide 911 988 allo ecoute', services:[{s:'urgence', faits:[{t:'La ligne de crise est disponible en tout temps, et Allo J’écoute s’adresse aux étudiants du postsecondaire de l’Ontario.', u:C + 'urgence'}, {t:'Le 9-8-8 répond 24 heures sur 24, chaque jour de l’année.', u:'https://988.ca/fr'}]}, {s:'securite'}]}
 };
 
@@ -445,7 +446,7 @@ function chercher(){
   fil.hidden = true; $('#dates').hidden = true;
   const l = LECONS.filter(id => plat(NOEUDS[id].titre + ' ' + (NOEUDS[id].mots || '') + ' ' + NOEUDS[id].services.map(c => SERVICES[c.s].nom).join(' ')).includes(m));
   etape.innerHTML = l.length ? '<h2 tabindex="-1">' + l.length + (l.length > 1 ? ' résultats' : ' résultat') + '</h2><ul class="choix">' + l.map(id => ligneChoix(id, NOEUDS[id].titre, NOEUDS[id].services.map(c => SERVICES[c.s].nom).join(' · '))).join('') + '</ul>'
-    : '<h2 tabindex="-1">Rien pour ce mot</h2><p class="vide">Essaie un autre mot, ou commence par le service qui oriente tout le monde.</p><ul class="choix" style="margin-top:12px">' + ligneChoix('perdu', titreDe('perdu')) + '</ul>';
+    : '<h2 tabindex="-1">Rien pour ce mot</h2><p class="vide">Essaie un autre mot, cherche dans la FAQ officielle de La Cité, ou commence par le service qui oriente tout le monde.</p>' + dehors(SERVICES.faq.page, 'Ouvrir la FAQ de La Cité ↗', 'go') + '<ul class="choix" style="margin-top:12px">' + ligneChoix('perdu', titreDe('perdu')) + '</ul>';
 }
 /* le lien d'une étape se copie à la demande ; l'adresse de la page, elle, ne change jamais : rien ne reste dans l'historique */
 async function copier(){
@@ -480,7 +481,7 @@ aller(NOEUDS[lien] ? lien : 'debut', false);
 </script>
 <script>
 (() => {
-  const ICI = 'afe77d8e235e';
+  const ICI = '133b6fa8fbf0';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
