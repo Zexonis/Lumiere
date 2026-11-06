@@ -271,8 +271,8 @@ const PAGES = {
      d:'Générateur d’exercices d’optique, modules 1 à 3.'}
   ],
   anat:[
-    {g:'Atelier', t:'Atelier Anatomie M6–M7', u:'atelier-anatomie-m6.html', v:true, ua:2,
-     d:'Larmes et clignement (M6) ; cornée, limbe et sclère, cristallin et vitré (M7) : simulateurs, dessins à étiqueter, gestes, fiches de cas. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+    {g:'Atelier', t:'Atelier Anatomie M6–M8', u:'atelier-anatomie-m6.html', v:true, ua:2,
+     d:'Larmes et clignement (M6) ; cornée, limbe et sclère, cristallin et vitré (M7) ; rétine, voies visuelles, pupille et horloge biologique (M8) : simulateurs, dessins à étiqueter, gestes, fiches de cas. Rappel du jour, guide pas à pas, annotations et tuteur.'},
     {g:'Document', t:'Anatomie M6 — système nerveux, larmes, clignement', u:A('UQFUMh5vm1qkPwrBYmy65V'), ua:2,
      d:'La distillation du module 6, en document.'},
     {g:'Planches', t:'Œil — planches d’anatomie', u:'planches-oeil.html', ua:1,
@@ -601,6 +601,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
+    {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
+    {d:'2026-11-06', p:['anat-m6'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 6 et 7, et le module 8 en 23 diapos, environ 17 minutes.'},
     {d:'2026-11-03', p:['*'], t:'« Qui peut m’aider ? » est sur la page d’accueil de Lumière, juste sous le message de bienvenue. Choisis ce qui te préoccupe (bourses, santé, notes, outils) et le guide t’indique le service de La Cité à contacter, avec sa page officielle. C’est un guide étudiant non officiel : il ne donne pas de conseils.'},
     {d:'2026-11-03', p:['*'], t:'Le Sablier marche maintenant dans le Survol, même seul·e : le bouton est en haut, à côté de Convergence. C’est le même sablier que dans tes ateliers : il te suit de l’un à l’autre, et sa pause tombe à la prochaine diapo, ou à la seconde près en 5 · 5.'},
     {d:'2026-11-03', p:['*'], t:'En ouvrant un atelier ou le Banc, tu choisis maintenant ton chemin. « Efficace » t’amène droit au Survol, « Complet » ouvre l’atelier comme d’habitude. Tu passes de l’un à l’autre quand tu veux.'},
@@ -749,7 +752,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '133b6fa8fbf0';
+  const ICI = 'cdf948f407aa';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

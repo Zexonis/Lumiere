@@ -1,0 +1,1814 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survol · Anatomie, module 8</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Survol · Anatomie (SCI 23545), module 8 : la rétine, le nerf optique, les voies visuelles et non-visuelles. Écrit le 6 nov. 2026.
+  Contenu : uniquement Guides/UA2-Anatomie/distilled/anat-m08_distilled.md (citations vérifiées contre les fichiers du cours
+  comme build/distill8/verif_anat8.py) et analyse/anat-m08_kc.md (méprises, prescriptions). Aucun fait nouveau; un trou du cours reste un trou.
+  Codes des sources (jamais affichés, comme le veut le format) : en commentaire au-dessus de chaque diapo.
+  A = deck 8.1 rétine; B = 8.2 voies visuelles; C = 8.3 voies non-visuelles; SEQ = la feuille du réflexe;
+  F1 « La rétine », F2 « Le nerf optique au niveau du disque optique », F3 « Voies visuelles » = les feuilles distribuées en classe (diapos A6, B2, B5).
+  Figures : toutes dessinées ici, en SVG, dans la logique des feuilles et des figures du cours; aucune n'est reprise, tracée ou intégrée (ce sont des images de tiers).
+  Le cœur du diaporama est la croix du chiasma, avec le code de couleur de F3 (diapos 9 à 13).
+  Erreurs du deck du cours : B6 « champ visuel nasal » (diapo 9), C14 « sphincter » (diapo 14), C2 « fréquences courtes » (diapo 20) : enseignées corrigées, comme
+  dans la distillation, et signalées dans une .note. C5 « La lumière voyage à une glande » : lu comme un raccourci (diapo 21, en piège).
+  Laissés de côté, exprès : muscles oculo-moteurs et triade (hors du module livré), le mot « consensuel » (le deck ne le dit jamais), les noms anglais et le
+  détail du trajet sympathique (à vérifier n° 15), le rôle du colliculus (non dit), S bleu M vert L rouge ([HORS COURS]), toute autre goutte ([HORS COURS]),
+  la note de marge de F3 (à vérifier n° 29), le format du projet (à vérifier n° 26), le nom des lignes sans étiquette des feuilles (à vérifier n° 1).
+  Moteur, styles et navigation : copiés tels quels de diapos-m8.html (le plus récent); seuls changent ACTES, CLE et les couleurs.
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; une seule phrase « À retenir »; au plus un piège,
+  et seulement une méprise des cartes KC; aucune citation de source ni point en attente; un seul bouton utile : Suite.
+  Code couleur constant : jaune pâle = la lumière · vert = rétine temporale de OS, reste à gauche · orange = rétine temporale de OD, reste à droite ·
+  bleu = rétine nasale des deux yeux, croise au chiasma (les trois de F3, ce que « voir » veut dire ici) · rose = la pupille (tirets : ce qui monte vers le centre;
+  trait plein : ce qui commande) · violet = l'horloge.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : la nuit. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --vert: #76d68f;
+  --ora: #f4a640;
+  --bleu: #58b8f6;
+  --pup: #f28db2;
+  --hor: #b8a4ff;
+  --tissu: #1c2d46;
+  --rayon: #f3e2a0;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --vert: #1c7a3e; --ora: #b25a00; --bleu: #0b6cb3; --pup: #b52f6e; --hor: #6448c9; --tissu: #dde4ee; --rayon: #9a7400;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --vert: #1c7a3e; --ora: #b25a00; --bleu: #0b6cb3; --pup: #b52f6e; --hor: #6448c9; --tissu: #dde4ee; --rayon: #9a7400;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.trois span { color: var(--doux); font-size: var(--t-s); }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- rangées : un petit schéma, deux lignes de texte ---- */
+.rangs { display: flex; flex-direction: column; gap: 12px; }
+.rang { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: center; }
+.rang svg { display: block; width: 100%; height: auto; }
+@media (min-width: 880px) { .rang { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); } }
+.rang h3 { font-size: var(--t-m); margin-bottom: 2px; }
+.rang p { margin: 0; font-size: var(--t-s); }
+
+/* ---- définitions ---- */
+.defs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; margin: 0; }
+.defs dt { font-family: var(--f-chiffre); font-weight: 700; font-size: var(--t-l); line-height: 1.2; }
+.defs dd { margin: 0; }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .pupille { fill: var(--encre); }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+
+/* ---- anatomie M8 : code couleur et schémas propres à ces diapos ---- */
+.c-vert { --c: var(--vert); } .c-ora { --c: var(--ora); } .c-bleu { --c: var(--bleu); } .c-pup { --c: var(--pup); } .c-hor { --c: var(--hor); } .c-lum { --c: var(--rayon); }
+.c-emm { --c: var(--encre); } .c-doux { --c: var(--doux); }
+.k-vert { color: var(--vert); } .k-ora { color: var(--ora); } .k-bleu { color: var(--bleu); } .k-pup { color: var(--pup); } .k-hor { color: var(--hor); } .k-lum { color: var(--rayon); }
+.voie { font-style: normal; font-size: var(--t-xs); color: var(--doux); margin-left: 6px; white-space: nowrap; }
+.etapes.serre { gap: 4px; }
+svg .etiq-s { font-weight: 700; }
+svg .etiq-b { font-size: 15px; font-weight: 700; fill: var(--encre); }
+svg .boite { fill: var(--fond-2); stroke: var(--c, var(--trait)); stroke-width: 2; }
+svg .trait-c { fill: none; stroke: var(--c, var(--encre)); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .trait-c.fort { stroke-width: 4; }
+svg .tirets { stroke-dasharray: 7 6; }
+svg .tete { fill: var(--c, var(--encre)); }
+svg .tissu { fill: var(--fond-2); stroke: var(--doux); stroke-width: 1.6; }
+svg .fibre { fill: none; stroke: var(--doux); stroke-width: 1.4; stroke-linecap: round; }
+svg .fibre-c { fill: none; stroke: var(--c, var(--encre)); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+svg .fibre-c.fort { stroke-width: 4; }
+svg .fibre-c.fin { stroke-width: 2; }
+svg .fibre-c.large { stroke-width: 6.5; }
+svg .halo { fill: none; stroke: var(--tissu); stroke-width: 12; }
+svg .halo.fin { stroke-width: 7; }
+svg .t-vert { fill: var(--vert); } svg .t-ora { fill: var(--ora); } svg .t-bleu { fill: var(--bleu); }
+svg .nerf-t { fill: var(--tissu); stroke: var(--doux); stroke-width: 1.6; }
+svg .vaisseau { fill: none; stroke: var(--doux); stroke-width: 8; stroke-linecap: round; }
+svg .vaisseau-i { fill: none; stroke: var(--fond-2); stroke-width: 4.5; stroke-linecap: round; }
+svg .coupure { stroke: var(--encre); stroke-width: 4; stroke-linecap: round; }
+svg .point-c { fill: var(--c, var(--encre)); }
+svg .croix { fill: none; stroke: var(--c, var(--encre)); stroke-width: 3.5; stroke-linecap: round; }
+svg .pastille { fill: var(--encre); }
+svg .lettre { font-family: var(--f-chiffre); font-size: 14px; font-weight: 700; fill: var(--fond); }
+svg .ret { fill: none; stroke: var(--doux); stroke-width: 5; stroke-linecap: round; }
+svg .ret-c { fill: none; stroke: var(--c, var(--doux)); stroke-width: 6; stroke-linecap: round; }
+svg .peau { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; stroke-linejoin: round; }
+svg .disque { fill: var(--doux); }
+svg .disque-l { stroke: var(--doux); stroke-width: 1.6; }
+svg .noyau { fill: var(--doux); fill-opacity: .55; }
+svg .mito { fill: var(--doux); fill-opacity: .8; }
+svg .fond-coupe { fill: var(--fond-2); fill-opacity: .5; }
+svg .tissu-v { fill: none; stroke: var(--tissu); stroke-width: 20; stroke-linecap: round; }
+svg .tissu-v.gros { stroke-width: 54; stroke-linecap: butt; }
+svg .tissu-e { fill: var(--tissu); }
+svg .cgl { fill: var(--fond-2); stroke: var(--doux); stroke-width: 1.6; }
+svg .cgl-c { fill: none; stroke: var(--c); stroke-width: 3; }
+svg .cortex { fill: none; stroke: var(--c, var(--encre)); stroke-width: 8; stroke-linecap: round; }
+svg .iris { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .anneau { fill: none; stroke: var(--pup); stroke-width: 7; }
+svg .rai { stroke: var(--pup); stroke-width: 3; stroke-linecap: round; }
+svg .iris-l { stroke: var(--doux); stroke-width: 6; stroke-linecap: round; }
+svg .iris-c { stroke: var(--pup); stroke-width: 6; stroke-linecap: round; }
+svg .noyau-c { fill: var(--fond-2); stroke: var(--c); stroke-width: 2.6; }
+svg .ferme { fill: none; stroke: var(--pup); stroke-width: 5; }
+svg .courbe-c { fill: none; stroke: var(--c); stroke-width: 3; stroke-linejoin: round; }
+svg .jour { fill: var(--rayon); fill-opacity: .2; }
+svg .nuit { fill: var(--doux); fill-opacity: .22; }
+svg .anneau-j { fill: none; stroke: var(--doux); stroke-width: 2; }
+.visuel.grand svg { max-height: 58vh; }
+.deux-notes { display: grid; gap: 10px; }
+.deux-notes p { margin: 0; }
+@media (min-width: 880px) { .deux-notes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 16px; } }
+
+/* au téléphone, le schéma d'un exemple résolu reste à l'écran pendant que ses étapes défilent dessous */
+@media (max-width: 600px) {
+  .corps.colle .visuel { position: sticky; top: 0; z-index: 1; background: var(--fond); }
+  .visuel.grand svg { max-height: 56vh; }
+}
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-anatomie-m6.html" title="Retour à l'atelier d'anatomie">← Atelier</a>
+      <p class="marque">Anatomie M8 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 23</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture (A1 : le schéma du module) -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Anatomie · SCI 23545 · module 8</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Une entrée, trois sorties</h1>
+            <p class="chapeau">Le module en 17 minutes. Le cœur&nbsp;: la croix du chiasma. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">23 diapos · ≈ 17 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-lum">la lumière</li>
+              <li class="c-vert">voir&nbsp;: rétine temporale de OS, reste à gauche</li>
+              <li class="c-ora">voir&nbsp;: rétine temporale de OD, reste à droite</li>
+              <li class="c-bleu">voir&nbsp;: rétine nasale des deux yeux, croise</li>
+              <li class="c-pup">la pupille&nbsp;: tirets, ça monte&nbsp;; trait plein, ça commande</li>
+              <li class="c-hor">l'horloge</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="La lumière entre dans l'œil. Un seul nerf en sort, puis trois chemins : voir, la pupille, l'horloge"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil (M6 A14, A1 ; distillation, section 1) -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Pourquoi une lampe dans l'œil parle-t-elle du cerveau&nbsp;?</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fil" aria-label="Lumière, rétine, nerf optique, puis trois sorties : voir au cortex occipital, la pupille par le nerf III, l'horloge par la mélatonine"></figure>
+          <div class="texte">
+            <p>Au module 6, une question est restée ouverte&nbsp;: «&nbsp;Pourquoi est-ce que les paramédiques vérifient les pupilles?&nbsp;»</p>
+            <p>Et pourquoi un écran, le soir, retarde-t-il le sommeil&nbsp;?</p>
+            <p>Un seul schéma répond aux deux&nbsp;: le signal qui quitte l'œil sert à trois choses.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;L'information lumineuse peut produire différentes réponses : voir, modifier le diamètre pupillaire et synchroniser l'horloge biologique.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 3 · la phototransduction (A2, A3 ; KC A8.2) -->
+    <section class="diapo" id="d3" data-acte="entree" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'entrée · La rétine traduit</p>
+        <h2>La rétine change la lumière en signal électrique</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="traduit" aria-label="La lumière frappe les disques d'un photorécepteur, où se trouve le rétinal. Il en sort des impulsions électriques"></figure>
+          <div class="texte">
+            <p>«&nbsp;Le langage du cerveau est impulsions électriques et non lumière&nbsp;». Il faut un traducteur.</p>
+            <ul class="points">
+              <li data-pas="1">La lumière arrive sur les <b>disques</b> des photorécepteurs.</li>
+              <li data-pas="2">Là, une «&nbsp;Réaction biochimique impliquant un dérivé de la vitamine A (rétinal)&nbsp;».</li>
+              <li data-pas="3">Il en sort des impulsions électriques&nbsp;: c'est la <b>phototransduction</b>.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La phototransduction, c'est «&nbsp;la transformation de la lumière en impulsions électriques au niveau des disques dans les photorécepteurs&nbsp;».</p>
+      </div>
+    </section>
+
+    <!-- 4 · cônes et bâtonnets (A2, A4, A5 ; KC A8.3, A8.4). La fin coupée de la phrase de A2 reste un trou : rien n'est ajouté. -->
+    <section class="diapo" id="d4" data-acte="entree" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'entrée · Deux photorécepteurs</p>
+        <h2>Les cônes pour la couleur, les bâtonnets pour le peu de lumière</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cellules" aria-label="Un bâtonnet et un cône côte à côte : terminaisons synaptiques ; segment interne avec le noyau et les mitochondries ; segment externe avec les disques, droit pour le bâtonnet, effilé pour le cône"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li><b>Cônes</b>&nbsp;: «&nbsp;vision des couleurs et la vision centrale fine&nbsp;». Il leur faut de la «&nbsp;lumière intense (beaucoup de photons)&nbsp;». Trois sortes&nbsp;: S, M et L.</li>
+              <li data-pas="1"><b>Bâtonnets</b>&nbsp;: pour «&nbsp;la lumière moins intense&nbsp;», «&nbsp;activés par très peu de lumière&nbsp;».</li>
+            </ul>
+            <p class="note">Pour les reconnaître&nbsp;: le segment externe du cône est effilé, celui du bâtonnet est droit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Beaucoup de lumière&nbsp;: les cônes. Très peu&nbsp;: les bâtonnets.</p>
+      </div>
+    </section>
+
+    <!-- 5 · le parcours en cinq numéros (A3, A5, B3, F1 ; I1, exemple résolu ; KC A8.5, A8.6). Lettres N, G, P, E de F1 ; les cinq lignes sans étiquette ne sont pas devinées. -->
+    <section class="diapo" id="d5" data-acte="entree" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'entrée · Exemple résolu</p>
+        <h2>La lumière va jusqu'au fond, puis le signal repart en sens inverse</h2>
+        <div class="corps colle">
+          <figure class="visuel" data-fig="retine" aria-label="Coupe de la rétine, la lumière vient du haut : N fibres nerveuses, G cellules ganglionnaires, cellules bipolaires, P cônes et bâtonnets, E épithélium pigmentaire. La lumière descend jusqu'aux photorécepteurs, le signal remonte et sort par les fibres"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>La lumière entre et traverse toute la rétine.</span></li>
+              <li data-pas="2"><span>Elle frappe un photorécepteur, <b>en dernier</b>. La lumière finit ici, ou juste derrière, dans l'épithélium pigmentaire.</span></li>
+              <li data-pas="3"><span>Le signal repart vers l'avant&nbsp;: les cellules bipolaires le modifient.</span></li>
+              <li data-pas="4"><span>Il passe aux cellules ganglionnaires et longe la rétine dans les fibres nerveuses.</span></li>
+              <li data-pas="5"><span>Il sort de l'œil vers le nerf optique.</span></li>
+            </ol>
+            <p class="note" data-pas="6">Même ordre que ta feuille «&nbsp;La rétine&nbsp;»&nbsp;: N, G, P, E. Le rang du milieu n'y a pas de lettre&nbsp;; les diapos le nomment cellules bipolaires. Le 5 et le sens du trajet se lisent sur la figure du cours.</p>
+            <p class="piege" data-pas="6"><b>Piège</b>Ce titre dit «&nbsp;Parcours de la lumière&nbsp;»&nbsp;: c'est un raccourci. Après le 2, c'est un signal, pas de la lumière.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Après les photorécepteurs, ce qui voyage n'est plus de la lumière.</p>
+      </div>
+    </section>
+
+    <!-- 6 · le nerf optique au disque optique (F2 ; A1, B1 ; M6 A12 ; Anatomie 4.2 d3, d6, d7 ; KC A8.7, A8.30).
+         « s'arrêtent » : lecture de la figure, déduit. Papille et « Disc » : empruntés, signalés. Les 2es A, B, C de la feuille restent sans nom. -->
+    <section class="diapo" id="d6" data-acte="entree" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'entrée · Le disque optique</p>
+        <h2>Les fibres plongent dans le nerf, et la rétine s'arrête</h2>
+        <div class="corps colle">
+          <figure class="visuel" data-fig="nerf" aria-label="Le nerf optique au disque optique, en coupe. Sous le vitré, A la rétine, B la choroïde, C la sclère. Les fibres nerveuses longent la rétine et plongent dans le nerf, les vaisseaux sanguins sont au centre. Les rangées de la rétine s'arrêtent de chaque côté : c'est le point aveugle"></figure>
+          <div class="texte">
+            <p>Ta feuille, en coupe&nbsp;: sous le vitré, trois couches, A rétine, B choroïde, C sclère. Au centre, les vaisseaux sanguins.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Les fibres nerveuses longent la rétine, puis plongent dans le nerf&nbsp;: «&nbsp;L’information électrique quitte l’oeil&nbsp;». C'est le nerf crânien <b>II</b>.</span></li>
+              <li data-pas="2"><span>Les rangées de la rétine s'arrêtent de chaque côté&nbsp;: aucune ne passe au milieu.</span></li>
+              <li data-pas="3"><span>«&nbsp;Absence de photorécepteurs au niveau du nerf optique&nbsp;»&nbsp;: d'où le <b>point aveugle</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Emprunté à l'UA1 et aux Tests ophtalmiques&nbsp;: de face, ce même endroit est la papille, le «&nbsp;Disc (papille, nerf optique)&nbsp;». Les A, B, C du bas de ta feuille restent vides&nbsp;: la prof ne les a pas nommés.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Au disque optique, les fibres sortent et il n'y a pas de photorécepteurs&nbsp;: c'est le point aveugle.</p>
+      </div>
+    </section>
+
+    <!-- 7 · les cinq stations, vue de côté (B3, B4, B8, B9, C12 ; KC A8.8) -->
+    <section class="diapo" id="d7" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · Le trajet</p>
+        <h2>Cinq stations, de l'œil jusqu'à l'arrière du crâne</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="trajet" aria-label="Une tête de profil : de l'œil, le nerf optique, le chiasma optique, le tractus optique, le CGL du thalamus, puis le cortex visuel à l'arrière"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Nerf optique</b>&nbsp;: il quitte l'œil.</span></li>
+              <li data-pas="2"><span><b>Chiasma optique</b>&nbsp;: les deux nerfs s'y rencontrent.</span></li>
+              <li data-pas="3"><span><b>Tractus optique</b>&nbsp;: la suite, vers l'arrière.</span></li>
+              <li data-pas="4"><span><b>CGL du thalamus</b>&nbsp;: un relais vers le cortex.</span></li>
+              <li data-pas="5"><span><b>Cortex visuel</b>&nbsp;: «&nbsp;en arrière du cerveau dans le lobe occipital&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="5">Même structure, autre nom&nbsp;: le tractus est aussi la «&nbsp;Bandelette&nbsp;», le CGL le «&nbsp;corps genouillé latéral&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Nerf optique, chiasma, tractus, CGL, cortex occipital&nbsp;: toujours dans cet ordre.</p>
+      </div>
+    </section>
+
+    <!-- 8 · champ ≠ rétine (figures de B3, B4 : déduit, signalé ; KC A8.9, seuil ; piège de I2) -->
+    <section class="diapo" id="d8" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · Champ ou rétine</p>
+        <h2>Dans l'œil, les rayons se croisent</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="champ" aria-label="OS vu du dessus : le rayon qui vient du côté de la tempe tombe sur la rétine nasale, en bleu ; celui qui vient du côté du nez tombe sur la rétine temporale, en vert"></figure>
+          <div class="texte">
+            <p><b>Nasal</b>, c'est côté nez. <b>Temporal</b>, côté tempe. Le <b>champ</b>, c'est ce qu'on regarde. La <b>rétine</b>, c'est ce qui reçoit.</p>
+            <ul class="points">
+              <li data-pas="1">Le champ <b>temporal</b> tombe sur la rétine <b>nasale</b>.</li>
+              <li data-pas="2">Le champ <b>nasal</b> tombe sur la rétine <b>temporale</b>.</li>
+            </ul>
+            <p class="note" data-pas="2">Le cours le montre sur ses figures, sans l'écrire.</p>
+            <p class="piege" data-pas="2"><b>Piège</b><i>Nasal</i> veut dire deux choses&nbsp;: le champ nasal et la rétine nasale ne se correspondent pas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La rétine nasale reçoit le champ temporal.</p>
+      </div>
+    </section>
+
+    <!-- 9 · la croix (F3, table de I2 ; C12 ; figures de B3, B4 ; B6 corrigé selon à vérifier n° 2 ; KC A8.10, A8.29, seuil) -->
+    <section class="diapo" id="d9" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · La croix</p>
+        <h2>Au chiasma, le bleu croise, le vert et l'orange restent</h2>
+        <div class="corps colle">
+          <figure class="visuel grand" data-fig="croix" aria-label="Le chiasma en grand. Le vert, rétine temporale de OS, reste à gauche. L'orange, rétine temporale de OD, reste à droite. Le bleu, rétine nasale des deux yeux, croise. Après le chiasma, le tractus gauche porte vert et bleu, le tractus droit orange et bleu"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="k-vert">Vert</b>&nbsp;: la rétine temporale de OS <b>reste</b> à gauche.</span></li>
+              <li data-pas="2"><span><b class="k-ora">Orange</b>&nbsp;: la rétine temporale de OD <b>reste</b> à droite.</span></li>
+              <li data-pas="3"><span><b class="k-bleu">Bleu</b>&nbsp;: la rétine nasale des deux yeux <b>croise</b>. Le bleu de OS part à droite, celui de OD à gauche.</span></li>
+              <li data-pas="4"><span>Tractus gauche = <b class="k-vert">vert</b> + <b class="k-bleu">bleu</b>. Tractus droit = <b class="k-ora">orange</b> + <b class="k-bleu">bleu</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="5">Une diapo du cours écrit «&nbsp;fibres du champ visuel nasal&nbsp;». Lis <b>rétine</b> nasale&nbsp;: c'est le mot de ta feuille, et «&nbsp;les fibres de rétine nasale traversent le chiasma&nbsp;» sur la diapo des pupilles.</p>
+            <p class="piege" data-pas="5"><b>Piège</b>Le tractus gauche n'est pas l'œil gauche&nbsp;: il porte les deux yeux.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un nerf optique porte un œil&nbsp;; un tractus porte une moitié de chaque œil.</p>
+      </div>
+    </section>
+
+    <!-- 10 · un point du champ gauche (annexe B, question 5 et sa réponse : le miroir de l'exemple résolu de I2 ; KC A8.11, A8.29) -->
+    <section class="diapo" id="d10" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · Exemple résolu</p>
+        <h2>Un point du champ gauche finit dans le cerveau droit</h2>
+        <div class="corps colle">
+          <figure class="visuel grand" data-fig="voies-gauche" aria-label="Un point du champ gauche tombe sur la rétine nasale de OS, en bleu, et la rétine temporale de OD, en orange. Le bleu croise au chiasma, l'orange reste. Les deux suivent le tractus droit, le CGL droit, jusqu'au cortex droit"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>OS&nbsp;: le point est du côté de la tempe. Il tombe sur la rétine <b>nasale</b>, le <b class="k-bleu">bleu</b>.</span></li>
+              <li data-pas="2"><span>OD&nbsp;: le point est du côté du nez. Il tombe sur la rétine <b>temporale</b>, l'<b class="k-ora">orange</b>.</span></li>
+              <li data-pas="3"><span>Chiasma&nbsp;: le bleu de OS <b>croise</b> vers la droite. L'orange de OD <b>reste</b> à droite.</span></li>
+              <li data-pas="4"><span>Les deux suivent le tractus <b>droit</b>, puis le CGL droit.</span></li>
+              <li data-pas="5"><span>Ils arrivent au cortex occipital <b>droit</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Champ gauche&nbsp;: bleu de OS + orange de OD, tractus droit, cortex droit.</p>
+      </div>
+    </section>
+
+    <!-- 11 · le miroir et la règle (I2, exemple résolu, vérifié par les modèles 1 et 3 de verif_anat8.py ; titre de B4 ; KC A8.11) -->
+    <section class="diapo" id="d11" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · La règle</p>
+        <h2>Le champ droit fait le chemin miroir</h2>
+        <div class="corps colle">
+          <figure class="visuel grand" data-fig="voies-droit" aria-label="Un point du champ droit tombe sur la rétine nasale de OD, en bleu, et la rétine temporale de OS, en vert. Le bleu croise, le vert reste. Les deux suivent le tractus gauche, le CGL gauche, jusqu'au cortex gauche"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>OD&nbsp;: rétine <b>nasale</b>, le <b class="k-bleu">bleu</b>. OS&nbsp;: rétine <b>temporale</b>, le <b class="k-vert">vert</b>.</span></li>
+              <li data-pas="2"><span>Le bleu de OD <b>croise</b> vers la gauche. Le vert de OS <b>reste</b> à gauche.</span></li>
+              <li data-pas="3"><span>Tractus <b>gauche</b>, CGL gauche, cortex occipital <b>gauche</b>.</span></li>
+            </ol>
+            <p class="piege" data-pas="3"><b>Piège</b>Un œil n'envoie pas tout d'un seul côté&nbsp;: le bleu de OD va à gauche, son orange reste à droite.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;le cerveau gauche traite l’information du champ visuel droit. Cerveau droit traite l’information du champ visuel gauche&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 12 · la feuille F3 (CF8, B3, B4 ; KC A8.14). Mise en page de F3 : OS à gauche, OD à droite, les yeux en haut ; rien n'est tracé ni repris de la feuille.
+         « relais » : mot de F3. Tractus et CGL : noms de B3 ; les lignes sans étiquette de F3 ne sont pas devinées (à vérifier n° 1).
+         Le format du projet est inconnu (à vérifier n° 26) : la diapo ne dit ni feuille à remplir ni dessin de zéro. -->
+    <section class="diapo" id="d12" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · La feuille des voies visuelles</p>
+        <h2>Les voies visuelles, en cinq gestes</h2>
+        <div class="corps colle">
+          <figure class="visuel grand" data-fig="voies-feuille" aria-label="Les voies visuelles comme sur la feuille : OS à gauche, OD à droite, R-Temp et Rétine Nasale, le nerf optique, le chiasma optique où le bleu croise, le tractus optique, le relais CGL du thalamus, le cortex visuel gauche et droit"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>OS à gauche, OD à droite, R-Temp dehors, Rétine Nasale au milieu.</span></li>
+              <li data-pas="2"><span>Les nerfs optiques, puis le chiasma&nbsp;: le bleu croise.</span></li>
+              <li data-pas="3"><span>Les tractus, vers l'arrière.</span></li>
+              <li data-pas="4"><span>Un relais de chaque côté, le CGL du thalamus.</span></li>
+              <li data-pas="5"><span>Le cortex visuel gauche et droit, tout à l'arrière.</span></li>
+            </ol>
+            <p class="note" data-pas="5">Ces dessins sont les feuilles distribuées en classe&nbsp;: <b>ta feuille est la référence pour le projet</b> (5&nbsp;%, vendredi 13 novembre, en classe). Tractus et CGL sont les noms des diapos&nbsp;: sous «&nbsp;relais&nbsp;», la feuille ne nomme pas ses lignes.</p>
+            <p class="piege" data-pas="5"><b>Piège</b>Les figures des diapos ont un autre code de couleur&nbsp;: garde celui de ta feuille, et lis l'étiquette.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le vert et l'orange restent, le bleu croise.</p>
+      </div>
+    </section>
+
+    <!-- 13 · pourquoi croiser, et la suite (B6, B7, B8, B9 ; KC A8.12, A8.13 ; aucun rôle inventé au colliculus) -->
+    <section class="diapo" id="d13" data-acte="voir" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Voir · Pourquoi croiser</p>
+        <h2>Croiser réunit les deux vues d'un même point, du même côté</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="raisons" aria-label="Pour un point du champ gauche, la vue de OS, en bleu, et la vue de OD, en orange, arrivent au même cortex, puis des liens partent vers la mémoire, le mouvement et la couleur"></figure>
+          <div class="texte">
+            <p>«&nbsp;C’est une façon pour le cerveau de voir le même champ de vision avec chaque œil.&nbsp;»</p>
+            <ul class="points">
+              <li data-pas="1">Les relais&nbsp;: «&nbsp;Information transformée ou ajoutée&nbsp;».</li>
+              <li data-pas="2">Le cortex visuel reçoit l'information. Le premier touché est le «&nbsp;cortex visuel primaire V1&nbsp;».</li>
+              <li data-pas="3">Ensuite, des liens vers d'autres parties du cerveau, dont la mémoire, le mouvement et la couleur.</li>
+            </ul>
+            <p class="note" data-pas="3">Que les deux vues arrivent du même côté se déduit des figures. Elles nomment aussi le colliculus supérieur et le prétectum, sans leur donner de rôle ici.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Ceci contribue à la vision binoculaire et coordination œil-main&nbsp;».</p>
+      </div>
+    </section>
+
+    <!-- 14 · deux muscles (C8, C11, C13, C14, SEQ ; M6 A10 ; titre de C14 corrigé selon à vérifier n° 3 ; KC A8.20, A8.21) -->
+    <section class="diapo" id="d14" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · Deux muscles</p>
+        <h2>Deux muscles de l'iris, deux sens opposés</h2>
+        <div class="rangs">
+          <div class="rang">
+            <figure class="visuel" data-fig="iris-myosis" aria-label="Un iris vu de face en forte lumière : le sphincter, un anneau autour de la pupille, se contracte, et la pupille est petite"></figure>
+            <div><h3 class="k-pup">Myosis&nbsp;: la pupille rétrécit</h3><p>«&nbsp;En illumination forte, elle se constricte.&nbsp;» C'est le <b>sphincter</b>, commandé par le <b>parasympathique</b>, sur le «&nbsp;3e nerf crânien&nbsp;».</p></div>
+          </div>
+          <div class="rang" data-pas="1">
+            <figure class="visuel" data-fig="iris-mydriase" aria-label="Un iris vu de face en faible lumière : les fibres du dilatateur, en rayons, tirent vers l'extérieur, et la pupille est grande"></figure>
+            <div><h3 class="k-pup">Mydriase&nbsp;: la pupille s'élargit</h3><p>En illumination basse. C'est le <b>dilatateur</b>, commandé par le <b>sympathique</b>, né «&nbsp;dans l’hypothalamus&nbsp;», par un long trajet.</p></div>
+          </div>
+        </div>
+        <div class="deux-notes">
+          <p class="note" data-pas="2">Une diapo du cours envoie le sympathique «&nbsp;au sphincter de l’iris&nbsp;», dans son titre. Lis <b>dilatateur</b>&nbsp;: c'est le texte de la diapo d'avant, et la figure de la même diapo.</p>
+          <p class="piege" data-pas="2"><b>Piège</b>Deux noms sosies&nbsp;: <i>myosis</i>, c'est la «&nbsp;Pupille plus petite&nbsp;».</p>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;Le sphincter domine sur les 2.&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 15 · afférent, efférent (C10 ; M6 A5, A13 ; contraste de la distillation, la correspondance est déduite ; KC A8.22, seuil) -->
+    <section class="diapo" id="d15" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · Le réflexe est un arc</p>
+        <h2>Afférent jusqu'au centre, efférent ensuite</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="arcs" aria-label="Deux arcs réflexes. La pupille : rétine, nerf II, centre, nerf III, sphincter. Le larmoiement du module 6 : cornée, nerf V, centre, nerf VII, glande"></figure>
+          <div class="texte">
+            <dl class="defs">
+              <dt>Afférent</dt><dd>de la périphérie vers le système nerveux central. «&nbsp;Permet au corps de ressentir&nbsp;».</dd>
+              <dt data-pas="1">Efférent</dt><dd data-pas="1">du système nerveux central vers les muscles et les glandes. «&nbsp;Permet au corps d’agir&nbsp;».</dd>
+            </dl>
+            <p class="note" data-pas="2">Même modèle que le larmoiement du module 6, avec d'autres nerfs. Le lien est déduit&nbsp;: aucune diapo ne le fait.</p>
+            <p class="piege" data-pas="2"><b>Piège</b>Le nerf optique part de l'œil, mais il va vers le centre&nbsp;: il est afférent.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Afférent&nbsp;: ça monte, pour ressentir. Efférent&nbsp;: ça commande, pour agir.</p>
+      </div>
+    </section>
+
+    <!-- 16 · les 7 étapes (SEQ, mot pour mot, sans le « (sic) » que le format interdit ; C10 ; le résumé du centre : C14, déduit ; KC A8.23) -->
+    <section class="diapo" id="d16" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · Exemple résolu</p>
+        <h2>Le réflexe à la lumière, en sept étapes</h2>
+        <div class="corps colle">
+          <figure class="visuel" data-fig="sept" aria-label="L'arc du réflexe autour de l'œil : la lumière atteint la rétine, le nerf optique monte au centre, le nerf III redescend au sphincter, et la pupille rétrécit"></figure>
+          <div class="texte">
+            <p>La feuille de la prof, mot pour mot&nbsp;:</p>
+            <ol class="etapes serre">
+              <li data-pas="1"><span>Lumière</span></li>
+              <li data-pas="2"><span>Rétine <i class="voie">afférent</i></span></li>
+              <li data-pas="3"><span>Nerf optique <i class="voie">afférent</i></span></li>
+              <li data-pas="4"><span>Centre réflexes du cerveau</span></li>
+              <li data-pas="5"><span>Nerf oculomoteur III-voie motrice parasympathique <i class="voie">efférent</i></span></li>
+              <li data-pas="6"><span>Contraction du sphincter de l’iris <i class="voie">efférent</i></span></li>
+              <li data-pas="7"><span>Pupille plus petite (myosis)</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Rétine et nerf optique&nbsp;: afférent. Nerf III et sphincter&nbsp;: efférent.</p>
+      </div>
+    </section>
+
+    <!-- 17 · une lumière, deux pupilles (C9, C12 ; second croisement : figures, déduit, à vérifier n° 7 ; KC A8.24).
+         Le mot « consensuel » n'est pas employé : le deck du cours ne le dit jamais. -->
+    <section class="diapo" id="d17" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · Exemple résolu</p>
+        <h2>Une lumière dans un œil, et les deux pupilles se contractent</h2>
+        <div class="corps colle">
+          <figure class="visuel" data-fig="deux" aria-label="Vue du dessus. La lumière entre dans l'œil droit. Le signal va des deux côtés du cerveau par le chiasma, traverse jusqu'aux noyaux d'Edinger-Westphal, puis les deux nerfs III commandent les deux pupilles, qui rétrécissent"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>La lumière entre dans l'œil droit seulement.</span></li>
+              <li data-pas="2"><span>Au chiasma, la fibre nasale croise, la temporale reste&nbsp;: les deux côtés du cerveau reçoivent le signal.</span></li>
+              <li data-pas="3"><span>Une seconde traversée, au milieu du cerveau, mène aux noyaux d'Edinger-Westphal.</span></li>
+              <li data-pas="4"><span>De là, «&nbsp;un message aux 2 nerfs oculomoteurs (III) qui stimulent les 2 sphincters des iris&nbsp;».</span></li>
+              <li data-pas="5"><span>Les <b>deux</b> pupilles se contractent.</span></li>
+            </ol>
+            <p class="note" data-pas="6">La seconde traversée se voit sur les figures du cours&nbsp;; le titre de la diapo ne nomme que le chiasma.</p>
+            <p class="piege" data-pas="6"><b>Piège</b>La pupille éclairée n'est pas seule à réagir.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Un seul œil éclairé, deux pupilles qui se contractent.</p>
+      </div>
+    </section>
+
+    <!-- 18 · trouver la panne (C9 ; pannes de I4, cas inventés, vérifié par le modèle 2 de verif_anat8.py ; KC A8.25) -->
+    <section class="diapo" id="d18" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · La réponse</p>
+        <h2>Pourquoi on mesure&nbsp;: la pupille montre où le trajet est coupé</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="panne" aria-label="Grille de pupilles. Aucune panne : les deux se contractent, quel que soit l'œil éclairé. Nerf optique droit coupé : lumière à droite, aucune ne bouge ; lumière à gauche, les deux se contractent. Nerf III droit coupé : seule la pupille gauche se contracte, dans les deux essais"></figure>
+          <div class="texte">
+            <p>«&nbsp;On mesure l’intégrité du parcours neurologique des voies optiques de l’oeil à travers plusieurs parties du cerveau.&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b>Nerf optique droit coupé</b>&nbsp;: l'œil droit n'envoie plus rien, mais les deux III fonctionnent.</span></li>
+              <li data-pas="2"><span><b>III droit coupé</b>&nbsp;: la pupille droite ne reçoit plus l'ordre, quel que soit l'œil éclairé.</span></li>
+            </ol>
+            <p class="note" data-pas="2">Ces cas sont inventés pour s'exercer&nbsp;: ils se déduisent de l'arc.</p>
+            <p class="piege" data-pas="2"><b>Piège</b>Un seul essai ne suffit pas&nbsp;: éclaire chaque œil tour à tour, et regarde les deux pupilles.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une panne afférente suit l'œil éclairé&nbsp;; une panne efférente suit la pupille.</p>
+      </div>
+    </section>
+
+    <!-- 19 · les gouttes (C8, C11 ; TO7.1 d17, d18, emprunt signalé ; I5, exemple résolu ; KC A8.26) -->
+    <section class="diapo" id="d19" data-acte="pupille" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La pupille · Exemple résolu</p>
+        <h2>Les gouttes ouvrent la pupille en coupant le système opposé</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="gouttes" aria-label="Les gouttes bloquent le parasympathique et son lien avec le sphincter. Le dilatateur l'emporte. La pupille passe de 3-4 mm à 8 mm"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Les gouttes «&nbsp;inhibent le système parasympathique&nbsp;».</span></li>
+              <li data-pas="2"><span>Comment&nbsp;: «&nbsp;en changeant les récepteurs entre les nerfs et le muscle du sphincter&nbsp;».</span></li>
+              <li data-pas="3"><span>Le sphincter, celui qui domine, ne se contracte plus&nbsp;: le dilatateur l'emporte.</span></li>
+              <li data-pas="4"><span>La pupille reste grande, utile pour la photo de l'œil&nbsp;: «&nbsp;Si la pupille est trop petite, la photo sera sombre ou noire.&nbsp;»</span></li>
+            </ol>
+            <p class="note" data-pas="4">L'étape 3 est déduite. La photo et les mesures viennent de Tests ophtalmiques.</p>
+            <p class="piege" data-pas="4"><b>Piège</b>Selon le cours, ces gouttes ne stimulent pas le dilatateur.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le parasympathique bloqué, le sphincter lâche et la pupille reste grande.</p>
+      </div>
+    </section>
+
+    <!-- 20 · la chaîne du bleu (C2, C3, C5, C6 ; C2 corrigé selon à vérifier n° 4 ; liens déduits signalés ; KC A8.17 ; piège de I3) -->
+    <section class="diapo" id="d20" data-acte="horloge" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'horloge · La voie non-visuelle</p>
+        <h2>La lumière bleue dit à l'horloge qu'il fait jour</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="horloge" aria-label="Une tête de profil : la lumière bleue entre dans l'œil, le signal va à l'hypothalamus, au noyau suprachiasmatique, puis à la glande pinéale, qui gère la mélatonine"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Le <b>bleu</b> active la mélanopsine.</span></li>
+              <li data-pas="2"><span>Des «&nbsp;cellules ganglionnaires&nbsp;» portent l'information vers l'<b>hypothalamus</b>.</span></li>
+              <li data-pas="3"><span>Là se trouve le noyau suprachiasmatique&nbsp;: l'«&nbsp;HORLOGE BIOLOGIQUE&nbsp;».</span></li>
+              <li data-pas="4"><span>Le signal gagne la <b>glande pinéale</b>, qui gère la <b>mélatonine</b>.</span></li>
+            </ol>
+            <p class="note" data-pas="4">Une diapo du cours écrit «&nbsp;lumières de fréquences courtes&nbsp;». Lis courtes <b>longueurs d'onde</b>, comme sur sa figure de l'écran. Les liens mélanopsine–ganglionnaires et noyau–hypothalamus sont déduits.</p>
+            <p class="piege" data-pas="4"><b>Piège</b>Ici, le cours ne nomme ni les cônes ni les bâtonnets.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Cette voie ne fait pas d'image&nbsp;: elle dit à l'horloge quand il fait jour.</p>
+      </div>
+    </section>
+
+    <!-- 21 · l'écran du soir (C5, C6 ; I3, exemple résolu ; C5 lu comme un raccourci, à vérifier n° 5 ; sommets lus à l'œil, n° 23 ; KC A8.17, A8.18) -->
+    <section class="diapo" id="d21" data-acte="horloge" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'horloge · Exemple résolu</p>
+        <h2>Un écran, le soir, fait croire au cerveau qu'il fait jour</h2>
+        <div class="corps colle">
+          <figure class="visuel" data-fig="courbe" aria-label="Deux courbes de mélatonine selon les heures : la production normale a son sommet entre 03 et 05 ; la production décalée par la lumière de l'écran, entre 05 et 07"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Des «&nbsp;cellules rétiniennes spécifiques&nbsp;» captent les «&nbsp;courtes longueurs d’ondes&nbsp;» de l'écran&nbsp;: signal «&nbsp;il fait jour&nbsp;».</span></li>
+              <li data-pas="2"><span>Le noyau suprachiasmatique «&nbsp;bloque la production de mélatonine&nbsp;».</span></li>
+              <li data-pas="3"><span>La mélatonine arrive plus tard&nbsp;: le sommet passe d'environ 03–05&nbsp;h à environ 05–07&nbsp;h.</span></li>
+              <li data-pas="4"><span>«&nbsp;La production de mélatonine étant retardée, l’endormissement l’est également.&nbsp;»</span></li>
+            </ol>
+            <p class="note" data-pas="3">Les sommets se lisent à l'œil sur la courbe du cours.</p>
+            <p class="piege" data-pas="4"><b>Piège</b>«&nbsp;La lumière voyage à une glande&nbsp;», dit une diapo&nbsp;: c'est un raccourci. C'est un signal, et il passe par l'horloge avant la glande.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Lumière&nbsp;: mélatonine bloquée, éveil. Noirceur&nbsp;: mélatonine sécrétée, sommeil.</p>
+      </div>
+    </section>
+
+    <!-- 22 · tout le corps, et la myopie (C3, C4, C7 ; cadran sans heure exacte, à vérifier n° 23 ; KC A8.15, A8.16, A8.19) -->
+    <section class="diapo" id="d22" data-acte="horloge" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'horloge · Tout le corps</p>
+        <h2>La lumière du jour règle bien plus que le sommeil</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cadran" aria-label="Le cadran du corps en 24 heures, le jour en haut, la nuit en bas : meilleure vigilance le matin, meilleur temps de réaction l'après-midi, début de sécrétion de mélatonine le soir, sommeil profond la nuit"></figure>
+          <div class="texte">
+            <p>Le rythme circadien suit un cycle «&nbsp;d’environ 24 heures&nbsp;». Il touche aussi l'humeur, la mémoire, les hormones et l'activité motrice.</p>
+            <ul class="points">
+              <li data-pas="1"><b>La myopie</b>&nbsp;: la recommandation générale est «&nbsp;2 heures à l’extérieur pour réduire les risques de myopie chez les jeunes enfants&nbsp;».</li>
+              <li data-pas="1">On ne sait pas encore quelles voies non-visuelles sont en jeu.</li>
+            </ul>
+            <p class="note">Le cadran place chaque étiquette dans une partie de la journée, pas à une heure exacte.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La lumière règle un cycle d'environ 24 heures, dans tout le corps.</p>
+      </div>
+    </section>
+
+    <!-- 23 · la carte et « Et maintenant » (schéma de la section 1 ; KC A8.28) -->
+    <section class="diapo" id="d23" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Tout le module 8 tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">L'entrée</p><p class="fiche-f k-lum">lumière → signal</p><p class="fiche-n">aux disques des photorécepteurs&nbsp;; puis bipolaires, ganglionnaires</p></div>
+          <div class="fiche"><p class="fiche-nom">Le disque optique</p><p class="fiche-f">le point aveugle</p><p class="fiche-n">les fibres sortent, pas de photorécepteurs</p></div>
+          <div class="fiche"><p class="fiche-nom">Voir</p><p class="fiche-f">cinq stations</p><p class="fiche-n">nerf optique, chiasma, tractus, CGL, cortex occipital</p></div>
+          <div class="fiche"><p class="fiche-nom">La croix</p><p class="fiche-f k-bleu">le bleu croise</p><p class="fiche-n"><span class="k-vert">vert</span> à gauche, <span class="k-ora">orange</span> à droite</p></div>
+          <div class="fiche"><p class="fiche-nom">Les tractus</p><p class="fiche-f">une moitié de chaque œil</p><p class="fiche-n">champ droit, cerveau gauche, et l'inverse</p></div>
+          <div class="fiche"><p class="fiche-nom">La pupille</p><p class="fiche-f k-pup">sept étapes</p><p class="fiche-n">afférent, centre, efférent&nbsp;; un œil éclairé, deux pupilles</p></div>
+          <div class="fiche"><p class="fiche-nom">Deux muscles</p><p class="fiche-f k-pup">myosis · mydriase</p><p class="fiche-n">sphincter, parasympathique&nbsp;; dilatateur, sympathique</p></div>
+          <div class="fiche"><p class="fiche-nom">L'horloge</p><p class="fiche-f k-hor">bleu → mélatonine</p><p class="fiche-n">lumière&nbsp;: bloquée&nbsp;; noirceur&nbsp;: sécrétée</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-anatomie-m6.html">L'atelier d'anatomie</a>, pour t'entraîner jusqu'à ce que ça sorte tout seul.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const g = (o, s) => `<g${o && o.c ? ` class="c-${o.c}"` : ''}${P(o)}>${s}</g>`;
+
+  // Flèche droite avec sa pointe; o.c : couleur (token), o.tirets : ce qui monte vers le centre.
+  function fleche(x1, y1, x2, y2, o = {}) {
+    const a = Math.atan2(y2 - y1, x2 - x1), L = 11, l = 6;
+    const bx = x2 - L * Math.cos(a), by = y2 - L * Math.sin(a);
+    const pts = [[x2, y2], [bx + l * Math.sin(a), by - l * Math.cos(a)], [bx - l * Math.sin(a), by + l * Math.cos(a)]];
+    return `<g class="c-${o.c || 'emm'}"${P(o)}><path d="M ${n1(x1)} ${n1(y1)} L ${n1(bx)} ${n1(by)}" class="trait-c${o.tirets ? ' tirets' : ''}"/>` +
+      `<path d="M ${pts.map(p => n1(p[0]) + ' ' + n1(p[1])).join(' L ')} Z" class="tete"/></g>`;
+  }
+  // Pointe seule, au bout d'une courbe : deg = direction de la flèche.
+  function pointe(x, y, deg, c = 'emm') {
+    const a = deg * Math.PI / 180, L = 11, l = 6, bx = x - L * Math.cos(a), by = y - L * Math.sin(a);
+    return `<path d="M ${n1(x)} ${n1(y)} L ${n1(bx + l * Math.sin(a))} ${n1(by - l * Math.cos(a))} L ${n1(bx - l * Math.sin(a))} ${n1(by + l * Math.cos(a))} Z" class="tete c-${c}"/>`;
+  }
+  // Texte sur une ou plusieurs lignes.
+  const txt = (x, y, lignes, cls = '', anc = 'start', dy = 20) =>
+    [].concat(lignes).map((t, i) => `<text x="${n1(x)}" y="${n1(y + i * dy)}" text-anchor="${anc}"${cls ? ` class="${cls}"` : ''}>${t}</text>`).join('');
+  const trait = (x1, y1, x2, y2) => `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="pointille"/>`;
+  // Boîte arrondie avec des lignes de texte centrées. l : [[texte, classe], ...]
+  function boite(x, y, w, h, l, o = {}) {
+    const y0 = y + h / 2 - (l.length - 1) * 10 + 5;
+    return `<g${o.c ? ` class="c-${o.c}"` : ''}${P(o)}><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" class="boite"/>` +
+      l.map(([t, c], i) => `<text x="${n1(x + w / 2)}" y="${n1(y0 + i * 20)}" text-anchor="middle"${c ? ` class="${c}"` : ''}>${t}</text>`).join('') + '</g>';
+  }
+  const num = (x, y, n, o = {}) => g(o, `<circle cx="${n1(x)}" cy="${n1(y)}" r="11" class="pastille"/><text x="${n1(x)}" y="${n1(y + 5)}" text-anchor="middle" class="lettre">${n}</text>`);
+  const croix = (x, y, c = 'pup') => `<path d="M ${x - 7} ${y - 7} L ${x + 7} ${y + 7} M ${x + 7} ${y - 7} L ${x - 7} ${y + 7}" class="croix c-${c}"/>`;
+  const pol = (cx, cy, r, deg) => [cx + r * Math.cos(deg * Math.PI / 180), cy + r * Math.sin(deg * Math.PI / 180)];
+  // Arc de cercle, angles en degrés (0 = à droite, 90 = en bas).
+  function arc(cx, cy, r, a, b, cls) {
+    const [x1, y1] = pol(cx, cy, r, a), [x2, y2] = pol(cx, cy, r, b);
+    return `<path d="M ${n1(x1)} ${n1(y1)} A ${r} ${r} 0 ${Math.abs(b - a) > 180 ? 1 : 0} ${b > a ? 1 : 0} ${n1(x2)} ${n1(y2)}" class="${cls}"/>`;
+  }
+  // Miroir gauche-droite d'un dessin de 420 de large.
+  const miroir = s => `<g transform="translate(420 0) scale(-1 1)">${s}</g>`;
+
+  // « Voir » se dessine avec les trois couleurs de la feuille des voies visuelles.
+  const TROIS = [['vert', -5], ['bleu', 0], ['ora', 5]];
+
+  // La couverture : une entrée, trois sorties.
+  function couverture() {
+    const cx = 108, cy = 120, r = 58;
+    let s = `<circle cx="${cx}" cy="${cy}" r="${r}" class="globe"/>` + arc(cx, cy, r, -52, 52, 'ret');
+    s += `<ellipse cx="${cx - 38}" cy="${cy}" rx="8" ry="26" class="cristallin"/>`;
+    for (const y of [cy - 18, cy, cy + 18]) s += `<path d="M 4 ${y} L ${cx - 42} ${y} L ${cx + r - 3} ${cy}" class="rayon"/>`;
+    s += `<path d="M ${cx + r} ${cy} L 214 ${cy}" class="trait-c c-emm" style="stroke-width:5"/>`;
+    TROIS.forEach(([c, d]) => { s += `<path d="M 214 ${cy + d} Q 256 ${34 + d} 294 ${34 + d}" class="trait-c c-${c}"/>`; });
+    s += pointe(305, 34, 0) + txt(310, 32, 'voir', 'etiq') + txt(310, 51, 'le cortex', 'petit t-doux');
+    for (const [c, y, nom, sous] of [['pup', 120, 'la pupille', 'le nerf III'], ['hor', 206, 'l’horloge', 'la mélatonine']]) {
+      s += `<path d="M 214 120 Q 256 ${y} 292 ${y}" class="trait-c c-${c}" style="stroke-width:4"/>` + pointe(304, y, 0, c);
+      s += txt(310, y - 2, nom, `etiq c-${c}`) + txt(310, y + 17, sous, 'petit t-doux');
+    }
+    return svgW(420, 232, s, 'Une entrée, trois sorties');
+  }
+
+  // Le fil : le schéma de tout le module.
+  function fil() {
+    let s = boite(8, 8, 104, 48, [['lumière', 'etiq']], { c: 'lum' }) + boite(146, 8, 104, 48, [['rétine', 'etiq']]) + boite(284, 8, 128, 48, [['nerf optique', 'etiq']]);
+    s += fleche(112, 32, 144, 32, { c: 'lum' }) + fleche(250, 32, 282, 32);
+    s += `<path d="M 348 56 L 348 92 L 72 92" class="trait-c c-emm"/>`;
+    const voirF = TROIS.map(([c, d]) => `<line x1="${72 + d * 1.2}" y1="92" x2="${72 + d * 1.2}" y2="116" class="trait-c c-${c}"/>`).join('') + pointe(72, 126, 90);
+    s += g({ pas: 1 }, voirF + boite(8, 128, 128, 66, [['voir', 'etiq'], ['cortex occipital', 'petit']], { c: 'emm' }) + txt(72, 218, 'une image', 'petit t-doux', 'middle'));
+    s += g({ pas: 2 }, fleche(210, 92, 210, 126, { c: 'pup' }) + boite(146, 128, 128, 66, [['la pupille', 'etiq'], ['nerf III', 'petit']], { c: 'pup' }) + txt(210, 218, 'plus petite', 'petit t-doux', 'middle'));
+    s += g({ pas: 3 }, fleche(348, 92, 348, 126, { c: 'hor' }) + boite(284, 128, 128, 66, [['l’horloge', 'etiq'], ['mélatonine', 'petit']], { c: 'hor' }) + txt(348, 218, 'le sommeil', 'petit t-doux', 'middle'));
+    return svgW(420, 228, s, 'Une entrée, trois sorties');
+  }
+
+  // La phototransduction : la lumière entre aux disques, l'électricité en sort.
+  function traduit() {
+    const yc = 100;
+    let s = txt(66, 22, 'lumière', 'etiq c-lum', 'middle');
+    for (const y of [yc - 40, yc, yc + 40]) s += fleche(8, y, 146, y, { c: 'lum' });
+    s += `<rect x="150" y="32" width="84" height="136" rx="14" class="tissu"/>`;
+    for (let y = 44; y <= 152; y += 12) s += `<rect x="160" y="${y}" width="64" height="6" rx="3" class="disque"/>`;
+    s += g({ pas: 1 }, txt(192, 22, 'disques', 'etiq', 'middle'));
+    s += g({ pas: 2 }, txt(192, 190, 'rétinal', 'etiq', 'middle') + txt(192, 209, 'dérivé de la vitamine A', 'petit t-doux', 'middle'));
+    s += g({ pas: 3 }, `<path d="M 238 ${yc} h 22 l 7 -30 l 11 60 l 7 -30 h 18 l 7 -30 l 11 60 l 7 -30 h 22" class="trait-c c-emm"/>` + fleche(350, yc, 414, yc) +
+      txt(336, 162, ['impulsions', 'électriques'], 'etiq', 'middle'));
+    return svgW(420, 218, s, 'La phototransduction');
+  }
+
+  // Un bâtonnet et un cône, avec les étiquettes du cours.
+  function cellules() {
+    const cell = (x, cone) => {
+      let c = `<circle cx="${x}" cy="46" r="7" class="point-c c-doux"/><line x1="${x}" y1="53" x2="${x}" y2="84" class="fibre"/>`;
+      c += `<path d="M ${x - 17} 170 L ${x - 17} 104 Q ${x - 17} 84 ${x} 84 Q ${x + 17} 84 ${x + 17} 104 L ${x + 17} 170 Z" class="tissu"/>`;
+      c += `<ellipse cx="${x}" cy="106" rx="11" ry="13" class="noyau"/>`;
+      for (const [dx, y] of (cone ? [[-7, 136], [6, 133], [-6, 152], [7, 150]] : [[-5, 136], [5, 152]])) c += `<ellipse cx="${x + dx}" cy="${y}" rx="5.5" ry="3.5" class="mito"/>`;
+      if (cone) {
+        c += `<path d="M ${x - 17} 174 L ${x + 17} 174 L ${x + 3} 272 L ${x - 3} 272 Z" class="tissu"/>`;
+        for (let y = 182; y <= 262; y += 10) { const d = 16 - (y - 174) * 0.135; c += `<line x1="${n1(x - d)}" y1="${y}" x2="${n1(x + d)}" y2="${y}" class="disque-l"/>`; }
+      } else {
+        c += `<rect x="${x - 17}" y="174" width="34" height="98" rx="6" class="tissu"/>`;
+        for (let y = 182; y <= 264; y += 10) c += `<line x1="${x - 13}" y1="${y}" x2="${x + 13}" y2="${y}" class="disque-l"/>`;
+      }
+      return c;
+    };
+    const xb = 66, xc = 354;
+    let s = txt(xb, 22, 'bâtonnet', 'etiq', 'middle') + txt(xc, 22, 'cône', 'etiq', 'middle') + cell(xb, false) + cell(xc, true);
+    const lien = (y, yb, yc2, x0 = 156, x1 = 264) => trait(xb + 18, yb, x0, y) + trait(x1, y, xc - 18, yc2);
+    s += txt(210, 42, ['Terminaisons', 'synaptiques'], 'petit', 'middle', 17) + trait(xb + 8, 46, 160, 48) + trait(260, 48, xc - 8, 46);
+    s += `<line x1="0" y1="76" x2="420" y2="76" class="pointille"/>`;
+    s += txt(210, 98, 'Segment interne', 'petit t-doux', 'middle') + txt(210, 122, 'Noyau', 'petit', 'middle') + lien(118, 108, 108, 186, 234);
+    s += txt(210, 150, 'Mitochondrie', 'petit', 'middle') + lien(146, 146, 146, 158, 262);
+    s += `<line x1="0" y1="172" x2="420" y2="172" class="pointille"/>`;
+    s += txt(210, 196, 'Segment externe', 'petit t-doux', 'middle') + txt(210, 226, 'Disques', 'petit', 'middle') + lien(222, 222, 222, 180, 240);
+    return svgW(420, 280, s, 'Un bâtonnet et un cône');
+  }
+
+  // La rétine en coupe : la lumière vient du haut, le signal repart.
+  function retine() {
+    const yF = 56, yG = 110, yB = 164, yT = 196, yE = 318, xR = 148, xB = 163;
+    let s = `<rect x="8" y="30" width="276" height="${yE + 22 - 30}" rx="10" class="fond-coupe"/>`;
+    for (const y of [yF - 7, yF, yF + 7]) s += `<line x1="16" y1="${y}" x2="284" y2="${y}" class="fibre"/>`;
+    for (const x of [43, 103, xB, 223]) {
+      s += `<line x1="${x}" y1="${yF + 7}" x2="${x}" y2="${yG}" class="fibre"/><circle cx="${x}" cy="${yG}" r="13" class="tissu"/>`;
+      s += `<line x1="${x}" y1="${yG + 13}" x2="${x}" y2="${yB}" class="fibre"/><ellipse cx="${x}" cy="${yB}" rx="8" ry="15" class="tissu"/>`;
+    }
+    for (let i = 0; i < 9; i++) {
+      const x = 28 + i * 30, cone = i % 3 === 1;
+      s += `<line x1="${x}" y1="${yT}" x2="${x}" y2="${yT + 18}" class="fibre"/><rect x="${x - 8}" y="${yT + 18}" width="16" height="30" rx="5" class="tissu"/>`;
+      s += cone ? `<path d="M ${x - 8} ${yT + 50} L ${x + 8} ${yT + 50} L ${x + 2} ${yT + 96} L ${x - 2} ${yT + 96} Z" class="tissu"/>`
+        : `<rect x="${x - 7}" y="${yT + 50}" width="14" height="46" rx="3" class="tissu"/>`;
+    }
+    for (let i = 0; i < 9; i++) s += `<rect x="${13 + i * 30}" y="${yE - 18}" width="29" height="34" rx="4" class="tissu"/>`;
+    // étiquettes de la colonne de droite
+    const rang = (y, l, mots, cls = 'petit') => txt(292, y + 5, l, 'etiq') + txt(312, y - 3, mots, cls, 'start', 17);
+    s += rang(yF, 'N', ['fibres', 'nerveuses']) + rang(yG, 'G', ['cellules', 'ganglionnaires']) + txt(312, yB - 3, ['cellules', 'bipolaires'], 'petit t-doux', 'start', 17);
+    s += rang(246, 'P', ['cônes et', 'bâtonnets']) + rang(yE, 'E', ['épithélium', 'pigmentaire']);
+    // 1, 2 : la lumière
+    s += g({ pas: 1 }, txt(14, 24, 'lumière', 'etiq c-lum') + fleche(xR, 8, xR, 186, { c: 'lum' }) + fleche(88, 8, 88, 186, { c: 'lum' }) + num(xR - 16, 110, 1));
+    s += g({ pas: 2 }, fleche(xR, 186, xR, 266, { c: 'lum' }) + fleche(88, 186, 88, 306, { c: 'lum' }) + num(xR + 18, 256, 2));
+    // 3 à 5 : le signal, en tirets
+    s += g({ pas: 3 }, `<path d="M ${xR + 6} ${yT - 2} L ${xB} ${yB + 18}" class="trait-c tirets c-emm"/>` + num(xB + 22, yB + 2, 3));
+    s += g({ pas: 4 }, fleche(xB, yB - 17, xB, yG + 15, { tirets: true }) + fleche(xB, yG - 15, xB, yF + 4, { tirets: true }) + num(xB + 22, yG, 4));
+    s += g({ pas: 5 }, `<path d="M ${xB} ${yF} L 280 ${yF}" class="trait-c tirets c-emm"/>` + num(240, yF - 20, 5) + txt(160, 22, 'vers le nerf optique', 'petit etiq-s'));
+    return svgW(420, 352, s, 'La rétine en coupe');
+  }
+
+  // Le nerf optique au disque optique, en coupe : la rétine s'arrête de chaque côté, les fibres plongent.
+  function nerf() {
+    const xG = 112, xD = 228, yS = 62, yR = 128, yCh = 150, yC = 196, xF = 330;
+    const couches = (x, w) => {
+      let c = `<rect x="${x}" y="${yS}" width="${w}" height="${yR - yS}" class="tissu"/><rect x="${x}" y="${yR}" width="${w}" height="${yCh - yR}" class="tissu"/><rect x="${x}" y="${yCh}" width="${w}" height="${yC - yCh}" class="tissu"/>`;
+      for (let k = x + 8; k < x + w - 4; k += 12) {
+        for (const y of [78, 90, 102]) c += `<circle cx="${k}" cy="${y}" r="2.6" class="point-c c-doux"/>`;
+        c += `<line x1="${k}" y1="112" x2="${k}" y2="125" class="fibre"/>`;
+      }
+      for (let k = x + 10; k < x + w - 8; k += 20) c += `<ellipse cx="${k}" cy="${yR + 11}" rx="7" ry="4" class="fibre"/>`;
+      for (const y of [162, 173, 184]) c += `<path d="M ${x + 4} ${y} q ${(w - 8) / 4} -5 ${(w - 8) / 2} 0 t ${(w - 8) / 2} 0" class="fibre"/>`;
+      return c;
+    };
+    let s = `<path d="M ${xG} ${yS} L ${xG} ${yC} L 96 292 L 244 292 L ${xD} ${yC} L ${xD} ${yS} Q 192 60 170 84 Q 148 60 ${xG} ${yS} Z" class="nerf-t"/>`;
+    for (const y of [160, 172, 184]) s += `<line x1="${xG}" y1="${y}" x2="${xD}" y2="${y}" class="fibre"/>`;
+    s += couches(8, xG - 8) + couches(xD, xF - xD);
+    s += `<path d="M 170 292 L 170 104 M 170 104 Q 168 88 148 80 M 170 104 Q 172 88 192 80" class="vaisseau"/><path d="M 170 292 L 170 104 M 170 104 Q 168 88 148 80 M 170 104 Q 172 88 192 80" class="vaisseau-i"/>`;
+    for (const [y0, y1, nom, yt] of [[yS, yR, 'Rétine', 100], [yR, yCh, 'Choroïde', 144], [yCh, yC, 'Sclère', 178]]) {
+      s += `<path d="M 334 ${y0 + 2} h 5 V ${y1 - 2} h -5" class="base"/>` + txt(344, yt, `<tspan class="etiq-s">${'ABC'[['Rétine', 'Choroïde', 'Sclère'].indexOf(nom)]}</tspan> ${nom}`, 'petit');
+    }
+    s += txt(286, 36, 'Vitré', 'etiq', 'middle') + trait(286, 42, 286, 60);
+    s += txt(250, 232, ['<tspan class="etiq-s">V</tspan> vaisseaux', 'sanguins'], 'petit') + trait(248, 228, 176, 214);
+    const fibres = [['M 14 66 C 60 62 112 62 132 96 C 148 126 146 220 138 290'], ['M 44 67 C 80 64 112 70 124 100 C 134 130 130 220 118 290'], ['M 80 67 C 104 66 124 80 142 92 C 158 110 156 220 152 290']];
+    const f = fibres.map(([d]) => `<path d="${d}" class="fibre-c fin c-emm"/>`).join('');
+    s += g({ pas: 1 }, f + `<g transform="translate(340 0) scale(-1 1)">${f}</g>` + txt(8, 232, ['<tspan class="etiq-s">N</tspan> fibres', 'nerveuses'], 'petit') + trait(72, 236, 121, 232) + txt(250, 284, 'nerf optique', 'petit etiq-s'));
+    s += g({ pas: 2 }, `<line x1="${xG}" y1="${yS}" x2="${xG}" y2="${yR}" class="coupure"/><line x1="${xD}" y1="${yS}" x2="${xD}" y2="${yR}" class="coupure"/>`);
+    s += g({ pas: 3 }, txt(170, 26, 'point aveugle', 'etiq', 'middle') + `<path d="M ${xG} 42 L ${xG} 36 L ${xD} 36 L ${xD} 42" class="trait-c c-emm" transform="translate(0 10)"/>`);
+    return svgW(420, 296, s, 'Le nerf optique au disque optique');
+  }
+
+  // Une tête de profil, tournée vers la gauche.
+  const profil = `<path d="M 166 276 L 166 240 C 138 242 96 244 86 226 C 80 214 84 206 80 198 C 72 194 72 188 76 184 C 70 180 72 174 78 168 L 64 164 C 56 160 56 154 60 148 L 84 104 C 90 40 152 10 224 10 C 322 10 386 72 386 150 C 386 196 352 228 316 240 L 310 276" class="peau"/>`;
+
+  // Les cinq stations, vues de côté.
+  function trajet() {
+    let s = profil + `<circle cx="112" cy="124" r="17" class="globe"/><circle cx="102" cy="124" r="4" class="pupille"/>`;
+    const q = k => ({ pas: k, c: 'emm' });
+    s += g(q(1), `<path d="M 128 128 L 176 150" class="trait-c fort"/>` + txt(176, 112, 'nerf optique', 'petit etiq-s', 'middle') + trait(164, 118, 154, 136) );
+    s += g(q(2), `<circle cx="178" cy="151" r="7" class="point-c"/>` + txt(178, 188, 'chiasma optique', 'petit etiq-s', 'middle') + trait(178, 174, 178, 160));
+    s += g(q(3), `<path d="M 184 152 L 248 164" class="trait-c fort"/>` + txt(242, 134, 'tractus optique', 'petit etiq-s', 'middle') + trait(224, 140, 218, 156));
+    s += g(q(4), `<ellipse cx="254" cy="165" rx="11" ry="8" class="point-c"/>` + txt(262, 206, 'CGL du thalamus', 'petit etiq-s', 'middle') + trait(256, 192, 254, 174));
+    s += g(q(5), `<path d="M 265 162 L 346 134" class="trait-c fort"/>` + `<path d="M 352 84 Q 376 134 346 188" class="cortex"/>` + txt(290, 62, ['cortex visuel,', 'lobe occipital'], 'petit etiq-s', 'middle', 17) + trait(320, 84, 348, 100));
+    return svgW(420, 280, s, 'Le trajet, vu de côté');
+  }
+
+  // OS vu du dessus : les rayons se croisent à la pupille.
+  function champ() {
+    const cx = 210, cy = 176, r = 74, yP = cy - r, yS = 28;
+    const chute = px => { const dx = cx - px, dy = yP - yS, t = 2 * r * dy / (dx * dx + dy * dy); return [cx + dx * t, yP + dy * t]; };
+    const pT = 164, pN = 256, A = chute(pT), B = chute(pN);
+    let s = `<circle cx="${cx}" cy="${cy}" r="${r}" class="globe"/><ellipse cx="${cx}" cy="${yP + 18}" rx="27" ry="9" class="cristallin"/>`;
+    s += arc(cx, cy, r, -14, 86, 'ret') + arc(cx, cy, r, 94, 194, 'ret');
+    s += txt(8, 172, 'côté tempe', 'petit t-doux') + txt(412, 172, 'côté nez', 'petit t-doux', 'end');
+    s += txt(210, 290, 'OS, vu du dessus', 'petit t-doux', 'middle');
+    s += g({ pas: 1 }, txt(pT - 12, 34, 'champ temporal', 'etiq', 'end') + `<circle cx="${pT}" cy="${yS}" r="6" class="point-c"/>` +
+      `<path d="M ${pT} ${yS} L ${n1(A[0])} ${n1(A[1])}" class="rayon"/>` + `<g class="c-bleu">` + arc(cx, cy, r, -14, 86, 'ret-c') + txt(412, 262, 'rétine nasale', 'etiq', 'end') + '</g>' + trait(340, 248, ...pol(cx, cy, r + 4, 42)));
+    s += g({ pas: 2 }, txt(pN + 12, 34, 'champ nasal', 'etiq') + `<circle cx="${pN}" cy="${yS}" r="6" class="point-c"/>` +
+      `<path d="M ${pN} ${yS} L ${n1(B[0])} ${n1(B[1])}" class="rayon"/>` + `<g class="c-vert">` + arc(cx, cy, r, 94, 194, 'ret-c') + txt(8, 262, 'rétine temporale', 'etiq') + '</g>' + trait(82, 248, ...pol(cx, cy, r + 4, 138)));
+    return svgW(420, 298, s, 'Champ et rétine');
+  }
+
+  // La croix, en grand : le vert et l'orange restent, le bleu croise.
+  function laCroix() {
+    const vert = 'M 90 44 C 128 100 172 152 176 196 C 172 240 128 292 94 346';
+    const bleu = 'M 124 44 C 152 90 190 156 210 196 C 230 236 268 300 292 346';
+    let s = `<path d="M 107 44 L 186 176 M 313 44 L 234 176 M 186 216 L 110 346 M 234 216 L 310 346" class="tissu-v gros"/><ellipse cx="210" cy="196" rx="66" ry="40" class="tissu-e"/>`;
+    s += txt(107, 28, 'OS', 'etiq', 'middle') + txt(313, 28, 'OD', 'etiq', 'middle');
+    s += txt(210, 304, ['Chiasma', 'optique'], 'petit', 'middle', 17) + trait(210, 290, 210, 230);
+    const fin = d => `<path d="${d}" class="fibre-c large"/>`;
+    s += g({ pas: 1, c: 'vert' }, fin(vert) + pointe(90, 352, 122, 'vert') + txt(78, 192, ['reste', 'à gauche'], 'etiq', 'middle'));
+    s += g({ pas: 2, c: 'ora' }, miroir(fin(vert) + pointe(90, 352, 122, 'ora')) + txt(342, 192, ['reste', 'à droite'], 'etiq', 'middle'));
+    s += g({ pas: 3, c: 'bleu' }, fin(bleu) + pointe(295, 352, 60, 'bleu') + miroir(`<path d="${bleu}" class="halo"/>` + fin(bleu) + pointe(295, 352, 60, 'bleu')) + txt(210, 78, ['le bleu', 'croise'], 'etiq', 'middle'));
+    const ligne = (x, a, ca) => `<text x="${x}" y="402" text-anchor="middle" class="etiq"><tspan class="t-${ca}">${a}</tspan> + <tspan class="t-bleu">bleu</tspan></text>`;
+    s += g({ pas: 4 }, txt(107, 381, 'tractus gauche', 'petit etiq-s', 'middle') + txt(313, 381, 'tractus droit', 'petit etiq-s', 'middle') + ligne(107, 'vert', 'vert') + ligne(313, 'orange', 'ora'));
+    return svgW(420, 412, s, 'La croix du chiasma');
+  }
+
+  // Les voies visuelles, comme sur la feuille : les yeux en haut, OS à gauche, OD à droite.
+  const V = { xG: 150, xD: 270, r: 44, yP: 34, xP: 118 };
+  const Y = y => +(222 + (y - 222) * 0.87).toFixed(1);   // le bas du dessin, un peu resserré
+  // dy décale tout le dessin vers le haut quand il n'y a pas de rayons (la feuille n'en a pas).
+  function voiesBase(dy) {
+    const Q = y => +(Y(y) + dy).toFixed(1), yE = 176 + dy, { xG, xD, r, yP, xP } = V, rr = r - 5;
+    const chute = xE => {
+      const y0 = yE - r, dx = xE - xP, dyR = y0 - (yP + dy), t = 2 * r * dyR / (dx * dx + dyR * dyR);
+      return [xE + dx * t, y0 + dyR * t];
+    };
+    const dedans = (xE, L, fin) => {
+      const a = Math.atan2(L[1] - yE, L[0] - xE), xi = xE + rr * Math.cos(a), yi = yE + rr * Math.sin(a);
+      const [xf, yf] = pol(xE, yE, rr, fin);
+      return `M ${n1(L[0])} ${n1(L[1])} L ${n1(xi)} ${n1(yi)} A ${rr} ${rr} 0 0 1 ${n1(xf)} ${n1(yf)}`;
+    };
+    const LG = dy ? pol(xG, yE, r, 36) : chute(xG), LD = dy ? pol(xD, yE, r, 36) : chute(xD);
+    const ex = 222 + dy;
+    const c = {
+      point: `<circle cx="${xP}" cy="${yP}" r="6" class="point-c"/>`,
+      ray1: `<path d="M ${xP} ${yP} L ${n1(LG[0])} ${n1(LG[1])}" class="rayon"/>`,
+      ray2: `<path d="M ${xP} ${yP} L ${n1(LD[0])} ${n1(LD[1])}" class="rayon"/>`,
+      arc1: arc(xG, yE, r, -24, 84, 'ret-c'),
+      arc2: arc(xD, yE, r, -24, 84, 'ret-c'),
+      // la fibre nasale de OS, qui croise, et la fibre temporale de OD, qui reste
+      f1a: `<path d="${dedans(xG, LG, 84)} L 153 ${ex} C 170 ${Q(250)} 196 ${Q(282)} 210 ${Q(306)} C 218 ${Q(319)} 230 ${Q(333)} 244 ${Q(346)}" class="fibre-c"/>`,
+      f2a: `<path d="${dedans(xD, LD, 84)} L 273 ${ex} C 262 ${Q(250)} 234 ${Q(280)} 232 ${Q(306)} C 232 ${Q(320)} 242 ${Q(334)} 250 ${Q(346)}" class="fibre-c"/>`,
+      f1b: `<path d="M 244 ${Q(346)} C 256 ${Q(358)} 270 ${Q(374)} 279 ${Q(388)}" class="fibre-c"/>`,
+      f2b: `<path d="M 250 ${Q(346)} C 260 ${Q(358)} 276 ${Q(374)} 285 ${Q(388)}" class="fibre-c"/>`
+    };
+    const fan = cls => [[279, 250, 526], [283, 276, 526], [287, 300, 521], [291, 322, 512], [295, 340, 498]]
+      .map(([x0, x1, y1]) => `<path d="M ${x0} ${Q(406)} C ${x0} ${Q(450)} ${x1} ${Q(462)} ${x1} ${Q(y1)}" class="${cls}"/>`).join('');
+    const cortexD = cls => `<path d="M 222 ${Q(524)} C 266 ${Q(530)} 326 ${Q(518)} 356 ${Q(482)}" class="${cls}"/>`;
+    const tissuN = `<path d="M 150 ${ex} L 198 ${Q(298)} M 270 ${ex} L 222 ${Q(298)}" class="tissu-v"/><ellipse cx="210" cy="${Q(306)}" rx="38" ry="20" class="tissu-e"/>`;
+    const tissuT = `<path d="M 198 ${Q(316)} L 136 ${Q(392)} M 222 ${Q(316)} L 284 ${Q(392)}" class="tissu-v"/>`;
+    const oeil = x => `<circle cx="${x}" cy="${yE}" r="${r}" class="globe"/><ellipse cx="${x}" cy="${yE - r + 11}" rx="17" ry="6" class="cristallin"/>`;
+    const cgl = cx => `<ellipse cx="${cx}" cy="${Q(396)}" rx="19" ry="11" class="cgl"/>`;
+    const etiqNerf = txt(128, Q(276), 'Nerf optique', 'petit', 'end') + trait(132, Q(272), 172, Q(268)) + txt(284, Q(306) + 5, 'Chiasma optique', 'petit') + trait(249, Q(306), 280, Q(306));
+    const etiqTractus = txt(126, Q(352), 'Tractus optique', 'petit', 'end') + trait(130, Q(348), 156, Q(350));
+    const etiqCGL = txt(210, Q(372), 'relais', 'petit etiq-s', 'middle') + txt(210, Q(372) + 17, ['CGL du', 'thalamus'], 'petit', 'middle', 16);
+    const milieu = `<line x1="210" y1="${Q(438)}" x2="210" y2="${Q(530)}" class="pointille"/>`;
+    const etiqCortex = txt(102, Q(530) + 22, 'cortex visuel gauche', 'petit etiq-s', 'middle') + txt(318, Q(530) + 22, 'cortex visuel droit', 'petit etiq-s', 'middle');
+    return { c, Q, yE, fan, cortexD, tissuN, tissuT, oeil, cgl, etiqNerf, etiqTractus, etiqCGL, etiqCortex, milieu };
+  }
+  const etiqRetine = (yE) => txt(8, yE + 60, 'R-Temp', 'petit') + trait(50, yE + 48, ...pol(V.xG, yE, V.r + 4, 150)) +
+    txt(412, yE + 60, 'R-Temp', 'petit', 'end') + trait(370, yE + 48, ...pol(V.xD, yE, V.r + 4, 30)) +
+    txt(210, yE + 54, ['Rétine', 'Nasale'], 'petit', 'middle', 16);
+
+  // Un point d'un champ, pas à pas. droit = false : champ gauche; droit = true : le miroir, en moins d'étapes.
+  function voiesPoint(droit) {
+    const b = voiesBase(0), c = b.c, yE = b.yE;
+    const M = s => (droit ? miroir(s) : s);
+    let s = b.tissuN + b.tissuT + b.oeil(V.xG) + b.oeil(V.xD);
+    for (const x of [V.xG, V.xD]) s += arc(x, yE, V.r, -24, 84, 'ret') + arc(x, yE, V.r, 96, 204, 'ret');
+    s += b.cgl(133) + b.cgl(287) + b.fan('fibre') + miroir(b.fan('fibre')) + b.cortexD('cortex c-doux') + miroir(b.cortexD('cortex c-doux')) + b.milieu;
+    s += txt(100, yE - 4, 'OS', 'etiq', 'end') + txt(320, yE - 4, 'OD', 'etiq') + txt(210, yE + 5, 'nez', 'petit t-doux', 'middle');
+    s += etiqRetine(yE) + b.etiqNerf + b.etiqTractus + b.etiqCGL + b.etiqCortex;
+    const coul = droit ? 'vert' : 'ora';
+    const nez = `<g class="c-bleu">${M(c.arc1)}</g>`, temp = `<g class="c-${coul}">${M(c.arc2)}</g>`;
+    const point = M(`<g class="c-emm">${c.point}</g>`);
+    const chA = `<g class="c-bleu">${M(c.f1a)}</g><g class="c-${coul}">${M(c.f2a)}</g>`, chB = `<g class="c-bleu">${M(c.f1b)}</g><g class="c-${coul}">${M(c.f2b)}</g>`;
+    const fin = M(b.fan('fibre-c fin c-emm') + b.cortexD('cortex c-emm'));
+    const titre = droit ? txt(412, 22, 'champ visuel droit', 'etiq', 'end') : txt(8, 22, 'champ visuel gauche', 'etiq');
+    const ovale = M(`<ellipse cx="287" cy="${b.Q(396)}" rx="19" ry="11" class="cgl-c"/>`);
+    if (droit) {
+      s += g({ pas: 1 }, titre + M(c.ray1 + c.ray2) + nez + temp + point + num(292, yE + 16, 1));
+      s += g({ pas: 2 }, chA + num(152, b.Q(282), 2));
+      s += g({ pas: 3 }, chB + `<g class="c-emm">${ovale}</g>` + fin + num(142, b.Q(478), 3));
+    } else {
+      s += g({ pas: 1 }, titre + M(c.ray1) + nez + point + num(136, yE + 20, 1));
+      s += g({ pas: 2 }, M(c.ray2) + temp + num(262, yE + 16, 2));
+      s += g({ pas: 3 }, chA + num(268, b.Q(282), 3));
+      s += g({ pas: 4 }, chB + `<g class="c-emm">${ovale}</g>` + num(304, b.Q(352), 4));
+      s += g({ pas: 5 }, fin + num(278, b.Q(478), 5));
+    }
+    return svgW(420, 515, s, droit ? 'Un point du champ droit' : 'Un point du champ gauche');
+  }
+
+  // La feuille des voies visuelles, en cinq gestes : les mêmes noms, les mêmes couleurs.
+  function voiesFeuille() {
+    const dy = -94, b = voiesBase(dy), c = b.c, yE = b.yE;
+    const f = (cl, s) => `<g class="c-${cl}">${s}</g>`;
+    let s = g({ pas: 2 }, b.tissuN) + g({ pas: 3 }, b.tissuT) + b.oeil(V.xG) + b.oeil(V.xD);
+    for (const x of [V.xG, V.xD]) s += arc(x, yE, V.r, -24, 84, 'ret') + arc(x, yE, V.r, 96, 204, 'ret');
+    s += txt(V.xG, 26, 'OS', 'etiq', 'middle') + txt(V.xD, 26, 'OD', 'etiq', 'middle');
+    const rt = txt(84, 66, 'R-Temp', 'petit', 'end') + trait(88, 64, ...pol(V.xG, yE, V.r + 4, 206)) + txt(336, 66, 'R-Temp', 'petit') + trait(332, 64, ...pol(V.xD, yE, V.r + 4, -26)) +
+      txt(210, 14, ['Rétine', 'Nasale'], 'petit', 'middle', 18) + trait(196, 37, ...pol(V.xG, yE, V.r + 4, -30)) + trait(224, 37, ...pol(V.xD, yE, V.r + 4, 210));
+    s += g({ pas: 1 }, f('bleu', c.arc1 + miroir(c.arc1)) + f('vert', miroir(c.arc2)) + f('ora', c.arc2) + rt);
+    s += g({ pas: 2 }, f('vert', miroir(c.f2a)) + f('ora', c.f2a) + f('bleu', c.f1a) + `<g class="c-bleu">${miroir(`<path d="${c.f1a.match(/ d="([^"]+)"/)[1].replace(/^.* C 170/, 'M 153 ' + (222 + dy) + ' C 170')}" class="halo fin"/>` + c.f1a)}</g>` + b.etiqNerf);
+    s += g({ pas: 3 }, f('vert', miroir(c.f2b)) + f('ora', c.f2b) + f('bleu', c.f1b + miroir(c.f1b)) + b.etiqTractus);
+    s += g({ pas: 4 }, b.cgl(133) + b.cgl(287) + b.etiqCGL);
+    s += g({ pas: 5 }, b.fan('fibre') + miroir(b.fan('fibre')) + b.cortexD('cortex c-emm') + miroir(b.cortexD('cortex c-emm')) + b.milieu + b.etiqCortex);
+    return svgW(420, 430, s, 'Les voies visuelles');
+  }
+
+  // Deux vues d'un même point du champ gauche, un seul cortex, puis des liens.
+  function raisons() {
+    const scene = (x, y, dx, nom) => `<rect x="${x}" y="${y}" width="104" height="62" rx="8" class="boite"/>` +
+      `<path d="M ${x + 40 + dx} ${y + 44} l 13 -28 l 13 28 Z" class="point-c c-emm"/><line x1="${x + 53 + dx}" y1="${y + 44}" x2="${x + 53 + dx}" y2="${y + 53}" class="trait-c c-emm"/>` +
+      txt(x + 52, y + 80, nom, 'petit t-doux', 'middle');
+    let s = scene(8, 8, -10, 'la vue de OS') + scene(8, 110, 10, 'la vue de OD');
+    s += fleche(116, 40, 182, 86, { c: 'bleu' }) + fleche(116, 140, 182, 104, { c: 'ora' });
+    s += g({ pas: 1 }, txt(150, 214, 'relais', 'petit t-doux', 'middle') + trait(150, 200, 150, 112));
+    s += g({ pas: 2 }, `<circle cx="222" cy="96" r="38" class="boite"/>` + txt(222, 92, 'cortex', 'etiq', 'middle') + txt(222, 110, 'droit', 'petit', 'middle'));
+    s += g({ pas: 3 }, fleche(262, 80, 308, 46, {}) + fleche(264, 96, 308, 96, {}) + fleche(262, 112, 308, 146, {}) +
+      txt(314, 50, 'mémoire', 'petit') + txt(314, 101, 'mouvement', 'petit') + txt(314, 152, 'couleur', 'petit'));
+    return svgW(420, 226, s, 'Pourquoi croiser');
+  }
+
+  // Un iris de face, en petit : anneau du sphincter, ou rayons du dilatateur.
+  function iris(fort) {
+    const cx = 130, cy = 80, R = 66, p = fort ? 15 : 40;
+    let s = `<circle cx="${cx}" cy="${cy}" r="${R}" class="iris"/>`;
+    if (fort) {
+      s += `<circle cx="${cx}" cy="${cy}" r="${p + 9}" class="anneau"/>`;
+      for (const a of [20, 110, 200, 290]) { const [x1, y1] = pol(cx, cy, 44, a), [x2, y2] = pol(cx, cy, 30, a); s += fleche(x1, y1, x2, y2, { c: 'pup' }); }
+    } else {
+      for (let a = 0; a < 360; a += 24) { const [x1, y1] = pol(cx, cy, p + 3, a), [x2, y2] = pol(cx, cy, R - 4, a); s += `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="rai"/>`; }
+    }
+    s += `<circle cx="${cx}" cy="${cy}" r="${p}" class="pupille"/>`;
+    for (const x of [8, 234]) for (const y of (fort ? [30, 80, 130] : [80])) s += fleche(x + (x < 100 ? 0 : 18), y, x + (x < 100 ? 18 : 0), y, { c: 'lum' });
+    return svgW(260, 160, s, fort ? 'Myosis' : 'Mydriase');
+  }
+
+  // Deux arcs, même modèle.
+  function arcs() {
+    let s = txt(126, 18, 'afférente', 'etiq-b', 'middle') ;
+    s += g({ pas: 1 }, txt(294, 18, 'efférente', 'etiq-b', 'middle'));
+    const ligne = (y, c, a, n1m, n2m, e, pasE) => {
+      let r = boite(8, y, 84, 50, [[a, 'petit etiq-s']], { c }) + boite(168, y, 84, 50, [['centre', 'petit etiq-s']], { c });
+      r += fleche(94, y + 25, 164, y + 25, { c, tirets: true }) + txt(126, y + 16, n1m, 'petit etiq-s c-' + c, 'middle');
+      r += g({ pas: pasE }, fleche(256, y + 25, 324, y + 25, { c }) + txt(290, y + 16, n2m, 'petit etiq-s c-' + c, 'middle') + boite(328, y, 84, 50, [[e, 'petit etiq-s']], { c }));
+      return r;
+    };
+    s += txt(8, 46, 'la pupille', 'petit etiq-s c-pup') + ligne(54, 'pup', 'rétine', 'II', 'III', 'sphincter', 1);
+    s += g({ pas: 2 }, txt(8, 134, 'le larmoiement (module 6)', 'petit t-doux') + ligne(142, 'doux', 'cornée', 'V', 'VII', 'glande'));
+    return svgW(420, 202, s, 'Deux arcs réflexes');
+  }
+
+  // L'arc du réflexe autour de l'œil, vu de côté.
+  function sept() {
+    const cx = 170, cy = 196, r = 68, xI = cx - 54;
+    const ret = cx + r;
+    let s = `<circle cx="${cx}" cy="${cy}" r="${r}" class="globe"/>` + arc(cx, cy, r, -48, 48, 'ret');
+    s += `<ellipse cx="${xI + 11}" cy="${cy}" rx="7" ry="20" class="cristallin"/>`;
+    s += `<line x1="${xI}" y1="${cy - 38}" x2="${xI}" y2="${cy - 18}" class="iris-l"/><line x1="${xI}" y1="${cy + 18}" x2="${xI}" y2="${cy + 38}" class="iris-l"/>`;
+    s += g({ pas: 1 }, fleche(8, cy, ret - 3, cy, { c: 'lum' }) + num(58, cy - 22, 1));
+    s += g({ pas: 2 }, num(ret - 22, cy + 28, 2));
+    s += g({ pas: 3, c: 'pup' }, `<path d="M ${ret + 2} ${cy} L 346 ${cy} Q 382 ${cy} 382 ${cy - 34} L 382 76 Q 382 44 350 44 L 322 44" class="trait-c tirets"/>` + pointe(310, 44, 180, 'pup') +
+      txt(372, 140, 'afférent', 'petit etiq-s', 'end') + num(382, 104, 3));
+    s += g({ pas: 4 }, boite(136, 16, 170, 56, [['centre', 'etiq'], ['du cerveau', 'petit']], { c: 'pup' }) + num(136, 16, 4));
+    s += g({ pas: 5, c: 'pup' }, `<path d="M 134 44 L 66 44 Q 34 44 34 76 L 34 110 Q 34 138 ${xI - 20} ${cy - 44} L ${xI - 7} ${cy - 32}" class="trait-c"/>` + pointe(xI - 3, cy - 29, 42, 'pup') +
+      txt(48, 88, 'nerf III', 'petit etiq-s') + txt(48, 106, 'efférent', 'petit etiq-s') + num(34, 62, 5));
+    s += g({ pas: 6 }, `<line x1="${xI}" y1="${cy - 38}" x2="${xI}" y2="${cy - 18}" class="iris-c"/><line x1="${xI}" y1="${cy + 18}" x2="${xI}" y2="${cy + 38}" class="iris-c"/>` + num(xI - 24, cy + 42, 6));
+    s += g({ pas: 7 }, `<line x1="${xI}" y1="${cy - 18}" x2="${xI}" y2="${cy - 7}" class="iris-c"/><line x1="${xI}" y1="${cy + 7}" x2="${xI}" y2="${cy + 18}" class="iris-c"/>` + num(xI - 24, cy + 72, 7) +
+      txt(xI, cy + 77, 'pupille plus petite', 'petit etiq-s c-pup'));
+    return svgW(420, 280, s, 'Le réflexe à la lumière');
+  }
+
+  // Une lumière dans l'œil droit, les deux pupilles (petits iris en haut, vus de face).
+  function deux() {
+    const xG = 150, xD = 270, yE = 112, r = 42;
+    const pup = x => `<circle cx="${x}" cy="28" r="20" class="iris"/><circle cx="${x}" cy="28" r="10" class="pupille"/>`;
+    let s = `<path d="M 150 156 L 198 206 M 270 156 L 222 206" class="tissu-v"/><ellipse cx="210" cy="214" rx="38" ry="18" class="tissu-e"/><path d="M 198 224 L 168 262 M 222 224 L 252 262" class="tissu-v"/>`;
+    s += pup(xG) + pup(xD);
+    for (const x of [xG, xD]) s += `<circle cx="${x}" cy="${yE}" r="${r}" class="globe"/><ellipse cx="${x}" cy="${yE - r + 11}" rx="17" ry="6" class="cristallin"/>` + arc(x, yE, r, 30, 150, 'ret');
+    s += txt(126, 176, 'œil gauche', 'petit', 'end') + txt(294, 176, 'œil droit', 'petit') + txt(284, 222, 'chiasma', 'petit t-doux');
+    // 1 : la lumière
+    s += g({ pas: 1 }, txt(380, 22, 'lumière', 'etiq c-lum', 'middle') + fleche(372, 34, 278, 66, { c: 'lum' }) + `<path d="M 278 66 L 270 152" class="rayon"/>`);
+    // 2 : le signal, en tirets, des deux côtés
+    s += g({ pas: 2, c: 'pup' }, '<path d="M 267 154 C 248 178 226 198 210 214 C 196 230 180 246 170 262" class="trait-c tirets"/><path d="M 273 154 C 262 178 238 198 234 214 C 232 230 244 246 250 262" class="trait-c tirets"/>' +
+      '<circle cx="168" cy="270" r="8" class="noyau-c"/><circle cx="252" cy="270" r="8" class="noyau-c"/>');
+    // 3 : la seconde traversée
+    s += g({ pas: 3, c: 'pup' }, '<path d="M 174 276 L 232 312 M 246 276 L 188 312" class="trait-c tirets"/><circle cx="184" cy="318" r="8" class="noyau-c"/><circle cx="236" cy="318" r="8" class="noyau-c"/>' +
+      txt(210, 346, 'noyaux d’Edinger-Westphal', 'petit', 'middle'));
+    // 4 : les deux nerfs III, en trait plein
+    const III = 'M 176 322 C 96 346 30 300 26 190 C 24 110 66 62 118 70';
+    s += g({ pas: 4, c: 'pup' }, `<path d="${III}" class="trait-c"/>` + pointe(122, 71, 12, 'pup') + miroir(`<path d="${III}" class="trait-c"/>` + pointe(122, 71, 12, 'pup')) +
+      txt(42, 206, 'nerf III', 'petit etiq-s') + txt(378, 206, 'nerf III', 'petit etiq-s', 'end'));
+    // 5 : les pupilles se contractent
+    s += g({ pas: 5 }, `<circle cx="${xG}" cy="28" r="8" class="ferme"/><circle cx="${xD}" cy="28" r="8" class="ferme"/>`);
+    return svgW(420, 354, s, 'Une lumière, deux pupilles');
+  }
+
+  // La grille des pannes : pour chaque cas et chaque essai, les deux pupilles.
+  function panne() {
+    const col = [226, 352], ligne = [70, 158, 246];
+    let s = txt(col[0], 18, 'lumière à gauche', 'petit etiq-s', 'middle') + txt(col[1], 18, 'lumière à droite', 'petit etiq-s', 'middle');
+    const paire = (cx, y, lumiere, rep) => {
+      let r = '';
+      [['G', -28], ['D', 28]].forEach(([nom, dx]) => {
+        const x = cx + dx, petite = rep.includes(nom);
+        r += `<circle cx="${x}" cy="${y}" r="20" class="iris"/><circle cx="${x}" cy="${y}" r="${petite ? 6 : 13}" class="pupille"/>`;
+        if (petite) r += `<circle cx="${x}" cy="${y}" r="9" class="ferme"/>`;
+        r += txt(x, y + 37, nom, 'petit t-doux', 'middle');
+        if (lumiere === nom) r += fleche(x, y - 39, x, y - 23, { c: 'lum' });
+      });
+      return r;
+    };
+    const rang = (i, lignes, a, b, o) => g(o, txt(6, ligne[i] + 2 - (lignes.length - 1) * 8, lignes, 'petit', 'start', 17) + paire(col[0], ligne[i], 'G', a) + paire(col[1], ligne[i], 'D', b));
+    s += rang(0, ['aucune panne'], 'GD', 'GD');
+    s += rang(1, ['nerf optique', 'droit coupé', '(afférent)'], 'GD', '', { pas: 1 });
+    s += rang(2, ['III droit coupé', '(efférent)'], 'G', 'G', { pas: 2 });
+    return svgW(420, 292, s, 'Trouver la panne');
+  }
+
+  // Les gouttes : le parasympathique coupé, le sphincter lâche.
+  function gouttes() {
+    let s = boite(8, 8, 84, 50, [['gouttes', 'petit etiq-s']], { c: 'doux' }) + boite(120, 8, 158, 50, [['parasympathique', 'petit etiq-s']], { c: 'pup' }) + boite(322, 8, 90, 50, [['sphincter', 'petit etiq-s']], { c: 'pup' });
+    s += boite(120, 84, 158, 50, [['sympathique', 'petit etiq-s']], { c: 'pup' }) + boite(322, 84, 90, 50, [['dilatateur', 'petit etiq-s']], { c: 'pup' });
+    s += fleche(280, 33, 318, 33, { c: 'pup' }) + fleche(280, 109, 318, 109, { c: 'pup' });
+    s += g({ pas: 1 }, `<path d="M 94 33 L 116 33 M 116 21 L 116 45" class="trait-c c-doux" style="stroke-width:3.5"/>`);
+    s += g({ pas: 2 }, croix(299, 33));
+    s += g({ pas: 3 }, txt(330, 156, 'il l’emporte', 'petit etiq-s c-pup', 'middle'));
+    const pupille = (x, p, nom) => `<circle cx="${x}" cy="208" r="36" class="iris"/><circle cx="${x}" cy="208" r="${p}" class="pupille"/>` + txt(x, 262, nom, 'petit etiq-s', 'middle');
+    s += g({ pas: 4 }, pupille(120, 11, '3-4 mm') + fleche(170, 208, 240, 208, { c: 'pup' }) + pupille(292, 28, '8 mm'));
+    return svgW(420, 272, s, 'Les gouttes');
+  }
+
+  // La voie de l'horloge, de profil.
+  function horloge() {
+    let s = profil + `<circle cx="112" cy="124" r="17" class="globe"/><circle cx="102" cy="124" r="4" class="pupille"/>`;
+    s += g({ pas: 1 }, txt(6, 80, ['lumière', 'bleue'], 'etiq c-lum', 'start') + fleche(6, 124, 92, 124, { c: 'lum' }) );
+    s += g({ pas: 1, c: 'hor' }, txt(148, 112, 'mélanopsine', 'petit etiq-s'));
+    s += g({ pas: 2, c: 'hor' }, `<path d="M 128 130 L 186 158" class="trait-c fort"/>`);
+    s += g({ pas: 3, c: 'hor' }, `<circle cx="192" cy="162" r="9" class="point-c"/>` + txt(204, 184, 'hypothalamus', 'petit etiq-s', 'middle') + txt(204, 202, 'noyau suprachiasmatique', 'petit', 'middle') + txt(204, 220, 'l’horloge', 'petit t-doux', 'middle'));
+    s += g({ pas: 4, c: 'hor' }, `<path d="M 200 156 L 266 118" class="trait-c fort"/><circle cx="272" cy="114" r="9" class="point-c"/>` + txt(278, 92, 'glande pinéale', 'petit etiq-s', 'middle') +
+      `<circle cx="294" cy="128" r="4" class="point-c"/><circle cx="310" cy="142" r="4" class="point-c"/><circle cx="330" cy="130" r="4" class="point-c"/><circle cx="342" cy="150" r="4" class="point-c"/>` + txt(326, 176, 'mélatonine', 'petit etiq-s', 'middle'));
+    return svgW(420, 280, s, 'La voie de l’horloge');
+  }
+
+  // La mélatonine selon les heures, à l'œil : l'axe du cours saute de 17 à 21.
+  function courbe() {
+    const heures = ['17', '21', '23', '01', '03', '05', '07', '09', '11', '13', '15'];
+    const x0 = 22, pas = 36.5, yb = 186, X = i => x0 + i * pas;
+    const cloche = mu => { const pts = []; for (let i = 0; i <= 100; i++) { const u = i / 10; pts.push(`${n1(X(u))} ${n1(yb - 128 * Math.exp(-(((u - mu) / 1.9) ** 2)))}`); } return pts.join(' L '); };
+    let s = txt(8, 16, 'Concentration de mélatonine', 'petit t-doux');
+    s += `<line x1="${x0 - 8}" y1="${yb}" x2="${X(10) + 8}" y2="${yb}" class="base"/>`;
+    heures.forEach((h, i) => { s += `<line x1="${n1(X(i))}" y1="${yb}" x2="${n1(X(i))}" y2="${yb + 5}" class="base"/>` + txt(X(i), yb + 22, h, 'petit t-doux', 'middle'); });
+    s += txt(X(10) + 8, yb + 42, 'Heures', 'petit t-doux', 'end');
+    s += `<g class="c-hor"><path d="M ${cloche(4.5)}" class="courbe-c"/></g>`;
+    s += txt(8, yb + 42, 'trait plein : normale', 'petit', 'start');
+    s += g({ pas: 3, c: 'hor' }, `<path d="M ${cloche(5.5)}" class="courbe-c tirets"/>` + fleche(X(4.5) + 4, 44, X(5.5) - 4, 44, { c: 'hor' }));
+    s += g({ pas: 3 }, txt(190, yb + 42, 'tirets : décalée', 'petit'));
+    return svgW(420, 236, s, 'La courbe de la mélatonine');
+  }
+
+  // Le cadran de 24 heures : une place sur le cadran, jamais une heure exacte.
+  function cadran() {
+    const cx = 210, cy = 150, r = 64;
+    const ang = h => 180 + (h - 6) * 15;
+    let s = `<path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy} Z" class="jour"/><path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 0 ${cx + r} ${cy} Z" class="nuit"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${r}" class="anneau-j"/>`;
+    s += txt(cx, cy - r + 18, '12', 'petit', 'middle') + txt(cx - r + 13, cy + 5, '6', 'petit', 'middle') + txt(cx + r - 14, cy + 5, '18', 'petit', 'middle') + txt(cx, cy + r - 8, '24', 'petit', 'middle');
+    s += txt(cx, cy - 18, 'jour', 'petit t-doux', 'middle') + txt(cx, cy + 28, 'nuit', 'petit t-doux', 'middle');
+    const rep = (h, xt, yt, l, anc, cls = 'petit') => {
+      const [x, y] = pol(cx, cy, r, ang(h));
+      const xf = anc === 'end' ? xt + 4 : xt - 4;
+      return `<circle cx="${n1(x)}" cy="${n1(y)}" r="4" class="point-c c-${cls.includes('c-hor') ? 'hor' : 'doux'}"/>` + `<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(xf)}" y2="${n1(yt - 5)}" class="pointille"/>` + txt(xt, yt, l, cls, anc, 17);
+    };
+    s += rep(10, 124, 44, ['Meilleure', 'vigilance'], 'end') + rep(6, 124, 146, ['Sécrétion', 'de cortisol'], 'end') + rep(2.5, 124, 246, ['Sommeil', 'profond'], 'end');
+    s += rep(14, 296, 44, ['Meilleur temps', 'de réaction'], 'start') + rep(18, 296, 146, ['Plus haute', 'T° du corps'], 'start') +
+      rep(22, 282, 246, ['Début de sécrétion', 'de mélatonine'], 'start', 'petit etiq-s c-hor');
+    return svgW(420, 280, s, 'Le corps en 24 heures');
+  }
+
+  const FIG = {
+    couverture, fil, traduit, cellules, retine, nerf, trajet, champ, croix: laCroix, raisons, arcs, sept, deux, panne, gouttes, horloge, courbe, cadran,
+    'voies-gauche': () => voiesPoint(false), 'voies-droit': () => voiesPoint(true), 'voies-feuille': voiesFeuille,
+    'iris-myosis': () => iris(true), 'iris-mydriase': () => iris(false)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', entree: 'L’entrée', voir: 'Voir', pupille: 'La pupille', horloge: 'L’horloge', route: 'Pour la route' };
+  const CLE = 'diapos-anat-m8';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+
+<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py. Le groupe (Convergence) vit dans survol-groupe.js, chargé seulement à la demande. -->
+<style id="notes-survol-css">
+/* une colonne à droite qui prend sa place dès 1200 px (les diapos se redessinent dans les ≥ 860 px qui restent :
+   audit sans problème) ; de 900 à 1199 px, le même panneau passe par-dessus la droite de la diapo (à 900 px, une
+   colonne laissait 560 px et faisait déborder deux diapos) ; au téléphone, une feuille par-dessus le bas.
+   Réduite, elle se rouvre par « ✎ Notes » en haut. */
+:root { --ns-w: 340px; }
+body.ns-dock { padding-right: var(--ns-w); }
+.ns-bouton { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; position: relative; }
+.ns-bouton[aria-expanded="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--encre); }
+.ns-bouton .ns-point { width: 7px; height: 7px; border-radius: 50%; background: var(--encre); }
+.ns-bouton .ns-point[hidden] { display: none; }
+.ns-bouton:focus-visible, .ns-panneau button:focus-visible, .ns-texte:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.ns-panneau { position: fixed; top: 0; right: 0; bottom: 0; width: var(--ns-w); z-index: 15; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
+  background: var(--fond-2); color: var(--encre); border-left: 1px solid var(--trait); font: 400 var(--t-s)/1.45 var(--f-texte); }
+.ns-panneau[hidden] { display: none; }
+body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
+.ns-tete { display: flex; align-items: center; gap: 8px; }
+.ns-titre { margin: 0; flex: 1; min-width: 0; font-size: var(--t-s); font-weight: 800; letter-spacing: .02em; }
+.ns-ou { margin: 0; font-size: var(--t-xs); color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ns-texte { flex: 1; min-height: 120px; width: 100%; box-sizing: border-box; resize: none; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); line-height: 1.5; }
+.ns-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ns-panneau button { min-height: 38px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
+.ns-panneau .ns-reduire { min-width: 38px; padding: 0 10px; }
+.ns-etat { margin: 0; min-height: 1.3em; font-size: var(--t-xs); color: var(--doux); }
+/* Convergence : le bouton du haut, l'interrupteur « Notes du groupe », et la place des lignes (survol-groupe.js les dessine) */
+.ns-cv svg { width: 22px; height: 11px; flex: none; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
+.ns-panneau .ns-sw { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 2px; border: 0; background: none; font-size: var(--t-xs); }
+.ns-sw i { position: relative; flex: none; width: 32px; height: 18px; border-radius: 9px; background: var(--trait); }
+.ns-sw i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--fond-2); box-shadow: 0 0 0 1px var(--doux); }
+.ns-sw[aria-checked="true"] i { background: var(--encre); }
+.ns-sw[aria-checked="true"] i::after { transform: translateX(14px); box-shadow: none; }
+.ns-lignes { flex: 1; min-height: 120px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
+.ns-garde { margin: 0; flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--t-s); line-height: 1.5; }
+/* le sablier seul : son bouton est ici, tout le reste dans survol-groupe.js, chargé au premier clic ou s'il est déjà allumé */
+.ns-sablier[hidden] { display: none; }
+.ns-sablier > svg { width: 12px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ns-sablier > svg.sablier-mini { width: 11px; stroke: none; }
+.ns-sablier .ns-temps { font-variant-numeric: tabular-nums; }
+.ns-sablier .ns-temps:empty { display: none; }
+.ns-sablier[aria-pressed="true"] .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 899px) {
+  .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+}
+/* au téléphone, le bouton Convergence prend sa place : le retour à l'atelier se coupe plutôt que de passer dessous */
+@media (max-width: 480px) {
+  .haut:has(.ns-cv:not([hidden])) .haut-gauche { flex: 1 1 0; }
+  .haut:has(.ns-cv:not([hidden])) .marque { display: none; }
+  .haut:has(.ns-cv:not([hidden])) .vers-banc { flex: 0 1 auto; min-width: 0; display: block; line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+}
+@media (max-width: 899px) {
+  .ns-cv .ns-mot, .ns-sablier .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (max-width: 600px) {
+  .ns-bouton { padding: 0 10px; }
+  .ns-bouton .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+/* au plus petit téléphone, le décompte seul : le sablier ne pousse pas le retour à l'atelier hors de la barre */
+@media (max-width: 480px) { .ns-sablier[aria-pressed="true"] > svg { display: none; } }
+@media (max-width: 359px) { .haut-droite { gap: 6px; } .ns-bouton { padding: 0 8px; } }
+@media print { .ns-panneau, .ns-bouton { display: none !important; } body.ns-dock { padding-right: 0; } }
+</style>
+<script id="notes-survol">
+(() => {
+  'use strict';
+  const diapos = [...document.querySelectorAll('.diapo')];
+  if (!diapos.length || document.getElementById('ns-panneau')) return;
+  const fichier = (decodeURIComponent(location.pathname.split('/').pop() || '') || 'diapos').replace(/\.html?$/i, '') || 'diapos';
+  const CLE = 'survol-notes:' + fichier, CLE_OUVERT = 'survol-notes-ouvert';
+  const lire = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const ecrire = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+  const net = s => String(s || '').replace(/\s+/g, ' ').trim();
+  const titreDe = d => net((d.querySelector('h2, h1') || {}).textContent) || '';
+  const titreDiapo = net(document.title).replace(/^Survol\s*·\s*/i, '') || fichier;
+
+  /* une note par diapo, rangée sous le titre de la diapo (elle suit sa diapo si l'ordre change) ;
+     deux titres pareils : le second prend son numéro */
+  const vus = {};
+  const cles = diapos.map((d, i) => { let k = titreDe(d) || 'Diapo ' + (i + 1); if (vus[k]) k += ' (' + (i + 1) + ')'; vus[k] = 1; return k; });
+  let notes = {};
+  try { notes = JSON.parse(lire(CLE) || '{}') || {}; } catch (e) { notes = {}; }
+  const texteDe = i => (notes[cles[i]] && notes[cles[i]].x) || '';
+  const cur = () => Math.max(0, diapos.findIndex(d => !d.hidden));
+
+  /* le bouton, en haut à droite, à côté du plan */
+  const haut = document.querySelector('.haut-droite') || document.querySelector('.haut');
+  const bouton = document.createElement('button');
+  bouton.type = 'button'; bouton.className = 'ns-bouton'; bouton.id = 'ns-bouton';
+  bouton.setAttribute('aria-controls', 'ns-panneau'); bouton.setAttribute('aria-expanded', 'false');
+  bouton.title = 'Mes notes : une note par diapo, gardée sur cet appareil';
+  bouton.innerHTML = '<span aria-hidden="true">✎</span><span class="ns-mot">Notes</span><i class="ns-point" hidden></i>';
+  if (haut) haut.insertBefore(bouton, haut.firstChild); else document.body.appendChild(bouton);
+
+  const p = document.createElement('aside');
+  p.className = 'ns-panneau'; p.id = 'ns-panneau'; p.hidden = true; p.setAttribute('aria-labelledby', 'ns-titre');
+  p.innerHTML =
+    '<div class="ns-tete"><h2 class="ns-titre" id="ns-titre">✎ Mes notes</h2>' +
+    '<button type="button" class="ns-reduire" aria-label="Réduire les notes" title="Réduire (Échap)">—</button></div>' +
+    '<button type="button" class="ns-sw" id="ns-sw" role="switch" aria-checked="false" hidden><i></i><span>Notes du groupe</span></button>' +
+    '<p class="ns-ou" id="ns-ou"></p>' +
+    '<label class="ns-ou" for="ns-texte" hidden>Note de cette diapo</label>' +
+    '<textarea class="ns-texte" id="ns-texte" spellcheck="true" placeholder="Ta note sur cette diapo : ce que tu retiens, une question pour le cours…"></textarea>' +
+    '<div class="ns-lignes" id="ns-lignes" hidden></div>' +
+    '<div class="ns-actions"><button type="button" data-ns="une" title="Enregistre la note de cette diapo en fichier .txt sur ton appareil">Enregistrer</button>' +
+    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button>' +
+    '<button type="button" data-ns="copier" title="Ajoute les notes du groupe de cette diapo à ta note à toi" hidden>Copier dans mes notes</button></div>' +
+    '<p class="ns-etat" id="ns-etat" aria-live="polite">Tes notes restent sur cet appareil.</p>';
+  document.body.appendChild(p);
+  const zone = p.querySelector('#ns-texte'), ou = p.querySelector('#ns-ou'), etat = p.querySelector('#ns-etat'), point = bouton.querySelector('.ns-point');
+  const lignes = p.querySelector('#ns-lignes'), sw = p.querySelector('#ns-sw'), titreP = p.querySelector('#ns-titre'), copier = p.querySelector('[data-ns="copier"]');
+
+  let ici = -1, tempo = 0;
+  const dire = t => { etat.textContent = t; };
+
+  /* la source des notes montrées : null, mes notes ; sinon le groupe en direct (vivant, survol-groupe.js) ou la dernière
+     copie gardée ici après une séance. Une source : {lignes(i) → textes, peindre(i), avant() : écrire ce qui attend, focus()} */
+  const CLE_G = 'survol-notes-groupe:' + fichier;
+  let source = null, vivant = null;
+  const texteG = i => source ? source.lignes(i).filter(x => x.trim()).join('\n') : '';
+  const majPoint = () => { point.hidden = !(source ? texteG(ici) : texteDe(ici)).trim(); };
+  function copieGardee() {
+    let c = null;
+    try { c = JSON.parse(lire(CLE_G) || 'null'); } catch (e) {}
+    if (!c || !c.n) return null;
+    return {
+      lignes: i => (c.n[cles[i]] && c.n[cles[i]].l) || [],
+      peindre(i) {
+        lignes.textContent = '';
+        const d = document.createElement('p'); d.className = 'ns-garde';
+        d.textContent = this.lignes(i).join('\n') || 'Aucune note du groupe sur cette diapo.';
+        lignes.appendChild(d);
+      }
+    };
+  }
+  /* hors d'un groupe, l'interrupteur n'apparaît que s'il reste une copie : les notes du groupe survivent à la séance */
+  function majInterrupteur() {
+    const c = !vivant && copieGardee(), dit = sw.querySelector('span');
+    sw.hidden = !vivant && !c;
+    dit.textContent = vivant ? 'Notes du groupe' : 'Copie des notes du groupe';
+    sw.title = vivant ? 'Les notes de tout le groupe sur cette diapo, ligne par ligne' : 'Les notes du groupe de ta dernière séance, gardées sur cet appareil';
+  }
+  function montrerSource(s) {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    source = s;
+    zone.hidden = !!s; lignes.hidden = !s; copier.hidden = !s;
+    sw.setAttribute('aria-checked', String(!!s));
+    titreP.textContent = s ? '✎ Notes du groupe' : '✎ Mes notes';
+    if (s) s.peindre(ici);
+    majPoint();
+    dire(s ? (s === vivant ? 'Tout le groupe voit ces lignes en direct.' : 'Une copie, gardée sur cet appareil.') : 'Tes notes restent sur cet appareil.');
+  }
+  function garder() {
+    clearTimeout(tempo); tempo = 0;
+    if (ici < 0) return;
+    const k = cles[ici], x = zone.value;
+    if (x.trim()) notes[k] = { i: ici + 1, x, m: new Date().toISOString() }; else delete notes[k];
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Gardée sur cet appareil.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+    majPoint();
+  }
+  const surDiapo = [];
+  function suivre() {
+    const n = cur();
+    if (n === ici) return;
+    if (tempo) garder();
+    ici = n;
+    zone.value = texteDe(n);
+    ou.textContent = 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + (titreDe(diapos[n]) || '');
+    if (source) source.peindre(n);
+    majPoint();
+    surDiapo.forEach(f => f(n));
+  }
+  zone.addEventListener('input', () => { clearTimeout(tempo); tempo = setTimeout(garder, 400); });
+  zone.addEventListener('blur', () => { if (tempo) garder(); });
+
+  /* enregistrer en .txt : la diapo, ou toutes celles qui ont une note */
+  const dateLisible = () => new Date().toLocaleString('fr-CA', { dateStyle: 'long', timeStyle: 'short' });
+  function telecharger(nom, texte) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + texte.replace(/\r?\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
+    a.download = nom; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function une() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const n = cur(), x = (source ? texteG(n) : zone.value).trim(), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '-diapo-' + (n + 1) + '.txt';
+    if (!x) { dire(source ? 'Cette diapo n’a pas encore de notes du groupe.' : 'Cette diapo n’a pas encore de note.'); return; }
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe · ' : '') + 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
+    dire('Fichier enregistré : ' + nom);
+  }
+  function toutes() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const avec = diapos.map((d, i) => ({ i, x: (source ? texteG(i) : texteDe(i)).trim() })).filter(o => o.x), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '.txt';
+    if (!avec.length) { dire('Aucune note à enregistrer pour l’instant.'); return; }
+    const corps = avec.map(o => '── Diapo ' + (o.i + 1) + ' · ' + titreDe(diapos[o.i]) + '\n\n' + o.x).join('\n\n');
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe, ' : 'Mes notes, ') + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
+    dire('Fichier enregistré : ' + nom + ' (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+  }
+  /* « Copier dans mes notes » : les lignes du groupe de cette diapo, ajoutées à ma note */
+  function copierDansMes() {
+    if (source && source.avant) source.avant();
+    const n = cur(), x = texteG(n).trim(), a = texteDe(n).trim();
+    if (!x) { dire('Cette diapo n’a pas encore de notes du groupe.'); return; }
+    if (a.includes(x)) { dire('Ces lignes sont déjà dans tes notes.'); return; }
+    notes[cles[n]] = { i: n + 1, x: a ? a + '\n\n' + x : x, m: new Date().toISOString() };
+    zone.value = notes[cles[n]].x;
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Copié dans tes notes de cette diapo.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+  }
+
+  /* ouvrir, réduire, et la place : en colonne dès 1200 px (les diapos se redessinent), par-dessus en dessous */
+  const large = matchMedia('(min-width: 1200px)');
+  const memo = lire(CLE_OUVERT);
+  let ouvert = memo === '1' ? true : memo === '0' ? false : large.matches;
+  function placer(focus) {
+    p.hidden = !ouvert;
+    bouton.setAttribute('aria-expanded', String(ouvert));
+    const dock = ouvert && large.matches;
+    document.body.classList.toggle('ns-ouvert', ouvert);
+    if (document.body.classList.contains('ns-dock') !== dock) {
+      document.body.classList.toggle('ns-dock', dock);
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 0);      // le diaporama redessine ses figures à la nouvelle largeur
+    }
+    if (ouvert) { suivre(); if (focus) { if (source && source.focus) source.focus(); else zone.focus(); } }
+  }
+  function basculer(v, focus) { if (!v && tempo) garder(); ouvert = v; ecrire(CLE_OUVERT, v ? '1' : '0'); placer(focus); }
+  bouton.addEventListener('click', e => { e.stopPropagation(); basculer(!ouvert, !ouvert); });
+  p.querySelector('.ns-reduire').addEventListener('click', () => { basculer(false); bouton.focus(); });
+  p.querySelector('[data-ns="une"]').addEventListener('click', une);
+  p.querySelector('[data-ns="toutes"]').addEventListener('click', toutes);
+  copier.addEventListener('click', copierDansMes);
+  sw.addEventListener('click', () => {
+    const on = !source;
+    montrerSource(on ? vivant || copieGardee() : null);
+    if (vivant && vivant.memo) vivant.memo(on);
+    if (on && source && source.focus) source.focus();
+  });
+  /* les touches tapées dans les notes ne font pas avancer le diaporama */
+  p.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); basculer(false); bouton.focus(); }
+    e.stopPropagation();
+  });
+  p.addEventListener('click', e => e.stopPropagation());
+  if (large.addEventListener) large.addEventListener('change', () => placer(false));
+  diapos.forEach(d => new MutationObserver(suivre).observe(d, { attributes: true, attributeFilter: ['hidden'] }));
+  window.addEventListener('pagehide', () => { if (tempo) garder(); });
+
+  ici = -1; suivre(); placer(false);
+  majInterrupteur();
+
+  /* Convergence : suivre le Survol à plusieurs. Tout le groupe vit dans survol-groupe.js, copié à la racine du site et chargé
+     seulement ici : seul·e, aucun appel au relais. Dans Claude il n'y a pas de relais, donc pas de bouton ; si le fichier ne se
+     charge pas, le bouton s'efface et les notes continuent. Un lien ?cv=<salle>, ou un rechargement en plein groupe, le charge. */
+  if (window.claude) return;
+  const cv = document.createElement('button');
+  cv.type = 'button'; cv.className = 'ns-bouton ns-cv'; cv.id = 'ns-cv';
+  cv.title = 'Convergence : suivre ce Survol à plusieurs, chacun sur son appareil';
+  cv.setAttribute('aria-label', cv.title);
+  cv.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span class="ns-mot">Convergence</span>';
+  const sb = document.createElement('button');
+  sb.type = 'button'; sb.className = 'ns-bouton ns-sablier'; sb.id = 'ns-sablier';
+  sb.title = 'Sablier : des pauses entre les diapos';
+  sb.setAttribute('aria-label', sb.title); sb.setAttribute('aria-haspopup', 'dialog');
+  sb.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3v3c0 3 3.5 4.5 5 6-1.5 1.5-5 3-5 6v3M17 3v3c0 3-3.5 4.5-5 6 1.5 1.5 5 3 5 6v3"/></svg><span class="ns-mot">Sablier</span><span class="ns-temps"></span>';
+  if (haut) { haut.insertBefore(sb, bouton); haut.insertBefore(cv, bouton); } else { document.body.appendChild(sb); document.body.appendChild(cv); }
+  const API = {
+    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, sablier: sb, lire, ecrire, cur, dire, majPoint, CLE_G,
+    surDiapo: f => surDiapo.push(f),
+    /* le groupe arrive ou repart : o = sa source, ou null */
+    groupe(o) { vivant = o; if (!o && source && source.vivant) montrerSource(null); majInterrupteur(); },
+    montrer: montrerSource, source: () => source
+  };
+  let chargement = null;
+  function chargerGroupe() {
+    if (!chargement) chargement = new Promise((ok, non) => {
+      const sources = (/^https?:$/.test(location.protocol) ? ['survol-groupe.js'] : []).concat('https://zexonis.github.io/Lumiere/survol-groupe.js');
+      const essai = k => {
+        if (k >= sources.length) { chargement = null; non(new Error('groupe')); return; }
+        const s = document.createElement('script');
+        s.src = sources[k];
+        s.onload = () => { if (window.SurvolGroupe) ok(window.SurvolGroupe.brancher(API)); else essai(k + 1); };
+        s.onerror = () => { s.remove(); essai(k + 1); };
+        document.head.appendChild(s);
+      };
+      essai(0);
+    });
+    return chargement;
+  }
+  const rate = () => { cv.hidden = true; sb.hidden = true; };
+  cv.addEventListener('click', () => chargerGroupe().then(g => g.ouvrir(), rate));
+  sb.addEventListener('click', () => chargerGroupe().then(g => g.sablier(), rate));
+  let salle = '', repris = false;
+  try { salle = (new URLSearchParams(location.search).get('cv') || '').toLowerCase(); repris = !!sessionStorage.getItem('survol-cv:' + fichier); } catch (e) {}
+  let allume = false;
+  try { allume = !!(JSON.parse(lire('lumiere-sablier')) || {}).on; } catch (e) {}
+  if (/^[a-z0-9]{6}$/.test(salle) || repris) chargerGroupe().then(g => g.arriver(salle), rate);
+  else if (allume) chargerGroupe().catch(rate);
+})();
+</script>
+<!-- notes-survol:fin -->
+<script>
+(() => {
+  const ICI = 'cdf948f407aa';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

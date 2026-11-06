@@ -8133,7 +8133,7 @@ const Arene = (() => {
     if(!it){
       ou.textContent = '';
       const t = total();
-      z.innerHTML = '<div class="ar-fin"><p class="ar-fin-t">100 %</p><p>Tout l’atelier est acquis : chaque question réussie, puis réussie encore de loin. ' + (t.k < t.n ? 'Quand tu reviendras, l’arène vérifiera ce qui est resté : ce qui tient s’ancre ⚓ (' + t.k + ' / ' + t.n + ' ancrés).' : 'Et tout est ancré ⚓.') + '</p></div>';
+      z.innerHTML = '<div class="ar-fin"><p class="ar-fin-t">100 %</p><p>' + (R.portee ? 'Tout « ' + esc(R.portee) + ' » est acquis' : 'Tout l’atelier est acquis') + ' : chaque question réussie, puis réussie encore de loin. ' + (t.k < t.n ? 'Quand tu reviendras, l’arène vérifiera ce qui est resté : ce qui tient s’ancre ⚓ (' + t.k + ' / ' + t.n + ' ancrés).' : 'Et tout est ancré ⚓.') + '</p></div>';
       return;
     }
     const s = lu(it.id), n = b.items.filter(acquis).length, mode = R.retour ? 'retour' : R.round ? 'round' : '', groupe = enGroupeSur(it);
@@ -15763,6 +15763,9 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
+    {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
+    {d:'2026-11-06', p:['anat-m6'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 6 et 7, et le module 8 en 23 diapos, environ 17 minutes.'},
     {d:'2026-11-03', p:['*'], t:'« Qui peut m’aider ? » est sur la page d’accueil de Lumière, juste sous le message de bienvenue. Choisis ce qui te préoccupe (bourses, santé, notes, outils) et le guide t’indique le service de La Cité à contacter, avec sa page officielle. C’est un guide étudiant non officiel : il ne donne pas de conseils.'},
     {d:'2026-11-03', p:['*'], t:'Le Sablier marche maintenant dans le Survol, même seul·e : le bouton est en haut, à côté de Convergence. C’est le même sablier que dans tes ateliers : il te suit de l’un à l’autre, et sa pause tombe à la prochaine diapo, ou à la seconde près en 5 · 5.'},
     {d:'2026-11-03', p:['*'], t:'En ouvrant un atelier ou le Banc, tu choisis maintenant ton chemin. « Efficace » t’amène droit au Survol, « Complet » ouvre l’atelier comme d’habitude. Tu passes de l’un à l’autre quand tu veux.'},
@@ -16178,7 +16181,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '133b6fa8fbf0';
+  const ICI = 'cdf948f407aa';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
