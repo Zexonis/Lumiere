@@ -1,0 +1,1561 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survol · Rx multifocale vers simple vision</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Survol · Rx multifocale vers simple vision (ADM 0010) : le « Survol » du module 8 de Bureau ophtalmique (cours du
+  lun. 9 nov. 2026 ; fichier de la prof « Mod 8.1 Adaptation Rx-Multifocal.pptx », dossier eCité Module 08 ; le
+  planificateur compte ce cours comme son module 9). Écrit le 9 nov. 2026.
+  Contenu : uniquement Guides/UA2-Bureau-Ophtalmique/distilled/adm-m08_distilled.md et adm-m08_ledger.md. Cartes KC :
+  analyse/adm-m08_kc.md (B8.1–B8.12) ; l'ordre suit les invariants I1–I3, et les pièges sont des idées fausses qu'elles nomment.
+  Citations vérifiées avec build/distill-m8/verif_adm8.py ; chaque nombre recalculé par script avant d'être écrit.
+  Codes des sources (jamais affichés, comme le veut le format) : en commentaire au-dessus de chaque diapo ; dN = la
+  diapo N de Mod 8.1.
+  Liens et valeurs déduits, signalés sur leur diapo (.note) : le classement de la Rx de d7 (la prof ne donne pas de
+  corrigé) ; la formule unique SPH + k × ADD (diapo 6) ; la lecture du « 0.12 » comme l'écart de 0,125 jusqu'au pas du
+  dessous (diapo 14) ; la liste des ADD en .25 ou .75 (diapo 15) ; pourquoi le CYL et l'axe ne bougent pas, tiré des
+  règles de la croix du M7 (diapo 16) ; l'ordre VL, VI, VP (diapo 17).
+  Erreur du deck signalée sans en faire le sujet : d44–d45 écrit OD +5.50, la somme donne +4.50 (diapo 13).
+  Écarté exprès : “pourquoi la moitié” (hors cours, Optique) ; la « Consultation avancée » (2e année) ; le
+  « Transcrire SPH, CYL, AXE » des synthèses SV-VI et SV-VP (d37, d62), que les exemples contredisent ; d5, d6, d9
+  (champ non dit) ; le Kahoot.
+  Moteur, styles, navigation, notes et Convergence : copiés tels quels de diapos-bureau-m7t.html.
+  Règles du format : une idée par diapo ; le schéma porte l'idée ; exemples résolus, révélés pas à pas ; une seule
+  phrase « À retenir » ; au plus un piège, tiré des chaînes de la distillation ; aucune citation de source ni point en
+  attente ; un seul bouton utile : Suite. Aucun « Prédis d'abord », aucune question (recette § 3.5) : les deux
+  “trouve les trois Rx” (17, 18) sont des exemples résolus, révélés pas à pas.
+  Code couleur constant, celui de la prof (cyan, magenta, jaune ; le jaune passe à l'ocre en thème clair) :
+  cyan = la vision de loin, SV-VL (0 % de l'ADD)
+  magenta = la vision intermédiaire, SV-VI (50 %)
+  jaune = la vision de près, SV-VP (100 %)
+  neutre = la Rx multifocale d'origine, et ce qui se recopie (CYL, AXE, prisme).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : un comptoir d'opticien le soir. Une diapo = un écran; le schéma à gauche, le texte à droite sur grand
+   écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --vl: #56d3ea;
+  --vi: #f17fdc;
+  --vp: #f3d04e;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --vl: #057389; --vi: #b0218c; --vp: #8a6100;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --vl: #057389; --vi: #b0218c; --vp: #8a6100;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.formule { font-family: var(--f-chiffre); font-size: var(--t-l); font-weight: 700; padding: 6px 12px; border: 1px solid var(--trait); border-radius: 8px; background: var(--fond-2); align-self: flex-start; max-width: 100%; overflow-x: auto; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.vl { color: var(--vl); }
+.vi { color: var(--vi); }
+.vp { color: var(--vp); }
+.rx { font-family: var(--f-chiffre); font-weight: 700; white-space: nowrap; }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-vl { --c: var(--vl); } .c-vi { --c: var(--vi); } .c-vp { --c: var(--vp); } .c-emm { --c: var(--encre); } .c-doux { --c: var(--doux); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .val { font-family: var(--f-chiffre); font-size: 17px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .grand { font-family: var(--f-chiffre); font-size: 21px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .titre-rang { font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .grille { stroke: var(--trait); stroke-width: 1; }
+svg .separe { stroke: var(--trait); stroke-width: 1; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .plein { fill: var(--c); stroke: var(--fond); stroke-width: 2; }
+svg .creux { fill: var(--fond); stroke: var(--c); stroke-width: 2.5; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .mince { stroke-width: 2; }
+svg .tirets { stroke-dasharray: 5 5; }
+svg .boite { fill: var(--fond-2); stroke: var(--c, var(--trait)); stroke-width: 2; }
+svg .bande { fill: var(--encre); fill-opacity: .06; stroke: var(--trait); stroke-width: 1; stroke-dasharray: 4 4; }
+svg .quart { fill: var(--encre); fill-opacity: .08; }
+svg .pastille { fill: var(--fond-2); stroke: var(--doux); stroke-width: 1.5; }
+
+/* ---- module 8 : la ligne de vue, la prédiction, la carte ---- */
+.dos { display: flex; flex-direction: column; gap: 4px; }
+b.vl, b.vi, b.vp { white-space: nowrap; }
+.carte-grille.trois { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px) { .carte-grille.trois { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+a.fiche { color: inherit; text-decoration: none; }
+a.fiche .fiche-f { text-decoration: underline; text-underline-offset: 4px; }
+a.fiche:hover { border-color: var(--encre); }
+a.fiche:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+svg .tag { font-size: 12px; font-weight: 700; letter-spacing: .04em; fill: var(--c, var(--encre)); }
+svg .cone { fill: var(--encre); fill-opacity: .05; }
+svg .coupe { fill: none; stroke: var(--doux); stroke-width: 2; }
+svg .oeil { fill: var(--fond-2); stroke: var(--encre); stroke-width: 2; }
+svg .iris { fill: var(--encre); }
+svg .lunette { stroke: var(--doux); stroke-width: 4; stroke-linecap: round; }
+svg .objet { fill: var(--fond-2); stroke: var(--c); stroke-width: 2.5; }
+svg .objet-trait { fill: none; stroke: var(--c); stroke-width: 2.5; stroke-linecap: round; }
+svg .ici { fill: var(--fond-2); stroke: var(--encre); stroke-width: 2.5; stroke-dasharray: 7 4; }
+svg .anneau { fill: none; stroke: var(--c); stroke-width: 2.5; }
+svg .loupe { fill: none; stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 4 3; }
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-bureau-m7.html" title="Retour à l'atelier Bureau">← Atelier Bureau</a>
+      <p class="marque">Bureau M8 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 20</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture (ligne de vue : d53, d65 ; distances : d63) -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Bureau ophtalmique · ADM 0010 · module 8</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Une Rx multifocale, trois Rx simple vision</h1>
+            <p class="chapeau">Le module 8 en 15 minutes, une idée par diapo&nbsp;: c'est à la sommative UA2 du 23 novembre. Ensuite, l'atelier sert à t'entraîner.</p>
+            <p class="meta">20 diapos · ≈ 15 min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-vl">la vision de loin (SV-VL)</li>
+              <li class="c-vi">la vision intermédiaire (SV-VI)</li>
+              <li class="c-vp">la vision de près (SV-VP)</li>
+              <li class="c-emm">la Rx d'origine, et ce qui se recopie</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l'écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="La ligne de vue de l'œil : de près, la SV-VP ; à l'intermédiaire, la SV-VI ; au loin, la SV-VL"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · RX vs Besoins patient (d1 ; d12) -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Entre l'examen et la lunetterie, la Rx rencontre les besoins du patient</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="parcours" aria-label="Le parcours patient : réception, pré-test, examen de la vue, puis RX vs Besoins patient, puis lunetterie ou contactologie, puis livraison et paiement"></figure>
+          <div class="texte">
+            <p>Dans le parcours patient de la prof, un parchemin est posé entre l'examen de la vue et la lunetterie&nbsp;: «&nbsp;RX vs Besoins patient&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>L'examen donne une Rx avec une addition (ADD)&nbsp;: une Rx multifocale.</span></li>
+              <li data-pas="2"><span>«&nbsp;Centré sur les besoins visuels du patient, l’opticien peut adapter l’ordonnance multifocal en ordonnance simple vision, tout en respectant les paramètres de l’ordonnance et son champ de pratique.&nbsp;»</span></li>
+              <li data-pas="3"><span>Adapter, c'est calculer, à partir de la Rx multifocale, une Rx simple vision pour <b>une seule distance</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une Rx multifocale peut devenir une Rx simple vision, selon les besoins du patient.</p>
+      </div>
+    </section>
+
+    <!-- 3 · l'ADD décide (d3, d4 ; UA1 M3 « Est-ce qu’il y a un pouvoir d’Addition? ») -->
+    <section class="diapo" id="d3" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>L'ADD décide&nbsp;: simple vision ou multifocal</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="decision" aria-label="Une ADD dans la Rx ? Non : simple vision, un seul champ, SV-VL, SV-VI ou SV-VP. Oui : multifocal, plus d'un champ. Une multifocale peut aussi être adaptée en simple vision"></figure>
+          <div class="texte">
+            <p>La question de l'UA1&nbsp;: «&nbsp;Est-ce qu’il y a un pouvoir d’Addition?&nbsp;»</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Non&nbsp;: une simple vision (SV), avec «&nbsp;Aucun pouvoir d’Addition&nbsp;». Elle corrige un seul champ&nbsp;: <b class="vl">SV-VL</b> (loin), <b class="vi">SV-VI</b> (intermédiaire) ou <b class="vp">SV-VP</b> (près).</span></li>
+              <li data-pas="2"><span>Oui&nbsp;: une multifocale. Elle corrige plus d'un champ et «&nbsp;DOIT comprendre un pouvoir d’ADDITION&nbsp;»&nbsp;: «&nbsp;Commande Multifocal&nbsp;».</span></li>
+              <li data-pas="3"><span>Une Rx multifocale peut aussi devenir une SV&nbsp;: c'est l'adaptation, le sujet de ce module.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Pas d'ADD&nbsp;: SV seulement. Une ADD&nbsp;: multifocal, ou adaptée en SV.</p>
+      </div>
+    </section>
+
+    <!-- 4 · trois distances (d13, d23, d38, d63 ; ligne de vue d53) -->
+    <section class="diapo" id="d4" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Trois distances, une Rx simple vision pour chacune</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="distances" aria-label="La ligne de vue : proche, environ 30 à 40 cm ; intermédiaire, environ 60 à 80 cm ; distance, environ 6 m et plus"></figure>
+          <div class="texte">
+            <p>La prof range les trois champs sur une ligne de vue&nbsp;: le près, l'intermédiaire, puis le loin.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="vl">Loin</b>, «&nbsp;(≈ 6 m et +)&nbsp;»&nbsp;: «&nbsp;Ex.&nbsp;: paysage, signalisation&nbsp;». La commande&nbsp;: <b class="vl">SV-VL</b>.</span></li>
+              <li data-pas="2"><span><b class="vi">Intermédiaire</b>, «&nbsp;(≈ 60 cm – 80 cm)&nbsp;»&nbsp;: «&nbsp;Ex.&nbsp;: ordinateur, télévision&nbsp;». <b class="vi">SV-VI</b>.</span></li>
+              <li data-pas="3"><span><b class="vp">Près</b>, «&nbsp;(≈ 30 cm – 40 cm)&nbsp;»&nbsp;: «&nbsp;Ex.&nbsp;: lecture, téléphone&nbsp;». <b class="vp">SV-VP</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Loin ≈ 6 m et plus, intermédiaire ≈ 60 à 80 cm, près ≈ 30 à 40 cm.</p>
+      </div>
+    </section>
+
+    <!-- 5 · la note dit le champ (d7, d8 ; d3–d4 ; classement déduit : d5–d11 n'ont pas de corrigé) -->
+    <section class="diapo" id="d5" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil · un piège</p>
+        <h2>Sans ADD, c'est la note qui dit le champ</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="note-lecture" aria-label="Une Rx sans ADD : OD +3.25, OS +3.50 −0.25 x 180, avec la note Notes: Lecture. La note désigne la commande SV-VP"></figure>
+          <div class="texte">
+            <p>Une Rx du cours, sans ADD, avec la note «&nbsp;Notes: Lecture&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Pas d'ADD&nbsp;: une SV, un seul champ. Reste à savoir lequel.</span></li>
+              <li data-pas="2"><span>«&nbsp;Notes: Lecture&nbsp;»&nbsp;: lire, c'est de près. La commande&nbsp;: <b class="vp">SV-VP</b>. Avec «&nbsp;Notes: Ordinateur&nbsp;», ce serait <b class="vi">SV-VI</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Voir +3.25 et penser “hypermétrope, donc des lunettes de loin”. Le signe ne dit pas la distance.</p>
+            <p class="note">La prof ne donne pas le corrigé de cet exercice&nbsp;: la réponse suit ses règles.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une SV de lecture ressemble à une Rx d'hypermétrope&nbsp;: c'est la note qui dit le champ.</p>
+      </div>
+    </section>
+
+    <!-- 6 · la règle (d14, d22, d24, d39, d62 ; formule unique : déduite) -->
+    <section class="diapo" id="d6" data-acte="regle" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Une règle</p>
+        <h2>Une seule règle&nbsp;: le SPH reçoit 0&nbsp;%, 50&nbsp;% ou 100&nbsp;% de l'ADD</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="regle" aria-label="Le SPH de la Rx sert de base. SV-VL : + 0. SV-VI : + la moitié de l'ADD. SV-VP : + toute l'ADD. Plus c'est près, plus le SPH monte"></figure>
+          <div class="texte">
+            <p class="formule">SPH (SV) = SPH + k × ADD</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="vl">SV-VL</b>, k = 0&nbsp;: «&nbsp;Addition 0% du pouvoir d’addition au SPH&nbsp;».</span></li>
+              <li data-pas="2"><span><b class="vi">SV-VI</b>, k = ½&nbsp;: «&nbsp;Additionne 50% du Pouvoir ADD au SPH&nbsp;».</span></li>
+              <li data-pas="3"><span><b class="vp">SV-VP</b>, k = 1&nbsp;: «&nbsp;Additionne 100% du Pouvoir ADD au SPH&nbsp;».</span></li>
+            </ol>
+            <p class="note">La prof écrit trois règles&nbsp;; la formule les réunit. C'est notre écriture, pas la sienne.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plus c'est près, plus le SPH reçoit d'ADD&nbsp;: rien, la moitié, tout.</p>
+      </div>
+    </section>
+
+    <!-- 7 · ce qui se recopie (d14, d24, d27, d39 ; prisme d30) -->
+    <section class="diapo" id="d7" data-acte="regle" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Une règle</p>
+        <h2>Seul le SPH change&nbsp;; le reste se recopie, et l'ADD disparaît</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="recopie" aria-label="SPH : le SPH plus sa part d'ADD. CYL, AXE, prisme : les mêmes. ADD : aucune"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>Le SPH reçoit sa part d'ADD&nbsp;: 0&nbsp;%, 50&nbsp;% ou 100&nbsp;%.</span></li>
+              <li data-pas="2"><span>«&nbsp;Transcrire CYL, AXE&nbsp;»&nbsp;: le CYL et l'AXE se recopient. Le prisme aussi&nbsp;: «&nbsp;2△BU&nbsp;» reste «&nbsp;2△BU&nbsp;».</span></li>
+              <li data-pas="3"><span>L'ADD ne se recopie pas&nbsp;: dans la Rx SV, la case ADD reste vide, «&nbsp;(Aucun Pouvoir d’ADD)&nbsp;».</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Ajouter l'ADD au CYL&nbsp;: elle ne va que dans le SPH.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>SPH + sa part d'ADD&nbsp;; CYL, AXE et prisme recopiés&nbsp;; plus d'ADD.</p>
+      </div>
+    </section>
+
+    <!-- 8 · SV-VL (d14–d15) -->
+    <section class="diapo" id="d8" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · loin</p>
+        <h2>Au loin, on recopie tout, sauf l'ADD</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-vl" aria-label="OD −1.00 −0.50 x 164, OS −1.25 −0.25 x 165, ADD +2.00. SV-VL : le SPH reçoit 0, CYL et AXE recopiés, ADD barrée"></figure>
+          <div class="texte">
+            <p>L'exemple de la prof&nbsp;: OD <span class="rx">−1.00 −0.50 x 164</span>, OS <span class="rx">−1.25 −0.25 x 165</span>, ADD +2.00. On veut la <b class="vl">SV-VL</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>0&nbsp;% de +2.00, c'est 0&nbsp;: le SPH ne bouge pas.</span></li>
+              <li data-pas="2"><span>«&nbsp;Transcrire SPH, CYL, AXE&nbsp;»&nbsp;: tout se recopie.</span></li>
+              <li data-pas="3"><span>L'ADD est barrée. SV-VL&nbsp;: OD <b class="rx vl">−1.00 −0.50 x 164</b>, OS <b class="rx vl">−1.25 −0.25 x 165</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La SV-VL, c'est la Rx de loin, sans l'ADD.</p>
+      </div>
+    </section>
+
+    <!-- 9 · SV-VP (d24–d27) -->
+    <section class="diapo" id="d9" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · près</p>
+        <h2>De près, toute l'ADD va dans le SPH</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-vp" aria-label="La même Rx en SV-VP : le SPH reçoit +2.00, OD +1.00 −0.50 x 164, OS +0.75 −0.25 x 165"></figure>
+          <div class="texte">
+            <p>La même Rx&nbsp;: OD <span class="rx">−1.00 −0.50 x 164</span>, OS <span class="rx">−1.25 −0.25 x 165</span>, ADD +2.00. Cette fois, la <b class="vp">SV-VP</b>.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;OD: (-1.00) + (+2.00)&nbsp;»&nbsp;: on monte de 2 et on passe au-dessus de 0, à <b class="vp">+1.00</b>.</span></li>
+              <li data-pas="2"><span>«&nbsp;OS: (-1.25) + (+2.00)&nbsp;» = <b class="vp">+0.75</b>.</span></li>
+              <li data-pas="3"><span>«&nbsp;Transcrire CYL et AXE&nbsp;»&nbsp;: OD <b class="rx vp">+1.00 −0.50 x 164</b>, OS <b class="rx vp">+0.75 −0.25 x 165</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Garder −1.00&nbsp;: c'est la Rx de loin. De près, le SPH reçoit toute l'ADD.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La SV-VP, c'est le SPH plus toute l'ADD.</p>
+      </div>
+    </section>
+
+    <!-- 10 · SV-VP avec Plano et prisme (d29–d30) -->
+    <section class="diapo" id="d10" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · près</p>
+        <h2>Avec un Plano et un prisme, la règle ne change pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-vp-prisme" aria-label="OD +0.75 −0.75 x 010, OS Plano −0.25 x 015 2△BU, ADD +3.00. SV-VP : OD +3.75 −0.75 x 010, OS +3.00 −0.25 x 015 2△BU"></figure>
+          <div class="texte">
+            <p>Un autre exemple de la prof&nbsp;: OD <span class="rx">+0.75 −0.75 x 010</span>, OS <span class="rx">Plano −0.25 x 015 2△BU</span>, ADD +3.00. Pour la <b class="vp">SV-VP</b>&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>OD&nbsp;: (+0.75) + (+3.00) = <b class="vp">+3.75</b>.</span></li>
+              <li data-pas="2"><span>OS&nbsp;: Plano vaut 0, donc 0 + (+3.00) = <b class="vp">+3.00</b>.</span></li>
+              <li data-pas="3"><span>CYL, AXE et prisme se recopient&nbsp;: OD <b class="rx vp">+3.75 −0.75 x 010</b>, OS <b class="rx vp">+3.00 −0.25 x 015 2△BU</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Plano vaut 0, et le prisme se recopie comme le CYL et l'AXE.</p>
+      </div>
+    </section>
+
+    <!-- 11 · une SV-VP peut rester négative (d31) -->
+    <section class="diapo" id="d11" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · près</p>
+        <h2>De près, une Rx de myope peut rester négative</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-negatif" aria-label="Sur une échelle, on part de −3.75 et on monte de +2.75 : on s'arrête à −1.00, encore sous 0"></figure>
+          <div class="texte">
+            <p>Un exemple de la prof&nbsp;: OD <span class="rx">−3.75 −0.25 x 125</span>, OS <span class="rx">−4.00</span>, ADD +2.75. Pour la <b class="vp">SV-VP</b>&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>OD&nbsp;: (−3.75) + (+2.75)&nbsp;: on monte de 2.75 et on s'arrête sous 0, à <b class="vp">−1.00</b>.</span></li>
+              <li data-pas="2"><span>OS&nbsp;: (−4.00) + (+2.75) = <b class="vp">−1.25</b>.</span></li>
+              <li data-pas="3"><span>SV-VP&nbsp;: OD <b class="rx vp">−1.00 −0.25 x 125</b>, OS <b class="rx vp">−1.25</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Mettre un + parce que c'est de près&nbsp;: le signe se lit là où l'on s'arrête.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le près ajoute l'ADD&nbsp;; il ne rend pas la Rx positive.</p>
+      </div>
+    </section>
+
+    <!-- 12 · SV-VI, à mi-chemin (d39–d42) -->
+    <section class="diapo" id="d12" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · intermédiaire</p>
+        <h2>À l'intermédiaire, la moitié de l'ADD&nbsp;: à mi-chemin</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="echelle-vi" aria-label="L'OD vaut −1.00 au loin et +1.00 au près ; l'intermédiaire reçoit +1.00, la moitié de l'ADD, et tombe à mi-chemin, à Plano"></figure>
+          <div class="texte">
+            <p>La Rx de la prof&nbsp;: OD <span class="rx">−1.00 −0.50 x 164</span>, OS <span class="rx">−1.25 −0.25 x 165</span>, ADD +2.00. L'OD vaut <b class="vl">−1.00</b> au loin et <b class="vp">+1.00</b> au près.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>À mi-chemin&nbsp;: «&nbsp;OD: (-1.00) + (+2.00/2) = (-1.00) + (+1.00) = 0/Plano&nbsp;». On écrit <b class="vi">Plano</b>.</span></li>
+              <li data-pas="2"><span>«&nbsp;OS: (-1.25) + (+2.00/2) = (-1.25) + (+1.00) = -0.25&nbsp;».</span></li>
+              <li data-pas="3"><span>CYL et AXE recopiés&nbsp;: OD <b class="rx vi">Plano −0.50 x 164</b>, OS <b class="rx vi">−0.25 −0.25 x 165</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La SV-VI, c'est le SPH plus la moitié de l'ADD&nbsp;: à mi-chemin entre le loin et le près.</p>
+      </div>
+    </section>
+
+    <!-- 13 · SV-VI avec prisme ; ADD +2.50 (d43–d45 ; la diapo écrit OD +5.50, la somme donne +4.50) -->
+    <section class="diapo" id="d13" data-acte="cas" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Les cas du cours · intermédiaire</p>
+        <h2>ADD +2.50&nbsp;: la moitié, +1.25, tombe pile sur un pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-vi-prisme" aria-label="OD +3.25 −1.75 x 030 2△BD, OS +3.00 −1.50 x 035, ADD +2.50. SV-VI : le SPH reçoit +1.25, OD +4.50 −1.75 x 030 2△BD, OS +4.25 −1.50 x 035"></figure>
+          <div class="texte">
+            <p>Un exemple de la prof&nbsp;: OD <span class="rx">+3.25 −1.75 x 030 2△BD</span>, OS <span class="rx">+3.00 −1.50 x 035</span>, ADD +2.50. Pour la <b class="vi">SV-VI</b>&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>La moitié de +2.50, c'est <b class="vi">+1.25</b>&nbsp;: un pas de 0.25, rien à choisir.</span></li>
+              <li data-pas="2"><span>OD&nbsp;: (+3.25) + (+1.25) = <b class="vi">+4.50</b>. OS&nbsp;: (+3.00) + (+1.25) = <b class="vi">+4.25</b>.</span></li>
+              <li data-pas="3"><span>CYL, AXE et prisme recopiés&nbsp;: OD <b class="rx vi">+4.50 −1.75 x 030 2△BD</b>, OS <b class="rx vi">+4.25 −1.50 x 035</b>.</span></li>
+            </ol>
+            <p class="note">Attention&nbsp;: dans le diaporama de la prof, la diapo 44 écrit +5.50 pour l'OD. La somme (+3.25) + (+1.25) donne +4.50.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Une moitié qui tombe sur un pas de 0.25 s'ajoute telle quelle.</p>
+      </div>
+    </section>
+
+    <!-- 14 · ADD impaire : la plus faible (d51–d54 ; lecture du « 0.12 » : déduite) -->
+    <section class="diapo" id="d14" data-acte="impaire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'ADD impaire</p>
+        <h2>ADD impaire&nbsp;: la moitié tombe entre deux pas, on prend la plus faible</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="pas-impair" aria-label="Plano ADD +2.75 : SV-VL Plano, SV-VP +2.75. La moitié, 1.375, tombe entre +1.50 et +1.25 ; on prend la plus faible, +1.25"></figure>
+          <div class="texte">
+            <p>L'exemple de la prof&nbsp;: «&nbsp;Plano ADD +2.75&nbsp;». Au loin, «&nbsp;SV-VL: Plano&nbsp;»&nbsp;; au près, «&nbsp;SV-VP: +2.75&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>La moitié de +2.75, c'est 1.375&nbsp;: entre deux pas de 0.25.</span></li>
+              <li data-pas="2"><span>La prof&nbsp;: «&nbsp;doit choisir&nbsp;», «&nbsp;+1.25 ou +1.50&nbsp;».</span></li>
+              <li data-pas="3"><span>«&nbsp;choisir l’addition le plus faible pour l'intermédiaire&nbsp;»&nbsp;: +1.25. SV-VI&nbsp;: Plano + (+1.25) = <b class="rx vi">+1.25</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Arrondir vers le haut, à +1.50&nbsp;: la règle prend la plus faible.</p>
+            <p class="note">Sa formule&nbsp;: «&nbsp;(ADD/2) -0.12&nbsp;». Le 0.12 est l'écart jusqu'au pas du dessous (1.375 − 0.125 = 1.25)&nbsp;: une lecture déduite de ses exemples.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Moitié entre deux pas&nbsp;: on descend au pas du dessous, «&nbsp;l’addition le plus faible&nbsp;».</p>
+      </div>
+    </section>
+
+    <!-- 15 · ADD +1.75 (d55–d57 ; liste des ADD concernées : déduite) -->
+    <section class="diapo" id="d15" data-acte="impaire" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L'ADD impaire</p>
+        <h2>Toute ADD en .25 ou en .75 a une moitié entre deux pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="cas-vi-impaire" aria-label="OD −3.00 −1.00 x 060, OS −3.75, ADD +1.75. SV-VI : le SPH reçoit +0.75, OD −2.25 −1.00 x 060, OS −3.00"></figure>
+          <div class="texte">
+            <p>Un exemple de la prof&nbsp;: OD <span class="rx">−3.00 −1.00 x 060</span>, OS <span class="rx">−3.75</span>, ADD +1.75. Pour la <b class="vi">SV-VI</b>&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;50% = 0.875&nbsp;»&nbsp;: entre deux pas, «&nbsp;+0.75 ou +1.00&nbsp;».</span></li>
+              <li data-pas="2"><span>La plus faible&nbsp;: <b class="vi">+0.75</b>.</span></li>
+              <li data-pas="3"><span>(−3.00) + (+0.75) = −2.25&nbsp;; (−3.75) + (+0.75) = −3.00. SV-VI&nbsp;: OD <b class="rx vi">−2.25 −1.00 x 060</b>, OS <b class="rx vi">−3.00</b>.</span></li>
+            </ol>
+            <p class="piege"><b>Piège</b>Retirer 0.12 quand la moitié tombe juste&nbsp;: ADD +2.00 donne +1.00, rien à retirer.</p>
+            <p class="note">Les ADD concernées&nbsp;: +0.75, +1.25, +1.75, +2.25, +2.75, +3.25… Cette liste est déduite des exemples du cours.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>ADD en .25 ou .75&nbsp;: la moitié tombe en .125, on prend le pas du dessous.</p>
+      </div>
+    </section>
+
+    <!-- 16 · pourquoi le CYL ne bouge pas (déduit : M7 ① ② + R1–R3 ; recalcul sur d27, OD) -->
+    <section class="diapo" id="d16" data-acte="verifier" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Comprendre et vérifier</p>
+        <h2>Le SPH fait monter les deux méridiens d'autant&nbsp;: le CYL ne bouge pas</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="meridiens" aria-label="Les deux méridiens de −1.00 −0.50 x 164. Au loin : 164 à −1.00, 074 à −1.50. Au près : 164 à +1.00, 074 à +0.50. Les deux montent de +2.00, l'écart reste −0.50"></figure>
+          <div class="texte">
+            <p>Pourquoi recopier le CYL&nbsp;? Prends la croix du module 7 et l'OD du cours&nbsp;: <span class="rx">−1.00 −0.50 x 164</span>, ADD +2.00.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le 164 porte la sphère&nbsp;: <b class="vl">−1.00</b> au loin, <b class="vp">+1.00</b> au près. Il monte de +2.00.</span></li>
+              <li data-pas="2"><span>Le 074 porte SPH + CYL&nbsp;: <b class="vl">−1.50</b> au loin, (+1.00) + (−0.50) = <b class="vp">+0.50</b> au près. Il monte aussi de +2.00.</span></li>
+              <li data-pas="3"><span>Même montée&nbsp;: l'écart reste −0.50. C'est le même CYL, sur le même axe.</span></li>
+            </ol>
+            <p class="note">Cette explication découle des règles de la croix du module 7&nbsp;; le cours ne la donne pas.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Les deux méridiens montent d'autant&nbsp;: même écart, donc même CYL et même AXE.</p>
+      </div>
+    </section>
+
+    <!-- 17 · trouve les trois Rx (d64–d65 ; l'ordre VL, VI, VP : déduit) -->
+    <section class="diapo" id="d17" data-acte="verifier" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Comprendre et vérifier · à toi</p>
+        <h2>Trois Rx d'une seule&nbsp;: le SPH monte du loin au près</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="trouve-1" aria-label="Rx −4.00 Add +2.00 sur la ligne de vue : proche −2.00, intermédiaire −3.00, distance −4.00"></figure>
+          <div class="texte">
+            <p>Le dernier exercice de la prof&nbsp;: «&nbsp;Rx: -4.00 Add +2.00&nbsp;». «&nbsp;Trouver les trois rx.&nbsp;» Les trois, pas à pas&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="vp">SV-VP</b>&nbsp;: (−4.00) + (+2.00) = <b class="vp">−2.00</b>.</span></li>
+              <li data-pas="2"><span><b class="vi">SV-VI</b>&nbsp;: (−4.00) + (+1.00) = <b class="vi">−3.00</b>.</span></li>
+              <li data-pas="3"><span><b class="vl">SV-VL</b>&nbsp;: rien à ajouter, <b class="vl">−4.00</b>.</span></li>
+            </ol>
+            <p class="note">Contrôle&nbsp;: l'ADD est positive, donc du loin au près, le SPH ne peut que monter. Ce contrôle est déduit de la règle.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Du loin au près, le SPH monte&nbsp;: VL, puis VI, puis VP.</p>
+      </div>
+    </section>
+
+    <!-- 18 · trouve les trois Rx, ADD impaire (d68) -->
+    <section class="diapo" id="d18" data-acte="verifier" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Comprendre et vérifier · à toi</p>
+        <h2>Avec une ADD impaire, seule la VI demande un choix</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="trouve-2" aria-label="Rx +3.75 Add +2.25 sur la ligne de vue : proche +6.00, intermédiaire +4.75, distance +3.75"></figure>
+          <div class="texte">
+            <p>Un autre exercice de la prof&nbsp;: «&nbsp;Rx: +3.75 Add +2.25&nbsp;». Les trois, pas à pas&nbsp;:</p>
+            <ol class="etapes">
+              <li data-pas="1"><span><b class="vp">SV-VP</b>&nbsp;: (+3.75) + (+2.25) = <b class="vp">+6.00</b>.</span></li>
+              <li data-pas="2"><span><b class="vi">SV-VI</b>&nbsp;: la moitié de +2.25, 1.125, tombe entre deux pas&nbsp;: la plus faible, +1.00. (+3.75) + (+1.00) = <b class="vi">+4.75</b>.</span></li>
+              <li data-pas="3"><span><b class="vl">SV-VL</b>&nbsp;: rien à ajouter, <b class="vl">+3.75</b>.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>On ne choisit qu'à l'intermédiaire&nbsp;: la VL et la VP n'ont jamais besoin d'arrondi.</p>
+      </div>
+    </section>
+
+    <!-- 19 · la carte, à redire de mémoire (d62, d63 ; le dos des fiches vient au toucher, rien ne bloque) -->
+    <section class="diapo" id="d19" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>À redire de mémoire&nbsp;: l'adaptation tient sur une carte</h2>
+        <p class="astuce">Redis chaque case à voix haute, puis touche Suite pour voir les réponses.</p>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">L'ADD décide</p><div class="dos" data-pas="1"><p class="fiche-f">ADD → multifocal</p><p class="fiche-n">pas d'ADD → SV seulement</p></div></div>
+          <div class="fiche"><p class="fiche-nom">Sans ADD, quel champ&nbsp;?</p><div class="dos" data-pas="1"><p class="fiche-f">la note le dit</p><p class="fiche-n">Lecture → VP · Ordinateur → VI</p></div></div>
+          <div class="fiche"><p class="fiche-nom">SV-VL · loin</p><div class="dos" data-pas="1"><p class="fiche-f vl">SPH + 0</p><p class="fiche-n">≈ 6 m et plus</p></div></div>
+          <div class="fiche"><p class="fiche-nom">SV-VI · intermédiaire</p><div class="dos" data-pas="1"><p class="fiche-f vi">SPH + ½ ADD</p><p class="fiche-n">≈ 60 à 80 cm</p></div></div>
+          <div class="fiche"><p class="fiche-nom">SV-VP · près</p><div class="dos" data-pas="1"><p class="fiche-f vp">SPH + ADD</p><p class="fiche-n">≈ 30 à 40 cm&nbsp;; peut rester négative</p></div></div>
+          <div class="fiche"><p class="fiche-nom">Ce qui se recopie</p><div class="dos" data-pas="1"><p class="fiche-f">CYL, AXE, prisme</p><p class="fiche-n">l'ADD disparaît</p></div></div>
+          <div class="fiche"><p class="fiche-nom">ADD en .25 ou .75</p><div class="dos" data-pas="1"><p class="fiche-f vi">la plus faible</p><p class="fiche-n">+2.75 → VI +1.25</p></div></div>
+          <div class="fiche"><p class="fiche-nom">Pourquoi le CYL reste</p><div class="dos" data-pas="1"><p class="fiche-f">même montée</p><p class="fiche-n">les deux méridiens montent d'autant</p></div></div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le SPH reçoit 0&nbsp;%, 50&nbsp;% ou 100&nbsp;% de l'ADD&nbsp;; tout le reste se recopie.</p>
+      </div>
+    </section>
+
+    <!-- 20 · Et maintenant (d71 ; atelier : la partie Rx multifocale → SV) -->
+    <section class="diapo" id="d20" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Pour la route</p>
+        <h2>Et maintenant&nbsp;: t'entraîner jusqu'à ce que ça sorte tout seul</h2>
+        <p class="chapeau">Ce Survol te donne la carte. Le calcul devient automatique en le faisant, dans l'atelier et sur eCité.</p>
+        <div class="carte-grille trois">
+          <a class="fiche" href="atelier-bureau-m7.html"><p class="fiche-nom">L'atelier Bureau</p><p class="fiche-f">la partie Rx multifocale → SV</p><p class="fiche-n">pour t'entraîner, à ton rythme</p></a>
+          <div class="fiche"><p class="fiche-nom">eCité · Évaluations · Questionnaire</p><p class="fiche-f">«&nbsp;PRATIQUE: Commande Rx Multifocal&nbsp;»</p><p class="fiche-n">«&nbsp;Illimité et avec correction automatique&nbsp;»</p></div>
+          <div class="fiche"><p class="fiche-nom">Ce Survol</p><p class="fiche-f">reviens quand tu veux</p><p class="fiche-n">le Plan, en haut, mène à chaque diapo</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-bureau-m7.html">L'atelier Bureau</a>, la partie Rx multifocale → SV, puis le questionnaire de pratique sur eCité, illimité et corrigé automatiquement.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const P = o => (o && o.pas ? ` data-pas="${o.pas}"` : '');
+  const n1 = v => v.toFixed(1);
+  const rad = a => a * Math.PI / 180;
+  // un pouvoir écrit comme dans une Rx : +0.50, −1.25, 0
+  const fmt = v => (Math.abs(v) < 1e-9 ? '0' : (v > 0 ? '+' : '−') + Math.abs(v).toFixed(2));
+  // les trois distances, dans l'ordre de la ligne de vue de la prof : le près à gauche, le loin à droite
+  const NOMS = { vp: 'PROCHE', vi: 'INTERMÉDIAIRE', vl: 'DISTANCE' };
+  const DIST = { vp: '≈ 30–40 cm', vi: '≈ 60–80 cm', vl: '≈ 6 m et +' };
+  const SV = { vl: 'SV-VL', vi: 'SV-VI', vp: 'SV-VP' };
+
+  // La pointe d'une flèche en (x, y), dirigée selon (tx, ty), unitaire.
+  function pointe(x, y, tx, ty, cls, L = 9) {
+    const c = Math.cos(rad(28)), s = Math.sin(rad(28)), bx = -tx, by = -ty;
+    const w1 = [x + L * (bx * c - by * s), y + L * (bx * s + by * c)];
+    const w2 = [x + L * (bx * c + by * s), y + L * (-bx * s + by * c)];
+    return `<path d="M ${n1(w1[0])} ${n1(w1[1])} L ${n1(x)} ${n1(y)} L ${n1(w2[0])} ${n1(w2[1])}" class="${cls}"/>`;
+  }
+  // Une flèche droite.
+  function trait(x1, y1, x2, y2, cls) {
+    const L = Math.hypot(x2 - x1, y2 - y1) || 1;
+    return `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="${cls}"/>` + pointe(x2, y2, (x2 - x1) / L, (y2 - y1) / L, cls);
+  }
+
+  // L'œil du patient, derrière sa lunette, qui regarde vers la droite.
+  const oeil = (x, y) => `<path d="M ${x} ${y} Q ${x + 15} ${y - 13} ${x + 30} ${y} Q ${x + 15} ${y + 13} ${x} ${y} Z" class="oeil"/>`
+    + `<circle cx="${x + 18}" cy="${y}" r="5" class="iris"/><line x1="${x + 38}" y1="${y - 15}" x2="${x + 38}" y2="${y + 15}" class="lunette"/>`;
+
+  // Ce qu'on regarde à chaque distance : un livre, un écran, un arbre.
+  function objet(k, x, y) {
+    const c = `c-${k}`;
+    if (k === 'vp') return `<path d="M ${n1(x - 20)} ${y - 7} Q ${n1(x - 10)} ${y - 12} ${n1(x)} ${y - 6} Q ${n1(x + 10)} ${y - 12} ${n1(x + 20)} ${y - 7} L ${n1(x + 20)} ${y + 10} Q ${n1(x + 10)} ${y + 5} ${n1(x)} ${y + 11} Q ${n1(x - 10)} ${y + 5} ${n1(x - 20)} ${y + 10} Z" class="objet ${c}"/>`
+      + `<line x1="${n1(x)}" y1="${y - 6}" x2="${n1(x)}" y2="${y + 11}" class="objet-trait ${c}"/>`;
+    if (k === 'vi') return `<rect x="${n1(x - 22)}" y="${y - 22}" width="44" height="29" rx="3" class="objet ${c}"/>`
+      + `<path d="M ${n1(x)} ${y + 7} V ${y + 15} M ${n1(x - 11)} ${y + 15} H ${n1(x + 11)}" class="objet-trait ${c}"/>`;
+    return `<path d="M ${n1(x)} ${y + 8} V ${y + 17}" class="objet-trait ${c}"/><path d="M ${n1(x)} ${y - 27} L ${n1(x + 15)} ${y + 8} L ${n1(x - 15)} ${y + 8} Z" class="objet ${c}"/>`;
+  }
+
+  // La ligne de vue de la prof : l'œil à gauche, puis le près, l'intermédiaire et le loin (pas à l'échelle).
+  // vals : ce qui s'écrit au-dessus de chaque distance ({t, pas}) ; dist : les distances dessous (true, ou le pas de chacune).
+  function ligneVue(o, W) {
+    const yH = o.titre ? 30 : 0;
+    const yv = yH + 24, yt = yH + (o.vals ? 38 : 4), ly = yt + 84;
+    const H = ly + (o.dist ? 50 : 28);
+    const X = { vp: W * 0.3, vi: W * 0.585, vl: W * 0.87 }, x0 = 12;
+    let s = '';
+    if (o.titre) s += `<text x="4" y="18" class="val">${o.titre}</text>`;
+    s += `<path d="M ${x0 + 42} ${ly - 3} L ${W - 2} ${ly - 30} L ${W - 2} ${ly + 26} L ${x0 + 42} ${ly + 3} Z" class="cone"/>`;
+    s += `<line x1="${x0 + 42}" y1="${ly}" x2="${W - 4}" y2="${ly}" class="pointille"/>`;
+    const xc = (X.vi + X.vl) / 2 + 2;
+    s += `<path d="M ${n1(xc - 7)} ${ly + 10} L ${n1(xc - 1)} ${ly - 10} M ${n1(xc + 2)} ${ly + 10} L ${n1(xc + 8)} ${ly - 10}" class="coupe"/>`;
+    s += oeil(x0, ly);
+    ['vp', 'vi', 'vl'].forEach(k => {
+      const x = X[k], tw = NOMS[k].length * 8.4 + 16;
+      s += `<line x1="${n1(x)}" y1="${yt + 26}" x2="${n1(x)}" y2="${ly - 30}" class="pointille"/>`;
+      s += `<rect x="${n1(x - tw / 2)}" y="${yt}" width="${n1(tw)}" height="26" rx="7" class="boite c-${k}"/>`;
+      s += `<text x="${n1(x)}" y="${yt + 18}" text-anchor="middle" class="tag c-${k}">${NOMS[k]}</text>`;
+      s += objet(k, x, ly);
+      if (o.dist) s += `<g${P({ pas: o.dist[k] })}><text x="${n1(x)}" y="${ly + 42}" text-anchor="middle" class="petit etiq c-${k}">${DIST[k]}</text></g>`;
+      const v = o.vals && o.vals[k];
+      if (v) s += `<g${P(v)}><text x="${n1(x)}" y="${yv}" text-anchor="middle" class="grand c-${k}">${v.t}</text></g>`;
+    });
+    return svgW(W, H, s, o.label);
+  }
+
+  // Le parcours patient de la prof : l'adaptation se fait entre l'examen de la vue et la lunetterie.
+  function parcours(W) {
+    const bw = Math.min(W - 24, 340), x = (W - bw) / 2, cx = W / 2, h = 30, g = 14;
+    const etapes = [['1', 'Réception'], ['2', 'Pré-test'], ['3', 'Examen de la vue'], [null, 'RX vs Besoins patient'],
+      ['4', 'Lunetterie ou contactologie'], ['5', 'Livraison et paiement']];
+    let y = 4, s = '';
+    etapes.forEach(([n, t], i) => {
+      const hh = n ? h : 50;
+      if (i) s += trait(cx, y - g + 1, cx, y - 2, 'fleche mince c-doux');
+      if (n) {
+        s += `<rect x="${n1(x)}" y="${y}" width="${n1(bw)}" height="${hh}" rx="9" class="boite"/>`;
+        s += `<text x="${n1(x + 14)}" y="${y + 20}" class="petit t-doux">${n}</text><text x="${n1(cx)}" y="${y + 20}" text-anchor="middle" class="petit">${t}</text>`;
+      } else {
+        s += `<rect x="${n1(x)}" y="${y}" width="${n1(bw)}" height="${hh}" rx="12" class="ici"/>`;
+        s += `<text x="${n1(cx)}" y="${y + 22}" text-anchor="middle" class="titre-rang">${t}</text>`;
+        s += `<g data-pas="3"><text x="${n1(cx)}" y="${y + 41}" text-anchor="middle" class="petit t-doux">l’opticien adapte la Rx</text></g>`;
+      }
+      y += hh + g;
+    });
+    return svgW(W, y - g + 4, s, 'Le parcours patient : réception, pré-test, examen de la vue, puis RX vs Besoins patient, puis lunetterie ou contactologie, puis livraison et paiement');
+  }
+
+  // L'ADD décide : pas d'ADD, une simple vision ; une ADD, une multifocale, qu'on peut aussi adapter en SV.
+  function decision(W) {
+    const m = 8, g = 14, bw = (W - 2 * m - g) / 2, xs = [m + bw / 2, m + bw + g + bw / 2], cx = W / 2;
+    const qw = Math.min(W - 2 * m, 240), yb = 92, hb = 104;
+    let s = `<rect x="${n1(cx - qw / 2)}" y="4" width="${n1(qw)}" height="36" rx="10" class="boite"/>`;
+    s += `<text x="${n1(cx)}" y="28" text-anchor="middle" class="titre-rang">une ADD dans la Rx&#160;?</text>`;
+    s += `<path d="M ${n1(cx)} 40 V 52 M ${n1(xs[0])} 52 H ${n1(xs[1])}" class="base"/>`;
+    const branche = (i, mot, pas, corps) => `<g data-pas="${pas}">${trait(xs[i], 52, xs[i], yb - 3, 'fleche mince c-doux')}`
+      + `<text x="${n1(xs[i] + 8)}" y="78" class="petit etiq">${mot}</text>`
+      + `<rect x="${n1(xs[i] - bw / 2)}" y="${yb}" width="${n1(bw)}" height="${hb}" rx="12" class="boite"/>${corps}</g>`;
+    const cw = Math.min(64, (bw - 20) / 3);
+    let sv = `<text x="${n1(xs[0])}" y="${yb + 26}" text-anchor="middle" class="titre-rang">Simple vision</text>`;
+    sv += `<text x="${n1(xs[0])}" y="${yb + 48}" text-anchor="middle" class="petit t-doux">un seul champ</text>`;
+    ['vl', 'vi', 'vp'].forEach((k, j) => {
+      const xc = xs[0] + (j - 1) * (cw + 4);
+      sv += `<rect x="${n1(xc - cw / 2)}" y="${yb + 64}" width="${n1(cw)}" height="26" rx="7" class="boite c-${k}"/><text x="${n1(xc)}" y="${yb + 82}" text-anchor="middle" class="tag c-${k}">${SV[k]}</text>`;
+    });
+    let mf = `<text x="${n1(xs[1])}" y="${yb + 26}" text-anchor="middle" class="titre-rang">Multifocal</text>`;
+    mf += `<text x="${n1(xs[1])}" y="${yb + 48}" text-anchor="middle" class="petit t-doux">plus d’un champ</text>`;
+    mf += `<text x="${n1(xs[1])}" y="${yb + 82}" text-anchor="middle" class="petit etiq">ADD obligatoire</text>`;
+    s += branche(0, 'non', 1, sv) + branche(1, 'oui', 2, mf);
+    const yA = yb + hb;
+    s += `<g data-pas="3"><path d="M ${n1(xs[1])} ${yA + 2} V ${yA + 24} H ${n1(xs[0])} V ${yA + 5}" class="fleche mince tirets c-emm"/>${pointe(xs[0], yA + 3, 0, -1, 'fleche mince c-emm')}`;
+    s += `<text x="${n1(cx)}" y="${yA + 44}" text-anchor="middle" class="petit etiq">adapter&#160;: le sujet du module</text></g>`;
+    return svgW(W, yA + 52, s, 'Une ADD dans la Rx ? Non : simple vision, un seul champ, SV-VL, SV-VI ou SV-VP. Oui : multifocal, plus d’un champ. Une multifocale peut aussi être adaptée en simple vision');
+  }
+
+  // Une Rx du cours sans ADD, et sa note : c'est la note qui dit le champ.
+  function noteLecture(W) {
+    const cw = Math.min(W - 16, 320), x = (W - cw) / 2, y = 4, hc = 132;
+    let s = `<rect x="${n1(x)}" y="${y}" width="${n1(cw)}" height="${hc}" rx="12" class="boite"/>`;
+    s += `<text x="${n1(x + 16)}" y="${y + 24}" class="petit t-doux">Rx</text>`;
+    s += `<text x="${n1(x + cw - 16)}" y="${y + 24}" text-anchor="end" class="petit t-doux">ADD&#160;: aucune</text>`;
+    s += `<text x="${n1(x + 16)}" y="${y + 52}" class="val">OD&#160; +3.25</text>`;
+    s += `<text x="${n1(x + 16)}" y="${y + 80}" class="val">OS&#160; +3.50 −0.25 x 180</text>`;
+    s += `<line x1="${n1(x + 12)}" y1="${y + 94}" x2="${n1(x + cw - 12)}" y2="${y + 94}" class="separe"/>`;
+    s += `<text x="${n1(x + 16)}" y="${y + 118}" class="petit">Notes: Lecture</text>`;
+    const ex = x + 16 + 52, ey = y + 113;
+    const yc = y + hc + 34, bw = Math.min(84, (cw - 16) / 3), xp = W / 2 + (bw + 8);
+    s += '<g data-pas="1">';
+    ['vl', 'vi', 'vp'].forEach((k, j) => {
+      const xc = W / 2 + (j - 1) * (bw + 8);
+      s += `<rect x="${n1(xc - bw / 2)}" y="${yc}" width="${n1(bw)}" height="28" rx="8" class="boite c-${k}"/><text x="${n1(xc)}" y="${yc + 19}" text-anchor="middle" class="tag c-${k}">${SV[k]}</text>`;
+    });
+    s += '</g>';
+    s += `<g data-pas="2"><ellipse cx="${n1(ex)}" cy="${ey}" rx="66" ry="15" class="anneau c-vp"/>`;
+    s += `<rect x="${n1(xp - bw / 2 - 5)}" y="${yc - 5}" width="${n1(bw + 10)}" height="38" rx="11" class="anneau c-vp"/>`;
+    s += trait(ex + 56, ey + 10, xp - 8, yc - 9, 'fleche mince c-vp') + '</g>';
+    return svgW(W, yc + 38, s, 'Une Rx sans ADD : OD +3.25, OS +3.50 −0.25 x 180, avec la note Notes: Lecture. La note désigne la commande SV-VP');
+  }
+
+  // La règle : la part de l'ADD que reçoit le SPH, du près au loin (dans l'ordre de la ligne de vue).
+  function regle(W) {
+    const yb = 206, ha = 140, xg = 66;
+    const X = { vp: xg + (W - xg) * 0.22, vi: xg + (W - xg) * 0.52, vl: xg + (W - xg) * 0.82 };
+    const K = { vp: 1, vi: 0.5, vl: 0 }, LAB = { vp: '+ ADD', vi: '+ ½ ADD', vl: '+ 0' }, PC = { vp: '100 % ADD', vi: '50 % ADD', vl: '0 % ADD' };
+    const PAS = { vl: 1, vi: 2, vp: 3 };
+    let s = `<line x1="${xg}" y1="${yb}" x2="${W - 6}" y2="${yb}" class="pointille"/>`;
+    s += `<text x="${xg - 10}" y="${yb + 5}" text-anchor="end" class="petit etiq">SPH</text>`;
+    s += `<path d="M ${xg + 6} ${yb - ha} H ${xg} V ${yb}" class="base"/>`;
+    s += `<text x="${xg - 10}" y="${yb - ha / 2 + 5}" text-anchor="end" class="petit etiq">ADD</text>`;
+    s += `<g data-pas="3"><line x1="${xg + 8}" y1="${yb - ha}" x2="${n1(X.vp - 12)}" y2="${yb - ha}" class="pointille"/></g>`;
+    ['vp', 'vi', 'vl'].forEach(k => {
+      const x = X[k], yt = yb - K[k] * ha;
+      if (K[k]) s += `<circle cx="${n1(x)}" cy="${yb}" r="4.5" class="plein c-emm"/>`;
+      s += `<g data-pas="${PAS[k]}">`;
+      if (K[k]) s += trait(x, yb - 8, x, yt + 10, `fleche c-${k}`);
+      s += `<circle cx="${n1(x)}" cy="${yt}" r="7" class="plein c-${k}"/>`;
+      s += `<text x="${n1(x)}" y="${yt - 16}" text-anchor="middle" class="val c-${k}">${LAB[k]}</text></g>`;
+      s += `<text x="${n1(x)}" y="${yb + 30}" text-anchor="middle" class="titre-rang c-${k}">${SV[k]}</text>`;
+      s += `<text x="${n1(x)}" y="${yb + 50}" text-anchor="middle" class="petit t-doux">${PC[k]}</text>`;
+    });
+    return svgW(W, yb + 58, s, 'Le SPH de la Rx sert de base. SV-VL : + 0. SV-VI : + la moitié de l’ADD. SV-VP : + toute l’ADD. Plus c’est près, plus le SPH monte');
+  }
+
+  // Ce que devient chaque partie de la Rx : seul le SPH change, l'ADD disparaît.
+  function recopie(W) {
+    const lignes = [
+      { a: 'SPH', f: '+', b: 'SPH + sa part d’ADD', pas: 1 },
+      { a: 'CYL', f: '=', b: 'le même', pas: 2 }, { a: 'AXE', f: '=', b: 'le même', pas: 2 },
+      { a: 'prisme', f: '=', b: 'le même', pas: 2 }, { a: 'ADD', f: '✕', b: 'aucune', doux: true, pas: 3 }];
+    const rowH = 44, top = 38, xA = W * 0.15, xF0 = W * 0.29, xF1 = W * 0.47, xB = W * 0.52;
+    let s = `<text x="${n1(xA)}" y="20" text-anchor="middle" class="titre-rang">Rx multifocale</text>`;
+    s += `<text x="${n1(xB)}" y="20" class="titre-rang">Rx simple vision</text>`;
+    lignes.forEach((l, i) => {
+      const y = top + i * rowH + rowH / 2;
+      s += `<line x1="4" y1="${n1(y - rowH / 2)}" x2="${W - 4}" y2="${n1(y - rowH / 2)}" class="separe"/>`;
+      s += `<text x="${n1(xA)}" y="${n1(y + 6)}" text-anchor="middle" class="val">${l.a}</text>`;
+      s += `<g${P(l)}>${trait(xF0, y, xF1, y, 'fleche mince c-doux')}`;
+      const xm = (xF0 + xF1) / 2 - 6;
+      s += `<circle cx="${n1(xm)}" cy="${n1(y)}" r="11" class="pastille"/><text x="${n1(xm)}" y="${n1(y + 5)}" text-anchor="middle" class="petit etiq">${l.f}</text>`;
+      s += `<text x="${n1(xB)}" y="${n1(y + 6)}" class="${l.doux ? 'val c-doux' : 'val'}">${l.b}</text></g>`;
+    });
+    return svgW(W, top + lignes.length * rowH + 4, s, 'SPH : le SPH plus sa part d’ADD. CYL, AXE, prisme : les mêmes. ADD : aucune');
+  }
+
+  // Une Rx du cours, adaptée : la Rx multifocale en haut, la Rx SV en bas ; entre les deux, ce que devient chaque colonne.
+  // parts : une par colonne, {t: '+ 2.00' (une pastille) | '=' | '✕', c, pas} ; une case de apres peut être [texte, pas].
+  function adapte(o, W) {
+    const cols = o.cols, n = cols.length, x0 = 40, cw = (W - 4 - x0) / n, rh = 28;
+    const X = j => x0 + cw * (j + 0.5);
+    const yh = 42, ya = yh + 26, yb0 = ya + (o.avant.length - 1) * rh + 16, yb1 = yb0 + 50, yr = yb1 + 22, yd = yr + 28;
+    let s = `<text x="4" y="18" class="titre-rang">Rx multifocale</text>`;
+    cols.forEach((c, j) => { s += `<text x="${n1(X(j))}" y="${yh}" text-anchor="middle" class="petit t-doux">${c}</text>`; });
+    s += `<line x1="4" y1="${yh + 8}" x2="${W - 4}" y2="${yh + 8}" class="separe"/>`;
+    o.avant.forEach((r, i) => {
+      const y = ya + i * rh;
+      s += `<text x="4" y="${y}" class="petit t-doux">${r[0]}</text>`;
+      r.slice(1).forEach((v, j) => { if (v) s += `<text x="${n1(X(j))}" y="${y}" text-anchor="middle" class="val">${v}</text>`; });
+    });
+    const ym = (yb0 + yb1) / 2;
+    o.parts.forEach((p, j) => {
+      const x = X(j), c = p.c || 'doux';
+      s += `<g${P(p)}>`;
+      if (p.t === '✕') s += `<circle cx="${n1(x)}" cy="${n1(ym)}" r="12" class="pastille"/><text x="${n1(x)}" y="${n1(ym + 5)}" text-anchor="middle" class="petit etiq c-doux">✕</text>`;
+      else {
+        s += trait(x, yb0, x, yb1, `fleche mince c-${c}`);
+        if (p.t === '=') s += `<circle cx="${n1(x)}" cy="${n1(ym)}" r="11" class="pastille"/><text x="${n1(x)}" y="${n1(ym + 5)}" text-anchor="middle" class="petit etiq">=</text>`;
+        else {
+          const w = p.t.length * 7.6 + 16;
+          s += `<rect x="${n1(x - w / 2)}" y="${n1(ym - 13)}" width="${n1(w)}" height="26" rx="13" class="boite c-${c}"/><text x="${n1(x)}" y="${n1(ym + 5)}" text-anchor="middle" class="petit etiq c-${c}">${p.t}</text>`;
+        }
+      }
+      s += '</g>';
+    });
+    s += `<text x="4" y="${yr}" class="titre-rang c-${o.cible}">${SV[o.cible]}</text>`;
+    o.apres.forEach((r, i) => {
+      const y = yd + i * rh;
+      s += `<text x="4" y="${y}" class="petit t-doux">${r[0]}</text>`;
+      r.slice(1).forEach((v, j) => {
+        const [t, pas] = Array.isArray(v) ? v : [v, o.parts[j].pas];
+        if (t) s += `<g${P({ pas })}><text x="${n1(X(j))}" y="${y}" text-anchor="middle" class="val${j ? '' : ' c-' + o.cible}">${t}</text></g>`;
+      });
+    });
+    return svgW(W, yd + (o.apres.length - 1) * rh + 10, s, o.label);
+  }
+
+  // Une échelle verticale (le + en haut) : chaque mouvement part d'une sphère et ajoute une part d'ADD.
+  function echelle(o, W) {
+    const H = o.H || 290, top = 20, bas = 20;
+    const Y = v => top + (o.hi - v) / (o.hi - o.lo) * (H - top - bas);
+    const xa = W * 0.3;
+    const marques = [];
+    o.mvts.forEach(m => marques.push(m.de, m.a));
+    let s = '';
+    if (o.zero) {
+      s += `<line x1="${n1(xa)}" y1="${n1(Y(0))}" x2="${n1(W - 8)}" y2="${n1(Y(0))}" class="pointille"/>`;
+      if (o.zero.haut) {
+        s += `<g${P({ pas: o.zero.pas })}><text x="${n1(W - 8)}" y="${n1(Y(0) - 10)}" text-anchor="end" class="petit t-doux">${o.zero.haut}</text>`;
+        s += `<text x="${n1(W - 8)}" y="${n1(Y(0) + 22)}" text-anchor="end" class="petit t-doux">${o.zero.bas}</text></g>`;
+      }
+    }
+    s += `<line x1="${n1(xa)}" y1="${n1(Y(o.hi) - 6)}" x2="${n1(xa)}" y2="${n1(Y(o.lo) + 6)}" class="base"/>`;
+    for (let k = Math.ceil(o.lo * 4 - 1e-9); k <= Math.floor(o.hi * 4 + 1e-9); k++) {
+      const v = k / 4, maj = Math.abs(v / o.maj - Math.round(v / o.maj)) < 1e-9, y = Y(v);
+      s += `<line x1="${n1(xa - (maj ? 9 : 5))}" y1="${n1(y)}" x2="${n1(xa + (maj ? 9 : 5))}" y2="${n1(y)}" class="${maj ? 'base' : 'grille'}"/>`;
+      if (maj && !marques.some(h => Math.abs(h - v) < 0.3 * o.maj + 1e-9)) s += `<text x="${n1(xa - 16)}" y="${n1(y + 5)}" text-anchor="end" class="petit t-doux">${fmt(v)}</text>`;
+    }
+    const vus = new Set();
+    const point = (v, c, t, pas) => {
+      if (vus.has(v)) return '';
+      vus.add(v);
+      return `<g${P({ pas })}><circle cx="${n1(xa)}" cy="${n1(Y(v))}" r="6.5" class="plein c-${c}"/><text x="${n1(xa - 16)}" y="${n1(Y(v) + 6)}" text-anchor="end" class="val c-${c}">${t}</text></g>`;
+    };
+    o.mvts.forEach(m => {
+      const y0 = Y(m.de), y1 = Y(m.a), xm = xa + m.dx;
+      s += point(m.de, m.cDe, m.tDe, m.pasDe);
+      s += `<g${P(m)}><path d="M ${n1(xa + 9)} ${n1(y0)} C ${n1(xm)} ${n1(y0)} ${n1(xm)} ${n1(y1)} ${n1(xa + 11)} ${n1(y1)}" class="fleche c-${m.cFl}"/>`;
+      s += pointe(xa + 10, y1, -1, 0, `fleche c-${m.cFl}`);
+      const xl = 0.25 * xa + 0.75 * xm + 14, yl = (y0 + y1) / 2 + (m.dy || 0);
+      s += `<text x="${n1(xl)}" y="${n1(yl)}" class="val c-${m.cFl}">${m.lab}</text>`;
+      if (m.sous) s += `<text x="${n1(xl)}" y="${n1(yl + 20)}" class="petit t-doux">${m.sous}</text>`;
+      s += '</g>';
+      s += point(m.a, m.cA, m.tA, m.pasA !== undefined ? m.pasA : m.pas);
+    });
+    return svgW(W, H, s, o.label);
+  }
+
+  // ADD +2.75 : la moitié, 1.375, tombe entre deux pas ; la loupe montre le choix de la prof (le + à gauche, comme sa ligne de vue).
+  function pasImpair(W) {
+    const m = 34, y1 = 58, add = 2.75;
+    const XA = v => m + (add - v) / add * (W - 2 * m);
+    let s = `<line x1="${m}" y1="${y1}" x2="${W - m}" y2="${y1}" class="base"/>`;
+    for (let k = 0; k <= add * 4; k++) { const x = XA(k / 4); s += `<line x1="${n1(x)}" y1="${y1 - 5}" x2="${n1(x)}" y2="${y1 + 5}" class="grille"/>`; }
+    s += `<rect x="${n1(XA(1.75) - 4)}" y="${y1 - 11}" width="${n1(XA(1) - XA(1.75) + 8)}" height="22" rx="5" class="loupe"/>`;
+    const point = (v, k, plein) => `<circle cx="${n1(XA(v))}" cy="${y1}" r="6.5" class="${plein ? 'plein' : 'creux'} c-${k}"/>`;
+    s += point(add, 'vp', 1) + `<text x="${n1(XA(add))}" y="${y1 - 18}" text-anchor="middle" class="tag c-vp">SV-VP</text><text x="${n1(XA(add))}" y="${y1 + 30}" text-anchor="middle" class="val c-vp">+2.75</text>`;
+    s += point(0, 'vl', 1) + `<text x="${n1(XA(0))}" y="${y1 - 18}" text-anchor="middle" class="tag c-vl">SV-VL</text><text x="${n1(XA(0))}" y="${y1 + 30}" text-anchor="middle" class="val c-vl">Plano</text>`;
+    s += `<g data-pas="1">${point(1.375, 'vi', 0)}<text x="${n1(XA(1.375))}" y="${y1 - 18}" text-anchor="middle" class="tag c-vi">SV-VI&#160;?</text></g>`;
+    // la loupe : de +1.75 à +1.00
+    const y2 = 170, xl0 = m + 6, xl1 = W - m - 6;
+    const XL = v => xl0 + (1.75 - v) / 0.75 * (xl1 - xl0);
+    s += `<path d="M ${n1(XA(1.75) - 4)} ${y1 + 11} L ${xl0} ${y2 - 30} M ${n1(XA(1) + 4)} ${y1 + 11} L ${xl1} ${y2 - 30}" class="pointille"/>`;
+    s += `<line x1="${xl0}" y1="${y2}" x2="${xl1}" y2="${y2}" class="base"/>`;
+    [1.75, 1.5, 1.25, 1].forEach(v => { s += `<line x1="${n1(XL(v))}" y1="${y2 - 9}" x2="${n1(XL(v))}" y2="${y2 + 9}" class="base"/>`; });
+    s += `<text x="${n1(XL(1.75))}" y="${y2 + 30}" text-anchor="middle" class="petit t-doux">+1.75</text><text x="${n1(XL(1))}" y="${y2 + 30}" text-anchor="middle" class="petit t-doux">+1.00</text>`;
+    s += `<g data-pas="1"><circle cx="${n1(XL(1.375))}" cy="${y2}" r="6.5" class="creux c-vi"/><text x="${n1(XL(1.375))}" y="${y2 + 30}" text-anchor="middle" class="petit etiq c-vi">1.375</text></g>`;
+    s += `<g data-pas="2"><text x="${n1(XL(1.5))}" y="${y2 + 30}" text-anchor="middle" class="petit etiq">+1.50</text><text x="${n1(XL(1.25))}" y="${y2 + 30}" text-anchor="middle" class="petit etiq">+1.25</text></g>`;
+    const xa = XL(1.375) + 6, xb = XL(1.25) - 2, xc = (xa + xb) / 2, ya = y2 - 10, yc = y2 - 40;
+    const L = Math.hypot(xb - xc, ya - yc);
+    s += `<g data-pas="3"><path d="M ${n1(xa)} ${ya} Q ${n1(xc)} ${yc} ${n1(xb)} ${ya}" class="fleche mince c-vi"/>${pointe(xb, ya, (xb - xc) / L, (ya - yc) / L, 'fleche mince c-vi')}`;
+    s += `<circle cx="${n1(XL(1.25))}" cy="${y2}" r="7" class="plein c-vi"/><text x="${n1(XL(1.5))}" y="${y2 - 16}" text-anchor="middle" class="petit t-doux">✗</text>`;
+    s += `<text x="${n1(xc)}" y="${y2 - 44}" text-anchor="middle" class="petit etiq c-vi">la plus faible</text></g>`;
+    return svgW(W, y2 + 40, s, 'Plano ADD +2.75 : SV-VL Plano, SV-VP +2.75. La moitié, 1.375, tombe entre +1.50 et +1.25 ; on prend la plus faible, +1.25');
+  }
+
+  // Les deux méridiens de −1.00 −0.50 x 164 : au loin, puis au près (ADD +2.00). Les deux montent de +2.00.
+  function meridiens(W) {
+    const lo = -2, hi = 1.5, top = 56, bas = 18, H = 300;
+    const Y = v => top + (hi - v) / (hi - lo) * (H - top - bas);
+    const xg = 46, xA = xg + (W - xg) * 0.33, xB = xg + (W - xg) * 0.72;
+    let s = '';
+    for (let k = lo * 2; k <= hi * 2; k++) {
+      const v = k / 2, y = Y(v);
+      s += `<line x1="${xg}" y1="${n1(y)}" x2="${W - 4}" y2="${n1(y)}" class="${v === 0 ? 'pointille' : 'grille'}"/>`;
+      s += `<text x="${xg - 6}" y="${n1(y + 5)}" text-anchor="end" class="petit t-doux">${fmt(v)}</text>`;
+    }
+    // les valeurs du 164 à sa gauche, celles du 074 à sa droite : les traits de l'écart passent entre les deux
+    [[xA, '164', -1, 1, 1, -1], [xB, '074', -1.5, 0.5, 2, 1]].forEach(([x, deg, loin, pres, pas, cote]) => {
+      const xv = x + cote * 12, anc = cote < 0 ? ' text-anchor="end"' : '';
+      s += `<text x="${n1(x)}" y="18" text-anchor="middle" class="petit t-doux">méridien</text><text x="${n1(x)}" y="40" text-anchor="middle" class="titre-rang">${deg}</text>`;
+      s += `<circle cx="${n1(x)}" cy="${n1(Y(loin))}" r="6.5" class="plein c-vl"/><text x="${n1(xv)}" y="${n1(Y(loin) + 6)}"${anc} class="val c-vl">${fmt(loin)}</text>`;
+      s += `<g data-pas="${pas}">${trait(x, Y(loin) - 9, x, Y(pres) + 10, 'fleche c-vp')}`;
+      s += `<text x="${n1(x - 12)}" y="${n1((Y(loin) + Y(pres)) / 2 + (pres > 0.75 ? -12 : 6))}" text-anchor="end" class="val c-vp">+2.00</text>`;   // au 164, au-dessus du trait du 0
+      s += `<circle cx="${n1(x)}" cy="${n1(Y(pres))}" r="6.5" class="plein c-vp"/><text x="${n1(xv)}" y="${n1(Y(pres) + 6)}"${anc} class="val c-vp">${fmt(pres)}</text></g>`;
+    });
+    const ecart = (a, b, c) => {
+      const ym = (Y(a) + Y(b)) / 2;
+      return `<line x1="${n1(xA)}" y1="${n1(Y(a))}" x2="${n1(xB)}" y2="${n1(Y(b))}" class="fleche mince tirets c-${c}"/>`
+        + `<text x="${n1(xA + 0.45 * (xB - xA))}" y="${n1(ym + 24)}" text-anchor="middle" class="petit etiq c-${c}">écart −0.50</text>`;
+    };
+    s += `<g data-pas="3">${ecart(-1, -1.5, 'vl')}${ecart(1, 0.5, 'vp')}</g>`;
+    return svgW(W, H, s, 'Les deux méridiens de −1.00 −0.50 x 164. Au loin : 164 à −1.00, 074 à −1.50. Au près : 164 à +1.00, 074 à +0.50. Les deux montent de +2.00, l’écart reste −0.50');
+  }
+
+  const FIG = {
+    parcours, decision, 'note-lecture': noteLecture, regle, recopie, meridiens, 'pas-impair': pasImpair,
+    couverture: W => ligneVue({ label: 'La ligne de vue : de près SV-VP, à l’intermédiaire SV-VI, au loin SV-VL',
+      vals: { vp: { t: 'SV-VP' }, vi: { t: 'SV-VI' }, vl: { t: 'SV-VL' } }, dist: true }, W),
+    distances: W => ligneVue({ label: 'La ligne de vue : proche, environ 30 à 40 cm ; intermédiaire, environ 60 à 80 cm ; distance, environ 6 m et plus',
+      vals: { vl: { t: 'SV-VL', pas: 1 }, vi: { t: 'SV-VI', pas: 2 }, vp: { t: 'SV-VP', pas: 3 } }, dist: { vl: 1, vi: 2, vp: 3 } }, W),
+    'cas-vl': W => adapte({ label: 'OD −1.00 −0.50 x 164, OS −1.25 −0.25 x 165, ADD +2.00. SV-VL : le SPH reçoit 0, CYL et AXE recopiés, ADD barrée',
+      cols: ['SPH', 'CYL', 'AXE', 'ADD'], cible: 'vl',
+      avant: [['OD', '−1.00', '−0.50', '164', '+2.00'], ['OS', '−1.25', '−0.25', '165', '+2.00']],
+      apres: [['OD', '−1.00', '−0.50', '164', ''], ['OS', '−1.25', '−0.25', '165', '']],
+      parts: [{ t: '+ 0', c: 'vl', pas: 1 }, { t: '=', pas: 2 }, { t: '=', pas: 2 }, { t: '✕', pas: 3 }] }, W),
+    'cas-vp': W => adapte({ label: 'La même Rx en SV-VP : le SPH reçoit +2.00, OD +1.00 −0.50 x 164, OS +0.75 −0.25 x 165',
+      cols: ['SPH', 'CYL', 'AXE', 'ADD'], cible: 'vp',
+      avant: [['OD', '−1.00', '−0.50', '164', '+2.00'], ['OS', '−1.25', '−0.25', '165', '+2.00']],
+      apres: [['OD', ['+1.00', 1], '−0.50', '164', ''], ['OS', ['+0.75', 2], '−0.25', '165', '']],
+      parts: [{ t: '+ 2.00', c: 'vp', pas: 1 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '✕', pas: 3 }] }, W),
+    'cas-vp-prisme': W => adapte({ label: 'OD +0.75 −0.75 x 010, OS Plano −0.25 x 015 2△BU, ADD +3.00. SV-VP : OD +3.75 −0.75 x 010, OS +3.00 −0.25 x 015 2△BU',
+      cols: ['SPH', 'CYL', 'AXE', 'Prisme', 'ADD'], cible: 'vp',
+      avant: [['OD', '+0.75', '−0.75', '010', '', '+3.00'], ['OS', 'Plano', '−0.25', '015', '2△BU', '+3.00']],
+      apres: [['OD', ['+3.75', 1], '−0.75', '010', '', ''], ['OS', ['+3.00', 2], '−0.25', '015', '2△BU', '']],
+      parts: [{ t: '+ 3.00', c: 'vp', pas: 1 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '✕', pas: 3 }] }, W),
+    'echelle-negatif': W => echelle({ label: 'De −3.75, on monte de +2.75 : on s’arrête à −1.00, encore sous 0', lo: -4.25, hi: 0.75, maj: 1,
+      zero: { haut: 'au-dessus de 0 : +', bas: 'sous 0 : −' },
+      mvts: [{ de: -3.75, a: -1, tDe: '−3.75', tA: '−1.00', cDe: 'vl', cA: 'vp', cFl: 'vp', lab: '+2.75', sous: 'toute l’ADD', dx: 96, pas: 1 }] }, W),
+    'echelle-vi': W => echelle({ label: 'L’OD vaut −1.00 au loin et +1.00 au près ; l’intermédiaire reçoit +1.00, la moitié de l’ADD, et tombe à mi-chemin, à Plano',
+      lo: -1.5, hi: 1.5, maj: 0.5, zero: {},
+      mvts: [{ de: -1, a: 1, tDe: '−1.00', tA: '+1.00', cDe: 'vl', cA: 'vp', cFl: 'vp', lab: '+2.00', sous: 'toute l’ADD', dx: W * 0.6, dy: 26 },
+        { de: -1, a: 0, tA: 'Plano', cA: 'vi', cFl: 'vi', lab: '+1.00', sous: 'la moitié', dx: 70, dy: -6, pas: 1 }] }, W),
+    'cas-vi-prisme': W => adapte({ label: 'OD +3.25 −1.75 x 030 2△BD, OS +3.00 −1.50 x 035, ADD +2.50. SV-VI : le SPH reçoit +1.25, OD +4.50 −1.75 x 030 2△BD, OS +4.25 −1.50 x 035',
+      cols: ['SPH', 'CYL', 'AXE', 'Prisme', 'ADD'], cible: 'vi',
+      avant: [['OD', '+3.25', '−1.75', '030', '2△BD', '+2.50'], ['OS', '+3.00', '−1.50', '035', '', '+2.50']],
+      apres: [['OD', ['+4.50', 2], '−1.75', '030', '2△BD', ''], ['OS', ['+4.25', 2], '−1.50', '035', '', '']],
+      parts: [{ t: '+ 1.25', c: 'vi', pas: 1 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '✕', pas: 3 }] }, W),
+    'cas-vi-impaire': W => adapte({ label: 'OD −3.00 −1.00 x 060, OS −3.75, ADD +1.75. SV-VI : le SPH reçoit +0.75, OD −2.25 −1.00 x 060, OS −3.00',
+      cols: ['SPH', 'CYL', 'AXE', 'ADD'], cible: 'vi',
+      avant: [['OD', '−3.00', '−1.00', '060', '+1.75'], ['OS', '−3.75', '', '', '+1.75']],
+      apres: [['OD', ['−2.25', 3], '−1.00', '060', ''], ['OS', ['−3.00', 3], '', '', '']],
+      parts: [{ t: '+ 0.75', c: 'vi', pas: 2 }, { t: '=', pas: 3 }, { t: '=', pas: 3 }, { t: '✕', pas: 3 }] }, W),
+    'trouve-1': W => ligneVue({ label: 'Rx −4.00 Add +2.00 sur la ligne de vue : proche −2.00, intermédiaire −3.00, distance −4.00', titre: 'Rx&#160;: −4.00&#160; Add +2.00',
+      vals: { vp: { t: '−2.00', pas: 1 }, vi: { t: '−3.00', pas: 2 }, vl: { t: '−4.00', pas: 3 } } }, W),
+    'trouve-2': W => ligneVue({ label: 'Rx +3.75 Add +2.25 sur la ligne de vue : proche +6.00, intermédiaire +4.75, distance +3.75', titre: 'Rx&#160;: +3.75&#160; Add +2.25',
+      vals: { vp: { t: '+6.00', pas: 1 }, vi: { t: '+4.75', pas: 2 }, vl: { t: '+3.75', pas: 3 } } }, W)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', regle: 'Une règle', cas: 'Les cas du cours', impaire: 'L’ADD impaire', verifier: 'Comprendre et vérifier', route: 'Pour la route' };
+  const CLE = 'diapos-bureau-m8';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+
+<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py. Le groupe (Convergence) vit dans survol-groupe.js, chargé seulement à la demande. -->
+<style id="notes-survol-css">
+/* une colonne à droite qui prend sa place dès 1200 px (les diapos se redessinent dans les ≥ 860 px qui restent :
+   audit sans problème) ; de 900 à 1199 px, le même panneau passe par-dessus la droite de la diapo (à 900 px, une
+   colonne laissait 560 px et faisait déborder deux diapos) ; au téléphone, une feuille par-dessus le bas.
+   Réduite, elle se rouvre par « ✎ Notes » en haut. */
+:root { --ns-w: 340px; }
+body.ns-dock { padding-right: var(--ns-w); }
+.ns-bouton { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; position: relative; }
+.ns-bouton[aria-expanded="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--encre); }
+.ns-bouton .ns-point { width: 7px; height: 7px; border-radius: 50%; background: var(--encre); }
+.ns-bouton .ns-point[hidden] { display: none; }
+.ns-bouton:focus-visible, .ns-panneau button:focus-visible, .ns-texte:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.ns-panneau { position: fixed; top: 0; right: 0; bottom: 0; width: var(--ns-w); z-index: 15; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
+  background: var(--fond-2); color: var(--encre); border-left: 1px solid var(--trait); font: 400 var(--t-s)/1.45 var(--f-texte); }
+.ns-panneau[hidden] { display: none; }
+body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
+.ns-tete { display: flex; align-items: center; gap: 8px; }
+.ns-titre { margin: 0; flex: 1; min-width: 0; font-size: var(--t-s); font-weight: 800; letter-spacing: .02em; }
+.ns-ou { margin: 0; font-size: var(--t-xs); color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ns-texte { flex: 1; min-height: 120px; width: 100%; box-sizing: border-box; resize: none; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); line-height: 1.5; }
+.ns-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ns-panneau button { min-height: 38px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
+.ns-panneau .ns-reduire { min-width: 38px; padding: 0 10px; }
+.ns-etat { margin: 0; min-height: 1.3em; font-size: var(--t-xs); color: var(--doux); }
+/* Convergence : le bouton du haut, l'interrupteur « Notes du groupe », et la place des lignes (survol-groupe.js les dessine) */
+.ns-cv svg { width: 22px; height: 11px; flex: none; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
+.ns-panneau .ns-sw { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 2px; border: 0; background: none; font-size: var(--t-xs); }
+.ns-sw i { position: relative; flex: none; width: 32px; height: 18px; border-radius: 9px; background: var(--trait); }
+.ns-sw i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--fond-2); box-shadow: 0 0 0 1px var(--doux); }
+.ns-sw[aria-checked="true"] i { background: var(--encre); }
+.ns-sw[aria-checked="true"] i::after { transform: translateX(14px); box-shadow: none; }
+.ns-lignes { flex: 1; min-height: 120px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
+.ns-garde { margin: 0; flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--t-s); line-height: 1.5; }
+/* le sablier seul : son bouton est ici, tout le reste dans survol-groupe.js, chargé au premier clic ou s'il est déjà allumé */
+.ns-sablier[hidden] { display: none; }
+.ns-sablier > svg { width: 12px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ns-sablier > svg.sablier-mini { width: 11px; stroke: none; }
+.ns-sablier .ns-temps { font-variant-numeric: tabular-nums; }
+.ns-sablier .ns-temps:empty { display: none; }
+.ns-sablier[aria-pressed="true"] .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 899px) {
+  .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+}
+/* au téléphone, le bouton Convergence prend sa place : le retour à l'atelier se coupe plutôt que de passer dessous */
+@media (max-width: 480px) {
+  .haut:has(.ns-cv:not([hidden])) .haut-gauche { flex: 1 1 0; }
+  .haut:has(.ns-cv:not([hidden])) .marque { display: none; }
+  .haut:has(.ns-cv:not([hidden])) .vers-banc { flex: 0 1 auto; min-width: 0; display: block; line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+}
+@media (max-width: 899px) {
+  .ns-cv .ns-mot, .ns-sablier .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (max-width: 600px) {
+  .ns-bouton { padding: 0 10px; }
+  .ns-bouton .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+/* au plus petit téléphone, le décompte seul : le sablier ne pousse pas le retour à l'atelier hors de la barre */
+@media (max-width: 480px) { .ns-sablier[aria-pressed="true"] > svg { display: none; } }
+@media (max-width: 359px) { .haut-droite { gap: 6px; } .ns-bouton { padding: 0 8px; } }
+@media print { .ns-panneau, .ns-bouton { display: none !important; } body.ns-dock { padding-right: 0; } }
+</style>
+<script id="notes-survol">
+(() => {
+  'use strict';
+  const diapos = [...document.querySelectorAll('.diapo')];
+  if (!diapos.length || document.getElementById('ns-panneau')) return;
+  const fichier = (decodeURIComponent(location.pathname.split('/').pop() || '') || 'diapos').replace(/\.html?$/i, '') || 'diapos';
+  const CLE = 'survol-notes:' + fichier, CLE_OUVERT = 'survol-notes-ouvert';
+  const lire = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const ecrire = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+  const net = s => String(s || '').replace(/\s+/g, ' ').trim();
+  const titreDe = d => net((d.querySelector('h2, h1') || {}).textContent) || '';
+  const titreDiapo = net(document.title).replace(/^Survol\s*·\s*/i, '') || fichier;
+
+  /* une note par diapo, rangée sous le titre de la diapo (elle suit sa diapo si l'ordre change) ;
+     deux titres pareils : le second prend son numéro */
+  const vus = {};
+  const cles = diapos.map((d, i) => { let k = titreDe(d) || 'Diapo ' + (i + 1); if (vus[k]) k += ' (' + (i + 1) + ')'; vus[k] = 1; return k; });
+  let notes = {};
+  try { notes = JSON.parse(lire(CLE) || '{}') || {}; } catch (e) { notes = {}; }
+  const texteDe = i => (notes[cles[i]] && notes[cles[i]].x) || '';
+  const cur = () => Math.max(0, diapos.findIndex(d => !d.hidden));
+
+  /* le bouton, en haut à droite, à côté du plan */
+  const haut = document.querySelector('.haut-droite') || document.querySelector('.haut');
+  const bouton = document.createElement('button');
+  bouton.type = 'button'; bouton.className = 'ns-bouton'; bouton.id = 'ns-bouton';
+  bouton.setAttribute('aria-controls', 'ns-panneau'); bouton.setAttribute('aria-expanded', 'false');
+  bouton.title = 'Mes notes : une note par diapo, gardée sur cet appareil';
+  bouton.innerHTML = '<span aria-hidden="true">✎</span><span class="ns-mot">Notes</span><i class="ns-point" hidden></i>';
+  if (haut) haut.insertBefore(bouton, haut.firstChild); else document.body.appendChild(bouton);
+
+  const p = document.createElement('aside');
+  p.className = 'ns-panneau'; p.id = 'ns-panneau'; p.hidden = true; p.setAttribute('aria-labelledby', 'ns-titre');
+  p.innerHTML =
+    '<div class="ns-tete"><h2 class="ns-titre" id="ns-titre">✎ Mes notes</h2>' +
+    '<button type="button" class="ns-reduire" aria-label="Réduire les notes" title="Réduire (Échap)">—</button></div>' +
+    '<button type="button" class="ns-sw" id="ns-sw" role="switch" aria-checked="false" hidden><i></i><span>Notes du groupe</span></button>' +
+    '<p class="ns-ou" id="ns-ou"></p>' +
+    '<label class="ns-ou" for="ns-texte" hidden>Note de cette diapo</label>' +
+    '<textarea class="ns-texte" id="ns-texte" spellcheck="true" placeholder="Ta note sur cette diapo : ce que tu retiens, une question pour le cours…"></textarea>' +
+    '<div class="ns-lignes" id="ns-lignes" hidden></div>' +
+    '<div class="ns-actions"><button type="button" data-ns="une" title="Enregistre la note de cette diapo en fichier .txt sur ton appareil">Enregistrer</button>' +
+    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button>' +
+    '<button type="button" data-ns="copier" title="Ajoute les notes du groupe de cette diapo à ta note à toi" hidden>Copier dans mes notes</button></div>' +
+    '<p class="ns-etat" id="ns-etat" aria-live="polite">Tes notes restent sur cet appareil.</p>';
+  document.body.appendChild(p);
+  const zone = p.querySelector('#ns-texte'), ou = p.querySelector('#ns-ou'), etat = p.querySelector('#ns-etat'), point = bouton.querySelector('.ns-point');
+  const lignes = p.querySelector('#ns-lignes'), sw = p.querySelector('#ns-sw'), titreP = p.querySelector('#ns-titre'), copier = p.querySelector('[data-ns="copier"]');
+
+  let ici = -1, tempo = 0;
+  const dire = t => { etat.textContent = t; };
+
+  /* la source des notes montrées : null, mes notes ; sinon le groupe en direct (vivant, survol-groupe.js) ou la dernière
+     copie gardée ici après une séance. Une source : {lignes(i) → textes, peindre(i), avant() : écrire ce qui attend, focus()} */
+  const CLE_G = 'survol-notes-groupe:' + fichier;
+  let source = null, vivant = null;
+  const texteG = i => source ? source.lignes(i).filter(x => x.trim()).join('\n') : '';
+  const majPoint = () => { point.hidden = !(source ? texteG(ici) : texteDe(ici)).trim(); };
+  function copieGardee() {
+    let c = null;
+    try { c = JSON.parse(lire(CLE_G) || 'null'); } catch (e) {}
+    if (!c || !c.n) return null;
+    return {
+      lignes: i => (c.n[cles[i]] && c.n[cles[i]].l) || [],
+      peindre(i) {
+        lignes.textContent = '';
+        const d = document.createElement('p'); d.className = 'ns-garde';
+        d.textContent = this.lignes(i).join('\n') || 'Aucune note du groupe sur cette diapo.';
+        lignes.appendChild(d);
+      }
+    };
+  }
+  /* hors d'un groupe, l'interrupteur n'apparaît que s'il reste une copie : les notes du groupe survivent à la séance */
+  function majInterrupteur() {
+    const c = !vivant && copieGardee(), dit = sw.querySelector('span');
+    sw.hidden = !vivant && !c;
+    dit.textContent = vivant ? 'Notes du groupe' : 'Copie des notes du groupe';
+    sw.title = vivant ? 'Les notes de tout le groupe sur cette diapo, ligne par ligne' : 'Les notes du groupe de ta dernière séance, gardées sur cet appareil';
+  }
+  function montrerSource(s) {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    source = s;
+    zone.hidden = !!s; lignes.hidden = !s; copier.hidden = !s;
+    sw.setAttribute('aria-checked', String(!!s));
+    titreP.textContent = s ? '✎ Notes du groupe' : '✎ Mes notes';
+    if (s) s.peindre(ici);
+    majPoint();
+    dire(s ? (s === vivant ? 'Tout le groupe voit ces lignes en direct.' : 'Une copie, gardée sur cet appareil.') : 'Tes notes restent sur cet appareil.');
+  }
+  function garder() {
+    clearTimeout(tempo); tempo = 0;
+    if (ici < 0) return;
+    const k = cles[ici], x = zone.value;
+    if (x.trim()) notes[k] = { i: ici + 1, x, m: new Date().toISOString() }; else delete notes[k];
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Gardée sur cet appareil.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+    majPoint();
+  }
+  const surDiapo = [];
+  function suivre() {
+    const n = cur();
+    if (n === ici) return;
+    if (tempo) garder();
+    ici = n;
+    zone.value = texteDe(n);
+    ou.textContent = 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + (titreDe(diapos[n]) || '');
+    if (source) source.peindre(n);
+    majPoint();
+    surDiapo.forEach(f => f(n));
+  }
+  zone.addEventListener('input', () => { clearTimeout(tempo); tempo = setTimeout(garder, 400); });
+  zone.addEventListener('blur', () => { if (tempo) garder(); });
+
+  /* enregistrer en .txt : la diapo, ou toutes celles qui ont une note */
+  const dateLisible = () => new Date().toLocaleString('fr-CA', { dateStyle: 'long', timeStyle: 'short' });
+  function telecharger(nom, texte) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + texte.replace(/\r?\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
+    a.download = nom; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function une() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const n = cur(), x = (source ? texteG(n) : zone.value).trim(), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '-diapo-' + (n + 1) + '.txt';
+    if (!x) { dire(source ? 'Cette diapo n’a pas encore de notes du groupe.' : 'Cette diapo n’a pas encore de note.'); return; }
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe · ' : '') + 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
+    dire('Fichier enregistré : ' + nom);
+  }
+  function toutes() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const avec = diapos.map((d, i) => ({ i, x: (source ? texteG(i) : texteDe(i)).trim() })).filter(o => o.x), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '.txt';
+    if (!avec.length) { dire('Aucune note à enregistrer pour l’instant.'); return; }
+    const corps = avec.map(o => '── Diapo ' + (o.i + 1) + ' · ' + titreDe(diapos[o.i]) + '\n\n' + o.x).join('\n\n');
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe, ' : 'Mes notes, ') + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
+    dire('Fichier enregistré : ' + nom + ' (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+  }
+  /* « Copier dans mes notes » : les lignes du groupe de cette diapo, ajoutées à ma note */
+  function copierDansMes() {
+    if (source && source.avant) source.avant();
+    const n = cur(), x = texteG(n).trim(), a = texteDe(n).trim();
+    if (!x) { dire('Cette diapo n’a pas encore de notes du groupe.'); return; }
+    if (a.includes(x)) { dire('Ces lignes sont déjà dans tes notes.'); return; }
+    notes[cles[n]] = { i: n + 1, x: a ? a + '\n\n' + x : x, m: new Date().toISOString() };
+    zone.value = notes[cles[n]].x;
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Copié dans tes notes de cette diapo.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+  }
+
+  /* ouvrir, réduire, et la place : en colonne dès 1200 px (les diapos se redessinent), par-dessus en dessous */
+  const large = matchMedia('(min-width: 1200px)');
+  const memo = lire(CLE_OUVERT);
+  let ouvert = memo === '1' ? true : memo === '0' ? false : large.matches;
+  function placer(focus) {
+    p.hidden = !ouvert;
+    bouton.setAttribute('aria-expanded', String(ouvert));
+    const dock = ouvert && large.matches;
+    document.body.classList.toggle('ns-ouvert', ouvert);
+    if (document.body.classList.contains('ns-dock') !== dock) {
+      document.body.classList.toggle('ns-dock', dock);
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 0);      // le diaporama redessine ses figures à la nouvelle largeur
+    }
+    if (ouvert) { suivre(); if (focus) { if (source && source.focus) source.focus(); else zone.focus(); } }
+  }
+  function basculer(v, focus) { if (!v && tempo) garder(); ouvert = v; ecrire(CLE_OUVERT, v ? '1' : '0'); placer(focus); }
+  bouton.addEventListener('click', e => { e.stopPropagation(); basculer(!ouvert, !ouvert); });
+  p.querySelector('.ns-reduire').addEventListener('click', () => { basculer(false); bouton.focus(); });
+  p.querySelector('[data-ns="une"]').addEventListener('click', une);
+  p.querySelector('[data-ns="toutes"]').addEventListener('click', toutes);
+  copier.addEventListener('click', copierDansMes);
+  sw.addEventListener('click', () => {
+    const on = !source;
+    montrerSource(on ? vivant || copieGardee() : null);
+    if (vivant && vivant.memo) vivant.memo(on);
+    if (on && source && source.focus) source.focus();
+  });
+  /* les touches tapées dans les notes ne font pas avancer le diaporama */
+  p.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); basculer(false); bouton.focus(); }
+    e.stopPropagation();
+  });
+  p.addEventListener('click', e => e.stopPropagation());
+  if (large.addEventListener) large.addEventListener('change', () => placer(false));
+  diapos.forEach(d => new MutationObserver(suivre).observe(d, { attributes: true, attributeFilter: ['hidden'] }));
+  window.addEventListener('pagehide', () => { if (tempo) garder(); });
+
+  ici = -1; suivre(); placer(false);
+  majInterrupteur();
+
+  /* Convergence : suivre le Survol à plusieurs. Tout le groupe vit dans survol-groupe.js, copié à la racine du site et chargé
+     seulement ici : seul·e, aucun appel au relais. Dans Claude il n'y a pas de relais, donc pas de bouton ; si le fichier ne se
+     charge pas, le bouton s'efface et les notes continuent. Un lien ?cv=<salle>, ou un rechargement en plein groupe, le charge. */
+  if (window.claude) return;
+  const cv = document.createElement('button');
+  cv.type = 'button'; cv.className = 'ns-bouton ns-cv'; cv.id = 'ns-cv';
+  cv.title = 'Convergence : suivre ce Survol à plusieurs, chacun sur son appareil';
+  cv.setAttribute('aria-label', cv.title);
+  cv.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span class="ns-mot">Convergence</span>';
+  const sb = document.createElement('button');
+  sb.type = 'button'; sb.className = 'ns-bouton ns-sablier'; sb.id = 'ns-sablier';
+  sb.title = 'Sablier : des pauses entre les diapos';
+  sb.setAttribute('aria-label', sb.title); sb.setAttribute('aria-haspopup', 'dialog');
+  sb.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3v3c0 3 3.5 4.5 5 6-1.5 1.5-5 3-5 6v3M17 3v3c0 3-3.5 4.5-5 6 1.5 1.5 5 3 5 6v3"/></svg><span class="ns-mot">Sablier</span><span class="ns-temps"></span>';
+  if (haut) { haut.insertBefore(sb, bouton); haut.insertBefore(cv, bouton); } else { document.body.appendChild(sb); document.body.appendChild(cv); }
+  const API = {
+    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, sablier: sb, lire, ecrire, cur, dire, majPoint, CLE_G,
+    surDiapo: f => surDiapo.push(f),
+    /* le groupe arrive ou repart : o = sa source, ou null */
+    groupe(o) { vivant = o; if (!o && source && source.vivant) montrerSource(null); majInterrupteur(); },
+    montrer: montrerSource, source: () => source
+  };
+  let chargement = null;
+  function chargerGroupe() {
+    if (!chargement) chargement = new Promise((ok, non) => {
+      const sources = (/^https?:$/.test(location.protocol) ? ['survol-groupe.js'] : []).concat('https://zexonis.github.io/Lumiere/survol-groupe.js');
+      const essai = k => {
+        if (k >= sources.length) { chargement = null; non(new Error('groupe')); return; }
+        const s = document.createElement('script');
+        s.src = sources[k];
+        s.onload = () => { if (window.SurvolGroupe) ok(window.SurvolGroupe.brancher(API)); else essai(k + 1); };
+        s.onerror = () => { s.remove(); essai(k + 1); };
+        document.head.appendChild(s);
+      };
+      essai(0);
+    });
+    return chargement;
+  }
+  const rate = () => { cv.hidden = true; sb.hidden = true; };
+  cv.addEventListener('click', () => chargerGroupe().then(g => g.ouvrir(), rate));
+  sb.addEventListener('click', () => chargerGroupe().then(g => g.sablier(), rate));
+  let salle = '', repris = false;
+  try { salle = (new URLSearchParams(location.search).get('cv') || '').toLowerCase(); repris = !!sessionStorage.getItem('survol-cv:' + fichier); } catch (e) {}
+  let allume = false;
+  try { allume = !!(JSON.parse(lire('lumiere-sablier')) || {}).on; } catch (e) {}
+  if (/^[a-z0-9]{6}$/.test(salle) || repris) chargerGroupe().then(g => g.arriver(salle), rate);
+  else if (allume) chargerGroupe().catch(rate);
+})();
+</script>
+<!-- notes-survol:fin -->
+<script>
+(() => {
+  const ICI = 'e18c447f00b5';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

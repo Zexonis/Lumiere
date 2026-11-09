@@ -257,8 +257,8 @@ const COURS = [
    ua : l'unité (2 = en cours ; 1 = révision, cachée tant qu'on n'affiche pas l'UA1) */
 const PAGES = {
   adm:[
-    {g:'Atelier', t:'Atelier Bureau M7', u:'atelier-bureau-m7.html', v:true, ua:2,
-     d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. Nouveau : la transposition (cylindre négatif ou positif, une croix pour deux écritures, analyser une Rx d’ophtalmologiste). Au comptoir, Rappel du jour, tuteur.'},
+    {g:'Atelier', t:'Atelier Bureau M7–M8', u:'atelier-bureau-m7.html', v:true, ua:2,
+     d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. La transposition. Nouveau : la Rx multifocale vers SV (0 %, 50 %, 100 % de l’addition, l’addition impaire, les trois Rx). Au comptoir, Rappel du jour, tuteur.'},
     {g:'Guide', t:'Réviser l’UA1', u:'reviser-ua1.html', ua:1, d:'Le guide de révision de l’UA1.'},
     {g:'Cartes', t:'Cartes UA1', u:'cartes-ua1.html', ua:1, d:'80 cartes éclair de l’UA1.'},
     {g:'Drills', t:'Drills Rx', u:'drills-ua1.html', ua:1, d:'40 QCM sur les Rx et la facturation.'},
@@ -601,6 +601,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['adm-m07'], t:'La Rx multifocale vers la simple vision est arrivée dans l’atelier Bureau, en 4 écrans : reconnais une Rx multifocale, puis prépare les lunettes de loin, d’ordinateur ou de lecture à partir d’une Rx avec addition (0 %, 50 % ou 100 % de l’addition ajoutés à la sphère). C’est la partie 7 ; « Au comptoir » devient la partie 8.'},
+    {d:'2026-11-09', p:['adm-m07'], t:'« À toi » sur la Rx multifocale vers la simple vision : des ordonnances toujours nouvelles, avec cylindre, prisme ou addition impaire, jusqu’à trois justes de suite, puis à l’envers (retrouver l’addition ou la Rx de loin). Aussi : les 18 exercices du cours, corrigés case par case.'},
+    {d:'2026-11-09', p:['adm-m07'], t:'Le bouton « Survol » de l’atelier Bureau propose maintenant un troisième diaporama : la Rx multifocale vers la simple vision, en 20 diapos, environ 15 minutes.'},
     {d:'2026-11-09', p:['to-m56'], t:'Le module 8, les gouttes diagnostiques, est arrivé dans l’atelier TO, en 7 écrans : choisis une goutte et regarde ce que font la pupille et l’accommodation, trouve la bonne goutte pour chaque situation, mesure le bris du film à la fluorescéine, remets le protocole dans l’ordre et construis ce que tu dis au patient avant les gouttes.'},
     {d:'2026-11-09', p:['to-m56'], t:'Le bouton « Survol » de l’atelier TO propose maintenant le module 8 : les gouttes diagnostiques en 23 diapos, environ 17 minutes.'},
     {d:'2026-11-09', p:['*'], t:'Dans l’Arène, tu peux maintenant retourner où tu veux : touche un bloc ou un module sur la carte, même un niveau déjà conquis, et l’Arène reste là au lieu de filer au suivant. Ça marche aussi pendant « Le retour » et le dernier round. En groupe, c’est le meneur qui choisit le bloc pour tout le monde.'},
@@ -755,7 +758,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '83235982cb02';
+  const ICI = 'e18c447f00b5';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
