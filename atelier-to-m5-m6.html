@@ -7818,7 +7818,7 @@ const Arene = (() => {
 
   /* ---------- la séance ---------- */
   const R = {sess:Date.now().toString(36), bloc:'', file:[], dernier:'', n:0, justes:0, depuisRev:0, courant:null,
-    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null, plans:new Set(), aide:false, repondu:false, portee:'', revoir:'', revus:new Set()};
+    acquisSeance:new Set(), retour:null, round:null, roundFait:false, retourVu:false, apresRound:null, plans:new Set(), aide:false, repondu:false, portee:'', revoir:'', revus:new Set(), revoirSuite:[], attenteDite:''};
   const item = id => { for(const b of B.blocs){ const i = b.items.find(x => x.id === id); if(i) return [i, b]; } return [null, null]; };
   function revision(sauf){
     const pool = [];
@@ -7839,19 +7839,36 @@ const Arene = (() => {
         const i = reste.sort((x, y) => ((lu(x.id) || {}).der || '').localeCompare((lu(y.id) || {}).der || ''))[0];
         R.revus.add(i.id); return [i, rb];
       }
-      annoncer('Bloc « ' + rb.titre + ' » revu. L’arène reprend la suite.');
-      R.revoir = ''; R.revus = new Set();
+      /* un module conquis se revoit bloc par bloc */
+      R.revus = new Set();
+      if(R.revoirSuite.length){ R.revoir = R.revoirSuite.shift(); return choisir(); }
+      annoncer('« ' + (R.portee || rb.titre) + ' » revu. L’arène reprend la suite.');
+      R.revoir = '';
     }
-    const pret = R.file.find(x => x.apres <= 0 && x.id !== R.dernier && dansPortee(item(x.id)[1]));
+    /* le bloc choisi sur la carte reste le bloc en cours (6 nov.) : ni la file d'un autre bloc, ni une révision prise ailleurs ne passent devant */
+    const choisi = R.bloc && B.par[R.bloc] && pc(B.par[R.bloc]) < 1 ? B.par[R.bloc] : null;
+    const pret = R.file.find(x => x.apres <= 0 && x.id !== R.dernier && dansPortee(item(x.id)[1]) && (!choisi || item(x.id)[1] === choisi));
     if(pret){ R.file = R.file.filter(x => x !== pret); return item(pret.id); }
-    if(R.depuisRev >= REVISION){ const r = revision(); if(r){ R.depuisRev = 0; return r; } }
-    let b = R.bloc && B.par[R.bloc] && pc(B.par[R.bloc]) < 1 ? B.par[R.bloc] : null;
+    if(!choisi && R.depuisRev >= REVISION){ const r = revision(); if(r){ R.depuisRev = 0; return r; } }
+    let b = choisi;
     if(!b){ if(R.bloc && B.par[R.bloc]) annoncer('Bloc « ' + B.par[R.bloc].titre + ' » acquis. L’arène reprend la suite.'); R.bloc = ''; b = frontiere(); }
     if(!b) return [null, null];
     const dansFile = new Set(R.file.map(x => x.id));
     const libres = x => x.items.filter(i => !acquis(i) && i.id !== R.dernier && !dansFile.has(i.id));
     let cands = libres(b), bb = b;
-    /* les éléments du bloc attendent leur écart : on avance dans du neuf ailleurs, sinon on révise */
+    /* ses dernières questions attendent leur écart : le bloc choisi garde la main, avec ce qu'il a déjà d'acquis, la moins récente d'abord.
+       Ces réponses comptent pour l'écart ; sinon, l'arène partait au bloc suivant alors qu'on venait de toucher celui-ci */
+    if(!cands.length && choisi){
+      const recent = i => { const x = lu(i.id) || {}; return x.sess === R.sess ? +x.rang || 0 : -1; };
+      const deja = b.items.filter(i => acquis(i) && i.id !== R.dernier).sort((p, q) => recent(p) - recent(q));
+      if(deja.length){
+        if(R.attenteDite !== b.id){ R.attenteDite = b.id; annoncer('Les dernières questions de ce bloc doivent revenir de loin : en attendant, tu revois ce que tu y as acquis.'); }
+        return [deja[0], b];
+      }
+      const att = R.file.filter(x => item(x.id)[1] === b && x.id !== R.dernier).sort((p, q) => p.apres - q.apres)[0];
+      if(att){ R.file = R.file.filter(y => y !== att); return item(att.id); }
+    }
+    /* sans bloc choisi, les éléments du bloc attendent leur écart : on avance dans du neuf ailleurs, sinon on révise */
     if(!cands.length){
       const autre = B.blocs.find(x => x !== b && dansPortee(x) && pc(x) < 1 && libres(x).length);
       if(autre){ bb = autre; cands = libres(autre); }
@@ -7961,8 +7978,8 @@ const Arene = (() => {
       else if(a === 'tableau') ouvrirTableau();
       else if(a === 'inviter'){ if(typeof Convergence !== 'undefined' && Convergence.inviter) Convergence.inviter(b); }
       else if(a === 'sablier'){ if(typeof Sablier !== 'undefined') Sablier.reglages(b); }
-      else if(a === 'auto'){ R.bloc = ''; R.revoir = ''; suivant(); }
-      else if(a === 'portee'){ R.portee = b.dataset.p || ''; R.bloc = ''; R.revoir = ''; R.courant = null; majCarte(); suivant(); }
+      else if(a === 'auto'){ R.bloc = ''; R.revoir = ''; R.revoirSuite = []; suivant(); }
+      else if(a === 'portee') choisirPortee(b.dataset.p || '');
       else if(a === 'round'){ if(lancerRound()) suivant(); }
     });
     ui.addEventListener('keydown', e => {
@@ -8001,17 +8018,42 @@ const Arene = (() => {
           '<span class="ar-bt">' + esc(b.titre) + '</span><span class="ar-bp"><i style="width:' + Math.round(p * 100) + '%"></i><b style="width:' + Math.round(q * 100) + '%"></b></span>' +
           '<span class="ar-bm">' + (tousAncres ? '⚓' : fait ? '✓' : Math.round(p * 100) + ' %') + '</span></button>';
       }).join('') + '</section>').join('') +
-      '<p class="ar-legende">L’arène commence par les bases (niveau A) et monte. Touche un module ou un bloc pour y aller directement, un bloc acquis pour le revoir. ✓ : tout acquis · ⚓ : retenu aussi un autre jour · partie pâle : en route. Rien ne se perd si tu t’arrêtes.</p>';
+      '<p class="ar-legende">L’arène commence par les bases (niveau A) et monte. Touche un module ou un bloc pour y aller, à tout moment : un bloc acquis se revoit, question par question. ✓ : tout acquis · ⚓ : retenu aussi un autre jour · partie pâle : en route. Rien ne se perd si tu t’arrêtes.</p>';
   }
   function annoncer(t){ if(!ui) return; const a = $('.ar-annonce', ui); a.textContent = t; a.hidden = false; clearTimeout(a._t); a._t = setTimeout(() => { a.hidden = true; }, 6000); }
   function annoncerHTML(h){ const a = $('.ar-annonce', ui); a.innerHTML = h; a.hidden = false; clearTimeout(a._t); }
+  /* toucher la carte passe avant le retour et le dernier round (6 nov.) : le clic ne faisait rien pendant ceux-ci. Ce qui est déjà répondu reste compté */
+  function lacherSession(){
+    const dit = R.retour ? 'Le retour est mis de côté. ' : R.round ? 'Le dernier round est mis de côté. ' : '';
+    R.retour = null; R.round = null; R.apresRound = null;
+    return dit;
+  }
   function choisirBloc(id){
-    const b = B.par[id]; if(!b || R.retour || R.round) return;
+    const b = B.par[id]; if(!b) return;
+    if(GR.actif){ choisirBlocGroupe(b); return; }
+    const dit = lacherSession();
     if(R.portee && !dansPortee(b)) R.portee = '';
-    if(pc(b) === 1){ R.revoir = id; R.revus = new Set(); R.bloc = ''; annoncer('On revoit « ' + b.titre + ' » : ses questions une fois chacune. Une question oubliée revient en jeu.'); }
-    else { R.revoir = ''; R.bloc = id; }
+    R.revoirSuite = [];
+    if(pc(b) === 1){ R.revoir = id; R.revus = new Set(); R.bloc = ''; annoncer(dit + 'On revoit « ' + b.titre + ' » : ses questions une fois chacune. Une question oubliée revient en jeu.'); }
+    else { R.revoir = ''; R.bloc = id; if(dit) annoncer(dit); }
     if(window.innerWidth < 900){ ui.classList.remove('avec-carte'); $('[data-a="carte"]', ui).setAttribute('aria-pressed', 'false'); }
     suivant();
+  }
+  /* un module : on y travaille ce qui reste ; conquis, on y retourne, bloc par bloc (avant, l'arène s'arrêtait sur son 100 %) */
+  function revoirPortee(){
+    const l = B.blocs.filter(dansPortee);
+    if(!l.length) return false;
+    R.revoir = l[0].id; R.revoirSuite = l.slice(1).map(b => b.id); R.revus = new Set(); R.bloc = '';
+    annoncer('On revoit « ' + R.portee + ' » : ses questions une fois chacune. Une question oubliée revient en jeu.');
+    return true;
+  }
+  function choisirPortee(p){
+    if(GR.actif){ annoncer('En groupe, le meneur choisit un bloc sur la carte.'); return; }
+    const dit = lacherSession();
+    R.portee = p; R.bloc = ''; R.revoir = ''; R.revoirSuite = []; R.revus = new Set(); R.courant = null;
+    if(p && B.blocs.filter(dansPortee).every(b => pc(b) === 1)) revoirPortee();
+    else if(dit) annoncer(dit);
+    majCarte(); suivant();
   }
   /* le point du cours derrière une question : le titre du pas et ses mots clés, et le chemin vers l'écran */
   function pointDuCours(pasId, plie){
@@ -8133,7 +8175,9 @@ const Arene = (() => {
     if(!it){
       ou.textContent = '';
       const t = total();
-      z.innerHTML = '<div class="ar-fin"><p class="ar-fin-t">100 %</p><p>' + (R.portee ? 'Tout « ' + esc(R.portee) + ' » est acquis' : 'Tout l’atelier est acquis') + ' : chaque question réussie, puis réussie encore de loin. ' + (t.k < t.n ? 'Quand tu reviendras, l’arène vérifiera ce qui est resté : ce qui tient s’ancre ⚓ (' + t.k + ' / ' + t.n + ' ancrés).' : 'Et tout est ancré ⚓.') + '</p></div>';
+      const fin = '<p class="ar-fin-t">100 %</p><p>' + (R.portee ? 'Tout « ' + esc(R.portee) + ' » est acquis' : 'Tout l’atelier est acquis') + ' : chaque question réussie, puis réussie encore de loin. ' + (t.k < t.n ? 'Quand tu reviendras, l’arène vérifiera ce qui est resté : ce qui tient s’ancre ⚓ (' + t.k + ' / ' + t.n + ' ancrés).' : 'Et tout est ancré ⚓.') + '</p>';
+      if(R.portee) carte(fin, [['Revoir ce module', () => { if(revoirPortee()) suivant(); }, true], ['Tout l’atelier', () => choisirPortee('')]]);
+      else z.innerHTML = '<div class="ar-fin">' + fin + '<p>Touche un bloc sur la carte pour le revoir.</p></div>';
       return;
     }
     const s = lu(it.id), n = b.items.filter(acquis).length, mode = R.retour ? 'retour' : R.round ? 'round' : '', groupe = enGroupeSur(it);
@@ -8350,7 +8394,7 @@ const Arene = (() => {
      sa propre progression : rien ne se gagne sur la réponse d'un autre (une question ratée revient pour qui l'a ratée).
      Le premier du groupe (l'ordre de Convergence) choisit les questions d'après ce que chacun a acquis. Tout passe par la
      présence de chacun (membres/<uid>/ar, publiée par convergence.js) : les règles du relais n'ont pas changé. */
-  const GR = {seance:null, ecoute:null, actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null, hist:{}};
+  const GR = {seance:null, ecoute:null, actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null, hist:{}, bloc:'', revus:new Set()};
   let HASH = '';
   function empreinte(){
     let h = 5381; const s = B.blocs.map(b => b.id + ':' + b.items.map(i => i.id).join(',')).join('|');
@@ -8423,6 +8467,18 @@ const Arene = (() => {
   function choisirGroupe(P, n){
     const lus = P.map(p => p.moi ? null : String(p.ar.m || '').split(',').map(bits));
     const a = (x, k, j) => P[x].moi ? acquis(B.blocs[k].items[j]) : !!(lus[x][k] && lus[x][k][j]);
+    /* le bloc choisi par le meneur : ce que quelqu'un n'a pas acquis, puis, s'il est conquis par tous, chaque question une fois */
+    if(GR.bloc && B.par[GR.bloc]){
+      const k = B.blocs.indexOf(B.par[GR.bloc]), b = B.blocs[k];
+      const reste = b.items.filter((it, j) => !P.every((p, x) => a(x, k, j)));
+      if(reste.length){
+        const vieux = it => GR.hist[it.id] ? GR.hist[it.id].n : -1, prets = reste.filter(it => !GR.hist[it.id] || n - GR.hist[it.id].n > COURT);
+        return (prets.length ? prets : reste).slice().sort((x, y) => vieux(x) - vieux(y))[0];
+      }
+      const revoir = b.items.find(it => !GR.revus.has(it.id));
+      if(revoir){ GR.revus.add(revoir.id); return revoir; }
+      GR.bloc = ''; GR.revus = new Set();
+    }
     const pcDe = (x, k) => { const L = B.blocs[k].items.length; let s = 0; for(let j = 0; j < L; j++) if(a(x, k, j)) s++; return L ? s / L : 1; };
     let front = B.blocs.findIndex((b, k) => P.some((p, x) => pcDe(x, k) < SEUIL_OUVERT));
     if(front < 0) front = B.blocs.length - 1;
@@ -8440,6 +8496,17 @@ const Arene = (() => {
     const confirmer = cands.filter(c => c.h && mur(c)).sort(ancien);
     if(confirmer.length) return confirmer[0].it;
     return cands.sort(ancien)[0].it;
+  }
+  /* un clic sur la carte ne sort plus de la question commune : c'est le meneur qui choisit, pour la prochaine question */
+  function choisirBlocGroupe(b){
+    if(!estChef()){
+      const c = participants()[0];
+      annoncer('En groupe, c’est ' + (c ? '« ' + c.nom + ' »' : 'le meneur') + ' qui choisit le bloc.');
+      return;
+    }
+    GR.bloc = b.id; GR.revus = new Set();
+    annoncer('Le groupe passe à « ' + b.titre + ' » à la prochaine question.');
+    piloter();
   }
   function montrerGroupe(){
     if(!GR.actif || !GR.q || !ui || ui.hidden || (GR.q.n === GR.vuN && GR.q.id === GR.vuId)) return;
@@ -8507,7 +8574,7 @@ const Arene = (() => {
   function rejoindreGroupe(){
     if(GR.actif || !GR.seance || GR.seance.membres.length < 2 || !ui) return;
     if(!B) construire();
-    Object.assign(GR, {actif:true, chef:false, vuN:0, vuId:'', mien:null, pret:0, attente:null});
+    Object.assign(GR, {actif:true, chef:false, vuN:0, vuId:'', mien:null, pret:0, attente:null, bloc:'', revus:new Set()});
     R.retour = null; R.round = null; R.courant = null;
     const P = participants(), chef = P[0];
     GR.q = chef && !chef.moi && chef.ar.q ? chef.ar.q : null;
@@ -8521,7 +8588,7 @@ const Arene = (() => {
   }
   function quitterGroupe(silencieux){
     if(!GR.actif) return;
-    Object.assign(GR, {actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null});
+    Object.assign(GR, {actif:false, chef:false, q:null, vuN:0, vuId:'', mien:null, pret:0, attente:null, bloc:'', revus:new Set()});
     publierAr();
     if(ui && !ui.hidden){ majTete(); if(!silencieux){ R.courant = null; suivant(); } }
   }
@@ -15763,6 +15830,7 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['*'], t:'Dans l’Arène, tu peux maintenant retourner où tu veux : touche un bloc ou un module sur la carte, même un niveau déjà conquis, et l’Arène reste là au lieu de filer au suivant. Ça marche aussi pendant « Le retour » et le dernier round. En groupe, c’est le meneur qui choisit le bloc pour tout le monde.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 6 et 7, et le module 8 en 23 diapos, environ 17 minutes.'},
@@ -16181,7 +16249,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'cdf948f407aa';
+  const ICI = 'f4a9938352bb';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

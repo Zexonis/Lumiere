@@ -601,6 +601,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['*'], t:'Dans l’Arène, tu peux maintenant retourner où tu veux : touche un bloc ou un module sur la carte, même un niveau déjà conquis, et l’Arène reste là au lieu de filer au suivant. Ça marche aussi pendant « Le retour » et le dernier round. En groupe, c’est le meneur qui choisit le bloc pour tout le monde.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le bouton « Survol » propose maintenant deux diaporamas : les modules 6 et 7, et le module 8 en 23 diapos, environ 17 minutes.'},
@@ -752,7 +753,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'cdf948f407aa';
+  const ICI = 'f4a9938352bb';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
