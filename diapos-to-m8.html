@@ -1,0 +1,1809 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diapos TO M8</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Diapos TO M8 : le « Survol » de Tests ophtalmiques (SAN 0010), module 8 (9 nov. 2026) : les gouttes diagnostiques.
+  Contenu : uniquement Guides/UA2-Tests-Ophtalmiques/distilled/to-m08_distilled.md (sections 1, 3, 4 et annexe A ;
+  citations et nombres vérifiés par script là-bas). Les pièges sont ceux que la distillation nomme.
+  Liens déduits ou empruntés, signalés sur leur diapo (.note) : quel système commande quel muscle, déduit des gouttes
+  (diapo 4) ; les deux premiers effets secondaires, chacun de son muscle (diapo 6) ; le cœur et les arythmies
+  (diapo 7) ; « Le sphincter domine », de l'anatomie, module 8 (diapo 8) ; la petite pupille avec l'âge, déduite des
+  deux causes (diapo 10) ; la phrase de l'optique, module 7, sur la cycloplégie (diapo 12) ; pourquoi l'aplanation
+  demande l'anesthésique et la fluorescéine, et le NCT de l'UA1 rien (diapo 18) ; le pourquoi de l'ordre du protocole
+  (diapo 19). Aucune valeur calculée : tous les nombres sont ceux de la distillation (relue après son audit, 9 nov.).
+  Règles du format : une idée par diapo; le schéma porte l'idée; exemples résolus, révélés pas à pas; une seule
+  phrase « À retenir »; au plus un piège; aucune citation de source ni point en attente; un seul bouton utile : Suite.
+  Code couleur constant :
+  cyan = le parasympathique (le repos : sphincter, corps ciliaire)   orange = le sympathique (mettre en action :
+  dilatateur)   violet = ce que fait et note l'assistant. Le vert-jaune de la fluorescéine n'est qu'une image.
+  L'iris est dessiné comme dans les diapos d'anatomie, module 8 : le disque de l'iris, la pupille pleine.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Mise en page : une salle d'examen dans la pénombre. Une diapo = un écran; le schéma à gauche, le texte à droite
+   sur grand écran, empilés sur téléphone; barre de progression par chapitre en haut, Suite en bas. */
+:root {
+  --fond: #0c1727;
+  --fond-2: #13233a;
+  --trait: #2a3f5c;
+  --encre: #e9eff7;
+  --doux: #9aabc2;
+  --para: #56d3ea;
+  --sym: #f4a640;
+  --aide: #b8a4ff;
+  --rayon: #f3e2a0;
+  --retine: #d27a98;
+  --disque: #f3e2a0;
+  --pigment: #04070d;
+  --nuit: #03060b;
+  --reflet: #ffffff;
+  --cobalt: #1d3594;
+  --fluo: #cdf55c;
+  --voile: rgba(5, 10, 20, .74);
+  --f-titre: "Bricolage Grotesque", "Lexend", system-ui, sans-serif;
+  --f-texte: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-chiffre: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-xs: .76rem;
+  --t-s: .92rem;
+  --t-m: clamp(.98rem, .93rem + .28vw, 1.1rem);
+  --t-l: clamp(1.12rem, 1rem + .55vw, 1.42rem);
+  --t-xl: clamp(1.5rem, 1.08rem + 1.9vw, 2.55rem);
+  --t-xxl: clamp(2.1rem, 1.3rem + 3.8vw, 3.9rem);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+    --para: #077d93; --sym: #b25a00; --aide: #6448c9; --rayon: #9a7400; --retine: #a8466b;
+    --disque: #fbefc0; --pigment: #2a1a22; --nuit: #1b1e25; --reflet: #ffffff; --cobalt: #22389c; --fluo: #c6f04a;
+    --voile: rgba(226, 233, 242, .82); color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --fond: #f2f5f9; --fond-2: #ffffff; --trait: #cdd8e5; --encre: #10203a; --doux: #50617a;
+  --para: #077d93; --sym: #b25a00; --aide: #6448c9; --rayon: #9a7400; --retine: #a8466b;
+  --disque: #fbefc0; --pigment: #2a1a22; --nuit: #1b1e25; --reflet: #ffffff; --cobalt: #22389c; --fluo: #c6f04a;
+  --voile: rgba(226, 233, 242, .82); color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden;
+  background: var(--fond); color: var(--encre);
+  font: 400 var(--t-m)/1.45 var(--f-texte);
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: 100%; max-width: 1180px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .diapo:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+b { font-weight: 700; }
+sub { font-size: .7em; }
+
+/* ---- barre du haut ---- */
+.haut { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px 6px; }
+.marque { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--doux); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.marque span { color: var(--encre); }
+.haut-droite { display: flex; align-items: center; gap: 10px; flex: none; }
+.haut-gauche { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vers-banc { flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font-size: var(--t-s); font-weight: 700; text-decoration: none; }
+.vers-banc:focus-visible, .retiens a:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.retiens a { color: inherit; text-underline-offset: 4px; }
+.compteur { font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); font-variant-numeric: tabular-nums; }
+.btn-plan { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); font-size: var(--t-s); font-weight: 700; }
+.progres { display: flex; gap: 4px; height: 4px; margin-bottom: 6px; }
+.progres span { flex: var(--n) 1 0; background: var(--trait); border-radius: 2px; position: relative; overflow: hidden; }
+.progres i { position: absolute; inset: 0 auto 0 0; width: calc(var(--f) * 100%); background: var(--encre); transition: width .25s ease; }
+
+/* ---- la scène et les diapos ---- */
+.scene { flex: 1; position: relative; min-height: 0; }
+.diapo { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.cadre { margin-block: auto; padding-block: 8px 18px; display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.diapo.entre .cadre { animation: entre .3s ease both; }
+@keyframes entre { from { opacity: 0; transform: translateY(8px); } }
+.kicker { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 700; letter-spacing: -.01em; line-height: 1.06; margin: 0; text-wrap: balance; }
+h1 { font-size: var(--t-xxl); font-weight: 800; max-width: 15ch; }
+h2 { font-size: var(--t-xl); max-width: 26ch; }
+.corps { display: grid; gap: 16px 36px; align-items: center; }
+@media (min-width: 880px) { .corps { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .corps.plein { grid-template-columns: minmax(0, 1fr); } }
+.visuel { margin: 0; min-width: 0; }
+.visuel svg { display: block; width: 100%; height: auto; max-height: 56vh; }
+.texte { min-width: 0; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; }
+.texte p { margin: 0; }
+.note { color: var(--doux); font-size: var(--t-s); }
+.sous { font-weight: 700; }
+.etapes { margin: 0; padding: 0; list-style: none; counter-reset: e; display: flex; flex-direction: column; gap: 8px; }
+.etapes li { counter-increment: e; display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.etapes li::before { content: counter(e); font-family: var(--f-chiffre); font-weight: 700; font-size: .8em; width: 1.75em; height: 1.75em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--doux); color: var(--doux); }
+.points { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.trois { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 6px; }
+.piege { font-size: var(--t-s); padding: 8px 12px; border: 1.5px dashed var(--trait); border-radius: 8px; }
+.piege b:first-child { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; margin-right: 8px; color: var(--doux); }
+.retiens { margin: 0; font-weight: 700; font-size: var(--t-l); line-height: 1.3; text-wrap: balance; padding-top: 12px; border-top: 1px solid var(--trait); }
+.retiens span { display: block; font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-bottom: 4px; }
+.para { color: var(--para); }
+.sym { color: var(--sym); }
+.aide { color: var(--aide); }
+
+/* pas à pas */
+[data-pas] { transition: opacity .28s ease; }
+[data-pas]:not(.vu) { opacity: 0; visibility: hidden; }
+
+/* ---- couverture ---- */
+.chapeau { margin: 0; font-size: var(--t-l); color: var(--doux); max-width: 38ch; }
+.meta { margin: 0; font-family: var(--f-chiffre); font-size: var(--t-s); color: var(--doux); }
+.code { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: var(--t-s); }
+.code li { display: flex; align-items: center; gap: 10px; }
+.code li::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+.reprendre { align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.astuce { margin: 0; font-size: var(--t-s); color: var(--doux); }
+
+/* ---- la carte finale ---- */
+.carte-grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .carte-grille { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fiche { padding: 12px; border: 1px solid var(--trait); border-radius: 12px; background: var(--fond-2); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.fiche p { margin: 0; }
+.fiche-nom { font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--doux); font-weight: 700; }
+.fiche-f { font-family: var(--f-chiffre); font-weight: 700; font-size: clamp(.92rem, .82rem + .5vw, 1.18rem); overflow-wrap: anywhere; }
+.fiche-n { font-size: var(--t-s); color: var(--doux); }
+
+/* ---- barre du bas ---- */
+.bas { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px 12px; border-top: 1px solid var(--trait); }
+.bas button { min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--trait); background: var(--fond-2); font-weight: 700; }
+.bas button:disabled { opacity: .4; cursor: default; }
+.bas .suite { background: var(--encre); color: var(--fond); border-color: var(--encre); min-width: 8.5em; }
+.points-pas { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-width: 0; }
+.points-pas i { width: 8px; height: 8px; border-radius: 50%; background: var(--trait); }
+.points-pas i.vu { background: var(--encre); }
+
+/* ---- plan ---- */
+.plan { position: fixed; inset: 0; z-index: 20; background: var(--voile); display: flex; justify-content: center; align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plan-boite { background: var(--fond-2); border: 1px solid var(--trait); border-radius: 14px; width: 100%; max-width: 560px; max-height: 100%; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.plan-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.plan-tete h2 { font-size: var(--t-l); }
+.plan-tete button { min-height: 40px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); font-weight: 700; }
+.plan-acte { margin: 10px 0 2px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); }
+.plan-boite button.aller { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; text-align: left; padding: 8px 10px; border-radius: 8px; border: 0; background: transparent; }
+.plan-boite button.aller:hover { background: var(--fond); }
+.plan-boite button.aller[aria-current="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--trait); }
+.plan-boite button.aller span:first-child { font-family: var(--f-chiffre); color: var(--doux); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- schémas (SVG) ---- */
+.c-para { --c: var(--para); } .c-sym { --c: var(--sym); } .c-aide { --c: var(--aide); } .c-emm { --c: var(--encre); } .c-doux { --c: var(--doux); } .c-lum { --c: var(--rayon); }
+svg text { font-family: var(--f-texte); font-size: 17px; fill: var(--encre); }
+svg .petit { font-size: 14px; }
+svg .t-doux { fill: var(--doux); }
+svg .etiq { font-weight: 700; fill: var(--c, var(--encre)); }
+svg .valeur { font-family: var(--f-chiffre); font-size: 15px; font-weight: 700; fill: var(--c, var(--encre)); }
+svg .lettre { font-family: var(--f-chiffre); font-size: 13px; font-weight: 700; fill: var(--fond); }
+svg .base { stroke: var(--trait); stroke-width: 2; fill: none; }
+svg .pointille { stroke: var(--doux); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+svg .fleche { fill: none; stroke: var(--c); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+svg .trait-c { fill: none; stroke: var(--c, var(--encre)); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .tirets { stroke-dasharray: 7 6; }
+svg .plein-c { fill: var(--c, var(--encre)); }
+svg .pastille { fill: var(--c, var(--encre)); }
+svg .croix { fill: none; stroke: var(--c, var(--encre)); stroke-width: 3.5; stroke-linecap: round; }
+svg .boite { fill: var(--fond-2); stroke: var(--c, var(--trait)); stroke-width: 2; }
+svg .verre { fill: var(--c); fill-opacity: .16; stroke: var(--c); stroke-width: 2; }
+svg .globe { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .sclere { fill: none; stroke: var(--doux); stroke-width: 2; }
+svg .cornee { fill: none; stroke: var(--encre); stroke-width: 2.6; }
+svg .retine { fill: none; stroke: var(--retine); stroke-width: 4; stroke-linecap: round; }
+svg .eclaire { fill: none; stroke: var(--rayon); stroke-width: 10; stroke-opacity: .5; stroke-linecap: round; }
+svg .faisceau { fill: var(--rayon); fill-opacity: .14; }
+svg .cristallin { fill: var(--fond); stroke: var(--encre); stroke-width: 2; }
+svg .rayon { fill: none; stroke: var(--rayon); stroke-width: 2.2; stroke-linecap: round; }
+svg .cil { fill: var(--c); fill-opacity: .85; }
+svg .zon { stroke: var(--doux); stroke-width: 1.2; fill: none; }
+svg .iris-l { stroke: var(--doux); stroke-linecap: round; fill: none; }
+/* l'iris de face, comme en anatomie (module 8) : le disque de l'iris, la pupille pleine */
+svg .iris { fill: var(--fond-2); stroke: var(--doux); stroke-width: 2; }
+svg .pupille { fill: var(--encre); }
+svg .sph { fill: none; stroke: var(--para); }
+svg .sph.lache { stroke-dasharray: 5 4; }
+svg .dil { stroke: var(--sym); stroke-linecap: round; }
+svg .masque { fill: none; stroke: var(--fond-2); }
+svg .aire { fill: var(--c); fill-opacity: .5; stroke: var(--c); stroke-width: 2; stroke-linejoin: round; }
+svg .aire.pale { fill-opacity: .16; stroke-opacity: .45; }
+svg .aire-t { fill: none; stroke: var(--c); stroke-width: 2; stroke-dasharray: 6 5; }
+/* la vue du fond d'œil (dessinée en unités du rayon : les épaisseurs de trait sont des attributs) */
+svg .palier-fond { fill: var(--fond-2); }
+svg .fondo { fill: var(--retine); }
+svg .vx { fill: none; stroke: var(--retine); stroke-linecap: round; }
+svg .disque { fill: var(--disque); stroke: var(--rayon); }
+svg .pig { fill: var(--pigment); }
+svg .lum { fill: var(--reflet); }
+svg .nuit { fill: var(--nuit); }
+svg .cadre-ph { fill: none; stroke: var(--doux); stroke-width: 3; }
+/* sous la lumière bleue : une image, pas une couleur du code */
+svg .cobalt { fill: var(--cobalt); }
+svg .fluo { fill: var(--fluo); }
+svg .fluo-t { fill: none; stroke: var(--fluo); stroke-linecap: round; stroke-linejoin: round; }
+svg .oeil-g { fill: var(--fond-2); stroke: var(--encre); stroke-width: 1.8; }
+svg .cil-t { stroke: var(--encre); stroke-width: 1.8; stroke-linecap: round; }
+svg .bord-l { fill: none; stroke: var(--encre); stroke-opacity: .7; stroke-width: 1.5; }
+
+/* au téléphone : moins d'air, pour qu'une diapo tienne dans un écran */
+@media (max-width: 600px) {
+  .cadre { gap: 10px; padding-block: 4px 12px; }
+  .corps { gap: 12px; }
+  h2 { font-size: clamp(1.3rem, 1rem + 1.6vw, 1.6rem); }
+  .texte { gap: 8px; }
+  .etapes, .points { gap: 6px; }
+  .retiens { padding-top: 8px; font-size: 1.02rem; }
+  .piege { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-pas], .progres i { transition: none; }
+  .diapo.entre .cadre { animation: none; }
+}
+</style>
+
+<div class="app" lang="fr">
+  <header class="haut">
+    <div class="haut-gauche">
+      <a class="vers-banc" href="atelier-to-m5-m6.html" title="Retour à l'Atelier TO">← Atelier</a>
+      <p class="marque">TO M8 · <span id="acte">Le fil</span></p>
+    </div>
+    <div class="haut-droite">
+      <span class="compteur" id="compteur">1 / 23</span>
+      <button type="button" class="btn-plan" id="btn-plan" aria-haspopup="dialog">Plan</button>
+    </div>
+  </header>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
+  <main class="scene" id="scene" aria-roledescription="diaporama">
+
+    <!-- 1 · couverture -->
+    <section class="diapo" id="d1" data-acte="fil" tabindex="-1">
+      <div class="cadre">
+        <p class="kicker">Tests ophtalmiques · SAN 0010 · module 8</p>
+        <div class="corps">
+          <div class="texte">
+            <h1>Les gouttes diagnostiques</h1>
+            <p class="chapeau">Tout le module en 17&nbsp;minutes, une idée par diapo. Ensuite, l’atelier sert à t’entraîner.</p>
+            <p class="meta">23 diapos · ≈&nbsp;17&nbsp;min</p>
+            <ul class="code" aria-label="Code couleur">
+              <li class="c-para">le parasympathique, le repos&nbsp;: le sphincter et le corps ciliaire</li>
+              <li class="c-sym">le sympathique, mettre en action&nbsp;: le dilatateur</li>
+              <li class="c-aide">ce que fait et note l’assistant</li>
+            </ul>
+            <button type="button" class="reprendre" id="reprendre" hidden></button>
+            <p class="astuce">Touche la droite de l’écran, ou appuie sur →, pour avancer.</p>
+          </div>
+          <figure class="visuel" data-fig="couverture" aria-label="Un iris à la pupille petite ; l’assistant met une goutte ; la pupille devient grande"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · le fil -->
+    <section class="diapo" id="d2" data-acte="fil" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Le fil</p>
+        <h2>Les gouttes ont trois rôles&nbsp;: la précision, les procédures, le confort</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fil" aria-label="Quatre sortes de gouttes. Mydriatique : la pupille s’ouvre, pour voir le fond de l’œil. Cycloplégique : plus d’accommodation, pour une réfraction précise. Anesthésique : la cornée ne sent plus, on peut la toucher. Fluorescéine : les larmes se colorent, à voir sous la lumière bleue"></figure>
+          <div class="texte">
+            <p>Trois classes de gouttes, «&nbsp;mydriatiques, cycloplégiques, anesthésiques topiques&nbsp;», plus un colorant, la fluorescéine. Leurs rôles&nbsp;:</p>
+            <ol class="etapes">
+              <li><span>«&nbsp;Améliorer la précision des examens visuels&nbsp;».</span></li>
+              <li data-pas="1"><span>«&nbsp;Faciliter certaines procédures&nbsp;»&nbsp;: la tonométrie quand on doit toucher l’œil, la dilatation pour regarder le fond d’œil, la réfraction chez les jeunes enfants.</span></li>
+              <li data-pas="2"><span>«&nbsp;Assurer le confort du patient&nbsp;» quand on examine un œil égratigné.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Chaque goutte a un but, des effets à prévoir, et demande le oui du patient.</p>
+      </div>
+    </section>
+
+    <!-- 3 · trois muscles -->
+    <section class="diapo" id="d3" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Trois muscles&nbsp;: deux pour la pupille, un pour l’accommodation</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="muscles" aria-label="Un iris de face : le sphincter, un cercle autour de la pupille ; le dilatateur, des rayons. Une coupe de l’avant de l’œil : le corps ciliaire, derrière l’iris, près du cristallin"></figure>
+          <div class="texte">
+            <p>«&nbsp;Le sphincter et le dilatateur de l’iris contrôlent la taille de la pupille&nbsp;».</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>Le <b class="para">sphincter</b> «&nbsp;forme un cercle autour de la pupille&nbsp;»&nbsp;: il la rétrécit.</span></li>
+              <li data-pas="2"><span>Le <b class="sym">dilatateur</b> «&nbsp;forme des lignes radiaires&nbsp;»&nbsp;: il l’agrandit.</span></li>
+              <li data-pas="3"><span>Le <b class="para">corps ciliaire</b>, lui, «&nbsp;contrôle l’accommodation&nbsp;».</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le cercle rétrécit la pupille, les rayons l’agrandissent&nbsp;; le corps ciliaire accommode.</p>
+      </div>
+    </section>
+
+    <!-- 4 · deux systèmes -->
+    <section class="diapo" id="d4" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Le parasympathique met au repos, le sympathique met en action</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="systemes" aria-label="Deux colonnes. Le parasympathique, digestion et relaxation : le sphincter serre la pupille, il commande aussi le corps ciliaire, le cœur ralentit. Le sympathique, mettre en action : le dilatateur ouvre la pupille, le cœur accélère"></figure>
+          <div class="texte">
+            <p>«&nbsp;Notre système parasympathique encourage nos pupilles de rétrécir (somnolence, repos). Notre système sympathique a l’effet contraire avec dilatation de la pupille (alerte, éveillé).&nbsp;»</p>
+            <ul class="points">
+              <li data-pas="1">Le <b class="para">parasympathique</b>, «&nbsp;digestion et relaxation&nbsp;», commande le sphincter et le corps ciliaire.</li>
+              <li data-pas="2">Le <b class="sym">sympathique</b>, «&nbsp;mettre en action&nbsp;», commande le dilatateur. Il accélère aussi le cœur.</li>
+            </ul>
+            <p class="note" data-pas="2">Quel système commande quel muscle se déduit des gouttes&nbsp;: les deux diapos qui suivent.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span><span class="para">Parasympathique</span>&nbsp;: sphincter et corps ciliaire. <span class="sym">Sympathique</span>&nbsp;: dilatateur.</p>
+      </div>
+    </section>
+
+    <!-- 5 · bloquer le parasympathique -->
+    <section class="diapo" id="d5" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Bloquer le parasympathique&nbsp;: mydriase et cycloplégie</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="bloquer" aria-label="Une goutte bloque le parasympathique. Le sphincter se relâche : la pupille s’ouvre, c’est la mydriase. Le corps ciliaire se relâche : plus d’accommodation, c’est la cycloplégie"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>La goutte bloque le <b class="para">parasympathique</b>.</span></li>
+              <li data-pas="2"><span>Le sphincter se relâche&nbsp;: la pupille s’ouvre. C’est la <b>mydriase</b>.</span></li>
+              <li data-pas="3"><span>Le corps ciliaire se relâche&nbsp;: plus d’accommodation. C’est la <b>cycloplégie</b>.</span></li>
+            </ol>
+            <p data-pas="3">Trois gouttes font les deux&nbsp;: le <b>tropicamide</b>, le <b>cyclopentolate</b> et l’<b>atropine</b>.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Bloquer le <span class="para">parasympathique</span>, c’est mydriase + cycloplégie.</p>
+      </div>
+    </section>
+
+    <!-- 6 · trois effets secondaires -->
+    <section class="diapo" id="d6" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Chaque effet secondaire vient d’un muscle relâché</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="effets" aria-label="Coupe de l’avant de l’œil, pupille ouverte. 1 : beaucoup de lumière entre, éblouissement. 2 : le corps ciliaire relâché, flou de près. 3 : très rarement, le passage de l’humeur aqueuse est bloqué"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Pupille grande&nbsp;: trop de lumière entre. «&nbsp;éblouissement avec la lumière&nbsp;».</span></li>
+              <li data-pas="1"><span>Corps ciliaire relâché&nbsp;: plus d’accommodation. «&nbsp;vision de près floue&nbsp;».</span></li>
+              <li data-pas="2"><span>«&nbsp;Très rarement une dilatation pupillaire bloque le passage de l’humeur aqueuse dans des individus susceptibles anatomiquement&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="2">Le cours donne les trois effets&nbsp;; le lien des deux premiers avec leur muscle est déduit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Pupille&nbsp;: éblouissement. Corps ciliaire&nbsp;: flou de près. Très rarement&nbsp;: l’humeur aqueuse bloquée.</p>
+      </div>
+    </section>
+
+    <!-- 7 · stimuler le sympathique -->
+    <section class="diapo" id="d7" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Stimuler le sympathique&nbsp;: la mydriase seule</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="stimuler" aria-label="La phényléphrine stimule le sympathique. Le dilatateur se contracte : la pupille s’ouvre. Le corps ciliaire n’est pas touché : on accommode encore. Ses effets : tension, arythmies"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>La <b class="sym">phényléphrine</b> (Mydfrin, 2,5&nbsp;% le plus souvent, ou 10&nbsp;%) stimule le sympathique.</span></li>
+              <li data-pas="1"><span>Le dilatateur se contracte&nbsp;: mydriase, pour «&nbsp;2-6&nbsp;heures&nbsp;». Le corps ciliaire n’est pas touché&nbsp;: «&nbsp;ils n’agissent pas sur le muscle ciliaire&nbsp;».</span></li>
+              <li data-pas="2"><span>Effets&nbsp;: «&nbsp;photophobie, hypertension possible&nbsp;»&nbsp;; elle «&nbsp;peut provoquer des arythmies cardiaques&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="2">Elle «&nbsp;augmente les effets sur le système sympathique&nbsp;», qui accélère aussi le cœur&nbsp;: d’où les arythmies. Ce lien est déduit.</p>
+            <p class="piege" data-pas="3"><b>Piège</b>«&nbsp;Mydriatique&nbsp;» ne veut pas dire «&nbsp;cycloplégique&nbsp;»&nbsp;: la phényléphrine ne fait que dilater.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span><span class="sym">Phényléphrine</span>&nbsp;: la mydriase seule, et attention à la tension.</p>
+      </div>
+    </section>
+
+    <!-- 8 · le parasympathique l'emporte -->
+    <section class="diapo" id="d8" data-acte="muscles" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Deux systèmes, trois muscles</p>
+        <h2>Le parasympathique l’emporte&nbsp;: la phényléphrine seule dilate mal</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="duel" aria-label="Trois iris. Phényléphrine seule : le dilatateur tire, mais le sphincter tient, la pupille s’ouvre peu. Tropicamide : le sphincter lâche, la pupille s’ouvre. Les deux ensemble : la pupille s’ouvre le plus"></figure>
+          <div class="texte">
+            <p>Pour la taille de la pupille, «&nbsp;le système parasympathique remporte&nbsp;».</p>
+            <ol class="etapes">
+              <li><span>Phényléphrine seule&nbsp;: le dilatateur tire, mais le sphincter tient. Elle «&nbsp;ne réussit pas à bien dilater la pupille&nbsp;».</span></li>
+              <li data-pas="1"><span>Le <b class="para">tropicamide</b> bloque le parasympathique&nbsp;: le sphincter lâche.</span></li>
+              <li data-pas="2"><span>Les deux ensemble&nbsp;: une dilatation «&nbsp;plus prononcée ou de plus longue durée&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="2">Même règle en anatomie, module 8&nbsp;: «&nbsp;Le sphincter domine&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Seule, la <span class="sym">phényléphrine</span> dilate mal&nbsp;: on l’ajoute au <span class="para">tropicamide</span>.</p>
+      </div>
+    </section>
+
+    <!-- 9 · pourquoi dilater -->
+    <section class="diapo" id="d9" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · pourquoi</p>
+        <h2>Une pupille plus grande laisse voir plus loin dans l’œil</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="fenetre" aria-label="Deux coupes de l’œil. Petite pupille : la lumière n’éclaire que le fond. Pupille dilatée : elle éclaire la rétine jusqu’en périphérie, au-delà de l’équateur, jusqu’au corps ciliaire"></figure>
+          <div class="texte">
+            <p class="sous">Quatre raisons de dilater&nbsp;:</p>
+            <ol class="etapes">
+              <li><span>Voir l’extrême périphérie de la rétine, «&nbsp;dans certains cas&nbsp;».</span></li>
+              <li data-pas="1"><span>Voir «&nbsp;la zone entre l’équateur et la fin du corps ciliaire&nbsp;».</span></li>
+              <li data-pas="2"><span>«&nbsp;Les informations lors de plusieurs prétests entrent par le biais de la pupille&nbsp;».</span></li>
+              <li data-pas="3"><span>Mieux voir le pôle postérieur&nbsp;: «&nbsp;Personnes 50&nbsp;ans+&nbsp;», plus de maladies oculaires et circulatoires, «&nbsp;Petites pupilles&nbsp;», «&nbsp;Opacités du cristallin&nbsp;».</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Dilater, c’est ouvrir la fenêtre&nbsp;: la périphérie, les prétests, le fond chez les 50&nbsp;ans et plus.</p>
+      </div>
+    </section>
+
+    <!-- 10 · petites pupilles avec l'âge -->
+    <section class="diapo" id="d10" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · pourquoi</p>
+        <h2>Avec l’âge, le dilatateur faiblit&nbsp;: la pupille rapetisse</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="age" aria-label="Deux iris. Jeune : le cercle du sphincter et les rayons du dilatateur. Avec l’âge : les rayons s’amincissent, puis la pupille rapetisse"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li data-pas="1"><span>«&nbsp;Le muscle dilatateur s’atrophie avec l’âge plus que le sphincter&nbsp;».</span></li>
+              <li data-pas="2"><span>«&nbsp;Le système sympathique devient moins efficace&nbsp;»&nbsp;; le parasympathique change moins.</span></li>
+              <li data-pas="3"><span>Le côté qui ouvre faiblit&nbsp;: la pupille rapetisse. Et ce sont justement les «&nbsp;Personnes 50&nbsp;ans+&nbsp;» dont on veut mieux voir le pôle postérieur.</span></li>
+            </ol>
+            <p class="note" data-pas="3">La petite pupille est déduite des deux causes. Certains médicaments la rapetissent aussi&nbsp;: opioïdes, sédatifs, antipsychotiques.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Avec l’âge, le côté qui ouvre faiblit&nbsp;: la pupille rapetisse.</p>
+      </div>
+    </section>
+
+    <!-- 11 · le tropicamide -->
+    <section class="diapo" id="d11" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · avec quoi</p>
+        <h2>Le tropicamide dilate vite, pour quelques heures</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="horloge-trop" aria-label="Le tropicamide sur une ligne du temps : l’effet arrive vers 20&nbsp;minutes, dure 5-6&nbsp;heures, et jusqu’à 24&nbsp;heures chez une personne sensible"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span><b class="para">Tropicamide</b> (Mydriacyl), 0,5&nbsp;% ou 1&nbsp;%&nbsp;: «&nbsp;Une goutte par œil&nbsp;». C’est la goutte utilisée «&nbsp;le plus fréquemment en pratique optométrie&nbsp;».</span></li>
+              <li data-pas="1"><span>L’effet arrive «&nbsp;dans environ 20&nbsp;minutes&nbsp;».</span></li>
+              <li data-pas="2"><span>Il dure «&nbsp;habituellement&nbsp;» 5-6&nbsp;heures, «&nbsp;jusqu’à 24&nbsp;heures&nbsp;» chez les personnes sensibles.</span></li>
+              <li data-pas="3"><span><b class="aide">On l’annonce avant</b>&nbsp;: «&nbsp;Il faut aviser de cette possibilité et avoir le consentement du patient.&nbsp;»</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Tropicamide&nbsp;: effet en 20&nbsp;minutes, 5-6&nbsp;heures, jusqu’à 24&nbsp;heures si la personne est sensible.</p>
+      </div>
+    </section>
+
+    <!-- 12 · le cyclopentolate -->
+    <section class="diapo" id="d12" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · avec quoi</p>
+        <h2>Le cyclopentolate relâche surtout l’accommodation</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="horloge-cyclo" aria-label="Deux lignes du temps : le tropicamide, effet vers 20&nbsp;minutes, 5-6&nbsp;heures ; le cyclopentolate, effet en 30-45&nbsp;minutes, 24&nbsp;heures ou plus"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span><b class="para">Cyclopentolate</b> (Cyclogyl), 1&nbsp;%&nbsp;: «&nbsp;l’agent le plus souvent utilisé chez les enfants&nbsp;».</span></li>
+              <li data-pas="1"><span>«&nbsp;Quand on veut surtout un effet de relaxation du corps ciliaire&nbsp;»&nbsp;: «&nbsp;pour réduire l’accommodation et assurer une réfraction plus précise&nbsp;».</span></li>
+              <li data-pas="2"><span>Plus lent, plus long&nbsp;: l’effet en «&nbsp;30-45&nbsp;minutes&nbsp;», une durée de «&nbsp;24&nbsp;heures ou plus chez certains enfants&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="2">Le cours d’optique, module 7, dit pourquoi&nbsp;: «&nbsp;La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale.&nbsp;»</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Fond d’œil&nbsp;: tropicamide. Réfraction d’un enfant&nbsp;: cyclopentolate.</p>
+      </div>
+    </section>
+
+    <!-- 13 · l'atropine -->
+    <section class="diapo" id="d13" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · avec quoi</p>
+        <h2>L’atropine dure jusqu’à 2&nbsp;semaines&nbsp;: rare pour un examen</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="atropine" aria-label="Sur deux semaines : l’atropine dure jusqu’à 2&nbsp;semaines ; le tropicamide, 5-6&nbsp;heures, à peine un trait. Deux flacons : 1&nbsp;%, rarement pour un examen ; 0,05&nbsp;%, diluée, pour la myopie des jeunes"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Le «&nbsp;premier agent utilisé pour dilatation des pupilles&nbsp;». Elle bloque le <b class="para">parasympathique</b>, comme le tropicamide.</span></li>
+              <li data-pas="1"><span>À 1&nbsp;%&nbsp;: «&nbsp;rarement utilisé pour fins diagnostiques&nbsp;». Son effet dure «&nbsp;jusqu’à 2&nbsp;semaines&nbsp;».</span></li>
+              <li data-pas="2"><span>À 0,05&nbsp;%, «&nbsp;diluée&nbsp;», chez les jeunes&nbsp;: pour «&nbsp;stabiliser l’augmentation&nbsp;» de la myopie.</span></li>
+            </ol>
+            <p class="note">À la Renaissance déjà, des gouttes de belladone, l’<i>Atropa Belladonna</i>, donnaient de grandes pupilles.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Atropine 1&nbsp;%&nbsp;: jusqu’à 2&nbsp;semaines, rarement pour un examen. 0,05&nbsp;%&nbsp;: la myopie.</p>
+      </div>
+    </section>
+
+    <!-- 14 · un cas : Mme L. -->
+    <section class="diapo" id="d14" data-acte="dilater" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Dilater · un cas</p>
+        <h2>Mme&nbsp;L., 62&nbsp;ans, petites pupilles&nbsp;: on dilate pour voir le fond</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="mme-l" aria-label="Avant : une petite pupille, le fond se voit mal. Tropicamide, puis phényléphrine. Après : une grande pupille, le fond se voit. À lui annoncer : éblouissement, flou de près, 5-6&nbsp;heures"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>On veut voir le pôle postérieur chez une personne de «&nbsp;50&nbsp;ans+&nbsp;» aux «&nbsp;Petites pupilles&nbsp;»&nbsp;: il faut dilater.</span></li>
+              <li data-pas="1"><span><b class="para">Tropicamide</b> 0,5&nbsp;% ou 1&nbsp;%, une goutte par œil&nbsp;: l’effet dans environ 20&nbsp;minutes.</span></li>
+              <li data-pas="2"><span>Pupilles petites, examen du fond&nbsp;: l’optométriste peut ajouter la <b class="sym">phényléphrine</b> 2,5&nbsp;%, «&nbsp;Ajouté au tropicamide pour un examen du fond d’œil&nbsp;».</span></li>
+              <li data-pas="3"><span><b class="aide">On lui annonce</b>&nbsp;: de l’éblouissement, une vision de près floue, «&nbsp;habituellement&nbsp;» 5-6&nbsp;heures, jusqu’à 24&nbsp;heures si elle est sensible.</span></li>
+            </ol>
+            <p class="note" data-pas="3">La phényléphrine monte la tension&nbsp;: «&nbsp;Certains patients peuvent être sensibles alors on utilise avec soin&nbsp;». Les contre-indications, c’est l’optométriste qui les revoit.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Petite pupille et fond d’œil&nbsp;: le tropicamide, et la phényléphrine peut s’y ajouter.</p>
+      </div>
+    </section>
+
+    <!-- 15 · l'anesthésique -->
+    <section class="diapo" id="d15" data-acte="cornee" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L’anesthésique</p>
+        <h2>Un anesthésique coupe les influx&nbsp;: on peut toucher la cornée</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="anesth" aria-label="La cornée envoie ses influx nerveux ; l’anesthésique les bloque, on peut la toucher. Sur une ligne du temps : effet en moins d’une minute, insensible pendant 15-20&nbsp;minutes ; l’œil peut sembler sec plus longtemps"></figure>
+          <div class="texte">
+            <p>Un nom en <b>–aine</b> ou <b>–caine</b>&nbsp;: c’est un anesthésique. Il empêche la transmission des influx nerveux.</p>
+            <ol class="etapes">
+              <li data-pas="1"><span>L’<b>Alcaine</b> (proparacaïne), la plus utilisée en clinique&nbsp;: effet «&nbsp;à l’intérieur d’une minute&nbsp;», pendant «&nbsp;15-20&nbsp;minutes&nbsp;».</span></li>
+              <li data-pas="2"><span>On peut alors toucher l’œil&nbsp;: mesurer la pression, examiner une abrasion de la cornée, enlever un corps étranger.</span></li>
+              <li data-pas="3"><span>«&nbsp;La sensation de vouloir cligner est réduite&nbsp;»&nbsp;: l’œil peut sembler sec plus de 20&nbsp;minutes.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>–aine, –caine&nbsp;: insensible en moins d’une minute, pour 15-20&nbsp;minutes.</p>
+      </div>
+    </section>
+
+    <!-- 16 · un cas : le corps étranger -->
+    <section class="diapo" id="d16" data-acte="cornee" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">L’anesthésique · un cas</p>
+        <h2>Un corps étranger sur la cornée&nbsp;: on anesthésie d’abord</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="alcaine" aria-label="Deux anesthésiques : l’Alcaine, proparacaïne 0,5&nbsp;%, au réfrigérateur, la mieux tolérée ; l’unidose de tétracaïne 1&nbsp;%, pas au réfrigérateur, moins bien tolérée. Le flacon ne va jamais au patient"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Une goutte d’<b>Alcaine</b>, sortie du réfrigérateur.</span></li>
+              <li data-pas="1"><span>Moins d’une minute&nbsp;: l’œil est insensible pour 15 à 20&nbsp;minutes.</span></li>
+              <li data-pas="2"><span><b class="aide">Après, prévenir le patient</b>&nbsp;: l’œil peut sembler sec plus de 20&nbsp;minutes, parce qu’il cligne moins.</span></li>
+            </ol>
+            <p class="note" data-pas="2">Sans Alcaine, l’unidose de tétracaïne 1&nbsp;% n’a pas besoin du réfrigérateur, «&nbsp;mais elle est moins bien tolérée (oeil irrité)&nbsp;». L’Alcaine est «&nbsp;le plus facilement toléré&nbsp;».</p>
+            <p class="piege" data-pas="3"><b>Piège</b>Le patient a mal et demande le flacon&nbsp;: <b class="aide">on ne le lui remet pas</b>. «&nbsp;une sur-utilisation crée une toxicité au niveau de l’épithélium&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>L’Alcaine au réfrigérateur&nbsp;; le flacon, <span class="aide">jamais au patient</span>.</p>
+      </div>
+    </section>
+
+    <!-- 17 · la fluorescéine -->
+    <section class="diapo" id="d17" data-acte="cornee" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La fluorescéine</p>
+        <h2>La fluorescéine colore les larmes, qui brillent sous le bleu</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="film" aria-label="Trois vues : la bandelette touche l’œil ; sous le bleu cobalt, les larmes brillent en vert-jaune ; puis une tache sèche apparaît : le film s’est rompu"></figure>
+          <div class="texte">
+            <p>«&nbsp;Fluorescéine est un colorant organique utilisé fréquemment en optométrie et par les opticiens.&nbsp;» Elle vient en bandelette.</p>
+            <ol class="etapes">
+              <li><span>Colorer les larmes avec la bandelette&nbsp;: elle colore la <b>phase aqueuse</b>.</span></li>
+              <li data-pas="1"><span>Regarder sous le filtre bleu cobalt, à la lampe à fente.</span></li>
+              <li data-pas="2"><span>Compter le temps jusqu’à la tache sèche&nbsp;: le film s’est rompu. Les couches lipidique et aqueuse se sont évaporées.</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>La fluorescéine colore la phase aqueuse&nbsp;: la tache sèche, c’est le bris du film.</p>
+      </div>
+    </section>
+
+    <!-- 18 · quatre usages -->
+    <section class="diapo" id="d18" data-acte="cornee" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La fluorescéine</p>
+        <h2>Quatre usages&nbsp;: le film, la cornée, la lentille rigide, la pression</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="usages" aria-label="Quatre vues sous la lumière bleue : le film qui se rompt ; une égratignure de la cornée qui brille ; une lentille rigide entourée de larmes colorées ; les deux demi-cercles des mires du tonomètre à aplanation"></figure>
+          <div class="texte">
+            <ul class="points">
+              <li>Le <b>bris du film</b>&nbsp;: «&nbsp;le temps écoulé avant le bris du film&nbsp;».</li>
+              <li data-pas="1">La <b>cornée</b>&nbsp;: «&nbsp;des zones de sécheresse ou des égratignures&nbsp;».</li>
+              <li data-pas="2">La <b>lentille rigide</b>&nbsp;: colorer les larmes «&nbsp;pour mieux visualiser l’ajustement&nbsp;».</li>
+              <li data-pas="3">La <b>tonométrie à aplanation</b>, Goldmann ou Perkins&nbsp;: «&nbsp;On utilise un mélange d’anesthésie et fluorescéine&nbsp;».</li>
+            </ul>
+            <p class="piege" data-pas="3"><b>Piège</b>L’aplanation touche la cornée, d’où l’anesthésique&nbsp;; la fluorescéine fait voir les mires. Le NCT, sans contact, aplatit la cornée avec «&nbsp;un jet d’air&nbsp;»&nbsp;: pas d’anesthésique.</p>
+            <p class="note" data-pas="3">Ces raisons sont déduites&nbsp;; le NCT est celui de l’UA1.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Aplanation&nbsp;: anesthésique + fluorescéine. NCT&nbsp;: rien.</p>
+      </div>
+    </section>
+
+    <!-- 19 · le protocole -->
+    <section class="diapo" id="d19" data-acte="avant" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Avant et pendant · le protocole</p>
+        <h2>Avant la goutte, cinq étapes, dans l’ordre</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="protocole" aria-label="Cinq étapes : l’acuité visuelle et la tonométrie, en prétests ; l’optométriste revoit l’histoire de cas, puis regarde l’angle et la cornée à la lampe à fente ; enfin, les gouttes, par l’assistant ou l’optométriste selon le bureau"></figure>
+          <div class="texte">
+            <p>Le protocole, à suivre «&nbsp;idéalement&nbsp;», «&nbsp;selon l’ordre des optométristes&nbsp;»&nbsp;:</p>
+            <ol class="etapes">
+              <li><span>L’acuité visuelle, en prétest.</span></li>
+              <li data-pas="1"><span>La tonométrie, en prétest.</span></li>
+              <li data-pas="2"><span>L’optométriste revoit l’histoire de cas&nbsp;: allergies, contre-indications.</span></li>
+              <li data-pas="3"><span>L’optométriste regarde à la lampe à fente «&nbsp;l’angle irido-cornéen et la cornée&nbsp;».</span></li>
+              <li data-pas="4"><span><b class="aide">On place les gouttes</b>&nbsp;: l’assistant ou l’optométriste, «&nbsp;selon le bureau&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="4">Pourquoi cet ordre, déduit&nbsp;: l’acuité avant que la goutte brouille la vision de près&nbsp;; l’angle, parce qu’une dilatation peut, rarement, bloquer l’humeur aqueuse.</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>L’acuité, la tonométrie, l’optométriste, puis <span class="aide">les gouttes</span>.</p>
+      </div>
+    </section>
+
+    <!-- 20 · la sécurité -->
+    <section class="diapo" id="d20" data-acte="avant" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Avant et pendant · la sécurité</p>
+        <h2>Pendant&nbsp;: cinq règles de sécurité</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="securite" aria-label="Un compte-gouttes au-dessus de l’œil, sans toucher les cils ni la paupière. À côté : les mains au savon et à l’eau, l’Alcaine au réfrigérateur, un doute vers l’optométriste, le dossier avec le collyre et l’heure"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span><b class="aide">Se laver les mains</b>, de préférence au savon et à l’eau&nbsp;: l’alcool isopropylique irrite la surface de l’œil. S’il sert, le laisser «&nbsp;sécher complètement&nbsp;».</span></li>
+              <li data-pas="1"><span>«&nbsp;Utiliser une technique aseptique en ne touchant pas les cils ou la paupière du patient&nbsp;».</span></li>
+              <li data-pas="2"><span>Conserver selon le fabricant&nbsp;: «&nbsp;Alcaine au réfrigérateur&nbsp;».</span></li>
+              <li data-pas="3"><span>Un doute sur une contre-indication&nbsp;: vérifier avec l’optométriste ou l’ophtalmologiste.</span></li>
+              <li data-pas="4"><span>«&nbsp;Noter les collyres administrés dans le dossier du patient et l’heure&nbsp;».</span></li>
+            </ol>
+            <p class="note" data-pas="4">Le geste se pratique au laboratoire&nbsp;: «&nbsp;Nous allons pratiquer ceci en laboratoire&nbsp;».</p>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span><span class="aide">Mains lavées, rien ne touche les cils, et au dossier&nbsp;: le collyre et l’heure.</span></p>
+      </div>
+    </section>
+
+    <!-- 21 · le consentement -->
+    <section class="diapo" id="d21" data-acte="avant" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Avant et pendant · le consentement</p>
+        <h2>Le consentement est explicite&nbsp;: on demande un oui</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="consentement" aria-label="Une conversation : l’assistant explique la raison de la goutte, ce qu’elle apporte et ce qui arrive sans elle, les effets, les alternatives et les questions, puis demande : C’est donc correct que je vous mets ces gouttes? Le patient répond oui"></figure>
+          <div class="texte">
+            <p>«&nbsp;Consentement explicite est préférable&nbsp;».</p>
+            <ol class="etapes">
+              <li><span>Expliquer la raison de chaque collyre.</span></li>
+              <li data-pas="1"><span>Dire «&nbsp;les avantages et aussi les conséquences de ne pas mettre les gouttes&nbsp;».</span></li>
+              <li data-pas="2"><span>Prévenir des effets&nbsp;: vision floue quelques heures, surtout chez les plus jeunes, sensibilité à la lumière, inconfort à l’instillation.</span></li>
+              <li data-pas="3"><span>Discuter les alternatives, comme remettre à une prochaine visite si ce n’est pas une urgence. Répondre aux questions.</span></li>
+              <li data-pas="4"><span><b class="aide">Puis demander, et attendre le oui.</b></span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>«&nbsp;C’est donc correct que je vous mets ces gouttes?&nbsp;»</p>
+      </div>
+    </section>
+
+    <!-- 22 · un cas : Léo -->
+    <section class="diapo" id="d22" data-acte="avant" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">Avant et pendant · un cas</p>
+        <h2>Léo, 6&nbsp;ans, réfraction sous cyclopentolate&nbsp;: tout le protocole</h2>
+        <div class="corps">
+          <figure class="visuel" data-fig="leo" aria-label="Une ligne du temps : le protocole, les explications aux parents, le oui, puis la goutte, notée au dossier avec l’heure ; l’effet arrive en 30-45&nbsp;minutes et dure 24&nbsp;heures ou plus"></figure>
+          <div class="texte">
+            <ol class="etapes">
+              <li><span>Acuité, puis tonométrie&nbsp;; l’optométriste revoit l’histoire de cas et regarde l’angle.</span></li>
+              <li data-pas="1"><span>Aux parents&nbsp;: la raison, relâcher l’accommodation pour une réfraction précise&nbsp;; l’effet en 30-45&nbsp;minutes&nbsp;; une durée qui «&nbsp;peut être 24&nbsp;heures ou plus chez certains enfants&nbsp;».</span></li>
+              <li data-pas="2"><span>Les effets&nbsp;: vision floue quelques heures, lumière, inconfort. L’option de remettre si ce n’est pas urgent. Leurs questions.</span></li>
+              <li data-pas="3"><span>«&nbsp;C’est donc correct que je vous mets ces gouttes?&nbsp;»</span></li>
+              <li data-pas="4"><span><b class="aide">Mains lavées, sans toucher cils ni paupière. Au dossier&nbsp;: Cyclopentolate 1&nbsp;%, et l’heure.</b></span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="retiens"><span>À retenir</span>Le protocole, le oui, la goutte&nbsp;; puis <span class="aide">au dossier, le collyre et l’heure</span>.</p>
+      </div>
+    </section>
+
+    <!-- 23 · la méthode -->
+    <section class="diapo" id="d23" data-acte="route" tabindex="-1" hidden>
+      <div class="cadre">
+        <p class="kicker">La méthode</p>
+        <h2>Tout le module tient sur une carte</h2>
+        <div class="carte-grille">
+          <div class="fiche"><p class="fiche-nom">Trois muscles</p><p class="fiche-f"><span class="para">cercle</span> · <span class="sym">rayons</span> · <span class="para">corps ciliaire</span></p><p class="fiche-n">sphincter, dilatateur, accommodation</p></div>
+          <div class="fiche"><p class="fiche-nom">Bloquer le parasympathique</p><p class="fiche-f para">mydriase + cycloplégie</p><p class="fiche-n">tropicamide, cyclopentolate, atropine</p></div>
+          <div class="fiche"><p class="fiche-nom">Stimuler le sympathique</p><p class="fiche-f sym">mydriase seule</p><p class="fiche-n">phényléphrine 2,5&nbsp;%&nbsp;: la tension</p></div>
+          <div class="fiche"><p class="fiche-nom">Tropicamide</p><p class="fiche-f">≈&nbsp;20&nbsp;min · 5-6&nbsp;h</p><p class="fiche-n">jusqu’à 24&nbsp;h si sensible</p></div>
+          <div class="fiche"><p class="fiche-nom">Cyclopentolate</p><p class="fiche-f">30-45&nbsp;min · 24&nbsp;h et plus</p><p class="fiche-n">les enfants, la réfraction</p></div>
+          <div class="fiche"><p class="fiche-nom">Anesthésique</p><p class="fiche-f">&lt;&nbsp;1&nbsp;min · 15-20&nbsp;min</p><p class="fiche-n">–aine, –caine&nbsp;; <span class="aide">jamais au patient</span></p></div>
+          <div class="fiche"><p class="fiche-nom">Fluorescéine</p><p class="fiche-f">la phase aqueuse</p><p class="fiche-n">film, cornée, lentille rigide, aplanation</p></div>
+          <div class="fiche"><p class="fiche-nom">Avant, pendant</p><p class="fiche-f aide">AV → tonométrie → optométriste → gouttes</p><p class="fiche-n">le oui, puis au dossier&nbsp;: le collyre et l’heure</p></div>
+        </div>
+        <p class="retiens"><span>Et maintenant</span><a href="atelier-to-m5-m6.html">L’atelier TO</a>, parties 9 à 11&nbsp;: l’iris en simulation, «&nbsp;Quelle goutte&nbsp;?&nbsp;», le protocole à remettre dans l’ordre et le consentement à construire. Avant, ferme les diapos et redis cette carte de mémoire.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bas">
+    <button type="button" id="btn-retour" aria-label="Revenir">←</button>
+    <div class="points-pas" id="points-pas" aria-hidden="true"></div>
+    <button type="button" class="suite" id="btn-suite">Suite →</button>
+  </footer>
+  <p class="sr" id="annonce" aria-live="polite"></p>
+</div>
+
+<div class="plan" id="plan" role="dialog" aria-modal="true" aria-labelledby="plan-titre" hidden>
+  <div class="plan-boite">
+    <div class="plan-tete"><h2 id="plan-titre">Plan</h2><button type="button" id="plan-fermer">Fermer</button></div>
+    <div id="plan-liste"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ===================== schémas ===================== */
+  const svgW = (W, H, s, label) => `<svg viewBox="0 0 ${W} ${Math.round(H)}" role="img" aria-label="${label}">${s}</svg>`;
+  const n1 = v => v.toFixed(1);
+  const n3 = v => String(Math.round(v * 1000) / 1000);
+  const RAD = Math.PI / 180;
+  const NB = ' ';
+  let uid = 0;
+  const nid = () => 'fx' + (++uid);
+  const pts = a => a.map(q => n1(q[0]) + ' ' + n1(q[1])).join(' L ');
+  const pol = (cx, cy, r, deg) => [cx + r * Math.cos(deg * RAD), cy + r * Math.sin(deg * RAD)];
+  // un groupe, révélé au pas k (0 : toujours là), coloré par sa classe
+  const G = (pas, s, cls) => `<g${cls ? ` class="${cls}"` : ''}${pas ? ` data-pas="${pas}"` : ''}>${s}</g>`;
+  const T = (x, y, t, cls, anc) => `<text x="${n1(x)}" y="${n1(y)}"${anc && anc !== 'start' ? ` text-anchor="${anc}"` : ''}${cls ? ` class="${cls}"` : ''}>${t}</text>`;
+  const place = (tx, ty, k) => ({ g: s => `<g transform="translate(${n1(tx)} ${n1(ty)}) scale(${n3(k)})">${s}</g>`, X: x => tx + x * k, Y: y => ty + y * k });
+
+  // Flèche droite, colorée par sa classe (fleche c-…).
+  function fleche(x1, y1, x2, y2, cls) {
+    const a = Math.atan2(y2 - y1, x2 - x1), h = 9;
+    const p = da => `${n1(x2 - h * Math.cos(a + da))} ${n1(y2 - h * Math.sin(a + da))}`;
+    return `<path d="M ${n1(x1)} ${n1(y1)} L ${n1(x2)} ${n1(y2)} M ${p(.5)} L ${n1(x2)} ${n1(y2)} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Flèche courbe (une quadratique), la pointe dans la direction d'arrivée.
+  function arc(x1, y1, qx, qy, x2, y2, cls) {
+    const a = Math.atan2(y2 - qy, x2 - qx), h = 9;
+    const p = da => `${n1(x2 - h * Math.cos(a + da))} ${n1(y2 - h * Math.sin(a + da))}`;
+    return `<path d="M ${n1(x1)} ${n1(y1)} Q ${n1(qx)} ${n1(qy)} ${n1(x2)} ${n1(y2)} M ${p(.5)} L ${n1(x2)} ${n1(y2)} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Flèche à coudes : une ligne brisée, la pointe sur le dernier segment.
+  function coude(q, cls) {
+    const [a, b] = q.slice(-2), ang = Math.atan2(b[1] - a[1], b[0] - a[0]), h = 9;
+    const p = da => `${n1(b[0] - h * Math.cos(ang + da))} ${n1(b[1] - h * Math.sin(ang + da))}`;
+    return `<path d="M ${pts(q)} M ${p(.5)} L ${n1(b[0])} ${n1(b[1])} L ${p(-.5)}" class="${cls}"/>`;
+  }
+  // Un trait qui bloque : la ligne, puis la barre (⊣).
+  const bloque = (x1, y, x2, c) => `<path d="M ${n1(x1)} ${n1(y)} L ${n1(x2)} ${n1(y)} M ${n1(x2)} ${n1(y - 12)} L ${n1(x2)} ${n1(y + 12)}" class="trait-c c-${c}" style="stroke-width:3.5"/>`;
+  const croix = (x, y, r, c) => `<path d="M ${n1(x - r)} ${n1(y - r)} L ${n1(x + r)} ${n1(y + r)} M ${n1(x + r)} ${n1(y - r)} L ${n1(x - r)} ${n1(y + r)}" class="croix c-${c}"/>`;
+  // Une pastille numérotée, la même que le numéro de l'étape dans le texte.
+  const num = (x, y, n, c = 'emm') => `<g class="c-${c}"><circle cx="${n1(x)}" cy="${n1(y)}" r="10" class="pastille"/><text x="${n1(x)}" y="${n1(y + 4.5)}" text-anchor="middle" class="lettre">${n}</text></g>`;
+  // Une goutte (sa pointe en haut), un cœur, un flacon compte-gouttes.
+  const goutte = (x, y, s, c) => `<path d="M ${n1(x)} ${n1(y - 1.5 * s)} C ${n1(x + .25 * s)} ${n1(y - .9 * s)} ${n1(x + s)} ${n1(y - .25 * s)} ${n1(x + s)} ${n1(y + .3 * s)} A ${n1(s)} ${n1(s)} 0 0 1 ${n1(x - s)} ${n1(y + .3 * s)} C ${n1(x - s)} ${n1(y - .25 * s)} ${n1(x - .25 * s)} ${n1(y - .9 * s)} ${n1(x)} ${n1(y - 1.5 * s)} Z" class="plein-c c-${c}"/>`;
+  const coeur = (x, y, s, c) => `<path d="M ${n1(x)} ${n1(y + s)} C ${n1(x - 1.7 * s)} ${n1(y - .1 * s)} ${n1(x - s)} ${n1(y - 1.3 * s)} ${n1(x)} ${n1(y - .5 * s)} C ${n1(x + s)} ${n1(y - 1.3 * s)} ${n1(x + 1.7 * s)} ${n1(y - .1 * s)} ${n1(x)} ${n1(y + s)} Z" class="plein-c c-${c}"/>`;
+  function flacon(cx, y, c, etiq) {
+    return `<g class="c-${c}"><rect x="${n1(cx - 6)}" y="${n1(y)}" width="12" height="18" rx="5" class="boite"/><rect x="${n1(cx - 11)}" y="${n1(y + 16)}" width="22" height="12" rx="2" class="boite"/>`
+      + `<rect x="${n1(cx - 32)}" y="${n1(y + 26)}" width="64" height="62" rx="10" class="boite"/>` + (etiq ? T(cx, y + 63, etiq, 'valeur', 'middle') : '') + '</g>';
+  }
+
+  /* ---- l'iris de face, dessiné comme en anatomie (module 8) : le disque de l'iris, la pupille pleine ----
+     p : rayon de la pupille / R. sph : 'fort' (le cercle serré) ou 'lache' (relâché, en tirets).
+     dil : 'fort', 'normal' ou 'faible' (les rayons du dilatateur). */
+  const anneauR = (R, p, sph) => p * R + (sph === 'fort' ? .1 : .05) * R;
+  const irisBase = (cx, cy, R) => `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="iris"/>`;
+  const pupille = (cx, cy, R, p) => `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(p * R)}" class="pupille"/>`;
+  const sphRing = (cx, cy, R, p, sph) => `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(anneauR(R, p, sph))}" class="sph${sph === 'lache' ? ' lache' : ''}" stroke-width="${n1((sph === 'fort' ? .12 : .05) * R)}"/>`;
+  function dilRays(cx, cy, R, p, dil, sph) {
+    const w = { fort: .05, normal: .03, faible: .016 }[dil] * R;
+    const r0 = sph ? anneauR(R, p, sph) + (sph === 'fort' ? .1 : .06) * R : p * R + .06 * R, r1 = .93 * R;
+    if (r0 > r1 - .05 * R) return '';
+    let s = '';
+    for (let a = 0; a < 360; a += 24) {
+      const [x1, y1] = pol(cx, cy, r0, a), [x2, y2] = pol(cx, cy, r1, a);
+      s += `<line x1="${n1(x1)}" y1="${n1(y1)}" x2="${n1(x2)}" y2="${n1(y2)}" class="dil" stroke-width="${n1(w)}"${dil === 'faible' ? ' stroke-opacity=".5"' : ''}/>`;
+    }
+    return s;
+  }
+  function irisFace(cx, cy, R, o = {}) {
+    const p = o.p || .3;
+    return irisBase(cx, cy, R) + (o.dil ? dilRays(cx, cy, R, p, o.dil, o.sph) : '') + (o.sph ? sphRing(cx, cy, R, p, o.sph) : '') + pupille(cx, cy, R, p);
+  }
+
+  /* ---- l'avant de l'œil en coupe (repère local 150 × 200, la lumière vient de la gauche) :
+     la cornée, l'iris, le corps ciliaire derrière la racine de l'iris, le cristallin et ses zonules ---- */
+  function avant(o = {}) {
+    const pup = o.pup || 24, ep = o.ep || 6, cil = o.cil || 'para';
+    let s = '<path d="M 46 10 C 76 1 116 0 150 5 M 46 190 C 76 199 116 200 150 195" class="sclere"/>';
+    s += '<path d="M 46 10 Q -16 100 46 190" class="cornee"/>';
+    // le corps ciliaire : un coin posé sur la paroi, derrière la racine de l'iris, la pointe vers l'équateur du cristallin
+    s += `<path d="M 49 12 Q 74 3 104 6 Q 92 24 76 44 Q 60 32 49 12 Z M 49 188 Q 74 197 104 194 Q 92 176 76 156 Q 60 168 49 188 Z" class="cil c-${cil}"/>`;
+    s += '<path d="M 76 44 L 88 58 M 82 38 L 92 57 M 76 156 L 88 142 M 82 162 L 92 143" class="zon"/>';
+    s += '<ellipse cx="90" cy="100" rx="16" ry="44" class="cristallin"/>';
+    s += `<path d="M 50 16 L 58 ${100 - pup} M 50 184 L 58 ${100 + pup}" class="iris-l" stroke-width="${ep}"/>`;
+    return s;
+  }
+
+  /* ---- l'œil entier en coupe (même géométrie que les autres diapos TO), la rétine jusqu'au corps ciliaire ---- */
+  function coupeOeil(p, lit) {
+    const cy = 100, ry = 82, dy = 40, cx = 256, rx = 116;
+    const xe = cx - rx * Math.sqrt(1 - (dy / ry) ** 2), ctrl = xe - 54;
+    const pe = t => [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+    const ps = t => pe(t).map(n1).join(' ');
+    let s = `<path d="M ${n1(xe)} ${cy - dy} A ${rx} ${ry} 0 1 1 ${n1(xe)} ${cy + dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy - dy} Z" class="globe"/>`;
+    const a = [[166, cy]];
+    for (let i = 0; i <= 30; i++) a.push(pe(-lit + 2 * lit * i / 30));
+    s += `<path d="M ${pts(a)} Z" class="faisceau"/>`;
+    s += `<path d="M ${ps(-2.25)} A ${rx} ${ry} 0 1 1 ${ps(2.25)}" class="retine"/>`;
+    s += `<path d="M ${ps(-lit)} A ${rx} ${ry} 0 ${2 * lit > Math.PI ? 1 : 0} 1 ${ps(lit)}" class="eclaire"/>`;
+    s += '<path d="M 157 60 Q 170 44 192 32 Q 188 54 176 68 Q 164 66 157 60 Z M 157 140 Q 170 156 192 168 Q 188 146 176 132 Q 164 134 157 140 Z" class="cil c-para"/>';
+    s += `<ellipse cx="${n1(xe + 28)}" cy="${cy}" rx="12" ry="33" class="cristallin"/>`;
+    s += `<path d="M 157 62 L 166 ${cy - p} M 157 138 L 166 ${cy + p}" class="iris-l" stroke-width="5"/>`;
+    s += `<path d="M ${n1(xe)} ${cy - dy} Q ${n1(ctrl)} ${cy} ${n1(xe)} ${cy + dy}" class="cornee"/>`;
+    return { s, pe, cx, cy, rx, ry, apex: (xe + ctrl) / 2, xr: cx + rx };
+  }
+
+  /* ---- la vue du fond d'œil (œil droit : la papille à droite, la macula à gauche), en unités du rayon ---- */
+  const VEINES = [
+    'M .34 -.06 C .28 -.36 -.05 -.56 -.42 -.52 C -.58 -.5 -.7 -.42 -.76 -.3',
+    'M .34 .02 C .28 .36 -.05 .56 -.42 .52 C -.58 .5 -.7 .42 -.76 .3',
+    'M .4 -.04 C .55 -.12 .66 -.28 .74 -.38',
+    'M .4 .04 C .54 .14 .6 .4 .58 .56'];
+  const ARTERES = [
+    'M .36 -.08 C .32 -.42 0 -.66 -.36 -.66 C -.52 -.65 -.64 -.58 -.7 -.5',
+    'M .36 .08 C .32 .42 0 .66 -.36 .66 C -.52 .65 -.64 .58 -.7 .5',
+    'M .41 0 C .58 .06 .68 .22 .76 .3',
+    'M .39 -.08 C .5 -.25 .52 -.48 .5 -.62'];
+  function vueFond(cx, cy, R, sombre) {
+    const id = nid();
+    let c = '<circle cx="-.24" cy=".04" r=".22" class="pig" fill-opacity=".13"/><circle cx="-.24" cy=".04" r=".13" class="pig" fill-opacity=".15"/>';
+    c += VEINES.map(d => `<path d="${d}" class="vx" stroke-width=".034"/>`).join('');
+    c += ARTERES.map(d => `<path d="${d}" class="vx" stroke-width=".02" stroke-opacity=".72"/>`).join('');
+    c += '<circle cx=".34" cy="-.02" r=".12" class="disque" stroke-width=".012"/><circle cx="-.24" cy=".04" r=".025" class="lum" fill-opacity=".75"/>';
+    let g = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="palier-fond"/><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="fondo" fill-opacity=".45"/>`;
+    g += `<g transform="translate(${n1(cx)} ${n1(cy)}) scale(${n3(R)})">${c}</g>`;
+    if (sombre) g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="nuit" fill-opacity="${sombre}"/>`;
+    return `<defs><clipPath id="c${id}"><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}"/></clipPath></defs><g clip-path="url(#c${id})">${g}</g><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="cadre-ph"/>`;
+  }
+
+  /* ---- l'œil sous la lumière bleue, de face : o.film (la fluorescéine), o.taches, o.griffe, o.lentille, o.mires ---- */
+  function bleu(cx, cy, R, o = {}) {
+    const id = nid();
+    let g = `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="cobalt"/>`;
+    g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(.62 * R)}" class="nuit" fill-opacity=".28"/><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(.26 * R)}" class="nuit" fill-opacity=".6"/>`;
+    if (o.film) g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="fluo" fill-opacity="${o.film}"/>`;
+    if (o.taches) for (const [u, v, r] of o.taches) g += `<ellipse cx="${n1(cx + u * R)}" cy="${n1(cy + v * R)}" rx="${n1(r * R)}" ry="${n1(r * R * .8)}" class="cobalt"/>`;
+    if (o.griffe) {
+      g += `<path d="M ${n1(cx - .5 * R)} ${n1(cy - .2 * R)} L ${n1(cx - .22 * R)} ${n1(cy - .05 * R)} L ${n1(cx - .05 * R)} ${n1(cy - .22 * R)} L ${n1(cx + .3 * R)} ${n1(cy + .02 * R)}" class="fluo-t" stroke-width="${n1(.06 * R)}"/>`;
+      for (const [u, v] of [[.2, .45], [.35, .38], [.05, .55], [-.3, .42]]) g += `<circle cx="${n1(cx + u * R)}" cy="${n1(cy + v * R)}" r="${n1(.035 * R)}" class="fluo"/>`;
+    }
+    if (o.lentille) {
+      g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(.7 * R)}" class="fluo-t" stroke-width="${n1(.1 * R)}" stroke-opacity=".9"/>`;
+      g += `<circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(.64 * R)}" class="bord-l"/>`;
+    }
+    if (o.mires) {
+      const r = .42 * R, d = .1 * R;
+      g += `<path d="M ${n1(cx - d - r)} ${n1(cy - 3)} A ${n1(r)} ${n1(r)} 0 0 1 ${n1(cx - d + r)} ${n1(cy - 3)}" class="fluo-t" stroke-width="${n1(.09 * R)}"/>`;
+      g += `<path d="M ${n1(cx + d - r)} ${n1(cy + 3)} A ${n1(r)} ${n1(r)} 0 0 0 ${n1(cx + d + r)} ${n1(cy + 3)}" class="fluo-t" stroke-width="${n1(.09 * R)}"/>`;
+    }
+    return `<defs><clipPath id="b${id}"><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}"/></clipPath></defs><g clip-path="url(#b${id})">${g}</g><circle cx="${n1(cx)}" cy="${n1(cy)}" r="${n1(R)}" class="cadre-ph"/>`;
+  }
+
+  /* ---- les figures ---- */
+
+  // La couverture : une petite pupille, une goutte, une grande pupille.
+  function couverture(W) {
+    const R = Math.min(W * .17, 88), x1 = W * .2, x2 = W * .8, cy = 66 + R, H = cy + R + 34;
+    let s = irisFace(x1, cy, R, { p: .22, sph: 'fort', dil: 'normal' }) + irisFace(x2, cy, R, { p: .6, sph: 'lache', dil: 'normal' });
+    const ya = cy - R - 10;
+    s += G(0, arc(x1 + R * .45, ya, W / 2, 26, x2 - R * .45, ya, 'fleche') + goutte(W / 2, 22, 9, 'aide') + T(W / 2 + 18, 27, 'une goutte', 'petit etiq'), 'c-aide');
+    s += T(x1, cy + R + 26, 'avant', 'petit t-doux', 'middle') + T(x2, cy + R + 26, 'après la goutte', 'petit t-doux', 'middle');
+    return svgW(W, H, s, 'Un iris à la pupille petite ; l’assistant met une goutte ; la pupille devient grande');
+  }
+
+  // Le fil : quatre sortes de gouttes, ce qu'elles changent, ce qu'on peut faire.
+  function fil(W) {
+    const bw = Math.min(176, W * .36), x0 = 6, pitch = 64, bh = 46, xt = x0 + bw + 40;
+    const R4 = [['Mydriatique', 'la pupille s’ouvre', 'voir le fond de l’œil'], ['Cycloplégique', 'plus d’accommodation', 'une réfraction précise'],
+      ['Anesthésique', 'la cornée ne sent plus', 'on peut la toucher'], ['Fluorescéine', 'les larmes se colorent', 'sous la lumière bleue']];
+    let s = '';
+    R4.forEach(([nom, a, b], i) => {
+      const y = 4 + i * pitch;
+      s += `<rect x="${x0}" y="${y}" width="${n1(bw)}" height="${bh}" rx="10" class="boite"/>` + T(x0 + bw / 2, y + 29, nom, 'etiq', 'middle');
+      s += fleche(x0 + bw + 6, y + bh / 2, xt - 8, y + bh / 2, 'fleche c-doux');
+      s += T(xt, y + 19, a, 'petit etiq') + T(xt, y + 39, b, 'petit t-doux');
+    });
+    return svgW(W, 4 * pitch, s, 'Quatre sortes de gouttes : ce qu’elles changent, ce qu’on peut faire');
+  }
+
+  // Trois muscles : l'iris de face (le cercle, les rayons), puis la coupe (le corps ciliaire).
+  function muscles(W) {
+    const R = Math.min(W * .19, 96), cx = 12 + R, cy = 8 + R, yl = cy + R + 26, H = yl + 30;
+    let s = irisBase(cx, cy, R) + pupille(cx, cy, R, .3);
+    s += G(1, sphRing(cx, cy, R, .3, 'fort') + T(6, yl, 'sphincter' + NB + ': le cercle', 'petit etiq c-para'));
+    s += G(2, dilRays(cx, cy, R, .3, 'normal', 'fort') + T(6, yl + 20, 'dilatateur' + NB + ': les rayons', 'petit etiq c-sym'));
+    const xs = Math.max(2 * R + 44, 214), k = Math.min(1.25, (W - xs - 8) / 140, (H - 30) / 200), L = place(xs - 15 * k, 4, k);
+    let g = L.g(avant({ pup: 30 }));
+    g += T(L.X(76), H - 8, 'corps ciliaire', 'petit etiq c-para', 'middle');
+    g += T(L.X(110), L.Y(104), 'cristallin', 'petit t-doux');
+    s += G(3, g);
+    return svgW(W, H, s, 'Un iris de face : le sphincter, un cercle ; le dilatateur, des rayons. En coupe : le corps ciliaire');
+  }
+
+  // Deux systèmes : le parasympathique (repos), le sympathique (action), et ce qu'ils font.
+  function systemes(W) {
+    const cw = W / 2, bw = Math.min(200, cw - 16), R = Math.min(W * .11, 56);
+    const col = (i, nom, role, c, o, lignes, pas) => {
+      const cx = cw * i + cw / 2, cy = 82 + R;
+      let h = `<rect x="${n1(cx - bw / 2)}" y="4" width="${n1(bw)}" height="40" rx="10" class="boite c-${c}"/>` + T(cx, 30, nom, `etiq c-${c}`, 'middle');
+      let g = T(cx, 66, role, 'petit t-doux', 'middle') + irisFace(cx, cy, R, o);
+      lignes.forEach((t, j) => { g += T(cx, cy + R + 26 + j * 20, t, j ? 'petit t-doux' : `petit etiq c-${c}`, 'middle'); });
+      if (c === 'sym') g += coeur(cx, cy + R + 76, 8, 'sym');
+      return h + G(pas, g);
+    };
+    let s = col(0, 'parasympathique', 'digestion, relaxation', 'para', { p: .2, sph: 'fort', dil: 'faible' }, ['la pupille rétrécit', '+ le corps ciliaire', 'le cœur ralentit'], 1);
+    s += col(1, 'sympathique', 'mettre en action', 'sym', { p: .56, sph: 'lache', dil: 'fort' }, ['la pupille s’ouvre', 'le cœur accélère'], 2);
+    return svgW(W, 82 + 2 * R + 26 + 2 * 20 + 26, s, 'Le parasympathique et le sympathique');
+  }
+
+  // Bloquer le parasympathique : le sphincter et le corps ciliaire se relâchent.
+  function bloquer(W) {
+    const x0 = 6, gw = Math.min(118, W * .27), pw = Math.min(220, W - gw - 60), px = W - 6 - pw, R = Math.min(W * .13, 64);
+    const cx1 = W * .27, cx2 = W * .73, yl = 92, cy = yl + 22 + R;
+    let s = `<rect x="${x0}" y="6" width="${n1(gw)}" height="44" rx="10" class="boite c-doux"/>` + T(x0 + gw / 2, 34, 'la goutte', 'etiq', 'middle');
+    s += bloque(x0 + gw + 4, 28, px - 8, 'doux');
+    s += `<rect x="${n1(px)}" y="6" width="${n1(pw)}" height="44" rx="10" class="boite c-para"/>` + T(px + pw / 2, 34, 'parasympathique', 'etiq c-para', 'middle');
+    s += G(1, croix(px + pw - 20, 28, 9, 'emm'));
+    let g1 = `<path d="M ${n1(px + pw / 2 - 20)} 52 L ${n1(cx1)} ${yl - 18}" class="trait-c c-para tirets"/>` + T(cx1, yl, 'sphincter relâché', 'petit etiq c-para', 'middle');
+    g1 += irisFace(cx1, cy, R, { p: .6, sph: 'lache', dil: 'normal' }) + T(cx1, cy + R + 24, 'mydriase', 'etiq', 'middle') + T(cx1, cy + R + 44, 'la pupille s’ouvre', 'petit t-doux', 'middle');
+    s += G(2, g1);
+    const k = (2 * R + 16) / 200, L = place(cx2 - 82 * k, cy - R - 8, k);
+    let g2 = `<path d="M ${n1(px + pw / 2 + 20)} 52 L ${n1(cx2)} ${yl - 18}" class="trait-c c-para tirets"/>` + T(cx2, yl, 'corps ciliaire relâché', 'petit etiq c-para', 'middle');
+    g2 += L.g(avant({ pup: 30 })) + T(cx2, cy + R + 24, 'cycloplégie', 'etiq', 'middle') + T(cx2, cy + R + 44, 'plus d’accommodation', 'petit t-doux', 'middle');
+    s += G(3, g2);
+    return svgW(W, cy + R + 54, s, 'Bloquer le parasympathique : mydriase et cycloplégie');
+  }
+
+  // Les trois effets secondaires, sur une coupe de l'avant de l'œil, pupille ouverte.
+  function effets(W) {
+    const k = Math.min(1.45, (W * .54) / 190), L = place(6 + 36 * k, 6, k), H = 200 * k + 12;
+    let s = L.g(avant({ pup: 46, ep: 9 }));
+    // 1 : la lumière entre à flots
+    let r = '';
+    for (const y of [62, 81, 100, 119, 138]) { const yp = 100 + (y - 100) * .92, y2 = 100 + (y - 100) * 1.5; r += `<path d="M -34 ${y} L 56 ${n1(yp)} L 148 ${n1(Math.max(8, Math.min(192, y2)))}" class="rayon"/>`; }
+    s += L.g(r) + num(L.X(-22), L.Y(44), 1);
+    // 2 : le corps ciliaire relâché
+    s += G(1, num(L.X(120), L.Y(24), 2));
+    // 3 : l'humeur aqueuse, bloquée à l'angle (très rarement)
+    const q = [[70, 152], [64, 142], [52, 136], [38, 150], [42, 176]].map(([x, y]) => [L.X(x), L.Y(y)]);
+    s += G(2, coude(q, 'fleche c-emm') + croix(L.X(46), L.Y(184), 6, 'emm') + num(L.X(14), L.Y(182), 3));
+    // les étiquettes, à droite
+    const xl = L.X(150) + 18, et = (y, n, l1, l2, l3, pas) => G(pas, num(xl + 10, y - 5, n) + T(xl + 26, y, l1, 'petit etiq') + T(xl + 26, y + 19, l2, 'petit t-doux') + (l3 ? T(xl + 26, y + 38, l3, 'petit t-doux') : ''));
+    s += et(L.Y(30), 1, 'éblouissement', 'pupille grande', '', 0);
+    s += et(L.Y(92), 2, 'flou de près', 'corps ciliaire', 'relâché', 1);
+    s += et(L.Y(158), 3, 'très rarement', 'humeur aqueuse', 'bloquée', 2);
+    return svgW(W, H, s, 'Les trois effets secondaires, chacun d’un muscle');
+  }
+
+  // Stimuler le sympathique : le dilatateur seul ; le corps ciliaire n'est pas touché ; le cœur.
+  function stimuler(W) {
+    const x0 = 6, gw = Math.min(150, W * .36), pw = Math.min(180, W - gw - 60), px = W - 6 - pw, cw = W / 3, R = Math.min(cw * .36, 58);
+    const yl = 100, cy = yl + 16 + R, cxs = [cw / 2, cw * 1.5, cw * 2.5];
+    let s = `<rect x="${x0}" y="6" width="${n1(gw)}" height="44" rx="10" class="boite c-doux"/>` + T(x0 + gw / 2, 34, 'phényléphrine', 'etiq', 'middle');
+    s += fleche(x0 + gw + 6, 28, px - 8, 28, 'fleche c-sym') + T((x0 + gw + px) / 2, 20, '+', 'etiq c-sym', 'middle');
+    s += `<rect x="${n1(px)}" y="6" width="${n1(pw)}" height="44" rx="10" class="boite c-sym"/>` + T(px + pw / 2, 34, 'sympathique', 'etiq c-sym', 'middle');
+    let g1 = `<path d="M ${n1(px + pw / 2 - 30)} 52 L ${n1(cxs[0])} ${yl - 20}" class="trait-c c-sym"/>` + T(cxs[0], yl, 'dilatateur', 'petit etiq c-sym', 'middle');
+    g1 += irisFace(cxs[0], cy, R, { p: .44, sph: 'fort', dil: 'fort' }) + T(cxs[0], cy + R + 24, 'mydriase', 'etiq', 'middle');
+    const k = (2 * R + 10) / 200, L = place(cxs[1] - 82 * k, cy - R - 5, k);
+    g1 += T(cxs[1], yl, 'corps ciliaire', 'petit etiq c-doux', 'middle') + L.g(avant({ pup: 30, cil: 'doux' }));
+    g1 += T(cxs[1], cy + R + 24, 'pas touché', 'petit t-doux', 'middle') + T(cxs[1], cy + R + 42, 'on accommode', 'petit t-doux', 'middle');
+    s += G(1, g1);
+    let g2 = `<path d="M ${n1(px + pw / 2 + 20)} 52 L ${n1(cxs[2])} ${yl - 20}" class="trait-c c-sym"/>` + T(cxs[2], yl, 'ses effets', 'petit etiq c-sym', 'middle');
+    g2 += coeur(cxs[2], cy, R * .55, 'sym') + T(cxs[2], cy + R + 24, 'tension,', 'petit etiq', 'middle') + T(cxs[2], cy + R + 42, 'arythmies', 'petit etiq', 'middle');
+    s += G(2, g2);
+    return svgW(W, cy + R + 52, s, 'Stimuler le sympathique : la mydriase seule');
+  }
+
+  // Le duel : la phényléphrine seule, le tropicamide, les deux.
+  function duel(W) {
+    const cw = W / 3, R = Math.min(cw * .36, 66), cy = 52 + R;
+    const col = (i, l1, l2, c, o, bas, pas) => {
+      const cx = cw * i + cw / 2;
+      return G(pas, T(cx, 18, l1, `petit etiq c-${c}`, 'middle') + (l2 ? T(cx, 36, l2, `petit etiq c-${c}`, 'middle') : '') + irisFace(cx, cy, R, o) + T(cx, cy + R + 24, bas, 'petit t-doux', 'middle'));
+    };
+    let s = col(0, 'phényléphrine', 'seule', 'sym', { p: .3, sph: 'fort', dil: 'fort' }, 'elle dilate mal', 0);
+    s += col(1, 'tropicamide', '', 'para', { p: .56, sph: 'lache', dil: 'normal' }, 'la pupille s’ouvre', 1);
+    s += col(2, 'les deux', '', 'emm', { p: .7, sph: 'lache', dil: 'fort' }, 'plus prononcée', 2);
+    return svgW(W, cy + R + 34, s, 'La phényléphrine seule, le tropicamide, les deux');
+  }
+
+  // Pourquoi dilater : la petite pupille n'éclaire que le fond ; dilatée, la lumière va jusqu'à la périphérie.
+  function fenetre(W) {
+    const k = Math.min(1.05, (W / 2 - 28) / 248), ty = 34 - 18 * k;
+    const A = coupeOeil(9, .5), B = coupeOeil(28, 2.05);
+    const La = place(8 - 127.7 * k, ty, k), Lb = place(W / 2 + 20 - 127.7 * k, ty, k);
+    let s = La.g(A.s) + Lb.g(B.s);
+    s += T(La.X(250), 18, 'petite pupille', 'petit etiq', 'middle') + T(Lb.X(250), 18, 'pupille dilatée', 'petit etiq', 'middle');
+    const ici = (t, f) => { const q = B.pe(t); return [Lb.X(B.cx + f * (q[0] - B.cx)), Lb.Y(B.cy + f * (q[1] - B.cy))]; };
+    let [x, y] = ici(-1.8, .72);
+    s += num(x, y, 1);
+    // 2 : la zone entre l'équateur et la fin du corps ciliaire
+    let z = '';
+    const za = []; for (let i = 0; i <= 12; i++) za.push(ici(Math.PI / 2 + (2.25 - Math.PI / 2) * i / 12, 1.1));
+    z += `<path d="M ${pts(za)}" class="trait-c c-emm" style="stroke-width:3"/>`;
+    z += `<line x1="${n1(Lb.X(B.cx))}" y1="${n1(Lb.Y(10))}" x2="${n1(Lb.X(B.cx))}" y2="${n1(Lb.Y(190))}" class="pointille"/>`;
+    [x, y] = ici(1.95, 1.32);
+    z += num(x, y, 2) + T(Lb.X(B.cx) + 6, Lb.Y(190) + 18, 'équateur', 'petit t-doux');
+    s += G(1, z);
+    s += G(2, num(Lb.X(B.apex) - 14, Lb.Y(B.cy), 3));
+    [x, y] = ici(0, .78);
+    s += G(3, num(x, y, 4));
+    return svgW(W, Lb.Y(190) + 26, s, 'Une petite pupille, une pupille dilatée : ce que la lumière éclaire');
+  }
+
+  // Avec l'âge : les rayons du dilatateur s'amincissent, puis la pupille rapetisse.
+  function age(W) {
+    const R = Math.min(W * .17, 84), x1 = W * .24, x2 = W * .76, cy = 34 + R, yl = cy + R + 24;
+    let s = T(x1, 18, 'jeune', 'petit etiq', 'middle') + irisFace(x1, cy, R, { p: .36, sph: 'fort', dil: 'normal' });
+    s += G(1, T(x2, 18, 'avec l’âge', 'petit etiq', 'middle') + fleche(x1 + R + 10, cy, x2 - R - 10, cy, 'fleche c-doux')
+      + irisBase(x2, cy, R) + dilRays(x2, cy, R, .36, 'faible', 'fort') + sphRing(x2, cy, R, .36, 'fort') + pupille(x2, cy, R, .36)
+      + T(x2, yl, 'dilatateur atrophié', 'petit etiq c-sym', 'middle'));
+    // pas 3 : un anneau couleur d'iris recouvre le bord de l'ancienne pupille ; le sphincter, plus serré
+    s += G(3, `<circle cx="${n1(x2)}" cy="${n1(cy)}" r="${n1(.375 * R)}" class="masque" stroke-width="${n1(.31 * R)}"/>` + sphRing(x2, cy, R, .22, 'fort') + pupille(x2, cy, R, .22)
+      + T(x2, yl + 20, 'la pupille rapetisse', 'petit etiq', 'middle'));
+    return svgW(W, yl + 30, s, 'Jeune, puis avec l’âge : le dilatateur s’atrophie, la pupille rapetisse');
+  }
+
+  // La ligne du temps des gouttes qui bloquent le parasympathique : les minutes, puis les heures (l'axe est coupé à 1 h).
+  function horloge(W, lesDeux) {
+    const xa = 10, xb = W - 26, wseg = (xb - xa) * .34, xh = xa + wseg + 12;
+    const Xm = m => xa + wseg * m / 60, Xh = m => xh + (xb - xh) * (m - 60) / 1380;
+    const X = m => (m < 60 ? Xm(m) : Xh(m));
+    const hb = 24;
+    // une aire en deux morceaux, de part et d'autre de la coupure à 1 h : montée, plateau, descente
+    const aire = (courbe, cls, y0) => {
+      const poly = a => (a.length > 1 ? `<path d="M ${n1(a[0][0])} ${n1(y0)} L ${a.map(q => n1(q[0]) + ' ' + n1(y0 - q[1] * hb)).join(' L ')} L ${n1(a[a.length - 1][0])} ${n1(y0)} Z" class="${cls}"/>` : '');
+      return poly(courbe.filter(q => q[0] <= 60).map(q => [Xm(q[0]), q[1]])) + poly(courbe.filter(q => q[0] >= 60).map(q => [Xh(q[0]), q[1]]));
+    };
+    let s = '', y = 0;
+    const rang = (nom, focus, courbe, haut, bas, tirets) => {
+      const y0 = y + 72, c = focus ? 'c-para' : 'c-doux';
+      let g = T(xa, y + 18, nom, focus ? 'etiq c-para' : 'etiq c-doux');
+      g += `<g class="${c}">${aire(courbe, focus ? 'aire' : 'aire pale', y0)}</g>`;
+      if (tirets) g += `<g class="${c}"><rect x="${n1(X(tirets[0]))}" y="${n1(y0 - hb)}" width="${n1(X(tirets[1]) - X(tirets[0]))}" height="${hb}" class="aire-t"/></g>`;
+      haut.forEach(([m, t, anc]) => { g += T(X(m), y0 - hb - 8, t, focus ? 'petit etiq' : 'petit t-doux', anc || 'middle'); });
+      bas.forEach(([m, t, anc]) => { g += T(X(m), y0 + 20, t, focus ? 'petit' : 'petit t-doux', anc || 'middle'); });
+      y += bas.length ? 104 : 86;
+      return g;
+    };
+    const trop = [[0, 0], [20, 1], [60, 1], [60, 1], [300, 1], [360, 0]];
+    s += rang('Tropicamide', !lesDeux, trop, [[20, '≈' + NB + '20' + NB + 'min'], [330, '5-6' + NB + 'h']], lesDeux ? [] : [[1440, 'jusqu’à 24' + NB + 'h si sensible', 'end']], lesDeux ? null : [360, 1440]);
+    if (lesDeux) {
+      const cyc = [[0, 0], [30, .45], [45, 1], [60, 1], [60, 1], [1440, 1]];
+      s += rang('Cyclopentolate', true, cyc, [[37.5, '30-45' + NB + 'min'], [1440, '24' + NB + 'h ou plus', 'end']], [], null);
+      s += `<g class="c-para">${fleche(X(1440), y - 86 + 72 - hb / 2, X(1440) + 16, y - 86 + 72 - hb / 2, 'fleche')}</g>`;
+    }
+    // l'axe, coupé à 1 h
+    const ya = y + 4;
+    s += `<line x1="${n1(xa)}" y1="${n1(ya)}" x2="${n1(Xm(60))}" y2="${n1(ya)}" class="base"/><line x1="${n1(xh)}" y1="${n1(ya)}" x2="${n1(xb)}" y2="${n1(ya)}" class="base"/>`;
+    s += `<path d="M ${n1(Xm(60) + 2)} ${n1(ya + 6)} L ${n1(Xm(60) + 6)} ${n1(ya - 6)} M ${n1(xh - 6)} ${n1(ya + 6)} L ${n1(xh - 2)} ${n1(ya - 6)}" class="base"/>`;
+    [[0, '0', 'start'], [30, '30' + NB + 'min'], [60, '1' + NB + 'h'], [360, '6' + NB + 'h'], [720, '12' + NB + 'h'], [1440, '24' + NB + 'h', 'end']].forEach(([m, t, anc]) => {
+      s += `<line x1="${n1(X(m))}" y1="${n1(ya)}" x2="${n1(X(m))}" y2="${n1(ya + 5)}" class="base"/>` + T(X(m), ya + 22, t, 'petit t-doux', anc || 'middle');
+    });
+    return svgW(W, ya + 30, s, lesDeux ? 'Le tropicamide et le cyclopentolate sur une ligne du temps' : 'Le tropicamide sur une ligne du temps');
+  }
+
+  // L'atropine : deux semaines, à côté des 5-6 heures du tropicamide ; deux flacons.
+  function atropine(W) {
+    const xa = 10, xb = W - 12, j = (xb - xa) / 14;
+    let s = T(xa, 18, 'atropine 1' + NB + '%', 'petit etiq c-para') + T(xb, 18, 'jusqu’à 2' + NB + 'semaines', 'petit etiq c-para', 'end');
+    s += `<g class="c-para"><rect x="${xa}" y="28" width="${n1(xb - xa)}" height="22" rx="4" class="aire"/></g>`;
+    s += T(xa, 74, 'tropicamide', 'petit t-doux');
+    s += `<g class="c-doux"><rect x="${xa}" y="82" width="${n1(Math.max(3, j * 5.5 / 24))}" height="14" rx="2" class="aire"/></g>` + T(xa + j * 5.5 / 24 + 8, 94, '5-6' + NB + 'h', 'petit t-doux');
+    s += `<line x1="${xa}" y1="110" x2="${n1(xb)}" y2="110" class="base"/>`;
+    for (let d = 0; d <= 14; d++) s += `<line x1="${n1(xa + d * j)}" y1="110" x2="${n1(xa + d * j)}" y2="${d % 7 ? 115 : 119}" class="base"/>`;
+    s += T(xa + 7 * j, 136, '1' + NB + 'semaine', 'petit t-doux', 'middle') + T(xb, 136, '2' + NB + 'semaines', 'petit t-doux', 'end');
+    const x1 = W * .27, x2 = W * .73, yf = 160;
+    s += G(1, flacon(x1, yf, 'para', '1' + NB + '%') + T(x1, yf + 112, 'examen', 'petit etiq', 'middle') + T(x1, yf + 131, 'rarement', 'petit t-doux', 'middle'));
+    s += G(2, flacon(x2, yf, 'para', '0,05' + NB + '%') + T(x2, yf + 112, 'diluée', 'petit etiq', 'middle') + T(x2, yf + 131, 'myopie, jeunes', 'petit t-doux', 'middle'));
+    return svgW(W, yf + 142, s, 'L’atropine : jusqu’à 2 semaines ; 1 % ou 0,05 %'.replace(/ (?=[%:;]|semaines)/g, NB));
+  }
+
+  // Mme L. : avant, la petite pupille et un fond mal vu ; après les gouttes, la grande pupille et le fond.
+  function mmeL(W) {
+    const R = Math.min(W * .13, 64), x1 = W * .17, x2 = W * .83, cy = 30 + R, Rp = Math.min(W * .11, 54), cyp = cy + R + 26 + Rp;
+    let s = T(x1, 16, 'avant', 'petit t-doux', 'middle') + irisFace(x1, cy, R, { p: .22, sph: 'fort', dil: 'normal' });
+    s += vueFond(x1, cyp, Rp, .78) + T(x1, cyp + Rp + 22, 'on voit peu', 'petit t-doux', 'middle');
+    s += G(1, fleche(x1 + R + 10, cy, x2 - R - 10, cy, 'fleche c-para') + T(W / 2, cy - 10, 'tropicamide', 'petit etiq c-para', 'middle'));
+    s += G(2, T(W / 2, cy + 26, '+' + NB + 'phényléphrine', 'petit etiq c-sym', 'middle') + T(x2, 16, 'après', 'petit t-doux', 'middle')
+      + irisFace(x2, cy, R, { p: .62, sph: 'lache', dil: 'fort' }) + vueFond(x2, cyp, Rp, 0) + T(x2, cyp + Rp + 22, 'le fond se voit', 'petit t-doux', 'middle'));
+    s += G(3, T(W / 2, cyp - 22, 'à lui annoncer', 'petit etiq c-aide', 'middle') + T(W / 2, cyp, 'éblouissement', 'petit', 'middle')
+      + T(W / 2, cyp + 20, 'flou de près', 'petit', 'middle') + T(W / 2, cyp + 40, '5-6' + NB + 'h', 'petit', 'middle'));
+    return svgW(W, cyp + Rp + 32, s, 'Mme L. : avant et après la dilatation');
+  }
+
+  // L'anesthésique : l'influx de la cornée bloqué ; la ligne du temps, en minutes.
+  function anesth(W) {
+    const k = .5, L = place(30, 4, k), yN = L.Y(100);
+    let s = L.g(avant({ pup: 24 }));
+    const xc = L.X(150) + 10, xs = W - 118;
+    s += `<path d="M ${n1(L.X(24))} ${n1(L.Y(70))} C ${n1(xc)} ${n1(L.Y(10))} ${n1(xc + 40)} ${n1(yN)} ${n1(xs - 10)} ${n1(yN)}" class="trait-c c-doux tirets"/>`;
+    s += `<rect x="${n1(xs)}" y="${n1(yN - 22)}" width="110" height="44" rx="10" class="boite c-doux"/>` + T(xs + 55, yN + 5, 'sensation', 'petit etiq', 'middle');
+    const xm = (xc + 40 + xs) / 2;
+    s += `<path d="M ${n1(xm - 5)} ${n1(yN - 13)} L ${n1(xm - 5)} ${n1(yN + 13)} M ${n1(xm + 5)} ${n1(yN - 13)} L ${n1(xm + 5)} ${n1(yN + 13)}" class="trait-c c-emm" style="stroke-width:4"/>`;
+    s += T(xm, yN + 34, 'influx bloqué', 'petit etiq', 'middle');
+    s += G(2, `<rect x="10" y="${n1(L.Y(100) - 4)}" width="${n1(L.X(15) - 10)}" height="8" rx="3" class="plein-c c-doux"/>` + T(10, L.Y(200) + 22, 'on peut toucher', 'petit t-doux'));
+    // la ligne du temps, de 0 à 30 minutes
+    const xa = 10, xb = W - 16, X = m => xa + (xb - xa) * m / 30, y0 = L.Y(200) + 92, hb = 24;
+    s += G(1, `<g class="c-emm"><path d="M ${n1(X(0))} ${y0} L ${n1(X(1))} ${y0 - hb} L ${n1(X(15))} ${y0 - hb} L ${n1(X(20))} ${y0} Z" class="aire pale"/></g>`
+      + T(X(1), y0 - hb - 8, '&lt;' + NB + '1' + NB + 'min', 'petit etiq') + T(X(17.5), y0 - hb - 8, '15-20' + NB + 'min', 'petit etiq', 'middle'));
+    s += G(3, `<g class="c-doux"><rect x="${n1(X(20))}" y="${y0 - 12}" width="${n1(X(30) - X(20))}" height="12" class="aire-t"/></g>` + T(xb, y0 + 48, 'œil sec' + NB + ': parfois plus longtemps', 'petit t-doux', 'end'));
+    s += `<line x1="${xa}" y1="${y0}" x2="${n1(xb)}" y2="${y0}" class="base"/>`;
+    [[0, '0', 'start'], [15, '15'], [20, '20'], [30, '30' + NB + 'min', 'end']].forEach(([m, t, anc]) => { s += `<line x1="${n1(X(m))}" y1="${y0}" x2="${n1(X(m))}" y2="${y0 + 5}" class="base"/>` + T(X(m), y0 + 22, t, 'petit t-doux', anc || 'middle'); });
+    return svgW(W, y0 + 58, s, 'L’anesthésique : l’influx bloqué, la ligne du temps');
+  }
+
+  // Deux anesthésiques : l'Alcaine au réfrigérateur, l'unidose ; le flacon, jamais au patient.
+  function alcaine(W) {
+    const x1 = W * .27, x2 = W * .73;
+    let s = `<rect x="${n1(x1 - 58)}" y="6" width="116" height="136" rx="10" class="boite c-doux"/><line x1="${n1(x1 - 58)}" y1="40" x2="${n1(x1 + 58)}" y2="40" class="base"/>`;
+    s += `<line x1="${n1(x1 + 46)}" y1="52" x2="${n1(x1 + 46)}" y2="82" class="trait-c c-doux" style="stroke-width:4"/>`;
+    s += flacon(x1 - 6, 46, 'doux', '');
+    s += T(x1, 166, 'Alcaine', 'petit etiq', 'middle') + T(x1, 185, 'proparacaïne 0,5' + NB + '%', 'petit t-doux', 'middle') + T(x1, 204, 'au réfrigérateur', 'petit t-doux', 'middle') + T(x1, 223, 'la mieux tolérée', 'petit t-doux', 'middle');
+    s += `<g class="c-doux"><rect x="${n1(x2 - 10)}" y="44" width="20" height="16" rx="3" class="boite"/><rect x="${n1(x2 - 5)}" y="58" width="10" height="10" class="boite"/><rect x="${n1(x2 - 17)}" y="66" width="34" height="70" rx="12" class="boite"/></g>`;
+    s += T(x2, 166, 'unidose', 'petit etiq', 'middle') + T(x2, 185, 'tétracaïne 1' + NB + '%', 'petit t-doux', 'middle') + T(x2, 204, 'pas au réfrigérateur', 'petit t-doux', 'middle') + T(x2, 223, 'moins bien tolérée', 'petit t-doux', 'middle');
+    // le flacon ne va pas au patient
+    const yb = 286, xp = W * .7;
+    let g = flacon(W * .3, yb - 44, 'doux', '') + fleche(W * .3 + 40, yb, xp - 34, yb, 'fleche c-doux');
+    g += `<circle cx="${n1(xp)}" cy="${n1(yb - 18)}" r="12" class="boite c-doux"/><path d="M ${n1(xp - 26)} ${n1(yb + 26)} Q ${n1(xp)} ${n1(yb - 6)} ${n1(xp + 26)} ${n1(yb + 26)}" class="boite c-doux"/>`;
+    g += croix((W * .3 + xp) / 2 + 4, yb, 13, 'aide') + T(W / 2, yb + 66, 'le flacon, jamais au patient', 'petit etiq c-aide', 'middle');
+    s += G(3, g);
+    return svgW(W, yb + 76, s, 'L’Alcaine et l’unidose ; le flacon, jamais au patient');
+  }
+
+  // La fluorescéine : la bandelette ; sous le bleu cobalt, le film brille ; puis la tache sèche.
+  function film(W) {
+    const cw = W / 3, R = Math.min(cw * .38, 66), cy = 10 + R, yl = cy + R + 24;
+    const c0 = cw / 2, c1 = cw * 1.5, c2 = cw * 2.5;
+    let s = irisBase(c0, cy, R) + pupille(c0, cy, R, .3);
+    s += `<path d="M ${n1(c0 + .55 * R)} ${n1(cy + 1.05 * R)} L ${n1(c0 + .15 * R)} ${n1(cy + .72 * R)}" class="trait-c c-doux" style="stroke-width:9"/>`;
+    s += `<path d="M ${n1(c0 + .28 * R)} ${n1(cy + .83 * R)} L ${n1(c0 + .15 * R)} ${n1(cy + .72 * R)}" class="fluo-t" stroke-width="9"/>`;
+    s += T(c0, yl, 'la bandelette', 'petit t-doux', 'middle');
+    s += G(1, bleu(c1, cy, R, { film: .5 }) + T(c1, yl, 'sous le bleu', 'petit t-doux', 'middle') + T(c1, yl + 18, 'cobalt', 'petit t-doux', 'middle'));
+    s += G(2, bleu(c2, cy, R, { film: .5, taches: [[-.35, -.3, .16], [.3, .35, .1]] }) + T(c2, yl, 'la tache', 'petit t-doux', 'middle') + T(c2, yl + 18, 'sèche', 'petit t-doux', 'middle'));
+    return svgW(W, yl + 26, s, 'La bandelette, puis sous le bleu cobalt, puis la tache sèche');
+  }
+
+  // Quatre usages de la fluorescéine, sous la lumière bleue.
+  function usages(W) {
+    const cols = W >= 640 ? 4 : 2, cw = W / cols, R = Math.min(cw * .26, 62), rh = 2 * R + 54;
+    const U = [[{ film: .5, taches: [[-.3, -.25, .18]] }, ['le bris du film'], 0], [{ film: .22, griffe: true }, ['zones sèches,', 'égratignures'], 1],
+      [{ film: .2, lentille: true }, ['la lentille', 'rigide'], 2], [{ mires: true }, ['les mires de', 'l’aplanation'], 3]];
+    let s = '';
+    U.forEach(([o, l, pas], i) => {
+      const cx = cw * (i % cols) + cw / 2, cy = 6 + R + rh * Math.floor(i / cols);
+      s += G(pas, bleu(cx, cy, R, o) + l.map((t, j) => T(cx, cy + R + 22 + j * 18, t, 'petit t-doux', 'middle')).join(''));
+    });
+    return svgW(W, rh * Math.ceil(4 / cols) + 4, s, 'Quatre usages de la fluorescéine');
+  }
+
+  // Le protocole : cinq étapes, et qui les fait.
+  function protocole(W) {
+    const pitch = 52, x0 = 8, xt = x0 + 34, xb = W - 148;
+    const E = [['Acuité visuelle', 0], ['Tonométrie', 1], ['Histoire de cas', 2], ['L’angle, la cornée', 3], ['Les gouttes', 4]];
+    let s = '';
+    E.forEach(([t, pas], i) => {
+      const y = 22 + i * pitch, c = i === 4 ? 'aide' : 'emm';
+      let g = num(x0 + 12, y, i + 1, c) + T(xt, y + 6, t, i === 4 ? 'etiq c-aide' : 'etiq');
+      if (i) g += fleche(x0 + 12, y - pitch + 14, x0 + 12, y - 14, 'fleche c-doux');
+      s += G(pas, g);
+    });
+    const crochet = (i1, i2, l1, l2, c, pas) => {
+      const ya = 22 + i1 * pitch - 14, yb = 22 + i2 * pitch + 14, ym = (ya + yb) / 2;
+      return G(pas, `<path d="M ${n1(xb - 8)} ${n1(ya)} L ${n1(xb)} ${n1(ya)} L ${n1(xb)} ${n1(yb)} L ${n1(xb - 8)} ${n1(yb)}" class="trait-c c-${c}" style="stroke-width:2"/>`
+        + T(xb + 12, ym + (l2 ? -3 : 5), l1, `petit etiq c-${c}`) + (l2 ? T(xb + 12, ym + 15, l2, `petit etiq c-${c}`) : ''));
+    };
+    s += crochet(0, 1, 'prétests', '', 'doux', 1) + crochet(2, 3, 'l’optométriste', '', 'emm', 3) + crochet(4, 4, 'assistant ou', 'optométriste', 'aide', 4);
+    return svgW(W, 22 + 4 * pitch + 30, s, 'Le protocole : cinq étapes, dans l’ordre');
+  }
+
+  // La sécurité : le compte-gouttes ne touche ni les cils ni la paupière ; autour, les quatre autres règles.
+  function securite(W) {
+    const rx = Math.min(W * .2, 96), ry = rx * .56, cx = 8 + rx, cy = 170;
+    const amande = `M ${n1(cx - rx)} ${cy} Q ${n1(cx)} ${n1(cy - 2 * ry)} ${n1(cx + rx)} ${cy} Q ${n1(cx)} ${n1(cy + 2 * ry)} ${n1(cx - rx)} ${cy} Z`;
+    let s = `<path d="${amande}" class="oeil-g"/>` + irisBase(cx, cy, ry * .82) + pupille(cx, cy, ry * .82, .38);
+    for (let i = 1; i < 10; i++) {
+      const t = i / 10, x = (1 - t) ** 2 * (cx - rx) + 2 * t * (1 - t) * cx + t * t * (cx + rx), y = (1 - t) ** 2 * cy + 2 * t * (1 - t) * (cy - 2 * ry) + t * t * cy;
+      s += `<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(x + (t - .5) * 10)}" y2="${n1(y - 11)}" class="cil-t"/>`;
+    }
+    // le compte-gouttes, au-dessus, sans toucher
+    const yt = cy - ry - 52;
+    s += `<g class="c-aide"><path d="M ${n1(cx - 6)} ${n1(yt - 40)} L ${n1(cx - 6)} ${n1(yt - 6)} L ${n1(cx)} ${n1(yt)} L ${n1(cx + 6)} ${n1(yt - 6)} L ${n1(cx + 6)} ${n1(yt - 40)} Z" class="boite"/><rect x="${n1(cx - 11)}" y="${n1(yt - 66)}" width="22" height="28" rx="9" class="plein-c"/></g>`;
+    s += goutte(cx, yt + 18, 5, 'aide');
+    s += G(1, `<path d="M ${n1(cx + 16)} ${n1(yt)} L ${n1(cx + 24)} ${n1(yt)} L ${n1(cx + 24)} ${n1(cy - ry - 12)} L ${n1(cx + 16)} ${n1(cy - ry - 12)}" class="trait-c c-aide" style="stroke-width:2"/>`
+      + T(cx + 32, yt + 20, 'sans toucher', 'petit etiq c-aide'));
+    // les autres règles, en colonne
+    const xr = Math.max(W * .56, cx + rx + 24), rows = [
+      [0, 'les mains', 'savon et eau', (x, y) => `<rect x="${n1(x - 13)}" y="${n1(y - 8)}" width="26" height="16" rx="7" class="boite"/><circle cx="${n1(x + 8)}" cy="${n1(y - 15)}" r="3.5" class="boite"/><circle cx="${n1(x - 2)}" cy="${n1(y - 17)}" r="2.5" class="boite"/>`],
+      [2, 'l’Alcaine', 'au réfrigérateur', (x, y) => `<rect x="${n1(x - 11)}" y="${n1(y - 16)}" width="22" height="32" rx="4" class="boite"/><line x1="${n1(x - 11)}" y1="${n1(y - 5)}" x2="${n1(x + 11)}" y2="${n1(y - 5)}" class="trait-c" style="stroke-width:1.6"/>`],
+      [3, 'un doute', 'l’optométriste', (x, y) => `<circle cx="${n1(x)}" cy="${n1(y)}" r="14" class="boite"/><text x="${n1(x)}" y="${n1(y + 6)}" text-anchor="middle" class="etiq">?</text>`],
+      [4, 'au dossier', 'collyre et heure', (x, y) => `<rect x="${n1(x - 12)}" y="${n1(y - 16)}" width="24" height="32" rx="3" class="boite"/><path d="M ${n1(x - 6)} ${n1(y - 7)} L ${n1(x + 6)} ${n1(y - 7)} M ${n1(x - 6)} ${n1(y)} L ${n1(x + 6)} ${n1(y)} M ${n1(x - 6)} ${n1(y + 7)} L ${n1(x + 2)} ${n1(y + 7)}" class="trait-c" style="stroke-width:1.6"/>`]];
+    rows.forEach(([pas, l1, l2, ico], i) => {
+      const y = 34 + i * 62;
+      s += G(pas, ico(xr + 14, y) + T(xr + 38, y - 3, l1, 'petit etiq') + T(xr + 38, y + 15, l2, 'petit t-doux'), 'c-aide');
+    });
+    return svgW(W, Math.max(cy + ry + 14, 34 + 3 * 62 + 30), s, 'Les cinq règles de sécurité');
+  }
+
+  // Le consentement : la conversation, jusqu'au oui.
+  function consentement(W) {
+    const lh = 18, gap = 5;
+    const B = [[['la raison de la goutte'], 0], [['ce qu’elle apporte,', 'et si on ne la met pas'], 1], [['les effets' + NB + ': flou,', 'lumière, inconfort'], 2],
+      [['remettre, si pas urgent' + NB + ';', 'vos questions' + NB + '?'], 3], [['«' + NB + 'C’est donc correct que je', 'vous mets ces gouttes?' + NB + '»'], 4]];
+    let s = '', y = 4;
+    B.forEach(([l, pas], i) => {
+      const fort = i === 4, w = Math.min(W - 92, Math.max(...l.map(t => t.length)) * (fort ? 8.6 : 7.9) + 26), h = l.length * lh + 16;
+      let g = `<path d="M 8 ${n1(y + 10)} Q 8 ${n1(y)} 18 ${n1(y)} L ${n1(8 + w - 10)} ${n1(y)} Q ${n1(8 + w)} ${n1(y)} ${n1(8 + w)} ${n1(y + 10)} L ${n1(8 + w)} ${n1(y + h - 10)} Q ${n1(8 + w)} ${n1(y + h)} ${n1(8 + w - 10)} ${n1(y + h)} L 22 ${n1(y + h)} L 10 ${n1(y + h + 7)} L 14 ${n1(y + h)} Q 8 ${n1(y + h)} 8 ${n1(y + h - 10)} Z" class="${fort ? 'verre' : 'boite'}"/>`;
+      l.forEach((t, j) => { g += T(20, y + 21 + j * lh, t, fort ? 'petit etiq' : 'petit'); });
+      if (fort) {
+        const xo = W - 62;
+        g += `<rect x="${n1(xo)}" y="${n1(y + h / 2 - 16)}" width="54" height="32" rx="12" class="boite c-emm"/>` + T(xo + 27, y + h / 2 + 5, 'Oui.', 'petit etiq c-emm', 'middle');
+      }
+      s += G(pas, g, 'c-aide');
+      y += h + 7 + gap;
+    });
+    return svgW(W, y, s, 'La conversation du consentement, jusqu’au oui');
+  }
+
+  // Léo : la ligne du temps du cas, du protocole à l'effet de la goutte.
+  function leo(W) {
+    const ya = 112, xa = 10, xg = W * .6, xb = W - 14;
+    const nodes = [[W * .07, 0], [W * .25, 1], [W * .43, 3], [xg, 4]];
+    let s = `<line x1="${xa}" y1="${ya}" x2="${n1(xg)}" y2="${ya}" class="base"/>`;
+    nodes.forEach(([x, pas], i) => { s += G(pas, num(x, ya, i < 2 ? i + 1 : i + 2, i === 3 ? 'aide' : 'emm')); });
+    s += G(0, T(xa, 54, 'AV, tonométrie,', 'petit') + T(xa, 72, 'l’optométriste', 'petit'));
+    s += G(1, T(nodes[1][0], ya + 34, 'aux parents' + NB + ':', 'petit', 'middle') + T(nodes[1][0], ya + 52, 'pourquoi, délai,', 'petit t-doux', 'middle') + T(nodes[1][0], ya + 70, 'durée, effets', 'petit t-doux', 'middle'));
+    s += G(3, T(nodes[2][0], 72, 'le oui', 'petit etiq', 'middle'));
+    // la goutte, puis l'effet : il monte en 30-45 minutes et dure 24 heures ou plus
+    const xr = xg + (xb - xg) * .3;
+    let g = goutte(xg, ya - 30, 7, 'aide') + T(xg, ya + 34, 'au dossier' + NB + ':', 'petit etiq c-aide', 'middle') + T(xg, ya + 52, 'collyre, heure', 'petit t-doux', 'middle');
+    g += `<g class="c-para"><path d="M ${n1(xg + 12)} ${ya} L ${n1(xr)} ${ya - 24} L ${n1(xb - 14)} ${ya - 24} L ${n1(xb - 14)} ${ya} Z" class="aire"/>${fleche(xb - 14, ya - 12, xb, ya - 12, 'fleche')}</g>`;
+    g += T(xr, ya - 34, '30-45' + NB + 'min', 'petit etiq', 'middle') + T(xb, ya + 70, '24' + NB + 'h ou plus', 'petit etiq', 'end');
+    s += G(4, g);
+    return svgW(W, ya + 80, s, 'Léo : la ligne du temps du cas');
+  }
+
+  const FIG = {
+    couverture, fil, muscles, systemes, bloquer, effets, stimuler, duel, fenetre, age, atropine, 'mme-l': mmeL,
+    anesth, alcaine, film, usages, protocole, securite, consentement, leo,
+    'horloge-trop': W => horloge(W, false), 'horloge-cyclo': W => horloge(W, true)
+  };
+
+  /* ===================== le diaporama ===================== */
+  const diapos = [...document.querySelectorAll('.diapo')];
+  const N = diapos.length;
+  const ACTES = { fil: 'Le fil', muscles: 'Deux systèmes, trois muscles', dilater: 'Dilater', cornee: 'Anesthésique et fluorescéine', avant: 'Avant et pendant', route: 'La méthode' };
+  const CLE = 'diapos-to-m8';
+  const $ = id => document.getElementById(id);
+  const titreDe = d => (d.querySelector('h2, h1').textContent || '').replace(/\s+/g, ' ').trim();
+  let cur = 0, rev = 0;
+
+  const maxPas = d => Math.max(0, ...[...d.querySelectorAll('[data-pas]')].map(e => +e.dataset.pas));
+
+  function rendre(d) {
+    d.querySelectorAll('[data-fig]').forEach(f => {
+      const cw = f.clientWidth || 360;
+      const W = Math.round(Math.min(760, Math.max(420, cw * 1.12)));
+      if (f._w === W) return;
+      f._w = W;
+      f.innerHTML = FIG[f.dataset.fig](W);
+    });
+  }
+
+  // progression : un segment par chapitre
+  const actes = [];
+  diapos.forEach((d, i) => {
+    const a = d.dataset.acte;
+    if (!actes.length || actes[actes.length - 1].cle !== a) actes.push({ cle: a, de: i, n: 0 });
+    actes[actes.length - 1].n++;
+  });
+  $('progres').innerHTML = actes.map(a => `<span style="--n:${a.n}" title="${ACTES[a.cle]}"><i style="--f:0"></i></span>`).join('');
+
+  function majChrome() {
+    const d = diapos[cur], m = maxPas(d);
+    d.querySelectorAll('[data-pas]').forEach(e => e.classList.toggle('vu', +e.dataset.pas <= rev));
+    $('compteur').textContent = `${cur + 1} / ${N}`;
+    $('acte').textContent = ACTES[d.dataset.acte];
+    [...$('progres').children].forEach((seg, j) => {
+      const a = actes[j], f = Math.max(0, Math.min(1, (cur - a.de + 1) / a.n));
+      seg.firstChild.style.setProperty('--f', f);
+    });
+    $('points-pas').innerHTML = m ? Array.from({ length: m }, (_, j) => `<i class="${j < rev ? 'vu' : ''}"></i>`).join('') : '';
+    $('btn-retour').disabled = cur === 0 && rev === 0;
+    $('btn-suite').textContent = cur === N - 1 && rev >= m ? 'Recommencer' : 'Suite →';
+  }
+
+  function memoriser() {
+    try { localStorage.setItem(CLE, String(cur)); } catch (e) {}
+    try { history.replaceState(null, '', '#d' + (cur + 1)); } catch (e) {}
+  }
+
+  function aller(n, tout, anime = true) {
+    n = Math.max(0, Math.min(N - 1, n));
+    diapos[cur].hidden = true;
+    cur = n;
+    const d = diapos[cur];
+    d.hidden = false;
+    d.scrollTop = 0;
+    rendre(d);
+    rev = tout ? maxPas(d) : 0;
+    majChrome();
+    d.classList.remove('entre');
+    if (anime) { void d.offsetWidth; d.classList.add('entre'); }
+    $('annonce').textContent = `Diapo ${cur + 1} sur ${N} : ${titreDe(d)}`;
+    memoriser();
+  }
+
+  // l'étape qui vient d'apparaître : si elle tombe sous le bas de la diapo, on la fait remonter, sans cacher son haut
+  function montrerPas() {
+    const d = diapos[cur], vue = d.getBoundingClientRect(), marge = 16;
+    let haut = Infinity, bas = -Infinity;
+    d.querySelectorAll(`[data-pas="${rev}"]`).forEach(e => {
+      const r = e.getBoundingClientRect();
+      if (r.height) { haut = Math.min(haut, r.top); bas = Math.max(bas, r.bottom); }
+    });
+    if (bas < 0 || bas <= vue.bottom - marge) return;
+    const dy = Math.max(0, Math.min(bas - vue.bottom + marge, haut - vue.top - marge));
+    if (dy) d.scrollBy({ top: dy, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+
+  function suite() {
+    const m = maxPas(diapos[cur]);
+    if (rev < m) { rev++; majChrome(); montrerPas(); }
+    else if (cur < N - 1) aller(cur + 1);
+    else aller(0);
+  }
+  function retour() {
+    if (rev > 0) { rev--; majChrome(); }
+    else if (cur > 0) aller(cur - 1, true);
+  }
+
+  $('btn-suite').addEventListener('click', suite);
+  $('btn-retour').addEventListener('click', retour);
+
+  // toucher : à droite = suite, à gauche = retour; glisser aussi
+  const scene = $('scene');
+  let tx = 0, ty = 0, dernierGlisse = 0;
+  scene.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  scene.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { dernierGlisse = Date.now(); dx < 0 ? suite() : retour(); }
+  }, { passive: true });
+  scene.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (Date.now() - dernierGlisse < 450) return;
+    const sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    const r = scene.getBoundingClientRect();
+    (e.clientX - r.left) < r.width * 0.3 ? retour() : suite();
+  });
+
+  // plan
+  const plan = $('plan');
+  function ouvrirPlan() {
+    let h = '', acte = '';
+    diapos.forEach((d, i) => {
+      if (d.dataset.acte !== acte) { acte = d.dataset.acte; h += `<p class="plan-acte">${ACTES[acte]}</p>`; }
+      h += `<button type="button" class="aller" data-i="${i}"${i === cur ? ' aria-current="true"' : ''}><span>${i + 1}</span><span>${titreDe(d)}</span></button>`;
+    });
+    $('plan-liste').innerHTML = h;
+    plan.hidden = false;
+    const courant = plan.querySelector('[aria-current="true"]') || $('plan-fermer');
+    courant.focus();
+  }
+  function fermerPlan() { plan.hidden = true; $('btn-plan').focus(); }
+  $('btn-plan').addEventListener('click', ouvrirPlan);
+  $('plan-fermer').addEventListener('click', fermerPlan);
+  plan.addEventListener('click', e => {
+    const b = e.target.closest('button.aller');
+    if (b) { plan.hidden = true; aller(+b.dataset.i); return; }
+    if (e.target === plan) fermerPlan();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!plan.hidden) { if (e.key === 'Escape') fermerPlan(); return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); suite(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); retour(); }
+    else if (e.key === 'Home') { e.preventDefault(); aller(0); }
+    else if (e.key === 'End') { e.preventDefault(); aller(N - 1, true); }
+  });
+
+  let minuterie = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => { rendre(diapos[cur]); majChrome(); }, 150);
+  });
+
+  // reprendre là où on était
+  $('reprendre').addEventListener('click', e => { aller(+e.currentTarget.dataset.i); });
+
+  function demarrer(data) {
+    let n = 0, tout = false;
+    const m = /^#d(\d+)$/.exec(location.hash || '');
+    if (data && Number.isInteger(data.cur)) { n = data.cur; tout = true; }
+    else if (m) n = +m[1] - 1;
+    else {
+      let garde = null;
+      try { garde = localStorage.getItem(CLE); } catch (e) {}
+      const g = parseInt(garde, 10);
+      if (g > 0 && g < N) {
+        const b = $('reprendre');
+        b.dataset.i = g;
+        b.textContent = `Reprendre à la diapo ${g + 1} : ${titreDe(diapos[g])}`;
+        b.hidden = false;
+      }
+    }
+    aller(n, tout, false);
+  }
+
+  const hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ cur }));
+  if (hot && typeof hot.ready === 'function') hot.ready(demarrer);
+  else demarrer((hot && hot.data) || {});
+})();
+</script>
+
+<!-- notes-survol:debut · Mes notes du Survol (3 nov. 2026) : source unique Guides/_commun/notes-survol.html, posée dans chaque diaporama par outils/notes_survol.py. Le groupe (Convergence) vit dans survol-groupe.js, chargé seulement à la demande. -->
+<style id="notes-survol-css">
+/* une colonne à droite qui prend sa place dès 1200 px (les diapos se redessinent dans les ≥ 860 px qui restent :
+   audit sans problème) ; de 900 à 1199 px, le même panneau passe par-dessus la droite de la diapo (à 900 px, une
+   colonne laissait 560 px et faisait déborder deux diapos) ; au téléphone, une feuille par-dessus le bas.
+   Réduite, elle se rouvre par « ✎ Notes » en haut. */
+:root { --ns-w: 340px; }
+body.ns-dock { padding-right: var(--ns-w); }
+.ns-bouton { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond-2); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; position: relative; }
+.ns-bouton[aria-expanded="true"] { background: var(--fond); box-shadow: inset 0 0 0 1px var(--encre); }
+.ns-bouton .ns-point { width: 7px; height: 7px; border-radius: 50%; background: var(--encre); }
+.ns-bouton .ns-point[hidden] { display: none; }
+.ns-bouton:focus-visible, .ns-panneau button:focus-visible, .ns-texte:focus-visible { outline: 3px solid var(--encre); outline-offset: 2px; }
+.ns-panneau { position: fixed; top: 0; right: 0; bottom: 0; width: var(--ns-w); z-index: 15; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
+  background: var(--fond-2); color: var(--encre); border-left: 1px solid var(--trait); font: 400 var(--t-s)/1.45 var(--f-texte); }
+.ns-panneau[hidden] { display: none; }
+body:not(.ns-dock) .ns-panneau { box-shadow: -10px 0 30px rgba(0, 0, 0, .22); }
+.ns-tete { display: flex; align-items: center; gap: 8px; }
+.ns-titre { margin: 0; flex: 1; min-width: 0; font-size: var(--t-s); font-weight: 800; letter-spacing: .02em; }
+.ns-ou { margin: 0; font-size: var(--t-xs); color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ns-texte { flex: 1; min-height: 120px; width: 100%; box-sizing: border-box; resize: none; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); line-height: 1.5; }
+.ns-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ns-panneau button { min-height: 38px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--trait); background: var(--fond); color: var(--encre); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
+.ns-panneau .ns-reduire { min-width: 38px; padding: 0 10px; }
+.ns-etat { margin: 0; min-height: 1.3em; font-size: var(--t-xs); color: var(--doux); }
+/* Convergence : le bouton du haut, l'interrupteur « Notes du groupe », et la place des lignes (survol-groupe.js les dessine) */
+.ns-cv svg { width: 22px; height: 11px; flex: none; fill: currentColor; stroke: currentColor; stroke-width: 1.6; }
+.ns-panneau .ns-sw { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 2px; border: 0; background: none; font-size: var(--t-xs); }
+.ns-sw i { position: relative; flex: none; width: 32px; height: 18px; border-radius: 9px; background: var(--trait); }
+.ns-sw i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--fond-2); box-shadow: 0 0 0 1px var(--doux); }
+.ns-sw[aria-checked="true"] i { background: var(--encre); }
+.ns-sw[aria-checked="true"] i::after { transform: translateX(14px); box-shadow: none; }
+.ns-lignes { flex: 1; min-height: 120px; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
+.ns-garde { margin: 0; flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--trait); background: var(--fond); white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--t-s); line-height: 1.5; }
+/* le sablier seul : son bouton est ici, tout le reste dans survol-groupe.js, chargé au premier clic ou s'il est déjà allumé */
+.ns-sablier[hidden] { display: none; }
+.ns-sablier > svg { width: 12px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ns-sablier > svg.sablier-mini { width: 11px; stroke: none; }
+.ns-sablier .ns-temps { font-variant-numeric: tabular-nums; }
+.ns-sablier .ns-temps:empty { display: none; }
+.ns-sablier[aria-pressed="true"] .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 899px) {
+  .ns-panneau { top: auto; left: 0; width: auto; height: min(52vh, 420px); border-left: 0; border-top: 1px solid var(--trait); border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, .22); padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+}
+/* au téléphone, le bouton Convergence prend sa place : le retour à l'atelier se coupe plutôt que de passer dessous */
+@media (max-width: 480px) {
+  .haut:has(.ns-cv:not([hidden])) .haut-gauche { flex: 1 1 0; }
+  .haut:has(.ns-cv:not([hidden])) .marque { display: none; }
+  .haut:has(.ns-cv:not([hidden])) .vers-banc { flex: 0 1 auto; min-width: 0; display: block; line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+}
+@media (max-width: 899px) {
+  .ns-cv .ns-mot, .ns-sablier .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (max-width: 600px) {
+  .ns-bouton { padding: 0 10px; }
+  .ns-bouton .ns-mot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+/* au plus petit téléphone, le décompte seul : le sablier ne pousse pas le retour à l'atelier hors de la barre */
+@media (max-width: 480px) { .ns-sablier[aria-pressed="true"] > svg { display: none; } }
+@media (max-width: 359px) { .haut-droite { gap: 6px; } .ns-bouton { padding: 0 8px; } }
+@media print { .ns-panneau, .ns-bouton { display: none !important; } body.ns-dock { padding-right: 0; } }
+</style>
+<script id="notes-survol">
+(() => {
+  'use strict';
+  const diapos = [...document.querySelectorAll('.diapo')];
+  if (!diapos.length || document.getElementById('ns-panneau')) return;
+  const fichier = (decodeURIComponent(location.pathname.split('/').pop() || '') || 'diapos').replace(/\.html?$/i, '') || 'diapos';
+  const CLE = 'survol-notes:' + fichier, CLE_OUVERT = 'survol-notes-ouvert';
+  const lire = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const ecrire = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+  const net = s => String(s || '').replace(/\s+/g, ' ').trim();
+  const titreDe = d => net((d.querySelector('h2, h1') || {}).textContent) || '';
+  const titreDiapo = net(document.title).replace(/^Survol\s*·\s*/i, '') || fichier;
+
+  /* une note par diapo, rangée sous le titre de la diapo (elle suit sa diapo si l'ordre change) ;
+     deux titres pareils : le second prend son numéro */
+  const vus = {};
+  const cles = diapos.map((d, i) => { let k = titreDe(d) || 'Diapo ' + (i + 1); if (vus[k]) k += ' (' + (i + 1) + ')'; vus[k] = 1; return k; });
+  let notes = {};
+  try { notes = JSON.parse(lire(CLE) || '{}') || {}; } catch (e) { notes = {}; }
+  const texteDe = i => (notes[cles[i]] && notes[cles[i]].x) || '';
+  const cur = () => Math.max(0, diapos.findIndex(d => !d.hidden));
+
+  /* le bouton, en haut à droite, à côté du plan */
+  const haut = document.querySelector('.haut-droite') || document.querySelector('.haut');
+  const bouton = document.createElement('button');
+  bouton.type = 'button'; bouton.className = 'ns-bouton'; bouton.id = 'ns-bouton';
+  bouton.setAttribute('aria-controls', 'ns-panneau'); bouton.setAttribute('aria-expanded', 'false');
+  bouton.title = 'Mes notes : une note par diapo, gardée sur cet appareil';
+  bouton.innerHTML = '<span aria-hidden="true">✎</span><span class="ns-mot">Notes</span><i class="ns-point" hidden></i>';
+  if (haut) haut.insertBefore(bouton, haut.firstChild); else document.body.appendChild(bouton);
+
+  const p = document.createElement('aside');
+  p.className = 'ns-panneau'; p.id = 'ns-panneau'; p.hidden = true; p.setAttribute('aria-labelledby', 'ns-titre');
+  p.innerHTML =
+    '<div class="ns-tete"><h2 class="ns-titre" id="ns-titre">✎ Mes notes</h2>' +
+    '<button type="button" class="ns-reduire" aria-label="Réduire les notes" title="Réduire (Échap)">—</button></div>' +
+    '<button type="button" class="ns-sw" id="ns-sw" role="switch" aria-checked="false" hidden><i></i><span>Notes du groupe</span></button>' +
+    '<p class="ns-ou" id="ns-ou"></p>' +
+    '<label class="ns-ou" for="ns-texte" hidden>Note de cette diapo</label>' +
+    '<textarea class="ns-texte" id="ns-texte" spellcheck="true" placeholder="Ta note sur cette diapo : ce que tu retiens, une question pour le cours…"></textarea>' +
+    '<div class="ns-lignes" id="ns-lignes" hidden></div>' +
+    '<div class="ns-actions"><button type="button" data-ns="une" title="Enregistre la note de cette diapo en fichier .txt sur ton appareil">Enregistrer</button>' +
+    '<button type="button" data-ns="toutes" title="Enregistre les notes de toutes les diapos en un seul fichier .txt">Tout enregistrer</button>' +
+    '<button type="button" data-ns="copier" title="Ajoute les notes du groupe de cette diapo à ta note à toi" hidden>Copier dans mes notes</button></div>' +
+    '<p class="ns-etat" id="ns-etat" aria-live="polite">Tes notes restent sur cet appareil.</p>';
+  document.body.appendChild(p);
+  const zone = p.querySelector('#ns-texte'), ou = p.querySelector('#ns-ou'), etat = p.querySelector('#ns-etat'), point = bouton.querySelector('.ns-point');
+  const lignes = p.querySelector('#ns-lignes'), sw = p.querySelector('#ns-sw'), titreP = p.querySelector('#ns-titre'), copier = p.querySelector('[data-ns="copier"]');
+
+  let ici = -1, tempo = 0;
+  const dire = t => { etat.textContent = t; };
+
+  /* la source des notes montrées : null, mes notes ; sinon le groupe en direct (vivant, survol-groupe.js) ou la dernière
+     copie gardée ici après une séance. Une source : {lignes(i) → textes, peindre(i), avant() : écrire ce qui attend, focus()} */
+  const CLE_G = 'survol-notes-groupe:' + fichier;
+  let source = null, vivant = null;
+  const texteG = i => source ? source.lignes(i).filter(x => x.trim()).join('\n') : '';
+  const majPoint = () => { point.hidden = !(source ? texteG(ici) : texteDe(ici)).trim(); };
+  function copieGardee() {
+    let c = null;
+    try { c = JSON.parse(lire(CLE_G) || 'null'); } catch (e) {}
+    if (!c || !c.n) return null;
+    return {
+      lignes: i => (c.n[cles[i]] && c.n[cles[i]].l) || [],
+      peindre(i) {
+        lignes.textContent = '';
+        const d = document.createElement('p'); d.className = 'ns-garde';
+        d.textContent = this.lignes(i).join('\n') || 'Aucune note du groupe sur cette diapo.';
+        lignes.appendChild(d);
+      }
+    };
+  }
+  /* hors d'un groupe, l'interrupteur n'apparaît que s'il reste une copie : les notes du groupe survivent à la séance */
+  function majInterrupteur() {
+    const c = !vivant && copieGardee(), dit = sw.querySelector('span');
+    sw.hidden = !vivant && !c;
+    dit.textContent = vivant ? 'Notes du groupe' : 'Copie des notes du groupe';
+    sw.title = vivant ? 'Les notes de tout le groupe sur cette diapo, ligne par ligne' : 'Les notes du groupe de ta dernière séance, gardées sur cet appareil';
+  }
+  function montrerSource(s) {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    source = s;
+    zone.hidden = !!s; lignes.hidden = !s; copier.hidden = !s;
+    sw.setAttribute('aria-checked', String(!!s));
+    titreP.textContent = s ? '✎ Notes du groupe' : '✎ Mes notes';
+    if (s) s.peindre(ici);
+    majPoint();
+    dire(s ? (s === vivant ? 'Tout le groupe voit ces lignes en direct.' : 'Une copie, gardée sur cet appareil.') : 'Tes notes restent sur cet appareil.');
+  }
+  function garder() {
+    clearTimeout(tempo); tempo = 0;
+    if (ici < 0) return;
+    const k = cles[ici], x = zone.value;
+    if (x.trim()) notes[k] = { i: ici + 1, x, m: new Date().toISOString() }; else delete notes[k];
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Gardée sur cet appareil.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+    majPoint();
+  }
+  const surDiapo = [];
+  function suivre() {
+    const n = cur();
+    if (n === ici) return;
+    if (tempo) garder();
+    ici = n;
+    zone.value = texteDe(n);
+    ou.textContent = 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + (titreDe(diapos[n]) || '');
+    if (source) source.peindre(n);
+    majPoint();
+    surDiapo.forEach(f => f(n));
+  }
+  zone.addEventListener('input', () => { clearTimeout(tempo); tempo = setTimeout(garder, 400); });
+  zone.addEventListener('blur', () => { if (tempo) garder(); });
+
+  /* enregistrer en .txt : la diapo, ou toutes celles qui ont une note */
+  const dateLisible = () => new Date().toLocaleString('fr-CA', { dateStyle: 'long', timeStyle: 'short' });
+  function telecharger(nom, texte) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + texte.replace(/\r?\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
+    a.download = nom; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function une() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const n = cur(), x = (source ? texteG(n) : zone.value).trim(), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '-diapo-' + (n + 1) + '.txt';
+    if (!x) { dire(source ? 'Cette diapo n’a pas encore de notes du groupe.' : 'Cette diapo n’a pas encore de note.'); return; }
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe · ' : '') + 'Diapo ' + (n + 1) + ' sur ' + diapos.length + ' · ' + titreDe(diapos[n]) + '\n' + dateLisible() + '\n\n' + x + '\n');
+    dire('Fichier enregistré : ' + nom);
+  }
+  function toutes() {
+    if (tempo) garder();
+    if (source && source.avant) source.avant();
+    const avec = diapos.map((d, i) => ({ i, x: (source ? texteG(i) : texteDe(i)).trim() })).filter(o => o.x), nom = (source ? 'notes-groupe-' : 'notes-') + fichier + '.txt';
+    if (!avec.length) { dire('Aucune note à enregistrer pour l’instant.'); return; }
+    const corps = avec.map(o => '── Diapo ' + (o.i + 1) + ' · ' + titreDe(diapos[o.i]) + '\n\n' + o.x).join('\n\n');
+    telecharger(nom, 'Survol · ' + titreDiapo + '\n' + (source ? 'Notes du groupe, ' : 'Mes notes, ') + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ' sur ' + diapos.length + ' · ' + dateLisible() + '\n\n' + corps + '\n');
+    dire('Fichier enregistré : ' + nom + ' (' + avec.length + ' diapo' + (avec.length > 1 ? 's' : '') + ')');
+  }
+  /* « Copier dans mes notes » : les lignes du groupe de cette diapo, ajoutées à ma note */
+  function copierDansMes() {
+    if (source && source.avant) source.avant();
+    const n = cur(), x = texteG(n).trim(), a = texteDe(n).trim();
+    if (!x) { dire('Cette diapo n’a pas encore de notes du groupe.'); return; }
+    if (a.includes(x)) { dire('Ces lignes sont déjà dans tes notes.'); return; }
+    notes[cles[n]] = { i: n + 1, x: a ? a + '\n\n' + x : x, m: new Date().toISOString() };
+    zone.value = notes[cles[n]].x;
+    dire(ecrire(CLE, JSON.stringify(notes)) ? 'Copié dans tes notes de cette diapo.' : 'Impossible de garder la note ici : enregistre-la en fichier.');
+  }
+
+  /* ouvrir, réduire, et la place : en colonne dès 1200 px (les diapos se redessinent), par-dessus en dessous */
+  const large = matchMedia('(min-width: 1200px)');
+  const memo = lire(CLE_OUVERT);
+  let ouvert = memo === '1' ? true : memo === '0' ? false : large.matches;
+  function placer(focus) {
+    p.hidden = !ouvert;
+    bouton.setAttribute('aria-expanded', String(ouvert));
+    const dock = ouvert && large.matches;
+    document.body.classList.toggle('ns-ouvert', ouvert);
+    if (document.body.classList.contains('ns-dock') !== dock) {
+      document.body.classList.toggle('ns-dock', dock);
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 0);      // le diaporama redessine ses figures à la nouvelle largeur
+    }
+    if (ouvert) { suivre(); if (focus) { if (source && source.focus) source.focus(); else zone.focus(); } }
+  }
+  function basculer(v, focus) { if (!v && tempo) garder(); ouvert = v; ecrire(CLE_OUVERT, v ? '1' : '0'); placer(focus); }
+  bouton.addEventListener('click', e => { e.stopPropagation(); basculer(!ouvert, !ouvert); });
+  p.querySelector('.ns-reduire').addEventListener('click', () => { basculer(false); bouton.focus(); });
+  p.querySelector('[data-ns="une"]').addEventListener('click', une);
+  p.querySelector('[data-ns="toutes"]').addEventListener('click', toutes);
+  copier.addEventListener('click', copierDansMes);
+  sw.addEventListener('click', () => {
+    const on = !source;
+    montrerSource(on ? vivant || copieGardee() : null);
+    if (vivant && vivant.memo) vivant.memo(on);
+    if (on && source && source.focus) source.focus();
+  });
+  /* les touches tapées dans les notes ne font pas avancer le diaporama */
+  p.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); basculer(false); bouton.focus(); }
+    e.stopPropagation();
+  });
+  p.addEventListener('click', e => e.stopPropagation());
+  if (large.addEventListener) large.addEventListener('change', () => placer(false));
+  diapos.forEach(d => new MutationObserver(suivre).observe(d, { attributes: true, attributeFilter: ['hidden'] }));
+  window.addEventListener('pagehide', () => { if (tempo) garder(); });
+
+  ici = -1; suivre(); placer(false);
+  majInterrupteur();
+
+  /* Convergence : suivre le Survol à plusieurs. Tout le groupe vit dans survol-groupe.js, copié à la racine du site et chargé
+     seulement ici : seul·e, aucun appel au relais. Dans Claude il n'y a pas de relais, donc pas de bouton ; si le fichier ne se
+     charge pas, le bouton s'efface et les notes continuent. Un lien ?cv=<salle>, ou un rechargement en plein groupe, le charge. */
+  if (window.claude) return;
+  const cv = document.createElement('button');
+  cv.type = 'button'; cv.className = 'ns-bouton ns-cv'; cv.id = 'ns-cv';
+  cv.title = 'Convergence : suivre ce Survol à plusieurs, chacun sur son appareil';
+  cv.setAttribute('aria-label', cv.title);
+  cv.innerHTML = '<svg viewBox="0 0 26 12" aria-hidden="true"><circle cx="4" cy="6" r="3"/><circle cx="22" cy="6" r="3"/><path d="M7.5 6h11"/></svg><span class="ns-mot">Convergence</span>';
+  const sb = document.createElement('button');
+  sb.type = 'button'; sb.className = 'ns-bouton ns-sablier'; sb.id = 'ns-sablier';
+  sb.title = 'Sablier : des pauses entre les diapos';
+  sb.setAttribute('aria-label', sb.title); sb.setAttribute('aria-haspopup', 'dialog');
+  sb.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3v3c0 3 3.5 4.5 5 6-1.5 1.5-5 3-5 6v3M17 3v3c0 3-3.5 4.5-5 6 1.5 1.5 5 3 5 6v3"/></svg><span class="ns-mot">Sablier</span><span class="ns-temps"></span>';
+  if (haut) { haut.insertBefore(sb, bouton); haut.insertBefore(cv, bouton); } else { document.body.appendChild(sb); document.body.appendChild(cv); }
+  const API = {
+    fichier, diapos, cles, titreDe, titreDiapo, lignes, bouton: cv, sablier: sb, lire, ecrire, cur, dire, majPoint, CLE_G,
+    surDiapo: f => surDiapo.push(f),
+    /* le groupe arrive ou repart : o = sa source, ou null */
+    groupe(o) { vivant = o; if (!o && source && source.vivant) montrerSource(null); majInterrupteur(); },
+    montrer: montrerSource, source: () => source
+  };
+  let chargement = null;
+  function chargerGroupe() {
+    if (!chargement) chargement = new Promise((ok, non) => {
+      const sources = (/^https?:$/.test(location.protocol) ? ['survol-groupe.js'] : []).concat('https://zexonis.github.io/Lumiere/survol-groupe.js');
+      const essai = k => {
+        if (k >= sources.length) { chargement = null; non(new Error('groupe')); return; }
+        const s = document.createElement('script');
+        s.src = sources[k];
+        s.onload = () => { if (window.SurvolGroupe) ok(window.SurvolGroupe.brancher(API)); else essai(k + 1); };
+        s.onerror = () => { s.remove(); essai(k + 1); };
+        document.head.appendChild(s);
+      };
+      essai(0);
+    });
+    return chargement;
+  }
+  const rate = () => { cv.hidden = true; sb.hidden = true; };
+  cv.addEventListener('click', () => chargerGroupe().then(g => g.ouvrir(), rate));
+  sb.addEventListener('click', () => chargerGroupe().then(g => g.sablier(), rate));
+  let salle = '', repris = false;
+  try { salle = (new URLSearchParams(location.search).get('cv') || '').toLowerCase(); repris = !!sessionStorage.getItem('survol-cv:' + fichier); } catch (e) {}
+  let allume = false;
+  try { allume = !!(JSON.parse(lire('lumiere-sablier')) || {}).on; } catch (e) {}
+  if (/^[a-z0-9]{6}$/.test(salle) || repris) chargerGroupe().then(g => g.arriver(salle), rate);
+  else if (allume) chargerGroupe().catch(rate);
+})();
+</script>
+<!-- notes-survol:fin -->
+<script>
+(() => {
+  const ICI = '83235982cb02';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body></html>

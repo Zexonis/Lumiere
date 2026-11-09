@@ -280,8 +280,8 @@ const PAGES = {
     {g:'Guide', t:'Anatomie oculaire UA1', u:'anatomie-oculaire-ua1.html', ua:1, d:'Le guide d’étude de l’UA1.'}
   ],
   to:[
-    {g:'Atelier', t:'Atelier TO M5–M7', u:'atelier-to-m5-m6.html', v:true, ua:2,
-     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre, OCT, caméra rétinienne et pression corrigée. Rappel du jour, guide pas à pas, annotations et tuteur.'}
+    {g:'Atelier', t:'Atelier TO M5–M8', u:'atelier-to-m5-m6.html', v:true, ua:2,
+     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre, OCT, caméra rétinienne, pression corrigée et gouttes diagnostiques. Rappel du jour, guide pas à pas, annotations et tuteur.'}
   ]
 };
 const NOTES_UA1 = [
@@ -601,6 +601,8 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['to-m56'], t:'Le module 8, les gouttes diagnostiques, est arrivé dans l’atelier TO, en 7 écrans : choisis une goutte et regarde ce que font la pupille et l’accommodation, trouve la bonne goutte pour chaque situation, mesure le bris du film à la fluorescéine, remets le protocole dans l’ordre et construis ce que tu dis au patient avant les gouttes.'},
+    {d:'2026-11-09', p:['to-m56'], t:'Le bouton « Survol » de l’atelier TO propose maintenant le module 8 : les gouttes diagnostiques en 23 diapos, environ 17 minutes.'},
     {d:'2026-11-09', p:['*'], t:'Dans l’Arène, tu peux maintenant retourner où tu veux : touche un bloc ou un module sur la carte, même un niveau déjà conquis, et l’Arène reste là au lieu de filer au suivant. Ça marche aussi pendant « Le retour » et le dernier round. En groupe, c’est le meneur qui choisit le bloc pour tout le monde.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
@@ -753,7 +755,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'f4a9938352bb';
+  const ICI = '83235982cb02';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

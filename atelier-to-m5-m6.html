@@ -1,7 +1,7 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Atelier TO M5–M7</title>
+<title>Atelier TO M5–M8</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -615,6 +615,14 @@ td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:now
 .zone-fo{cursor:pointer}
 .zone-fo:focus-visible,.zone-fo.sel{outline:none;stroke:#FFFFFF;stroke-width:2.5}
 .pr-table td.sel{background:var(--accent-soft);font-weight:700}
+
+/* ---------- module 8 (gouttes diagnostiques) ---------- */
+.m8-ex{margin:20px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);max-width:78ch}
+.m8-ex h3{margin:0 0 6px}
+.m8-ex-intro{margin:0 0 8px;color:var(--ink-2);font-size:15px}
+.m8-ex .piege{margin-top:12px}
+#sys-svg,#fl-svg,#an-svg{width:100%;height:auto;display:block}
+#fl-temps{font-variant-numeric:tabular-nums}
 
 /* ======================================================================
    v2 : pas et maîtrise, Rappel du jour, annotations, Vis-le, gestes,
@@ -1650,8 +1658,8 @@ html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
 
 <nav class="rail" id="rail" aria-label="Fil des modules">
   <div class="marque">
-    <p class="eyebrow">Tests ophtalmiques · M5 à M7</p>
-    <h1>Cornée, lunettes, OCT<span>l'atelier</span></h1>
+    <p class="eyebrow">Tests ophtalmiques · M5 à M8</p>
+    <h1>Cornée, rétine, gouttes<span>l'atelier</span></h1>
   </div>
   <div class="avance" aria-live="polite">
     <div class="jauge"><div class="rempli" id="avance-barre" style="width:0%"></div></div>
@@ -1676,9 +1684,9 @@ html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
 <!-- ===================================================================== ACCUEIL -->
 <section class="ecran" data-id="accueil" data-partie="Départ" data-titre="Bienvenue">
   <header class="tete">
-    <p class="eyebrow">Tests ophtalmiques (SAN 0010) · Modules 5, 6 et 7</p>
-    <h2>Mesurer la cornée, lire les lunettes, photographier la rétine</h2>
-    <p class="chapeau">Les trois modules tiennent en une idée : <b>l'assistant recueille des mesures et des images fiables (la courbure de la cornée, la puissance des lunettes, le fond de l'œil, les couches de la rétine), les transcrit sans erreur et signale ce qui cloche ; il ne pose pas de diagnostic</b> <span class="deduit">déduit</span>. Cet atelier te fait parcourir les trois modules en 25 écrans courts.</p>
+    <p class="eyebrow">Tests ophtalmiques (SAN 0010) · Modules 5 à 8</p>
+    <h2>Mesurer la cornée, lire les lunettes, photographier la rétine, instiller les gouttes</h2>
+    <p class="chapeau">Les quatre modules tiennent en une idée : <b>l'assistant recueille des mesures et des images fiables (la courbure de la cornée, la puissance des lunettes, le fond de l'œil, les couches de la rétine), les transcrit sans erreur et signale ce qui cloche ; il ne pose pas de diagnostic</b> <span class="deduit">déduit</span>. Le module 8 donne les gouttes qui préparent l'œil à ces mesures : ce que chacune fait, pourquoi on la met, et comment la mettre. Cet atelier te fait parcourir les quatre modules en 32 écrans courts.</p>
   </header>
 
   <div class="questions-ouvertes">
@@ -1702,10 +1710,15 @@ html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
       <blockquote>« Le technicien garantit la qualité technique »</blockquote>
       <button type="button" class="btn" data-aller="camera">La caméra rétinienne →</button>
     </div>
+    <div class="carte-q">
+      <p class="lib">Module 8 · <span class="src">8.1-d2</span></p>
+      <blockquote>« Comprendre leurs mécanismes d’action et leurs usages cliniques »</blockquote>
+      <button type="button" class="btn" data-aller="systemes">Deux systèmes, trois muscles →</button>
+    </div>
   </div>
 
   <div class="bloc">
-    <p class="lib">Les sept idées des trois modules : tout le reste en découle</p>
+    <p class="lib">Les huit idées des quatre modules : tout le reste en découle</p>
     <div class="idees">
       <div class="idee" style="--c:var(--accent)"><h4>1 · La cornée est un miroir</h4><p>mires → reflet sur la cornée (miroir convexe) → taille du reflet → rayon r.</p></div>
       <div class="idee" style="--c:var(--accent)"><h4>2 · ① Du rayon à la puissance</h4><p>D = (1,3375 − 1) / r, r en mètres : petit rayon, grande puissance.</p></div>
@@ -1714,6 +1727,7 @@ html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
       <div class="idee" style="--c:var(--os)"><h4>5 · Le kératocône</h4><p>le stroma s'amincit → cône → astigmatisme irrégulier → topographie, puis lentilles rigides.</p></div>
       <div class="idee" style="--c:var(--od)"><h4>6 · Lunettes et OCT</h4><p>Rx : sph cyl x axe (add) · mesurer la lunette actuelle · l'OCT fait une coupe de l'œil en lumière infrarouge.</p></div>
       <div class="idee" style="--c:var(--accent)"><h4>7 · Une image fiable</h4><p>photo à travers la pupille · OCT : la fovéa et la papille, OD et OS · ⑦ la pression corrigée selon l'épaisseur · un artefact se reprend, 2 photos au plus.</p></div>
+      <div class="idee" style="--c:var(--od)"><h4>8 · Les gouttes</h4><p>bloquer le parasympathique : pupille grande et plus d'accommodation · stimuler le sympathique : pupille seule · l'anesthésique coupe les nerfs · la fluorescéine colore les larmes · protocole et consentement d'abord.</p></div>
     </div>
   </div>
 
@@ -1738,14 +1752,14 @@ html.entree-ouverte,html.entree-ouverte body{overflow:hidden}
       <div class="legende-codes">
         <span>« … »</span><span>les mots exacts de la prof, fautes comprises, marquées <span class="sic">(sic)</span>.</span>
         <span><span class="deduit">déduit</span></span><span>un lien qui découle des diapos, mais qu'elles ne font pas elles-mêmes.</span>
-        <span><span class="src">5.1-d32</span></span><span>deck et diapo. <b>5.1</b> kératométrie · <b>5.2</b> exercices · <b>5.3</b> topographe · <b>CM5</b> cartes mystères · <b>AK5</b> activité · <b>6.1</b> kératocône · <b>6.2</b> éléments d'une Rx · <b>6.3</b> lentimètre · <b>SC6</b> situations cliniques · <b>6.4</b> OCT · <b>7.1</b> caméra rétinienne · <b>7.2</b> OCT (suite) · <b>7.3</b> artefacts.</span>
+        <span><span class="src">5.1-d32</span></span><span>deck et diapo. <b>5.1</b> kératométrie · <b>5.2</b> exercices · <b>5.3</b> topographe · <b>CM5</b> cartes mystères · <b>AK5</b> activité · <b>6.1</b> kératocône · <b>6.2</b> éléments d'une Rx · <b>6.3</b> lentimètre · <b>SC6</b> situations cliniques · <b>6.4</b> OCT · <b>7.1</b> caméra rétinienne · <b>7.2</b> OCT (suite) · <b>7.3</b> artefacts · <b>8.1</b> gouttes diagnostiques.</span>
         <span><span class="hors">hors cours</span></span><span>un ajout qui n'est pas dans les fichiers du cours.</span>
       </div>
     </div>
   </div>
 
   <div class="astuce">
-    <b>L'examen.</b> Examen UA2 : lundi 16 novembre 2026 à 10h00, 31 % de la note (planificateur). Format pas encore annoncé ; l'UA1 était « eCité QCM ». L'OCT et les éléments d'une Rx, prévus plus tard dans le plan, ont été donnés au module 6 : ils sont dans la matière, comme la caméra rétinienne, la suite de l'OCT et les artefacts du module 7.
+    <b>L'examen.</b> Examen UA2 : lundi 16 novembre 2026 à 10h00, 31 % de la note (planificateur). Format pas encore annoncé ; l'UA1 était « eCité QCM ». L'OCT et les éléments d'une Rx, prévus plus tard dans le plan, ont été donnés au module 6 : ils sont dans la matière, comme la caméra rétinienne, la suite de l'OCT et les artefacts du module 7. Le module 8 (9 novembre), les gouttes diagnostiques, est le dernier cours avant l'examen.
   </div>
 
   <div class="ctrl" style="margin-top:22px">
@@ -3158,10 +3172,436 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
   </div>
 </section>
 
-<!-- ===================================================================== CARTES -->
-<section class="ecran" data-id="cartes" data-partie="9 · Révision" data-titre="Rappel du jour">
+<!-- ===================================================================== MODULE 8 · LES GOUTTES DIAGNOSTIQUES -->
+<section class="ecran" data-id="systemes" data-partie="9 · Gouttes : deux systèmes (M8)" data-titre="Deux systèmes, trois muscles">
   <header class="tete">
-    <p class="eyebrow">Partie 9 · Révision</p>
+    <p class="eyebrow">Partie 9 · Les gouttes diagnostiques · deck 8.1</p>
+    <h2>Deux systèmes, trois muscles</h2>
+    <p class="chapeau">« Le sphincter et le dilatateur de l’iris contrôlent la taille de la pupille » ; « Le corps ciliaire contrôle l’accommodation » <span class="src">8.1-d7</span>. Chaque goutte qui dilate bloque un système ou stimule l'autre : de là, tu déduis ce qu'elle fait et ce qu'elle cause.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« Notre système parasympathique encourage nos pupilles de rétrécir (somnolence, repos). Notre système sympathique a l’effet contraire avec dilatation de la pupille (alerte, éveillé). » <span class="src">8.1-d12</span></p>
+    <p>Le sphincter « forme un cercle autour de la pupille », le dilatateur « forme des lignes radiaires » <span class="src">8.1-d8</span> : le cercle se serre, les rayons tirent <span class="deduit">déduit</span>. Le parasympathique commande le sphincter et le corps ciliaire, le sympathique le dilatateur <span class="src">8.1-d18, d25</span>.</p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">L'iris en simulation · choisis la goutte, puis regarde la pupille et l'accommodation</p>
+    <div class="duo">
+      <figure class="fig"><svg id="sys-svg" viewBox="0 0 420 250" role="img" aria-label="L'iris vu de face, avec le sphincter, le dilatateur et le corps ciliaire"></svg>
+        <figcaption>Simulation dessinée pour l'atelier : cyan = parasympathique (sphincter, corps ciliaire), orange = sympathique (dilatateur). Les tailles sont schématiques.</figcaption></figure>
+      <div>
+        <div class="puces" id="sys-ag" role="group" aria-label="Goutte instillée" style="flex-direction:column;align-items:stretch">
+          <button type="button" class="puce" data-a="repos" aria-pressed="true">Aucune goutte (repos)</button>
+          <button type="button" class="puce" data-a="tro">Tropicamide : bloque le parasympathique</button>
+          <button type="button" class="puce" data-a="cyc">Cyclopentolate : bloque le parasympathique, surtout le corps ciliaire</button>
+          <button type="button" class="puce" data-a="phe">Phényléphrine seule : stimule le sympathique</button>
+          <button type="button" class="puce" data-a="deux">Tropicamide + phényléphrine</button>
+        </div>
+        <label class="case"><input type="checkbox" id="sys-age"> Patiente de 70 ans (le dilatateur s'atrophie)</label>
+        <div class="situation" id="sys-etat" style="margin-top:10px" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-wrap"><table>
+    <thead><tr><th>La goutte</th><th>Ce qu'elle fait</th><th>Les muscles</th><th>Les effets secondaires</th></tr></thead>
+    <tbody>
+      <tr><td>Tropicamide, cyclopentolate, atropine</td><td>« blocage du système parasympathique » <span class="src">8.1-d18</span></td><td>sphincter relâché + corps ciliaire relâché : mydriase et cycloplégie</td><td>« éblouissement avec la lumière, vision de près floue, risque de bloquer l’évaculation <span class="sic">(sic)</span> de l’humeur aqueuse chez les patients susceptibles » <span class="src">8.1-d18</span></td></tr>
+      <tr><td>Phényléphrine</td><td>« stimulation du système sympathique (adrénergique) » <span class="src">8.1-d22</span></td><td>dilatateur contracté : mydriase seule ; « Ils n’ont pas d’effet sur l’accommodation » <span class="src">8.1-d25</span></td><td>« photophobie, hypertension possible » <span class="src">8.1-d22</span> ; « peut provoquer des arythmies cardiaques » <span class="src">8.1-d27</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="duo egal" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">D'où viennent les effets · <span class="deduit">déduit</span></p>
+      <ul style="margin:0;padding-left:20px">
+        <li>pupille grande → éblouissement</li>
+        <li>corps ciliaire relâché → vision de près floue</li>
+        <li>et le cours ajoute : « Très rarement une dilatation pupillaire bloque le passage de l’humeur aqueuse dans des individus susceptibles anatomiquement. » <span class="src">8.1-d10</span></li>
+        <li>phényléphrine : « Risques de phenyléphrine (augmente les effets sur le système sympathique) » <span class="src">8.1-d27</span> → la tension, les arythmies ; le sympathique « accélère le coeur » (figure de 8.1-d12). Le deck n'explique pas la hausse de tension.</li>
+      </ul>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Pourquoi on associe les deux · <span class="src">8.1-d25</span></p>
+      <p style="margin:0">« Pour le control <span class="sic">(sic)</span> de la taille de la pupille, le système parasympathique remporte alors l’utilisation de phenyléphrine seul ne réussit pas à bien dilater la pupille » : on l'ajoute au tropicamide quand on veut une dilatation « plus prononcée ou de plus longue durée » <span class="src">8.1-d22</span>.</p>
+    </div>
+  </div>
+
+  <div class="m8-ex">
+    <h3>Exemple résolu · Mme L., 62 ans, petites pupilles, fond d'œil demandé</h3>
+    <p class="m8-ex-intro">Cas construit pour l'atelier ; les valeurs sont celles du cours <span class="src">8.1-d16, d20, d22, d25</span>.</p>
+    <ol class="liste-num">
+      <li>Elle a « 50 ans+ » et de « Petites pupilles » : pour bien voir le pôle postérieur, on dilate <span class="src">8.1-d16</span>.</li>
+      <li>Tropicamide (Mydriacyl), « Une goutte par œil » ; l'effet arrive « dans environ 20 minutes » <span class="src">8.1-d20</span>.</li>
+      <li>Ses pupilles restent petites : la phényléphrine 2,5 % (Mydfrin) est « Ajouté au tropicamide pour un examen du fond d’œil » <span class="src">8.1-d22</span>, parce que seule elle « ne réussit pas à bien dilater » <span class="src">8.1-d25</span>.</li>
+      <li>Ce qu'on lui annonce, muscle par muscle : l'éblouissement, la vision de près floue, « habituellement durer 5-6 heures », jusqu'à 24 heures si elle est sensible <span class="src">8.1-d20</span>.</li>
+    </ol>
+    <p class="piege">« Certains patients peuvent être sensibles alors on utilise avec soin » <span class="src">8.1-d27</span> : la phényléphrine monte la tension. Les contre-indications, c'est l'optométriste qui les revoit avant les gouttes <span class="src">8.1-d32</span>.</p>
+  </div>
+
+  <div class="astuce"><b>Le piège du mot.</b> « Mydriatique » ne veut pas dire « cycloplégique ». Le tropicamide, le cyclopentolate et l'atropine font les deux <span class="src">8.1-d18</span> ; la phényléphrine ne fait que dilater <span class="src">8.1-d25</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="b" data-explique="« blocage du système parasympathique avec relaxation du muscle sphincteur (sic) de la pupille et relaxation du muscle du corps ciliaire » (8.1-d18) : mydriase et cycloplégie.">
+      <p>Le tropicamide relâche…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">le dilatateur seulement</button><button type="button" class="puce" data-v="b">le sphincter et le corps ciliaire</button><button type="button" class="puce" data-v="c">le sphincter seulement</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« le système parasympathique remporte » (8.1-d25) : on combine avec le tropicamide pour une dilatation supérieure.">
+      <p>La phényléphrine seule dilate mal parce que…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">elle agit trop lentement</button><button type="button" class="puce" data-v="b">elle relâche le corps ciliaire</button><button type="button" class="puce" data-v="c">le parasympathique garde la main</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="Corps ciliaire relâché : plus d'accommodation. Seuls les bloqueurs du parasympathique le font (8.1-d18) ; la phényléphrine n'a « pas d’effet sur l’accommodation » (8.1-d25).">
+      <p>Après une goutte, un patient voit flou de près. Quelle goutte peut l'expliquer ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">le tropicamide</button><button type="button" class="puce" data-v="b">la phényléphrine</button><button type="button" class="puce" data-v="c">l'Alcaine</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="pourquoi" data-partie="9 · Gouttes : deux systèmes (M8)" data-titre="Pourquoi dilater">
+  <header class="tete">
+    <p class="eyebrow">Partie 9 · Les gouttes diagnostiques · deck 8.1</p>
+    <h2>Pourquoi dilater</h2>
+    <p class="chapeau">« Les informations lors de plusieurs prétests entrent par le biais de la pupille » <span class="src">8.1-d15</span>. Au module 7, une pupille trop petite donnait une photo sombre ou noire : voici quand et pourquoi on dilate.</p>
+  </header>
+
+  <div class="bloc">
+    <p class="lib">Quatre raisons · <span class="src">8.1-d13–d16</span></p>
+    <ol class="liste-num">
+      <li>« Pour voie <span class="sic">(sic)</span> l’extreme périphérique de la rétine dans certains cas »</li>
+      <li>« On veut parfois voir la zone entre l’équateur et la fin du corps ciliaire »</li>
+      <li>« Les informations lors de plusieurs prétests entrent par le biais de la pupille »</li>
+      <li>« Dans beaucoup de cas on souhaite une meilleure vue du pole <span class="sic">(sic)</span> postérieur » : « Personnes 50 ans+ », « Petites pupilles », « Opacités du cristallin », « Plus tendance à avoir des maladies oculaires et circulatoires et on veut une vue optimale du fond d’oeil »</li>
+    </ol>
+  </div>
+
+  <div class="duo egal" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Petites pupilles avec l'âge · <span class="src">8.1-d17</span></p>
+      <ul style="margin:0;padding-left:20px">
+        <li>« Le muscle dilatateur s’atrophie avec l’âge plus que le sphincter »</li>
+        <li>« Le système sympathique devient moins efficace tandis <span class="sic">(sic)</span> le système parasympathique change moins »</li>
+        <li>« Effet secondaire de certains médiments <span class="sic">(sic)</span> tel opiodes <span class="sic">(sic)</span>, sédatifs, antipsychotiques »</li>
+      </ul>
+      <p style="margin:8px 0 0">C'est la règle des deux systèmes : le côté qui ouvre faiblit, la pupille rapetisse <span class="deduit">déduit</span>. Coche « 70 ans » dans la simulation de l'écran précédent pour le voir.</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Le lien avec la caméra · <span class="src">7.1-d17</span></p>
+      <p style="margin:0">« Si la pupille est trop petite, la photo sera sombre ou noire. Parfois on doit utiliser des gouttes pour dilater les pupilles afin d’avoir une image utilisable » : ce module te donne ces gouttes.</p>
+    </div>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="a" data-explique="« Le muscle dilatateur s’atrophie avec l’âge plus que le sphincter » ; « Le système sympathique devient moins efficace » (8.1-d17).">
+      <p>Avec l'âge, la pupille rapetisse parce que…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">le dilatateur et le sympathique faiblissent</button><button type="button" class="puce" data-v="b">le sphincter s'atrophie</button><button type="button" class="puce" data-v="c">le cristallin devient opaque</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="« On veut parfois voir la zone entre l’équateur et la fin du corps ciliaire » (8.1-d14) : la périphérie extrême, cachée derrière l'iris sans dilatation.">
+      <p>La dilatation sert parfois à voir…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">la cornée</button><button type="button" class="puce" data-v="b">la zone entre l'équateur et la fin du corps ciliaire</button><button type="button" class="puce" data-v="c">le film lacrymal</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="agents" data-partie="9 · Gouttes : deux systèmes (M8)" data-titre="Quelle goutte, pour quoi ?">
+  <header class="tete">
+    <p class="eyebrow">Partie 9 · Les gouttes diagnostiques · deck 8.1</p>
+    <h2>Quelle goutte, pour quoi ?</h2>
+    <p class="chapeau">« Identifier les principales classes de gouttes diagnostiques : mydriatiques, cycloplégiques, anesthésiques topiques » <span class="src">8.1-d2</span>. Chaque goutte se choisit par ce qu'on veut obtenir.</p>
+  </header>
+
+  <div class="tab-wrap"><table>
+    <thead><tr><th>Agent (nom de commerce)</th><th>Classe</th><th>Concentration</th><th>Début</th><th>Durée</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td>Tropicamide (Mydriacyl)</td><td>bloque le parasympathique</td><td>« 0.5% ou 1% »</td><td>« dans environ 20 minutes »</td><td>« 5-6 heures », « jusqu’à 24 heures » si sensible</td><td>« le plus fréquemment en pratique optométrie » : l'effet est rapide <span class="src">8.1-d20</span></td></tr>
+      <tr><td>Cyclopentolate (Cyclogyl)</td><td>bloque le parasympathique, « surtout » le corps ciliaire</td><td>« 1% »</td><td>« 30-45 minutes »</td><td>« 24 heures ou plus chez certains enfants »</td><td>« l’agent le plus souvent utilisé chez les enfants » : réfraction <span class="src">8.1-d23</span></td></tr>
+      <tr><td>Atropine</td><td>bloque le parasympathique</td><td>1 % ; « 0.05% »</td><td>—</td><td>« jusqu’à 2 semaines »</td><td>« rarement utilisé pour fins diagnostiques » ; la dose diluée chez les jeunes myopes <span class="src">8.1-d19</span></td></tr>
+      <tr><td>Phényléphrine (Mydfrin)</td><td>stimule le sympathique</td><td>« 2,5 %, 10 % »</td><td>—</td><td>« 2-6 heures »</td><td>« Ajouté au tropicamide » <span class="src">8.1-d22, d27</span></td></tr>
+      <tr><td>Proparacaïne (Alcaine)</td><td>anesthésique topique</td><td>0,5 % (image)</td><td>« à l’intérieur d’une minute »</td><td>« 15-20 minutes »</td><td>pression, abrasions, corps étrangers <span class="src">8.1-d28, d30</span></td></tr>
+      <tr><td>Fluorescéine</td><td>« colorant organique »</td><td>bandelette (image)</td><td>—</td><td>—</td><td>film, cornée, lentille rigide, tonométrie <span class="src">8.1-d36–d40</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bloc">
+    <p class="lib">Quelle goutte ? · un besoin, tu choisis</p>
+    <div class="situation" id="ag-situation"></div>
+    <div class="puces" id="ag-choix" style="margin-top:10px"></div>
+    <p class="retour" id="ag-retour" aria-live="polite"></p>
+    <div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="ag-suivant">Autre besoin</button> <span class="lib" id="ag-compte"></span></div>
+  </div>
+
+  <div class="astuce"><b>Deux débuts à ne pas confondre.</b> Le tropicamide agit « dans environ 20 minutes » ; le cyclopentolate, « après 30-45 minutes », et dure plus longtemps chez l'enfant <span class="src">8.1-d20, d23</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">trois questions</p>
+    <div class="qcm" data-bon="c" data-explique="« Cyclopentolate (Cyclogyl) est l’agent le plus souvent utilisé chez les enfants » ; « pour réduire l’accommodation et assurer une réfraction plus précise » (8.1-d23).">
+      <p>Réfraction d'un enfant de 6 ans : la goutte la plus souvent utilisée ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">le tropicamide</button><button type="button" class="puce" data-v="b">la phényléphrine</button><button type="button" class="puce" data-v="c">le cyclopentolate</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="Mydriacyl est le nom de commerce du tropicamide (8.1-d20, d21) ; Cyclogyl, du cyclopentolate ; Mydfrin, de la phényléphrine.">
+      <p>Mydriacyl, c'est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">la phényléphrine</button><button type="button" class="puce" data-v="b">le tropicamide</button><button type="button" class="puce" data-v="c">le cyclopentolate</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="a" data-explique="« Atropine 1% est rarement utilisé pour fins diagnostiques. Elle a une durée très longue (jusqu’à 2 semaines) » (8.1-d19).">
+      <p>L'atropine 1 % est rare en examen parce que…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">son effet peut durer jusqu'à 2 semaines</button><button type="button" class="puce" data-v="b">elle ne dilate pas</button><button type="button" class="puce" data-v="c">elle doit rester au réfrigérateur</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="anesthesie" data-partie="10 · Anesthésique et fluorescéine (M8)" data-titre="L'anesthésique topique">
+  <header class="tete">
+    <p class="eyebrow">Partie 10 · Anesthésique et fluorescéine · deck 8.1</p>
+    <h2>L'anesthésique topique</h2>
+    <p class="chapeau">« Les médicaments qui finissent avec –aine ou –caine sont des anesthétiques. Ils empêchent la transmission d’impulses <span class="sic">(sic)</span> nerveux. » <span class="src">8.1-d28</span> Il agit sur les nerfs, pas sur les muscles : la pupille ne bouge pas, mais on peut toucher la cornée.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« On les utilise en soins oculaires pour mesurer la pression intraoculaire, examiner des conditions douloureuses comme des abrasions sur la cornée ou enlever des corps étrangers sur la cornée. » <span class="src">8.1-d28</span></p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">La ligne du temps · <span class="src">8.1-d28</span></p>
+    <figure class="fig"><svg id="an-svg" viewBox="0 0 420 130" role="img" aria-label="Après la goutte : anesthésie en moins d'une minute, pendant 15 à 20 minutes, et parfois un œil sec plus longtemps"></svg>
+      <figcaption>« L’anesthésie a lieu à l’intérieur d’une minute après instillation et la durée est de 15-20 minutes. »</figcaption></figure>
+    <p style="margin:8px 0 0">« La sensation de vouloir cligner est réduite pendant ce temps alors parfois les patients ont une sensation de yeux secs qui peut durer plus longtemps que 20 minutes. »</p>
+  </div>
+
+  <div class="duo egal" style="margin-top:20px">
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">Alcaine · <span class="src">8.1-d28, d30</span></p>
+      <p style="margin:0">« Proparacaine HCl(alcaine) est utilisé le plus souvent en clinique. » « Cet agent est le plus facilement toléré. Se conserve au réfrigérateur »</p>
+    </div>
+    <div class="bloc" style="margin-top:0">
+      <p class="lib">L'unidose · <span class="src">8.1-d31</span></p>
+      <p style="margin:0">Une tétracaïne 1 % en unidoses (nom lu sur l'image) : « Cet agent est disponible en unidoses qui ne doivent pas etre <span class="sic">(sic)</span> réfrigérés mais elle est moins bien tolérée (oeil irrité) »</p>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Que fais-tu ? · <span class="src">8.1-d28</span></p>
+    <div class="situation"><p style="margin:0">Tu viens d'instiller l'Alcaine pour enlever un corps étranger. Soulagé, le patient demande : « Je peux garder le flacon pour ce soir ? »</p></div>
+    <div class="puces" id="an-choix" style="flex-direction:column;align-items:stretch;margin-top:10px">
+      <button type="button" class="puce" data-c="a" style="text-align:left;border-radius:10px">Tu lui donnes : il aura moins mal.</button>
+      <button type="button" class="puce" data-c="b" style="text-align:left;border-radius:10px">Tu refuses : trop en mettre abîme l'épithélium de la cornée.</button>
+      <button type="button" class="puce" data-c="c" style="text-align:left;border-radius:10px">Tu lui donnes, en lui disant de le garder au réfrigérateur.</button>
+    </div>
+    <p class="retour" id="an-retour" aria-live="polite"></p>
+  </div>
+
+  <div class="m8-ex">
+    <h3>Exemple résolu · un corps étranger sur la cornée</h3>
+    <p class="m8-ex-intro">L'image du cours le dit : « Proparacaine 0.5% to anesthetize cornea before attempted FB removal. » <span class="src">8.1-d30</span></p>
+    <ol class="liste-num">
+      <li>Une goutte d'Alcaine, sortie du réfrigérateur <span class="src">8.1-d30, d33</span>.</li>
+      <li>Moins d'une minute plus tard, l'œil est insensible, pour 15 à 20 minutes <span class="src">8.1-d28</span>.</li>
+      <li>Après : prévenir que l'œil peut sembler sec plus de 20 minutes, parce qu'il cligne moins <span class="src">8.1-d28</span>. La légende de l'image ajoute : « Anesthetizing both eyes is helpful, as it eliminates reflex blinking. »</li>
+    </ol>
+    <p class="piege">« Ne pas remettre au patient parce qu’une sur-utilisation crée une toxicité au niveau de l’épithélium » <span class="src">8.1-d28</span></p>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="b" data-explique="« La sensation de vouloir cligner est réduite pendant ce temps alors parfois les patients ont une sensation de yeux secs » (8.1-d28).">
+      <p>Après l'anesthésique, l'œil semble sec parce que…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">la goutte assèche les larmes</button><button type="button" class="puce" data-v="b">le patient cligne moins</button><button type="button" class="puce" data-v="c">la pupille est dilatée</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« L’anesthésie a lieu à l’intérieur d’une minute après instillation et la durée est de 15-20 minutes. » (8.1-d28)">
+      <p>L'Alcaine agit en… et dure…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">20 minutes ; 5 à 6 heures</button><button type="button" class="puce" data-v="b">30 à 45 minutes ; 24 heures</button><button type="button" class="puce" data-v="c">moins d'une minute ; 15 à 20 minutes</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="fluo" data-partie="10 · Anesthésique et fluorescéine (M8)" data-titre="La fluorescéine">
+  <header class="tete">
+    <p class="eyebrow">Partie 10 · Anesthésique et fluorescéine · deck 8.1</p>
+    <h2>La fluorescéine</h2>
+    <p class="chapeau">« Fluorescéine est un colorant organique utilisé fréquemment en optométrie et par les opticiens. » <span class="src">8.1-d36</span> Elle colore les larmes ; sous la lumière bleue, on voit le film, la cornée, la lentille et les mires.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« Coloration de la phase aqueuse dans le film lachrymal <span class="sic">(sic)</span> et on observe le temps écoulé avant le bris du film. Ceci veut dire que la couche de lipide et la couche aqueuse sont évaporées » <span class="src">8.1-d37</span></p>
+    <p>Le film à trois couches est celui de l'Anatomie (M6) : la couche lipidique freine l'évaporation ; quand elle et l'aqueuse se sont évaporées, le film se rompt <span class="deduit">déduit</span>.</p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Le bris du film, en simulation · cligne, puis arrête le compteur à la première tache sèche</p>
+    <div class="duo">
+      <figure class="fig"><svg id="fl-svg" viewBox="0 0 300 220" role="img" aria-label="La cornée colorée à la fluorescéine sous lumière bleue"></svg>
+        <figcaption>Simulation dessinée pour l'atelier. Les secondes sont inventées : le cours ne donne pas de valeur normale.</figcaption></figure>
+      <div>
+        <div class="ctrl"><button type="button" class="btn" id="fl-cligne">Cligner</button> <button type="button" class="btn" id="fl-stop">Je vois une tache sèche</button></div>
+        <p class="lecture" id="fl-temps" style="font-size:1.6em;margin:12px 0 4px">0,0 s</p>
+        <p class="retour" id="fl-retour" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Quatre usages · <span class="src">8.1-d37–d40</span></p>
+    <div class="tab-wrap" style="margin-top:0"><table>
+      <thead><tr><th>Usage</th><th>Ce qu'on voit</th></tr></thead>
+      <tbody>
+        <tr><td>Le bris du film</td><td>le temps avant la première tache sèche <span class="src">8.1-d37</span></td></tr>
+        <tr><td>La cornée</td><td>« On utilise avec lumière bleue pour mettre en évidence des zones de sécheresse ou des égratignures sur la cornée. » <span class="src">8.1-d38</span></td></tr>
+        <tr><td>La lentille rigide</td><td>« pour colorer les larmes pour mieux visualiser l’ajustement d’un verre de contacte <span class="sic">(sic)</span> rigide » <span class="src">8.1-d39</span></td></tr>
+        <tr><td>La tonométrie</td><td>« Voici les mires d’un tonomètre applanation <span class="sic">(sic)</span> (Goldmann ou Perkins). On utilise un mélange d’anesthésie et fluorescéine » <span class="src">8.1-d40</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="astuce"><b>Aplanation ou jet d'air.</b> Le tonomètre Goldmann ou Perkins touche la cornée, d'où l'anesthésique (« tonométrie quand on doit toucher la surface de l’oeil » <span class="src">8.1-d3</span>) ; la fluorescéine colore les larmes, d'où les mires vertes <span class="src">8.1-d40</span> <span class="deduit">déduit</span>. Le NCT de l'UA1, « non-contact tonometer », aplatit la cornée avec « un jet d’air » <span class="src">3.2-d9</span> : pas d'anesthésique <span class="deduit">déduit</span>.</div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="a" data-explique="« Coloration de la phase aqueuse dans le film lachrymal (sic) » (8.1-d37).">
+      <p>La fluorescéine colore…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">la phase aqueuse des larmes</button><button type="button" class="puce" data-v="b">la couche lipidique</button><button type="button" class="puce" data-v="c">l'iris</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="« On utilise un mélange d’anesthésie et fluorescéine » (8.1-d40) : l'anesthésique parce que le tonomètre touche la cornée, la fluorescéine pour voir ses mires.">
+      <p>Pour la tonométrie Goldmann, on met…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">du tropicamide</button><button type="button" class="puce" data-v="b">un anesthésique et de la fluorescéine</button><button type="button" class="puce" data-v="c">rien : c'est un jet d'air</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="protocole" data-partie="11 · Instiller (M8)" data-titre="Avant et pendant l'instillation">
+  <header class="tete">
+    <p class="eyebrow">Partie 11 · Instiller · deck 8.1</p>
+    <h2>Avant et pendant l'instillation</h2>
+    <p class="chapeau">« Avant d’instiller les gouttes idéalement on suit ce protocol <span class="sic">(sic)</span> en optométrie (selon l’ordre des optométristes) » <span class="src">8.1-d32</span>. Puis cinq règles de sécurité <span class="src">8.1-d33</span>.</p>
+  </header>
+
+  <div class="bloc">
+    <p class="lib">Remets le protocole dans l'ordre · touche les étapes de la première à la dernière</p>
+    <div class="puces" id="pr-pool" style="flex-direction:column;align-items:stretch"></div>
+    <ol class="liste-num" id="pr-rang" style="margin-top:10px"></ol>
+    <p class="retour" id="pr-retour" aria-live="polite"></p>
+    <div class="ctrl"><button type="button" class="btn" id="pr-refaire">Recommencer</button></div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Pourquoi cet ordre · <span class="deduit">déduit</span></p>
+    <p style="margin:0">On mesure l'acuité avant que la goutte ne brouille la vision de près <span class="src">8.1-d18</span>. L'optométriste regarde l'angle parce qu'une dilatation peut, « Très rarement », bloquer l'humeur aqueuse <span class="src">8.1-d10</span>. Pour la tonométrie, le deck ne donne pas de raison (voir « À vérifier »).</p>
+  </div>
+
+  <div class="tab-wrap"><table>
+    <thead><tr><th>Règle</th><th>Le cours</th></tr></thead>
+    <tbody>
+      <tr><td>Les mains</td><td>« On se lave les mains. De preference <span class="sic">(sic)</span> avec savon et eau parce que l’alcool isopropyl est irritant pour la surface de l’oeil. Si on utilise l’alcool, laisse sécher complètement »</td></tr>
+      <tr><td>L'asepsie</td><td>« Utiliser une technique aseptique en ne touchant pas les cils ou la paupière du patient. Nous allons pratiquer ceci en laboratoire »</td></tr>
+      <tr><td>La conservation</td><td>« Conserver selon les recommandations du fabricant (Alcaine au réfrigérateur) »</td></tr>
+      <tr><td>Le doute</td><td>« Vérifier les contre-indications avec l’optométriste ou ophtalmologiste si on est pas certain que le produit est avisé pour un patient »</td></tr>
+      <tr><td>Le dossier</td><td>« Noter les collyres administrés dans le dossier du patient et l’heure »</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bloc">
+    <p class="lib">Trouve l'erreur · <span class="src">8.1-d33</span></p>
+    <div class="situation" id="er-situation"></div>
+    <div class="puces" id="er-choix" style="flex-direction:column;align-items:stretch;margin-top:10px"></div>
+    <p class="retour" id="er-retour" aria-live="polite"></p>
+    <div class="ctrl" style="margin-top:10px"><button type="button" class="btn" id="er-suivant">Autre situation</button></div>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="c" data-explique="Étapes 1 et 2 : « Acuité visuelle (prétests) », « Tonométrie » ; les gouttes viennent en dernier (8.1-d32).">
+      <p>La première étape du protocole ?</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">placer les gouttes</button><button type="button" class="puce" data-v="b">regarder l'angle à la lampe à fente</button><button type="button" class="puce" data-v="c">l'acuité visuelle</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="b" data-explique="« Noter les collyres administrés dans le dossier du patient et l’heure » (8.1-d33).">
+      <p>Au dossier, tu notes…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">le nom du collyre seulement</button><button type="button" class="puce" data-v="b">le collyre et l'heure</button><button type="button" class="puce" data-v="c">rien : c'est l'optométriste qui note</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="ecran" data-id="consentement" data-partie="11 · Instiller (M8)" data-titre="Le consentement pour les gouttes">
+  <header class="tete">
+    <p class="eyebrow">Partie 11 · Instiller · deck 8.1</p>
+    <h2>Le consentement pour les gouttes</h2>
+    <p class="chapeau">« Consentement explicite est préférable » <span class="src">8.1-d35</span>. À l'UA1, « Instiller des gouttes » figurait déjà parmi les « Exemples de traitements par opticiens et optométristes » <span class="src">2.2-d4</span> : on explique, puis on demande un oui.</p>
+  </header>
+
+  <div class="lecon">
+    <p class="regle">« On explique pourquoi on administre les gouttes. On explique les avantages et aussi les conséquences de ne pas mettre les gouttes. On explique les effets secondaires. On laisse la chance de poser des questions. » « Puis on demande : C’est donc correct que je vous mets <span class="sic">(sic)</span> ces gouttes? » <span class="src">8.1-d35</span></p>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Construis ce que tu dis · touche les phrases dans l'ordre ; trois sont à laisser de côté</p>
+    <div class="puces" id="co-pool" style="flex-direction:column;align-items:stretch"></div>
+    <ol class="liste-num" id="co-rang" style="margin-top:10px"></ol>
+    <p class="retour" id="co-retour" aria-live="polite"></p>
+    <div class="ctrl"><button type="button" class="btn" id="co-refaire">Recommencer</button></div>
+  </div>
+
+  <div class="bloc">
+    <p class="lib">Les éléments du consentement éclairé · <span class="src">8.1-d34</span></p>
+    <ul style="margin:0;padding-left:20px">
+      <li>« Expliquer la raison de chaque collyre avant l’instillation »</li>
+      <li>« Prévenir des effets secondaires temporaires : vision floue pendant quelques heures surtout chez les plus jeunes, sensibilité à la lumière, inconfort avec instillation initiale »</li>
+      <li>« Discuter les alternatives (remettre à une prochaine visite par exemple si ce n’est pas une urgence) »</li>
+      <li>« Répondre aux questions »</li>
+    </ul>
+  </div>
+
+  <div class="m8-ex">
+    <h3>Exemple résolu · Léo, 6 ans, réfraction sous cyclopentolate</h3>
+    <p class="m8-ex-intro">Cas construit pour l'atelier ; les valeurs sont celles du cours <span class="src">8.1-d23, d32–d35</span>.</p>
+    <ol class="liste-num">
+      <li>Acuité, puis tonométrie ; l'optométriste revoit l'histoire de cas et regarde l'angle <span class="src">8.1-d32</span>.</li>
+      <li>Aux parents : la raison, relâcher l'accommodation pour une réfraction précise ; le début, « 30-45 minutes » ; la durée, qui « peut être 24 heures ou plus chez certains enfants » <span class="src">8.1-d23</span>.</li>
+      <li>Les effets : la vision floue, la lumière, l'inconfort à la goutte ; l'option de remettre si ce n'est pas urgent ; leurs questions <span class="src">8.1-d34</span>.</li>
+      <li>« C’est donc correct que je vous mets <span class="sic">(sic)</span> ces gouttes? » <span class="src">8.1-d35</span></li>
+      <li>Mains lavées, sans toucher les cils ni la paupière ; au dossier, le collyre et l'heure <span class="src">8.1-d33</span>.</li>
+    </ol>
+    <p class="piege">« Il faut aviser de cette possibilité et avoir le consentement du patient. » <span class="src">8.1-d20</span> On annonce la durée longue avant la goutte, pas après.</p>
+  </div>
+
+  <div class="verif">
+    <h3>Vérifie-toi</h3>
+    <p class="lib">deux questions</p>
+    <div class="qcm" data-bon="a" data-explique="« Puis on demande : C’est donc correct que je vous mets (sic) ces gouttes? » (8.1-d35) : le consentement explicite, c'est un oui demandé.">
+      <p>Le consentement explicite, c'est…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">expliquer, puis demander un oui</button><button type="button" class="puce" data-v="b">expliquer après l'instillation</button><button type="button" class="puce" data-v="c">supposer l'accord si le patient reste assis</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+    <div class="qcm" data-bon="c" data-explique="« Discuter les alternatives (remettre à une prochaine visite par exemple si ce n’est pas une urgence) » (8.1-d34).">
+      <p>Le patient hésite, et ce n'est pas urgent. Tu proposes…</p>
+      <div class="puces"><button type="button" class="puce" data-v="a">de mettre la goutte quand même</button><button type="button" class="puce" data-v="b">une goutte plus faible</button><button type="button" class="puce" data-v="c">de remettre à une prochaine visite</button></div>
+      <p class="retour" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== CARTES -->
+<section class="ecran" data-id="cartes" data-partie="12 · Révision" data-titre="Rappel du jour">
+  <header class="tete">
+    <p class="eyebrow">Partie 12 · Révision</p>
     <h2>Rappel du jour</h2>
     <p class="chapeau">Produis la réponse de mémoire, vérifie tout de suite, et continue jusqu’à réussir chaque carte une fois. Une carte réussie revient dans 1, 3, 7, 14 puis 30 jours ; une carte ratée revient demain. Quelques minutes par jour valent mieux qu’une longue relecture la veille.</p>
   </header>
@@ -3169,21 +3609,21 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
 </section>
 
 <!-- ===================================================================== QUESTIONS -->
-<section class="ecran" data-id="questions" data-partie="9 · Révision" data-titre="Questions d'entraînement">
+<section class="ecran" data-id="questions" data-partie="12 · Révision" data-titre="Questions d'entraînement">
   <header class="tete">
-    <p class="eyebrow">Partie 9 · Révision</p>
+    <p class="eyebrow">Partie 12 · Révision</p>
     <h2>Questions d'entraînement</h2>
-    <p class="chapeau">Cinquante questions graduées (rappel → application → et si) : 16 pour le module 5, 17 pour le module 6 et 17 pour le module 7. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
+    <p class="chapeau">Soixante-six questions graduées (rappel → application → et si) : 16 pour le module 5, 17 pour le module 6, 17 pour le module 7 et 16 pour le module 8. Écris ta réponse, puis compare. Tes réponses partent dans l'export avec tes notes.</p>
   </header>
   <div class="bloc" id="questions-liste"></div>
 </section>
 
 <!-- ===================================================================== À VÉRIFIER -->
-<section class="ecran" data-id="verifier" data-partie="9 · Révision" data-titre="À vérifier en classe">
+<section class="ecran" data-id="verifier" data-partie="12 · Révision" data-titre="À vérifier en classe">
   <header class="tete">
-    <p class="eyebrow">Partie 9 · Révision</p>
+    <p class="eyebrow">Partie 12 · Révision</p>
     <h2>À vérifier en classe</h2>
-    <p class="chapeau">Les points où les fichiers se contredisent, se taisent ou renvoient à la classe : 15 pour le module 5, 17 pour le module 6, 12 pour le module 7. Coche-les à mesure, et note la réponse dans les notes de cet écran.</p>
+    <p class="chapeau">Les points où les fichiers se contredisent, se taisent ou renvoient à la classe : 15 pour le module 5, 17 pour le module 6, 12 pour le module 7, 14 pour le module 8. Coche-les à mesure, et note la réponse dans les notes de cet écran.</p>
   </header>
   <ul class="averifier" id="averifier" style="margin-top:20px"></ul>
 </section>
@@ -3269,9 +3709,15 @@ Notes: Si on n'est pas capable de center (sic) la mire il y a possiblement un pr
     <ul>
       <li><b>7.1</b> · <code>TO7.1Caméra (2026).pptx</code>, 19 diapos : la photographie rétinienne.</li>
       <li><b>7.2</b> · <code>TO7.2OCTsuite (2026).pptx</code>, 15 diapos : l'OCT (suite), l'épaisseur de la cornée et la pression.</li>
-      <li><b>7.3</b> · <code>TO7.3artefact.pptx</code>, 13 diapos : les artefacts en instrumentation.</li>
+      <li><b>7.3</b> · <code>TO7.3artefact.pptx</code>, 13 diapos : les artefacts en instrumentation.</li>
     </ul>
-    <p>Cet atelier suit les distillations des deux modules (<code>to-m05_distilled.md</code>, <code>to-m06_distilled.md</code>, <code>to-m07_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les fichiers du cours, par script. Les liens marqués <span class="deduit">déduit</span> sont des raisonnements, pas des affirmations de la prof.</p>
+    <h3>Module 8</h3>
+    <ul>
+      <li><b>8.1</b> · <code>TO8.1gttsdiagnostiques (2026).pptx</code>, 41 diapos : les gouttes diagnostiques. Sans notes du présentateur ; la tétracaïne et la proparacaïne 0,5 % ne sont nommées que dans les images.</li>
+      <li>Rappels : Tests ophtalmiques UA1, 2.2 (consentement) et 3.2 (tonométrie) ; Anatomie M6 et M8 (système autonome, film lacrymal, pupille) ; Optique M7 (la cycloplégie).</li>
+      <li>Les dessins du module 8 (l'iris, le corps ciliaire, la ligne du temps, la cornée colorée) sont faits pour cet atelier ; aucune image du deck n'est reprise.</li>
+    </ul>
+    <p>Cet atelier suit les distillations des deux modules (<code>to-m05_distilled.md</code>, <code>to-m06_distilled.md</code>, <code>to-m07_distilled.md</code>, <code>to-m08_distilled.md</code>) : chaque citation entre « » a été vérifiée mot pour mot dans les fichiers du cours, par script. Les liens marqués <span class="deduit">déduit</span> sont des raisonnements, pas des affirmations de la prof.</p>
     <h3>Les images</h3>
     <p>Tous les schémas, cartes topographiques, verres, écrans de lentimètre et rapports d'OCT sont <b>dessinés ou calculés pour cet atelier</b>. Les cartes et les rapports sont des simulations : ce ne sont pas des examens réels. Les images des diapos du cours ne sont pas reprises ; les noms écrits sur certains schémas (« Mire », « Liquid Reservoir », « Macular hole »…) sont ceux des figures du cours.</p>
     <h3>Le tuteur</h3>
@@ -3817,13 +4263,69 @@ AVERIFIER.push(
   {m:'M7', t:'Le Kahoot', p:'Au programme du jour selon eCité ; aucun fichier.'}
 );
 
+/* ======================================================================
+   Module 8 (9 nov. 2026) : les gouttes diagnostiques (deck 8.1).
+   Contenu : distilled/to-m08_distilled.md ; cartes KC : analyse/to-m08_kc.md.
+   ====================================================================== */
+QUESTIONS.push(
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'rappel', q:'Quel muscle forme un cercle autour de la pupille, lequel forme des lignes radiaires, et lequel commande l’accommodation ?',
+    r:'<p>Le sphincter : un cercle ; le dilatateur : des lignes radiaires ' + S('8.1-d8') + '. Le corps ciliaire commande l’accommodation ' + S('8.1-d7') + '.</p>'},
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'rappel', q:'Nomme les trois « Mydriatiques avec un effet cycloplégique » et la goutte qui dilate sans effet sur l’accommodation.',
+    r:'<p>Tropicamide, cyclopentolate, atropine ' + S('8.1-d18') + ' ; la phényléphrine dilate sans effet sur l’accommodation ' + S('8.1-d25') + '.</p>'},
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'application', q:'Un patient a reçu du tropicamide. Déduis ses trois effets secondaires, chacun de son muscle.',
+    r:'<p>Sphincter relâché → pupille grande → <b>éblouissement</b> ; corps ciliaire relâché → <b>vision de près floue</b> ' + DED + ' ; et le cours ajoute le <b>risque, très rare, de bloquer l’humeur aqueuse</b> chez un patient susceptible ' + S('8.1-d10, d18') + '.</p>'},
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'application', q:'Après une goutte, un patient voit mal de près, et sa tension a monté. Quelles deux gouttes a-t-il probablement reçues, et quel effet vient de laquelle ?',
+    r:'<p>Le tropicamide (flou de près : corps ciliaire relâché) et la phényléphrine (tension : sympathique stimulé) ' + S('8.1-d18, d22, d27') + '.</p>'},
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'et si', q:'Pourquoi la phényléphrine seule dilate-t-elle mal ? Que fait-on à la place ?',
+    r:'<p>« le système parasympathique remporte » : le sphincter, resté actif, tient la pupille. On l’associe au tropicamide « pour atteindre une dilatation supérieure » ' + S('8.1-d25') + '.</p>'},
+  {g:'M8 · I1 · deux systèmes, trois muscles', n:'et si', q:'Une personne de 70 ans a de petites pupilles sans aucun médicament. Explique-le avec les deux systèmes.',
+    r:'<p>Le dilatateur s’atrophie plus que le sphincter, et le sympathique perd en efficacité alors que le parasympathique change peu ' + S('8.1-d17') + ' : le côté qui ouvre faiblit ' + DED + '.</p>'},
+  {g:'M8 · les agents', n:'rappel', q:'Tropicamide et cyclopentolate : début et durée de chacun ?',
+    r:'<p>Tropicamide : « dans environ 20 minutes », « 5-6 heures », jusqu’à 24 heures si sensible ' + S('8.1-d20') + '. Cyclopentolate : « 30-45 minutes », « 24 heures ou plus chez certains enfants » ' + S('8.1-d23') + '.</p>'},
+  {g:'M8 · les agents', n:'application', q:'Choisis la goutte : un corps étranger sur la cornée ; la réfraction d’un enfant de 5 ans ; un fond d’œil chez une patiente de 65 ans aux petites pupilles.',
+    r:'<p>L’Alcaine ' + S('8.1-d28') + ' ; le cyclopentolate ' + S('8.1-d23') + ' ; le tropicamide avec la phényléphrine ' + S('8.1-d22, d25') + '.</p>'},
+  {g:'M8 · I2 · l’anesthésique', n:'rappel', q:'Comment reconnaître un anesthésique à son nom ? Délai et durée de l’Alcaine ?',
+    r:'<p>Son nom finit « avec –aine ou –caine » ; « à l’intérieur d’une minute », pendant « 15-20 minutes » ' + S('8.1-d28') + '.</p>'},
+  {g:'M8 · I2 · l’anesthésique', n:'application', q:'Après l’Alcaine, le patient dit que son œil est sec. Pourquoi ? Et pourquoi ne pas lui donner le flacon quand il le demande ?',
+    r:'<p>« La sensation de vouloir cligner est réduite » : il cligne moins, l’œil sèche, parfois plus de 20 minutes. On ne le remet pas : « une sur-utilisation crée une toxicité au niveau de l’épithélium » ' + S('8.1-d28') + '.</p>'},
+  {g:'M8 · I2 · l’anesthésique', n:'et si', q:'La clinique n’a plus d’Alcaine, seulement des unidoses. Que change ce choix pour le patient et pour le rangement ?',
+    r:'<p>L’unidose ne se réfrigère pas, mais elle est « moins bien tolérée (oeil irrité) » ' + S('8.1-d31') + ' : prévenir le patient d’un inconfort plus marqué.</p>'},
+  {g:'M8 · I3 · la fluorescéine', n:'rappel', q:'Quelle phase du film la fluorescéine colore-t-elle ? Que veut dire le « bris du film » ?',
+    r:'<p>La phase aqueuse. Le bris : le film se rompt quand « la couche de lipide et la couche aqueuse sont évaporées » ' + S('8.1-d37') + '.</p>'},
+  {g:'M8 · I3 · la fluorescéine', n:'et si', q:'Pourquoi la tonométrie Goldmann demande-t-elle un anesthésique, et le NCT non ?',
+    r:'<p>Goldmann et Perkins touchent la cornée, d’où l’anesthésique ' + S('8.1-d3') + ' ; la fluorescéine fait voir leurs mires : « un mélange d’anesthésie et fluorescéine » ' + S('8.1-d40') + '. Le NCT, « non-contact tonometer », aplatit la cornée avec un jet d’air ' + S('3.2-d9') + ' : pas d’anesthésique ' + DED + '.</p>'},
+  {g:'M8 · I4 · instiller', n:'rappel', q:'Les cinq étapes du protocole avant les gouttes, dans l’ordre.',
+    r:'<p>Acuité visuelle ; tonométrie ; l’optométriste révise l’histoire de cas (allergies, contre-indications) ; il regarde l’angle irido-cornéen et la cornée ; on place les gouttes ' + S('8.1-d32') + '.</p>'},
+  {g:'M8 · I4 · instiller', n:'application', q:'Écris ce que tu dis au parent avant le cyclopentolate, jusqu’à la question de consentement.',
+    r:'<p>La raison (relâcher l’accommodation pour une réfraction précise) ' + S('8.1-d23') + ' ; les avantages, et ce qui arrive sans les gouttes ' + S('8.1-d35') + ' ; le délai, 30-45 minutes, et la durée, 24 heures ou plus chez certains enfants ' + S('8.1-d23') + ' ; les effets : vision floue, lumière, inconfort ; l’option de remettre si ce n’est pas urgent ' + S('8.1-d34') + ' ; les questions ; puis « C’est donc correct que je vous mets (sic) ces gouttes? » ' + S('8.1-d35') + '.</p>'},
+  {g:'M8 · I4 · instiller', n:'et si', q:'Le patient refuse les gouttes et ce n’est pas urgent. Que lui proposes-tu, et que notes-tu ?',
+    r:'<p>Remettre à une prochaine visite ' + S('8.1-d34') + '. Le deck demande de noter les collyres administrés et l’heure ' + S('8.1-d33') + ' ; noter un refus n’y est pas dit (voir « À vérifier »).</p>'}
+);
+
+AVERIFIER.push(
+  {m:'M8', t:'Le format et le poids des gouttes à l’examen', p:'Le module 8 est le dernier cours avant l’examen du 16 novembre. Combien de questions sur les gouttes, et sous quelle forme (QCM, mise en situation, jeu de rôle) ?'},
+  {m:'M8', t:'Qui instille les gouttes ?', p:'Le deck vise « les assistants en optométrie » et dit « délégué à l’assistant ou par l’optométriste selon le bureau » ; l’UA1 range « Instiller des gouttes » parmi les traitements des opticiens (2.2-d4). Qu’est-ce qu’on aura le droit de faire, nous ?'},
+  {m:'M8', t:'Pourquoi la tonométrie avant les gouttes ?', p:'Le protocole (8.1-d32) place la tonométrie en 2e, sans dire pourquoi. Pour l’acuité, la raison est déduite (la goutte brouille la vision de près).'},
+  {m:'M8', t:'Système nerveux central ou autonome ?', p:'8.1-d11 dit « système nerveux central » pour le sympathique et le parasympathique ; l’Anatomie parle du système autonome.'},
+  {m:'M8', t:'L’humeur aqueuse et la phényléphrine', p:'8.1-d10 dit qu’une dilatation peut, très rarement, bloquer l’humeur aqueuse ; 8.1-d18 ne liste ce risque que pour les gouttes cycloplégiques. Vaut-il aussi pour la phényléphrine ?'},
+  {m:'M8', t:'Phényléphrine 10 %', p:'8.1-d22 donne « 2,5 %, 10 % » ; 2,5 % est « le plus souvent utilisé ». Quand utilise-t-on 10 %, et ses risques sont-ils plus grands ?'},
+  {m:'M8', t:'Combien de gouttes, et combien de temps entre elles ?', p:'Seul le tropicamide a une dose (« Une goutte par œil »). Pour l’association avec la phényléphrine : l’ordre et l’attente ?'},
+  {m:'M8', t:'Le temps de rupture normal', p:'8.1-d37 explique la mesure, sans valeur normale. À partir de combien de secondes le film est-il trop court ?'},
+  {m:'M8', t:'Un mélange ou deux produits ?', p:'« On utilise un mélange d’anesthésie et fluorescéine » (8.1-d40) : un produit déjà mélangé, ou une goutte puis une bandelette ?'},
+  {m:'M8', t:'Ne pas toucher la paupière', p:'« en ne touchant pas les cils ou la paupière du patient » (8.1-d33) : avec le flacon ? Les photos des diapos 30 et 36 montrent un doigt ganté sur la paupière inférieure. Gants ou lavage des mains ?'},
+  {m:'M8', t:'Noter un refus', p:'Le deck dit de noter les collyres administrés et l’heure (8.1-d33). Si le patient refuse, note-t-on le refus au dossier ?'},
+  {m:'M8', t:'Le consentement implicite', p:'L’UA1 n’en donne que le titre (2.2-d10, « Consentement Implicite vs Explicite »). Le M8 dit seulement que l’explicite « est préférable ».'},
+  {m:'M8', t:'Ce qui n’est que dans les images', p:'La tétracaïne (8.1-d31 : le texte dit « Cet agent »), la proparacaïne 0,5 % et le conseil d’anesthésier les deux yeux (légende en anglais de 8.1-d30).'},
+  {m:'M8', t:'Coquilles du deck', p:'« effects », « pupilless », « retouve », « sphincteur », « voie » (voir), « médiments », « opiodes », « évaculation », « impulses », « lachrymal », « contacte », « applanation », « que je vous mets » (mette).'}
+);
+
 /* ====== 21-config.js ====== */
 /* ======================================================================
-   L'atelier TO M5–M7 pour le moteur commun (Guides/_commun).
+   L'atelier TO M5–M8 pour le moteur commun (Guides/_commun).
    ====================================================================== */
 const ATELIER = {
   prefixe:'to-m56',                  // clés du navigateur et document du compte : ne pas changer
-  nom:'Atelier TO M5–M7',
+  nom:'Atelier TO M5–M8',
   fichier:'atelier-to-m5-m6',
   progression:'écrans, pas, rappel, situations, questions, cases cochées',
   premier:'miroir',
@@ -3831,10 +4333,11 @@ const ATELIER = {
   verifierModule:m => 'Module ' + m.slice(1),
   verifierTitre:v => v.m + ' · ' + v.t,
   /* « Survol » (bouton du haut) : un diaporama par module, au menu du bouton (recette §3.5) ;
-     Guides/UA2-Tests-Ophtalmiques/diapos-to-m5-m6.html et diapos-to-m7.html */
+     Guides/UA2-Tests-Ophtalmiques/diapos-to-m5-m6.html, diapos-to-m7.html et diapos-to-m8.html (site Lumière seulement) */
   survol:[
     {url:'diapos-to-m5-m6.html', titre:'Survol : les modules 5 et 6 en 22 diapos, environ 15 minutes', court:'Modules 5 et 6', detail:'kératométrie, topographie, kératocône, lunettes, OCT · 22 diapos, ≈ 15 min'},
-    {url:'diapos-to-m7.html', titre:'Survol : le module 7 en 21 diapos, environ 15 minutes', court:'Module 7', detail:'caméra rétinienne, OCT, pression, artefacts · 21 diapos, ≈ 15 min'}
+    {url:'diapos-to-m7.html', titre:'Survol : le module 7 en 21 diapos, environ 15 minutes', court:'Module 7', detail:'caméra rétinienne, OCT, pression, artefacts · 21 diapos, ≈ 15 min'},
+    {url:'diapos-to-m8.html', titre:'Survol : le module 8 en 23 diapos, environ 17 minutes', court:'Module 8', detail:'gouttes diagnostiques : deux systèmes, anesthésique, fluorescéine, protocole, consentement · 23 diapos, ≈ 17 min'}
   ],
   /* les situations ont chacune leur note (sc-01…) */
   notesSup:[{prefixe:'sc-', ecran:'situations',
@@ -4097,6 +4600,71 @@ const PAS = [
    verif:{q:'À l’OCT : QI dans le rouge, puis le patient s’épuise. Que fais-tu ?', r:'QI dans le rouge : refaire. Patient trop fatigué : on arrête, pas plus de 3-4 minutes, on voit l’optométriste ; on peut refaire à une autre visite (7.3-d13).', points:['refaire', 'arrêter', '3-4 minutes', 'autre visite'], qcm:{bon:'Refaire le scan ; si le patient s’épuise, arrêter et voir l’optométriste', faux:['Noter des fibres trop minces, puis continuer', 'Continuer le scan jusqu’à obtenir une image toute verte', 'Dilater les yeux, puis refaire le scan jusqu’à dix minutes']}}, qcm:'À l’OCT, le QI est dans le rouge', src:['7.3-d13']},
   {id:'artefacts.6', ecran:'artefacts', ancre:'À discuter · les questions de la prof', titre:'Pourquoi ce scan', cle:['chaque test vise une structure', 'le temps du patient est compté'], explique:'Pourquoi ne fait-on pas tous les scans à tous les patients ?',
    verif:{q:'Pourquoi ne pas faire tous les scans à tous les patients ? (piste déduite)', r:'Chaque test vise une structure (macula, papille, cornée) et le temps du patient est compté (3-4 minutes au plus) ; la question reste à discuter en classe (7.2-d15 ; 7.3-d13).', points:['une structure par test', 'temps compté'], qcm:{bon:'Chaque scan vise une structure, et le temps du patient est compté', faux:['Les scans sont dangereux pour la rétine', 'L’OCT ne peut faire qu’un test par jour', 'Seul l’optométriste a le droit de lancer un scan']}}, src:['7.2-d15', '7.3-d13']},
+  /* ---------- systemes (M8) ---------- */
+  {id:'systemes.1', ecran:'systemes', ancre:'le cercle se serre, les rayons tirent', titre:'Trois muscles', cle:['sphincter : un cercle, il serre la pupille', 'dilatateur : des rayons, il l’ouvre', 'corps ciliaire : l’accommodation'], explique:'Pourquoi la forme de chaque muscle de l’iris dit-elle ce qu’il fait ?',
+   verif:{q:'Quels muscles règlent la taille de la pupille, et lequel règle l’accommodation ?', r:'Le sphincter et le dilatateur de l’iris règlent la pupille ; le corps ciliaire règle l’accommodation (8.1-d7).', points:['sphincter', 'dilatateur', 'corps ciliaire'], qcm:{bon:'Sphincter et dilatateur ; le corps ciliaire accommode', faux:['Corps ciliaire et sphincter ; le dilatateur accommode', 'Dilatateur seul ; le sphincter accommode', 'Le cristallin seul règle la pupille']}}, src:['8.1-d7', '8.1-d8']},
+  {id:'systemes.2', ecran:'systemes', ancre:'Notre système parasympathique encourage nos pupilles de rétrécir', titre:'Deux systèmes', cle:['parasympathique : repos, pupille petite', 'sympathique : action, pupille grande'], explique:'Pourquoi une pupille grande va-t-elle avec l’alerte, et une petite avec le repos ?',
+   verif:{q:'Quel système rétrécit la pupille, et lequel la dilate ?', r:'Le parasympathique la rétrécit (somnolence, repos) ; le sympathique la dilate (alerte, éveillé) (8.1-d12).', points:['parasympathique rétrécit', 'sympathique dilate'], qcm:{bon:'Parasympathique : rétrécit ; sympathique : dilate', faux:['Sympathique : rétrécit ; parasympathique : dilate', 'Les deux systèmes dilatent la pupille', 'Aucun système ne change la pupille']}}, src:['8.1-d11', '8.1-d12']},
+  {id:'systemes.3', ecran:'systemes', ancre:'D\'où viennent les effets', titre:'Bloquer le parasympathique', cle:['sphincter et corps ciliaire relâchés', 'mydriase et cycloplégie', 'éblouissement, flou de près, angle (rare)'], explique:'Comment un seul blocage donne-t-il à la fois une grande pupille et une vision de près floue ?',
+   verif:{q:'Le tropicamide bloque le parasympathique. Quels muscles se relâchent, et quels effets secondaires en découlent ?', r:'Le sphincter et le corps ciliaire (8.1-d18) : éblouissement, vision de près floue, et un risque de bloquer l’humeur aqueuse chez les patients susceptibles, très rare (8.1-d10, d18).', points:['sphincter', 'corps ciliaire', 'éblouissement', 'flou de près'], qcm:{bon:'Sphincter et corps ciliaire : éblouissement, flou de près', faux:['Dilatateur seul : hypertension et arythmies', 'Corps ciliaire seul : la pupille reste petite', 'Sphincter seul : l’accommodation reste intacte']}}, src:['8.1-d10', '8.1-d18']},
+  {id:'systemes.4', ecran:'systemes', ancre:'Pourquoi on associe les deux', titre:'Stimuler le sympathique, et associer', cle:['phényléphrine : le dilatateur seul', 'pas d’effet sur l’accommodation', 'le parasympathique remporte : on l’ajoute au tropicamide'], explique:'Pourquoi la phényléphrine seule ne suffit-elle pas à bien dilater ?',
+   verif:{q:'Pourquoi ajoute-t-on la phényléphrine au tropicamide plutôt que de l’utiliser seule ?', r:'Le parasympathique remporte : seule, elle ne réussit pas à bien dilater ; avec le tropicamide, la dilatation est supérieure (8.1-d25).', points:['le parasympathique remporte', 'dilatation supérieure'], qcm:{bon:'Seule, elle dilate mal : le parasympathique l’emporte', faux:['Seule, elle relâche trop le corps ciliaire', 'Seule, elle agit en plus de 45 minutes', 'Seule, elle doit rester au réfrigérateur']}}, src:['8.1-d22', '8.1-d25']},
+  {id:'systemes.5', ecran:'systemes', ancre:'Exemple résolu · Mme L.', titre:'Le cas de Mme L.', cle:['50 ans et plus, petites pupilles : on dilate', 'tropicamide, puis phényléphrine si besoin', 'annoncer l’éblouissement, le flou, la durée'], explique:'Qu’annonces-tu à Mme L. avant la goutte, et pourquoi ?',
+   verif:{q:'Mme L., 62 ans, petites pupilles, fond d’œil : quelles gouttes, et qu’annonces-tu ?', r:'Le tropicamide, et la phényléphrine pour une dilatation plus prononcée (8.1-d22) ; éblouissement, vision de près floue, 5-6 heures, jusqu’à 24 heures si sensible (8.1-d20).', points:['tropicamide', 'phényléphrine', '5-6 heures'], qcm:{bon:'Tropicamide + phényléphrine ; flou et éblouissement, 5-6 h', faux:['Cyclopentolate seul ; aucun effet à annoncer', 'Atropine 1 % ; flou pendant une heure', 'Alcaine ; l’œil sera insensible 20 minutes']}}, src:['8.1-d16', '8.1-d20', '8.1-d22', '8.1-d25']},
+  {id:'systemes.6', ecran:'systemes', ancre:'Le piège du mot.', titre:'Mydriatique n’est pas cycloplégique', cle:['tropicamide, cyclopentolate, atropine : les deux', 'phényléphrine : dilate seulement'], explique:'Quelle goutte dilate sans toucher l’accommodation, et pourquoi ?',
+   verif:{q:'Laquelle de ces gouttes dilate sans effet sur l’accommodation : tropicamide, cyclopentolate, phényléphrine ?', r:'La phényléphrine : elle n’agit pas sur le muscle ciliaire (8.1-d25).', points:['phényléphrine'], qcm:{bon:'La phényléphrine', faux:['Le tropicamide', 'Le cyclopentolate', 'L’atropine']}}, src:['8.1-d18', '8.1-d25']},
+  /* ---------- pourquoi (M8) ---------- */
+  {id:'pourquoi.1', ecran:'pourquoi', ancre:'Quatre raisons', titre:'Quatre raisons de dilater', cle:['la périphérie extrême', 'la zone de l’équateur au corps ciliaire', 'les prétests passent par la pupille', 'le pôle postérieur chez les 50 ans et plus'], explique:'Pourquoi dilate-t-on plus souvent les personnes de 50 ans et plus ?',
+   verif:{q:'Donne deux raisons de dilater, et trois traits des patients chez qui on veut mieux voir le pôle postérieur.', r:'Voir la périphérie extrême, la zone de l’équateur à la fin du corps ciliaire, les prétests qui passent par la pupille ; 50 ans et plus, petites pupilles, opacités du cristallin (8.1-d13–d16).', points:['périphérie', 'pupille', '50 ans'], qcm:{bon:'Voir la périphérie ; 50 ans et plus, petites pupilles', faux:['Mesurer la cornée ; enfants de moins de 5 ans', 'Calmer l’œil ; patients qui portent des lentilles', 'Colorer les larmes ; patients aux yeux secs']}}, src:['8.1-d13', '8.1-d14', '8.1-d15', '8.1-d16']},
+  {id:'pourquoi.2', ecran:'pourquoi', ancre:'Petites pupilles avec l', titre:'Petites pupilles avec l’âge', cle:['le dilatateur s’atrophie plus que le sphincter', 'le sympathique faiblit', 'certains médicaments'], explique:'Comment la règle des deux systèmes explique-t-elle les petites pupilles des aînés ?',
+   verif:{q:'Pourquoi les pupilles rapetissent-elles avec l’âge ?', r:'Le dilatateur s’atrophie plus que le sphincter et le sympathique devient moins efficace (8.1-d17) ; certains médicaments aussi.', points:['dilatateur', 'sympathique'], qcm:{bon:'Le dilatateur et le sympathique faiblissent', faux:['Le sphincter s’atrophie avec l’âge', 'Le parasympathique devient moins efficace', 'Le cristallin pousse sur l’iris']}}, src:['8.1-d17']},
+  {id:'pourquoi.3', ecran:'pourquoi', ancre:'Le lien avec la caméra', titre:'La caméra et la dilatation', cle:['pupille trop petite : photo sombre ou noire', 'les gouttes rendent l’image utilisable'], explique:'Que gagne la photo du fond d’œil quand on dilate ?',
+   verif:{q:'Pourquoi dilate-t-on parfois avant la photo du fond d’œil ?', r:'Si la pupille est trop petite, la photo est sombre ou noire ; les gouttes donnent une image utilisable (7.1-d17).', points:['pupille trop petite', 'photo sombre'], qcm:{bon:'Une pupille trop petite donne une photo sombre', faux:['Les gouttes rendent la rétine plus claire', 'La dilatation calme le patient pendant la photo', 'Le flash ne marche qu’avec des gouttes']}}, src:['7.1-d17', '8.1-d15']},
+  /* ---------- agents (M8) ---------- */
+  {id:'agents.1', ecran:'agents', ancre:'Agent (nom de commerce)', titre:'Les agents et leurs délais', cle:['tropicamide : environ 20 min, 5-6 h', 'cyclopentolate : 30-45 min, 24 h ou plus', 'atropine : jusqu’à 2 semaines', 'phényléphrine : 2-6 h'], explique:'Pourquoi le tropicamide est-il la goutte la plus utilisée pour dilater ?',
+   verif:{q:'Délai et durée du tropicamide, et du cyclopentolate chez l’enfant ?', r:'Tropicamide : environ 20 minutes, 5-6 heures, jusqu’à 24 heures si sensible (8.1-d20). Cyclopentolate : 30-45 minutes, 24 heures ou plus chez certains enfants (8.1-d23).', points:['20 minutes', '5-6 heures', '30-45 minutes', '24 heures'], qcm:{bon:'Tropicamide 20 min, 5-6 h ; cyclopentolate 30-45 min, 24 h', faux:['Tropicamide 30-45 min, 24 h ; cyclopentolate 20 min, 5-6 h', 'Tropicamide 1 min, 20 min ; cyclopentolate 20 min, 2 semaines', 'Tropicamide 2-6 h ; cyclopentolate jusqu’à 2 semaines']}}, src:['8.1-d19', '8.1-d20', '8.1-d22', '8.1-d23', '8.1-d27']},
+  {id:'agents.2', ecran:'agents', ancre:'un besoin, tu choisis', titre:'Quelle goutte, pour quel besoin', cle:['fond d’œil : tropicamide (± phényléphrine)', 'réfraction d’un enfant : cyclopentolate', 'toucher la cornée : anesthésique', 'voir le film ou une égratignure : fluorescéine'], explique:'Quel besoin te fait choisir le cyclopentolate plutôt que le tropicamide ?',
+   verif:{q:'Quelle goutte pour : un corps étranger sur la cornée ? la réfraction d’un enfant ? l’ajustement d’une lentille rigide ?', r:'Un anesthésique (Alcaine) (8.1-d28) ; le cyclopentolate (8.1-d23) ; la fluorescéine (8.1-d39).', points:['Alcaine', 'cyclopentolate', 'fluorescéine'], qcm:{bon:'Alcaine ; cyclopentolate ; fluorescéine', faux:['Fluorescéine ; tropicamide ; Alcaine', 'Tropicamide ; atropine 1 % ; phényléphrine', 'Cyclopentolate ; Alcaine ; tropicamide']}}, src:['8.1-d23', '8.1-d28', '8.1-d38', '8.1-d39', '8.1-d40']},
+  {id:'agents.3', ecran:'agents', ancre:'Deux débuts à ne pas confondre.', titre:'Noms de commerce', cle:['Mydriacyl = tropicamide', 'Cyclogyl = cyclopentolate', 'Mydfrin = phényléphrine', 'Alcaine = proparacaïne'], explique:'Quel moyen te ferait retenir quel nom de commerce va avec quel agent ?',
+   verif:{q:'Mydriacyl, Cyclogyl, Mydfrin, Alcaine : quel agent pour chacun ?', r:'Tropicamide, cyclopentolate, phényléphrine, proparacaïne (8.1-d20, d23, d25, d28).', points:['tropicamide', 'cyclopentolate', 'phényléphrine', 'proparacaïne'], qcm:{bon:'Tropicamide, cyclopentolate, phényléphrine, proparacaïne', faux:['Phényléphrine, cyclopentolate, tropicamide, proparacaïne', 'Tropicamide, atropine, phényléphrine, tétracaïne', 'Cyclopentolate, tropicamide, proparacaïne, phényléphrine']}}, src:['8.1-d20', '8.1-d21', '8.1-d23', '8.1-d24', '8.1-d25', '8.1-d26', '8.1-d28']},
+  /* ---------- anesthesie (M8) ---------- */
+  {id:'anesthesie.1', ecran:'anesthesie', ancre:'Les médicaments qui finissent avec', titre:'-aine, -caine', cle:['un nom en -aine ou -caine', 'il empêche la transmission des influx nerveux', 'il agit sur les nerfs, pas les muscles'], explique:'Pourquoi un anesthésique ne change-t-il pas la taille de la pupille ?',
+   verif:{q:'Comment reconnaître un anesthésique, et que fait-il ?', r:'Son nom finit en -aine ou -caine ; il empêche la transmission des influx nerveux (8.1-d28).', points:['-aine', 'influx nerveux'], qcm:{bon:'Nom en -aine ou -caine ; bloque les influx nerveux', faux:['Nom en -ine ; relâche le sphincter', 'Nom en -cyl ; colore les larmes', 'Nom en -frin ; stimule le dilatateur']}}, src:['8.1-d28']},
+  {id:'anesthesie.2', ecran:'anesthesie', ancre:'On les utilise en soins oculaires', titre:'À quoi sert l’anesthésique', cle:['mesurer la pression intraoculaire', 'examiner une abrasion', 'enlever un corps étranger'], explique:'Qu’ont en commun les trois usages de l’anesthésique ?',
+   verif:{q:'Trois usages de l’anesthésique topique ?', r:'Mesurer la pression intraoculaire, examiner des conditions douloureuses comme des abrasions, enlever des corps étrangers sur la cornée (8.1-d28).', points:['pression', 'abrasions', 'corps étrangers'], qcm:{bon:'Pression, abrasions, corps étrangers', faux:['Dilatation, réfraction, photo du fond', 'Lentilles souples, acuité, couleurs', 'Fond d’œil, OCT, topographie']}}, src:['8.1-d3', '8.1-d28']},
+  {id:'anesthesie.3', ecran:'anesthesie', ancre:'La ligne du temps', titre:'Délai et durée', cle:['moins d’une minute', '15 à 20 minutes', 'moins de clignement : œil sec, parfois plus longtemps'], explique:'Pourquoi l’œil semble-t-il sec après l’anesthésique ?',
+   verif:{q:'L’anesthésique agit en combien de temps, pendant combien de temps, et pourquoi l’œil peut-il sembler sec après ?', r:'En moins d’une minute, pendant 15-20 minutes ; l’envie de cligner est réduite, d’où une sensation d’œil sec parfois plus longue (8.1-d28).', points:['moins d’une minute', '15-20 minutes', 'cligner'], qcm:{bon:'Moins d’une minute, 15-20 min ; il cligne moins', faux:['20 min, 5-6 h ; la pupille est dilatée', '30-45 min, 24 h ; les larmes sont colorées', 'Moins d’une minute, 2 semaines ; la cornée égratignée']}}, src:['8.1-d28']},
+  {id:'anesthesie.4', ecran:'anesthesie', ancre:'en unidoses (nom lu sur', titre:'Alcaine ou unidose', cle:['Alcaine : la mieux tolérée, au réfrigérateur', 'unidose : pas au réfrigérateur, moins bien tolérée'], explique:'Quel compromis fais-tu entre l’Alcaine et l’unidose ?',
+   verif:{q:'Alcaine ou unidose : laquelle va au réfrigérateur, et laquelle irrite davantage ?', r:'L’Alcaine se conserve au réfrigérateur et est la mieux tolérée ; l’unidose ne se réfrigère pas mais est moins bien tolérée (8.1-d30, d31).', points:['Alcaine au réfrigérateur', 'unidose moins bien tolérée'], qcm:{bon:'Alcaine au froid ; l’unidose irrite plus', faux:['Unidose au froid ; l’Alcaine irrite plus', 'Les deux au froid ; aucune n’irrite', 'Ni l’une ni l’autre au froid ; même tolérance']}}, src:['8.1-d30', '8.1-d31', '8.1-d33']},
+  {id:'anesthesie.5', ecran:'anesthesie', ancre:'Je peux garder le flacon', titre:'Jamais remis au patient', cle:['on ne remet pas l’anesthésique', 'trop en mettre : toxique pour l’épithélium'], explique:'Pourquoi refuser le flacon à un patient qui a mal ?',
+   verif:{q:'Un patient demande l’Alcaine pour la maison. Ta réponse, et pourquoi ?', r:'Non : on ne le remet pas, une sur-utilisation crée une toxicité au niveau de l’épithélium (8.1-d28).', points:['ne pas remettre', 'toxicité', 'épithélium'], qcm:{bon:'Non : la sur-utilisation est toxique pour l’épithélium', faux:['Oui, s’il le garde au réfrigérateur', 'Oui, mais une seule goutte par jour, pas plus', 'Non : il dilaterait trop la pupille']}}, src:['8.1-d28']},
+  /* ---------- fluo (M8) ---------- */
+  {id:'fluo.1', ecran:'fluo', ancre:'Coloration de la phase aqueuse', titre:'La phase aqueuse colorée', cle:['la fluorescéine colore la phase aqueuse', 'le bris du film : lipides et aqueuse évaporés'], explique:'Que veut dire le bris du film, couche par couche ?',
+   verif:{q:'Que colore la fluorescéine, et que signifie le bris du film ?', r:'La phase aqueuse du film ; le bris veut dire que la couche de lipide et la couche aqueuse se sont évaporées (8.1-d37).', points:['phase aqueuse', 'lipide', 'évaporées'], qcm:{bon:'La phase aqueuse ; lipides et aqueuse évaporés', faux:['La couche lipidique ; la mucine est partie', 'La cornée ; l’épithélium est abîmé', 'L’iris ; la pupille se ferme']}}, src:['8.1-d36', '8.1-d37']},
+  {id:'fluo.2', ecran:'fluo', ancre:'Le bris du film, en simulation', titre:'Mesurer le temps de bris', cle:['colorer, cligner', 'lumière bleue', 'compter jusqu’à la première tache sèche'], explique:'Pourquoi compte-t-on depuis le clignement ?',
+   verif:{q:'Comment mesure-t-on le temps de rupture du film ?', r:'On colore les larmes à la fluorescéine, on observe sous lumière bleue et on note le temps écoulé avant le bris du film (8.1-d37) ; l’image montre la tache sèche, « Dry spot ».', points:['fluorescéine', 'lumière bleue', 'temps écoulé'], qcm:{bon:'Colorer, lumière bleue, le temps jusqu’au bris', faux:['Anesthésier, puis compter les clignements', 'Dilater, puis photographier la cornée', 'Mesurer la pression, puis colorer']}}, src:['8.1-d37']},
+  {id:'fluo.3', ecran:'fluo', ancre:'Quatre usages', titre:'Quatre usages', cle:['le bris du film', 'sécheresse et égratignures', 'ajustement d’une lentille rigide', 'mires de la tonométrie à aplanation'], explique:'Lequel des quatre usages demande aussi un anesthésique, et pourquoi ?',
+   verif:{q:'Nomme les quatre usages de la fluorescéine.', r:'Le bris du film (8.1-d37), les zones sèches et égratignures de la cornée (d38), l’ajustement d’une lentille rigide (d39), les mires du tonomètre à aplanation (d40).', points:['bris', 'égratignures', 'lentille rigide', 'tonomètre'], qcm:{bon:'Film, égratignures, lentille rigide, tonométrie', faux:['Film, dilatation, réfraction, OCT', 'Égratignures, pupille, angle, acuité', 'Tonométrie, kératométrie, photo, couleurs']}}, src:['8.1-d37', '8.1-d38', '8.1-d39', '8.1-d40']},
+  {id:'fluo.4', ecran:'fluo', ancre:'Aplanation ou jet d', titre:'Aplanation ou NCT', cle:['Goldmann, Perkins : touchent la cornée, donc l’anesthésique', 'la fluorescéine montre les mires', 'NCT : un jet d’air, sans contact'], explique:'Pourquoi le NCT n’a-t-il pas besoin d’anesthésique ?',
+   verif:{q:'Pourquoi la tonométrie Goldmann demande-t-elle des gouttes, et le NCT non ?', r:'Goldmann touche la cornée, d’où l’anesthésique (8.1-d3) ; la fluorescéine fait voir ses mires (8.1-d40). Le NCT, « non-contact tonometer », aplatit la cornée avec un jet d’air (3.2-d9) : pas d’anesthésique (déduit).', points:['touche la cornée', 'jet d’air'], qcm:{bon:'Goldmann touche la cornée ; le NCT souffle de l’air', faux:['Goldmann mesure plus haut ; le NCT est plus juste', 'Goldmann dilate la pupille ; le NCT non', 'Goldmann est ancien ; le NCT est interdit']}}, src:['8.1-d40', '3.2-d8', '3.2-d9']},
+  /* ---------- protocole (M8) ---------- */
+  {id:'protocole.1', ecran:'protocole', ancre:'Remets le protocole dans l', titre:'Les cinq étapes', cle:['acuité, puis tonométrie', 'l’optométriste : allergies et contre-indications', 'l’optométriste : l’angle et la cornée', 'enfin, les gouttes'], explique:'Pourquoi les gouttes viennent-elles en dernier ?',
+   verif:{q:'Les cinq étapes avant l’instillation, dans l’ordre ?', r:'Acuité visuelle ; tonométrie ; l’optométriste révise l’histoire de cas (allergies, contre-indications) ; il regarde l’angle irido-cornéen et la cornée ; on place les gouttes (8.1-d32).', points:['acuité', 'tonométrie', 'histoire de cas', 'angle', 'gouttes'], qcm:{bon:'AV, tonométrie, histoire de cas, angle, gouttes', faux:['Gouttes, AV, tonométrie, angle, histoire de cas', 'Histoire de cas, gouttes, AV, angle, tonométrie', 'AV, gouttes, tonométrie, histoire de cas, angle']}}, src:['8.1-d32']},
+  {id:'protocole.2', ecran:'protocole', ancre:'Pourquoi cet ordre', titre:'Pourquoi cet ordre', cle:['mesurer avant que la goutte brouille', 'l’angle : le risque rare de bloquer l’humeur aqueuse'], explique:'Que risquerait-on à dilater sans regarder l’angle ?',
+   verif:{q:'Pourquoi l’optométriste regarde-t-il l’angle irido-cornéen avant de dilater ?', r:'Une dilatation peut, très rarement, bloquer le passage de l’humeur aqueuse chez un patient susceptible (8.1-d10, d18 ; lien déduit).', points:['humeur aqueuse', 'très rarement'], qcm:{bon:'Une dilatation peut, rarement, bloquer l’humeur aqueuse', faux:['L’angle dit quelle goutte est la plus rapide', 'L’angle mesure la pression sans tonomètre', 'L’angle montre si le patient est allergique']}}, src:['8.1-d10', '8.1-d18', '8.1-d32']},
+  {id:'protocole.3', ecran:'protocole', ancre:'Utiliser une technique aseptique', titre:'Les cinq règles', cle:['mains : savon et eau, ou alcool bien séché', 'ne toucher ni cils ni paupière', 'conserver selon le fabricant', 'contre-indications : demander', 'noter le collyre et l’heure'], explique:'Pourquoi le savon plutôt que l’alcool ?',
+   verif:{q:'Les cinq règles de sécurité et de manipulation ?', r:'Se laver les mains (savon et eau, sinon laisser sécher l’alcool) ; technique aseptique sans toucher cils ni paupière ; conserver selon le fabricant ; vérifier les contre-indications en cas de doute ; noter les collyres et l’heure (8.1-d33).', points:['mains', 'aseptique', 'conserver', 'contre-indications', 'l’heure'], qcm:{bon:'Mains, asepsie, conservation, doute, dossier', faux:['Mains, gants, masque, désinfectant, photo', 'Asepsie, dilatation, acuité, dossier, facture', 'Conservation, réfrigérateur, flacon, étiquette, prix']}}, src:['8.1-d33']},
+  {id:'protocole.4', ecran:'protocole', ancre:'Au dossier, tu notes', titre:'Trouve l’erreur', cle:['alcool non séché', 'flacon contre la paupière', 'Alcaine hors du réfrigérateur', 'l’heure oubliée au dossier'], explique:'Laquelle de ces erreurs peut blesser le patient tout de suite ?',
+   verif:{q:'Au dossier, tu écris “tropicamide 1 %”. Que manque-t-il ?', r:'L’heure : « Noter les collyres administrés dans le dossier du patient et l’heure » (8.1-d33).', points:['l’heure'], qcm:{bon:'L’heure de l’instillation', faux:['Le nom de l’optométriste', 'Le prix du flacon', 'La couleur des yeux']}}, src:['8.1-d33']},
+  /* ---------- consentement (M8) ---------- */
+  {id:'consentement.1', ecran:'consentement', ancre:'On explique pourquoi on administre les gouttes', titre:'Le consentement explicite', cle:['pourquoi, avantages, conséquences sans les gouttes', 'les effets secondaires', 'les questions', 'puis la demande'], explique:'Pourquoi demander un oui plutôt que supposer l’accord ?',
+   verif:{q:'Que dis-tu, dans l’ordre, avant de demander « C’est donc correct que je vous mets ces gouttes? » ?', r:'Pourquoi on administre les gouttes, les avantages et les conséquences de ne pas les mettre, les effets secondaires ; on laisse poser des questions (8.1-d35).', points:['pourquoi', 'conséquences', 'effets secondaires', 'questions'], qcm:{bon:'Pourquoi, avantages et refus, effets, questions', faux:['Le prix, la durée, puis la signature', 'Les effets seulement, après la goutte', 'Rien : le patient assis consent déjà']}}, src:['8.1-d35']},
+  {id:'consentement.2', ecran:'consentement', ancre:'Construis ce que tu dis', titre:'Ce qu’on ne dit pas', cle:['expliquer avant, pas après', 'ne pas cacher les effets', 'donner la vraie durée'], explique:'Pourquoi “ça ne fait rien” rend-il le consentement non éclairé ?',
+   verif:{q:'Pourquoi “Je les mets, je vous explique ensuite” ne va-t-il pas ?', r:'On explique la raison « avant l’instillation » (8.1-d34) et on demande l’accord avant (8.1-d35).', points:['avant l’instillation'], qcm:{bon:'On explique et on demande avant la goutte', faux:['On explique seulement aux enfants', 'On explique seulement si le patient demande', 'On explique au dossier, pas au patient']}}, src:['8.1-d34', '8.1-d35']},
+  {id:'consentement.3', ecran:'consentement', ancre:'Les éléments du consentement éclairé', titre:'Les éléments', cle:['la raison de chaque collyre', 'les effets temporaires', 'les alternatives', 'répondre aux questions'], explique:'Quelle alternative offres-tu quand ce n’est pas urgent ?',
+   verif:{q:'Quels effets temporaires annonces-tu, et quelle alternative proposes-tu ?', r:'Vision floue pendant quelques heures, surtout chez les plus jeunes, sensibilité à la lumière, inconfort à l’instillation ; remettre à une prochaine visite si ce n’est pas urgent (8.1-d34).', points:['vision floue', 'lumière', 'prochaine visite'], qcm:{bon:'Flou, lumière, inconfort ; remettre si non urgent', faux:['Douleur forte ; aucune alternative', 'Yeux rouges deux semaines ; une autre goutte', 'Aucun effet ; signer un formulaire']}}, src:['8.1-d34']},
+  {id:'consentement.4', ecran:'consentement', ancre:'Exemple résolu · Léo', titre:'Le cas de Léo', cle:['protocole d’abord', 'aux parents : raison, délai, durée, effets', 'la demande, puis l’asepsie et le dossier'], explique:'Pourquoi parles-tu aux parents de la durée de 24 heures avant la goutte ?',
+   verif:{q:'Léo, 6 ans, cyclopentolate : que dis-tu aux parents sur le temps ?', r:'L’effet commence après 30-45 minutes et la durée peut être 24 heures ou plus chez certains enfants (8.1-d23).', points:['30-45 minutes', '24 heures ou plus'], qcm:{bon:'30-45 min pour agir ; 24 h ou plus', faux:['20 min pour agir ; 5-6 h', 'Une minute ; 20 minutes', 'Une heure ; jusqu’à 2 semaines']}}, src:['8.1-d20', '8.1-d23', '8.1-d32', '8.1-d33', '8.1-d34', '8.1-d35']}
 ];
 
 const CARTES2 = [
@@ -4379,6 +4947,36 @@ const CARTES2 = [
   {id:'c-artefacts-04', type:'discrim', pas:['artefacts.1', 'artefacts.3'], q:'Une image anormale « créée par la technique », c’est…', choix:['un artefact', 'une anomalie réelle'], bonne:0, r:'L’artefact vient de la technique et n’a pas de signification diagnostique (7.3-d2) ; « Ici on a une anomalie réelle » (7.3-d5) vient de l’œil.', src:['7.3-d2', '7.3-d5']},
   {id:'c-artefacts-05', type:'libre', pas:['artefacts.4', 'artefacts.5'], q:'Les deux limites à ne pas dépasser, caméra et OCT ?', r:'Caméra : « On se limite à 2 photos » <span class="src">7.3-d12</span> ; OCT : « Ne pas dépasser 3-4 minutes » <span class="src">7.3-d13</span>', points:['2 photos', '3-4 minutes'], src:['7.3-d12', '7.3-d13'], qcm:{bon:'2 photos par œil ; 3-4 minutes d’OCT', faux:['4 photos par œil ; 10 minutes d’OCT', '1 photo par œil ; 30 secondes d’OCT', 'Autant qu’il faut dans les deux cas']}},
   {id:'c-artefacts-06', type:'application', pas:['artefacts.2'], q:'Suivi d’un naevus : sur la nouvelle photo, un peu surexposée, il paraît plus grand que l’an dernier. Que fais-tu ?', r:'Reprendre une photo de qualité et signaler à l’optométriste, sans conclure : un artefact peut donner la fausse impression d’une croissance (7.3-d3, d7 ; 7.1-d13).', points:['reprendre une bonne photo', 'signaler', 'sans conclure'], src:['7.3-d3', '7.3-d7', '7.1-d13'], qcm:{bon:'Reprendre une photo de qualité et signaler, sans conclure', faux:['Annoncer au patient que le naevus grossit', 'Effacer l’ancienne photo du dossier', 'Dilater et prendre cinq photos de suite']}},
+  /* ---------- systemes (M8) ---------- */
+  {id:'c-systemes-01', type:'libre', pas:['systemes.1'], q:'Les trois muscles du module, et ce que chacun fait ?', r:'Le sphincter (un cercle) et le dilatateur (des lignes radiaires) règlent la pupille ; le corps ciliaire règle l’accommodation <span class="src">8.1-d7, d8</span>.', points:['sphincter', 'dilatateur', 'corps ciliaire'], src:['8.1-d7', '8.1-d8'], qcm:{bon:'Sphincter et dilatateur : pupille ; corps ciliaire : accommodation', faux:['Sphincter : accommodation ; dilatateur et corps ciliaire : pupille', 'Corps ciliaire : pupille ; sphincter et dilatateur : accommodation', 'Dilatateur : accommodation ; sphincter et corps ciliaire : pupille']}},
+  {id:'c-systemes-02', type:'discrim', pas:['systemes.2'], q:'« mettre en action », pupille qui se dilate : c’est le système…', choix:['sympathique', 'parasympathique'], bonne:0, r:'Le sympathique « (mettre en action) » ; le parasympathique « (digestion et relaxation) » rétrécit la pupille (8.1-d11, d12).', src:['8.1-d11', '8.1-d12']},
+  {id:'c-systemes-03', type:'chaine', pas:['systemes.3'], q:'Remets dans l’ordre : le tropicamide, jusqu’aux effets.', items:['blocage du système parasympathique', 'sphincter et corps ciliaire relâchés', 'pupille grande, plus d’accommodation', 'éblouissement et vision de près floue'], src:['8.1-d18'], qcm:{q:'Le tropicamide dilate la pupille et brouille la vision de près. Par quel mécanisme ?', bon:'Il bloque le parasympathique : sphincter et corps ciliaire se relâchent', faux:['Il stimule le sympathique : le dilatateur se contracte seul', 'Il bloque le sympathique : le sphincter se contracte', 'Il anesthésie l’iris : la pupille ne réagit plus']}},
+  {id:'c-systemes-04', type:'application', pas:['systemes.3', 'systemes.4'], q:'Après des gouttes, un patient voit flou de près et sa tension a monté. Quelles deux gouttes, et quel effet vient de laquelle ?', r:'Le tropicamide (flou de près : le corps ciliaire relâché) et la phényléphrine (la tension : le sympathique stimulé) <span class="src">8.1-d18, d22, d27</span>.', points:['tropicamide', 'phényléphrine', 'corps ciliaire', 'sympathique'], src:['8.1-d18', '8.1-d22', '8.1-d27'], qcm:{bon:'Tropicamide (flou de près) et phényléphrine (tension)', faux:['Phényléphrine (flou de près) et tropicamide (tension)', 'Alcaine (flou de près) et fluorescéine (tension)', 'Cyclopentolate seul : les deux effets à la fois']}},
+  {id:'c-systemes-05', type:'discrim', pas:['systemes.6'], q:'La phényléphrine, c’est…', choix:['un mydriatique sans effet cycloplégique', 'un mydriatique cycloplégique'], bonne:0, r:'Les sympathomimétiques « n’ont pas d’effet sur l’accommodation parce qu’ils n’agissent pas sur le muscle ciliaire » (8.1-d25).', src:['8.1-d25']},
+  {id:'c-systemes-06', type:'libre', pas:['systemes.4'], q:'Pourquoi associe-t-on phényléphrine et tropicamide ?', r:'Seule, la phényléphrine dilate mal : « le système parasympathique remporte » ; ensemble, la dilatation est supérieure <span class="src">8.1-d25</span>.', points:['le parasympathique remporte', 'dilatation supérieure'], src:['8.1-d22', '8.1-d25'], qcm:{bon:'Seule, elle dilate mal : le parasympathique l’emporte', faux:['Seule, elle relâche trop le corps ciliaire', 'Seule, elle agit en plus de deux semaines', 'Seule, elle colore la cornée en vert']}},
+  /* ---------- pourquoi (M8) ---------- */
+  {id:'c-pourquoi-01', type:'libre', pas:['pourquoi.1'], q:'Chez qui veut-on mieux voir le pôle postérieur ?', r:'« Personnes 50 ans+ », « Petites pupilles », « Opacités du cristallin », plus de maladies oculaires et circulatoires <span class="src">8.1-d16</span>.', points:['50 ans', 'petites pupilles', 'opacités'], src:['8.1-d16'], qcm:{bon:'50 ans et plus, petites pupilles, opacités du cristallin', faux:['Enfants de moins de 5 ans qui accommodent', 'Porteurs de lentilles rigides, yeux secs', 'Patients au kératocône, cornée mince']}},
+  {id:'c-pourquoi-02', type:'application', pas:['pourquoi.2'], q:'Une personne de 75 ans a de petites pupilles sans aucun médicament. Explique-le avec les deux systèmes.', r:'Le dilatateur s’atrophie plus que le sphincter et le sympathique devient moins efficace <span class="src">8.1-d17</span> : le côté qui ouvre faiblit <span class="deduit">déduit</span>.', points:['dilatateur', 'sympathique'], src:['8.1-d17'], qcm:{bon:'Le dilatateur et le sympathique faiblissent avec l’âge', faux:['Le sphincter s’atrophie plus que le dilatateur', 'Le parasympathique devient moins efficace', 'Le cristallin opaque pousse l’iris vers l’avant']}},
+  /* ---------- agents (M8) ---------- */
+  {id:'c-agents-01', type:'libre', pas:['agents.1'], q:'Tropicamide : début, durée habituelle, et durée chez une personne sensible ?', r:'« dans environ 20 minutes », « 5-6 heures », « jusqu’à 24 heures » <span class="src">8.1-d20</span>.', points:['20 minutes', '5-6 heures', '24 heures'], src:['8.1-d20'], qcm:{bon:'20 minutes ; 5-6 heures ; jusqu’à 24 heures', faux:['30-45 minutes ; 24 heures ; 2 semaines', 'Une minute ; 15-20 minutes ; une heure', '2 heures ; 2-6 heures ; 10 heures']}},
+  {id:'c-agents-02', type:'libre', pas:['agents.1'], q:'Cyclopentolate : chez qui, à quelle concentration, début et durée ?', r:'« l’agent le plus souvent utilisé chez les enfants », 1 %, « 30-45 minutes », « 24 heures ou plus chez certains enfants » <span class="src">8.1-d23</span>.', points:['enfants', '1 %', '30-45 minutes', '24 heures'], src:['8.1-d23'], qcm:{bon:'Enfants ; 1 % ; 30-45 minutes ; 24 heures ou plus', faux:['Adultes ; 2,5 % ; 20 minutes ; 5-6 heures', 'Enfants ; 0,05 % ; une minute ; 2 semaines', 'Aînés ; 10 % ; 2-6 heures ; 24 heures']}},
+  {id:'c-agents-03', type:'libre', pas:['agents.1'], q:'L’atropine : pourquoi rare en examen, et à quoi sert la dose diluée ?', r:'« Elle a une durée très longue (jusqu’à 2 semaines) » ; à 0,05 % « pour stabiliser l’augmentation de la myopie chez les jeunes » <span class="src">8.1-d19</span>.', points:['2 semaines', 'myopie'], src:['8.1-d19'], qcm:{bon:'Jusqu’à 2 semaines d’effet ; à 0,05 %, freiner la myopie', faux:['Effet trop court ; à 0,05 %, dilater les enfants', 'Trop irritante ; à 0,05 %, anesthésier la cornée', 'Trop chère ; à 0,05 %, colorer les larmes']}},
+  {id:'c-agents-04', type:'discrim', pas:['agents.3'], q:'Mydfrin, c’est…', choix:['la phényléphrine', 'le tropicamide', 'le cyclopentolate'], bonne:0, r:'Phényléphrine (Mydfrin), 2,5 % le plus souvent (8.1-d22, d25, d26).', src:['8.1-d22', '8.1-d26']},
+  {id:'c-agents-05', type:'application', pas:['agents.2'], q:'Réfraction d’un enfant de 4 ans qui accommode beaucoup : quelle goutte, et pourquoi ?', r:'Le cyclopentolate : « pour réduire l’accommodation et assurer une réfraction plus précise » <span class="src">8.1-d23</span>.', points:['cyclopentolate', 'réduire l’accommodation'], src:['8.1-d23'], qcm:{bon:'Le cyclopentolate : il réduit l’accommodation', faux:['La phényléphrine : elle réduit l’accommodation', 'L’atropine 1 % : elle agit en 20 minutes', 'L’Alcaine : elle empêche l’enfant de cligner']}},
+  /* ---------- anesthesie (M8) ---------- */
+  {id:'c-anesthesie-01', type:'libre', pas:['anesthesie.1', 'anesthesie.3'], q:'L’anesthésique : comment le reconnaître, délai, durée ?', r:'Un nom qui finit avec -aine ou -caine ; « à l’intérieur d’une minute » ; « 15-20 minutes » <span class="src">8.1-d28</span>.', points:['-aine', 'une minute', '15-20 minutes'], src:['8.1-d28'], qcm:{bon:'Nom en -aine ou -caine ; moins d’une minute ; 15-20 minutes', faux:['Nom en -cyl ; 20 minutes ; 5-6 heures', 'Nom en -frin ; 30-45 minutes ; 24 heures', 'Nom en -ine ; une heure ; 2 semaines']}},
+  {id:'c-anesthesie-02', type:'application', pas:['anesthesie.5'], q:'Le patient demande à garder l’Alcaine. Ta réponse ?', r:'Non : « Ne pas remettre au patient parce qu’une sur-utilisation crée une toxicité au niveau de l’épithélium » <span class="src">8.1-d28</span>.', points:['non', 'toxicité', 'épithélium'], src:['8.1-d28'], qcm:{bon:'Non : la sur-utilisation est toxique pour l’épithélium', faux:['Oui, s’il le garde bien au réfrigérateur', 'Oui, mais une seule goutte par jour, pas plus', 'Non : il dilaterait trop ses pupilles']}},
+  {id:'c-anesthesie-03', type:'discrim', pas:['anesthesie.4'], q:'L’anesthésique qui se garde au réfrigérateur et que l’œil tolère le mieux :', choix:['l’Alcaine', 'l’unidose'], bonne:0, r:'« Alcaine: Cet agent est le plus facilement toléré. Se conserve au réfrigérateur » (8.1-d30) ; l’unidose ne se réfrigère pas et irrite davantage (8.1-d31).', src:['8.1-d30', '8.1-d31']},
+  /* ---------- fluo (M8) ---------- */
+  {id:'c-fluo-01', type:'libre', pas:['fluo.3'], q:'Les quatre usages de la fluorescéine ?', r:'Le bris du film ; les zones sèches et égratignures de la cornée ; l’ajustement d’une lentille rigide ; les mires du tonomètre à aplanation <span class="src">8.1-d37–d40</span>.', points:['bris du film', 'égratignures', 'lentille rigide', 'tonomètre'], src:['8.1-d37', '8.1-d38', '8.1-d39', '8.1-d40'], qcm:{bon:'Le film, les égratignures, la lentille rigide, la tonométrie', faux:['La dilatation, la réfraction, l’OCT, la photo', 'Le film, la pupille, l’angle, l’acuité', 'La kératométrie, la topographie, l’OCT, le film']}},
+  {id:'c-fluo-02', type:'discrim', pas:['fluo.4'], q:'Un tonomètre qui souffle un jet d’air :', choix:['pas de goutte', 'anesthésique et fluorescéine'], bonne:0, r:'Le NCT, « non-contact tonometer », aplatit la cornée avec un jet d’air (3.2-d9) ; le Goldmann ou le Perkins la touche, d’où l’anesthésique, et la fluorescéine montre ses mires : « un mélange d’anesthésie et fluorescéine » (8.1-d40).', src:['3.2-d9', '8.1-d40']},
+  /* ---------- protocole (M8) ---------- */
+  {id:'c-protocole-01', type:'chaine', pas:['protocole.1'], q:'Remets dans l’ordre le protocole avant les gouttes.', items:['acuité visuelle', 'tonométrie', 'l’optométriste révise l’histoire de cas', 'l’optométriste regarde l’angle et la cornée', 'on place les gouttes'], src:['8.1-d32'], qcm:{q:'Après l’acuité et la tonométrie, quelle étape vient ensuite ?', bon:'L’optométriste révise l’histoire de cas', faux:['On place les gouttes tout de suite', 'L’optométriste regarde l’angle', 'On mesure l’acuité visuelle']}},
+  {id:'c-protocole-02', type:'application', pas:['protocole.3'], q:'Tu te laves les mains au gel d’alcool. Que dois-tu faire avant d’instiller, et pourquoi ?', r:'Le laisser sécher complètement : l’alcool isopropylique est irritant pour la surface de l’œil ; savon et eau de préférence <span class="src">8.1-d33</span>.', points:['sécher complètement', 'irritant'], src:['8.1-d33'], qcm:{bon:'Le laisser sécher complètement : l’alcool irrite l’œil', faux:['Instiller tout de suite : l’alcool désinfecte l’œil', 'Mettre des gants par-dessus l’alcool humide', 'Rincer l’œil du patient avec de l’alcool']}},
+  {id:'c-protocole-03', type:'libre', pas:['protocole.4'], q:'Que notes-tu au dossier après l’instillation ?', r:'« Noter les collyres administrés dans le dossier du patient et l’heure » <span class="src">8.1-d33</span>.', points:['les collyres', 'l’heure'], src:['8.1-d33'], qcm:{bon:'Le collyre administré et l’heure', faux:['Le collyre seulement', 'L’heure de l’examen seulement', 'Le prix et la date d’achat']}},
+  /* ---------- consentement (M8) ---------- */
+  {id:'c-consentement-01', type:'chaine', pas:['consentement.1'], q:'Le consentement explicite, dans l’ordre du cours.', items:['pourquoi on administre les gouttes', 'les avantages, et les conséquences de ne pas les mettre', 'les effets secondaires', 'on laisse poser des questions', 'C’est donc correct que je vous mets ces gouttes?'], src:['8.1-d35'], qcm:{q:'Après avoir expliqué la raison, les avantages et les effets, que fait-on ?', bon:'On laisse poser des questions, puis on demande l’accord', faux:['On instille, puis on explique les effets', 'On demande l’accord, puis on explique pourquoi', 'On explique les effets, puis on instille sans demander']}},
+  {id:'c-consentement-02', type:'application', pas:['consentement.3'], q:'Le patient hésite et ce n’est pas urgent. Que proposes-tu ?', r:'« Discuter les alternatives (remettre à une prochaine visite par exemple si ce n’est pas une urgence) » <span class="src">8.1-d34</span>.', points:['prochaine visite', 'pas une urgence'], src:['8.1-d34'], qcm:{bon:'Remettre à une prochaine visite', faux:['Instiller une goutte plus faible', 'Instiller quand même, sans rien dire', 'Demander à un collègue de convaincre']}}
 ];
 
 const VISLE = {
@@ -4447,7 +5045,28 @@ const VISLE = {
     prediction:{q:'La vraie pression de Mathis est…', choix:['plus haute que 14 mmHg', 'plus basse que 14 mmHg', 'exactement 14 mmHg'], bonne:0, retour:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11) : 485 µm → +4, donc 18 mmHg.'}},
   artefacts:{genre:'comptoir', titre:'Une tache de trop',
     texte:'Un an plus tard, Mathis revient pour son suivi. Sur la nouvelle photo, prise un peu vite, une tache sombre semble plus grande que l’an dernier. Il voit ton air et demande ce qui se passe.',
-    prediction:{q:'Ta première action ?', choix:['vérifier la qualité de l’image, reprendre, puis signaler à l’optométriste', 'lui dire que la tache grossit', 'effacer l’ancienne photo'], bonne:0, retour:'« Parfois un artefact peut ressembler à quelque chose avec signification clinique » (7.3-d3) : on obtient d’abord une image fiable, et l’optométriste juge.'}}
+    prediction:{q:'Ta première action ?', choix:['vérifier la qualité de l’image, reprendre, puis signaler à l’optométriste', 'lui dire que la tache grossit', 'effacer l’ancienne photo'], bonne:0, retour:'« Parfois un artefact peut ressembler à quelque chose avec signification clinique » (7.3-d3) : on obtient d’abord une image fiable, et l’optométriste juge.'}},
+  systemes:{genre:'sur-toi', titre:'Ta pupille dans le miroir',
+    texte:'Dans une pièce éclairée, regarde une de tes pupilles dans un miroir. Éteins la lumière quelques secondes, puis rallume en gardant les yeux sur le miroir.',
+    prediction:{q:'Au moment où tu rallumes, ta pupille…', choix:['rétrécit', 'grandit', 'ne bouge pas'], bonne:0, retour:'Elle rétrécit : c’est le sphincter, commandé par le parasympathique (8.1-d12, d18). « Notre système parasympathique encourage nos pupilles de rétrécir » ; le lien avec la lumière vient du réflexe pupillaire vu en Anatomie (M8).'}},
+  pourquoi:{genre:'comptoir', titre:'La périphérie de Mathis',
+    texte:'Mathis revient pour son suivi. L’optométriste veut voir loin en périphérie, vers la zone entre l’équateur et la fin du corps ciliaire. Dans la pièce éclairée, ses pupilles sont petites.',
+    prediction:{q:'Pour voir cette zone, il faut d’abord…', choix:['dilater la pupille', 'prendre plus de photos', 'éclairer davantage'], bonne:0, retour:'« On veut parfois voir la zone entre l’équateur et la fin du corps ciliaire » (8.1-d14) : on dilate. Plus de photos ou plus de lumière ne font que rétrécir la pupille ou assombrir l’image (7.1-d17, 7.3-d12).'}},
+  agents:{genre:'comptoir', titre:'La goutte habituelle des enfants',
+    texte:'Une mère arrive avec sa fille de 6 ans pour une réfraction. L’optométriste te demande de préparer “la goutte habituelle chez les enfants”.',
+    prediction:{q:'Tu prépares…', choix:['le cyclopentolate (Cyclogyl)', 'la phényléphrine (Mydfrin)', 'l’Alcaine'], bonne:0, retour:'« Cyclopentolate (Cyclogyl) est l’agent le plus souvent utilisé chez les enfants » (8.1-d23). Et tu préviens la mère : 30-45 minutes avant l’effet, parfois 24 heures ou plus.'}},
+  anesthesie:{genre:'vie', titre:'La goutte miracle',
+    texte:'Un ami s’est égratigné l’œil. À la clinique, une goutte a fait disparaître la douleur en moins d’une minute. Il te demande où acheter « la même » pour chez lui.',
+    prediction:{q:'Tu lui expliques que…', choix:['ces gouttes ne se remettent pas au patient : trop en mettre abîme la cornée', 'il peut l’acheter en pharmacie', 'il suffit de la garder au réfrigérateur'], bonne:0, retour:'« Ne pas remettre au patient parce qu’une sur-utilisation crée une toxicité au niveau de l’épithélium » (8.1-d28).'}},
+  fluo:{genre:'comptoir', titre:'Les lentilles rigides de Mathis',
+    texte:'Pour son kératocône, Mathis porte maintenant des lentilles rigides (module 6). L’optométriste veut voir comment elles s’ajustent sur sa cornée.',
+    prediction:{q:'Pour voir les larmes sous la lentille, on utilise…', choix:['la fluorescéine, sous lumière bleue', 'le tropicamide', 'l’Alcaine seule'], bonne:0, retour:'« On utilise pour colorer les larmes pour mieux visualiser l’ajustement d’un verre de contacte (sic) rigide » (8.1-d39).'}},
+  protocole:{genre:'comptoir', titre:'On va le dilater',
+    texte:'L’optométriste passe la tête dans la porte : “On va dilater Mathis.” Tu as déjà le flacon de tropicamide en main, mais Mathis vient d’arriver.',
+    prediction:{q:'Avant d’instiller…', choix:['l’acuité et la tonométrie, puis l’optométriste vérifie', 'tu instilles tout de suite pour gagner du temps', 'tu prends d’abord la photo du fond d’œil'], bonne:0, retour:'« 1. Acuité visuelle (prétests) », « 2. Tonométrie », puis l’optométriste révise l’histoire de cas et regarde l’angle ; les gouttes en dernier (8.1-d32).'}},
+  consentement:{genre:'comptoir', titre:'Ça change quoi pour moi ?',
+    texte:'Avant la goutte, Mathis demande : “Ça change quoi pour moi, aujourd’hui ?” Il doit retourner travailler devant son écran cet après-midi.',
+    prediction:{q:'Tu lui dis surtout…', choix:['la vision floue et la lumière pendant quelques heures, puis tu lui demandes s’il est d’accord', 'que ce n’est rien', 'de signer un formulaire'], bonne:0, retour:'« Prévenir des effets secondaires temporaires : vision floue pendant quelques heures surtout chez les plus jeunes, sensibilité à la lumière, inconfort avec instillation initiale » (8.1-d34), puis « C’est donc correct que je vous mets (sic) ces gouttes? » (8.1-d35). S’il préfère, on peut remettre si ce n’est pas urgent.'}}
 };
 
 const GESTES = [
@@ -4506,7 +5125,16 @@ const GESTES = [
      {fais:'Pointe le L avec la main gauche, le R avec la main droite.', dis:'ne pas mélanger OD et OS'}],
    sentir:'Le côté de l’écran, le côté de ta main et le côté de ton œil concordent : gauche avec gauche, droite avec droite.',
    lien:'L’écran de 6.3-d10 affiche L à gauche et R à droite ; R = OD et L = OS <span class="deduit">déduit</span> ; l’erreur à éviter : « Mélanger les mesures de l’oeil droit et oeil gauche » (6.2-d20).',
-   src:['6.3-d10', '6.2-d20']}
+   src:['6.3-d10', '6.2-d20']},
+  {id:'g-pupille', ecran:'systemes', titre:'Le sphincter au travail', duree:'1 min', materiel:'un miroir, une pièce que tu peux assombrir',
+   etapes:[
+     {fais:'Regarde une de tes pupilles dans le miroir, lumière allumée.', dis:'pupille petite : le sphincter serre'},
+     {fais:'Éteins ou tamise la lumière, et attends une dizaine de secondes.', dis:'la pupille grandit'},
+     {fais:'Rallume en fixant le miroir.', dis:'elle rétrécit : le parasympathique'},
+     {fais:'Imagine maintenant le tropicamide : le sphincter ne répond plus.', dis:'la pupille resterait grande, même à la lumière'}],
+   sentir:'La pupille change sans que tu le décides : deux muscles et deux systèmes s’en chargent. Bloque l’un, et l’autre gagne.',
+   lien:'« Notre système parasympathique encourage nos pupilles de rétrécir » (8.1-d12) ; le tropicamide bloque ce système (8.1-d18). Le lien avec la lumière est le réflexe vu en Anatomie <span class="deduit">déduit</span>.',
+   src:['8.1-d12', '8.1-d18']}
 ];
 
 const PREDIRE = [
@@ -4569,7 +5197,19 @@ const PREDIRE = [
   {id:'p-oct-rate', ecran:'oct-tests', cible:'#ot-test [data-t="rate"]', q:'Au test 2, le patient ne fixe pas la cible. L’écran montrera…', choix:['la macula, avec son creux', 'la papille quand même', 'un écran noir'], bonne:0,
    retour:'« l’instrument capte la macula et non le disc » (7.3-d13).'},
   {id:'p-pression-ep', ecran:'pression', cible:'#pr-ep', q:'Si la cornée devient plus mince que 545 µm, la PIO corrigée sera…', choix:['plus haute que la lecture', 'plus basse que la lecture', 'égale à la lecture'], bonne:0,
-   retour:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11) : la correction est positive.'}
+   retour:'« Si la cornée est plus mince, la mesure sera sous-estimée » (7.2-d11) : la correction est positive.'},
+  {id:'p-sys-phe', ecran:'systemes', cible:'#sys-ag [data-a="phe"]', q:'Avec la phényléphrine seule, la pupille…', choix:['s’ouvre un peu, pas beaucoup', 's’ouvre au maximum', 'se ferme'], bonne:0,
+   retour:'« le système parasympathique remporte alors l’utilisation de phenyléphrine seul ne réussit pas à bien dilater la pupille » (8.1-d25).'},
+  {id:'p-sys-tro', ecran:'systemes', cible:'#sys-ag [data-a="tro"]', q:'Avec le tropicamide, l’accommodation…', choix:['se relâche : la vision de près devient floue', 'reste intacte', 'augmente'], bonne:0,
+   retour:'Le blocage du parasympathique relâche aussi le corps ciliaire (« relaxation du muscle du corps ciliaire ») (8.1-d18) : « vision de près floue ».'},
+  {id:'p-an-delai', ecran:'anesthesie', cible:'#an-svg', q:'L’Alcaine rend l’œil insensible en…', choix:['moins d’une minute', 'environ 20 minutes', '30 à 45 minutes'], bonne:0,
+   retour:'« L’anesthésie a lieu à l’intérieur d’une minute après instillation et la durée est de 15-20 minutes. » (8.1-d28)'},
+  {id:'p-fluo-bris', ecran:'fluo', cible:'#fl-cligne', q:'Après le clignement, si l’œil reste ouvert, le film coloré…', choix:['finit par se rompre : des taches sèches apparaissent', 'reste intact', 'devient rouge'], bonne:0,
+   retour:'« on observe le temps écoulé avant le bris du film. Ceci veut dire que la couche de lipide et la couche aqueuse sont évaporées » (8.1-d37).'},
+  {id:'p-proto-1', ecran:'protocole', cible:'#pr-pool', q:'La toute première étape avant les gouttes ?', choix:['l’acuité visuelle', 'placer les gouttes', 'regarder l’angle'], bonne:0,
+   retour:'« 1. Acuité visuelle (prétests) » (8.1-d32) : on mesure avant que la goutte brouille la vision <span class="deduit">déduit</span>.'},
+  {id:'p-cons-fin', ecran:'consentement', cible:'#co-pool', q:'La dernière phrase avant d’instiller ?', choix:['C’est donc correct que je vous mets ces gouttes ?', 'Avez-vous des questions ?', 'Signez ici.'], bonne:0,
+   retour:'« Puis on demande : C’est donc correct que je vous mets (sic) ces gouttes? » (8.1-d35) : les questions viennent juste avant.'}
 ];
 
 /* ====== _commun/moteur.js ====== */
@@ -6398,6 +7038,262 @@ INIT.artefacts = root => {
 };
 
 /* ======================================================================
+   Module 8 (9 nov. 2026) : les gouttes diagnostiques (deck 8.1).
+   Écrans systemes, pourquoi, agents, anesthesie, fluo, protocole, consentement.
+   Contenu : distilled/to-m08_distilled.md ; cartes KC : analyse/to-m08_kc.md (T8.1–T8.19).
+   Les tailles de pupille de la simulation sont des mots, jamais des millimètres : le cours n'en donne pas.
+   ====================================================================== */
+
+/* ---------- systemes : bloquer un système ou stimuler l'autre ---------- */
+const GOUTTES_SYS = {
+  repos:{t:'aucune goutte', para:false, sym:false, cil:false,
+    effets:'Au repos, les deux systèmes s’équilibrent : le parasympathique serre la pupille, le sympathique l’ouvre.'},
+  tro:{t:'tropicamide', para:true, sym:false, cil:true,
+    effets:'Bloquer le parasympathique relâche le sphincter et le corps ciliaire (8.1-d18) : éblouissement, vision de près floue, et un risque de bloquer l’humeur aqueuse chez les patients susceptibles, « Très rarement » (8.1-d10, d18).'},
+  cyc:{t:'cyclopentolate', para:true, sym:false, cil:true,
+    effets:'Même blocage, mais on le choisit « Quand on veut surtout un effet de relaxation du corps ciliaire » (8.1-d23) : la réfraction d’un enfant.'},
+  phe:{t:'phényléphrine seule', para:false, sym:true, cil:false,
+    effets:'Le dilatateur se contracte, l’accommodation ne bouge pas (8.1-d25). Mais « le système parasympathique remporte » : la pupille s’ouvre mal. Effets : photophobie, tension, arythmies (8.1-d22, d27).'},
+  deux:{t:'tropicamide + phényléphrine', para:true, sym:true, cil:true,
+    effets:'Le sphincter lâche ET le dilatateur tire : la dilatation la plus grande, « plus prononcée ou de plus longue durée » (8.1-d22). On additionne les effets des deux gouttes.'}
+};
+INIT.systemes = root => {
+  const st = {ag:'repos', age:false};
+  /* rayon de la pupille dans le dessin (unités du SVG) : un ordre, pas une mesure */
+  const rayon = () => {
+    const g = GOUTTES_SYS[st.ag];
+    let r = g.para && g.sym ? 52 : g.para ? 44 : g.sym ? 26 : 20;
+    if(st.age) r -= g.sym ? 9 : 5;      // le dilatateur s'atrophie (8.1-d17)
+    return r;
+  };
+  const mot = r => r >= 48 ? 'très grande' : r >= 38 ? 'grande' : r >= 24 ? 'un peu plus grande' : r >= 18 ? 'moyenne' : 'petite';
+  function rendre(){
+    const g = GOUTTES_SYS[st.ag], r = rayon(), cx = 120, cy = 118, R = 92;
+    $$('[data-a]', $('#sys-ag')).forEach(b => b.setAttribute('aria-pressed', b.dataset.a === st.ag ? 'true' : 'false'));
+    let h = '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="#6E8BA6"/>';
+    /* le dilatateur : des rayons ; orange vif s'il est stimulé */
+    const dil = g.sym ? 1 : 0.45, dw = g.sym ? 3.2 : 1.6, nRay = st.age ? 14 : 22;
+    for(let i = 0; i < nRay; i++){
+      const a = i * 2 * Math.PI / nRay, x1 = cx + (r + 16) * Math.cos(a), y1 = cy + (r + 16) * Math.sin(a), x2 = cx + (R - 6) * Math.cos(a), y2 = cy + (R - 6) * Math.sin(a);
+      h += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="#E8833A" stroke-width="' + dw + '" opacity="' + dil + '" stroke-linecap="round"/>';
+    }
+    /* le sphincter : un anneau autour de la pupille ; pâle et pointillé s'il est relâché */
+    h += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 8) + '" fill="none" stroke="#38B6C9" stroke-width="' + (g.para ? 4 : 9) + '"' + (g.para ? ' stroke-dasharray="5 5" opacity=".5"' : '') + '/>';
+    h += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#0E0E14"/>';
+    h += '<text x="' + cx + '" y="236" text-anchor="middle" class="d-txt">pupille ' + mot(r) + '</text>';
+    /* le corps ciliaire et le cristallin, en coupe, à droite */
+    const ox = 300, oy = 118, epais = g.cil ? 16 : 26;
+    h += '<text x="' + ox + '" y="22" text-anchor="middle" class="d-txt">corps ciliaire</text>';
+    [-1, 1].forEach(s => {
+      h += '<path d="M' + (ox - 28) + ' ' + (oy + s * 92) + ' Q' + ox + ' ' + (oy + s * 70) + ' ' + (ox + 28) + ' ' + (oy + s * 92) + '" fill="none" stroke="#38B6C9" stroke-width="' + (g.cil ? 4 : 10) + '"' + (g.cil ? ' stroke-dasharray="5 5" opacity=".5"' : '') + '/>';
+      h += '<line x1="' + ox + '" y1="' + (oy + s * 76) + '" x2="' + ox + '" y2="' + (oy + s * 46) + '" stroke="#9a98a8" stroke-width="1"/>';
+    });
+    h += '<ellipse cx="' + ox + '" cy="' + oy + '" rx="' + epais + '" ry="46" fill="#C9D6E2" opacity=".85"/>';
+    h += '<text x="' + ox + '" y="236" text-anchor="middle" class="d-txt">' + (g.cil ? 'accommodation relâchée' : 'accommode') + '</text>';
+    $('#sys-svg').innerHTML = h;
+    $('#sys-etat').innerHTML = '<p style="margin:0"><b>' + esc(g.t.charAt(0).toUpperCase() + g.t.slice(1)) + (st.age ? ', 70 ans' : '') + '.</b> ' + esc(g.effets) +
+      (st.age ? ' À 70 ans, « Le muscle dilatateur s’atrophie avec l’âge plus que le sphincter » (8.1-d17) : la pupille part plus petite et s’ouvre moins.' : '') + '</p>';
+  }
+  $('#sys-ag').addEventListener('click', e => { const b = e.target.closest('[data-a]'); if(b){ st.ag = b.dataset.a; rendre(); } });
+  $('#sys-age').addEventListener('change', e => { st.age = e.target.checked; rendre(); });
+  rendre();
+};
+
+/* ---------- agents : quelle goutte ? ---------- */
+const AG_CHOIX = ['tropicamide', 'tropicamide + phényléphrine', 'cyclopentolate', 'Alcaine', 'fluorescéine', 'Alcaine + fluorescéine'];
+const AG_CAS = [
+  {s:'Fond d’œil chez un adulte : on veut une dilatation qui agit vite.', bon:0, e:'« Ceci est utilisé le plus fréquemment en pratique optométrie parce que l’effet commence assez rapidement. » (8.1-d20)'},
+  {s:'Fond d’œil chez une patiente de 65 ans aux petites pupilles : on veut une dilatation plus prononcée.', bon:1, e:'« Ajouté au tropicamide pour un examen du fond d’œil ou on veut que la dilatation soit plus prononcée ou de plus longue durée » (8.1-d22).'},
+  {s:'Réfraction d’un enfant de 5 ans qui accommode beaucoup.', bon:2, e:'« Cyclopentolate (Cyclogyl) est l’agent le plus souvent utilisé chez les enfants » ; « pour réduire l’accommodation et assurer une réfraction plus précise » (8.1-d23).'},
+  {s:'Enlever un corps étranger sur la cornée.', bon:3, e:'Un anesthésique : « enlever des corps étrangers sur la cornée » (8.1-d28) ; l’Alcaine est « le plus facilement toléré » (8.1-d30).'},
+  {s:'Chercher des égratignures ou des zones sèches sur la cornée.', bon:4, e:'« On utilise avec lumière bleue pour mettre en évidence des zones de sécheresse ou des égratignures sur la cornée. » (8.1-d38)'},
+  {s:'Mesurer la pression au tonomètre Goldmann.', bon:5, e:'« On utilise un mélange d’anesthésie et fluorescéine » (8.1-d40) : l’anesthésique parce que le tonomètre touche la cornée (8.1-d3), la fluorescéine pour voir ses mires.'},
+  {s:'Évaluer l’ajustement d’une lentille cornéenne rigide.', bon:4, e:'« pour colorer les larmes pour mieux visualiser l’ajustement d’un verre de contacte (sic) rigide » (8.1-d39).'},
+  {s:'Mesurer le temps avant le bris du film lacrymal.', bon:4, e:'« Coloration de la phase aqueuse dans le film lachrymal (sic) et on observe le temps écoulé avant le bris du film. » (8.1-d37)'}
+];
+INIT.agents = root => {
+  let ordre = AG_CAS.map((_, i) => i).sort(() => Math.random() - 0.5), k = 0, fait = false, bons = 0, vus = 0;
+  function rendre(){
+    const c = AG_CAS[ordre[k % ordre.length]]; fait = false;
+    $('#ag-situation').innerHTML = '<p style="margin:0"><b>Le besoin.</b> ' + esc(c.s) + '</p>';
+    $('#ag-choix').innerHTML = AG_CHOIX.map((t, i) => '<button type="button" class="puce" data-i="' + i + '">' + esc(t) + '</button>').join('');
+    dire($('#ag-retour'), '');
+    $('#ag-compte').textContent = vus ? bons + ' / ' + vus + ' du premier coup' : '';
+  }
+  $('#ag-choix').addEventListener('click', e => {
+    const b = e.target.closest('[data-i]'); if(!b || fait) return;
+    const c = AG_CAS[ordre[k % ordre.length]], ok = +b.dataset.i === c.bon; fait = true; vus++; if(ok) bons++;
+    b.classList.add(ok ? 'bon' : 'faux'); if(!ok) $('[data-i="' + c.bon + '"]', $('#ag-choix')).classList.add('bon');
+    dire($('#ag-retour'), (ok ? 'Oui. ' : 'Non : ' + esc(AG_CHOIX[c.bon]) + '. ') + esc(c.e), ok ? 'ok' : 'bad');
+    $('#ag-compte').textContent = bons + ' / ' + vus + ' du premier coup';
+    if(typeof Pratique !== 'undefined') Pratique.noter('T8.9', {premier:ok, aide:false, resolu:ok, err:ok ? [] : ['ag.' + AG_CHOIX[+b.dataset.i]]});
+  });
+  $('#ag-suivant').addEventListener('click', () => { k++; rendre(); });
+  rendre();
+};
+
+/* ---------- anesthesie : la ligne du temps et le flacon ---------- */
+INIT.anesthesie = root => {
+  /* 0 à 30 min, 12 px par minute à partir de x = 40 */
+  const X = m => 40 + m * 12;
+  let h = '<line x1="' + X(0) + '" y1="70" x2="' + X(30) + '" y2="70" stroke="#9a98a8" stroke-width="1.5"/>';
+  [0, 1, 15, 20, 30].forEach(m => { h += '<line x1="' + X(m) + '" y1="66" x2="' + X(m) + '" y2="74" stroke="#9a98a8"/><text x="' + X(m) + '" y="92" text-anchor="middle" class="d-txt2">' + m + ' min</text>'; });
+  h += '<rect x="' + X(0) + '" y="34" width="' + (X(1) - X(0)) + '" height="22" fill="#E8833A" opacity=".8"/>';
+  h += '<rect x="' + X(1) + '" y="34" width="' + (X(17.5) - X(1)) + '" height="22" fill="#38B6C9" opacity=".85"/>';
+  h += '<rect x="' + X(15) + '" y="34" width="' + (X(20) - X(15)) + '" height="22" fill="#38B6C9" opacity=".4"/>';
+  h += '<text x="' + X(9) + '" y="27" text-anchor="middle" class="d-txt">l’œil est insensible : 15 à 20 min</text>';
+  h += '<line x1="' + X(20) + '" y1="112" x2="' + X(30) + '" y2="112" stroke="#9B7BD4" stroke-width="3" stroke-dasharray="6 4"/>';
+  h += '<text x="' + X(20) + '" y="126" class="d-txt2">parfois un œil sec, plus longtemps</text>';
+  h += '<text x="' + X(0) + '" y="27" class="d-txt2">&lt; 1 min</text>';
+  $('#an-svg').innerHTML = h;
+  let fait = false;
+  $('#an-choix').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if(!b || fait) return;
+    const ok = b.dataset.c === 'b'; fait = true;
+    b.classList.add(ok ? 'bon' : 'faux'); if(!ok) $('[data-c="b"]', $('#an-choix')).classList.add('bon');
+    dire($('#an-retour'), (ok ? 'Oui. ' : 'Non. ') + '« Ne pas remettre au patient parce qu’une sur-utilisation crée une toxicité au niveau de l’épithélium » (8.1-d28).', ok ? 'ok' : 'bad');
+    if(typeof Pratique !== 'undefined') Pratique.noter('T8.12', {premier:ok, aide:false, resolu:ok, err:ok ? [] : ['an.flacon']});
+  });
+};
+
+/* ---------- fluo : le bris du film, en simulation ---------- */
+INIT.fluo = root => {
+  const st = {t0:0, bris:0, minuterie:null, fini:true};
+  /* des taches sèches tirées une fois par clignement */
+  let taches = [];
+  function dessiner(t){
+    let h = '<rect x="0" y="0" width="300" height="220" fill="#0A1030"/>';
+    h += '<circle cx="150" cy="110" r="96" fill="#2E8C4A" opacity=".35"/><circle cx="150" cy="110" r="90" fill="#9BE36B" opacity=".55"/>';
+    if(t >= st.bris && st.bris) taches.forEach(p => {
+      const age = Math.min(1, (t - st.bris - p.d) / 2.5); if(age <= 0) return;
+      h += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + (p.r * age).toFixed(1) + '" fill="#071028" opacity=".9"/>';
+    });
+    $('#fl-svg').innerHTML = h;
+    $('#fl-temps').textContent = virg(t, 1) + ' s';
+  }
+  function arreter(){ if(st.minuterie){ clearInterval(st.minuterie); st.minuterie = null; } }
+  $('#fl-cligne').addEventListener('click', () => {
+    arreter();
+    st.t0 = performance.now(); st.bris = 4 + Math.random() * 10; st.fini = false;
+    taches = Array.from({length:4}, (_, i) => { const a = Math.random() * 2 * Math.PI, d = 20 + Math.random() * 55; return {x:150 + d * Math.cos(a), y:110 + d * Math.sin(a), r:7 + Math.random() * 9, d:i * 0.7}; });
+    dire($('#fl-retour'), 'Le film est étalé. Regarde la cornée verte, et arrête le compteur dès la première tache sombre.');
+    st.minuterie = setInterval(() => {
+      if(!root.isConnected){ arreter(); return; }
+      const t = (performance.now() - st.t0) / 1000; dessiner(t);
+      if(t > st.bris + 12){ arreter(); st.fini = true; dire($('#fl-retour'), 'Le film s’est rompu à ' + virg(st.bris, 1) + ' s. Cligne pour recommencer.', 'bad'); }
+    }, 100);
+  });
+  $('#fl-stop').addEventListener('click', () => {
+    if(st.fini){ dire($('#fl-retour'), 'Cligne d’abord : le film se reforme.'); return; }
+    const t = (performance.now() - st.t0) / 1000;
+    if(t < st.bris){ dire($('#fl-retour'), 'Pas encore : à ' + virg(t, 1) + ' s, le film est intact. Continue de regarder.', 'bad'); return; }
+    arreter(); st.fini = true; dessiner(t);
+    dire($('#fl-retour'), 'Le film s’est rompu à ' + virg(st.bris, 1) + ' s ; tu l’as vu à ' + virg(t, 1) + ' s. Ce temps, c’est « le temps écoulé avant le bris du film » (8.1-d37). Le cours ne dit pas quelle valeur est normale.', 'ok');
+  });
+  dessiner(0);
+};
+
+/* ---------- protocole : l'ordre, puis trouve l'erreur ---------- */
+const PROTO = [
+  {t:'Acuité visuelle (prétests)', pourquoi:'On mesure d’abord : la goutte brouillera la vision de près (8.1-d18, déduit).'},
+  {t:'Tonométrie (prétests)', pourquoi:'La pression se prend aussi avant les gouttes (8.1-d32) ; le deck ne dit pas pourquoi.'},
+  {t:'L’optométriste révise l’histoire de cas : allergies, contre-indications', pourquoi:'On vérifie qu’aucune goutte n’est contre-indiquée avant de la choisir (8.1-d32).'},
+  {t:'L’optométriste regarde l’angle irido-cornéen et la cornée à la lampe à fente', pourquoi:'« Très rarement une dilatation pupillaire bloque le passage de l’humeur aqueuse » (8.1-d10) : le lien avec l’angle est déduit.'},
+  {t:'On place les gouttes', pourquoi:'En dernier, déléguées « à l’assistant ou par l’optométriste selon le bureau » (8.1-d32).'}
+];
+const REGLES8 = ['les mains', 'l’asepsie', 'la conservation', 'le doute : les contre-indications', 'le dossier'];
+const ERR8 = [
+  {s:'Tu te frottes les mains au gel d’alcool et tu instilles aussitôt, les mains encore humides.', bon:0, e:'« De preference (sic) avec savon et eau parce que l’alcool isopropyl est irritant pour la surface de l’oeil. Si on utilise l’alcool, laisse sécher complètement » (8.1-d33).'},
+  {s:'Pour bien viser, tu appuies le bout du flacon sur la paupière inférieure.', bon:1, e:'« Utiliser une technique aseptique en ne touchant pas les cils ou la paupière du patient. » (8.1-d33)'},
+  {s:'Le flacon d’Alcaine est resté sur le comptoir depuis ce matin.', bon:2, e:'« Conserver selon les recommandations du fabricant (Alcaine au réfrigérateur) » (8.1-d33).'},
+  {s:'Le patient te dit qu’il fait de l’hypertension. Tu instilles la phényléphrine sans en parler à personne.', bon:3, e:'« Vérifier les contre-indications avec l’optométriste ou ophtalmologiste si on est pas certain que le produit est avisé pour un patient » (8.1-d33) ; la phényléphrine peut monter la tension (8.1-d22).'},
+  {s:'Au dossier, tu écris seulement “tropicamide 1 %”.', bon:4, e:'« Noter les collyres administrés dans le dossier du patient et l’heure » (8.1-d33) : il manque l’heure.'}
+];
+INIT.protocole = root => {
+  let place = [], erreurs = 0;
+  const melange = () => PROTO.map((_, i) => i).sort(() => Math.random() - 0.5);
+  let pool = melange();
+  function rendre(){
+    $('#pr-pool').innerHTML = pool.filter(i => !place.includes(i)).map(i => '<button type="button" class="puce" data-p="' + i + '" style="text-align:left;border-radius:10px">' + esc(PROTO[i].t) + '</button>').join('');
+    $('#pr-rang').innerHTML = place.map(i => '<li>' + esc(PROTO[i].t) + '</li>').join('');
+  }
+  $('#pr-pool').addEventListener('click', e => {
+    const b = e.target.closest('[data-p]'); if(!b) return;
+    const i = +b.dataset.p;
+    if(i === place.length){
+      place.push(i); rendre();
+      if(place.length === PROTO.length){
+        dire($('#pr-retour'), 'Le protocole est dans l’ordre' + (erreurs ? ', après ' + erreurs + ' essai' + (erreurs > 1 ? 's' : '') + ' de trop.' : ', du premier coup.'), 'ok');
+        if(typeof Pratique !== 'undefined') Pratique.noter('T8.16', {premier:!erreurs, aide:false, resolu:true, err:erreurs ? ['pr.ordre'] : []});
+      } else dire($('#pr-retour'), 'Oui. ' + PROTO[i].pourquoi, 'ok');
+    } else {
+      erreurs++;
+      dire($('#pr-retour'), 'Pas encore : « ' + esc(PROTO[i].t) + ' » vient plus tard. Quelle étape vient juste après « ' + esc(place.length ? PROTO[place.length - 1].t : 'le début') + ' » ?', 'bad');
+    }
+  });
+  $('#pr-refaire').addEventListener('click', () => { place = []; erreurs = 0; pool = melange(); dire($('#pr-retour'), ''); rendre(); });
+  rendre();
+
+  let k = Math.floor(Math.random() * ERR8.length), fait = false;
+  function rendreErr(){
+    const c = ERR8[k % ERR8.length]; fait = false;
+    $('#er-situation').innerHTML = '<p style="margin:0">' + esc(c.s) + ' Quelle règle n’est pas suivie ?</p>';
+    $('#er-choix').innerHTML = REGLES8.map((t, i) => '<button type="button" class="puce" data-r="' + i + '" style="text-align:left;border-radius:10px">' + esc(t) + '</button>').join('');
+    dire($('#er-retour'), '');
+  }
+  $('#er-choix').addEventListener('click', e => {
+    const b = e.target.closest('[data-r]'); if(!b || fait) return;
+    const c = ERR8[k % ERR8.length], ok = +b.dataset.r === c.bon; fait = true;
+    b.classList.add(ok ? 'bon' : 'faux'); if(!ok) $('[data-r="' + c.bon + '"]', $('#er-choix')).classList.add('bon');
+    dire($('#er-retour'), (ok ? 'Oui. ' : 'Non. ') + esc(c.e), ok ? 'ok' : 'bad');
+    if(typeof Pratique !== 'undefined') Pratique.noter('T8.17', {premier:ok, aide:false, resolu:ok, err:ok ? [] : ['er.' + c.bon]});
+  });
+  $('#er-suivant').addEventListener('click', () => { k++; rendreErr(); });
+  rendreErr();
+};
+
+/* ---------- consentement : construire ce qu'on dit au parent de Léo ----------
+   rang : 1 la raison ; 2 les avantages, les effets et les autres choix, dans l'ordre qu'on veut ; 3 les questions ; 4 la demande.
+   L'ordre des rangs 1, 3 et 4 vient de 8.1-d35 ; le cours ne classe pas les éléments du rang 2 entre eux. */
+const CONS = [
+  {t:'Je vais mettre des gouttes pour relâcher l’accommodation de Léo : sa réfraction sera plus précise.', rang:1, e:'D’abord la raison : « Expliquer la raison de chaque collyre avant l’instillation » (8.1-d34).'},
+  {t:'Sans les gouttes, il pourrait accommoder pendant l’examen, et la mesure serait moins juste.', rang:2, e:'« On explique les avantages et aussi les conséquences de ne pas mettre les gouttes. » (8.1-d35)'},
+  {t:'L’effet commence après 30 à 45 minutes. Sa vision sera floue et la lumière le gênera, parfois 24 heures ou plus.', rang:2, e:'« Il faut expliquer aux parents que la durée de l’effet peut être 24 heures ou plus chez certains enfants. » (8.1-d23)'},
+  {t:'Si ce n’est pas urgent, on peut aussi remettre l’examen à une prochaine visite.', rang:2, e:'« Discuter les alternatives (remettre à une prochaine visite par exemple si ce n’est pas une urgence) » (8.1-d34).'},
+  {t:'Avez-vous des questions ?', rang:3, e:'« On laisse la chance de poser des questions. » (8.1-d35)'},
+  {t:'C’est donc correct que je vous mets ces gouttes ?', rang:4, e:'« Puis on demande : C’est donc correct que je vous mets (sic) ces gouttes? » (8.1-d35)'},
+  {t:'Je les mets tout de suite, et je vous explique ensuite.', rang:0, e:'Non : on explique « avant l’instillation » (8.1-d34), puis on demande.'},
+  {t:'Ne vous inquiétez pas, ça ne fait absolument rien.', rang:0, e:'Non : il faut « Prévenir des effets secondaires temporaires » (8.1-d34).'},
+  {t:'Ça dure une heure, pas plus.', rang:0, e:'Non : le cyclopentolate dure « 24 heures ou plus chez certains enfants » (8.1-d23).'}
+];
+INIT.consentement = root => {
+  let place = [], erreurs = 0;
+  const melange = () => CONS.map((_, i) => i).sort(() => Math.random() - 0.5);
+  let pool = melange();
+  const rangActuel = () => { for(const r of [1, 2, 3, 4]) if(CONS.some((c, i) => c.rang === r && !place.includes(i))) return r; return 5; };
+  function rendre(){
+    $('#co-pool').innerHTML = pool.filter(i => !place.includes(i)).map(i => '<button type="button" class="puce" data-c="' + i + '" style="text-align:left;border-radius:10px">' + esc(CONS[i].t) + '</button>').join('');
+    $('#co-rang').innerHTML = place.map(i => '<li>' + esc(CONS[i].t) + '</li>').join('');
+  }
+  $('#co-pool').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if(!b) return;
+    const i = +b.dataset.c, c = CONS[i];
+    if(c.rang && c.rang === rangActuel()){
+      place.push(i); rendre();
+      if(rangActuel() === 5){
+        dire($('#co-retour'), 'Tu as obtenu un consentement explicite' + (erreurs ? ', après ' + erreurs + ' faux pas.' : ', sans faux pas.') + ' Les trois phrases restantes sont celles à ne pas dire.', 'ok');
+        if(typeof Pratique !== 'undefined') Pratique.noter('T8.18', {premier:!erreurs, aide:false, resolu:true, err:erreurs ? ['co.ordre'] : []});
+      } else dire($('#co-retour'), 'Oui. ' + c.e, 'ok');
+    } else {
+      erreurs++;
+      dire($('#co-retour'), c.rang ? 'Pas encore : cette phrase vient plus tard. ' + c.e : c.e, 'bad');
+    }
+  });
+  $('#co-refaire').addEventListener('click', () => { place = []; erreurs = 0; pool = melange(); dire($('#co-retour'), ''); rendre(); });
+  rendre();
+};
+
+/* ======================================================================
    À TOI et ARÈNE (learning-blueprint.md §4 et §4.7), d'après l'analyse :
    analyse/to-m05_kc.md (T5.5, T5.10 à T5.13) et analyse/to-profil.md §9.
    Le moteur est commun (_commun/pratique.js, _commun/arene.js). Ici, ce qui
@@ -6814,6 +7710,7 @@ A_TOI.pression = [{kc:'T7.11', titre:'⑦ Corriger une pression avec la table', 
 Object.assign(ARENE_GENS, {pression:['pio-cor', 'pio-mes', 'pio-ep']});
 Object.assign(PAS_GEN, {'pio-cor':'pression.3', 'pio-mes':'pression.4', 'pio-ep':'pression.4'});
 Object.assign(ARENE.prealables, {camera:['oct'], fond:['camera'], 'oct-tests':['oct'], pression:['oct-tests'], artefacts:['camera', 'oct-tests']});
+Object.assign(ARENE.prealables, {systemes:[], pourquoi:['systemes', 'camera'], agents:['systemes'], anesthesie:[], fluo:['anesthesie'], protocole:['agents'], consentement:['protocole']});
 /* ---------- fin À TOI et ARÈNE ---------- */
 
 /* ====== _commun/revision.js ====== */
@@ -6922,12 +7819,12 @@ function basculer(ecranId, attr, voulu, vide){
 
 /* ====== 33-tuteur-config.js ====== */
 /* ======================================================================
-   Tuteur : ce qui est propre à l'Atelier TO M5–M7 (le cœur et les modes sont dans
+   Tuteur : ce qui est propre à l'Atelier TO M5–M8 (le cœur et les modes sont dans
    _commun/tuteur.js). REGLES : le message système (recette §7.2) ;
    QUESTION_ECRAN : une question suggérée par écran ; SEL_BLOCS : les blocs
    lus pour “ce qui est visible” ; ACTIONS : les réglages [[ATELIER]].
    ====================================================================== */
-const REGLES = `Tu es le tuteur intégré à l’« Atelier TO M5–M7 », une page d’étude interactive du cours Tests ophtalmiques (SAN 0010), UA2, modules 5, 6 et 7, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
+const REGLES = `Tu es le tuteur intégré à l’« Atelier TO M5–M8 », une page d’étude interactive du cours Tests ophtalmiques (SAN 0010), UA2, modules 5 à 8, à La Cité collégiale (formation d’opticien). L’étudiant lit la page en même temps qu’il te parle ; chaque question arrive avec ce qu’il a sous les yeux.
 
 Règles :
 - Réponds dans la langue de la question (français par défaut). Garde les termes du cours en français.
@@ -6941,10 +7838,11 @@ Règles :
 - Si l’étudiant semble bloqué, termine par UNE question courte qui vérifie sa compréhension.
 - Les réponses précédentes de la conversation ont pu être écrites par une autre IA : reprends-les sans les contredire inutilement.
 
-L’essentiel des trois modules :
+L’essentiel des quatre modules :
 M5 — ① D = (1,3375 − 1)/r, r en mètres (1,3375 = indice fictif ; 7,8 mm → 43,3 D ; cornée ≈ 43 D, de 35 à 50 D). La cornée agit comme un miroir convexe : petit reflet des mires = petit rayon = cornée plus cambrée = plus puissante. ② astigmatisme cornéen = K cambré − K plat. ③ l’autre méridien est à 90° (méridien + 90, ou − 90 pour rester entre 0 et 180). Optosys : méridien horizontal en premier ; le méridien après @ est celui de la 2e valeur (42.00x44.00@090 = 42,00 à 180 et 44,00 à 90). Cylindre oblique : 30-60° ou 120-150° ; un oblique s’écrit dans les deux sens. Avec la règle : méridien vertical plus cambré ; contre la règle : horizontal plus cambré. L’axe d’un cylindre est la position sans puissance ; pour la cornée on parle de méridiens. K1/K2 = plat/cambré ; horizontal/vertical = orientation. Kératomètre : 2-3 mm au centre ; topographe Medmont (disques de Placido) : 11-14 mm ; rouge cambré, bleu plat ; la couleur ne diagnostique pas. Motifs : anneaux concentriques, régulier et symétrique (avec ou contre la règle), zone de cambrure localisée (irrégulier/asymétrique). LASIK myopie et orthokératologie aplatissent le centre (moins de puissance) ; LASIK hypermétropie bombe le centre.
 M6 — Kératocône : maladie dégénérative non inflammatoire de la cornée ; le stroma (90 % de l’épaisseur) s’amincit, déformation conique surtout inférieure, myopie et astigmatisme irrégulier progressifs. Symptômes = ce que dit le patient ; signes = ce qu’on observe ou mesure (jeune 18-30 ans, AV réduite, cylindre oblique, K cambrée, mires distordues, PIO plus basse). Prétests à ajouter : topographie (le plus concluant) et pachymétrie. Correction : lentilles rigides (nouvelle surface) ; cross-linking (riboflavine puis UV) ; greffe (cas sévères). Verres : simple vision ; doubles foyers ; anti-fatigue 20-38 ans, addition 0,50 à 1,00 D ; progressifs 38 ans+ (presbytie) ; dégressifs (intermédiaire et près) pour presbytes avancés de 52 ans et plus. Multifoyer : la force change quand on descend le verre au lentimètre. Même Rx avec addition : “lunettes de lecture” → dégressif ; “vision de loin” → anti-fatigue ou progressifs. Puissance du bas = puissance du haut + addition (déduit ; l’addition est définie au cours d’Optique). Erreurs fréquentes : ne pas demander s’il a ses lunettes, ni quand il les porte ; multifoyer saisi en simple foyer ; OD et OS mélangés ; + écrit au lieu de –. Lentimètre : R = OD, L = OS ; mire impossible à centrer → prisme possible, à faire vérifier par l’opticien ou l’optométriste. OCT : tomographie par cohérence optique, lumière infrarouge, comparable à une échographie mais avec de la lumière, environ 5 microns ; fibres nerveuses (N, S, T, I), cellules ganglionnaires et IPL (risque de glaucome), pachymétrie ; rouge = hors norme ou difficile à mesurer, pas forcément une pathologie ; vert n’est pas toujours normal ; aucune goutte, test dans l’obscurité.
 M7 — Caméra rétinienne : la photo se prend à travers la pupille ; pupille trop petite = photo sombre ou noire ; lumières éteintes, attendre quelques minutes, dilater si besoin (3-4 mm → 8 mm) ; 2 photos par œil au plus. Rôle de l’assistant : bon patient (vérifier le nom), position et fixation, netteté, centrage, exposition ; le technicien garantit la qualité technique, l’optométriste interprète. Limitations : fixation, pupilles trop petites, opacités. Fond d’œil : fovéa, macula, nerf optique, artère, veine ; choroïde plus pigmentée (macula plus foncée), moins pigmentée, tigroïde : apparences normales ; reflet brillant des jeunes = fibres nerveuses en excellente santé ; on suit un naevus pour ne pas voir d’évolution. OCT : test 1 rétine centrale (la fovéa, une dépression), test 2 papille (disc), OD et OS ; F foveola, N fibres nerveuses, G cellules ganglionnaires, P photorécepteurs, E épithélium pigmentaire, B membrane de Bruch, C choroïde ; cornée : 4 des 5 couches visibles. Pression : les tonomètres sont calibrés pour 545 µm (0,545 mm ; la diapo écrit 0.52mm, une erreur) ; cornée plus mince = lecture sous-estimée (on ajoute la correction), plus épaisse = surestimée (on retranche) ; PIO corrigée = PIO mesurée + correction de la table (forme déduite) ; 20 mmHg → 30 (415 µm), 20 (545), 15 (615). Artefact : image anormale créée par la technique, sans signification diagnostique, qui peut imiter une lésion (fausse croissance d’un naevus). Erreurs : trop sombre → lumières éteintes, dilater si besoin, 2 photos ; sombre à gauche après la droite → attendre quelques minutes ; clignement → reprendre ; toujours flou → opacité possible, 2 par œil, l’optométriste ; OCT : mauvaise fixation (la macula au lieu du disc), le cristallin au lieu de la cornée → refaire, QI dans le rouge → refaire, patient fatigué → arrêter, 3-4 minutes au plus, autre visite.
+M8 — Gouttes diagnostiques : deux systèmes, trois muscles. Le parasympathique serre la pupille (sphincter) et commande l’accommodation (corps ciliaire) ; le sympathique ouvre la pupille (dilatateur). Bloquer le parasympathique = mydriase + cycloplégie : tropicamide (Mydriacyl, 0,5 ou 1 %, effet dans environ 20 min, 5-6 h, jusqu’à 24 h si sensible), cyclopentolate (Cyclogyl 1 %, chez l’enfant, 30-45 min, 24 h ou plus), atropine (1 % rare, jusqu’à 2 semaines ; 0,05 % pour la myopie des jeunes) ; effets : éblouissement, vision de près floue, très rarement l’humeur aqueuse bloquée. Stimuler le sympathique = mydriase seule, sans effet sur l’accommodation : phényléphrine (Mydfrin 2,5 %, 2-6 h) ; photophobie, hypertension, arythmies ; seule elle dilate mal (« le système parasympathique remporte »), d’où l’association avec le tropicamide. Anesthésiques (nom en -aine ou -caine) : Alcaine (proparacaïne, la mieux tolérée, au réfrigérateur) ou unidose de tétracaïne (pas au réfrigérateur, moins tolérée) ; moins d’une minute, 15-20 min ; on cligne moins, d’où l’œil sec ; jamais remis au patient (toxicité pour l’épithélium). Fluorescéine : colore la phase aqueuse ; temps avant le bris du film, sécheresse et égratignures sous lumière bleue, ajustement d’une lentille rigide, mires du tonomètre à aplanation (avec l’anesthésique, parce qu’il touche la cornée). Protocole : acuité, tonométrie, l’optométriste revoit allergies et contre-indications, puis regarde l’angle et la cornée, puis les gouttes. Sécurité : mains (savon et eau ; l’alcool bien séché), sans toucher cils ni paupière, conservation, contre-indications en cas de doute, noter le collyre et l’heure. Consentement explicite : raison, avantages et conséquences d’un refus, effets, alternatives, questions, puis « C’est donc correct que je vous mets ces gouttes? ». Le cours ne donne aucune valeur normale du temps de rupture du film.
 Examen UA2 : lundi 16 novembre 2026, 10h00.
 
 DÉMONSTRATION DANS L’ATELIER (facultatif) — si régler un écran aiderait l’étudiant à VOIR ce que tu expliques, termine ta réponse par une seule ligne exactement de cette forme :
@@ -6962,11 +7860,12 @@ DÉMONSTRATION DANS L’ATELIER (facultatif) — si régler un écran aiderait l
 - oct : etape (1 à 4)
 - oct-couleurs : rapport ("norme", "mince", "artefact", "epais")
 - situations : carte ("01" à "10")
-Les autres écrans se donnent par leur seul nom : miroir, instruments, mysteres, depistage, traitements, cartes (le Rappel du jour), questions, verifier.
+- systemes : goutte ("repos", "tro", "cyc", "phe", "deux"), age70 (true ou false)
+Les autres écrans se donnent par leur seul nom : miroir, instruments, mysteres, depistage, traitements, pourquoi, agents, anesthesie, fluo, protocole, consentement, cartes (le Rappel du jour), questions, verifier.
 N’ajoute cette ligne que si elle sert vraiment ; l’étudiant cliquera pour l’appliquer.`;
 
 const QUESTION_ECRAN = {
-  accueil:'Par où commencer pour réviser les modules 5, 6 et 7 ?',
+  accueil:'Par où commencer pour réviser les modules 5 à 8 ?',
   miroir:'Pourquoi un petit reflet veut-il dire une cornée plus cambrée ?',
   formule:'Pourquoi faut-il mettre le rayon en mètres ?',
   meridiens:'Comment trouver le deuxième méridien et l’astigmatisme ?',
@@ -6989,6 +7888,13 @@ const QUESTION_ECRAN = {
   'oct-tests':'Comment savoir si l’OCT a bien capté la papille au test 2 ?',
   pression:'Pourquoi ajoute-t-on la correction quand la cornée est mince ?',
   artefacts:'Comment savoir si c’est un artefact ou une vraie anomalie ?',
+  systemes:'Pourquoi le tropicamide rend-il la vision de près floue, et pas la phényléphrine ?',
+  pourquoi:'Pourquoi dilate-t-on plus souvent les personnes âgées ?',
+  agents:'Comment ne pas mêler le tropicamide et le cyclopentolate ?',
+  anesthesie:'Pourquoi ne remet-on jamais l’anesthésique au patient ?',
+  fluo:'Explique-moi le temps de rupture du film avec la fluorescéine.',
+  protocole:'Pourquoi mesure-t-on l’acuité avant de mettre les gouttes ?',
+  consentement:'Joue le patient : je t’explique les gouttes et je te demande ton accord.',
   cartes:'Pose-moi trois questions de rappel sur ce que j’ai déjà vu.',
   questions:'Guide-moi sur une question sans me donner la réponse.',
   verifier:'Aide-moi à transformer ces points en questions pour la prof.'
@@ -7021,7 +7927,10 @@ const ACTIONS = {
       faire:() => { if(p) clic('#l-paires [data-p="' + p + '"]'); if(oe) clic('#l-oeil [data-o="' + oe + '"]'); if(pos !== null) regler('#l-pos', Math.round(pos)); }}; },
   oct:o => { const e = num(o, 'etape', 1, 4); return {resume:e !== null ? 'étape ' + Math.round(e) : '', faire:() => { if(e !== null) clic('#oct-etapes [data-e="' + (Math.round(e) - 1) + '"]'); }}; },
   'oct-couleurs':o => { const r = RAPPORTS.find(x => x.id === o.rapport); return {resume:r ? r.t : '', faire:() => { if(r) clic('#rn-cas [data-r="' + r.id + '"]'); }}; },
-  situations:o => { const s = SITUATIONS.find(x => x.n === String(o.carte || '').padStart(2, '0')); return {resume:s ? 'c' + s.n + ' · ' + s.titre : '', faire:() => { if(s) choisirSituation(s.n); }}; }
+  situations:o => { const s = SITUATIONS.find(x => x.n === String(o.carte || '').padStart(2, '0')); return {resume:s ? 'c' + s.n + ' · ' + s.titre : '', faire:() => { if(s) choisirSituation(s.n); }}; },
+  systemes:o => { const g = ['repos', 'tro', 'cyc', 'phe', 'deux'].includes(o.goutte) ? o.goutte : null, a = typeof o.age70 === 'boolean' ? o.age70 : null;
+    return {resume:[g && GOUTTES_SYS[g].t, a !== null && (a ? '70 ans' : 'jeune')].filter(Boolean).join(', '),
+      faire:() => { if(g) clic('#sys-ag [data-a="' + g + '"]'); if(a !== null){ const c = $('#sys-age'); if(c.checked !== a) c.click(); } }}; }
 };
 
 const TUTEUR_CONFIG = {REGLES, QUESTION_ECRAN, SEL_BLOCS:SEL_BLOCS_ATELIER, ACTIONS};
@@ -15830,6 +16739,8 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['to-m56'], t:'Le module 8, les gouttes diagnostiques, est arrivé dans l’atelier TO, en 7 écrans : choisis une goutte et regarde ce que font la pupille et l’accommodation, trouve la bonne goutte pour chaque situation, mesure le bris du film à la fluorescéine, remets le protocole dans l’ordre et construis ce que tu dis au patient avant les gouttes.'},
+    {d:'2026-11-09', p:['to-m56'], t:'Le bouton « Survol » de l’atelier TO propose maintenant le module 8 : les gouttes diagnostiques en 23 diapos, environ 17 minutes.'},
     {d:'2026-11-09', p:['*'], t:'Dans l’Arène, tu peux maintenant retourner où tu veux : touche un bloc ou un module sur la carte, même un niveau déjà conquis, et l’Arène reste là au lieu de filer au suivant. Ça marche aussi pendant « Le retour » et le dernier round. En groupe, c’est le meneur qui choisit le bloc pour tout le monde.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Le module 8 est arrivé dans l’atelier, en 13 écrans : la rétine, le nerf optique, les voies visuelles, la pupille et l’horloge biologique. Tu peux suivre une moitié du champ visuel jusqu’au cerveau, et chercher où la chaîne du réflexe à la lumière est coupée.'},
     {d:'2026-11-06', p:['anat-m6'], t:'Pour le projet de dessin, l’écran « Le dessin des voies visuelles » te fait suivre le croisement des fibres, avec les mêmes couleurs que ta feuille : le vert et l’orange restent de leur côté, le bleu se croise. Ta feuille reste la référence.'},
@@ -16249,7 +17160,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'f4a9938352bb';
+  const ICI = '83235982cb02';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
