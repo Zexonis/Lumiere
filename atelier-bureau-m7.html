@@ -4074,7 +4074,7 @@ const AVERIFIER = [
   {m:'La transposition', t:'OD : l’optométriste', p:'Dans « OD et RO = - cyl » (7.1T-d5), « OD et RO = Cylindre négatif » (7.3T-d5) et « RX - OD - CYL NÉGATIF » (7.2T-d22), OD désigne l’optométriste, pas l’œil droit ; RO, l’opticien ; MD, l’ophtalmologiste. À confirmer en classe.'}
   ,
   /* ---------- La Rx multifocale (partie 7) : à la fin seulement (les cases cochées suivent le rang) ---------- */
-  {m:'La Rx multifocale', t:'8.1-d44 : +4.50, pas +5.50', p:'Les diapos 8.1-d44 et d45 écrivent +5.50 pour la SV-VI de l’OD : une erreur de calcul, car (+3.25) + (+1.25) = +4.50 : la SV-VI de l’OD est +4.50 -1.75 x 030 2△BD ; l’OS, +4.25 -1.50 x 035, est juste. L’atelier montre +4.50 ; à confirmer avec la prof.'},
+  {m:'La Rx multifocale', t:'8.1-d44 : +4.50, pas +5.50 (réglé)', p:'Réglé le 9 nov. : la prof a confirmé en classe que c’est une coquille. Les diapos 8.1-d44 et d45 écrivent +5.50 pour la SV-VI de l’OD : une erreur de calcul, car (+3.25) + (+1.25) = +4.50 : la SV-VI de l’OD est +4.50 -1.75 x 030 2△BD ; l’OS, +4.25 -1.50 x 035, est juste. L’atelier montre +4.50.'},
   {m:'La Rx multifocale', t:'« Transcrire SPH, CYL, AXE » pour le près ?', p:'Les synthèses (8.1-d37, d62, d69) écrivent « Transcrire SPH, CYL, AXE » pour la SV-VI et la SV-VP ; les exemples écrivent « Transcrire CYL, AXE » (8.1-d24, d39), et le SPH y reçoit l’addition. L’atelier suit les exemples : seuls CYL, AXE et prisme se recopient. Est-ce bien ce que la prof veut dire ?'},
   {m:'La Rx multifocale', t:'« Règle de plus de plus » ou « l’addition le plus faible » (sic) ?', p:'Pour l’addition impaire, le tableau chronologique dit « Règle de plus de plus » ; les diapos disent « choisir l’addition le plus faible pour l’intermédiaire » ' + SIC + ' et « (ie:  (ADD/2) -0.12 » (8.1-d52, d54). L’atelier suit les diapos : ADD +2.75 donne une part de +1.25. Que veut dire « plus de plus » ?'},
   {m:'La Rx multifocale', t:'8.1-d5, d6, d9 : quel champ ?', p:'Les sept Rx de 8.1-d5 à d11 n’ont pas de corrigé. d10 et d11 ont une addition (multifocal) ; d7 porte « Notes: Lecture », d8 « Notes: Ordinateur » ; d5, d6 et d9 n’ont ni addition ni note. Sont-elles des SV-VL, ou faut-il demander le besoin du patient ? L’atelier accepte SV, sans champ, et le dit.'}
@@ -19924,6 +19924,7 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-09', p:['adm-m07'], t:'Diapo 44 du cours sur la Rx multifocale : la prof a confirmé en classe que le +5.50 est une coquille. La bonne réponse est +4.50 (+3.25 et la moitié de +2.50). L’atelier et le Survol le disent maintenant.'},
     {d:'2026-11-09', p:['adm-m07'], t:'La Rx multifocale vers la simple vision est arrivée dans l’atelier Bureau, en 4 écrans : reconnais une Rx multifocale, puis prépare les lunettes de loin, d’ordinateur ou de lecture à partir d’une Rx avec addition (0 %, 50 % ou 100 % de l’addition ajoutés à la sphère). C’est la partie 7 ; « Au comptoir » devient la partie 8.'},
     {d:'2026-11-09', p:['adm-m07'], t:'« À toi » sur la Rx multifocale vers la simple vision : des ordonnances toujours nouvelles, avec cylindre, prisme ou addition impaire, jusqu’à trois justes de suite, puis à l’envers (retrouver l’addition ou la Rx de loin). Aussi : les 18 exercices du cours, corrigés case par case.'},
     {d:'2026-11-09', p:['adm-m07'], t:'Le bouton « Survol » de l’atelier Bureau propose maintenant un troisième diaporama : la Rx multifocale vers la simple vision, en 20 diapos, environ 15 minutes.'},
@@ -20348,7 +20349,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'e18c447f00b5';
+  const ICI = '1c456bfc2e60';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
