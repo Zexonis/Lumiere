@@ -18014,6 +18014,11 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-14', p:['*'], t:'Un examen approche ? Sur la page d’accueil de Lumière, touche « 😢 Les exams me stressent » et choisis ton cours : tu arrives à des questions courtes, corrigées tout de suite, pour voir ce que tu sais déjà et ce qu’il te reste à revoir.'},
+    {d:'2026-11-14', p:['to-m56'], t:'278 questions pour préparer l’examen, sur les modules 5 à 8 : c’est le nouvel exerciseur. Une mauvaise réponse te dit quelle erreur tu as faite, et « Mes erreurs » te ramène les questions manquées. Tu le trouves sur la page d’accueil de Lumière, sous Tests ophtalmiques.'},
+    {d:'2026-11-14', p:['adm-m07'], t:'Nouvel exerciseur pour préparer l’examen : croix optique, types d’astigmatisme, transposition, nom d’une Rx et Rx multifocale vers la simple vision, avec des ordonnances toujours nouvelles. Tu le trouves sur la page d’accueil de Lumière, sous Bureau ophtalmique.'},
+    {d:'2026-11-14', p:['opt-ua2'], t:'« Quelle formule ? », pour préparer l’examen : des problèmes mêlés des modules 6 à 8. Tu choisis d’abord la formule, puis tu calcules ; le « ? » explique chaque formule. Tu le trouves sur la page d’accueil de Lumière, sous Optique.'},
+    {d:'2026-11-14', p:['opt-ua2'], t:'Examen blanc d’Optique, au format annoncé pour le 17 novembre : 22 questions, les formules à la fin, et le corrigé. Imprime-le ou fais-le à l’écran ; chaque nouvelle version change les questions. Tu le trouves sur la page d’accueil de Lumière, sous Optique.'},
     {d:'2026-11-09', p:['adm-m07'], t:'Diapo 44 du cours sur la Rx multifocale : la prof a confirmé en classe que le +5.50 est une coquille. La bonne réponse est +4.50 (+3.25 et la moitié de +2.50). L’atelier et le Survol le disent maintenant.'},
     {d:'2026-11-09', p:['adm-m07'], t:'La Rx multifocale vers la simple vision est arrivée dans l’atelier Bureau, en 4 écrans : reconnais une Rx multifocale, puis prépare les lunettes de loin, d’ordinateur ou de lecture à partir d’une Rx avec addition (0 %, 50 % ou 100 % de l’addition ajoutés à la sphère). C’est la partie 7 ; « Au comptoir » devient la partie 8.'},
     {d:'2026-11-09', p:['adm-m07'], t:'« À toi » sur la Rx multifocale vers la simple vision : des ordonnances toujours nouvelles, avec cylindre, prisme ou addition impaire, jusqu’à trois justes de suite, puis à l’envers (retrouver l’addition ou la Rx de loin). Aussi : les 18 exercices du cours, corrigés case par case.'},
@@ -18439,7 +18444,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = '1c456bfc2e60';
+  const ICI = 'ac3595e88124';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

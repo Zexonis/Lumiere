@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Examen blanc UA2 · Optique</title>
+<script>try{var th=localStorage.getItem('opt-ua2-theme');if(th==='light'||th==='dark')document.documentElement.setAttribute('data-theme',th);}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Examen blanc UA2 (Optique) : une répétition sur papier de l'évaluation du 17 novembre. Construit par
+   build/examen-ua2/construire.py ; ne pas modifier ce fichier à la main. Couleurs : celles du Banc, raie d. */
+:root{
+  --bg:#ECF0F2; --panel:#FFFFFF; --panel-2:#F3F6F8; --ink:#13202A; --ink-2:#465763; --ink-3:#5F717D; --line:#D3DBE0;
+  --accent:#8C5A00; --accent-soft:rgba(140,90,0,.11); --on-accent:#FFFFFF;
+  --ok:#1B7A4B; --ok-soft:rgba(27,122,75,.12); --warn:#9A5F0C; --warn-soft:rgba(158,99,13,.14); --bad:#B3352A; --bad-soft:rgba(179,53,42,.11);
+  --f-display:"STIX Two Text", Cambria, Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono", ui-monospace, Consolas, monospace;
+  --r:14px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+    --accent:#FFD23F; --accent-soft:rgba(255,210,63,.14); --on-accent:#1F1600;
+    --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+  --accent:#FFD23F; --accent-soft:rgba(255,210,63,.14); --on-accent:#1F1600;
+  --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+  color-scheme:dark;
+}
+/* sur papier : toujours le thème clair, en noir sur blanc */
+:root[data-impression]:not(.jamais){
+  --bg:#FFFFFF; --panel:#FFFFFF; --panel-2:#FFFFFF; --ink:#000000; --ink-2:#222222; --ink-3:#444444; --line:#999999;
+  --accent:#000000; --accent-soft:transparent; --on-accent:#FFFFFF; --ok:#000000; --ok-soft:transparent; --bad:#000000; --bad-soft:transparent;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 var(--f-body)}
+[hidden]{display:none!important}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cadre,.cadre>tbody,.cadre>tbody>tr,.cadre>tbody>tr>td{display:block;width:auto;margin:0;padding:0;border:0}
+.cadre>thead{display:none}
+.page{max-width:880px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.sur{margin:0 0 4px;font:600 12.5px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.titre-ligne{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+h1{margin:0;font:600 34px/1.1 var(--f-display);letter-spacing:-.01em}
+h1:focus{outline:none}
+.badge-v{font:700 15px var(--f-mono);padding:3px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.sous{margin:8px 0 0;color:var(--ink-2);max-width:70ch}
+.barre{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.aller{display:inline-flex;align-items:center;gap:6px}
+.aller label{font-size:14.5px;color:var(--ink-2)}
+.aller input{width:84px;min-height:44px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font:700 17px var(--f-mono)}
+.bouton{min-height:44px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-weight:700;font-size:15.5px}
+.bouton:hover{border-color:var(--accent)}
+.bouton.plein{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.bouton[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+.note-v{margin:6px 0 0;font-size:14.5px;color:var(--ink-2);min-height:1em}
+.bloc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.bloc h2,.partie>h2,.feuille>h2,.annexe>h2,.score>h2{margin:0 0 8px;font:600 24px/1.2 var(--f-display)}
+.bloc ul,.bloc ol{margin:6px 0 0;padding-left:20px}
+.bloc li{margin:3px 0}
+.bloc p{margin:8px 0 0}
+details.bloc>summary{cursor:pointer;font:600 19px/1.3 var(--f-display)}
+.partie{display:flex;flex-direction:column;gap:12px}
+.partie>h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:10px 0 0}
+.partie>h2 .pts,.feuille .sous-t{font:600 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.cons{margin:0;color:var(--ink-2);font-size:15.5px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:12px}
+.q.juste{border-color:var(--ok);box-shadow:inset 3px 0 0 var(--ok)}
+.q.faux{border-color:var(--bad);box-shadow:inset 3px 0 0 var(--bad)}
+.q-tete{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px}
+.q-num{min-width:32px;height:32px;padding:0 6px;display:inline-grid;place-items:center;border-radius:9px;background:var(--accent-soft);color:var(--accent);font:700 16px var(--f-mono)}
+.q-pts,.q-genre{font:600 12.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.q-etat{margin-left:auto;font-weight:700;font-size:14.5px}
+.q-etat.ok{color:var(--ok)} .q-etat.bad{color:var(--bad)} .q-etat.vide{color:var(--ink-3)}
+.enonce{margin:0;font-size:17.5px;line-height:1.55;max-width:70ch;overflow-wrap:anywhere}
+.choix{border:0;margin:0;padding:0;display:grid;gap:7px;min-width:0}
+.choix.vf{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:8px;align-items:start;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);cursor:pointer;min-height:44px}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin:4px 0 0;width:18px;height:18px;accent-color:var(--accent)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt .lettre{font:700 15px/1.6 var(--f-mono);color:var(--ink-3)}
+.opt .t{overflow-wrap:anywhere}
+.case{display:none;width:10pt;height:10pt;border:1pt solid #222;border-radius:2pt;vertical-align:-1pt;text-align:center;font:700 9pt/9pt var(--f-body)}
+.saisie{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.saisie label{font-size:14.5px;color:var(--ink-2)}
+.saisie input{width:min(210px,100%);min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);font:700 18px var(--f-mono)}
+.u{color:var(--ink-2);font-weight:700}
+.cotes{display:inline-flex;gap:6px}
+.parties{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.pq{margin:0;font-size:17px;overflow-wrap:anywhere}
+.pl{font:700 15px var(--f-mono);color:var(--accent);margin-right:4px}
+.pp{color:var(--ink-3);font-size:14px;white-space:nowrap}
+textarea{width:100%;min-height:70px;margin-top:6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);resize:vertical;font:14.5px/1.5 var(--f-mono)}
+.q-msg{margin:0;font-size:15px;color:var(--ink-2)}
+.q-msg:empty{display:none}
+.q-actions{display:flex;flex-wrap:wrap;gap:2px 18px}
+.lien{border:0;background:none;padding:6px 0;min-height:38px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;font-size:15px}
+.lien:hover{color:var(--ink)}
+.copie-note{flex-basis:100%;margin:0;font-size:14px;color:var(--ink-2)}
+.corrige{padding:12px 14px;border-radius:12px;background:var(--panel-2);border-left:4px solid var(--ok);display:flex;flex-direction:column;gap:8px}
+.corrige p{margin:0}
+.etiq{font:700 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-right:6px}
+.rep{font-weight:700;overflow-wrap:anywhere}
+.cpart{display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px dashed var(--line)}
+.cpart:first-child{border-top:0;padding-top:0}
+.cf{overflow-wrap:anywhere}
+.fx{display:inline-block;font:400 16.5px/1.35 var(--f-display);padding:0 8px;margin:1px 0;border-radius:7px;background:var(--panel);border:1px solid var(--line)}
+.dem{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.dem li{display:grid;grid-template-columns:210px minmax(0,1fr);gap:10px;font-size:15.5px}
+.dem .l{color:var(--ink-3);font-size:14px}
+.dem .c{font-family:var(--f-mono);font-size:14.5px;overflow-wrap:anywhere}
+.piege{padding:8px 10px;border-radius:9px;background:var(--bad-soft);border-left:3px solid var(--bad)}
+.mal{margin:0;padding-left:18px;font-size:15px;color:var(--ink-2)}
+.bareme,.src{font-size:13.5px;color:var(--ink-3)}
+.auto{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--ink-2)}
+.pt{min-width:40px;min-height:38px;border-radius:8px;border:1px solid var(--line);background:var(--panel);font:700 14px var(--f-mono)}
+.pt[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.corriger-ab{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.score .notes{margin:6px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.score .notes li{padding:10px 12px;border-radius:10px;background:var(--panel-2)}
+.score .notes b{display:block;font:700 22px var(--f-mono)}
+.score .notes span{font-size:14px;color:var(--ink-2)}
+.feuille{text-align:center}
+.feuille>h2{margin-bottom:4px}
+.note-f{margin:0 auto;max-width:66ch;font-size:14.5px;color:var(--ink-2);text-align:left}
+.formules{display:flex;flex-direction:column;align-items:center;gap:20px;padding:22px 0 10px;font:400 22px/1.3 var(--f-display)}
+.formules p{margin:0;max-width:100%;overflow-wrap:anywhere}
+.formules .regle{font-size:19px}
+.formules .regle::before{content:"\2022";margin-right:.9em}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em}
+.fr>span{padding:0 .25em;line-height:1.25}
+.fr>span:first-child{border-bottom:1.4px solid currentColor}
+.lettres{margin:10px auto 0;max-width:70ch;text-align:left}
+.lettres dl{margin:8px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:15px}
+.lettres dt{font:400 17px var(--f-display)}
+.lettres dd{margin:0}
+.prov{margin:10px auto 0;max-width:70ch;text-align:left;font-size:13.5px;color:var(--ink-3)}
+.donders{display:flex;flex-direction:column;gap:8px}
+.donders table{border-collapse:collapse;width:100%;max-width:560px;font:600 15px var(--f-mono);table-layout:fixed}
+.donders th,.donders td{border:1px solid var(--line);padding:6px 4px;text-align:center}
+.donders th{font:600 12.5px var(--f-mono);color:var(--ink-3);text-align:left;width:76px}
+.pied{font-size:14.5px;color:var(--ink-2)}
+.pied h2{font:600 19px var(--f-display);margin:0 0 6px}
+.papier-seul{display:none}
+.ligne-rep{margin-top:4px}
+.blanc{display:inline-block;width:44mm;border-bottom:.8pt solid #222}
+.blanc.long{width:78mm}
+.lignes .ligne{height:8.2mm;border-bottom:.5pt solid #9a9a9a}
+.tete-imp{display:flex;justify-content:space-between;gap:12px;font:600 9pt var(--f-mono);color:#333;border-bottom:.6pt solid #888;padding-bottom:3pt;margin-bottom:8pt}
+.fond{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(8,12,16,.55)}
+.boite{width:min(560px,100%);max-height:88vh;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+.boite h2{margin:0;font:600 21px var(--f-display)}
+.boite textarea{min-height:40vh}
+@media (max-width:560px){
+  h1{font-size:28px}
+  .bloc,.q{padding:14px}
+  .enonce{font-size:17px}
+  .dem li{grid-template-columns:minmax(0,1fr);gap:0}
+  .formules{font-size:18.5px;gap:16px}
+  .formules .regle{font-size:16.5px}
+  .choix.vf{grid-template-columns:minmax(0,1fr)}
+  .barre .bouton{flex:1 1 auto}
+  .q-etat{margin-left:0;flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- l'impression : l'attribut data-impression est posé avant d'imprimer (examen ou corrigé) ---------- */
+@page{margin:13mm 13mm 14mm}
+@media print{
+  body{background:#fff}
+  .ecran-seul,.q-actions,.q-msg,.q-etat,.fond{display:none!important}
+  html:not([data-impression="corrige"]) .corrige{display:none!important}
+}
+html[data-impression] body{background:#fff;color:#000;font-size:11pt;line-height:1.45}
+html[data-impression] .ecran-seul,html[data-impression] .q-actions,html[data-impression] .q-msg,html[data-impression] .q-etat{display:none!important}
+html[data-impression] .cadre{display:table;width:100%;border-collapse:collapse}
+html[data-impression] .cadre>thead{display:table-header-group}
+html[data-impression] .cadre>tbody{display:table-row-group}
+html[data-impression] .cadre>thead>tr,html[data-impression] .cadre>tbody>tr{display:table-row}
+html[data-impression] .cadre>thead>tr>td,html[data-impression] .cadre>tbody>tr>td{display:table-cell;padding:0}
+html[data-impression] .page{max-width:none;padding:0;gap:9pt}
+html[data-impression] h1{font-size:22pt}
+html[data-impression] .bloc{border:.6pt solid #999;border-radius:0;padding:7pt 9pt}
+html[data-impression] .partie>h2{font-size:15pt;break-after:avoid;margin-top:6pt}
+html[data-impression] .q{border:0;border-top:.6pt solid #bbb;border-radius:0;padding:7pt 0 0;gap:5pt;box-shadow:none;break-inside:avoid}
+html[data-impression] .q-C{break-inside:auto}
+html[data-impression] .q-C .partie{break-inside:avoid}
+html[data-impression] .q-num{background:none;border:1pt solid #000;color:#000;min-width:20pt;height:20pt;font-size:11pt}
+html[data-impression] .enonce,html[data-impression] .pq{font-size:11.5pt}
+html[data-impression] .opt{background:none;border:0;padding:1pt 0;min-height:0;grid-template-columns:auto auto minmax(0,1fr)}
+html[data-impression] .opt input{display:none}
+html[data-impression] .case{display:inline-block}
+html[data-impression] .choix.vf{grid-template-columns:repeat(2,max-content);gap:4pt 28pt}
+html[data-impression="examen"] .papier-seul{display:block}
+html[data-impression="examen"] .corrige{display:none!important}
+html[data-impression="corrige"] .corrige[hidden]{display:flex!important}
+html[data-impression="corrige"] .corrige{background:none;border-left:1.5pt solid #444;border-radius:0;padding:3pt 0 3pt 8pt;break-inside:auto}
+html[data-impression="corrige"] .opt.bonne .case::after{content:"\2713"}
+html[data-impression="corrige"] .opt.bonne .t{font-weight:700}
+html[data-impression="corrige"] .feuille,html[data-impression="corrige"] .annexe,html[data-impression="corrige"] .consignes,html[data-impression="corrige"] .parties textarea{display:none!important}
+html[data-impression] .fx{border:.5pt solid #999}
+html[data-impression] .piege{background:none;border-left:1.5pt solid #000}
+html[data-impression] .dem li{grid-template-columns:44mm minmax(0,1fr);font-size:10pt}
+html[data-impression] .dem .c{font-size:10pt}
+html[data-impression] .feuille{break-before:page}
+html[data-impression] .formules{font-size:16pt;gap:12pt;padding:10pt 0 4pt}
+html[data-impression] .formules .regle{font-size:14pt}
+html[data-impression] .note-f,html[data-impression] .prov{font-size:9pt}
+html[data-impression] .annexe{break-inside:avoid;margin-top:10pt}
+html[data-impression] .donders table{max-width:none}
+</style>
+</head>
+<body>
+<table class="cadre" role="presentation">
+<thead><tr><td><div class="tete-imp"><span>Optique (SCI 23546) · examen blanc UA2<span class="mode-imp"></span></span><span>Version <b class="v-num">0000</b></span></div></td></tr></thead>
+<tbody><tr><td>
+<main class="page" id="haut">
+  <header class="tete">
+    <p class="sur">Optique · SCI 23546 · UA2</p>
+    <div class="titre-ligne"><h1 tabindex="-1">Examen blanc</h1><span class="badge-v">Version <b class="v-num">0000</b></span></div>
+    <p class="sous">Une répétition de l’« Évaluation semaine 10 » du mardi 17 novembre 2026 (UA2, 33 % du cours). Ce n’est pas l’examen de la prof : c’est notre reconstitution, au format qu’elle a annoncé.</p>
+    <div class="barre ecran-seul" role="toolbar" aria-label="Version, impression et thème">
+      <button type="button" class="bouton plein" data-a="nouvelle">Nouvelle version</button>
+      <span class="aller"><label for="v-saisie">Version</label><input id="v-saisie" inputmode="numeric" maxlength="4" autocomplete="off" aria-describedby="note-v"><button type="button" class="bouton" data-a="aller">Ouvrir</button></span>
+      <button type="button" class="bouton" data-a="imp-examen">Imprimer l’examen</button>
+      <button type="button" class="bouton" data-a="imp-corrige">Imprimer le corrigé</button>
+      <button type="button" class="bouton" data-a="theme" id="theme">Thème : auto</button>
+    </div>
+    <p class="note-v ecran-seul" id="note-v" aria-live="polite"></p>
+  </header>
+
+  <p class="papier-seul ident">Nom : <span class="blanc long"></span> &nbsp; Date : <span class="blanc"></span></p>
+
+  <section class="bloc consignes" aria-labelledby="t-consignes">
+    <h2 id="t-consignes">Consignes</h2>
+    <ul>
+      <li>Examen sur papier, avec ta calculatrice. Durée : non annoncée.</li>
+      <li>22 questions : partie A, 8 à choix multiples ou vrai ou faux ; partie B, 8 à courte réponse ; partie C, 6 à développement, avec formules.</li>
+      <li>Les formules sont à la fin, sans le sens des lettres, comme à l’UA1. Le tableau de Donders est en annexe.</li>
+      <li>Donne chaque réponse avec son unité et, s’il le faut, son signe. Un Pr ou un Pp se donne en distance, avec le côté.</li>
+      <li>Barème indicatif (le nôtre, la prof n’en a pas annoncé) : A 8 × 1 = 8 points ; B 8 × 2 = 16 ; C 6 × 6 = 36 ; total 60.</li>
+    </ul>
+  </section>
+
+  <details class="bloc annonce ecran-seul" id="annonce">
+    <summary>Ce que la prof a annoncé, et comment utiliser cette page</summary>
+    <p>Diapo 14 du module 9 (10 novembre) :</p>
+    <ul>
+      <li>« Formules seront à la fin de l’évaluation comme UA1 »</li>
+      <li>« Questions à choix multiples et à développement »</li>
+      <li>« EXAMEN SUR PAPIER – NE PAS OUBLIER VOTRE CALCULATRICE »</li>
+      <li>« En 2025, il y avait 22 questions. 8 questions choix multiples/VF, 8 questions à courtes réponses et 6 questions à développement (avec formules). »</li>
+    </ul>
+    <p>La matière : « Passons par les semaines 6, 7 et 8 », donc les modules 6, 7 et 8. Sa liste « Quoi retenir? » (diapo 2), que chaque version couvre en entier :</p>
+    <ol>
+      <li>« Les causes principales des amétropies »</li>
+      <li>« Quelles sont les structures importantes dans le système optique de l’œil? »</li>
+      <li>« Qu’est ce qu’est l’accommodation? Pourquoi y a-t-il une addition? » <span class="sic">(sic)</span></li>
+      <li>« Quels sont les points focaux de loin et de proche pour l’emmétrope, le myope et l’hypermétrope? » (le Pr et le Pp)</li>
+      <li>« Le positionnement de la lunette peut affecter l’image reçu par l’œil: l’exemple de la grandeur d’image. » <span class="sic">(sic)</span></li>
+    </ol>
+    <p><b>Sur papier :</b> “Imprimer l’examen” donne les 22 questions sans réponses, avec des lignes pour écrire ; “Imprimer le corrigé” donne toutes les réponses et les démarches.</p>
+    <p><b>À l’écran :</b> réponds, puis “Corriger les parties A et B” (après la partie B) te donne ta note. La partie C se corrige avec “Voir le corrigé” : tu te donnes tes points, étape par étape. Rien ne s’affiche tout seul.</p>
+    <p><b>Les versions :</b> chaque numéro donne toujours le même examen et le même corrigé. Garde le numéro (ou l’adresse de la page) pour refaire la même version, ou pour la donner à un collègue.</p>
+  </details>
+
+  <section class="partie" aria-labelledby="t-A">
+    <h2 id="t-A">Partie A · Choix multiples, vrai ou faux <span class="pts">8 questions · 8 points</span></h2>
+    <p class="cons">Une seule bonne réponse par question.</p>
+    <div id="liste-A" class="partie-liste"></div>
+  </section>
+  <section class="partie" aria-labelledby="t-B">
+    <h2 id="t-B">Partie B · Questions à courte réponse <span class="pts">8 questions · 16 points</span></h2>
+    <p class="cons">Écris ta réponse avec son unité et son signe. Montre ta démarche sur les lignes.</p>
+    <div id="liste-B" class="partie-liste"></div>
+    <div class="corriger-ab ecran-seul"><button type="button" class="bouton plein" data-a="corriger">Corriger les parties A et B</button><span class="q-msg" id="msg-ab" aria-live="polite"></span></div>
+  </section>
+  <section class="partie" aria-labelledby="t-C">
+    <h2 id="t-C">Partie C · Questions à développement <span class="pts">6 questions · 36 points</span></h2>
+    <p class="cons">Écris la formule de la feuille que tu utilises, puis chaque étape avec ses unités et ses signes.</p>
+    <div id="liste-C" class="partie-liste"></div>
+  </section>
+
+  <section class="bloc score ecran-seul" id="score" aria-labelledby="t-score">
+    <h2 id="t-score">Ta note</h2>
+    <ul class="notes" id="notes" aria-live="polite"></ul>
+    <p id="score-note"></p>
+    <div class="barre"><button type="button" class="bouton plein" data-a="corriger">Corriger les parties A et B</button><button type="button" class="bouton" data-a="effacer">Effacer mes réponses</button></div>
+  </section>
+
+  <section class="bloc feuille" id="feuille" aria-labelledby="t-feuille">
+    <h2 id="t-feuille">Formules</h2>
+    <p class="sous-t">Feuille probable, reconstituée</p>
+    <p class="note-f">La vraie feuille de l’UA2 n’est pas connue. La prof a seulement annoncé « Formules seront à la fin de l’évaluation comme UA1 ». Voici les formules des semaines 6 à 8, écrites comme dans le cours, sans le sens des lettres, comme sur la feuille de l’UA1.</p>
+    <div class="formules" lang="fr">
+      <p><i>D</i> = <span class="fr"><span><i>n</i><sub>r</sub> − <i>n</i><sub>i</sub></span><span><i>r</i></span></span></p>
+      <p><i>F</i> = <span class="fr"><span><i>n</i><sub>v</sub> − <i>n</i>(avant)</span><span><i>r</i><sub>1</sub></span></span> − <span class="fr"><span><i>n</i><sub>v</sub> − <i>n</i>(arrière)</span><span><i>r</i><sub>2</sub></span></span></p>
+      <p><i>F</i> = 1/<i>f</i>′</p>
+      <p class="regle">1 mm de longueur axiale ≈ 3,00 D</p>
+      <p>Addition = <i>A</i> − 0.5(<i>Am</i>)</p>
+      <p><i>A</i> = <span class="fr"><span>1</span><span><i>d</i></span></span> + <i>R</i></p>
+      <p><i>D</i> = <span class="fr"><span>1</span><span><i>Pr</i></span></span></p>
+      <p><span class="fr"><span>1</span><span><i>Pp</i></span></span> = <i>Am</i> − <i>R</i></p>
+      <p><i>Gi</i> = <span class="fr"><span>1</span><span>1 − <i>d</i>(<i>Fl</i>)</span></span></p>
+      <p class="regle">Pourcentage = (facteur − 1) × 100</p>
+    </div>
+    <details class="lettres ecran-seul">
+      <summary>Ce que veut dire chaque lettre (cache-le pendant l’examen)</summary>
+      <dl>
+        <dt>D, F</dt><dd>une puissance, en dioptries (D)</dd>
+        <dt>nᵣ, nᵢ</dt><dd>l’indice du milieu où la lumière entre, et celui d’où elle vient</dd>
+        <dt>r, r₁, r₂</dt><dd>un rayon de courbure, en mètres, signé (r₁ la face avant, r₂ la face arrière)</dd>
+        <dt>nᵥ, n(avant), n(arrière)</dt><dd>l’indice du verre, et les milieux devant et derrière lui</dd>
+        <dt>f′</dt><dd>la distance focale, en mètres</dd>
+        <dt>A</dt><dd>l’accommodation : la demande 1/d d’un œil emmétrope ou corrigé (module 6), ou ce qu’un œil non corrigé doit fournir, 1/d + R (module 7)</dd>
+        <dt>d</dt><dd>la distance de l’objet, en mètres ; dans Gi, le vertex (distance cornée-lunette), en mètres</dd>
+        <dt>Am</dt><dd>l’amplitude d’accommodation (tableau de Donders)</dd>
+        <dt>R</dt><dd>l’erreur réfractive, signée : myope −, hypermétrope + ; c’est aussi la correction de loin</dd>
+        <dt>Pr, Pp</dt><dd>le punctum remotum (point net le plus loin, œil au repos ; signé : devant −, derrière +) et le punctum proximum (point net le plus près, toute l’amplitude), en mètres</dd>
+        <dt>Gi, Fl</dt><dd>le grossissement d’image, et la force (puissance) du verre, signée</dd>
+      </dl>
+    </details>
+    <p class="prov">D’où vient chaque ligne : D = (nᵣ − nᵢ)/r et F = 1/f′ sont sur la feuille de l’UA1 et reviennent au module 6 ; la formule du lunetier, la règle du millimètre et l’addition sont du module 6 (diapos 11, 36 et 56) ; A = 1/d + R, D = 1/Pr et 1/Pp = Am − R du module 7 (diapos 20, 37 et 28) ; Gi du module 8 (diapo 20). La ligne du pourcentage résume en une ligne les deux étapes de la diapo 21 du module 8. La règle “près = loin + addition” (module 7, diapo 6) n’y est pas : elle est en mots dans le cours.</p>
+  </section>
+
+  <section class="bloc annexe" id="annexe" aria-labelledby="t-donders">
+    <h2 id="t-donders">Annexe · Tableau de Donders</h2>
+    <p class="note-f">Il sera fourni à l’examen (confirmé le 10 nov.). Les valeurs sont celles du cours (module 6, diapo 54).</p>
+    <div class="donders" id="donders"></div>
+  </section>
+
+  <footer class="bloc pied ecran-seul">
+    <h2>À vérifier en classe</h2>
+    <ul>
+      <li>Le tableau de Donders sera fourni (réglé le 10 nov.). Reste à demander : quand l’énoncé donne une amplitude, l’emporte-t-elle sur le tableau ?</li>
+      <li>La forme des réponses : un Pr ou un Pp en distance avec le côté, jamais en dioptries ? Arrondir 14,29 cm à 14,3 ou à 14 ? Cette page accepte les deux.</li>
+      <li>Une différence d’exactement 3 % entre les deux yeux : aniséiconie possible ou non ? (« 3% ou plus » à la diapo 22, « plus grands que 3% » à l’exercice 3.) Aucune version ne tombe près de 3 %.</li>
+      <li>Le contenu de la vraie feuille de formules.</li>
+    </ul>
+    <p>Sources : les diapos et les corrigés des modules 6, 7 et 8 d’Optique, les questions extra et le tableau du 3 novembre, et les diapos 2 et 14 du module 9. Les mots de la prof sont entre guillemets français ; les nôtres sans guillemets, ou entre guillemets anglais. Chaque nombre de chaque version est recalculé par un script avant la publication.</p>
+  </footer>
+</main>
+</td></tr></tbody></table>
+<script id="banque">
+/* Examen blanc UA2, Optique (SCI 23546) : la banque de questions et le générateur à graine.
+   Pur : rien ici ne touche à la page. construire.py le colle tel quel dans examen-blanc-ua2.html ; dump.js le charge dans Node
+   pour les tests (test_examen.py recalcule chaque réponse en Python, de façon indépendante).
+   Contenu : distillations M6, M7, M8 (distilled/), cartes KC (analyse/), fichiers du cours. Les mots de la prof seulement
+   entre guillemets français, exacts (verif_citations.py) ; nos mots sans guillemets ou entre guillemets anglais. */
+(function(racine){
+'use strict';
+
+/* ---------- le hasard réglé : une version = une graine = toujours le même examen ---------- */
+function hasard(graine){
+  let a = graine >>> 0;
+  return function(){
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function outils(rnd){
+  return {
+    u: rnd,
+    pick: a => a[Math.floor(rnd() * a.length)],
+    melange(a){ const b = a.slice(); for(let i = b.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); const x = b[i]; b[i] = b[j]; b[j] = x; } return b; },
+    tirage(f, ok){ for(let k = 0; k < 4000; k++){ const x = f(); if(ok(x)) return x; } throw new Error('tirage impossible'); }
+  };
+}
+
+/* ---------- l'écriture des nombres (virgule, vrai signe moins, arrondi au plus proche) ---------- */
+const MOINS = '−';
+function arr(x, d){ const p = Math.pow(10, d), s = x < 0 ? -1 : 1; return s * Math.floor(Math.abs(x) * p + 0.5 + 1e-9) / p; }
+function nf(x, d){ const r = arr(x, d); return (r < 0 ? MOINS : '') + Math.abs(r).toFixed(d).replace('.', ','); }
+/* au plus d décimales, au moins deux : 1,13 · 0,9675 */
+function nt(x, d){ let s = nf(x, d); while(/,\d\d+0$/.test(s)) s = s.slice(0, -1); return s; }
+const sd = x => (arr(x, 2) > 0 ? '+' : '') + nf(x, 2);            // +2,50 · −1,25
+const D = x => sd(x) + ' D';
+const Du = x => nf(x, 2) + ' D';
+const cmT = x => { const r = arr(x, 1); return Math.abs(r - Math.round(r)) < 1e-9 ? nf(r, 0) : nf(r, 1); };
+const mmT = cmT;
+const cmS = x => (arr(x, 1) > 0 ? '+' : '') + cmT(x);
+const pctT = p => (arr(p, 1) > 0 ? '+' : '') + nf(p, 1) + ' %';
+const pct2 = p => (arr(p, 2) > 0 ? '+' : '') + nf(p, 2) + ' %';
+const giT = g => nf(g, 3);
+const dT = d => d === 100 ? '1 m' : d + ' cm';
+const dm = d => nf(d / 100, 2);
+const sm = x => (arr(x, 3) > 0 ? '+' : '') + nt(x, 3);           // mètres signés : −0,333
+const par = s => /^[+−]/.test(s) ? '(' + s + ')' : s;
+const plusR = R => R < 0 ? MOINS + ' ' + nf(-R, 2) : '+ ' + nf(R, 2);  // “+ (−3)” s'écrit “− 3,00”
+const moinsR = R => R < 0 ? '+ ' + nf(-R, 2) : MOINS + ' ' + nf(R, 2); // Am − R
+const LETTRES = 'abcdefgh';
+
+/* ---------- le cours ---------- */
+const DONDERS = [[1, 18], [5, 16], [10, 14], [15, 12], [20, 10], [25, 8.5], [30, 7], [40, 4.5], [44, 4], [50, 2.5], [60, 1], [75, 0]];
+const amDe = age => DONDERS.find(x => x[0] === age)[1];
+const typeR = R => R < 0 ? 'myope' : R > 0 ? 'hypermétrope' : 'emmétrope';
+const HOMMES = ['Luc', 'Arthur', 'Paul', 'Sébastien', 'Phil', 'Karim', 'Noah', 'Théo', 'Hugo', 'Mateo'];
+const FEMMES = ['Caroline', 'Marie', 'Inès', 'Léa', 'Amina', 'Chloé', 'Nadia', 'Zoé'];
+function patient(h){ const f = h.u() < 0.45; return {nom: h.pick(f ? FEMMES : HOMMES), il: f ? 'elle' : 'il', Il: f ? 'Elle' : 'Il'}; }
+const gi = (Fl, mm) => 1 / (1 - mm / 1000 * Fl);
+const pc = (Fl, mm) => (gi(Fl, mm) - 1) * 100;
+
+/* La feuille de formules reconstituée (la vraie n'est pas connue) : écrites comme dans le cours, sans le sens des lettres */
+const FEUILLE = [
+  {id:'surf', t:'D = (nᵣ − nᵢ)/r', src:'feuille de l’UA1, rappelée au module 6 (diapos 10 et 16)'},
+  {id:'lun', t:'F = (nᵥ − n(avant))/r₁ − (nᵥ − n(arrière))/r₂', src:'module 6, diapo 11 (formule du lunetier)'},
+  {id:'foc', t:'F = 1/f′', src:'module 6, diapos 26–27 (et feuille de l’UA1)'},
+  {id:'mm', t:'1 mm de longueur axiale ≈ 3,00 D', src:'module 6, diapo 36 (une règle, écrite comme les conversions de la feuille de l’UA1)'},
+  {id:'add', t:'Addition = A − 0.5(Am)', src:'module 6, diapo 56'},
+  {id:'acc', t:'A = 1/d + R', src:'module 7, diapo 20'},
+  {id:'pr', t:'D = 1/Pr', src:'module 7, diapo 37'},
+  {id:'pp', t:'1/Pp = Am − R', src:'module 7, diapo 28'},
+  {id:'gi', t:'Gi = 1/(1 − d(Fl))', src:'module 8, diapo 20'},
+  {id:'pct', t:'Pourcentage = (facteur − 1) × 100', src:'module 8, diapo 21 (ses deux étapes, en une ligne)'}
+];
+const FEUILLE_T = {}; FEUILLE.forEach(f => { FEUILLE_T[f.id] = f.t; });
+const REGLE_PRES = 'puissance de près = correction de loin + addition (module 7, diapo 6 : une règle en mots, pas une formule de la feuille)';
+
+const CONVENTIONS = [
+  'Dans les formules, les distances sont en mètres et les puissances en dioptries (D).',
+  'R : l’erreur réfractive, signée (myope −, hypermétrope +). C’est aussi la correction de loin.',
+  'Pr : le punctum remotum, le point net le plus éloigné, œil au repos. D = 1/Pr, avec Pr signé (devant l’œil −, derrière +). On répond par une distance et un côté.',
+  'Pp : le punctum proximum, le point net le plus proche, avec toute l’amplitude. 1/Pp = Am − R. On répond par une distance, pas en dioptries.',
+  'Am : l’amplitude d’accommodation (tableau de Donders quand l’âge est donné). Avec la correction de loin en place, R = 0.',
+  'Addition = A − 0.5(Am), avec A = 1/d (correction de loin en place). Un résultat négatif veut dire : aucune addition.',
+  'A = 1/d + R : l’accommodation d’un œil non corrigé.',
+  'Gi = 1/(1 − d(Fl)) : d est le vertex (distance cornée-lunette) en mètres, Fl la puissance du verre, signée. Pourcentage = (Gi − 1) × 100. Une différence de 3 % ou plus entre les deux yeux : aniséiconie possible.',
+  'Règle du cours : 1 mm de longueur axiale ≈ 3,00 D (plus long : myopie).'
+];
+
+/* ---------- petites fabriques ---------- */
+function vf(affirmation, vrai, mal, explication, src){
+  return {type:'vf', enonce:affirmation, verite:vrai,
+    choix:[{t:'Vrai', ok:vrai, mal:vrai ? '' : mal}, {t:'Faux', ok:!vrai, mal:vrai ? mal : ''}],
+    explication:(vrai ? 'Vrai. ' : 'Faux. ') + explication, src};
+}
+function repNum(v, fmt, u, signe){
+  const txt = fmt === 'D' ? D(v) : fmt === 'Du' ? Du(v) : fmt === 'cm' ? cmT(v) + ' cm' : fmt === 'mm' ? mmT(v) + ' mm' : fmt === 'pct' ? pctT(v) : fmt === 'pct1' ? nf(v, 1) + ' %' : giT(v);
+  return {k:'num', v, fmt, u, signe:!!signe, txt};
+}
+function repPr(R){
+  const pr = 100 / R, cote = pr < 0 ? 'devant' : 'derrière';
+  return {k:'pr', v:pr, fmt:'cmPr', cote, u:'cm', txt:cmT(Math.abs(pr)) + ' cm ' + cote + (pr > 0 ? ' (virtuel)' : '')};
+}
+/* le Pr : D = 1/Pr lu à l'envers */
+function partiePr(q, pts, R){
+  const rep = repPr(R), pr = rep.v;
+  return {q, pts, calc:'pr', donnees:{R}, rep, formules:['pr'],
+    dem:[['Le Pr : l’œil au repos, sans accommoder', 'D = 1/Pr, donc Pr = 1/R ; l’amplitude ne sert pas ici'],
+      ['Inverser R, avec son signe', `Pr = 1/${par(sd(R))} = ${sm(1 / R)} m = ${cmS(pr)} cm`],
+      ['Lire le signe', pr < 0 ? 'négatif : devant l’œil, un point réel' : 'positif : derrière l’œil, un point virtuel'],
+      ['Conclure', 'Pr à ' + rep.txt]]};
+}
+/* le Pp : 1/Pp = Am − R, avec toute l'amplitude */
+function partiePp(q, pts, R, Am, age){
+  const S = Am - R, donnees = age != null ? {R, age} : {R, Am};
+  const dem = [['Le Pp : accommodation maximale, toute l’amplitude', '1/Pp = Am − R']];
+  if(age != null) dem.push(['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`]);
+  dem.push(['Remplacer, R avec son signe', `1/Pp = ${nf(Am, 2)} ${moinsR(R)} = ${nf(S, 2)} D` + (R < 0 ? ' (la myopie s’ajoute)' : R > 0 ? ' (l’hypermétropie se retire)' : '')]);
+  if(S <= 1e-9){
+    dem.push(['Conclure', `${S < -1e-9 ? 'négatif' : 'nul'} : aucun Pp réel devant l’œil sans correction (Am ≤ R)`]);
+    return {q, pts, calc:'pp', donnees, rep:{k:'aucun', v:null, fmt:'aucun', txt:'aucun Pp réel'}, formules:['pp'], dem};
+  }
+  const pp = 100 / S;
+  dem.push(['Inverser : le Pp est une distance', `Pp = 1/${nf(S, 2)} = ${nt(1 / S, 3)} m`], ['Conclure', `Pp à ${cmT(pp)} cm devant l’œil`]);
+  return {q, pts, calc:'pp', donnees, rep:{k:'num', v:pp, fmt:'cm', u:'cm', txt:cmT(pp) + ' cm devant l’œil'}, formules:['pp'], dem};
+}
+/* le Pp avec la correction de loin : R = 0 */
+function partiePpAvec(q, pts, Am, age){
+  const pp = 100 / Am;
+  const dem = [['Avec la correction, R = 0', 'l’œil est comme un emmétrope : Pr à l’infini, 1/Pp = Am']];
+  if(age != null) dem.push(['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`]);
+  dem.push(['Inverser Am', `Pp = 1/${nf(Am, 2)} = ${nt(1 / Am, 3)} m`], ['Conclure', `Pp à ${cmT(pp)} cm`]);
+  return {q, pts, calc:'ppAvec', donnees:age != null ? {age} : {Am}, rep:{k:'num', v:pp, fmt:'cm', u:'cm', txt:'Pp à ' + cmT(pp) + ' cm'}, formules:['pp'], dem};
+}
+/* l'addition : correction de loin en place, la moitié de Am */
+function partieAdd(q, pts, d, Am, age){
+  const A = 100 / d, ad = A - Am / 2, neg = ad < 0;
+  const dem = [['La demande, d en mètres', `A = 1/d = 1/${dm(d)} = ${D(A)}`]];
+  if(age != null) dem.push(['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`]);
+  dem.push(['La moitié de Am (effort prolongé)', `0,5 × ${nf(Am, 2)} = ${nf(Am / 2, 2)} D`],
+    ['Soustraire', `Addition = ${D(A)} − ${nf(Am / 2, 2)} = ${D(ad)}`],
+    ['Conclure', neg ? 'négatif : aucune addition' : 'positif : une addition de ' + D(ad)]);
+  return {q, pts, calc:'add', donnees:age != null ? {d, age} : {d, Am},
+    rep:neg ? {k:'aucune', v:ad, fmt:'aucune', txt:'aucune addition (' + D(ad) + ')'} : repNum(ad, 'D', 'D', true),
+    formules:['add', 'foc'], dem};
+}
+/* la lecture prolongée sans addition : 1/(0,5 Am) */
+function partieConfort(q, pts, Am, age){
+  const c = 100 / (Am / 2);
+  return {q, pts, calc:'confort', donnees:age != null ? {age} : {Am}, rep:repNum(c, 'cm', 'cm'), formules:['foc'],
+    dem:[['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`], ['La moitié, pour un effort prolongé', `0,5 × ${nf(Am, 2)} = ${nf(Am / 2, 2)} D`],
+      ['Inverser (F = 1/f′ à l’envers)', `d = 1/${nf(Am / 2, 2)} = ${nt(2 / Am, 3)} m`], ['Conclure', `${cmT(c)} cm`]]};
+}
+function partieGi(q, pts, Fl, mm){
+  const dmm = mm / 1000, den = 1 - dmm * Fl, g = 1 / den;
+  const rep = repNum(g, 'gi', ''); rep.txt = 'Gi = ' + giT(g) + ' (image plus ' + (g > 1 ? 'grande' : 'petite') + ')';
+  return {q, pts, calc:'gi', donnees:{Fl, mm}, rep, formules:['gi'],
+    dem:[['d en mètres', `${mm} mm = ${nt(dmm, 3)} m`], ['Le dénominateur, Fl avec son signe', `1 − (${nt(dmm, 3)} × ${par(sd(Fl))}) = ${nt(den, 4)}`],
+      ['Inverser', `Gi = 1/${nt(den, 4)} = ${giT(g)}`], ['Conclure', rep.txt]]};
+}
+const motTaille = p => p > 0 ? 'plus grande' : 'plus petite';
+
+/* =====================================================================================================
+   PARTIE A : 8 questions à choix multiples ou vrai/faux, 1 point chacune. Une case = un thème ; plusieurs
+   gabarits par case, pour que les versions changent de questions, pas seulement de nombres.
+   ===================================================================================================== */
+const BANQUE = {};
+BANQUE.A1 = [
+  {id:'A1-causes', mod:6, qr:[1], kc:'O6.11', f(){ return {type:'qcm',
+    enonce:'Selon le cours, quelles sont les deux causes importantes d’amétropie ?',
+    choix:[{t:'La courbure cornéenne et la longueur axiale', ok:true},
+      {t:'L’âge et la perte d’amplitude d’accommodation', mal:'la presbytie prise pour une amétropie (O6.18)'},
+      {t:'La longueur axiale et la focale de 17 mm du modèle simplifié', mal:'longueur axiale et longueur focale confondues (O6.8)'},
+      {t:'Les indices de l’humeur aqueuse et de l’humeur vitrée', mal:'les milieux internes crus responsables de la puissance (O6.4)'}],
+    explication:'« Deux causes importantes d’amétropie : la courbure cornéenne et la longueur axiale. La puissance du cristallin peut aussi intervenir. » L’âge, lui, amène la presbytie, et « Ce n’est pas une amétropie au sens strict. »',
+    src:'M6 D33 · M7 D4'}; }},
+  {id:'A1-axe', mod:6, qr:[1], kc:'O6.11', f(h){
+    const L = h.pick([22, 22.5, 23, 23.5, 24.5, 25, 25.5, 26]), dl = L - 24, R = -3 * dl;
+    const nomR = x => x < 0 ? 'myope d’environ ' + D(x) : 'hypermétrope d’environ ' + D(x);
+    return {type:'qcm', calc:'axe', donnees:{L}, vus:['L'],
+      enonce:`Un œil emmétrope de 24 mm ${dl > 0 ? 's’allonge' : 'raccourcit'} à ${mmT(L)} mm, sans changement de puissance. Selon la règle du cours, il devient :`,
+      choix:[{t:nomR(R), ok:true, v:R}, {t:nomR(-R), v:-R, err:'signe', mal:'un œil plus long pris pour hypermétrope (O6.11)'},
+        {t:nomR(-dl), v:-dl, err:'sans3', mal:'1 mm compté pour 1 D au lieu de 3,00 D (O6.11)'},
+        {t:'toujours emmétrope, puisque sa puissance n’a pas changé', v:0, err:'zero', mal:'la longueur axiale oubliée comme cause (O6.11)'}],
+      explication:`Règle du cours : « une augmentation de 1 mm de la longueur axiale correspond à environ 3,00 D de myopie supplémentaire, si la puissance optique demeure inchangée. » Ici, ${mmT(Math.abs(dl))} mm × 3,00 = ${nf(3 * Math.abs(dl), 2)} D. ${dl > 0 ? 'Plus long : l’image tombe devant la rétine, myopie (−).' : 'Plus court : l’image tombe derrière la rétine, hypermétropie (+).'}`,
+      src:'M6 D36–D37'};
+  }},
+  {id:'A1-courbure', mod:6, qr:[1], kc:'O6.6', f(h){
+    const k = h.pick([0, 1, 2, 3]);
+    const V = [
+      ['Une cornée plus cambrée (rayon plus court) rend l’œil plus convergent : à longueur égale, il tend vers la myopie.', true, 'rayon court pris pour une courbe plus faible (O6.6)'],
+      ['Une cornée plus cambrée (rayon plus court) rend l’œil moins convergent : à longueur égale, il tend vers l’hypermétropie.', false, 'rayon court pris pour une courbe plus faible (O6.6)'],
+      ['À puissance égale, un œil trop court est hypermétrope.', true, 'un œil plus long pris pour hypermétrope, et l’inverse (O6.11)'],
+      ['À puissance égale, un œil trop long est hypermétrope.', false, 'un œil plus long pris pour hypermétrope (O6.11)']][k];
+    return vf(V[0], V[1], V[2], k < 2
+      ? '« Myopie de courbure : puissance trop élevée, par exemple lorsque la cornée est plus cambrée. » Dans D = (nᵣ − nᵢ)/r, le rayon est au dénominateur : rayon plus court, puissance plus grande.'
+      : '« Hypermétropie axiale : œil trop court par rapport à sa puissance optique; la rétine se situe devant le foyer. » À l’inverse, un œil trop long est myope.', 'M7 D18, D35 · M6 D34');
+  }},
+  {id:'A1-mesure', mod:6, qr:[1], kc:'O6.12', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'La longueur axiale se mesure, par exemple par échographie A ou par biométrie optique (IOLMaster) : la prescription ne la donne pas.'
+      : 'La prescription d’un patient suffit pour connaître la longueur axiale de son œil.', vrai, 'la prescription prise pour une mesure de la longueur axiale (O6.11)',
+      '« La prescription et la courbure cornéenne ne suffisent pas à mesurer la longueur axiale. » Méthodes : échographie A, biométrie optique (IOLMaster), certains dispositifs OCT.', 'M6 D38');
+  }}
+];
+BANQUE.A2 = [
+  {id:'A2-essentiel', mod:6, qr:[2], kc:'O6.4', f(){ return {type:'qcm',
+    enonce:'Quelle partie de l’œil fournit la plus grande part de sa puissance ?',
+    choix:[{t:'La face antérieure de la cornée', ok:true}, {t:'Le cristallin', mal:'“le cristallin fait l’essentiel” (O6.4)'},
+      {t:'La face postérieure de la cornée', mal:'les deux faces de la cornée confondues : son saut d’indice est minuscule (O6.4)'},
+      {t:'L’humeur vitrée', mal:'un milieu pris pour une surface : sans saut d’indice, pas de déviation (O6.2)'}],
+    explication:'Le plus grand saut d’indice de l’œil est air → cornée : de 1,000 à 1,376, soit 0,376 ; cornée → humeur aqueuse ne fait que 0,040. Face antérieure ≈ +48,21 D, face postérieure ≈ −6,15 D (diapo 16). Repère du cours : cornée ≈ +40 D, cristallin ≈ +20 D. « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. »',
+    src:'M6 D14, D16, D27'}; }},
+  {id:'A2-focale', mod:6, qr:[2], kc:'O6.8', f(h){
+    const f = h.pick([16, 17, 18, 20, 25]), F = 1000 / f;
+    return {type:'qcm', calc:'focale', donnees:{f}, vus:['f'],
+      enonce:`Dans un modèle simplifié, l’œil est remplacé par une lentille mince équivalente dans l’air, de focale ${f} mm. Quelle est sa puissance ?`,
+      choix:[{t:D(F), ok:true, v:F}, {t:D(100 / f), v:100 / f, err:'dm', mal:'des mm divisés par 100 au lieu de 1000 (O6.7)'},
+        {t:D(1000 / 24), v:1000 / 24, err:'24', mal:'la longueur axiale de 24 mm inversée au lieu de la focale (O6.8)'},
+        {t:D(f), v:f, err:'distance', mal:'la distance donnée au lieu de son inverse (O6.7)'}],
+      explication:`F = 1/f′, f′ en mètres : ${f} mm = ${nt(f / 1000, 3)} m, donc F = 1/${nt(f / 1000, 3)} = ${D(F)}. On inverse la focale du modèle, jamais la longueur axiale de 24 mm : « Ne pas confondre longueur axiale du globe et longueur focale optique. »${f === 17 ? ' (Le cours arrondit 1/0,017 à +58,8 D.)' : ''}`,
+      src:'M6 D23–D27 · M7 D35'};
+  }},
+  {id:'A2-saut', mod:6, qr:[2], kc:'O6.4', f(h){
+    const k = h.pick([0, 1, 2, 3]);
+    const V = [
+      ['Le saut d’indice air → cornée (1,000 → 1,376) est le plus grand de l’œil : c’est pourquoi la face antérieure de la cornée fournit l’essentiel de sa puissance.', true, 'les deux faces de la cornée confondues (O6.4)'],
+      ['Le saut d’indice cornée → humeur aqueuse (1,376 → 1,336) est le plus grand de l’œil : c’est la face postérieure de la cornée qui fournit l’essentiel de sa puissance.', false, 'les deux faces de la cornée confondues (O6.4)'],
+      ['Pour trouver la puissance de l’œil simplifié, on inverse sa focale de 17 mm dans l’air, pas sa longueur axiale de 24 mm.', true, 'longueur axiale et focale confondues (O6.8)'],
+      ['Pour trouver la puissance de l’œil simplifié, on inverse sa longueur axiale de 24 mm.', false, 'longueur axiale et focale confondues (O6.8)']][k];
+    return vf(V[0], V[1], V[2], k < 2
+      ? 'Air → cornée : un saut de 0,376 ; cornée → humeur aqueuse : 0,040. « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. » D’où ≈ +48,21 D devant et ≈ −6,15 D derrière (diapo 16).'
+      : '1/0,017 ≈ +58,8 D, à peu près les +60 D de l’œil. « Ne pas confondre longueur axiale du globe et longueur focale optique. »', 'M6 D14, D16, D23–D27 · M7 D35');
+  }},
+  {id:'A2-milieux', mod:6, qr:[2], kc:'O6.4', f(){ return {type:'qcm',
+    enonce:'Dans quel ordre la lumière traverse-t-elle les milieux de l’œil ?',
+    choix:[{t:'Film lacrymal → cornée → humeur aqueuse → cristallin → humeur vitrée', ok:true},
+      {t:'Film lacrymal → cornée → cristallin → humeur aqueuse → humeur vitrée', mal:'l’humeur aqueuse placée derrière le cristallin'},
+      {t:'Cornée → film lacrymal → humeur aqueuse → cristallin → humeur vitrée', mal:'le film lacrymal placé derrière la cornée'},
+      {t:'Film lacrymal → cornée → humeur vitrée → cristallin → humeur aqueuse', mal:'les deux humeurs inversées'}],
+    explication:'Le trajet du cours (M6, diapo 24) : film lacrymal, cornée, humeur aqueuse, cristallin, humeur vitrée, puis la rétine. Les deux éléments convergents principaux sont la cornée et le cristallin.',
+    src:'M6 D9, D24'}; }}
+];
+BANQUE.A3 = [
+  {id:'A3-mecanisme', mod:6, qr:[3], kc:'O6.13', f(){ return {type:'qcm',
+    enonce:'Pour voir net un objet proche, l’œil accommode. Que se passe-t-il ?',
+    choix:[{t:'Le muscle ciliaire se contracte, les fibres zonulaires se relâchent, le cristallin se bombe.', ok:true},
+      {t:'Le muscle ciliaire se relâche, les fibres zonulaires se tendent, le cristallin s’aplatit.', mal:'la vision de loin décrite à la place de la vision de près'},
+      {t:'Le muscle ciliaire se contracte, les fibres zonulaires se tendent, le cristallin s’aplatit.', mal:'“les zonules se tendent pour voir de près” (O6.13)'},
+      {t:'Le muscle ciliaire tire sur le cristallin pour l’arrondir, et la cornée se bombe.', mal:'“le muscle tire le cristallin pour l’arrondir” (O6.13)'}],
+    explication:'De près : muscle ciliaire contracté, fibres zonulaires relâchées, cristallin bombé, forte convergence. De loin, l’inverse : muscle relâché, zonules tendues, cristallin aplati (diapo 48). « L’accommodation est la capacité de l’œil à augmenter sa puissance optique, principalement par une modification de la forme du cristallin, pour voir de près. »',
+    src:'M6 D46–D49'}; }},
+  {id:'A3-presbytie', mod:6, qr:[3], kc:'O6.18', f(h){
+    const k = h.pick([0, 1, 2]);
+    const V = [
+      ['La presbytie est la perte progressive de l’amplitude d’accommodation avec l’âge ; ce n’est pas une amétropie au sens strict.', true, '“la presbytie est une sorte d’hypermétropie” (O6.18)'],
+      ['La presbytie est une forme d’hypermétropie qui apparaît avec l’âge.', false, '“la presbytie est une sorte d’hypermétropie” (O6.18)'],
+      ['La presbytie se corrige avec la correction de loin, sans addition.', false, 'presbytie et amétropie confondues (O6.18)']][k];
+    return vf(V[0], V[1], V[2], '« La presbytie est la diminution progressive de l’amplitude d’accommodation avec l’âge, principalement liée à la perte de souplesse du cristallin. Ce n’est pas une amétropie au sens strict. » Elle se compense par une addition de près.', 'M7 D4 · M6 D53');
+  }},
+  {id:'A3-donders', mod:6, qr:[3], kc:'O6.15', f(h){
+    const age = h.pick([10, 20, 30, 40, 50, 60]), i = DONDERS.findIndex(x => x[0] === age), Am = DONDERS[i][1], av = DONDERS[i - 1][1], ap = DONDERS[i + 1][1];
+    return {type:'qcm', calc:'donders', donnees:{age}, vus:['age'],
+      enonce:`Selon le tableau de Donders, quelle est l’amplitude d’accommodation à ${age} ans ?`,
+      choix:[{t:Du(Am), ok:true, v:Am}, {t:Du(av), v:av, err:'avant', mal:'la ligne voisine du tableau (plus jeune)'},
+        {t:Du(ap), v:ap, err:'apres', mal:'la ligne voisine du tableau (plus âgé)'}, {t:Du(Am / 2), v:Am / 2, err:'moitie', mal:'la moitié de l’amplitude, celle de l’effort prolongé (O6.16)'}],
+      explication:`Tableau de Donders (M6, diapo 54) : ${age} ans → ${Du(Am)}. La moitié, ${Du(Am / 2)}, est ce qu’on utilise en effort prolongé ; le Pp, lui, utilise toute l’amplitude.`,
+      src:'M6 D54'};
+  }},
+  {id:'A3-pourquoi', mod:6, qr:[3], kc:'O6.16', f(){ return {type:'qcm',
+    enonce:'Pourquoi une personne presbyte a-t-elle besoin d’une addition pour lire ?',
+    choix:[{t:'En effort prolongé, l’œil n’utilise qu’environ la moitié de son amplitude, et cette moitié ne couvre plus la demande de près.', ok:true},
+      {t:'Parce que l’addition corrige sa vision de loin.', mal:'l’addition confondue avec la correction de loin (O7.11)'},
+      {t:'Parce que son cristallin devient plus puissant avec l’âge.', mal:'“le cristallin devient plus fort avec l’âge” (O6.18)'},
+      {t:'Parce qu’elle doit utiliser toute son amplitude pour lire longtemps.', mal:'toute l’amplitude utilisée en effort prolongé (O6.16)'}],
+    explication:'« Pour un effort prolongé, on utilise généralement, comme règle pédagogique, environ la moitié de l’amplitude d’accommodation. » Avec l’âge, l’amplitude fond (Donders) : la moitié ne couvre plus la demande 1/d, et l’addition paie le reste. « L’addition est la puissance positive supplémentaire destinée à faciliter la vision de près. »',
+    src:'M6 D53–D56'}; }},
+  {id:'A3-negatif', mod:6, qr:[3], kc:'O6.17', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Si la formule de l’addition donne un résultat négatif, aucune addition n’est indiquée.' : 'Si la formule de l’addition donne un résultat négatif, on prescrit une addition négative.',
+      vrai, 'un résultat négatif rapporté comme une addition (O6.17)',
+      '« Si le résultat est négatif, aucune addition n’est indiquée par ce calcul simplifié. On suppose la correction de loin adéquate. » (Exemple du corrigé : à 1 m, à 40 ans, +1,00 − 2,25 = −1,25 : pas d’addition.)', 'M6 D56 · corrigé M6, exercice 2.2');
+  }}
+];
+BANQUE.A4 = [
+  {id:'A4-pr', mod:7, qr:[4], kc:'O7.5', f(h){
+    const k = h.pick(['hyp', 'myo', 'emm']);
+    const V = {
+      hyp:['Où se trouve le punctum remotum d’un hypermétrope non corrigé ?', [{t:'Derrière l’œil : c’est un point virtuel', ok:true},
+        {t:'Devant l’œil, à quelques centimètres', mal:'le Pr de l’hypermétrope placé devant l’œil (O7.4)'},
+        {t:'À l’infini', mal:'“l’hypermétrope voit bien de loin”, vrai seulement en accommodant (O7.5)'},
+        {t:'Au même endroit que son punctum proximum', mal:'Pr et Pp confondus (O7.1)'}]],
+      myo:['Où se trouve le punctum remotum d’un myope non corrigé ?', [{t:'Devant l’œil, à une distance finie : un point réel', ok:true},
+        {t:'Derrière l’œil : un point virtuel', mal:'le signe de R inversé (O7.2)'},
+        {t:'À l’infini, comme chez l’emmétrope', mal:'la zone nette du myope crue jusqu’à l’infini (O7.8)'},
+        {t:'Toujours à 25 cm, quelle que soit sa myopie', mal:'le Pr cru fixe : il dépend de la myopie, Pr = 1/R (O7.4)'}]],
+      emm:['Où se trouve le punctum remotum d’un emmétrope ?', [{t:'À l’infini', ok:true},
+        {t:'Derrière l’œil', mal:'emmétrope et hypermétrope confondus (O7.5)'},
+        {t:'À 25 cm devant l’œil', mal:'Pr et Pp confondus (O7.1)'},
+        {t:'Devant l’œil, à 1/Am', mal:'l’amplitude utilisée pour le Pr (O8.1)'}]]}[k];
+    return {type:'qcm', enonce:V[0], choix:V[1],
+      explication:'Le Pr : « Point objet le plus éloigné que l’oeil peut voir clairement (œil au repos) ». Avec D = 1/Pr : myope (R < 0), Pr négatif, devant, réel ; hypermétrope (R > 0), Pr positif, derrière, virtuel ; emmétrope, à l’infini. « Souvenez-vous que les valeurs à gauche de l’oeil sont négatives, et les valeurs à la droite sont positives »',
+      src:'M7 D11, D21–D25, D37'};
+  }},
+  {id:'A4-ordre', mod:7, qr:[4], kc:'O7.7', f(h){
+    const r = h.pick([1.5, 2, 2.5, 3]), proche = h.u() < 0.6;
+    return {type:'qcm', donnees:{Rm:-r, Rh:r}, vus:['Rm', 'Rh'],
+      enonce:`Trois patients ont la même amplitude d’accommodation : un emmétrope, un myope de ${D(-r)} et un hypermétrope de ${D(r)}. Sans lunettes, lequel a le punctum proximum le plus ${proche ? 'rapproché' : 'éloigné'} ?`,
+      choix:[{t:'Le myope', ok:proche, mal:proche ? '' : 'l’ordre des Pp inversé (O7.7)'}, {t:'L’hypermétrope', ok:!proche, mal:proche ? '“le myope voit mal, donc son Pp est plus loin” : l’ordre des Pp inversé (O7.7)' : ''},
+        {t:'L’emmétrope', mal:'l’emmétrope pris pour un extrême (O7.7)'}, {t:'Les trois au même endroit : le Pp ne dépend que de l’amplitude', mal:'R oublié dans le Pp (O7.6)'}],
+      explication:`1/Pp = Am − R. Myope : Am − (${D(-r)}) = Am + ${nf(r, 2)}, le plus grand, donc le Pp le plus proche. Hypermétrope : Am − ${nf(r, 2)}, le plus petit, donc le Pp le plus loin. « À amplitude égale, le Pp myope est plus rapproché que le Pp hypermétrope. »`,
+      src:'M7 D28, D48'};
+  }},
+  {id:'A4-tout', mod:7, qr:[4], kc:'O7.6', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Pour calculer le punctum proximum, on utilise toute l’amplitude d’accommodation.' : 'Pour calculer le punctum proximum, on utilise la moitié de l’amplitude d’accommodation.',
+      vrai, 'la moitié de l’amplitude utilisée pour le Pp (O6.16, O7.6)',
+      'Le Pp : « Point objet le plus près que l’oeil peut voir avec accommodation maximale (même si c’est juste pour quelques instant) » (sic). Toute l’amplitude, donc. La moitié sert à l’addition et à la lecture prolongée.', 'M7 D11, D28');
+  }},
+  {id:'A4-corrige', mod:7, qr:[4], kc:'O7.9', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Avec sa correction de loin, un amétrope se comporte comme un emmétrope : son Pr est à l’infini et 1/Pp = Am.' : 'Avec sa correction de loin, un myope garde son erreur R dans le calcul du Pp : 1/Pp = Am − R.',
+      vrai, 'R gardé dans le calcul avec la correction en place (O7.9)',
+      'Corrigé, R = 0 : « Avec l’orthèse, Marie devient comme un emmétrope. On peut utiliser donc toute son amplitude. »', 'corrigé M7, n° 4 · M8, questions extra');
+  }},
+  {id:'A4-sanspp', mod:7, qr:[4], kc:'O7.7', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Un hypermétrope non corrigé dont l’amplitude est inférieure ou égale à son erreur (Am ≤ R) n’a aucun Pp réel devant l’œil.' : 'Un hypermétrope non corrigé a toujours un Pp réel : il suffit d’inverser Am − R.',
+      vrai, 'le cas Am ≤ R oublié (O7.7)',
+      '« Si Am ≤ R chez un hypermétrope, aucun Pp réel devant l’œil sans correction. » Am − R est alors nul ou négatif : son inverse n’est pas une distance devant l’œil.', 'M7 D28');
+  }}
+];
+BANQUE.A5 = [
+  {id:'A5-lentille', mod:7, qr:[4], kc:'O7.10', f(h){
+    const myo = h.u() < 0.5;
+    const C = myo ? [{t:'Un verre concave (divergent), plus mince au centre qu’au bord, de puissance négative', ok:true},
+      {t:'Un verre convexe (convergent), plus mince au bord qu’au centre, de puissance positive', mal:'concave et convexe inversés entre myopie et hypermétropie (O7.10)'},
+      {t:'Un verre concave (divergent), plus mince au bord qu’au centre, de puissance négative', mal:'la forme d’un verre concave confondue (O7.14)'},
+      {t:'Un verre convexe (convergent), plus mince au centre qu’au bord, de puissance négative', mal:'forme et signe mélangés (O7.14)'}]
+      : [{t:'Un verre convexe (convergent), plus mince au bord qu’au centre, de puissance positive', ok:true},
+      {t:'Un verre concave (divergent), plus mince au centre qu’au bord, de puissance négative', mal:'concave et convexe inversés entre myopie et hypermétropie (O7.10)'},
+      {t:'Un verre convexe (convergent), plus mince au centre qu’au bord, de puissance positive', mal:'la forme d’un verre convexe confondue (O7.14)'},
+      {t:'Un verre concave (divergent), plus mince au bord qu’au centre, de puissance positive', mal:'forme et signe mélangés (O7.14)'}];
+    return {type:'qcm', enonce:myo ? 'Quel verre corrige la myopie ?' : 'Quel verre corrige l’hypermétropie ?', choix:C,
+      explication:myo ? '« On utilise des verres concaves pour corriger l’excès de convergence chez les myopes. » « Rappel que les lentilles divergentes sont plus minces au centre qu’au bord. » Leur puissance est négative, comme R.'
+        : '« On utilise des verres convexes pour corriger le manque de convergences chez les hypermétropes. » (sic) « Rappel que les lentilles convergentes sont plus minces au bord qu’au centre. » Leur puissance est positive, comme R.',
+      src:'M7 D19, D36'};
+  }},
+  {id:'A5-accommode', mod:7, qr:[3, 4], kc:'O7.3', f(h){
+    const p = patient(h);
+    const [R, d] = h.tirage(() => [h.pick([-2, -1.5, -1, -0.75, 1, 1.5, 2, 3]), h.pick([25, 40, 50])], ([R, d]) => 100 / d + R >= 0.5);
+    const myo = R < 0, A = 100 / d + R;
+    return {type:'qcm', calc:'acc', donnees:{R, d}, vus:['R', 'd'],
+      enonce:`Sans lunettes, ${p.nom}, ${typeR(R)} de ${D(R)}, lit à ${d} cm. Comparé à un emmétrope à la même distance, ${p.il} accommode :`,
+      choix:[{t:'Moins', ok:myo, cle:'moins', mal:myo ? '' : 'le signe de R inversé : un hypermétrope accommode plus (O7.3)'},
+        {t:'Plus', ok:!myo, cle:'plus', mal:myo ? 'le signe de R inversé : un myope accommode moins (O7.3)' : ''},
+        {t:'Autant : la demande ne dépend que de la distance', mal:'la demande du M6 (A = 1/d) utilisée pour un œil non corrigé (O7.3)'},
+        {t:myo ? 'Pas du tout : un myope voit net de près sans jamais accommoder' : 'Pas du tout : un hypermétrope voit bien de près', mal:myo ? '“un myope n’accommode jamais” : il accommode moins, pas zéro (O7.3)' : 'hypermétropie et presbytie confondues (O6.18)'}],
+      explication:`A = 1/d + R = ${D(100 / d)} ${plusR(R)} = ${D(A)}, contre ${D(100 / d)} pour un emmétrope. ${myo ? '« Pourquoi la myopie facilite-t-elle la vision de près? » Son erreur négative paie une partie de la demande.' : 'L’hypermétrope paie d’abord son erreur, puis la demande de l’objet.'}`,
+      verifs:[{calc:'acc', donnees:{R, d}, fmt:'D'}],
+      src:'M7 D20–D22'};
+  }},
+  {id:'A5-cyclo', mod:7, qr:[3], kc:'O7.12', f(){ return {type:'qcm',
+    enonce:'Chez un enfant hypermétrope, la cycloplégie sert à :',
+    choix:[{t:'Relâcher l’accommodation pour révéler l’hypermétropie totale', ok:true},
+      {t:'Mesurer la longueur axiale de l’œil', mal:'la cycloplégie confondue avec la biométrie (O6.12)'},
+      {t:'Augmenter son amplitude d’accommodation', mal:'l’effet inversé : elle relâche l’accommodation (O7.12)'},
+      {t:'Corriger sa presbytie', mal:'hypermétropie et presbytie confondues (O6.18)'}],
+    explication:'« La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale. » Sans elle, « Un enfant hypermétrope peut masquer son erreur réfractive par une accommodation importante. »',
+    src:'M7 D42'}; }},
+  {id:'A5-2020', mod:7, qr:[3], kc:'O7.12', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Un jeune hypermétrope non corrigé peut lire 20/20 de loin en accommodant, au prix de fatigue ou de maux de tête.' : 'Un jeune hypermétrope qui lit 20/20 de loin sans correction n’a besoin d’aucune correction.',
+      vrai, '“20/20 veut dire aucune correction” (O7.12)',
+      'Il accommode déjà R dioptries pour voir au loin (A = 1/d + R, avec 1/d ≈ 0). « L’effort accommodatif soutenu peut s’accompagner de fatigue visuelle ou de céphalées. »', 'M7 D41–D44');
+  }}
+];
+BANQUE.A6 = [
+  {id:'A6-vertex', mod:8, qr:[5], kc:'O8.10', f(h){
+    const p = patient(h), Fl = h.pick([-8, -6, -4, 3, 4, 6]), neg = Fl < 0;
+    const g10 = gi(Fl, 10), g15 = gi(Fl, 15);
+    return {type:'qcm', donnees:{Fl}, vus:['Fl'],
+      enonce:`${p.nom} porte un verre de ${D(Fl)}. ${p.Il} choisit une monture qui place le verre plus loin de l’œil (vertex plus grand). Sur la rétine, l’image :`,
+      choix:[{t:neg ? 'reste plus petite qu’à l’œil nu, et l’effet augmente' : 'reste plus grande qu’à l’œil nu, et l’effet augmente', ok:true},
+        {t:neg ? 'devient plus grande qu’à l’œil nu' : 'devient plus petite qu’à l’œil nu', mal:'l’effet du signe du verre inversé (O8.10)'},
+        {t:neg ? 'reste plus petite, mais l’effet diminue' : 'reste plus grande, mais l’effet diminue', mal:'le sens de l’effet du vertex inversé (O8.10)'},
+        {t:'ne change pas : seule la puissance du verre compte', mal:'“déplacer la monture ne change rien” (O8.10)'}],
+      explication:`« Plus la distance v (vertex) est grande, plus grand sera son influence sur la taille de l’image formée sur la rétine. » Avec Gi = 1/(1 − d(Fl)) : à 10 mm, Gi = ${giT(g10)} (${pctT((g10 - 1) * 100)}) ; à 15 mm, Gi = ${giT(g15)} (${pctT((g15 - 1) * 100)}).`,
+      verifs:[{calc:'gi', donnees:{Fl, mm:10}, fmt:'gi'}, {calc:'pct', donnees:{Fl, mm:10}, fmt:'pct'}, {calc:'gi', donnees:{Fl, mm:15}, fmt:'gi'}, {calc:'pct', donnees:{Fl, mm:15}, fmt:'pct'}],
+      src:'M8 D17–D20'};
+  }},
+  {id:'A6-verres', mod:8, qr:[5], kc:'O8.10', f(h){
+    const k = h.pick([0, 1, 2]);
+    const V = [
+      ['Les verres convexes (+) agrandissent l’image rétinienne ; les verres concaves (−) la rapetissent.', true, 'les effets des verres − et + inversés (O8.10)'],
+      ['Les verres concaves (−) agrandissent l’image rétinienne ; les verres convexes (+) la rapetissent.', false, 'les effets des verres − et + inversés (O8.10)'],
+      ['La distance entre le verre et l’œil (vertex) ne change pas la taille de l’image rétinienne.', false, '“déplacer la monture ne change rien” (O8.10)']][k];
+    return vf(V[0], V[1], V[2], '« Les verres concaves diminuent la taille de l’image » ; « Les verres convexes augmentent la taille de l’image » ; « La distance verre-œil (vertex) a une influence sur la taille de l’image ».', 'M8 D17');
+  }},
+  {id:'A6-seuil', mod:8, qr:[5], kc:'O8.13', f(){ return {type:'qcm',
+    enonce:'Selon le cours, à partir de quelle différence de grandeur d’image entre les deux yeux l’aniséiconie peut-elle se produire ?',
+    choix:[{t:'3 % ou plus', ok:true}, {t:'0,3 % ou plus', mal:'le seuil lu dix fois trop petit (O8.13)'}, {t:'10 % ou plus', mal:'le seuil du cours mal retenu (O8.13)'}, {t:'30 % ou plus', mal:'le seuil lu dix fois trop grand (O8.13)'}],
+    explication:'« Si la différence entre les grandeurs est de 3% ou plus, l’aniséiconie peut se produire. » Le chiffre varie d’un patient à l’autre. (L’exercice 3 dit « plus grands que 3% » : pour une différence d’exactement 3 %, à vérifier en classe.)',
+    src:'M8 D22, D31'}; }},
+  {id:'A6-leviers', mod:8, qr:[5], kc:'O8.15', f(){ return {type:'qcm',
+    enonce:'Les images des deux yeux d’un patient n’ont pas la même taille. Laquelle de ces actions réduit la différence ?',
+    choix:[{t:'Rapprocher les verres des yeux (vertex plus court)', ok:true},
+      {t:'Éloigner les verres des yeux (vertex plus grand)', mal:'le sens de l’effet du vertex inversé (O8.10)'},
+      {t:'Sur l’œil dont l’image est la plus grande, prendre une courbure de base plus cambrée', mal:'le levier de la courbure de base pris à l’envers (O8.15)'},
+      {t:'Sur l’œil dont l’image est la plus grande, prendre un verre plus épais au centre', mal:'le levier de l’épaisseur pris à l’envers (O8.15)'}],
+    explication:'Un vertex plus court rapproche les deux facteurs de 1, donc réduit leur écart (corrigé M8, exercices 1 et 2). « Une courbure de base plus cambrée augmente le grossissement. » « Une épaisseur centrale plus importante augmente le grossissement. » Sur l’œil le plus agrandi, il faudrait donc l’inverse. (Le choix de l’œil est déduit des diapos, pas écrit.)',
+    src:'M8 D19, D23 · corrigé M8, exercices 1–2'}; }},
+  {id:'A6-pct', mod:8, qr:[5], kc:'O8.12', f(h){
+    const Fl = h.pick([-10, -8, -6, -4, -3, -2, 2, 3, 4, 5, 6]), mm = h.pick([10, 12, 13, 15]);
+    const g = arr(gi(Fl, mm), 3), p = (g - 1) * 100, mot = x => ' (image ' + motTaille(x) + ')';
+    return {type:'qcm', calc:'pctG', donnees:{g}, vus:['g'],
+      enonce:`Un verre donne un facteur de grossissement Gi = ${giT(g)}. De combien la taille de l’image rétinienne change-t-elle ?`,
+      choix:[{t:pctT(p) + mot(p), ok:true, v:p}, {t:pctT(-p) + mot(-p), v:-p, err:'signe', mal:'le signe du pourcentage inversé (O8.12)'},
+        {t:nf(g * 100, 1) + ' %', v:g * 100, err:'fois100', mal:'Gi multiplié par 100 sans soustraire 1 (O8.12)'},
+        {t:(g > 1 ? '+' : '') + nf(g - 1, 3) + ' %', v:g - 1, err:'sans100', mal:'le “× 100” oublié (O8.12)'}],
+      explication:`« Soustraire 1 du facteur obtenu. » puis × 100 : (${giT(g)} − 1) × 100 = ${pctT(p)}. ${p > 0 ? '« Si le résultat est positif → image plus grande »' : '« Si le résultat est négatif → image plus petite »'}.`,
+      src:'M8 D21'};
+  }}
+];
+BANQUE.A7 = [
+  {id:'A7-rayon', mod:8, qr:[2], kc:'O8.7', f(h){
+    const k = h.pick(['par', 'F', 'O']);
+    const V = {
+      par:['Un rayon arrive parallèle à l’axe optique sur une lentille convergente. Après la lentille, il :', [{t:'passe par le foyer image F′', ok:true},
+        {t:'passe par le foyer objet F', mal:'F et F′ inversés (O8.7)'}, {t:'continue sans être dévié', mal:'la règle du rayon qui passe par O (O8.7)'}, {t:'ressort parallèle à l’axe', mal:'la règle du rayon qui passe par F (O8.7)'}]],
+      F:['Un rayon passe par le foyer objet F, puis traverse une lentille convergente. Après la lentille, il :', [{t:'ressort parallèle à l’axe optique', ok:true},
+        {t:'passe par le foyer image F′', mal:'la règle du rayon parallèle (O8.7)'}, {t:'continue sans être dévié', mal:'la règle du rayon qui passe par O (O8.7)'}, {t:'revient couper l’axe en F', mal:'F et F′ confondus (O8.7)'}]],
+      O:['Un rayon passe par le centre optique O d’une lentille convergente. Après la lentille, il :', [{t:'continue sans être dévié', ok:true},
+        {t:'passe par le foyer image F′', mal:'la règle du rayon parallèle (O8.7)'}, {t:'ressort parallèle à l’axe', mal:'la règle du rayon qui passe par F (O8.7)'}, {t:'est renvoyé vers l’objet', mal:'réflexion et réfraction confondues'}]]}[k];
+    return {type:'qcm', enonce:V[0], choix:V[1],
+      explication:'Les trois rayons principaux d’une lentille convergente (M8, diapo 12) : par le centre optique O, pas de déviation ; parallèle à l’axe, il ressort par le foyer image F′ ; par le foyer objet F, il ressort parallèle à l’axe. F et F′ sont symétriques par rapport à O.',
+      src:'M8 D11–D12'};
+  }},
+  {id:'A7-image', mod:8, qr:[2], kc:'O8.8', f(h){
+    const k = h.pick(['2f', 'f2f', 'inf']);
+    const V = {
+      '2f':['Un objet est placé à deux fois la distance focale (2f) d’une lentille convergente. Son image est :', [{t:'réelle, renversée, de même grandeur que l’objet, à 2f de l’autre côté', ok:true},
+        {t:'réelle, renversée, plus grande que l’objet, au-delà de 2f', mal:'le cas de l’objet entre f et 2f (O8.8)'}, {t:'dans le plan focal, en F′', mal:'le cas de l’objet à l’infini (O8.8)'}, {t:'virtuelle, droite et plus grande', mal:'une image virtuelle pour un objet au-delà du foyer (O8.8)'}],
+        '« Quand l’objet et à deux fois la longueur focale (2f), l’image est la même grandeur » (sic). « Ces images sont réelles, mais inversées. »'],
+      f2f:['Un objet est placé entre f et 2f d’une lentille convergente. Son image est :', [{t:'réelle, renversée, plus grande que l’objet, au-delà de 2f', ok:true},
+        {t:'réelle, renversée, de même grandeur, à 2f', mal:'le cas de l’objet à 2f (O8.8)'}, {t:'dans le plan focal, en F′', mal:'le cas de l’objet à l’infini (O8.8)'}, {t:'virtuelle, droite et plus petite', mal:'une image virtuelle pour un objet au-delà du foyer (O8.8)'}],
+        '« Quand l’objet est entre f et 2f, l’image est plus grande que l’objet » ; « Ces images sont réelles, mais inversées. »'],
+      inf:['Un objet très éloigné est regardé à travers une lentille convergente. Son image se forme :', [{t:'dans le plan focal image, en F′ : réelle et renversée', ok:true},
+        {t:'à 2f, de même grandeur que l’objet', mal:'le cas de l’objet à 2f (O8.8)'}, {t:'au foyer objet F, devant la lentille', mal:'F et F′ confondus (O8.7)'}, {t:'à l’infini, de l’autre côté', mal:'“l’image voyage avec l’objet” (O8.8)'}],
+        'Les rayons d’un objet très éloigné arrivent parallèles entre eux : ils se croisent dans le plan focal image, en F′ (M8, diapo 13). L’image y est réelle et renversée.']}[k];
+    return {type:'qcm', enonce:V[0], choix:V[1], explication:V[2], src:'M8 D13, D15'};
+  }},
+  {id:'A7-angle', mod:8, qr:[2], kc:'O8.9', f(){ return {type:'qcm',
+    enonce:'Deux objets ont la même taille ; A est plus proche de l’œil que B. Sur la rétine :',
+    choix:[{t:'l’image de A est plus grande : A est vu sous un angle plus grand', ok:true},
+      {t:'les deux images ont la même taille, puisque les objets ont la même taille', mal:'“la taille de l’image ne dépend que de l’objet” (O8.9)'},
+      {t:'l’image de B est plus grande', mal:'l’effet de la distance inversé (O8.9)'},
+      {t:'l’image de A est plus petite, parce qu’elle est renversée', mal:'orientation et taille de l’image confondues (O8.8)'}],
+    explication:'La taille de l’image rétinienne suit l’angle sous lequel on voit l’objet : à taille égale, l’objet le plus proche est vu sous un angle plus grand et donne une image plus grande sur la rétine (M8, diapo 14).',
+    src:'M8 D14'}; }},
+  {id:'A7-foyer', mod:8, qr:[2], kc:'O8.5', f(h){
+    const vrai = h.u() < 0.5;
+    return vf(vrai ? 'Avec une lentille divergente, des rayons parallèles ne se coupent pas : ce sont leurs prolongements qui se coupent, en un foyer virtuel.' : 'Avec une lentille divergente, des rayons parallèles se coupent derrière la lentille, en un foyer réel.',
+      vrai, 'foyer réel et foyer virtuel confondus (O8.5)',
+      'Avec une lentille divergente (concave), « le foyer est trouvé en prolongeant les rayons de la lentille » : c’est un foyer virtuel. Une lentille convergente, elle, fait vraiment se couper les rayons en F′ (foyer réel). « L’image d’une lentille concave est virtuelle. »', 'M8 D7–D8 · M7 D19');
+  }}
+];
+BANQUE.A8 = [
+  {id:'A8-demande', mod:6, qr:[3], kc:'O6.14', f(h){
+    const d = h.pick([20, 25, 40, 50]);
+    return {type:'qcm', calc:'demande', donnees:{d}, vus:['d'],
+      enonce:`Combien d’accommodation un œil emmétrope doit-il exercer pour voir net un objet à ${d} cm ?`,
+      choix:[{t:D(100 / d), ok:true, v:100 / d}, {t:D(1 / d), v:1 / d, err:'cm', mal:'la distance gardée en cm (O6.7)'},
+        {t:D(d / 100), v:d / 100, err:'distance', mal:'la distance donnée au lieu de son inverse (O6.7)'}, {t:D(50 / d), v:50 / d, err:'moitie', mal:'la demande coupée en deux comme l’amplitude (O6.16)'}],
+      explication:`A = 1/d, avec d en mètres : 1/${dm(d)} = ${D(100 / d)}. Ce n’est pas proportionnel : deux fois plus près, c’est deux fois plus de dioptries.`,
+      src:'corrigé M6, exercices 1 · M7 D3'};
+  }},
+  {id:'A8-lecture', mod:7, qr:[3], kc:'O7.11', f(h){
+    const p = patient(h);
+    const [R, a] = h.tirage(() => [h.pick([-4, -3.5, -3, -2.5, -2, -1.5, -1.25, -0.75]), h.pick([0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5])], ([R, a]) => Math.abs(R + a) > 0.01);
+    return {type:'qcm', calc:'pres', donnees:{R, add:a}, vus:['R', 'add'],
+      enonce:`Ordonnance de ${p.nom} : OD ${D(R)} add ${D(a)}. Quelle est la puissance des lunettes de lecture de l’OD ?`,
+      choix:[{t:D(R + a), ok:true, v:R + a}, {t:D(a), v:a, err:'addseule', mal:'l’addition seule prise pour la puissance de près (O7.11)'},
+        {t:D(R - a), v:R - a, err:'soustrait', mal:'l’addition retranchée au lieu d’ajoutée (O7.11)'}, {t:D(-R + a), v:-R + a, err:'signe', mal:'le signe de la correction de loin perdu (O7.11)'}],
+      explication:`« on ajoute l’addition à sa correction de loin pour obtenir la puissance de vision de près » : ${D(R)} + ${D(a)} = ${D(R + a)}. (Diapo 9 : −3,00 add +2,50 donne −0,50.)`,
+      src:'M7 D6–D10'};
+  }},
+  {id:'A8-net', mod:7, qr:[4], kc:'O8.2', f(h){
+    const p = patient(h), vrai = h.u() < 0.5;
+    const [R, d, age] = h.tirage(() => [h.pick([-1, -1.5, -2, -2.5, -3, -4, -5]), h.pick([25, 40, 50, 100]), h.pick([20, 25, 30, 40, 50])], ([R, d, age]) => {
+      const A = 100 / d + R, Am = amDe(age); if(Math.abs(A) < 0.01 || Math.abs(A - Am) < 0.01) return false; return (A > 0 && A < Am) === vrai; });
+    const Am = amDe(age), A = 100 / d + R;
+    const pourquoi = A < 0 ? '« Si A < 0, la vision nette n’est pas possible par accommodation seule. » L’objet est au-delà de son Pr (' + cmT(-100 / R) + ' cm devant).'
+      : A > Am ? 'A dépasse son amplitude (' + Du(Am) + ') : l’objet est plus près que son Pp.' : 'A est entre 0 et son amplitude (' + Du(Am) + ') : l’objet est entre son Pp et son Pr.';
+    const r = vf(`Sans lunettes, ${p.nom}, ${age} ans (tableau de Donders), myope de ${D(R)}, peut voir net un objet à ${dT(d)}, même pour quelques instants.`, vrai,
+      vrai ? '“un myope ne voit rien net sans lunettes” (O8.2)' : A < 0 ? 'le Pr oublié : au-delà du Pr, accommoder n’aide pas (O7.3)' : 'le Pp oublié : plus près que le Pp, c’est flou (O8.2)',
+      `A = 1/d + R = ${D(100 / d)} ${plusR(R)} = ${D(A)}. ${pourquoi}`, 'M7 D20–D22 · M8, questions extra, cas 3');
+    return Object.assign(r, {calc:'voir', donnees:{R, d, age}, vus:['R', 'd', 'age'], verifs:[{calc:'acc', donnees:{R, d}, fmt:'D'}]});
+  }},
+  {id:'A8-hyper', mod:7, qr:[4], kc:'O7.3', f(h){
+    const p = patient(h);
+    const [R, d] = h.tirage(() => [h.pick([0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4]), h.pick([25, 40, 50, 100])], ([R, d]) => {
+      const v = [100 / d + R, 100 / d, 100 / d - R, R]; if(100 / d - R < 0.25) return false; return v.every((x, i) => v.every((y, j) => i === j || Math.abs(x - y) > 0.01)); });
+    return {type:'qcm', calc:'acc', donnees:{R, d}, vus:['R', 'd'],
+      enonce:`${p.nom}, hypermétrope de ${D(R)}, sans correction, regarde un objet à ${dT(d)}. Combien doit-${p.il} accommoder ?`,
+      choix:[{t:D(100 / d + R), ok:true, v:100 / d + R}, {t:D(100 / d), v:100 / d, err:'sansR', mal:'R oublié : la demande du M6 pour un œil non corrigé (O7.3)'},
+        {t:D(100 / d - R), v:100 / d - R, err:'signeR', mal:'le signe de R inversé (O7.3)'}, {t:D(R), v:R, err:'Rseul', mal:'seulement l’erreur, sans la demande de l’objet (O7.3)'}],
+      explication:`A = 1/d + R : ${D(100 / d)} + ${nf(R, 2)} = ${D(100 / d + R)}. L’œil paie d’abord son hypermétropie, puis la demande. (Corrigé M7, Marie à 40 cm : « +2.00 pour sa correction d’hypermétropie et +2.50 pour la vision de près ».)`,
+      src:'M7 D20 · corrigé M7, n° 4'};
+  }}
+];
+
+/* =====================================================================================================
+   PARTIE B : 8 questions à courte réponse, 2 points chacune (barème indicatif : 1 la démarche, 1 la réponse)
+   ===================================================================================================== */
+BANQUE.B1 = [
+  {id:'B1-add-am', mod:6, qr:[3], kc:'O6.17', f(h){
+    const p = patient(h);
+    const [d, Am] = h.tirage(() => [h.pick([25, 40, 50]), h.pick([0.5, 1, 1.5, 2, 2.5, 3, 3.5])], ([d, Am]) => { const a = 100 / d - Am / 2; return a >= 0.25 && a <= 3.5; });
+    const r = partieAdd('', 2, d, Am, null);
+    return Object.assign(r, {type:'num', vus:['d', 'Am'],
+      enonce:`${p.nom} veut lire à ${d} cm. Son amplitude d’accommodation est de ${Du(Am)} et sa vision de loin est corrigée. Quelle addition lui faut-il, selon la formule du cours ?`,
+      piege:{kc:'O6.17', t:'Le 0,5 porte sur Am, jamais sur A ; et la distance va en mètres (40 cm = 0,40 m).'},
+      pieges:[{v:100 / d - Am, m:'Tu as retiré toute l’amplitude : en effort prolongé, l’œil n’en fournit que la moitié.'}, {v:50 / d - Am, m:'Le 0,5 porte sur Am, pas sur A.'}, {v:1 / d - Am / 2, m:'La distance est restée en cm : 1/d, avec d en mètres.'}],
+      src:'M6 D56 · corrigé M6, exercices 2.1 (40 cm, Am 2,00 : +1,50) et 2.3 (25 cm, Am 1,50 : +3,25)'});
+  }},
+  {id:'B1-add-age', mod:6, qr:[3], kc:'O6.17', f(h){
+    const p = patient(h);
+    const [age, d] = h.tirage(() => [h.pick([40, 44, 50, 60]), h.pick([25, 40, 50, 100])], ([age, d]) => { const a = 100 / d - amDe(age) / 2; return Math.abs(a) > 0.01 && a <= 3; });
+    const Am = amDe(age), r = partieAdd('', 2, d, Am, age);
+    return Object.assign(r, {type:'num', vus:['age', 'd'],
+      enonce:`${p.nom} a ${age} ans (tableau de Donders) et sa vision de loin est corrigée. ${p.Il} veut ${d === 100 ? 'travailler à un écran à 1 m' : 'lire à ' + d + ' cm'}. Quelle addition lui faut-il ? S’il n’en faut aucune, écris “aucune”.`,
+      piege:{kc:'O6.17', t:'Un résultat négatif n’est pas une addition : il veut dire “aucune addition”. Et la moitié de Am, pas Am entier.'},
+      pieges:[{v:100 / d - Am, m:'Tu as retiré toute l’amplitude : en effort prolongé, l’œil n’en fournit que la moitié.'}, {v:50 / d - Am, m:'Le 0,5 porte sur Am, pas sur A.'}],
+      src:'M6 D56–D60 · corrigé M6, exercice 2.2 (1 m à 40 ans : −1,25, pas d’addition)'});
+  }},
+  {id:'B1-confort', mod:6, qr:[3], kc:'O6.17', f(h){
+    const age = h.pick([10, 15, 20, 25, 30, 40, 44]), Am = amDe(age), r = partieConfort('', 2, Am, age), c = r.rep.v;
+    return Object.assign(r, {type:'num', vus:['age'],
+      enonce:`Sans addition, à quelle distance minimale une personne de ${age} ans (tableau de Donders), vision de loin corrigée, peut-elle lire confortablement, pendant un temps prolongé ? Réponds en cm.`,
+      piege:{kc:'O6.16', t:'Effort prolongé : la moitié de l’amplitude. Toute l’amplitude donne le Pp, qu’on ne tient qu’un instant.'},
+      pieges:[{v:100 / Am, m:'Toute l’amplitude, c’est le Pp : on ne la tient qu’un instant. En effort prolongé, la moitié.'}, {v:c / 100, m:'Ta réponse est en mètres : la question demande des cm.'}],
+      src:'corrigé M6, exercice 2.4 (10 ans : 1/7 = 14,3 cm ; le corrigé écrit « 14cm ») · M6 D55'});
+  }}
+];
+BANQUE.B2 = [
+  {id:'B2-axe', mod:6, qr:[1], kc:'O6.11', f(h){
+    const L = h.pick([22, 22.5, 23, 23.5, 24.5, 25, 25.5, 26, 26.5]), dl = L - 24, R = -3 * dl;
+    return {type:'num', calc:'axe', donnees:{L}, vus:['L'],
+      enonce:`Un œil emmétrope mesure 24 mm (≈ +60 D). Il ${dl > 0 ? 's’allonge' : 'raccourcit'} à ${mmT(L)} mm sans changer de puissance. Quelle correction lui faut-il, environ ? Donne-la avec son signe.`,
+      rep:repNum(R, 'D', 'D', true), formules:['mm'],
+      dem:[['L’écart de longueur', `${mmT(L)} − 24 = ${dl > 0 ? '+' : MOINS}${mmT(Math.abs(dl))} mm`], ['La règle', `1 mm ≈ 3,00 D : ${mmT(Math.abs(dl))} × 3,00 = ${nf(3 * Math.abs(dl), 2)} D`],
+        ['Le sens', dl > 0 ? 'plus long : l’image tombe devant la rétine, myopie, donc −' : 'plus court : l’image tombe derrière la rétine, hypermétropie, donc +'], ['Conclure', `correction ≈ ${D(R)}`]],
+      piege:{kc:'O6.11', t:'Plus long = myope (−), plus court = hypermétrope (+) ; et 3,00 D par mm, pas 1 D.'},
+      pieges:[{v:-R, m:'Le signe : un œil plus long est myope (−), un œil plus court hypermétrope (+).'}, {v:-dl, m:'La règle est de 3,00 D par mm, pas 1 D.'}],
+      src:'M6 D36 (25 mm : −3,00) et D37 (23 mm : +3,00)'};
+  }},
+  {id:'B2-axeL', mod:6, qr:[1], kc:'O6.11', f(h){
+    const R = h.pick([-1.5, -3, -4.5, -6, 1.5, 3, 4.5]), L = 24 - R / 3;
+    return {type:'num', calc:'axeL', donnees:{R}, vus:['R'],
+      enonce:`Une amétropie purement axiale se corrige avec ${D(R)}. Si l’œil emmétrope mesure 24 mm, quelle est la longueur de cet œil, environ ? Réponds en mm.`,
+      rep:repNum(L, 'mm', 'mm'), formules:['mm'],
+      dem:[['Le type', R < 0 ? 'correction négative : myope ; un myope axial a l’œil trop long' : 'correction positive : hypermétrope ; un hypermétrope axial a l’œil trop court'],
+        ['La règle, à l’envers', `${nf(Math.abs(R), 2)} D ÷ 3,00 D par mm = ${mmT(Math.abs(R) / 3)} mm`], ['Conclure', `24 ${R < 0 ? '+' : MOINS} ${mmT(Math.abs(R) / 3)} = ${mmT(L)} mm`]],
+      piege:{kc:'O6.11', t:'Le sens : un myope axial a l’œil plus long, un hypermétrope axial plus court.'},
+      pieges:[{v:24 + R / 3, m:'Le sens est inversé : un myope axial a l’œil plus long que 24 mm.'}, {v:24 - R * 3, m:'On divise par 3,00 D par mm : on ne multiplie pas.'}],
+      src:'M6 D36 (la règle lue à l’envers)'};
+  }}
+];
+BANQUE.B3 = [
+  {id:'B3-cornee', mod:6, qr:[2], kc:'O6.2', f(h){
+    const r = h.pick([7, 7.2, 7.5, 7.8, 8, 8.2, 8.5]), P = 0.376 / (r / 1000);
+    return {type:'num', calc:'surf', donnees:{n1:1, n2:1.376, r}, vus:['r'],
+      enonce:`La face antérieure d’une cornée a un rayon de +${mmT(r)} mm. Avec n(air) = 1,000 et n(cornée) = 1,376, quelle est la puissance de cette surface ?`,
+      rep:repNum(P, 'D', 'D', true), formules:['surf'],
+      dem:[['Le rayon en mètres', `${mmT(r)} mm = ${nt(r / 1000, 4)} m`], ['Le saut d’indice', 'nᵣ − nᵢ = 1,376 − 1,000 = 0,376'], ['Diviser', `D = 0,376/${nt(r / 1000, 4)} = ${D(P)}`]],
+      piege:{kc:'O6.2', t:'Le rayon va en mètres (7,8 mm = 0,0078 m), et c’est le saut d’indice nᵣ − nᵢ qu’on divise, pas nᵣ seul.'},
+      pieges:[{v:0.376 / r, m:'Le rayon est resté en mm : divise par 1000 pour des mètres.'}, {v:1.376 / (r / 1000), m:'Il faut le saut d’indice, nᵣ − nᵢ, pas nᵣ seul.'}, {v:0.376 / (r / 100), m:'Des mm se divisent par 1000, pas par 100.'}],
+      src:'M6 D16 (7,8 mm : +48,21 D)'};
+  }},
+  {id:'B3-arriere', mod:6, qr:[2], kc:'O6.4', f(h){
+    const r = h.pick([6, 6.2, 6.5, 6.8, 7]), P = (1.336 - 1.376) / (r / 1000);
+    return {type:'num', calc:'surf', donnees:{n1:1.376, n2:1.336, r}, vus:['r'],
+      enonce:`La face postérieure d’une cornée a un rayon de +${mmT(r)} mm. La lumière y passe de la cornée (n = 1,376) à l’humeur aqueuse (n = 1,336). Quelle est la puissance de cette surface, avec son signe ?`,
+      rep:repNum(P, 'D', 'D', true), formules:['surf'],
+      dem:[['Le rayon en mètres', `${mmT(r)} mm = ${nt(r / 1000, 4)} m`], ['Le saut d’indice, dans le sens de la lumière', 'nᵣ − nᵢ = 1,336 − 1,376 = −0,040 : négatif'], ['Diviser', `D = −0,040/${nt(r / 1000, 4)} = ${D(P)}`],
+        ['Conclure', `${D(P)} : une petite contribution négative ; c’est la face antérieure qui fait l’essentiel`]],
+      piege:{kc:'O6.2', t:'nᵣ est le milieu où la lumière entre : 1,336 − 1,376, un saut négatif.'},
+      pieges:[{v:-P, m:'Le signe : la lumière passe de 1,376 à 1,336, le saut d’indice est négatif.'}, {v:-0.04 / r, m:'Le rayon est resté en mm : divise par 1000 pour des mètres.'}],
+      src:'M6 D16 (6,5 mm : −6,15 D)'};
+  }},
+  {id:'B3-lunetier', mod:6, qr:[2], kc:'O6.3', f(h){
+    const [nv, r1, r2] = h.tirage(() => [h.pick([1.5, 1.6]), h.pick([8, 10, 12.5, 20]), h.pick([10, 20, 25, -10, -20, -25])],
+      ([nv, r1, r2]) => { const F = (nv - 1) / (r1 / 100) - (nv - 1) / (r2 / 100); return r1 !== r2 && Math.abs(F) >= 0.5 && Math.abs(F) <= 10; });
+    const F1 = (nv - 1) / (r1 / 100), F2 = -(nv - 1) / (r2 / 100), F = F1 + F2;
+    return {type:'num', calc:'lun', donnees:{nv, nav:1, nar:1, r1, r2}, vus:['nv', 'r1', 'r2'],
+      enonce:`Une lentille d’indice ${nf(nv, 2)}, dans l’air des deux côtés, a r₁ = ${cmS(r1)} cm et r₂ = ${cmS(r2)} cm. Quelle est sa puissance totale ?`,
+      rep:repNum(F, 'D', 'D', true), formules:['lun'],
+      dem:[['Les rayons en mètres', `r₁ = ${sm(r1 / 100)} m ; r₂ = ${sm(r2 / 100)} m`], ['Face avant', `(${nf(nv, 2)} − 1,00)/${par(sm(r1 / 100))} = ${D(F1)}`],
+        ['Face arrière, avec le moins', `−(${nf(nv, 2)} − 1,00)/${par(sm(r2 / 100))} = ${D(F2)}`], ['Additionner', `F = ${D(F1)} ${plusR(F2)} = ${D(F)}`]],
+      piege:{kc:'O6.3', t:'Le second terme se soustrait, même quand r₂ est positif ; les rayons vont en mètres.'},
+      pieges:[{v:F1 - F2, m:'Le second terme se soustrait : à la sortie du verre, les indices changent de place.'}, {v:F / 100, m:'Les rayons sont restés en cm : convertis-les en mètres.'}, {v:F1, m:'Tu as oublié la face arrière.'}],
+      src:'M6 D11–D12 (1,50, +8 cm, +10 cm : +1,25 D)'};
+  }}
+];
+BANQUE.B4 = [
+  {id:'B4-pr', mod:7, qr:[4], kc:'O7.4', f(h){
+    const p = patient(h), R = h.pick([-0.5, -1, -1.25, -1.5, -2, -2.5, -3, -4, -5, -6, -8, 0.5, 1, 1.25, 2, 2.5, 4, 5]);
+    const r = partiePr('', 2, R);
+    return Object.assign(r, {type:'pr', vus:['R'],
+      enonce:`${p.nom}, ${typeR(R)} de ${D(R)}, n’a pas de correction. Où se trouve son punctum remotum ? Donne la distance et le côté.`,
+      piege:{kc:'O7.4', t:'Le signe dit le côté : myope, Pr devant (négatif, réel) ; hypermétrope, derrière (positif, virtuel). Et l’amplitude ne sert pas au Pr.'},
+      pieges:[{v:1 / Math.abs(R), m:'Ta réponse est en mètres : × 100 pour des cm.'}, {v:Math.abs(R), m:'Tu as recopié R : le Pr est son inverse, 1/R.'}],
+      src:'M7 D23–D25, D37 · corrigé M7, n° 2'});
+  }},
+  {id:'B4-lc', mod:7, qr:[4], kc:'O7.4', f(h){
+    const R = h.pick([-0.75, -1.25, -1.75, -2.5, -3.5, -4.5, -6, 1.5, 2.5, 3.5, 4.5]);
+    const r = partiePr('', 2, R);
+    return Object.assign(r, {type:'pr', vus:['R'],
+      enonce:`Un patient a reçu des lentilles cornéennes de ${D(R)}. Quelle est la distance objet corrigée par ces lentilles, c’est-à-dire son punctum remotum sans correction ? Donne la distance et le côté.`,
+      piege:{kc:'O7.4', t:'Le Pr est une distance : 1/R donne des mètres (le corrigé écrit « F=-0.222m » pour une distance), puis le signe dit le côté.'},
+      pieges:[{v:1 / Math.abs(R), m:'Ta réponse est en mètres : × 100 pour des cm.'}, {v:Math.abs(R), m:'Tu as recopié R : le Pr est son inverse, 1/R.'}],
+      src:'corrigé M7, n° 2 (−4,50 : 22,2 cm devant) et n° 3 (+4,00 : 25 cm derrière)'});
+  }},
+  {id:'B4-inv', mod:7, qr:[4], kc:'O7.4', f(h){
+    const p = patient(h);
+    const [c, cote] = h.pick([[20, 'devant'], [25, 'devant'], [40, 'devant'], [50, 'devant'], [80, 'devant'], [100, 'devant'], [200, 'devant'], [25, 'derrière'], [40, 'derrière'], [50, 'derrière'], [100, 'derrière']]);
+    const prm = (cote === 'devant' ? -1 : 1) * c / 100, R = 1 / prm;
+    return {type:'num', calc:'prR', donnees:{c, cote}, vus:['c'],
+      enonce:`Le punctum remotum de ${p.nom} est situé à ${c} cm ${cote === 'devant' ? 'devant ' + (p.il === 'elle' ? 'elle' : 'lui') : 'derrière son œil'}. Quelle lentille cornéenne le corrige ? Donne sa puissance avec son signe.`,
+      rep:repNum(R, 'D', 'D', true), formules:['pr'],
+      dem:[['Signer le Pr, en mètres', `${cote} : ${cote === 'devant' ? 'négatif' : 'positif'}, Pr = ${sm(prm)} m`], ['Inverser', `D = 1/Pr = 1/${par(sm(prm))} = ${D(R)}`],
+        ['Conclure', `une lentille de ${D(R)} (${R < 0 ? 'concave' : 'convexe'})`]],
+      piege:{kc:'O7.2', t:'Le côté donne le signe : devant = négatif (myope), derrière = positif (hypermétrope).'},
+      pieges:[{v:-R, m:'Le signe vient du côté : devant = négatif, derrière = positif.'}, {v:prm, m:'Tu as donné la distance : il faut son inverse.'}, {v:1 / ((cote === 'devant' ? -1 : 1) * c), m:'La distance est restée en cm : convertis-la en mètres.'}],
+      src:'corrigé M7, n° 1 (Phil, 50 cm devant : −2,00) · D37 (Luc, 25 cm derrière : +4,00)'};
+  }}
+];
+BANQUE.B5 = [
+  {id:'B5-pp', mod:7, qr:[4], kc:'O7.6', f(h){
+    const p = patient(h), parAge = h.u() < 0.6;
+    const [R, X] = h.tirage(() => [h.pick([-4, -3, -2.5, -2, -1.5, -1, 1, 1.5, 2, 2.5, 3]), parAge ? h.pick([10, 20, 25, 30, 40, 50]) : h.pick([3, 4, 5, 6, 7, 8])],
+      ([R, X]) => { const Am = parAge ? amDe(X) : X, S = Am - R; return S >= 1.5 && S <= 25; });
+    const age = parAge ? X : null, Am = parAge ? amDe(X) : X, r = partiePp('', 2, R, Am, age), S = Am - R;
+    return Object.assign(r, {type:'num', vus:parAge ? ['R', 'age'] : ['R', 'Am'],
+      enonce:`${p.nom}, ${parAge ? age + ' ans (tableau de Donders)' : 'amplitude d’accommodation ' + Du(Am)}, ${typeR(R)} de ${D(R)}, enlève ses lunettes. Où est son punctum proximum ? Réponds en cm.`,
+      piege:{kc:'O7.6', t:'Am − R avec R signé : la myopie s’ajoute, l’hypermétropie se retire ; toute l’amplitude ; et le Pp est une distance, pas 1/Pp.'},
+      pieges:[{v:100 / (Am + R), m:'Le signe de R : 1/Pp = Am − R ; une myopie s’ajoute, une hypermétropie se retire.'}, {v:100 / Am, m:'Tu as oublié R : sans lunettes, l’erreur compte. 1/Am, c’est le Pp avec lunettes.'},
+        {v:Am / 2 - R > 0 ? 100 / (Am / 2 - R) : NaN, m:'Le Pp prend toute l’amplitude, pas la moitié.'}, {v:S, m:'Ça, c’est 1/Pp, en dioptries : le Pp est une distance. Inverse-le.'}, {v:1 / S, m:'Ta réponse est en mètres : × 100 pour des cm.'}],
+      src:'M7 D27–D28, D38 · corrigé M7, n° 4b et 5'});
+  }},
+  {id:'B5-avec', mod:7, qr:[4], kc:'O7.6', f(h){
+    const p = patient(h);
+    const [R, c] = h.tirage(() => [h.pick([-3, -2, -1.5, -1, 1, 1.5, 2, 3]), h.pick([20, 25, 40, 50])], ([R, c]) => 100 / c - R >= 1.5);
+    const Am = 100 / c, S = Am - R, pp = 100 / S;
+    return {type:'num', calc:'ppAvecR', donnees:{R, c}, vus:['R', 'c'],
+      enonce:`${p.nom} porte des lunettes de ${D(R)}. Avec elles, son point net le plus proche, en accommodant au maximum, est à ${c} cm. Où serait son punctum proximum sans lunettes ?`,
+      rep:repNum(pp, 'cm', 'cm'), formules:['pp'],
+      dem:[['Avec les lunettes, R = 0', `comme un emmétrope : Am = 1/Pp = 1/${dm(c)} = ${Du(Am)}`], ['Sans lunettes, R revient', `1/Pp = ${nf(Am, 2)} ${moinsR(R)} = ${nf(S, 2)} D`],
+        ['Inverser', `Pp = 1/${nf(S, 2)} = ${nt(1 / S, 3)} m`], ['Conclure', `${cmT(pp)} cm devant l’œil`]],
+      piege:{kc:'O7.9', t:'Deux étapes : avec les lunettes, R = 0 donne Am ; sans lunettes, 1/Pp = Am − R.'},
+      pieges:[{v:c, m:'Ça, c’est le Pp avec lunettes : la question porte sur l’œil nu.'}, {v:100 / (Am + R), m:'Le signe de R : 1/Pp = Am − R.'}],
+      src:'M7 D29–D30 et D39–D40 (Caroline)'};
+  }},
+  {id:'B5-am', mod:7, qr:[4], kc:'O7.6', f(h){
+    const p = patient(h);
+    const [S, R] = h.tirage(() => [h.pick([2, 2.5, 4, 5, 8, 10]), h.pick([-3, -2, -1.5, -1, 1, 2])], ([S, R]) => S + R >= 1 && S + R <= 14);
+    const pp = 100 / S, Am = S + R;
+    return {type:'num', calc:'amPp', donnees:{pp, R}, vus:['pp', 'R'],
+      enonce:`Sans lunettes, ${p.nom}, ${typeR(R)} de ${D(R)}, voit net jusqu’à ${cmT(pp)} cm, pas plus près. Quelle est son amplitude d’accommodation ?`,
+      rep:repNum(Am, 'Du', 'D'), formules:['pp'],
+      dem:[['C’est son Pp, sans lunettes', '1/Pp = Am − R, donc Am = 1/Pp + R'], ['Inverser le Pp', `1/Pp = 1/${nt(pp / 100, 3)} = ${Du(S)}`], ['Ajouter R, avec son signe', `Am = ${nf(S, 2)} ${plusR(R)} = ${Du(Am)}`]],
+      piege:{kc:'O7.6', t:'Le Pp mesuré à l’œil nu contient encore R : Am = 1/Pp + R, R avec son signe.'},
+      pieges:[{v:S - R, m:'Le signe de R : Am = 1/Pp + R.'}, {v:S, m:'Ça, c’est 1/Pp : à l’œil nu, il faut encore ajouter R.'}],
+      src:'corrigé M7, n° 3 (+4,00, Pp 50 cm : 2 + 4 = 6,00 D)'};
+  }}
+];
+BANQUE.B6 = [
+  {id:'B6-acc', mod:7, qr:[3, 4], kc:'O7.3', f(h){
+    const p = patient(h);
+    const [R, d] = h.tirage(() => [h.pick([-2, -1.5, -1, 1, 1.5, 2, 2.5, 3, 4]), h.pick([25, 40, 50, 100])], ([R, d]) => 100 / d + R >= 0.25);
+    const A = 100 / d + R;
+    return {type:'num', calc:'acc', donnees:{R, d}, vus:['R', 'd'],
+      enonce:`${p.nom}, ${typeR(R)} de ${D(R)}, sans lunettes, regarde un objet à ${dT(d)}. Combien doit-${p.il} accommoder ?`,
+      rep:repNum(A, 'D', 'D', true), formules:['acc'],
+      dem:[['La formule commune', 'A = 1/d + R, R avec son signe'], ['La demande, d en mètres', `1/d = 1/${dm(d)} = ${D(100 / d)}`], ['Ajouter R', `A = ${D(100 / d)} ${plusR(R)} = ${D(A)}`]],
+      piege:{kc:'O7.3', t:'Un œil non corrigé : la demande plus son erreur R. Un myope accommode moins, un hypermétrope plus.'},
+      pieges:[{v:100 / d, m:'Tu as oublié R : sans lunettes, l’erreur s’ajoute à la demande.'}, {v:100 / d - R, m:'Le signe de R : un myope accommode moins, un hypermétrope plus.'}, {v:1 / d + R, m:'La distance est restée en cm.'}],
+      src:'M7 D20 · corrigé M7, n° 4 (Marie, +2,00 à 40 cm : 4,50)'};
+  }},
+  {id:'B6-pres', mod:7, qr:[3], kc:'O7.11', f(h){
+    const p = patient(h);
+    const [R, a] = h.tirage(() => [h.pick([-4, -3, -2.5, -1.5, -0.75, 0.5, 1.25, 2, 3]), h.pick([0.75, 1, 1.25, 1.5, 2, 2.25, 2.5])], ([R, a]) => Math.abs(R + a) > 0.01);
+    return {type:'num', calc:'pres', donnees:{R, add:a}, vus:['R', 'add'],
+      enonce:`Ordonnance de ${p.nom} : ${D(R)} add ${D(a)}. Quelle est la puissance de ses lunettes de lecture ?`,
+      rep:repNum(R + a, 'D', 'D', true), formules:[], regle:REGLE_PRES,
+      dem:[['La règle', 'puissance de près = correction de loin + addition'], ['Ajouter, avec le signe de la correction de loin', `${D(R)} + ${D(a)} = ${D(R + a)}`]],
+      piege:{kc:'O7.11', t:'Les lunettes de lecture ne sont pas l’addition seule : loin + addition, en gardant le signe de loin.'},
+      pieges:[{v:a, m:'Ça, c’est l’addition seule : il reste à l’ajouter à la correction de loin.'}, {v:R - a, m:'L’addition s’ajoute, elle ne se retranche pas.'}],
+      src:'M7 D6–D10 · corrigé M7, n° 5 (−3,00 add +1,50 : −1,50)'};
+  }},
+  {id:'B6-accR', mod:7, qr:[3, 4], kc:'O7.3', f(h){
+    const p = patient(h);
+    const [R, d] = h.tirage(() => [h.pick([-1.5, -1, 1, 1.5, 2, 2.5, 3, 4]), h.pick([25, 40, 50])], ([R, d]) => 100 / d + R >= 0.5);
+    const A = 100 / d + R;
+    return {type:'num', calc:'accR', donnees:{A, d}, vus:['A', 'd'],
+      enonce:`Sans lunettes, ${p.nom} doit accommoder de ${D(A)} pour voir net un objet à ${d} cm. Quelle est son erreur réfractive R, avec son signe ?`,
+      rep:repNum(R, 'D', 'D', true), formules:['acc'],
+      dem:[['Isoler R', 'A = 1/d + R, donc R = A − 1/d'], ['La demande', `1/${dm(d)} = ${D(100 / d)}`], ['Soustraire', `R = ${D(A)} − ${nf(100 / d, 2)} = ${D(R)}`], ['Conclure', `${D(R)} : ${typeR(R)}`]],
+      piege:{kc:'O7.3', t:'La formule commune lue à l’envers : un œil qui fournit plus que la demande est hypermétrope, moins, myope.'},
+      pieges:[{v:100 / d - A, m:'Le signe : R = A − 1/d, pas 1/d − A.'}, {v:A + 100 / d, m:'On retranche la demande de l’objet, on ne l’ajoute pas.'}],
+      src:'M7 D20 (lue à l’envers)'};
+  }}
+];
+BANQUE.B7 = [
+  {id:'B7-gi', mod:8, qr:[5], kc:'O8.11', f(h){
+    const Fl = h.pick([-14, -12, -10, -8, -6, -4, -3, -2, 2, 3, 4, 5, 6, 8]), mm = h.pick([8, 10, 12, 13, 15]);
+    const r = partieGi('', 2, Fl, mm), g = r.rep.v, den = 1 / g;
+    return Object.assign(r, {type:'num', vus:['Fl', 'mm'],
+      enonce:`Un verre de ${D(Fl)} est porté à ${mm} mm de la cornée. Quel est son facteur de grossissement Gi ? Donne trois décimales.`,
+      piege:{kc:'O8.11', t:'Le vertex en mètres (13 mm = 0,013 m), Fl avec son signe (moins par moins donne plus), puis inverser.'},
+      pieges:[{v:1 / (1 - mm * Fl), m:`Le vertex est resté en mm : dans la formule, d s’écrit en mètres (${mm} mm = ${nt(mm / 1000, 3)} m).`}, {v:1 / (1 - mm / 100 * Fl), m:'Des mm se divisent par 1000, pas par 100.'},
+        {v:1 / (1 + mm / 1000 * Fl), m:'Le signe : c’est 1 − d(Fl), avec Fl signé.'}, {v:den, m:'Tu as donné le dénominateur : il reste à inverser.'}, {v:(g - 1) * 100, m:'Ça, c’est le pourcentage : la question demande le facteur Gi.'}],
+      src:'M8 D20, D25, D27 · corrigé M8, exercices 1–2'});
+  }},
+  {id:'B7-pct', mod:8, qr:[5], kc:'O8.12', f(h){
+    const Fl = h.pick([-14, -10, -8, -6, -4, -3, -2, 2, 3, 4, 5, 6]), mm = h.pick([8, 10, 12, 13, 15]);
+    const g = gi(Fl, mm), p = (g - 1) * 100, den = 1 - mm / 1000 * Fl;
+    return {type:'num', calc:'pct', donnees:{Fl, mm}, vus:['Fl', 'mm'],
+      enonce:`Un verre de ${D(Fl)} est porté à ${mm} mm de la cornée. De combien de pour cent la taille de l’image rétinienne change-t-elle ? Donne un pourcentage signé (+ plus grande, − plus petite), à une décimale.`,
+      rep:repNum(p, 'pct', '%', true), formules:['gi', 'pct'],
+      dem:[['Le facteur, d en mètres', `Gi = 1/(1 − ${nt(mm / 1000, 3)} × ${par(sd(Fl))}) = 1/${nt(den, 4)} = ${nf(g, 4)}`], ['Soustraire 1, puis × 100', `(${nf(g, 4)} − 1) × 100 = ${pctT(p)}`],
+        ['Conclure', `${pctT(p)} : image ${motTaille(p)}`]],
+      piege:{kc:'O8.12', t:'Garde quatre décimales au facteur, arrondis à la fin ; et le signe dit plus grande (+) ou plus petite (−).'},
+      pieges:[{v:g * 100, m:'Tu as oublié de soustraire 1 : « Soustraire 1 du facteur obtenu. », puis × 100.'}, {v:-p, m:'Le signe : un verre ' + (Fl < 0 ? '− rapetisse, le % est négatif.' : '+ agrandit, le % est positif.')},
+        {v:g - 1, m:'Il manque le × 100.'}, {v:(arr(g, 2) - 1) * 100, m:'Tu as arrondi Gi à deux décimales avant : garde-en quatre, et arrondis à la fin.'}],
+      src:'M8 D21, D25, D27 · M9 (+5,00 à 12 mm : « Plus grand de 6.4% »)'};
+  }},
+  {id:'B7-inv', mod:8, qr:[5], kc:'O8.12', f(h){
+    const p = h.pick([-17.4, -14.4, -11.5, -8.3, -6.5, -3.8, 2.5, 3.3, 5.5, 6.4, 7.8, 8.5]), g = 1 + p / 100;
+    return {type:'num', calc:'giP', donnees:{p}, vus:['p'],
+      enonce:`Un verre donne une image ${nf(Math.abs(p), 1)} % plus ${p < 0 ? 'petite' : 'grande'}. Quel est son facteur de grossissement Gi ? Donne trois décimales.`,
+      rep:Object.assign(repNum(g, 'gi', ''), {tol:0.0006}), formules:['pct'],
+      dem:[['Le signe du pourcentage', `plus ${p < 0 ? 'petite : négatif' : 'grande : positif'}, ${pctT(p)}`], ['Isoler le facteur', 'Pourcentage = (facteur − 1) × 100, donc facteur = 1 + pourcentage/100'],
+        ['Calculer', `Gi = 1 ${p < 0 ? MOINS : '+'} ${nt(Math.abs(p) / 100, 3)} = ${giT(g)}`]],
+      piege:{kc:'O8.12', t:'Plus petite : Gi sous 1 ; plus grande : Gi au-dessus de 1.'},
+      pieges:[{v:1 - p / 100, m:'Le signe : une image plus petite a un Gi sous 1, une plus grande au-dessus de 1.'}, {v:p / 100, m:'Tu as oublié d’ajouter 1.'}, {v:1 + p, m:'Il faut diviser le pourcentage par 100.'}],
+      src:'M8 D21 (à l’envers) · corrigé M8, exercices 1–2'};
+  }}
+];
+BANQUE.B8 = [
+  {id:'B8-voir', mod:8, qr:[4], kc:'O8.2', f(h){
+    const p = patient(h), oui = h.u() < 0.5;
+    const [R, age, d] = h.tirage(() => [h.pick([-5, -3, -2.5, -1.5, 1, 2, 2.5, 3]), h.pick([25, 30, 40, 44, 50]), h.pick([25, 40, 50])], ([R, age, d]) => {
+      const Am = amDe(age), A = 100 / d + R; if(Am - R < 0.5 || Math.abs(A) < 0.01 || Math.abs(A - Am) < 0.01) return false; return (A > 0 && A < Am) === oui; });
+    const Am = amDe(age), A = 100 / d + R, S = Am - R;
+    return {type:'ouinon', calc:'voir', donnees:{R, d, age}, vus:['R', 'age', 'd'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), ${typeR(R)} de ${D(R)}, n’a pas ses lunettes. Peut-${p.il} voir net un objet à ${d} cm, même pour quelques instants ? Réponds oui ou non.`,
+      rep:{k:'ouinon', v:oui, fmt:'ouinon', txt:oui ? 'Oui' : 'Non'}, formules:['acc', 'pp'],
+      dem:[['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`], ['A = 1/d + R', `A = ${D(100 / d)} ${plusR(R)} = ${D(A)}`],
+        ['Comparer à 0 et à Am', A < 0 ? 'A < 0 : l’objet est au-delà de son Pr (' + cmT(-100 / R) + ' cm devant)' : A > Am ? `A > Am : l’objet est plus près que son Pp (${cmT(100 / S)} cm)` : `0 ≤ A ≤ Am : l’objet est entre son Pp (${cmT(100 / S)} cm) et son Pr`],
+        ['Conclure', oui ? 'Oui' : 'Non']],
+      piege:{kc:'O8.2', t:'« même pour quelques instants » : toute l’amplitude (le Pp), pas la moitié ; et chez le myope, au-delà du Pr, accommoder n’aide pas.'},
+      pieges:[], src:'M8, questions extra, cas 2 et 3 (Paul)'};
+  }},
+  {id:'B8-confort', mod:8, qr:[3, 4], kc:'O8.3', f(h){
+    const p = patient(h), oui = h.u() < 0.5;
+    const [age, R] = h.tirage(() => [h.pick([40, 44, 50, 60]), h.pick([-0.5, -0.75, -1, -1.25, -1.5, -2, -2.5, 0.5])], ([age, R]) => {
+      const disp = amDe(age) / 2 - R; if(Math.abs(disp - 2.5) < 0.01) return false; return (disp > 2.5) === oui; });
+    const Am = amDe(age), disp = Am / 2 - R;
+    return {type:'ouinon', calc:'confortOK', donnees:{R, d:40, age}, vus:['R', 'age'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), ${typeR(R)} de ${D(R)}, veut lire un livre à 40 cm sans lunettes. Peut-${p.il} le faire de façon confortable, pendant longtemps ? Réponds oui ou non.`,
+      rep:{k:'ouinon', v:oui, fmt:'ouinon', txt:oui ? 'Oui' : 'Non'}, formules:['acc', 'add'],
+      dem:[['La demande', '1/0,40 = +2,50 D'], ['Ce qui est disponible pour lire longtemps', `la moitié de Am (${Du(Am)} à ${age} ans) : ${nf(Am / 2, 2)} D, ${R < 0 ? 'plus sa myopie' : 'moins son hypermétropie'} : ${nf(Am / 2, 2)} ${moinsR(R)} = ${Du(disp)}`],
+        ['Comparer', `${Du(disp)} ${disp > 2.5 ? '≥' : '<'} 2,50 D`], ['Conclure', oui ? 'Oui' : 'Non']],
+      piege:{kc:'O8.3', t:'« de façon confortable » : la moitié de l’amplitude (plus la myopie), pas toute l’amplitude.'},
+      pieges:[], src:'M8, questions extra, cas 4 (Sébastien, −1,50, 50 ans : « il peut utiliser la moitié de façon confortable (1.25) »)'};
+  }},
+  {id:'B8-lunettes', mod:8, qr:[4], kc:'O7.9', f(h){
+    const p = patient(h), age = h.pick([10, 20, 25, 30, 40, 50, 60]), R = h.pick([-6, -4, -3, -2, -1.5, 1.5, 2, 2.5, 3]), Am = amDe(age);
+    const r = partiePpAvec('', 2, Am, age);
+    return Object.assign(r, {type:'num', donnees:{age, R}, vus:['age', 'R'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), ${typeR(R)} de ${D(R)}, porte ses lunettes. Où est son punctum proximum ? Réponds en cm.`,
+      piege:{kc:'O7.9', t:'Avec ses lunettes, R = 0 : « comme un emmétrope », le Pp ne dépend que de Am.'},
+      pieges:[{v:Am - R > 0 ? 100 / (Am - R) : NaN, m:'Avec ses lunettes, R = 0 : l’erreur ne compte plus.'}, {v:200 / Am, m:'Le Pp prend toute l’amplitude, pas la moitié.'}, {v:Am, m:'Ça, c’est Am, en dioptries : le Pp est une distance, 1/Am.'}],
+      src:'M8, questions extra, cas 1–3 (« Pr est à l’infini ») · corrigé M7, n° 4c'});
+  }}
+];
+
+/* =====================================================================================================
+   PARTIE C : 6 questions à développement (avec formules), 6 points chacune, en sous-questions
+   ===================================================================================================== */
+BANQUE.C1 = [
+  {id:'C1-addition', mod:6, qr:[3], kc:'O6.17', f(h){
+    const p = patient(h);
+    const [age, d1, d2] = h.tirage(() => [h.pick([40, 44, 50, 60]), h.pick([25, 40]), h.pick([50, 100])], ([age, d1, d2]) => {
+      const Am = amDe(age), a1 = 100 / d1 - Am / 2, a2 = 100 / d2 - Am / 2; return a1 >= 0.25 && a1 <= 3 && Math.abs(a2) > 0.01; });
+    const Am = amDe(age), A1 = 100 / d1;
+    return {type:'dev', donnees:{age, d:d1, d2}, vus:['age', 'd', 'd2'],
+      enonce:`${p.nom} a ${age} ans (tableau de Donders). Sa vision de loin est corrigée.`,
+      parties:[
+        {q:`Quelle demande accommodative crée une lecture à ${d1} cm ?`, pts:1, calc:'demande', donnees:{d:d1}, rep:repNum(A1, 'D', 'D', true), formules:['foc'],
+          dem:[['d en mètres', `${d1} cm = ${dm(d1)} m`], ['Inverser', `A = 1/${dm(d1)} = ${D(A1)}`]]},
+        partieAdd(`Quelle addition lui faut-il pour lire à ${d1} cm ?`, 2, d1, Am, age),
+        partieAdd(`${p.nom} veut aussi travailler à ${d2 === 100 ? 'un écran à 1 m' : d2 + ' cm'}. Faut-il une addition à cette distance ? Si oui, laquelle ?`, 2, d2, Am, age),
+        partieConfort(`Sans addition, à partir de quelle distance la lecture prolongée devient-elle confortable pour ${p.nom} ?`, 1, Am, age)],
+      piege:{kc:'O6.17', t:'La moitié de Am, jamais Am entier ni la moitié de A ; un résultat négatif veut dire “aucune addition” ; et la distance compte : même âge, autre distance, autre addition.'},
+      src:'M6 D56–D60 · corrigé M6, exercices 2.1 à 2.4'};
+  }},
+  {id:'C1-ages', mod:6, qr:[3], kc:'O6.16', f(h){
+    const [a1, a2, a3] = h.pick([[10, 20, 30], [15, 25, 40], [20, 30, 44], [10, 25, 40], [15, 30, 44]]);
+    return {type:'dev', donnees:{}, vus:[],
+      enonce:`Compare la distance minimum confortable pour la lecture (effort prolongé, vision de loin corrigée, sans addition) de trois personnes de ${a1}, ${a2} et ${a3} ans (tableau de Donders).`,
+      parties:[
+        partieConfort(`À ${a1} ans, quelle est cette distance ?`, 1, amDe(a1), a1),
+        partieConfort(`À ${a2} ans ?`, 1, amDe(a2), a2),
+        partieConfort(`À ${a3} ans ?`, 1, amDe(a3), a3),
+        partiePpAvec(`Avec toute son amplitude, mais seulement un instant, jusqu’où la personne de ${a1} ans voit-elle net de près ? (son Pp, vision de loin corrigée)`, 1, amDe(a1), a1),
+        {q:'Pourquoi la distance confortable s’éloigne-t-elle avec l’âge ? Comment s’appelle cette perte ?', pts:2,
+          rep:{k:'texte', txt:'L’amplitude d’accommodation diminue avec l’âge (tableau de Donders) : la moitié utilisable en effort prolongé diminue aussi, et 1/(0,5 Am) grandit. « Cette perte d’accommodation s’appelle la presbytie. »'},
+          dem:[['L’idée', 'moins d’amplitude, donc moins de dioptries pour lire longtemps : il faut éloigner le texte'], ['Le mot', 'la presbytie']]}],
+      piege:{kc:'O6.16', t:'Lecture prolongée : la moitié de Am. Le Pp, lui, prend toute l’amplitude, mais ne tient qu’un instant.'},
+      src:'M6 D54–D55 · corrigé M6, exercice 2.4 (10 ans : 1/7 = 14,3 cm ; le corrigé écrit « 14cm »)'};
+  }},
+  {id:'C1-mecanisme', mod:6, qr:[3], kc:'O6.13', f(h){
+    const p = patient(h);
+    const [age, R] = h.tirage(() => [h.pick([44, 50, 60]), h.pick([-1.5, -1, -0.75, 0.75, 1, 1.5, 2])], ([age, R]) => { const a = 2.5 - amDe(age) / 2; return a > 0 && Math.abs(R + a) > 0.01; });
+    const Am = amDe(age), a = 2.5 - Am / 2;
+    return {type:'dev', donnees:{age, R}, vus:['age', 'R'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), ${typeR(R)} de ${D(R)}, voit flou de près depuis quelque temps.`,
+      parties:[
+        {q:'Explique ce qui se passe dans l’œil quand il accommode pour voir de près : le muscle ciliaire, les fibres zonulaires, le cristallin.', pts:2,
+          rep:{k:'texte', txt:'Le muscle ciliaire se contracte, les fibres zonulaires se relâchent, le cristallin se bombe : sa puissance augmente, la convergence est forte. De loin, c’est l’inverse (muscle relâché, zonules tendues, cristallin aplati).'},
+          dem:[['Muscle ciliaire', 'contracté'], ['Fibres zonulaires', 'relâchées'], ['Cristallin', 'bombé : plus puissant']]},
+        {q:`Pourquoi ${p.nom} a-t-${p.il} besoin d’une addition à ${age} ans ?`, pts:1,
+          rep:{k:'texte', txt:`Son amplitude a fondu avec l’âge (Donders : ${Du(Am)} à ${age} ans) ; la moitié, seule utilisable longtemps, ne couvre plus la demande de lecture. C’est la presbytie : l’addition paie le reste.`},
+          dem:[['La règle', 'en effort prolongé, environ la moitié de l’amplitude'], ['Le manque', 'la moitié de Am est plus petite que la demande 1/d']]},
+        partieAdd('Quelle addition lui faut-il pour lire à 40 cm, sa vision de loin corrigée ?', 2, 40, Am, age),
+        {q:'Quelle est la puissance de ses lunettes de lecture ?', pts:1, calc:'lecture', donnees:{R, d:40, age}, rep:repNum(R + a, 'D', 'D', true), formules:[], regle:REGLE_PRES,
+          dem:[['La règle', 'puissance de près = correction de loin + addition'], ['Ajouter, avec le signe de la correction de loin', `${D(R)} + ${D(a)} = ${D(R + a)}`]]}],
+      piege:{kc:'O6.13', t:'De près, les zonules se relâchent (elles ne se tendent pas) ; l’addition utilise la moitié de Am ; et les lunettes de lecture, c’est loin + addition.'},
+      src:'M6 D46–D56 · M7 D6'};
+  }}
+];
+BANQUE.C2 = [
+  {id:'C2-axe', mod:6, qr:[1, 2], kc:'O6.11', f(h){
+    const L = h.pick([22.5, 23, 23.5, 25, 25.5, 26]), cambree = h.u() < 0.5, dl = L - 24, R = -3 * dl;
+    const rep = repNum(R, 'D', 'D', true); rep.txt = (R < 0 ? 'myopie' : 'hypermétropie') + ' d’environ ' + D(R);
+    return {type:'dev', donnees:{L}, vus:['L'],
+      enonce:'Un œil emmétrope mesure 24 mm ; sa puissance est d’environ +60 D.',
+      parties:[
+        {q:`Cet œil ${dl > 0 ? 's’allonge' : 'raccourcit'} à ${mmT(L)} mm sans changer de puissance. Quelle amétropie apparaît, et d’environ combien de dioptries ?`, pts:2, calc:'axe', donnees:{L}, rep, formules:['mm'],
+          dem:[['L’écart', `${mmT(L)} − 24 = ${dl > 0 ? '+' : MOINS}${mmT(Math.abs(dl))} mm`], ['La règle', `1 mm ≈ 3,00 D : ${mmT(Math.abs(dl))} × 3,00 = ${nf(3 * Math.abs(dl), 2)} D`],
+            ['Le sens', dl > 0 ? 'plus long : l’image tombe devant la rétine (myopie, −)' : 'plus court : l’image tombe derrière la rétine (hypermétropie, +)'], ['Conclure', rep.txt]]},
+        {q:'Quel verre la corrige : concave ou convexe ? De quel signe ?', pts:1, calc:'axe', donnees:{L}, verif:{kind:'lentille', R}, formules:['mm', 'pr'],
+          rep:{k:'num', v:R, fmt:'D', txt:R < 0 ? 'un verre concave (divergent), de puissance négative : environ ' + D(R) : 'un verre convexe (convergent), de puissance positive : environ ' + D(R)},
+          dem:[['La correction a le signe de R', R < 0 ? 'myope : négatif, verre concave' : 'hypermétrope : positif, verre convexe'], ['Conclure', 'environ ' + D(R)]]},
+        {q:`Un autre œil, de 24 mm lui aussi, a une cornée ${cambree ? 'plus cambrée' : 'plus plate'} que la normale. Quelle amétropie ? Pourquoi ?`, pts:2, verif:{kind:'courbure', cambree}, formules:['surf'],
+          rep:{k:'texte', txt:cambree ? 'Une myopie (de courbure) : rayon plus court, donc D = (nᵣ − nᵢ)/r plus grand ; trop de convergence, le foyer tombe devant la rétine.'
+            : 'Une hypermétropie (de courbure) : rayon plus long, donc D = (nᵣ − nᵢ)/r plus petit ; pas assez de convergence, le foyer tombe derrière la rétine.'},
+          dem:[['Le rayon est au dénominateur', cambree ? 'rayon plus court : puissance plus grande' : 'rayon plus long : puissance plus petite'], ['Le foyer', cambree ? 'devant la rétine : myopie' : 'derrière la rétine : hypermétropie']]},
+        {q:'Peut-on connaître la longueur axiale d’un œil à partir de sa prescription ? Sinon, comment la mesure-t-on ?', pts:1,
+          rep:{k:'texte', txt:'Non : « La prescription et la courbure cornéenne ne suffisent pas à mesurer la longueur axiale. » On la mesure par échographie A, par biométrie optique (IOLMaster) ou avec certains OCT.'},
+          dem:[['La réponse', 'non'], ['Les mesures', 'échographie A, IOLMaster, certains OCT']]}],
+      piege:{kc:'O6.11', t:'Plus long = myope (−), plus court = hypermétrope (+) ; 3,00 D par mm ; et la prescription ne donne pas la longueur.'},
+      src:'M6 D33–D38 · M7 D18, D35'};
+  }},
+  {id:'C2-cornee', mod:6, qr:[2], kc:'O6.4', f(h){
+    const rA = h.pick([7.5, 7.7, 7.8, 8]), rP = h.pick([6.2, 6.5, 6.8]);
+    const F1 = 0.376 / (rA / 1000), F2 = -0.04 / (rP / 1000), F = F1 + F2;
+    return {type:'dev', donnees:{rA, rP}, vus:['rA', 'rP'],
+      enonce:`Une cornée a un rayon antérieur r₁ = +${mmT(rA)} mm et un rayon postérieur r₂ = +${mmT(rP)} mm. Indices : air 1,000 ; cornée 1,376 ; humeur aqueuse 1,336.`,
+      parties:[
+        {q:'Quelle est la puissance de la face antérieure (air → cornée) ?', pts:2, calc:'surf', donnees:{n1:1, n2:1.376, r:rA}, rep:repNum(F1, 'D', 'D', true), formules:['surf'],
+          dem:[['r₁ en mètres', `${mmT(rA)} mm = ${nt(rA / 1000, 4)} m`], ['Le saut d’indice', 'nᵣ − nᵢ = 1,376 − 1,000 = 0,376'], ['Diviser', `D = 0,376/${nt(rA / 1000, 4)} = ${D(F1)}`]]},
+        {q:'Quelle est la puissance de la face postérieure (cornée → humeur aqueuse), avec son signe ?', pts:2, calc:'surf', donnees:{n1:1.376, n2:1.336, r:rP}, rep:repNum(F2, 'D', 'D', true), formules:['surf'],
+          dem:[['r₂ en mètres', `${mmT(rP)} mm = ${nt(rP / 1000, 4)} m`], ['Le saut d’indice', 'nᵣ − nᵢ = 1,336 − 1,376 = −0,040 : négatif'], ['Diviser', `D = −0,040/${nt(rP / 1000, 4)} = ${D(F2)}`]]},
+        {q:'Quelle est la puissance totale de cette cornée (modèle mince) ?', pts:1, calc:'cornee', donnees:{rA, rP}, rep:repNum(F, 'D', 'D', true), formules:['lun'],
+          dem:[['Additionner les deux faces, sans arrondir', `F = 0,376/${nt(rA / 1000, 4)} − 0,040/${nt(rP / 1000, 4)} = ${D(F)}`],
+            ['Conclure', `F = ${D(F)} (en additionnant les valeurs déjà arrondies, on peut trouver 0,01 de plus ou de moins : la diapo 16 trouve ainsi +42,06 D au lieu de +42,05 D)`]]},
+        {q:'Laquelle des deux faces fait l’essentiel ? Pourquoi ?', pts:1,
+          rep:{k:'texte', txt:'La face antérieure : son saut d’indice (0,376) est près de dix fois celui de la face postérieure (0,040). « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. »'},
+          dem:[['La face', 'antérieure'], ['La raison', 'le saut d’indice air → cornée est le plus grand de l’œil']]}],
+      piege:{kc:'O6.2', t:'Les rayons en mètres (7,8 mm = 0,0078 m) ; à la face postérieure, nᵣ − nᵢ est négatif, la lumière passe de 1,376 à 1,336.'},
+      src:'M6 D16 (7,8 mm et 6,5 mm : +48,21 D et −6,15 D, total +42,05 D ; la diapo additionne les parties arrondies et écrit +42,06)'};
+  }},
+  {id:'C2-lunetier', mod:6, qr:[2], kc:'O6.3', f(h){
+    const [nv, r1, r2] = h.tirage(() => [h.pick([1.5, 1.6]), h.pick([10, 20]), h.pick([10, 20, 25])], ([nv, r1, r2]) => r1 !== r2);
+    const F1 = (nv - 1) / (r1 / 100), F1e = (nv - 1.33) / (r1 / 100), F2 = -(nv - 1) / (r2 / 100);
+    return {type:'dev', donnees:{nv, r1, r2}, vus:['nv', 'r1', 'r2'],
+      enonce:`Une lentille d’indice ${nf(nv, 2)} a r₁ = +${r1} cm et r₂ = +${r2} cm.`,
+      parties:[
+        {q:'Quelle est sa puissance dans l’air (de l’air des deux côtés) ?', pts:3, calc:'lun', donnees:{nv, nav:1, nar:1, r1, r2}, rep:repNum(F1 + F2, 'D', 'D', true), formules:['lun'],
+          dem:[['Les rayons en mètres', `r₁ = +${dm(r1)} m ; r₂ = +${dm(r2)} m`], ['Face avant', `(${nf(nv, 2)} − 1,00)/${dm(r1)} = ${D(F1)}`], ['Face arrière, avec le moins', `−(${nf(nv, 2)} − 1,00)/${dm(r2)} = ${D(F2)}`], ['Additionner', `F = ${D(F1)} ${plusR(F2)} = ${D(F1 + F2)}`]]},
+        {q:'Même lentille, mais avec de l’eau (n = 1,33) devant et de l’air derrière. Quelle est sa puissance ?', pts:2, calc:'lun', donnees:{nv, nav:1.33, nar:1, r1, r2}, rep:repNum(F1e + F2, 'D', 'D', true), formules:['lun'],
+          dem:[['Face avant : le saut change', `(${nf(nv, 2)} − 1,33)/${dm(r1)} = ${D(F1e)}`], ['Face arrière : rien ne change', D(F2)], ['Additionner', `F = ${D(F1e)} ${plusR(F2)} = ${D(F1e + F2)}`]]},
+        {q:'Pourquoi la puissance change-t-elle ?', pts:1,
+          rep:{k:'texte', txt:`Le saut d’indice de la face avant passe de ${nf(nv - 1, 2)} à ${nf(nv - 1.33, 2)} : la face avant dévie moins la lumière. « La contribution d’une surface dépend de la différence d’indice de part et d’autre de cette surface. »`},
+          dem:[['Le saut d’indice avant', `${nf(nv - 1, 2)} dans l’air, ${nf(nv - 1.33, 2)} dans l’eau`]]}],
+      piege:{kc:'O6.3', t:'Le second terme se soustrait, même quand r₂ est positif ; et le milieu compte : de l’eau devant réduit le saut de la face avant.'},
+      src:'M6 D11–D14 (1,50, +8 cm, +10 cm : +1,25 D dans l’air, −2,875 D avec l’eau devant)'};
+  }}
+];
+BANQUE.C3 = [
+  {id:'C3-myope', mod:7, qr:[4], kc:'O7.6', f(h){
+    const p = patient(h), R = h.pick([-1.5, -2, -2.5, -3, -4, -5, -6, -7]), age = h.pick([10, 20, 25, 30, 40, 50, 60]), Am = amDe(age);
+    const pp = 100 / (Am - R), pr = -100 / R;
+    return {type:'dev', donnees:{R, age}, vus:['R', 'age'],
+      enonce:`${p.nom} est myope de ${D(R)} et a ${age} ans (tableau de Donders).`,
+      parties:[
+        partiePr('Sans lunettes, où est son punctum remotum ?', 2, R),
+        partiePp('Sans lunettes, où est son punctum proximum ?', 2, R, Am, age),
+        (() => { const x = partiePpAvec('Avec ses lunettes, où sont son Pr et son Pp ?', 1, Am, age); x.rep.txt = 'Pr à l’infini ; ' + x.rep.txt; x.dem[x.dem.length - 1] = ['Conclure', x.rep.txt]; return x; })(),
+        {q:`Sans lunettes, entre quelles distances ${p.nom} voit-${p.il} net ?`, pts:1, calc:'zone', donnees:{R, age}, formules:['pr', 'pp'],
+          rep:{k:'multi', v:[pp, pr], fmt:['cm', 'cm'], txt:`entre ${cmT(pp)} cm (son Pp) et ${cmT(pr)} cm (son Pr), devant l’œil`},
+          dem:[['Le myope voit net entre son Pp et son Pr', `Pp = ${cmT(pp)} cm ; Pr = ${cmT(pr)} cm devant`], ['Conclure', `entre ${cmT(pp)} cm et ${cmT(pr)} cm`]]}],
+      piege:{kc:'O7.6', t:'Am − R avec R négatif : la myopie s’ajoute (Am + |R|) ; le Pp prend toute l’amplitude ; et le Pp est une distance, pas “1/Pp” en dioptries.'},
+      src:'M8, questions extra, cas 1 (Paul, −7,00, 25 ans) · M7 D27, D32–D33'};
+  }},
+  {id:'C3-tableau', mod:8, qr:[4], kc:'O8.1', f(h){
+    const [Am, r] = h.tirage(() => [h.pick([3, 4, 5, 6, 7, 8]), h.pick([1, 1.5, 2, 2.5, 3])], ([Am, r]) => Am - r >= 1);
+    const pr = 100 / r, pE = 100 / Am, pM = 100 / (Am + r), pH = 100 / (Am - r);
+    return {type:'dev', donnees:{Am, Rm:-r, Rh:r}, vus:['Am', 'Rm', 'Rh'],
+      enonce:`Exercice du tableau : trois patients ont la même amplitude, Am = ${Du(Am)}. Le premier est emmétrope, le deuxième myope de ${D(-r)}, le troisième hypermétrope de ${D(r)}. Aucun ne porte de correction.`,
+      parties:[
+        {q:'Où est le Pr de chacun ?', pts:2, calc:'prAbs', donnees:{R:-r}, formules:['pr'],
+          rep:{k:'num', v:pr, fmt:'cm', u:'cm', txt:`emmétrope : à l’infini ; myope : ${cmT(pr)} cm devant ; hypermétrope : ${cmT(pr)} cm derrière (virtuel)`},
+          dem:[['L’emmétrope', 'R = 0 : Pr à l’infini'], ['Le myope', `Pr = 1/${par(sd(-r))} = ${sm(-1 / r)} m : ${cmT(pr)} cm devant`], ['L’hypermétrope', `Pr = 1/${par(sd(r))} = ${sm(1 / r)} m : ${cmT(pr)} cm derrière (virtuel)`]]},
+        {q:'Où est le Pp de chacun ?', pts:3, calc:'pp3', donnees:{Am, r}, formules:['pp'],
+          rep:{k:'multi', v:[pE, pM, pH], fmt:['cm', 'cm', 'cm'], txt:`emmétrope : ${cmT(pE)} cm ; myope : ${cmT(pM)} cm ; hypermétrope : ${cmT(pH)} cm (tous devant l’œil)`},
+          dem:[['L’emmétrope', `1/Pp = ${nf(Am, 2)} D → Pp = ${cmT(pE)} cm`], ['Le myope', `1/Pp = ${nf(Am, 2)} + ${nf(r, 2)} = ${nf(Am + r, 2)} D → Pp = ${cmT(pM)} cm`],
+            ['L’hypermétrope', `1/Pp = ${nf(Am, 2)} − ${nf(r, 2)} = ${nf(Am - r, 2)} D → Pp = ${cmT(pH)} cm`], ['Conclure : des distances', `${cmT(pE)} cm ; ${cmT(pM)} cm ; ${cmT(pH)} cm`]]},
+        {q:'Classe les trois Pp, du plus proche au plus éloigné. Est-ce plausible ?', pts:1, calc:'pp3', donnees:{Am, r}, formules:['pp'],
+          rep:{k:'multi', v:[pE, pM, pH], fmt:['cm', 'cm', 'cm'], txt:`myope (${cmT(pM)} cm), puis emmétrope (${cmT(pE)} cm), puis hypermétrope (${cmT(pH)} cm). Plausible : « À amplitude égale, le Pp myope est plus rapproché que le Pp hypermétrope. »`},
+          dem:[['L’ordre', 'myope < emmétrope < hypermétrope'], ['La vérification du cours', 'la quatrième question de la méthode : « Le résultat est-il plausible? »']]}],
+      piege:{kc:'O8.1', t:'Le Pp est une distance : 6,5 D n’est pas un Pp, c’est 1/Pp (au tableau, la réponse est toujours une distance). Et Am − R avec R négatif : la myopie s’ajoute à l’amplitude.'},
+      src:'tableau du 3 nov. (Am 5, ±1,50 : 20 ; 15,4 ; 28,6 cm, que le tableau tronque en 15 et 28 cm) · M8 D3–D5 · M7 D28, D48'};
+  }},
+  {id:'C3-caroline', mod:7, qr:[4], kc:'O7.6', f(h){
+    const p = patient(h);
+    const [R, c] = h.tirage(() => [h.pick([-3, -2, -1.5, -1, 1, 1.5, 2]), h.pick([20, 25, 40])], ([R, c]) => 100 / c - R >= 1.25);
+    const Am = 100 / c, pp = 100 / (Am - R);
+    return {type:'dev', donnees:{R, c}, vus:['R', 'c'],
+      enonce:`${p.nom} porte des lunettes de ${D(R)}. Avec ses lunettes, son point net le plus proche, en accommodant au maximum, est à ${c} cm.`,
+      parties:[
+        {q:'Quelle est son amplitude d’accommodation ?', pts:2, calc:'amAvec', donnees:{c}, rep:repNum(Am, 'Du', 'D'), formules:['pp'],
+          dem:[['Avec ses lunettes, R = 0', 'comme un emmétrope : 1/Pp = Am'], ['Inverser le Pp', `Am = 1/${dm(c)} = ${Du(Am)}`]]},
+        partiePr('Sans lunettes, où est son punctum remotum ?', 1, R),
+        partiePp('Sans lunettes, où est son punctum proximum ?', 2, R, Am, null),
+        {q:'Ton résultat est-il plausible ? Compare son Pp sans lunettes à son Pp avec lunettes.', pts:1, verif:{kind:'plaus', R, pp, c},
+          rep:{k:'texte', txt:R < 0 ? `Oui : sans lunettes, un myope voit plus près (${cmT(pp)} cm contre ${c} cm), car la myopie s’ajoute à l’amplitude.`
+            : `Oui : sans lunettes, un hypermétrope voit moins près (${cmT(pp)} cm contre ${c} cm), car l’hypermétropie se retire de l’amplitude.`},
+          dem:[['La vérification', R < 0 ? 'myope : Pp plus proche sans lunettes' : 'hypermétrope : Pp plus loin sans lunettes']]}],
+      piege:{kc:'O7.9', t:'Avec les lunettes, R = 0 : Am = 1/Pp tout court. Sans lunettes, R revient : 1/Pp = Am − R, avec le signe de R.'},
+      src:'M7 D29–D30 (Caroline, −2,00 : 16,7 cm) et D39–D40 (+2,00 : 50 cm)'};
+  }}
+];
+BANQUE.C4 = [
+  {id:'C4-hyper', mod:8, qr:[3, 4], kc:'O7.12', f(h){
+    const p = patient(h);
+    const [R, age, d] = h.tirage(() => [h.pick([1, 1.5, 2, 2.5, 3]), h.pick([20, 25, 30, 40]), h.pick([25, 40, 50])],
+      ([R, age, d]) => { const Am = amDe(age), A = 100 / d + R; return Am - R >= 0.5 && Math.abs(A - Am) > 0.01 && Math.abs(100 / d - Am) > 0.01; });
+    const Am = amDe(age), A = 100 / d + R, net = A <= Am, pa = 100 / Am, netA = 100 / d <= Am, pp = 100 / (Am - R);
+    const pA = partiePpAvec(`Et avec ses lunettes : où est son Pp, et voit-${p.il} cet objet ?`, 1, Am, age);
+    pA.rep.txt = `Pp à ${cmT(pa)} cm : ${netA ? 'oui, l’objet est au-delà de son Pp' : 'non, l’objet est encore plus près que son Pp'}`;
+    pA.verif = {kind:'voirAvec', d, age, oui:netA};
+    pA.dem[pA.dem.length - 1] = ['Conclure', pA.rep.txt];
+    return {type:'dev', donnees:{R, age, d}, vus:['R', 'age', 'd'],
+      enonce:`${p.nom} est hypermétrope de ${D(R)} et a ${age} ans (tableau de Donders).`,
+      parties:[
+        partiePr('Sans lunettes, où est son punctum remotum ?', 1, R),
+        partiePp('Sans lunettes, où est son punctum proximum ?', 2, R, Am, age),
+        {q:`Sans lunettes, peut-${p.il} voir net un objet à ${d} cm, même pour quelques instants ? Combien doit-${p.il} accommoder ?`, pts:1, calc:'voir', donnees:{R, d, age}, formules:['acc'],
+          rep:{k:'ouinon', v:net, fmt:'ouinon', txt:(net ? 'Oui' : 'Non') + ` : il faut ${D(A)} d’accommodation, ${net ? 'pas plus que' : 'plus que'} son amplitude (${Du(Am)})${net ? '' : ` ; ${d} cm est plus près que son Pp (${cmT(pp)} cm)`}.`},
+          verifs:[{calc:'acc', donnees:{R, d}, fmt:'D'}],
+          dem:[['A = 1/d + R', `A = ${D(100 / d)} + ${nf(R, 2)} = ${D(A)}`], ['Comparer à Am', `${D(A)} ${net ? '≤' : '>'} ${Du(Am)}`], ['Conclure', net ? 'Oui' : 'Non']]},
+        pA,
+        {q:`Plus jeune, ${p.nom} lisait 20/20 de loin sans lunettes. Comment est-ce possible ? Quel examen révèle son hypermétropie totale ?`, pts:1,
+          rep:{k:'texte', txt:`${p.Il} accommodait déjà ${D(R)} pour voir au loin (A = 1/d + R, avec 1/d ≈ 0) : une compensation accommodative, au prix de fatigue ou de maux de tête. « La cycloplégie permet de relâcher l’accommodation afin de mieux révéler l’hypermétropie totale. »`},
+          dem:[['Au loin', `A ≈ R = ${D(R)}`], ['L’examen', 'la cycloplégie']]}],
+      piege:{kc:'O7.12', t:'L’hypermétropie se retire de l’amplitude (Am − R) ; son Pr est derrière l’œil ; et 20/20 sans lunettes ne veut pas dire sans symptômes.'},
+      src:'M8, questions extra, cas 2 (Paul, +2,50, 40 ans) · M7 D41–D44'};
+  }},
+  {id:'C4-marie', mod:7, qr:[4], kc:'O7.9', f(h){
+    const p = patient(h);
+    const [Am, R, d] = h.tirage(() => [h.pick([5, 6, 7, 8, 10]), h.pick([1, 1.5, 2, 2.5, 3]), h.pick([25, 40, 50])], ([Am, R]) => Am - R >= 1);
+    const A = 100 / d + R, pp = 100 / (Am - R), pa = 100 / Am;
+    return {type:'dev', donnees:{Am, R, d}, vus:['Am', 'R', 'd'],
+      enonce:`${p.nom} a une amplitude d’accommodation de ${Du(Am)} et porte des lentilles cornéennes de ${D(R)}.`,
+      parties:[
+        partiePr('Sans correction, où est son punctum remotum ?', 1, R),
+        partiePp('Sans correction, où est son punctum proximum ?', 2, R, Am, null),
+        partiePpAvec('Avec ses lentilles, quelle est sa distance minimale de vision distincte (son Pp corrigé) ?', 1, Am, null),
+        {q:`Sans correction, quel effort d’accommodation faut-il pour voir un objet à ${d} cm ?`, pts:1, calc:'acc', donnees:{R, d}, rep:repNum(A, 'D', 'D', true), formules:['acc'],
+          dem:[['A = 1/d + R', `${D(100 / d)} + ${nf(R, 2)}`], ['Lire', `${D(R)} pour son hypermétropie, ${D(100 / d)} pour la distance`], ['Conclure', D(A)]]},
+        {q:'Que lui apporte sa correction pour la vision de près ?', pts:1, verifs:[{calc:'pp', donnees:{R, Am}, fmt:'cm'}, {calc:'ppAvec', donnees:{Am}, fmt:'cm'}],
+          rep:{k:'texte', txt:`Corrigé${p.il === 'elle' ? 'e' : ''}, ${p.il} n’a plus à payer son hypermétropie : son Pp passe de ${cmT(pp)} cm à ${cmT(pa)} cm. « la correction du Pr va aussi aider la vision de près »`},
+          dem:[['Sans correction', `Pp = ${cmT(pp)} cm`], ['Avec', `Pp = ${cmT(pa)} cm`]]}],
+      piege:{kc:'O7.9', t:'Avec l’orthèse, R disparaît du calcul (R = 0) ; sans elle, l’hypermétropie se retire de l’amplitude et s’ajoute à la demande.'},
+      src:'corrigé M7, n° 4 (Marie : Am 7,00, +2,00) et n° 3'};
+  }},
+  {id:'C4-sanspp', mod:7, qr:[3, 4], kc:'O7.7', f(h){
+    const p = patient(h);
+    const [age, R] = h.tirage(() => [h.pick([50, 60]), h.pick([1, 1.5, 2, 2.5, 3, 4])], ([age, R]) => amDe(age) - R <= 1e-9 && Math.abs(R + 2.5 - amDe(age) / 2) > 0.01);
+    const Am = amDe(age), a = 2.5 - Am / 2;
+    return {type:'dev', donnees:{age, R}, vus:['age', 'R'], sansPp:true,
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), est hypermétrope de ${D(R)} et ne porte pas de correction.`,
+      parties:[
+        partiePr('Où est son punctum remotum ?', 1, R),
+        partiePp('Sans lunettes, où est son punctum proximum ?', 2, R, Am, age),
+        partiePpAvec('Avec ses lunettes de loin, où est son Pp ?', 1, Am, age),
+        {q:'Quelle puissance faut-il pour ses lunettes de lecture à 40 cm, en gardant la moitié de son amplitude en réserve ?', pts:2, calc:'lecture', donnees:{R, d:40, age}, rep:repNum(R + a, 'D', 'D', true), formules:['add', 'foc'], regle:REGLE_PRES,
+          dem:[['L’addition, correction de loin en place', `A = 1/0,40 = +2,50 D ; Addition = +2,50 − 0,5 × ${nf(Am, 2)} = ${D(a)}`], ['Près = loin + addition', `${D(R)} + ${D(a)} = ${D(R + a)}`]]}],
+      piege:{kc:'O7.7', t:'Si Am ≤ R, l’hypermétrope n’a aucun Pp réel sans correction : l’inverse d’un nombre négatif (ou nul) n’est pas une distance devant l’œil.'},
+      src:'M7 D28 · M8 D4'};
+  }}
+];
+BANQUE.C5 = [
+  {id:'C5-arthur', mod:7, qr:[3, 4], kc:'O7.11', f(h){
+    const p = patient(h);
+    const [R, Am] = h.tirage(() => [h.pick([-4, -3, -2.5, -2, -1.5, 1, 1.5]), h.pick([1, 1.5, 2, 2.5])], ([R, Am]) => { const a = 2.5 - Am / 2; return Am - R >= 1 && a > 0 && Math.abs(R + a) > 0.01; });
+    const a = 2.5 - Am / 2;
+    return {type:'dev', donnees:{Am, R}, vus:['Am', 'R'],
+      enonce:`${p.nom} a une amplitude d’accommodation de ${Du(Am)}. Sa prescription de loin : ${D(R)} OU.`,
+      parties:[
+        partiePr('Sans lunettes, où est son punctum remotum ?', 1, R),
+        partiePp('Sans lunettes, où est son punctum proximum ?', 2, R, Am, null),
+        partieAdd('À 40 cm, en gardant la moitié de son amplitude en réserve, quelle addition lui faut-il ?', 2, 40, Am, null),
+        {q:'Quelle est la puissance de ses lunettes de lecture ?', pts:1, calc:'lecture', donnees:{R, d:40, Am}, rep:repNum(R + a, 'D', 'D', true), formules:[], regle:REGLE_PRES,
+          dem:[['La règle', 'puissance de près = correction de loin + addition'], ['Ajouter, avec le signe de la correction de loin', `${D(R)} + ${D(a)} = ${D(R + a)}`]]}],
+      piege:{kc:'O7.11', t:'Pour l’addition, la correction de loin est en place : la demande est 1/d, sans R. Et les lunettes de lecture ne sont pas l’addition seule : loin + addition, avec le signe de loin.'},
+      src:'corrigé M7, n° 5 (Arthur : Am 2,00, −3,00 OU → Pr 33,3 cm, Pp 20 cm, add +1,50, lecture −1,50 D)'};
+  }},
+  {id:'C5-sebastien', mod:8, qr:[3, 4], kc:'O8.3', f(h){
+    const p = patient(h);
+    const [age, R] = h.tirage(() => [h.pick([44, 50, 60]), h.pick([-0.5, -0.75, -1, -1.25, -1.5, -2, -2.5])], ([age, R]) => {
+      const Am = amDe(age), disp = Am / 2 - R, a = 2.5 - Am / 2; return Math.abs(disp - 2.5) > 0.01 && a > 0 && Math.abs(R + a) > 0.01; });
+    const Am = amDe(age), disp = Am / 2 - R, a = 2.5 - Am / 2, ok = disp > 2.5;
+    return {type:'dev', donnees:{age, R}, vus:['age', 'R'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), est myope de ${D(R)}. ${p.Il} veut lire un livre à 40 cm.`,
+      parties:[
+        {q:'Quelle est la demande à 40 cm ?', pts:1, calc:'demande', donnees:{d:40}, rep:repNum(2.5, 'D', 'D', true), formules:['foc'], dem:[['Inverser, d en mètres', `A = 1/0,40 = ${D(2.5)}`]]},
+        {q:`Sans lunettes, de combien de dioptries dispose-t-${p.il} pour lire longtemps, de façon confortable ?`, pts:2, calc:'dispo', donnees:{R, age}, rep:repNum(disp, 'Du', 'D'), formules:['acc'],
+          dem:[['Am, au tableau de Donders', `${age} ans → ${Du(Am)}`], ['La moitié, pour lire longtemps', `0,5 × ${nf(Am, 2)} = ${nf(Am / 2, 2)} D`], ['Sa myopie aide aussi', `${nf(Am / 2, 2)} ${moinsR(R)} = ${Du(disp)}`]]},
+        {q:`Peut-${p.il} lire confortablement à 40 cm sans lunettes ?`, pts:1, calc:'confortOK', donnees:{R, d:40, age}, formules:['acc'],
+          rep:{k:'ouinon', v:ok, fmt:'ouinon', txt:ok ? `Oui : ${Du(disp)} ≥ 2,50 D` : `Non : ${Du(disp)} < 2,50 D`}, dem:[['Comparer', `${Du(disp)} ${ok ? '≥' : '<'} 2,50 D`], ['Conclure', ok ? 'Oui' : 'Non']]},
+        {q:'Avec ses lunettes de loin, quelle addition lui faut-il à 40 cm, et quelle sera la puissance de ses lunettes de lecture ?', pts:2, calc:'addNear', donnees:{R, d:40, age}, formules:['add', 'foc'], regle:REGLE_PRES,
+          rep:{k:'multi', v:[a, R + a], fmt:['D', 'D'], txt:`addition ${D(a)} ; lunettes de lecture ${D(R + a)}`},
+          dem:[['L’addition, correction en place', `+2,50 − 0,5 × ${nf(Am, 2)} = ${D(a)}`], ['Près = loin + addition', `${D(R)} + ${D(a)} = ${D(R + a)}`]]}],
+      piege:{kc:'O8.3', t:'Lire longtemps : la moitié de l’amplitude, plus la myopie (sans lunettes). « même pour quelques instants », ce serait toute l’amplitude.'},
+      src:'M8, questions extra, cas 4 (Sébastien, −1,50, 50 ans : 1,25 + 1,50 = 2,75 ≥ 2,50)'};
+  }},
+  {id:'C5-ordonnance', mod:7, qr:[3], kc:'O7.11', f(h){
+    const p = patient(h), RX = [-3, -2.5, -2, -1.25, -0.75, 0.5, 1.25, 2, 3];
+    const [age, R1, R2] = h.tirage(() => [h.pick([44, 50, 60]), h.pick(RX), h.pick(RX)], ([age, R1, R2]) => {
+      const Am = amDe(age), a = 2.5 - Am / 2; return R1 !== R2 && Math.abs(R1 - R2) <= 1.5 && a > 0 && Math.abs(R1 + a) > 0.01 && Math.abs(R2 + a) > 0.01 && Am - R1 >= 1; });
+    const Am = amDe(age), a = 2.5 - Am / 2;
+    const lect = (R, q) => ({q, pts:1, calc:'lecture', donnees:{R, d:40, age}, rep:repNum(R + a, 'D', 'D', true), formules:[], regle:REGLE_PRES,
+      dem:[['Près = loin + addition', `${D(R)} + ${D(a)} = ${D(R + a)}`]]});
+    return {type:'dev', donnees:{age, R1, R2}, vus:['age', 'R1', 'R2'],
+      enonce:`${p.nom}, ${age} ans (tableau de Donders), lit à 40 cm. Sa prescription de loin : OD ${D(R1)}, OS ${D(R2)}.`,
+      parties:[
+        partieAdd('Quelle addition lui faut-il ?', 2, 40, Am, age),
+        lect(R1, 'Quelle est la puissance des lunettes de lecture de l’OD ?'),
+        lect(R2, 'Et celle de l’OS ?'),
+        partiePpAvec('Avec sa correction de loin, où est le Pp de l’OD ?', 1, Am, age),
+        partiePp('Sans correction, où est le Pp de l’OD ?', 1, R1, Am, age)],
+      piege:{kc:'O7.11', t:'Une seule addition pour les deux yeux, ajoutée à chaque correction de loin avec son signe ; et avec la correction, le Pp ne dépend plus que de Am.'},
+      src:'M7 D7–D10 (OD −3,00, OS −2,50, add +2,50 → OD −0,50, OS plano)'};
+  }}
+];
+const P_ANIS = [-8, -6, -5, -4, -3, -2, -1, 1, 2, 2.5, 3, 4, 5, 6];
+const ecart = (od, os, mm) => Math.abs(pc(od, mm) - pc(os, mm));
+BANQUE.C6 = [
+  {id:'C6-anis', mod:8, qr:[5], kc:'O8.14', f(h){
+    const [od, os, mm] = h.tirage(() => [h.pick(P_ANIS), h.pick(P_ANIS), h.pick([10, 12, 13, 15])], ([od, os, mm]) => {
+      if(Math.abs(od - os) < 1.5 || Math.abs(od - os) > 6) return false; const e = ecart(od, os, mm); return e >= 0.8 && (e < 2.4 || e > 3.6); });
+    const gA = gi(od, mm), gB = gi(os, mm), pA = pc(od, mm), pB = pc(os, mm), hi = Math.max(pA, pB), lo = Math.min(pA, pB), e = hi - lo, oui = e >= 3;
+    return {type:'dev', donnees:{od, os, mm}, vus:['od', 'os', 'mm'],
+      enonce:`Ordonnance : OD ${D(od)}, OS ${D(os)}. Distance verre-œil (vertex) : ${mm} mm.`,
+      parties:[
+        partieGi('Quel est le facteur de grossissement (Gi) de l’OD ?', 1, od, mm),
+        partieGi('Et celui de l’OS ?', 1, os, mm),
+        {q:'De combien de pour cent l’image change-t-elle pour chaque œil ?', pts:1, calc:'pct2', donnees:{od, os, mm}, formules:['pct'],
+          rep:{k:'multi', v:[pA, pB], fmt:['pct', 'pct'], txt:`OD ${pctT(pA)} (plus ${pA > 0 ? 'grande' : 'petite'}) ; OS ${pctT(pB)} (plus ${pB > 0 ? 'grande' : 'petite'})`},
+          dem:[['OD', `(${nf(gA, 4)} − 1) × 100 = ${pctT(pA)}`], ['OS', `(${nf(gB, 4)} − 1) × 100 = ${pctT(pB)}`]]},
+        {q:'Quelle est la différence de taille d’image entre les deux yeux ?', pts:2, calc:'ecart', donnees:{od, os, mm}, rep:repNum(e, 'pct1', '%'), formules:['pct'],
+          dem:[['Le plus grand % moins le plus petit, signes compris', `${pct2(hi)} − ${par(pct2(lo))} = ${nf(e, 2)} %`], ['Conclure', `≈ ${nf(e, 1)} %`]]},
+        {q:'Y a-t-il un risque d’aniséiconie ?', pts:1, calc:'anis', donnees:{od, os, mm}, formules:['gi', 'pct'], rep:{k:'ouinon', v:oui, fmt:'ouinon', txt:(oui ? 'Oui' : 'Non') + ` : ${nf(e, 1)} % ${oui ? '≥' : '<'} 3 %`},
+          dem:[['Le seuil du cours', '3 % ou plus : aniséiconie possible'], ['Conclure', (oui ? 'Oui' : 'Non') + ` (${nf(e, 1)} %)`]]}],
+      piege:{kc:'O8.14', t:'Le plus grand % moins le plus petit, signes compris : si un œil rapetisse et l’autre agrandit, les deux écarts s’additionnent. Garde quatre décimales au facteur : le corrigé arrondit 1,0256 à 1,03 et trouve ≈ 5 % au lieu de 4,5 %.'},
+      src:'corrigé M8, exercice 3 (OD −2,00, OS +2,50, 10 mm) · M8 D21–D22'};
+  }},
+  {id:'C6-vertex', mod:8, qr:[5], kc:'O8.11', f(h){
+    const p = patient(h), PAIRES = [[2, 4], [3, 6], [4, 6], [2, 5], [1, 4], [-4, -8], [-6, -10], [-3, -6], [-6, -14], [-2, -6], [-4, -10]];
+    const pr0 = h.pick(PAIRES), [od, os] = h.u() < 0.5 ? pr0 : [pr0[1], pr0[0]], mm1 = h.pick([12, 13, 15]), mm2 = h.pick([8, 9, 10]);
+    const vals = mm => [gi(od, mm), pc(od, mm), gi(os, mm), pc(os, mm)];
+    const txt = mm => { const v = vals(mm); return `OD : Gi = ${giT(v[0])}, ${pctT(v[1])} ; OS : Gi = ${giT(v[2])}, ${pctT(v[3])}`; };
+    const e1 = ecart(od, os, mm1), e2 = ecart(od, os, mm2);
+    const partie = (q, mm) => ({q, pts:2, calc:'gipct2', donnees:{od, os, mm}, formules:['gi', 'pct'], rep:{k:'multi', v:vals(mm), fmt:['gi', 'pct', 'gi', 'pct'], txt:txt(mm)},
+      dem:[['d en mètres', `${mm} mm = ${nt(mm / 1000, 3)} m`], ['OD', `Gi = 1/(1 − ${nt(mm / 1000, 3)} × ${par(sd(od))}) = ${giT(vals(mm)[0])}, soit ${pctT(vals(mm)[1])}`],
+        ['OS', `Gi = 1/(1 − ${nt(mm / 1000, 3)} × ${par(sd(os))}) = ${giT(vals(mm)[2])}, soit ${pctT(vals(mm)[3])}`]]});
+    return {type:'dev', donnees:{od, os, mm1}, vus:['od', 'os', 'mm1'],
+      enonce:`Ordonnance de ${p.nom} : OD ${D(od)}, OS ${D(os)}. Sa monture actuelle place les verres à ${mm1} mm de la cornée.`,
+      parties:[
+        partie(`À ${mm1} mm, quels sont le facteur de grossissement (Gi) et le pourcentage de chaque œil ?`, mm1),
+        partie(`${p.nom} choisit une monture qui place les verres à ${mm2} mm. Que deviennent Gi et le pourcentage de chaque œil ?`, mm2),
+        {q:'Quelle est la différence entre les deux yeux à chaque vertex ? Laquelle est la plus petite ?', pts:1, calc:'ecart2', donnees:{od, os, mm1, mm2}, formules:['pct'],
+          rep:{k:'multi', v:[e1, e2], fmt:['pct1', 'pct1'], txt:`à ${mm1} mm : ${nf(e1, 1)} % ; à ${mm2} mm : ${nf(e2, 1)} %. Le vertex le plus court donne la plus petite différence.`},
+          dem:[['Le plus grand % moins le plus petit', `à ${mm1} mm : ${nf(e1, 1)} % ; à ${mm2} mm : ${nf(e2, 1)} %`], ['Conclure', 'plus le vertex est court, plus Gi est près de 1, et plus l’écart diminue']]},
+        {q:'Nomme deux autres paramètres du verre qui changent la taille de l’image, et dans quel sens.', pts:1,
+          rep:{k:'texte', txt:'« Une courbure de base plus cambrée augmente le grossissement. » « Une épaisseur centrale plus importante augmente le grossissement. »'},
+          dem:[['Les deux leviers', 'la courbure de base, l’épaisseur centrale']]}],
+      piege:{kc:'O8.11', t:'Le vertex en mètres (12 mm = 0,012 m) et Fl avec son signe : moins par moins donne plus. Plus le vertex est court, plus Gi se rapproche de 1.'},
+      src:'corrigé M8, exercices 1 (+4,00 et +6,00 à 13 puis 8 mm) et 2 (−14,00 et −6,00 à 12 puis 15 mm)'};
+  }},
+  {id:'C6-verre', mod:8, qr:[5], kc:'O8.10', f(h){
+    const p = patient(h), Fl = h.pick([4, 5, 6, 8, -4, -6, -8, -10]), mm = h.pick([12, 13, 15]), mm2 = h.pick([8, 10]);
+    const pA = pc(Fl, mm), g2 = gi(Fl, mm2), p2 = pc(Fl, mm2);
+    return {type:'dev', donnees:{Fl, mm}, vus:['Fl', 'mm'],
+      enonce:`${p.nom} porte un verre de ${D(Fl)} à ${mm} mm de la cornée.`,
+      parties:[
+        partieGi('Quel est le facteur de grossissement Gi ?', 2, Fl, mm),
+        {q:'De combien de pour cent l’image rétinienne change-t-elle ? Plus grande ou plus petite ?', pts:1, calc:'pct', donnees:{Fl, mm}, formules:['pct'],
+          rep:Object.assign(repNum(pA, 'pct', '%', true), {txt:`${pctT(pA)} : image ${motTaille(pA)}`}), dem:[['Soustraire 1, puis × 100', `(${nf(gi(Fl, mm), 4)} − 1) × 100 = ${pctT(pA)}`], ['Conclure', `${pctT(pA)} : image ${motTaille(pA)}`]]},
+        {q:`Avec une monture à ${mm2} mm, que deviennent Gi et le pourcentage ?`, pts:2, calc:'gipct', donnees:{Fl, mm:mm2}, formules:['gi', 'pct'],
+          rep:{k:'multi', v:[g2, p2], fmt:['gi', 'pct'], txt:`Gi = ${giT(g2)}, soit ${pctT(p2)}`},
+          dem:[['d en mètres', `${mm2} mm = ${nt(mm2 / 1000, 3)} m`], ['Le facteur', `Gi = 1/(1 − ${nt(mm2 / 1000, 3)} × ${par(sd(Fl))}) = ${giT(g2)}`], ['Le pourcentage', pctT(p2)]]},
+        {q:'Que conclus-tu sur l’effet du vertex ?', pts:1, verifs:[{calc:'pct', donnees:{Fl, mm}, fmt:'pct'}, {calc:'pct', donnees:{Fl, mm:mm2}, fmt:'pct'}],
+          rep:{k:'texte', txt:`« Plus la distance v (vertex) est grande, plus grand sera son influence sur la taille de l’image formée sur la rétine. » Ici, en rapprochant le verre, l’effet passe de ${pctT(pA)} à ${pctT(p2)}.`},
+          dem:[['La règle', 'un vertex plus court rapproche Gi de 1']]}],
+      piege:{kc:'O8.11', t:'Le vertex en mètres, Fl avec son signe, puis inverser ; le pourcentage se lit sur le facteur non arrondi.'},
+      src:'M8 D25 (+6,00 à 12 mm : 1,078) et D27 (−10,00 à 13 mm : 0,885) · M9 (+5,00 à 12 mm : plus grand de 6,4 %)'};
+  }}
+];
+
+/* ---------- le plan de l'examen : 8 + 8 + 6 = 22 questions, barème indicatif 8 + 16 + 36 = 60 ---------- */
+const PLAN = [['A', ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8'], 1], ['B', ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8'], 2], ['C', ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'], 6]];
+const TAILLE = {}; PLAN.forEach(([p, cases]) => { TAILLE[p] = cases.reduce((n, c) => n + BANQUE[c].length, 0); });
+const QUOI_RETENIR = [
+  'Les causes principales des amétropies',
+  'Quelles sont les structures importantes dans le système optique de l’œil?',
+  'Qu’est ce qu’est l’accommodation? Pourquoi y a-t-il une addition?',
+  'Quels sont les points focaux de loin et de proche pour l’emmétrope, le myope et l’hypermétrope?',
+  'Le positionnement de la lunette peut affecter l’image reçu par l’œil: l’exemple de la grandeur d’image.'
+];
+
+function genererExamen(v){
+  v = Number(v);
+  if(!(Number.isInteger(v) && v >= 1000 && v <= 9999)) throw new Error('version hors de 1000–9999 : ' + v);
+  const h = outils(hasard((Math.imul(v, 2654435761) ^ 0x5EED1A2B) >>> 0));
+  const questions = []; let n = 0;
+  for(const [part, cases, pts] of PLAN){
+    for(const c of cases){
+      const t = h.pick(BANQUE[c]), q = t.f(h);
+      n++;
+      Object.assign(q, {n, part, slot:c, id:t.id, mod:t.mod, qr:t.qr, kc:t.kc, pts});
+      if(q.type === 'qcm') q.choix = h.melange(q.choix);
+      /* une erreur reconnue qui tombe sur la bonne réponse (ou qui n'a pas de valeur) n'est pas une erreur à reconnaître */
+      if(q.pieges) q.pieges = q.pieges.filter(e => Number.isFinite(e.v) && (q.rep.k !== 'num' && q.rep.k !== 'pr' || !proche(q.rep.k === 'pr' ? Math.abs(e.v) : e.v, q.rep)));
+      if(!q.donnees) q.donnees = {};
+      if(!q.vus) q.vus = [];
+      questions.push(q);
+    }
+  }
+  return {v, total:60, questions};
+}
+
+/* ---------- lire et juger une réponse tapée : virgule ou point, unité facultative, vrai signe moins ---------- */
+function lireNombre(s){
+  const t = String(s == null ? '' : s).toLowerCase().replace(/[  ]/g, ' ').replace(/[−–—]/g, '-').trim();
+  const m = t.match(/([+-]?)\s*(\d+(?:[.,]\d*)?|[.,]\d+)/);
+  if(!m) return {x:null, t, signe:'', unite:null};
+  let x = parseFloat(m[2].replace(',', '.'));
+  if(m[1] === '-') x = -x;
+  const reste = t.slice(m.index + m[0].length).trim();
+  const u = /^(mm|cm|m(?![a-z])|d(?![a-z])|dioptries?|%)/.exec(reste);
+  return {x, t, signe:m[1], unite:u ? (u[1].charAt(0) === 'd' ? 'D' : u[1]) : null};
+}
+const TOL = {D:0.015, Du:0.015, mm:0.051, pct:0.11, pct1:0.11, gi:0.0011};
+function proche(x, r){
+  if(r.fmt === 'cm' || r.fmt === 'cmPr'){
+    const v = Math.abs(r.v);
+    return Math.abs(x - v) <= 0.15 || (Number.isInteger(x) && (x === Math.floor(v + 1e-9) || x === Math.round(v)));
+  }
+  return Math.abs(x - r.v) <= (r.tol || TOL[r.fmt] || 0.015);
+}
+/* s = {t: texte tapé, cote: 'devant' | 'derrière' | null, oui: true | false | null, choix: index | null} */
+function juger(q, s){
+  s = s || {};
+  if(q.part === 'A'){ if(s.choix == null) return {vide:true}; return {ok:!!q.choix[s.choix].ok}; }
+  const r = q.rep;
+  if(r.k === 'ouinon'){ if(s.oui !== true && s.oui !== false) return {vide:true, m:'Choisis oui ou non.'}; return {ok:s.oui === r.v}; }
+  const n = lireNombre(s.t), mots = n.t || '';
+  if(r.k === 'aucune'){
+    if(/aucun|pas d|pas besoin|n[ée]ant|rien|^non\b/.test(mots) || (n.x !== null && (n.x === 0 || Math.abs(n.x - r.v) <= 0.015))) return {ok:true};
+    if(n.x === null) return {vide:true, m:'Écris un nombre, ou “aucune”.'};
+    for(const e of q.pieges || []) if(Number.isFinite(e.v) && Math.abs(n.x - e.v) <= 0.015) return {ok:false, m:e.m};
+    return {ok:false};
+  }
+  if(n.x === null) return {vide:true, m:'Écris un nombre.'};
+  let x = n.x;
+  if(r.u === 'cm'){ if(n.unite === 'm') x *= 100; else if(n.unite === 'mm') x /= 10; }
+  if(r.u === 'mm'){ if(n.unite === 'cm') x *= 10; else if(n.unite === 'm') x *= 1000; }
+  if(r.k === 'pr'){
+    const cote = s.cote || (/devant/.test(mots) ? 'devant' : /derri/.test(mots) ? 'derrière' : n.signe === '-' ? 'devant' : n.signe === '+' ? 'derrière' : null);
+    const a = Math.abs(x);
+    if(!proche(a, r)){
+      for(const e of q.pieges || []) if(Number.isFinite(e.v) && Math.abs(a - Math.abs(e.v)) <= Math.max(0.005, Math.abs(e.v) * 0.01)) return {ok:false, m:e.m};
+      return {ok:false};
+    }
+    if(!cote) return {ok:false, m:'Il manque le côté : devant ou derrière l’œil ?'};
+    if(cote !== r.cote) return {ok:false, m:'Bonne distance, mauvais côté : le signe de R dit où est le Pr.'};
+    return {ok:true};
+  }
+  if(proche(x, r)) return {ok:true};
+  for(const e of q.pieges || []) if(Number.isFinite(e.v) && Math.abs(x - e.v) <= (r.tol || TOL[r.fmt] || 0.015) * (r.fmt === 'cm' ? 10 : 1)) return {ok:false, m:e.m};
+  if(proche(-x, r)) return {ok:false, m:'Vérifie le signe de ta réponse.'};
+  return {ok:false};
+}
+
+/* ---------- le texte à coller dans une IA : l'énoncé, les choix, ce que l'étudiant a écrit ; jamais le corrigé ---------- */
+function pourIA(q, s){
+  s = s || {};
+  const l = ['Je suis en formation d’opticien·ne (cours Optique, UA2). Voici une question de mon examen blanc. Aide-moi à la comprendre sans me donner la réponse tout de suite.', ''];
+  l.push('QUESTION ' + q.n + ' (partie ' + q.part + ', ' + q.pts + (q.pts > 1 ? ' points' : ' point') + ')', (q.type === 'vf' ? 'Vrai ou faux : ' : '') + q.enonce, '');
+  if(q.type === 'qcm'){ l.push('LES CHOIX'); q.choix.forEach((c, i) => l.push(LETTRES[i] + ') ' + c.t)); l.push(''); }
+  if(q.parties){ l.push('LES SOUS-QUESTIONS'); q.parties.forEach((p, i) => l.push(LETTRES[i] + ') ' + p.q + ' (' + p.pts + (p.pts > 1 ? ' points' : ' point') + ')')); l.push(''); }
+  l.push('CE QUE J’AI RÉPONDU');
+  if(q.part === 'A') l.push(s.choix == null ? 'Rien encore.' : q.type === 'vf' ? q.choix[s.choix].t : LETTRES[s.choix] + ') ' + q.choix[s.choix].t);
+  else if(q.part === 'B'){
+    const t = [s.t ? String(s.t).trim() : '', s.cote || '', s.oui === true ? 'Oui' : s.oui === false ? 'Non' : ''].filter(Boolean).join(' ');
+    l.push(t || 'Rien encore.');
+  } else q.parties.forEach((p, i) => l.push(LETTRES[i] + ') ' + (s.parts && s.parts[i] && String(s.parts[i]).trim() ? String(s.parts[i]).trim() : 'rien encore')));
+  l.push('', 'LES CONVENTIONS DE MON COURS', ...CONVENTIONS.map(c => '- ' + c), '- Utilise ces conventions, même si tu en connais d’autres.', '',
+    'CE QUE J’AIMERAIS',
+    'Guide-moi une étape à la fois : d’abord quelle formule de ma feuille utiliser et ce que veut dire chaque lettre, puis le calcul. Pose-moi une seule question à la fois. Si j’ai déjà répondu, aide-moi à voir si je me trompe et où, sans me donner directement la bonne réponse.');
+  return l.join('\n');
+}
+
+const API = {genererExamen, juger, lireNombre, pourIA, FEUILLE, FEUILLE_T, DONDERS, QUOI_RETENIR, CONVENTIONS, TAILLE, PLAN, LETTRES,
+  BANQUE_IDS:Object.fromEntries(Object.entries(BANQUE).map(([k, l]) => [k, l.map(t => t.id)])),
+  fmt:{nf, nt, sd, D, Du, cmT, mmT, pctT, giT, dT}};
+if(typeof module !== 'undefined' && module.exports) module.exports = API;
+else racine.ExamenUA2 = API;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>
+(() => {
+'use strict';
+const X = window.ExamenUA2, L = X.LETTRES;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+/* espaces insécables : avant ? : ; ! %, et à l'intérieur des guillemets */
+const NB = String.fromCharCode(160), G1 = String.fromCharCode(171), G2 = String.fromCharCode(187);   /* espace insecable, guillemets ouvrant et fermant */
+const typo = s => s.replace(/ ([?:;!%])/g, NB + '$1').split(G1 + ' ').join(G1 + NB).split(' ' + G2).join(NB + G2);
+const T = s => typo(esc(s));
+const PTS = n => n + (n > 1 ? ' pts' : ' pt');
+const CLE = 'examen-blanc-ua2', CLE_TH = 'opt-ua2-theme';
+const memo = {get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }};
+let E = null, S = null;
+const Q = n => E.questions[n - 1];
+const etatVide = v => ({v, rep:{}, vus:{}, corrige:false, auto:{}});
+const sauver = () => memo.set(CLE, JSON.stringify(S));
+let minuteur = 0;
+const sauverBientot = () => { clearTimeout(minuteur); minuteur = setTimeout(sauver, 300); };
+
+/* ---------- les cartes ---------- */
+const lignes = n => '<div class="papier-seul lignes" aria-hidden="true">' + '<div class="ligne"></div>'.repeat(n) + '</div>';
+function choixHtml(q){
+  const vf = q.type === 'vf';
+  return '<fieldset class="choix' + (vf ? ' vf' : '') + '"><legend class="sr">Question ' + q.n + ' : choisis une réponse</legend>' + q.choix.map((c, i) =>
+    '<label class="opt' + (c.ok ? ' bonne' : '') + '"><input type="radio" name="r-' + q.n + '" value="' + i + '" data-n="' + q.n + '"><span class="case" aria-hidden="true"></span><span class="lettre">' + (vf ? '' : L[i] + ')') + '</span><span class="t">' + T(c.t) + '</span></label>').join('') + '</fieldset>';
+}
+function saisieHtml(q){
+  const r = q.rep;
+  if(r.k === 'ouinon'){
+    return '<div class="saisie ecran-seul" role="group" aria-label="Ta réponse, question ' + q.n + '"><button type="button" class="bouton" data-a="oui" data-n="' + q.n + '" data-v="1" aria-pressed="false">Oui</button><button type="button" class="bouton" data-a="oui" data-n="' + q.n + '" data-v="0" aria-pressed="false">Non</button></div>' +
+      '<p class="papier-seul ligne-rep"><span class="case"></span> Oui &nbsp;&nbsp; <span class="case"></span> Non &nbsp;&nbsp; Pourquoi :</p>' + lignes(3);
+  }
+  const u = r.k === 'pr' ? 'cm' : r.k === 'aucune' ? 'D' : (r.u || '');
+  return '<div class="saisie ecran-seul"><label for="r-' + q.n + '">Ta réponse</label><input id="r-' + q.n + '" data-n="' + q.n + '" autocomplete="off" spellcheck="false" autocapitalize="off">' + (u ? '<span class="u">' + esc(u) + '</span>' : '') +
+    (r.k === 'pr' ? '<span class="cotes" role="group" aria-label="Côté du Pr, question ' + q.n + '"><button type="button" class="bouton" data-a="cote" data-n="' + q.n + '" data-v="devant" aria-pressed="false">devant</button><button type="button" class="bouton" data-a="cote" data-n="' + q.n + '" data-v="derrière" aria-pressed="false">derrière</button></span>' : '') + '</div>' +
+    '<p class="papier-seul ligne-rep">Réponse : <span class="blanc"></span> ' + esc(u) + (r.k === 'pr' ? ' &nbsp;&nbsp; <span class="case"></span> devant &nbsp; <span class="case"></span> derrière' : '') + '</p>' + lignes(3);
+}
+function partiesHtml(q){
+  return '<ol class="parties">' + q.parties.map((p, i) => '<li class="partie"><p class="pq"><span class="pl">' + L[i] + ')</span> ' + T(p.q) + ' <span class="pp">(' + PTS(p.pts) + ')</span></p>' +
+    '<textarea class="ecran-seul" data-n="' + q.n + '" data-i="' + i + '" rows="3" aria-label="Ta démarche, question ' + q.n + ' ' + L[i] + ')" placeholder="Ta démarche (facultatif)"></textarea>' + lignes(Math.max(3, 2 * p.pts + 1)) + '</li>').join('') + '</ol>';
+}
+const demHtml = dem => '<ol class="dem">' + dem.map(([l, c]) => '<li><span class="l">' + T(l) + '</span><span class="c">' + T(c) + '</span></li>').join('') + '</ol>';
+function formulesHtml(it){
+  const f = (it.formules || []).map(id => X.FEUILLE_T[id]);
+  let h = '';
+  if(f.length) h += '<p class="cf"><span class="etiq">Formule' + (f.length > 1 ? 's' : '') + ' de la feuille</span> ' + f.map(x => '<span class="fx">' + esc(x) + '</span>').join(' ') + '</p>';
+  if(it.regle) h += '<p class="cf"><span class="etiq">Règle</span> ' + T(it.regle) + '</p>';
+  return h;
+}
+const piegeHtml = q => q.piege ? '<p class="piege"><span class="etiq">Le piège · ' + esc(q.piege.kc) + '</span> ' + T(q.piege.t) + '</p>' : '';
+function corrigeHtml(q){
+  let h = '';
+  if(q.part === 'A'){
+    const i = q.choix.findIndex(c => c.ok), b = q.choix[i], vf = q.type === 'vf';
+    h += '<p class="rep"><span class="etiq">Réponse</span> ' + (vf ? b.t : L[i] + ') ' + T(b.t)) + '</p><p>' + T(q.explication) + '</p>';
+    const faux = q.choix.map((c, j) => [c, j]).filter(([c]) => !c.ok && c.mal);
+    if(faux.length) h += '<p class="etiq">Les pièges</p><ul class="mal">' + faux.map(([c, j]) => '<li><b>' + (vf ? c.t : L[j] + ')') + '</b> ' + T(c.mal) + '</li>').join('') + '</ul>';
+  } else if(q.part === 'B'){
+    h += '<p class="rep"><span class="etiq">Réponse</span> ' + T(q.rep.txt) + '</p>' + formulesHtml(q) + demHtml(q.dem) + piegeHtml(q) +
+      '<p class="bareme">Barème indicatif : 1 point pour la démarche, 1 pour la réponse avec son unité et son signe.</p>';
+  } else {
+    h += q.parties.map((p, i) => '<div class="cpart"><p class="rep"><span class="pl">' + L[i] + ')</span> <span class="etiq">' + PTS(p.pts) + '</span> ' + T(p.rep.txt) + '</p>' + formulesHtml(p) + demHtml(p.dem) +
+      '<div class="auto ecran-seul" role="group" aria-label="Tes points, question ' + q.n + ' ' + L[i] + ')"><span>Tes points :</span>' +
+      Array.from({length:p.pts + 1}, (_, k) => '<button type="button" class="pt" data-a="auto" data-n="' + q.n + '" data-i="' + i + '" data-v="' + k + '" aria-pressed="false">' + k + '</button>').join('') + '</div></div>').join('') + piegeHtml(q);
+  }
+  return h + '<p class="src">Source : ' + T(q.src) + ' · « Quoi retenir? » n° ' + q.qr.join(', ') + ' · ' + esc(q.kc) + '</p>';
+}
+function carte(q){
+  return '<article class="q q-' + q.part + '" id="q-' + q.n + '" aria-labelledby="t-q-' + q.n + '">' +
+    '<header class="q-tete"><span class="q-num" id="t-q-' + q.n + '" aria-label="Question ' + q.n + '">' + q.n + '</span><span class="q-pts">' + PTS(q.pts) + '</span>' + (q.type === 'vf' ? '<span class="q-genre">Vrai ou faux</span>' : '') + '<span class="q-etat" id="etat-' + q.n + '"></span></header>' +
+    '<p class="enonce">' + T(q.enonce) + '</p>' + (q.part === 'A' ? choixHtml(q) : q.part === 'B' ? saisieHtml(q) : partiesHtml(q)) +
+    '<p class="q-msg" id="msg-' + q.n + '" aria-live="polite"></p>' +
+    '<div class="q-actions ecran-seul"><button type="button" class="lien" data-a="voir" data-n="' + q.n + '" aria-expanded="false" aria-controls="c-' + q.n + '">Voir le corrigé</button><button type="button" class="lien" data-a="ia" data-n="' + q.n + '">Copier pour une IA</button></div>' +
+    '<section class="corrige" id="c-' + q.n + '" hidden aria-label="Corrigé de la question ' + q.n + '">' + corrigeHtml(q) + '</section></article>';
+}
+function donders(){
+  const D = X.DONDERS, moities = [D.slice(0, 6), D.slice(6)];
+  $('#donders').innerHTML = moities.map(m => '<table><tr><th scope="row">Âge</th>' + m.map(d => '<td>' + d[0] + '</td>').join('') + '</tr><tr><th scope="row">Am (D)</th>' +
+    m.map(d => '<td>' + X.fmt.nt(d[1], 2).replace(/,00$/, '').replace(/,50$/, ',5') + '</td>').join('') + '</tr></table>').join('');
+}
+
+/* ---------- l'état : les réponses de la version en cours ---------- */
+function rendre(){
+  $$('.v-num').forEach(e => { e.textContent = E.v; });
+  document.title = 'Examen blanc UA2 · version ' + E.v;
+  $('#v-saisie').value = E.v;
+  for(const p of 'ABC') $('#liste-' + p).innerHTML = E.questions.filter(q => q.part === p).map(carte).join('');
+  for(const q of E.questions){
+    const r = S.rep[q.n] || {};
+    if(q.part === 'A' && r.choix != null){ const i = $('input[name="r-' + q.n + '"][value="' + r.choix + '"]'); if(i) i.checked = true; }
+    if(q.part === 'B'){
+      const i = $('#r-' + q.n); if(i && r.t) i.value = r.t;
+      $$('[data-n="' + q.n + '"][data-a="cote"]').forEach(b => b.setAttribute('aria-pressed', String(r.cote === b.dataset.v)));
+      $$('[data-n="' + q.n + '"][data-a="oui"]').forEach(b => b.setAttribute('aria-pressed', String(r.oui === (b.dataset.v === '1'))));
+    }
+    if(q.part === 'C') $$('textarea[data-n="' + q.n + '"]').forEach(t => { t.value = (r.parts || [])[+t.dataset.i] || ''; });
+    if(S.vus[q.n]) montrer(q.n, true);
+    const a = S.auto[q.n] || {};
+    $$('[data-a="auto"][data-n="' + q.n + '"]').forEach(b => b.setAttribute('aria-pressed', String(a[b.dataset.i] === +b.dataset.v)));
+  }
+  marquer(); score();
+}
+function charger(v, focus){
+  E = X.genererExamen(v);
+  let s = null; try{ s = JSON.parse(memo.get(CLE) || 'null'); }catch(e){}
+  S = s && s.v === v ? Object.assign(etatVide(v), s) : etatVide(v);
+  sauver();
+  rendre();
+  $('#note-v').textContent = focus ? 'Version ' + v + '.' : '';
+  if(focus){ window.scrollTo(0, 0); $('h1').focus({preventScroll:true}); }
+}
+function saisieDe(q){ const r = S.rep[q.n] || {}; return q.part === 'C' ? {parts:r.parts || []} : r; }
+const aDesReponses = () => Object.values(S.rep).some(r => r && (r.choix != null || (r.t && r.t.trim()) || r.cote || r.oui != null || (r.parts || []).some(x => x && x.trim())));
+
+/* ---------- corriger A et B : seulement quand on le demande ; le corrigé reste fermé ---------- */
+function marquer(){
+  for(const q of E.questions){
+    if(q.part === 'C') continue;
+    const c = $('#q-' + q.n), e = $('#etat-' + q.n), m = $('#msg-' + q.n);
+    c.classList.remove('juste', 'faux'); e.className = 'q-etat'; e.textContent = ''; m.textContent = '';
+    if(!S.corrige) continue;
+    const j = X.juger(q, saisieDe(q));
+    if(j.vide){ e.classList.add('vide'); e.textContent = '· pas de réponse · 0/' + q.pts; continue; }
+    c.classList.add(j.ok ? 'juste' : 'faux');
+    e.classList.add(j.ok ? 'ok' : 'bad');
+    e.textContent = j.ok ? '✓ juste · ' + q.pts + '/' + q.pts : '✗ pas juste · 0/' + q.pts;
+    if(!j.ok && j.m) m.textContent = j.m;
+  }
+}
+function score(){
+  let a = 0, b = 0, c = 0, rep = 0;
+  for(const q of E.questions){
+    if(q.part === 'C'){ const x = S.auto[q.n] || {}; c += Object.values(x).reduce((s, v) => s + v, 0); continue; }
+    const j = X.juger(q, saisieDe(q));
+    if(!j.vide) rep++;
+    if(j.ok){ if(q.part === 'A') a += 1; else b += 2; }
+  }
+  const pret = S.corrige;
+  $('#notes').innerHTML = [['Partie A', pret ? a + ' / 8' : '— / 8', 'choix multiples'], ['Partie B', pret ? b + ' / 16' : '— / 16', 'courtes réponses'],
+    ['Partie C', c + ' / 36', 'tes points, d’après le corrigé'], ['Total', pret ? (a + b + c) + ' / 60' : '— / 60', 'barème indicatif']].map(([t, v, s]) => '<li><span>' + t + '</span><b>' + v + '</b><span>' + s + '</span></li>').join('');
+  $('#score-note').textContent = pret ? 'Parties A et B corrigées. Si tu changes une réponse, la note suit. Ouvre “Voir le corrigé” sous chaque question pour comprendre.'
+    : rep + ' réponse' + (rep > 1 ? 's' : '') + ' sur 16 aux parties A et B. Quand tu as fini, corrige.';
+}
+function montrer(n, oui){
+  const c = $('#c-' + n), b = $('[data-a="voir"][data-n="' + n + '"]');
+  c.hidden = !oui; b.setAttribute('aria-expanded', String(oui)); b.textContent = oui ? 'Cacher le corrigé' : 'Voir le corrigé';
+}
+
+/* ---------- copier pour une IA (le motif du drill : presse-papiers, sinon le texte à copier à la main) ---------- */
+async function versPressePapiers(t){
+  try{ await navigator.clipboard.writeText(t); return true; }catch(e){}
+  const z = document.createElement('textarea');
+  z.value = t; z.readOnly = true; z.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(z); z.select(); z.setSelectionRange(0, t.length);
+  let ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+  z.remove(); return ok;
+}
+let fond = null, retour = null;
+function fermer(){ if(!fond) return; fond.remove(); fond = null; if(retour && retour.isConnected) retour.focus({preventScroll:true}); retour = null; }
+async function copier(b){
+  const q = Q(+b.dataset.n), t = X.pourIA(q, saisieDe(q));
+  if(!(await versPressePapiers(t))){
+    fermer(); retour = b;
+    fond = document.createElement('div'); fond.className = 'fond';
+    fond.innerHTML = '<section class="boite" role="dialog" aria-modal="true" aria-labelledby="t-boite"><h2 id="t-boite">À copier</h2><p>Ton navigateur bloque la copie automatique. Sélectionne ce texte, copie-le, puis colle-le dans ton IA.</p><textarea readonly aria-label="La question, à copier">' + esc(t) + '</textarea><p class="src">Une IA peut se tromper : ton cours a le dernier mot.</p><button type="button" class="bouton plein" data-a="fermer">Fermer</button></section>';
+    document.body.appendChild(fond);
+    const z = $('textarea', fond); z.focus({preventScroll:true}); z.select();
+    return;
+  }
+  b.textContent = 'Copié ✓';
+  setTimeout(() => { if(b.isConnected) b.textContent = 'Copier pour une IA'; }, 2200);
+  const bas = b.parentElement; let n = $('.copie-note', bas);
+  if(!n){ n = document.createElement('p'); n.className = 'copie-note'; bas.appendChild(n); }
+  n.textContent = 'La question et ta réponse sont copiées, sans le corrigé. Colle-les dans ton IA : elle peut se tromper, ton cours a le dernier mot.';
+}
+
+/* ---------- versions ---------- */
+const lireVersion = s => { const m = String(s || '').match(/^\s*(\d{4})\s*$/); const v = m ? +m[1] : NaN; return v >= 1000 && v <= 9999 ? v : null; };
+const versionDeAdresse = () => { const m = location.hash.match(/(?:^#|&)v=(\d{4})(?:&|$)/); return m ? lireVersion(m[1]) : null; };
+function allerA(v){ if(v === E.v) return; history.pushState(null, '', '#v=' + v); charger(v, true); }
+let confirmer = null;
+function demander(b, texte, action){
+  if(confirmer === b){ confirmer = null; action(); return; }
+  if(confirmer) confirmer.textContent = confirmer.dataset.label;
+  confirmer = b; b.dataset.label = b.dataset.label || b.textContent; b.textContent = texte;
+  setTimeout(() => { if(confirmer === b){ confirmer = null; b.textContent = b.dataset.label; } }, 5000);
+}
+function nouvelle(b){
+  const go = () => { b.textContent = b.dataset.label || 'Nouvelle version'; let v; do{ v = 1000 + Math.floor(Math.random() * 9000); }while(v === E.v); allerA(v); };
+  if(aDesReponses()) demander(b, 'Clique encore : tes réponses seront effacées', go); else go();
+}
+
+/* ---------- impression : examen sans réponses, ou corrigé complet ---------- */
+const racine = document.documentElement;
+function imprimer(mode){
+  racine.setAttribute('data-impression', mode);
+  $$('.mode-imp').forEach(e => { e.textContent = mode === 'corrige' ? ' · corrigé' : ''; });
+  window.print();
+}
+window.addEventListener('beforeprint', () => { if(!racine.hasAttribute('data-impression')) racine.setAttribute('data-impression', 'examen'); });
+window.addEventListener('afterprint', () => { racine.removeAttribute('data-impression'); $$('.mode-imp').forEach(e => { e.textContent = ''; }); });
+
+/* ---------- thème : auto, clair, sombre (la même préférence que le Banc) ---------- */
+const THEMES = [['', 'auto'], ['light', 'clair'], ['dark', 'sombre']];
+let theme = memo.get(CLE_TH); if(theme !== 'light' && theme !== 'dark') theme = '';
+function appliquerTheme(){ if(theme) racine.setAttribute('data-theme', theme); else racine.removeAttribute('data-theme'); $('#theme').textContent = 'Thème : ' + THEMES.find(t => t[0] === theme)[1]; }
+
+/* ---------- les gestes ---------- */
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.matches('input[type="radio"][data-n]')){ S.rep[t.dataset.n] = {choix:+t.value}; sauver(); marquer(); score(); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if(t.matches('input[data-n]')){ const r = S.rep[t.dataset.n] || (S.rep[t.dataset.n] = {}); r.t = t.value; sauverBientot(); if(S.corrige) marquer(); score(); }
+  else if(t.matches('textarea[data-n]')){ const r = S.rep[t.dataset.n] || (S.rep[t.dataset.n] = {}); (r.parts || (r.parts = []))[+t.dataset.i] = t.value; sauverBientot(); }
+});
+document.addEventListener('click', e => {
+  if(fond && e.target === fond){ fermer(); return; }
+  const b = e.target.closest('button'); if(!b) return;
+  const a = b.dataset.a, n = b.dataset.n;
+  if(a === 'cote' || a === 'oui'){
+    const r = S.rep[n] || (S.rep[n] = {});
+    if(a === 'cote') r.cote = r.cote === b.dataset.v ? null : b.dataset.v; else r.oui = b.dataset.v === '1';
+    $$('[data-a="' + a + '"][data-n="' + n + '"]').forEach(x => x.setAttribute('aria-pressed', String(a === 'cote' ? r.cote === x.dataset.v : r.oui === (x.dataset.v === '1'))));
+    sauver(); marquer(); score();
+  }
+  else if(a === 'voir'){ const oui = $('#c-' + n).hidden; montrer(n, oui); S.vus[n] = oui; sauver(); }
+  else if(a === 'ia') copier(b);
+  else if(a === 'auto'){
+    const x = S.auto[n] || (S.auto[n] = {}), i = b.dataset.i, v = +b.dataset.v;
+    if(x[i] === v) delete x[i]; else x[i] = v;
+    $$('[data-a="auto"][data-n="' + n + '"][data-i="' + i + '"]').forEach(y => y.setAttribute('aria-pressed', String(x[i] === +y.dataset.v)));
+    sauver(); score();
+  }
+  else if(a === 'corriger'){
+    S.corrige = true; sauver(); marquer(); score();
+    $('#msg-ab').textContent = 'Corrigé : chaque question A et B est marquée, et ta note est en bas, après la partie C.';
+  }
+  else if(a === 'effacer') demander(b, 'Clique encore pour tout effacer', () => { b.textContent = b.dataset.label; S = etatVide(E.v); sauver(); rendre(); $('#msg-ab').textContent = ''; });
+  else if(a === 'nouvelle') nouvelle(b);
+  else if(a === 'aller'){ const v = lireVersion($('#v-saisie').value); if(v === null){ $('#note-v').textContent = 'Une version est un nombre de 1000 à 9999.'; return; } allerA(v); }
+  else if(a === 'imp-examen') imprimer('examen');
+  else if(a === 'imp-corrige') imprimer('corrige');
+  else if(a === 'theme'){ theme = THEMES[(THEMES.findIndex(t => t[0] === theme) + 1) % THEMES.length][0]; memo.set(CLE_TH, theme); appliquerTheme(); }
+  else if(a === 'fermer') fermer();
+});
+document.addEventListener('keydown', e => {
+  if(fond){ if(e.key === 'Escape') fermer(); return; }
+  if(e.key === 'Enter' && e.target.id === 'v-saisie'){ e.preventDefault(); $('[data-a="aller"]').click(); }
+});
+window.addEventListener('hashchange', () => { const v = versionDeAdresse(); if(v !== null && v !== E.v) charger(v, true); });
+window.addEventListener('popstate', () => { const v = versionDeAdresse(); if(v !== null && E && v !== E.v) charger(v, true); });
+
+/* ---------- au départ : la version de l'adresse, sinon la dernière ouverte, sinon une au hasard ---------- */
+appliquerTheme();
+donders();
+let v0 = versionDeAdresse();
+if(v0 === null){ let s = null; try{ s = JSON.parse(memo.get(CLE) || 'null'); }catch(e){} v0 = s && lireVersion(String(s.v)) ? s.v : 1000 + Math.floor(Math.random() * 9000); }
+history.replaceState(null, '', '#v=' + v0);
+charger(v0, false);
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'ac3595e88124';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body>
+</html>

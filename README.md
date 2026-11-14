@@ -9,6 +9,15 @@ Les pages d’étude de la cohorte, Techniques d’opticien (Automne 2026). Tout
 | Atelier Tests ophtalmiques, modules 5 et 6 | `atelier-to-m5-m6.html` |
 | Atelier Bureau ophtalmique, module 7 | `atelier-bureau-m7.html` |
 
+| Avant l’examen (UA2) | Page |
+|---|---|
+| Exerciseur Tests ophtalmiques, modules 5 à 8 | `drill-to.html` |
+| « Quelle formule ? » (Optique, modules 6 à 8) | `drill-formules.html` |
+| Exerciseur Bureau ophtalmique | `drill-bureau.html` |
+| Examen blanc d’Optique | `examen-blanc-ua2.html` |
+
+Sur l’accueil, le bouton « 😢 Les exams me stressent » propose ces exerciseurs, l’examen le plus proche en premier. Lien direct : `https://zexonis.github.io/Lumiere/#examens`.
+
 | UA1 et outils | Page |
 |---|---|
 | Réviser l’UA1 (Bureau) | `reviser-ua1.html` |

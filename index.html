@@ -60,6 +60,48 @@ h1 em{display:inline;font-style:italic;font-weight:500;color:var(--blanc);text-s
 .reprendre span{color:var(--gris-2);font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 .reprendre:hover{border-color:var(--gris)}
 .raccourcis{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+/* « Les exams me stressent » : le seul bouton plein du ciel, pour qu'on le voie avant le reste */
+.stress{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:11px 20px 11px 15px;background:var(--blanc);color:var(--nuit);
+  font:700 17px/1.2 var(--f-texte);cursor:pointer;box-shadow:0 0 28px -6px rgba(255,255,255,.6);transition:transform .2s, box-shadow .2s}
+.stress .emo{font-size:23px;line-height:1}
+.stress:hover,.stress:focus-visible{transform:translateY(-1px);box-shadow:0 0 38px -4px rgba(255,255,255,.8)}
+/* le choix du cours : une fenêtre calme, l'examen le plus proche en premier */
+.calme{width:min(700px, calc(100vw - 24px));max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);padding:0;overflow:auto;border:1px solid var(--trait-2);border-radius:18px;
+  background:radial-gradient(120% 80% at 50% 0%, #0E1428 0%, var(--nuit-2) 60%);color:var(--blanc);box-shadow:0 30px 90px rgba(0,0,0,.65)}
+.calme::backdrop{background:rgba(3,5,10,.74)}
+.calme-in{position:relative;display:flex;flex-direction:column;gap:14px;padding:24px 22px 20px}
+.calme h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(27px, 4.6vw, 36px);line-height:1.08;padding-right:44px}
+.calme .intro{color:var(--gris);font-size:16px;line-height:1.5;max-width:54ch}
+.calme-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--trait-2);background:transparent;color:var(--gris);font-size:16px;line-height:1;cursor:pointer}
+.calme-x:hover{border-color:var(--gris);color:var(--blanc)}
+.exos{display:grid;gap:10px}
+.exo{border-radius:14px;border:1px solid color-mix(in srgb, var(--c) 50%, transparent);
+  background:linear-gradient(120deg, color-mix(in srgb, var(--c) 15%, transparent), color-mix(in srgb, var(--c) 3%, transparent) 70%), var(--nuit)}
+.exo-lien{display:grid;grid-template-columns:3px minmax(0,1fr) auto;column-gap:14px;align-items:center;padding:14px 14px 14px 16px;text-decoration:none;border-radius:14px;transition:box-shadow .2s}
+.exo-lien:hover,.exo-lien:focus-visible{box-shadow:0 0 34px -10px var(--c)}
+.exo-lien .raie{align-self:stretch}
+.exo-quand{display:block;font:600 11.5px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.exo-nom{display:block;margin-top:3px;font-family:var(--f-titre);font-weight:600;font-size:23px;line-height:1.15}
+.exo-desc{display:block;margin-top:4px;font-size:14.5px;line-height:1.45;color:var(--gris)}
+.exo .aller{white-space:nowrap;border-radius:999px;padding:8px 14px;background:var(--c);color:var(--nuit);font-weight:700;font-size:14.5px}
+.exo-aussi{display:block;margin:0 14px 12px 33px;padding-top:10px;border-top:1px dashed color-mix(in srgb, var(--c) 35%, transparent);font-size:14.5px;color:var(--gris);text-decoration:none}
+.exo-aussi b{color:var(--blanc);font-weight:700}
+.exo-aussi:hover b,.exo-aussi:focus-visible b{text-decoration:underline}
+.calme-pied{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--trait);color:var(--gris-2);font-size:14px;line-height:1.5}
+.calme-pied a{color:var(--gris)}
+.calme-pied button{align-self:flex-start;border:1px solid var(--trait-2);border-radius:999px;background:transparent;color:var(--gris);padding:6px 13px;font:600 14px var(--f-texte);cursor:pointer}
+.calme-pied button:hover{border-color:var(--gris);color:var(--blanc)}
+/* téléphone : les trois cours tiennent à l'écran sans défiler ; la ligne de description attend l'exerciseur */
+@media (max-width:559px){
+  .calme-in{padding:20px 14px 16px;gap:12px}
+  .calme .intro{font-size:15.5px}
+  .exo-lien{column-gap:12px;padding:12px 12px 12px 14px}
+  .exo-nom{font-size:21px}
+  .exo-desc{display:none}
+  .exo .aller{padding:7px 12px;font-size:14px}
+  .exo-aussi{margin:0 12px 11px 29px}
+  .stress{font-size:16.5px}
+}
 .scene{display:none}
 
 .ports{display:flex;flex-direction:column;justify-content:center;gap:12px;padding-block:6px;min-width:0}
@@ -179,7 +221,8 @@ h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px)
 @media (prefers-reduced-motion: reduce){
   h1 em{animation:none!important;background-position:0 0, 0 0!important}
   .cours.eclaire{animation:none}
-  .port,.cours,.page .fleche,.principal,.bascule-ua .piste,.bascule-ua .piste::after{transition:none}
+  .port,.cours,.page .fleche,.principal,.bascule-ua .piste,.bascule-ua .piste::after,.stress,.exo-lien{transition:none}
+  .stress:hover,.stress:focus-visible{transform:none}
 }
 </style>
 
@@ -190,6 +233,7 @@ h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px)
       <p class="sur">Lumière · Techniques d’opticien</p>
       <h1 id="salut"><span class="mot" id="salut-mot">Bonjour,</span> <em>cher rayon<br> de lumière.</em></h1>
       <p class="sous">Ton métier : offrir aux autres la lumière d’une vision nette. Ici, elle traverse ce prisme et ressort en cinq raies : une par cours, à toi de choisir.</p>
+      <button type="button" class="stress" id="stress" aria-haspopup="dialog"><span class="emo" aria-hidden="true">😢</span>Les exams me stressent</button>
       <div class="raccourcis">
         <a class="reprendre" id="reprendre" href="#" target="_blank" rel="noopener" hidden><span>Reprendre</span><b id="reprendre-titre"></b> ↗</a>
         <a class="reprendre" href="qui-peut-aider.html" target="_blank" rel="noopener"><span>Besoin d’aide</span><b>Qui peut m’aider ?</b> ↗</a>
@@ -216,6 +260,17 @@ h2{font-family:var(--f-titre);font-weight:500;font-size:clamp(28px, 3.2vw, 38px)
     <p class="mono">Les cinq raies sont celles qui servent à caractériser le verre des lentilles : C 656,3 nm (hydrogène), d 587,6 nm (hélium), e 546,1 nm (mercure), F 486,1 nm (hydrogène), g 435,8 nm (mercure). L’indice de réfraction d’un verre se donne à la raie d ou e ; son nombre d’Abbe compare F et C. Plus la longueur d’onde est courte, plus le prisme dévie : g en bas, C en haut.</p>
   </footer>
 </main>
+
+<dialog class="calme" id="calme" aria-labelledby="calme-t">
+  <div class="calme-in">
+    <button type="button" class="calme-x" id="calme-x" aria-label="Fermer">✕</button>
+    <p class="sur">Avant l’examen</p>
+    <h2 id="calme-t" tabindex="-1">Respire. Une question à la fois.</h2>
+    <p class="intro">Choisis ton cours. Des questions courtes, corrigées tout de suite : tu vois ce que tu sais déjà, et ce qu’il te reste à revoir. Dix minutes, c’est déjà bien.</p>
+    <div class="exos" id="calme-exos"></div>
+    <div class="calme-pied" id="calme-pied"></div>
+  </div>
+</dialog>
 
 <script>
 (() => {
@@ -247,18 +302,23 @@ const A = id => 'https://claude.ai/artifact/' + id;
 /* ---------- données ---------- */
 /* les raies de Fraunhofer des verres optiques, de la moins déviée (C) à la plus déviée (g) */
 const COURS = [
-  {id:'adm',  court:'Bureau ophtalmique',      long:'Principes et procédures d’un bureau ophtalmique', code:'ADM 0010',  raie:'C', nm:'656,3', couleur:'rouge'},
-  {id:'opt',  court:'Optique',                 long:'',                                                code:'SCI 23546', raie:'d', nm:'587,6', couleur:'jaune'},
+  {id:'adm',  court:'Bureau ophtalmique',      long:'Principes et procédures d’un bureau ophtalmique', code:'ADM 0010',  raie:'C', nm:'656,3', couleur:'rouge',  examen:{d:'2026-11-23'}},
+  {id:'opt',  court:'Optique',                 long:'',                                                code:'SCI 23546', raie:'d', nm:'587,6', couleur:'jaune',  examen:{d:'2026-11-17'}},
   {id:'lab',  court:'Labo tests ophtalmiques', long:'Laboratoire de tests ophtalmiques',               code:'SAN 0030',  raie:'e', nm:'546,1', couleur:'vert'},
-  {id:'anat', court:'Anatomie',                long:'Anatomie et physiologie oculaires',               code:'SCI 23545', raie:'F', nm:'486,1', couleur:'bleu'},
-  {id:'to',   court:'Tests ophtalmiques',      long:'',                                                code:'SAN 0010',  raie:'g', nm:'435,8', couleur:'violet'}
+  {id:'anat', court:'Anatomie',                long:'Anatomie et physiologie oculaires',               code:'SCI 23545', raie:'F', nm:'486,1', couleur:'bleu',   examen:{d:'2026-11-20', h:'9 h'}},
+  {id:'to',   court:'Tests ophtalmiques',      long:'',                                                code:'SAN 0010',  raie:'g', nm:'435,8', couleur:'violet', examen:{d:'2026-11-16', h:'10 h'}}
 ];
 /* g : genre · t : titre · u : lien · d : une ligne · v : la page principale du cours (atelier, banc)
-   ua : l'unité (2 = en cours ; 1 = révision, cachée tant qu'on n'affiche pas l'UA1) */
+   ua : l'unité (2 = en cours ; 1 = révision, cachée tant qu'on n'affiche pas l'UA1)
+   x : avant l'examen (1 = l'exerciseur du cours, proposé par « Les exams me stressent » ; 2 = à côté de lui, ex. l'examen blanc)
+   COURS.examen : la date de l'examen de l'UA en cours (d, et h si l'heure est connue) ; elle ne sert qu'à ce choix,
+   qui met l'examen le plus proche en premier. Passée, elle ne s'affiche plus : la changer à chaque UA. */
 const PAGES = {
   adm:[
     {g:'Atelier', t:'Atelier Bureau M7–M8', u:'atelier-bureau-m7.html', v:true, ua:2,
      d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. La transposition. Nouveau : la Rx multifocale vers SV (0 %, 50 %, 100 % de l’addition, l’addition impaire, les trois Rx). Au comptoir, Rappel du jour, tuteur.'},
+    {g:'Exerciseur', t:'Exerciseur Bureau UA2', u:'drill-bureau.html', ua:2, x:1,
+     d:'Croix optique, types d’astigmatisme, transposition, nommer une Rx, Rx multifocale vers la simple vision : 115 questions et des ordonnances toujours nouvelles.'},
     {g:'Guide', t:'Réviser l’UA1', u:'reviser-ua1.html', ua:1, d:'Le guide de révision de l’UA1.'},
     {g:'Cartes', t:'Cartes UA1', u:'cartes-ua1.html', ua:1, d:'80 cartes éclair de l’UA1.'},
     {g:'Drills', t:'Drills Rx', u:'drills-ua1.html', ua:1, d:'40 QCM sur les Rx et la facturation.'},
@@ -267,6 +327,10 @@ const PAGES = {
   opt:[
     {g:'Banc', t:'Banc d’optique UA2', u:'banc-optique-ua2.html', v:true, ua:2,
      d:'Modules 6 et 7 : amétropies, punctum remotum et proximum, accommodation et addition. Schémas réglables, exercices, Rappel du jour, guide pas à pas et tuteur.'},
+    {g:'Exerciseur', t:'Quelle formule ?', u:'drill-formules.html', ua:2, x:1,
+     d:'Des problèmes mêlés des modules 6 à 8, avec des nombres toujours nouveaux : tu choisis la formule, puis tu calcules. Le « ? » explique chaque formule.'},
+    {g:'Examen blanc', t:'Examen blanc UA2', u:'examen-blanc-ua2.html', ua:2, x:2,
+     d:'L’évaluation du 17 novembre, au format annoncé : 22 questions (8 choix multiples, 8 courtes réponses, 6 développements), les formules à la fin. À imprimer ou à faire à l’écran, avec le corrigé ; une nouvelle version à chaque fois.'},
     {g:'Exercices', t:'Opticaide', u:'https://zexonis.github.io/Opticaide/', ua:1,
      d:'Générateur d’exercices d’optique, modules 1 à 3.'}
   ],
@@ -281,7 +345,9 @@ const PAGES = {
   ],
   to:[
     {g:'Atelier', t:'Atelier TO M5–M8', u:'atelier-to-m5-m6.html', v:true, ua:2,
-     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre, OCT, caméra rétinienne, pression corrigée et gouttes diagnostiques. Rappel du jour, guide pas à pas, annotations et tuteur.'}
+     d:'Kératométrie, topographie, kératocône, verres multifoyers, lentimètre, OCT, caméra rétinienne, pression corrigée et gouttes diagnostiques. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+    {g:'Exerciseur', t:'Exerciseur TO UA2', u:'drill-to.html', ua:2, x:1,
+     d:'278 questions sur les modules 5 à 8 : kératométrie et topographie, lunettes et lentimètre, OCT, caméra rétinienne, gouttes diagnostiques.'}
   ]
 };
 const NOTES_UA1 = [
@@ -367,6 +433,60 @@ function voirUA1(on){
 }
 $('#voir-ua1').addEventListener('click', () => voirUA1($('#voir-ua1').getAttribute('aria-pressed') !== 'true'));
 voirUA1(false);
+
+/* ---------- « Les exams me stressent » : choisir un exerciseur, l'examen le plus proche en premier ---------- */
+const JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+const MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const leJour = iso => { const [a, m, j] = iso.split('-').map(Number); return new Date(a, m - 1, j); };
+/* en jours de calendrier, à l'heure de l'appareil ; l'arrondi absorbe le changement d'heure */
+function dansJours(iso, auj = new Date()){ return Math.round((leJour(iso) - new Date(auj.getFullYear(), auj.getMonth(), auj.getDate())) / 864e5); }
+function quand(ex, auj){
+  if(!ex) return '';
+  const n = dansJours(ex.d, auj);
+  if(n < 0) return '';
+  const d = leJour(ex.d), h = ex.h ? ', ' + ex.h : '';
+  if(n === 0) return 'Examen aujourd’hui' + h;
+  if(n === 1) return 'Examen demain' + h;
+  return 'Examen ' + JOURS[d.getDay()] + ' ' + (d.getDate() === 1 ? '1er' : d.getDate()) + ' ' + MOIS[d.getMonth()] + h + ' · dans ' + n + ' jours';
+}
+function exosTries(auj){
+  const l = COURS.map((c, i) => ({c, i, p:(PAGES[c.id] || []).find(p => p.x === 1), aussi:(PAGES[c.id] || []).filter(p => p.x === 2)})).filter(o => o.p);
+  const rang = o => { const n = o.c.examen ? dansJours(o.c.examen.d, auj) : -1; return n < 0 ? 1e6 + o.i : n; };
+  return l.sort((a, b) => rang(a) - rang(b));
+}
+function rendreCalme(auj){
+  $('#calme-exos').innerHTML = exosTries(auj).map(o => {
+    const q = quand(o.c.examen, auj);
+    return '<div class="exo" style="--c:' + varCoul(o.c) + '">' +
+      '<a class="exo-lien" href="' + esc(o.p.u) + '" target="_blank" rel="noopener" data-titre="' + esc(o.p.t) + '"><span class="raie" aria-hidden="true"></span>' +
+        '<span>' + (q ? '<span class="exo-quand">' + esc(q) + '</span>' : '') + '<span class="exo-nom">' + esc(o.c.court) + '</span><span class="exo-desc">' + esc(o.p.d) + '</span></span>' +
+        '<span class="aller">Commencer ↗</span></a>' +
+      o.aussi.map(p => '<a class="exo-aussi" href="' + esc(p.u) + '" target="_blank" rel="noopener" data-titre="' + esc(p.t) + '">Aussi : <b>' + esc(p.t) + '</b>, pour te mettre en situation ↗</a>').join('') +
+      '</div>';
+  }).join('');
+  /* un cours qui a un atelier mais pas d'exerciseur : on le dit, et on montre où trouver des questions */
+  const sans = COURS.filter(c => (PAGES[c.id] || []).some(p => p.v) && !(PAGES[c.id] || []).some(p => p.x === 1));
+  $('#calme-pied').innerHTML = sans.map(c => { const at = PAGES[c.id].find(p => p.v);
+      return '<p>' + esc(c.court) + ' n’a pas encore d’exerciseur. Dans <a href="' + esc(at.u) + '" target="_blank" rel="noopener" data-titre="' + esc(at.t) + '">son atelier</a>, le bouton « Arène » pose aussi des questions.</p>'; }).join('') +
+    '<button type="button" id="calme-ateliers">Je préfère revoir la matière : voir les ateliers</button>';
+}
+const calme = $('#calme');
+function ouvrirCalme(){
+  rendreCalme();
+  if(typeof calme.showModal !== 'function'){ $('#t-raies').scrollIntoView(); return; }   /* très vieux navigateur : les cours, plus bas */
+  if(!calme.open) calme.showModal();
+  $('#calme-t').focus({preventScroll:true});
+}
+$('#stress').addEventListener('click', ouvrirCalme);
+$('#calme-x').addEventListener('click', () => calme.close());
+calme.addEventListener('click', e => {
+  if(e.target === calme) calme.close();                                   /* un clic sur le voile */
+  else if(e.target.closest('a')) setTimeout(() => calme.close(), 0);      /* le lien s'ouvre dans un nouvel onglet ; au retour, l'accueil */
+  else if(e.target.closest('#calme-ateliers')){ calme.close(); $('#t-raies').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
+});
+/* …/Lumiere/#examens ouvre le choix directement : un lien à partager la veille d'un examen */
+if(location.hash === '#examens') ouvrirCalme();
+window.addEventListener('hashchange', () => { if(location.hash === '#examens') ouvrirCalme(); });
 
 /* ---------- le faisceau : canvas ---------- */
 const reduit = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -601,6 +721,11 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-14', p:['*'], t:'Un examen approche ? Sur la page d’accueil de Lumière, touche « 😢 Les exams me stressent » et choisis ton cours : tu arrives à des questions courtes, corrigées tout de suite, pour voir ce que tu sais déjà et ce qu’il te reste à revoir.'},
+    {d:'2026-11-14', p:['to-m56'], t:'278 questions pour préparer l’examen, sur les modules 5 à 8 : c’est le nouvel exerciseur. Une mauvaise réponse te dit quelle erreur tu as faite, et « Mes erreurs » te ramène les questions manquées. Tu le trouves sur la page d’accueil de Lumière, sous Tests ophtalmiques.'},
+    {d:'2026-11-14', p:['adm-m07'], t:'Nouvel exerciseur pour préparer l’examen : croix optique, types d’astigmatisme, transposition, nom d’une Rx et Rx multifocale vers la simple vision, avec des ordonnances toujours nouvelles. Tu le trouves sur la page d’accueil de Lumière, sous Bureau ophtalmique.'},
+    {d:'2026-11-14', p:['opt-ua2'], t:'« Quelle formule ? », pour préparer l’examen : des problèmes mêlés des modules 6 à 8. Tu choisis d’abord la formule, puis tu calcules ; le « ? » explique chaque formule. Tu le trouves sur la page d’accueil de Lumière, sous Optique.'},
+    {d:'2026-11-14', p:['opt-ua2'], t:'Examen blanc d’Optique, au format annoncé pour le 17 novembre : 22 questions, les formules à la fin, et le corrigé. Imprime-le ou fais-le à l’écran ; chaque nouvelle version change les questions. Tu le trouves sur la page d’accueil de Lumière, sous Optique.'},
     {d:'2026-11-09', p:['adm-m07'], t:'Diapo 44 du cours sur la Rx multifocale : la prof a confirmé en classe que le +5.50 est une coquille. La bonne réponse est +4.50 (+3.25 et la moitié de +2.50). L’atelier et le Survol le disent maintenant.'},
     {d:'2026-11-09', p:['adm-m07'], t:'La Rx multifocale vers la simple vision est arrivée dans l’atelier Bureau, en 4 écrans : reconnais une Rx multifocale, puis prépare les lunettes de loin, d’ordinateur ou de lecture à partir d’une Rx avec addition (0 %, 50 % ou 100 % de l’addition ajoutés à la sphère). C’est la partie 7 ; « Au comptoir » devient la partie 8.'},
     {d:'2026-11-09', p:['adm-m07'], t:'« À toi » sur la Rx multifocale vers la simple vision : des ordonnances toujours nouvelles, avec cylindre, prisme ou addition impaire, jusqu’à trois justes de suite, puis à l’envers (retrouver l’addition ou la Rx de loin). Aussi : les 18 exercices du cours, corrigés case par case.'},
@@ -759,7 +884,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '1c456bfc2e60';
+  const ICI = 'ac3595e88124';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

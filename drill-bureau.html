@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bureau ophtalmique, UA2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* L'exerciseur de notions : le moteur de « Quelle formule ? » (Optique UA2), pour des cours de notions. Des questions
+   mêlées (QCM, vrai ou faux, calcul, mise en ordre, ordonnance), une carte des familles à côté, le critère du blueprint
+   §4.2 (trois de suite, sans aide, en au moins cinq essais). Gabarit commun : Guides/_commun/drill-notions/gabarit.html,
+   assemblé par construire.py avec la banque d'un cours. Couleurs : celles de « Quelle formule ? ». */
+:root{
+  --bg:#ECF0F2; --panel:#FFFFFF; --panel-2:#F3F6F8; --ink:#13202A; --ink-2:#465763; --ink-3:#5F717D; --line:#D3DBE0;
+  --accent:#9C2F6B; --accent-soft:rgba(156,47,107,.11); --on-accent:#FFFFFF;
+  --ok:#1B7A4B; --ok-soft:rgba(27,122,75,.12); --warn:#9A5F0C; --warn-soft:rgba(158,99,13,.14); --bad:#B3352A; --bad-soft:rgba(179,53,42,.11);
+  --f-display:"STIX Two Text", Cambria, Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono", ui-monospace, Consolas, monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+    --accent:#F08CC4; --accent-soft:rgba(240,140,196,.15); --on-accent:#0C1217;
+    --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+  --accent:#F08CC4; --accent-soft:rgba(240,140,196,.15); --on-accent:#0C1217;
+  --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 var(--f-body)}
+[hidden]{display:none!important}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.page{max-width:1080px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
+.tete{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+h1{margin:0;font:600 30px/1.1 var(--f-display);letter-spacing:-.01em}
+.tete p{margin:0;color:var(--ink-2);font-size:15.5px}
+.bande{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.puce{min-height:38px;padding:5px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:15px}
+.puce[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.puce .n{margin-left:5px;font:600 12px var(--f-mono);opacity:.8}
+.compte{margin-left:auto;font:600 13px var(--f-mono);color:var(--ink-2)}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.scene,.cote section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.scene{padding:20px;display:flex;flex-direction:column;gap:14px;min-height:380px}
+.sujet{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font:600 12.5px var(--f-mono);color:var(--ink-3)}
+.sujet .chip{padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.sujet .sorte{padding:2px 9px;border-radius:999px;background:var(--panel-2)}
+.enonce{margin:0;font-size:19px;line-height:1.5;max-width:64ch}
+.tuiles{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.tuiles.deux{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tuile{display:flex;align-items:center;gap:10px;min-height:56px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-align:left;font-size:17px;line-height:1.35}
+.tuile:hover:not(:disabled){border-color:var(--accent)}
+.tuile kbd{flex:none;width:24px;height:24px;display:grid;place-items:center;border-radius:6px;background:var(--panel);border:1px solid var(--line);font:600 12px var(--f-mono);color:var(--ink-3)}
+.tuile .f{min-width:0;overflow-wrap:anywhere}
+.tuile.non{border-color:var(--bad);background:var(--bad-soft)}
+.tuile.oui{border-color:var(--ok);background:var(--ok-soft)}
+.tuile:disabled{cursor:default}
+.qm{position:relative;flex:none;width:28px;height:28px;padding:0;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--panel);color:var(--ink-2);font:700 14px/1 var(--f-body)}
+.qm::after{content:"";position:absolute;inset:-8px}
+.qm:hover{border-color:var(--accent);color:var(--accent)}
+.suite{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:s}
+.suite li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border-radius:10px;background:var(--ok-soft);font-size:16.5px}
+.suite li::before{content:counter(s);flex:none;width:24px;height:24px;display:grid;place-items:center;border-radius:6px;background:var(--panel);font:600 12px var(--f-mono);color:var(--ink-2)}
+.suite.vide-s li{background:var(--panel-2);color:var(--ink-3)}
+.suite-t{margin:0;font-size:14px;font-weight:700;color:var(--ink-2)}
+.expl-fond{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;background:rgba(8,12,16,.5)}
+.expl{width:min(440px,100%);height:100%;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--panel);border-left:1px solid var(--line)}
+.expl h2{margin:0;font:600 24px/1.2 var(--f-display);overflow-wrap:anywhere}
+.expl h3{margin:0 0 3px;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.expl p{margin:0}
+.expl .haut{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.expl .ex{padding:10px 12px;border-radius:10px;background:var(--panel-2)}
+.expl .piege{padding:10px 12px;border-radius:10px;background:var(--warn-soft)}
+.expl small{color:var(--ink-3);font-size:13.5px}
+.expl textarea{width:100%;min-height:42vh;padding:10px 12px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);font:400 14px/1.5 var(--f-mono)}
+.copie-note{flex-basis:100%;color:var(--ink-2);font-size:14.5px}
+.saisie{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.saisie input{width:150px;min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);font:600 18px var(--f-mono)}
+.saisie .u{color:var(--ink-2)}
+.rx{display:flex;flex-wrap:wrap;gap:10px}
+.rx label{display:flex;flex-direction:column;gap:3px;font:600 12px var(--f-mono);color:var(--ink-3)}
+.rx input{width:110px;min-height:46px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);font:600 18px var(--f-mono)}
+.bouton.signe{min-width:46px;padding:8px 10px;font-size:18px}
+.bouton{min-height:44px;padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-weight:700}
+.bouton:hover{border-color:var(--accent)}
+.bouton.plein{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.lien{border:0;background:none;padding:8px 2px;min-height:36px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;font-size:15px}
+.lien.petit{align-self:flex-start;font-size:14px;color:var(--ink-3)}
+.brouillon-boite{display:flex;flex-direction:column;gap:6px}
+.brouillon-t{font-size:14px;font-weight:700;color:var(--ink-2)}
+.brouillon-t .facultatif{font-weight:400;color:var(--ink-3)}
+.brouillon{width:100%;min-height:104px;padding:10px 12px;border:1px dashed var(--ink-3);border-radius:10px;background:var(--panel-2);color:var(--ink);font:400 16px/1.55 var(--f-mono);resize:vertical}
+.msg{margin:0;padding:10px 13px;border-radius:10px;font-size:16px}
+.msg.bad{background:var(--bad-soft)}
+.msg.warn{background:var(--warn-soft)}
+.msg.ok{background:var(--ok-soft)}
+.msg.info{background:var(--panel-2)}
+.dem{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.dem li{display:grid;grid-template-columns:168px minmax(0,1fr);gap:10px;font-size:16px}
+.dem .l{color:var(--ink-3);font-size:14px}
+.dem .c{font-family:var(--f-mono);font-size:15px;overflow-wrap:anywhere}
+.source{margin:0;color:var(--ink-3);font-size:13px}
+.bas{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-top:auto}
+.cote{display:flex;flex-direction:column;gap:12px}
+.cote section{padding:14px}
+.cote h2{margin:0 0 8px;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.mod-t{margin:10px 0 2px;font:600 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.fam{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:0 9px;margin:0 -7px;padding:6px 7px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.3}
+.fam.tout,.mod-t + .fam{border-top:0}
+.fam .nom small{margin-left:7px;color:var(--ink-3);font-size:12.5px}
+.fam .nom small.bon{color:var(--ok);font-weight:700}
+.fam .fin{display:flex;align-items:center;gap:7px}
+.ser{display:inline-flex;gap:4px;align-items:center;flex:none}
+.ser i{width:10px;height:10px;border-radius:50%;background:transparent;border:1px solid var(--ink-3);flex:none}
+.ser i.on{background:var(--accent);border-color:var(--accent)}
+.ser i.neuf{width:12px;height:12px;background:var(--ok);border-color:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+.ser i.perdu{background:transparent;border:1px dashed var(--bad)}
+.fam.eteinte .nom{color:var(--ink-3)}
+.fam.eteinte .fin{opacity:.55}
+.fam.vient{border-radius:9px;border-top-color:transparent}
+.fam.vient + .fam{border-top-color:transparent}
+.fam.vient.ok{background:var(--ok-soft);box-shadow:inset 3px 0 0 var(--ok)}
+.fam.vient.perdu{background:var(--bad-soft);box-shadow:inset 3px 0 0 var(--bad)}
+.fam.vient.neutre{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--ink-3)}
+.fam .tag{font:600 12.5px var(--f-mono);font-style:normal;white-space:nowrap}
+.fam.vient.ok .tag{color:var(--ok)}
+.fam.vient.perdu .tag{color:var(--bad)}
+.legende{margin:9px 0 0;font-size:12.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.inter{position:relative;flex:none;width:36px;height:21px;padding:0;border:1px solid var(--ink-3);border-radius:999px;background:var(--panel-2);cursor:pointer}
+.inter::before{content:'';position:absolute;inset:-9px -6px}
+.inter span{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--ink-3);transition:transform .15s ease}
+.inter[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.inter[aria-checked="true"] span{transform:translateX(15px);background:var(--on-accent)}
+.fam.tout{padding-bottom:8px}
+.fam.tout .nom{font-weight:700}
+.fam.tout .nom small{font-weight:400}
+.aide-carte{margin:-2px 0 8px;font-size:12.5px;color:var(--ink-3);line-height:1.35}
+.annonce-carte{margin:6px 0 0;font-size:12.5px;color:var(--warn)}
+.annonce-carte:empty{display:none}
+.maitrise{padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.m-ligne{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.m-t{margin:0;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.m-pct{font:600 26px/1 var(--f-display)}
+.m-delta{padding:1px 8px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font:600 13px var(--f-mono)}
+.m-delta.moins{background:var(--bad-soft);color:var(--bad)}
+.jauge{flex:1 1 130px;min-width:110px;max-width:240px;height:8px;border-radius:999px;background:var(--accent-soft);overflow:hidden}
+.jauge i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.m-rep,.m-vit{font-size:13.5px;color:var(--ink-2)}
+.m-vit{margin-left:auto}
+.calcul{margin-top:6px}
+.seul-mobile{display:none}
+.calcul summary{font-weight:400;font-size:13px;color:var(--ink-3)}
+.calcul p{margin:6px 0 0;font-size:13.5px;line-height:1.45;color:var(--ink-2);max-width:86ch}
+.bilan{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:3px 13px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)}
+.bilan.ok{border-color:var(--ok);background:var(--ok-soft)}
+.bilan.perdu{border-color:var(--bad);background:var(--bad-soft)}
+.bilan p{margin:0;font-size:15.5px;line-height:1.45}
+.bilan .sous{grid-column:2;font-size:13.5px;color:var(--ink-2)}
+.bilan .ser{gap:5px}
+.bilan .ser i{width:15px;height:15px}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+.bilan .ser i.neuf{animation:pop .5s ease-out}
+@media (prefers-reduced-motion:reduce){.inter span{transition:none} .bilan .ser i.neuf{animation:none}}
+@media (min-width:881px){ .cote{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow-y:auto;scrollbar-width:thin;padding-right:2px} }
+.erreurs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.35}
+.erreurs li{display:flex;flex-direction:column;gap:2px}
+.erreurs .r{color:var(--ok)}
+.vide{margin:0;color:var(--ink-3);font-size:14.5px}
+details summary{cursor:pointer;font-weight:700;font-size:15px}
+.mots{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35}
+.mots li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 8px;align-items:center}
+.note{margin:0;font-size:13.5px;color:var(--ink-2);max-width:80ch}
+@media (max-width:880px){ .corps{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  h1{font-size:26px}
+  .scene{padding:15px}
+  .enonce{font-size:18px}
+  .tuiles.deux{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dem li{grid-template-columns:minmax(0,1fr);gap:0}
+  .compte{display:none}
+  .page{gap:12px;padding-top:12px}
+  .tete p{display:none}
+  .bande{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+  .bande::-webkit-scrollbar{display:none}
+  .puce{flex:none}
+  .maitrise{padding:8px 12px}
+  .m-rep,.m-vit{display:none}
+  .seul-mobile{display:block!important}
+  .jauge{flex-basis:100%;max-width:none;order:9}
+  .bilan{grid-template-columns:minmax(0,1fr)}
+  .bilan .sous{grid-column:1}
+  .saisie label{flex-basis:100%}
+  .saisie input{width:140px}
+  .rx input{width:96px}
+  .expl-fond{align-items:flex-end;justify-content:stretch}
+  .expl{width:100%;height:auto;max-height:84vh;border-left:0;border-radius:16px 16px 0 0}
+}
+</style>
+<style>
+.lum-nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px 7px;font-size:14px;line-height:1.3}
+.lum-nav a{display:inline-flex;align-items:center;min-height:34px;padding:3px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink-2);text-decoration:none;white-space:nowrap}
+.lum-nav a:hover{border-color:var(--ink-3);color:var(--ink)}
+.lum-nav a.acc{color:var(--ink);font-weight:700}
+.lum-nav a[aria-current]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:700}
+.lum-nav span{margin:0 2px 0 8px;color:var(--ink-3);white-space:nowrap}
+@media (max-width:600px){ .lum-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px} .lum-nav::-webkit-scrollbar{display:none} .lum-nav span{display:none} }
+@media print{ .lum-nav{display:none} }
+</style>
+</head>
+<body>
+<main class="page">
+<nav class="lum-nav" aria-label="Lumière et les autres exerciseurs"><a class="acc" href="./">← Lumière</a><span>Exerciseurs</span><a href="drill-to.html">Tests ophtalmiques</a><a href="drill-formules.html">Optique</a><a href="drill-bureau.html" aria-current="page">Bureau</a></nav>
+  <header class="tete">
+    <h1 id="titre"></h1>
+    <p id="sous-titre"></p>
+  </header>
+  <div class="bande" role="group" aria-label="Ce que tu pratiques" id="portees"></div>
+  <section class="maitrise" id="progression" aria-labelledby="t-prog"></section>
+  <div class="corps">
+    <section class="scene" id="scene" aria-live="polite"></section>
+    <aside class="cote">
+      <section aria-labelledby="t-carte"><h2 id="t-carte">Ta carte</h2><p class="aide-carte">Un interrupteur par notion : allumée, tu la pratiques. Le «&nbsp;?&nbsp;» ouvre sa fiche.</p><div id="carte"></div><p class="annonce-carte" id="annonce-carte" role="status" aria-live="polite"></p><p class="legende"><span class="ser" aria-hidden="true"><i class="on"></i></span>un point (juste du premier coup, sans aide)<span class="ser" aria-hidden="true"><i class="neuf"></i></span>ton dernier point</p></section>
+      <section aria-labelledby="t-err"><h2 id="t-err">Tes dernières erreurs</h2><ul class="erreurs" id="erreurs"></ul></section>
+    </aside>
+  </div>
+  <p class="note" id="note"></p>
+</main>
+<script>
+(() => {
+'use strict';
+/* === données du cours (assemblées par construire.py) === */
+const COURS = {"titre":"Bureau ophtalmique, UA2","sousTitre":"Croix optique, types d’astigmatisme, transposition, analyse d’ordonnance, Rx multifocale en simple vision. Des questions mêlées et des ordonnances neuves à chaque calcul ; le « ? » ouvre la fiche de chaque notion.","nom":"Principes et procédures d’un bureau ophtalmique (ADM 0010)","cle":"drill-bureau-ua2-v1","examen":{"date":"2026-11-23","txt":"lundi 23 novembre"},"note":"Questions tirées des modules 7 à 9 de la prof (diapos, vidéo et questionnaires de pratique) ; les ordonnances des calculs sont neuves à chaque fois. Un point = une réponse juste du premier coup, sans aide. Réussie = trois points de suite, en au moins cinq essais. La fiche « ? » ou une copie pour une IA ne donnent pas de point et n’en enlèvent pas.","maitrise":"Ta maîtrise de l’UA2","tout":"Tout l’UA2"};
+const BANQUE = {"familles":[{"id":"b-croix-montre","t":"Ce que la croix montre","mod":7,"carte":{"quoi":"La croix optique montre la Rx de loin seulement : SPH, CYL et AXE, posés sur deux méridiens à angle droit. Une croix par œil.","quand":"Dès qu’on te donne une Rx complète à mettre en croix, ou une croix seule à interpréter.","piege":"Mettre l’ADD ou le prisme sur la croix, ou deviner l’œil d’après la croix : « CECI EST DICTÉ PAR RX ».","exemple":"OD -2.25 -0.75 x 180 2△BI Add +2.00 : sur la croix, seulement -2.25 sur 180 et -3.00 sur 090.","source":"7.1-d3, d5, d8–d10, d22–d24, d31–d37, d50 ; 7.3-d38"}},{"id":"b-croix-construire","t":"Construire la croix ① ② ③","mod":7,"carte":{"quoi":"① la sphère va sur le méridien de l’axe ; ② SPH + CYL va sur le 2e méridien ; ③ le 2e méridien = axe ± 090, entre 001 et 180. Sans cylindre, même force partout.","quand":"Toute Rx de loin à mettre en croix.","piege":"Mettre la sphère sur 180 quel que soit l’axe : pour OS -2.00 -0.75 x 090, -2.00 va sur 090.","exemple":"OD -5.00 -1.50 x 160 : -5.00 sur 160 ; (-5.00) + (-1.50) = -6.50 sur 070 (160 - 090).","source":"7.1-d22 ; 7.2-d11–d29, d32 ; 7.3-d15, d18–d28"}},{"id":"b-croix-oblique","t":"Axe oblique : options A et B","mod":7,"carte":{"quoi":"Axe ni 090 ni 180 : option A, tracer les vrais méridiens ; option B, garder une croix droite et étiqueter les bras. Bras horizontal = méridien le plus près de 180 ou 0.","quand":"Quand l’axe de la Rx est oblique.","piege":"Tracer 160 en montant vers la droite : 160 monte vers la gauche, du côté de 180.","exemple":"-5.00 -1.50 x 160, option B : bras horizontal 160 / -5.00, bras vertical 070 / -6.50.","source":"7.3-d13–d17, d28 ; 7.2T-d3, d12–d16"}},{"id":"b-croix-types","t":"Foyers et types d’astigmatisme","mod":7,"carte":{"quoi":"Le signe d’un méridien situe son foyer : négatif devant la rétine, positif derrière, Plano sur la rétine. Les deux signes donnent le type : simple, composé ou mixte.","quand":"Quand on te demande où sont les points focaux, l’amétropie ou le type d’astigmatisme.","piege":"Lire le type avec la sphère seule : +2.50 -3.75 x 090 donne +2.50 et -1.25, donc mixte.","exemple":"+2.00 -2.00 x 135 : +2.00 sur 135, Plano sur 045 → « Astigmatisme Hypermétrope Simple ».","source":"7.1-d40–d41, d50 ; 7.2-d30–d31 ; 7.3-d30–d36 ; UA1 M3"}},{"id":"b-croix-rx","t":"De la croix à la Rx","mod":7,"carte":{"quoi":"À rebours : le méridien le plus positif donne la Rx en CYL négatif (SPH = son pouvoir, AXE = son degré, CYL = l’autre - SPH) ; le plus négatif donne la Rx en CYL positif. Bras égaux : DS.","quand":"« ANALYSE INVERSE », ou une croix à réécrire en Rx ; aussi la croix d’une Rx en CYL positif.","piege":"Prendre le méridien le plus négatif comme sphère pour la Rx en CYL négatif : tu obtiens un cylindre positif.","exemple":"-0.50 sur 180 et -1.50 sur 090 → -0.50 -1.00 x 180 (CYL négatif) et -1.50 +1.00 x 090 (CYL positif).","source":"7.1-d43–d49 ; 7.2T-d5–d12, d18–d25"}},{"id":"b-transposer","t":"Transposer en 4 étapes","mod":8,"carte":{"quoi":"Réécrire la même correction dans l’autre format de cylindre : 1) SPH + CYL = nouveau SPH ; 2) inverser le signe du CYL ; 3) axe ± 090, entre 001 et 180 ; 4) prisme et ADD recopiés.","quand":"Une Rx d’ophtalmologiste (CYL +) à lire comme une Rx d’optométriste (CYL -), ou l’inverse.","piege":"-8.00 +2.00 x 135 : la nouvelle sphère est -6.00 (on monte de 2.00), pas -10.00.","exemple":"-8.00 +2.00 x 135 → (-8.00) + (+2.00) = -6.00 ; -2.00 ; 135 - 090 = 045 → -6.00 -2.00 x 045.","source":"7.1T-d5, d7–d8, d16–d39 ; PDF ; MP4"}},{"id":"b-analyse","t":"Nommer le type d’une Rx","mod":8,"carte":{"quoi":"Avant tout, le CYL doit être absent ou négatif ; sinon tu transposes. Puis : signe de la sphère (myope, hypermétrope), cylindre (sphérique, torique), prisme (prismatique), ADD (presbyte).","quand":"Quand on te demande le type d’une Rx, surtout une Rx en CYL positif.","piege":"Lire la sphère avant de transposer : OD -3.75 +4.00 x 166 devient +0.25 -4.00 x 076, une Rx hypermétrope.","exemple":"OD -3.75 +4.00 x 166 Add +2.00 → +0.25 -4.00 x 076 Add +2.00 → « OD: Hypermétrope Torique et Presbyte ».","source":"7.3T-d4–d17, d30–d42, d61–d67"}},{"id":"b-sv-multi","t":"SV ou multifocal ?","mod":9,"carte":{"quoi":"Une Rx est multifocale seulement si elle a une ADD : elle « DOIT comprendre un pouvoir d’ADDITION ». Sans ADD, c’est une SV : un seul champ (VL, VI ou VP).","quand":"Avant toute commande : « Est-ce qu’il y a un pouvoir d’Addition? »","piege":"Prendre une forte sphère positive pour une ADD : OD +3.25 sans ADD reste une SV.","exemple":"OD -2.00 Add +1.50 / OS -2.50 Add +1.50 : multifocale. OD +4.00 -0.25 x 175, « Notes: Ordinateur » : SV-VI.","source":"d1, d3–d13, d23, d38, d63 ; UA1 M3"}},{"id":"b-adapter","t":"Adapter : 0 %, 50 %, 100 %","mod":9,"carte":{"quoi":"SPH de la SV = SPH + une part de l’ADD : 0 % en SV-VL, 50 % en SV-VI, 100 % en SV-VP. CYL, AXE et prisme se recopient ; l’ADD disparaît.","quand":"Une Rx avec ADD à commander pour un seul champ : loin, ordinateur, lecture.","piege":"En SV-VI avec une ADD impaire (+2.75, +1.75, +2.25), arrondir la moitié vers le haut : il faut « l’addition le plus faible » (sic).","exemple":"OD -1.00 -0.50 x 164 Add +2.00 : SV-VL -1.00 -0.50 x 164 · SV-VI Plano -0.50 x 164 · SV-VP +1.00 -0.50 x 164.","source":"d14–d61"}},{"id":"b-trois-rx","t":"Les trois Rx SV","mod":9,"carte":{"quoi":"Une Rx multifocale donne trois Rx SV : SV-VL (0 %), SV-VI (50 %, au quart du dessous si la moitié tombe entre deux), SV-VP (100 %). Toujours VP ≥ VI ≥ VL.","quand":"« Trouver les trois rx. », ou une commande complète avec CYL, prisme et besoin du patient.","piege":"Lire les réponses du cours dans le mauvais sens : la ligne de vue va de « PROCHE » à « DISTANCE », donc VP, VI, VL.","exemple":"-4.00 Add +2.00 → SV-VL -4.00 · SV-VI -3.00 · SV-VP -2.00.","source":"d62–d68"}}],"items":[{"id":"b-001","fam":"b-croix-montre","kc":"B7.1","mod":7,"k":"qcm","q":"La Rx dit : OD -1.50 -0.50 x 180 1△BU Add +2.00. Qu’est-ce qui va sur la croix optique ?","choix":[{"t":"-1.50 sur 180 et -2.00 sur 090, rien d’autre","ok":true},{"t":"-1.50 sur 180, -2.00 sur 090, et l’ADD +2.00","pourquoi":"L’addition reste hors de la croix : « Exclus (sic) Pouvoir d’Addition »."},{"t":"-1.50 sur 180, -2.00 sur 090, et le prisme 1△BU","pourquoi":"Le prisme reste hors de la croix : « Exclus (sic) Prisme »."},{"t":"-1.50 sur 090 et -2.00 sur 180, rien d’autre","pourquoi":"Bras inversés : la sphère va sur le méridien de l’axe, ici 180."}],"expl":"La croix « représente les puissance (sic) de l’ordonnance en vision de loin (VL) » : SPH, CYL, AXE. Pour un prisme ou une addition : « RIEN! ».","source":"7.1-d3, d5 ; 7.3-d37–d38"},{"id":"b-002","fam":"b-croix-montre","kc":"B7.1","mod":7,"k":"vf","q":"Si la Rx a une addition, tu l’écris sur la croix, à côté de la sphère.","v":false,"expl":"Prisme ou addition dans la Rx ? Réponse du cours : « RIEN! ». « La croix optique sert à partager les information (sic) SPH/CYL/AXE ».","source":"7.3-d37–d38"},{"id":"b-003","fam":"b-croix-montre","kc":"B7.1","mod":7,"k":"vf","q":"La croix optique représente la Rx en vision de loin.","v":true,"expl":"Elle « représente les puissance (sic) de l’ordonnance en vision de loin (VL) ». Le près, avec l’addition, n’y est pas.","source":"7.1-d3, d5"},{"id":"b-004","fam":"b-croix-montre","kc":"B7.2","mod":7,"k":"qcm","q":"On te montre seulement une croix : +2.50 sur 180 et +2.50 sur 090. De quel œil s’agit-il ?","choix":[{"t":"On ne peut pas le savoir avec la croix seule","ok":true},{"t":"L’OD, parce que la croix est à gauche de la page","pourquoi":"La place sur la page ne dit rien : c’est la Rx qui dit l’œil."},{"t":"L’OS, parce que la valeur est positive","pourquoi":"Le signe dit l’amétropie (ici hypermétrope), jamais l’œil."},{"t":"L’OD, parce qu’un méridien est à 180","pourquoi":"Les méridiens ne disent pas l’œil : les deux verres ont les mêmes repères."}],"expl":"« OD ou OS ??? » → « Inconnu dans ce scénario ». La croix ne précise pas l’œil : c’est la Rx qui le dit.","source":"7.1-d24, d27–d32"},{"id":"b-005","fam":"b-croix-montre","kc":"B7.2","mod":7,"k":"vf","q":"La croix optique précise toujours s’il s’agit de l’OD ou de l’OS.","v":false,"expl":"« ATTN: LA CROIX OPTIQUE NE PRÉCISE PAS OD/OS, CECI EST DICTÉ PAR RX ».","source":"7.1-d24"},{"id":"b-006","fam":"b-croix-montre","kc":"B7.4","mod":7,"k":"qcm","q":"Sur un verre vu de face, vers où monte le méridien 135 ?","choix":[{"t":"Vers le haut à gauche","ok":true},{"t":"Vers le haut à droite","pourquoi":"Vers le haut à droite, c’est 045. 135 penche du côté de 180, à gauche."},{"t":"Tout droit vers le haut","pourquoi":"Tout droit vers le haut, c’est 090 ; 135 est entre 090 et 180."},{"t":"Vers la gauche, à l’horizontale","pourquoi":"L’horizontale, c’est 180 ; 135 est à mi-chemin entre 180 et 090."}],"expl":"Repères vus de face : 180 à gauche, 090 en haut, 0 à droite ; 135 en haut à gauche, 045 en haut à droite.","source":"7.1-d8–d10, d23"},{"id":"b-007","fam":"b-croix-montre","kc":"B7.4","mod":7,"k":"vf","q":"Sur un verre vu de face, 180 est à gauche et 090 en haut.","v":true,"expl":"Repères du cours : 180 à gauche, 090 en haut, 0 à droite, les mêmes sur les deux verres.","source":"7.1-d8–d10"},{"id":"b-008","fam":"b-croix-montre","kc":"B7.5","mod":7,"k":"qcm","q":"Rx : OD -3.50 · OS -2.75. Combien de croix dessines-tu, et que portent-elles ?","choix":[{"t":"Deux croix : -3.50 sur les deux bras de l’OD, -2.75 sur ceux de l’OS","ok":true},{"t":"Une croix : -3.50 sur 180 et -2.75 sur 090","pourquoi":"Une croix ne mélange pas deux yeux : une croix par œil."},{"t":"Deux croix : -3.50 sur 180 et -2.75 sur 090, sur chacune","pourquoi":"Chaque croix ne porte que les valeurs de son œil."},{"t":"Deux croix : -3.50 sur un seul bras de l’OD, -2.75 sur un seul bras de l’OS","pourquoi":"Rx sphérique : même force sur les deux méridiens de chaque croix."}],"expl":"Une croix par œil. Rx sphérique : « Pouvoir Sphérique = même force dans tous les méridiens de la croix ».","source":"7.1-d22, d33–d37"},{"id":"b-009","fam":"b-croix-montre","kc":"B7.5","mod":7,"k":"vf","q":"Sur des lunettes dessinées vues de face, la croix de l’OD est à gauche.","v":true,"expl":"On regarde les verres en face du patient : l’OD est à gauche, l’OS à droite.","source":"7.1-d34"},{"id":"b-010","fam":"b-croix-construire","kc":"B7.3","mod":7,"k":"qcm","q":"Rx -2.00 DS. Que porte sa croix ?","choix":[{"t":"-2.00 sur les deux méridiens","ok":true},{"t":"-2.00 sur 180 et Plano sur 090","pourquoi":"Sans cylindre, aucun méridien ne change : même force partout."},{"t":"-2.00 sur 180 seulement","pourquoi":"Une valeur sur un seul bras ne suffit pas : les deux méridiens portent -2.00."},{"t":"-1.00 sur chaque méridien","pourquoi":"On ne partage pas la sphère : chaque méridien porte toute la force, -2.00."}],"expl":"« Pouvoir Sphérique = même force dans tous les méridiens de la croix ». Une seule force, un seul foyer.","source":"7.1-d22–d23, d50"},{"id":"b-011","fam":"b-croix-construire","kc":"B7.3","mod":7,"k":"vf","q":"Une Rx avec un cylindre donne une croix torique : deux méridiens, deux forces.","v":true,"expl":"« Croix Optique TORIQUE = Rx avec astigmatisme = 2 méridiens = 2 forces ». Sans cylindre, les deux bras sont égaux.","source":"7.2-d32 ; 7.1-d22"},{"id":"b-012","fam":"b-croix-construire","kc":"B7.6","mod":7,"k":"qcm","q":"OS -2.00 -0.75 x 090. Sur quel méridien poses-tu -2.00 ?","choix":[{"t":"Sur 090, le méridien de l’axe","ok":true},{"t":"Sur 180, comme toujours pour la sphère","pourquoi":"La sphère ne va pas toujours sur 180 : elle suit l’axe, ici 090."},{"t":"Sur les deux méridiens","pourquoi":"Avec un cylindre, les méridiens diffèrent : -2.00 sur l’axe, -2.75 sur l’autre."},{"t":"Sur 180, parce que 090 porte le cylindre","pourquoi":"C’est l’inverse : l’axe est le méridien où le cylindre n’a pas de puissance."}],"expl":"① La sphère va sur l’axe : à l’OD x 180, sur 180 ; à l’OS x 090, sur 090. « L’axe du cylinder (sic) est la position ou (sic) il n’y a pas de puissance » (TO).","source":"7.2-d11, d23–d24 ; TO 5.1-d11"},{"id":"b-013","fam":"b-croix-construire","kc":"B7.6","mod":7,"k":"vf","q":"Le méridien de l’axe est celui où le cylindre agit le plus.","v":false,"expl":"C’est l’inverse : « L’axe du cylinder (sic) est la position ou (sic) il n’y a pas de puissance ». Le méridien de l’axe porte donc la sphère seule.","source":"TO 5.1-d11 ; 7.2-d16–d17"},{"id":"b-014","fam":"b-croix-construire","kc":"B7.6","mod":7,"k":"qcm","q":"-1.25 -0.50 x 180 et -1.25 -0.50 x 090 : qu’est-ce qui change entre leurs deux croix ?","choix":[{"t":"Le bras de -1.25 : 180 pour la 1re, 090 pour la 2e","ok":true},{"t":"Rien : -1.25 va toujours sur 180, quel que soit l’axe","pourquoi":"La sphère suit l’axe : x 090 la met sur 090."},{"t":"Les valeurs : la 2e croix porte -0.75 au lieu de -1.75","pourquoi":"Les valeurs restent -1.25 et -1.75 ; seuls les bras changent."},{"t":"Le signe : la 2e croix porte +1.25 et +1.75","pourquoi":"Changer l’axe ne change aucun signe, seulement le bras de chaque valeur."}],"expl":"Même sphère, même cylindre : -1.25 et -1.75 dans les deux cas. ① met -1.25 sur l’axe : c’est l’axe qui choisit le bras.","source":"7.2-d11, d16–d17, d23"},{"id":"b-015","fam":"b-croix-construire","kc":"B7.6","mod":7,"k":"qcm","q":"Tu fais la croix de +1.50 -0.50 x 090. Quelle croix est juste ?","choix":[{"t":"+1.50 sur 090 et +1.00 sur 180","ok":true},{"t":"+1.50 sur 180 et +1.00 sur 090","pourquoi":"Sphère posée sur 180 par habitude : l’axe est 090, la sphère va sur 090."},{"t":"+1.50 sur 090 et +2.00 sur 180","pourquoi":"Signe du cylindre perdu : +1.50 + (-0.50) = +1.00, pas +2.00."},{"t":"+1.50 sur 090 et -0.50 sur 180","pourquoi":"Cylindre seul sur le 2e méridien : il faut SPH + CYL, soit +1.00."}],"expl":"Axe 090 : ① +1.50 sur 090 ; ② +1.50 + (-0.50) = +1.00 ; ③ 090 + 090 = 180.","source":"7.2-d16–d24"},{"id":"b-016","fam":"b-croix-construire","kc":"B7.7","mod":7,"k":"qcm","q":"OD -1.00 -0.50 x 180. Que porte le méridien 090 ?","choix":[{"t":"-1.50","ok":true},{"t":"-0.50","pourquoi":"Cylindre seul : le 2e méridien porte SPH + CYL, pas le CYL."},{"t":"-1.00","pourquoi":"Sphère recopiée partout : avec un cylindre, le 2e méridien diffère de la sphère."},{"t":"+1.50","pourquoi":"Signe perdu : deux négatifs s’additionnent en un négatif plus grand."}],"expl":"« SPH + CYL = Force du 2e méridien » : « (-1.00) + (-0.50) = -1.50 ».","source":"7.2-d18–d21"},{"id":"b-017","fam":"b-croix-construire","kc":"B7.7","mod":7,"k":"vf","q":"Sur une croix torique, le 2e méridien porte seulement la valeur du cylindre.","v":false,"expl":"Il porte la somme : « SPH + CYL = Force du 2e méridien ». Pour -5.00 -1.50 x 160 : -6.50, pas -1.50.","source":"7.2-d18 ; 7.3-d21–d22"},{"id":"b-018","fam":"b-croix-construire","kc":"B7.8","mod":7,"k":"qcm","q":"+2.00 -2.00 x 135 : que porte le méridien 045 ?","choix":[{"t":"Plano","ok":true},{"t":"-4.00","pourquoi":"Signes contraires : depuis +2.00, on recule de 2.00 et on arrive à zéro."},{"t":"+4.00","pourquoi":"Tu as additionné les valeurs sans regarder le signe du cylindre."},{"t":"-2.00","pourquoi":"Cylindre seul : le 2e méridien porte SPH + CYL, soit zéro."}],"expl":"+2.00 + (-2.00) = zéro, qui s’écrit Plano : « Plano = Emmetrope (sic) = Sur la rétine ».","source":"7.3-d30–d32"},{"id":"b-019","fam":"b-croix-construire","kc":"B7.8","mod":7,"k":"qcm","q":"Croix de +0.25 -0.75 x 090. Que porte le méridien 180 ?","choix":[{"t":"-0.50","ok":true},{"t":"+0.50","pourquoi":"Signe perdu en passant zéro : +0.25 recule de 0.75 et passe sous zéro."},{"t":"-1.00","pourquoi":"Tu as additionné les valeurs (0.25 + 0.75) : les signes sont contraires."},{"t":"Plano","pourquoi":"On dépasse zéro : +0.25 - 0.75 = -0.50."}],"expl":"② +0.25 + (-0.75) = -0.50 sur 180. Le zéro se traverse : un méridien positif, l’autre négatif.","source":"7.2-d30 (n° 6)"},{"id":"b-020","fam":"b-croix-construire","kc":"B7.9","mod":7,"k":"vf","q":"Avec un cylindre négatif, le 2e méridien est toujours plus négatif (ou moins positif) que la sphère.","v":true,"expl":"② ajoute un nombre négatif à la sphère : le 2e méridien descend toujours. Si ton 2e méridien est au-dessus de la sphère, refais le calcul.","source":"déduit de 7.2-d18 ; UA1"},{"id":"b-021","fam":"b-croix-construire","kc":"B7.9","mod":7,"k":"qcm","q":"Pour -2.00 -1.25 x 180, un camarade écrit -2.00 sur 180 et -0.75 sur 090. Quel contrôle montre l’erreur ?","choix":[{"t":"Le 2e méridien devrait être sous la sphère","ok":true},{"t":"La sphère devrait être sur le méridien 090","pourquoi":"L’axe est 180 : la sphère est bien sur 180. L’erreur est ailleurs."},{"t":"Les deux méridiens devraient être égaux","pourquoi":"Égaux, ce serait une Rx sphérique ; ici il y a un cylindre."},{"t":"Le 2e méridien devrait être positif","pourquoi":"Un cylindre négatif fait descendre : le 2e méridien reste négatif ici."}],"expl":"-0.75 est au-dessus de -2.00 : impossible avec un CYL négatif. (-2.00) + (-1.25) = -3.25 ; il a soustrait les valeurs.","source":"déduit de 7.2-d18 ; UA1"},{"id":"b-022","fam":"b-croix-construire","kc":"B7.10","mod":7,"k":"qcm","q":"-5.00 -1.50 x 160 : sur quel méridien poses-tu -6.50 ?","choix":[{"t":"070","ok":true},{"t":"250","pourquoi":"160 + 090 = 250 sort de 001–180 : il faut soustraire, 160 - 090."},{"t":"160","pourquoi":"160 est l’axe : il porte la sphère. Le 2e méridien est à 90° de lui."},{"t":"180","pourquoi":"Le 2e méridien n’est pas toujours 180 : il est à angle droit de l’axe."}],"expl":"③ « +/- 090 (Angle Droit) » : « 160 - 090 = 070 ». On choisit le calcul qui reste entre 001 et 180.","source":"7.3-d15, d23–d26"},{"id":"b-023","fam":"b-croix-construire","kc":"B7.10","mod":7,"k":"qcm","q":"Rx à axe 090. Quel est le 2e méridien ?","choix":[{"t":"180","ok":true},{"t":"000","pourquoi":"090 - 090 = 0, qui n’est pas un axe : additionne, 090 + 090 = 180."},{"t":"090","pourquoi":"C’est l’axe lui-même : le 2e méridien est à 90° de lui."},{"t":"045","pourquoi":"45° n’est pas un angle droit : on ajoute ou on retire 090."}],"expl":"Les deux méridiens sont à angle droit : 090 + 090 = 180. Zéro, « qui n'est pas un axe d'ordonnance » (MP4).","source":"7.3-d15 ; MP4 04:02–05:36"},{"id":"b-024","fam":"b-croix-construire","kc":"B7.11","mod":7,"k":"qcm","q":"Quelle est la croix de -3.25 -2.25 x 100 ?","choix":[{"t":"-3.25 sur 100 et -5.50 sur 010","ok":true},{"t":"-3.25 sur 100 et -5.50 sur 190","pourquoi":"190 dépasse 180 : 100 - 090 = 010."},{"t":"-5.50 sur 100 et -3.25 sur 010","pourquoi":"Bras inversés : la sphère, -3.25, va sur l’axe 100."},{"t":"-3.25 sur 100 et -1.00 sur 010","pourquoi":"Valeurs soustraites : (-3.25) + (-2.25) = -5.50."}],"expl":"① -3.25 sur l’axe 100 ; ② (-3.25) + (-2.25) = -5.50 ; ③ 100 - 090 = 010.","source":"7.3-d36"},{"id":"b-025","fam":"b-croix-construire","kc":"B7.11","mod":7,"k":"ordre","q":"Remets dans l’ordre les étapes pour faire la croix d’une Rx torique.","etapes":["Pose la sphère sur le méridien de l’axe","Calcule SPH + CYL","Trouve le 2e méridien : axe ± 090, entre 001 et 180","Écris chaque valeur au bout du bras de son méridien","Vérifie : avec un CYL négatif, le 2e méridien est plus bas que la sphère"],"expl":"L’ordre du cours pour -5.00 -1.50 x 160 : ① -5.00 sur 160, ② -6.50, ③ 070, puis chaque valeur sur son bras.","source":"7.3-d18–d28"},{"id":"b-026","fam":"b-croix-oblique","kc":"B7.12","mod":7,"k":"qcm","q":"En option A, comment dessines-tu la croix de -5.00 -1.50 x 160 ?","choix":[{"t":"Tu traces les vrais méridiens : à 160 et à 070","ok":true},{"t":"Tu gardes une croix droite et tu étiquettes les bras","pourquoi":"Ça, c’est l’option B. L’option A trace les méridiens réels, en oblique."},{"t":"Tu traces une seule ligne, celle de l’axe 160","pourquoi":"Il faut deux méridiens : l’axe 160 et le 2e méridien 070."},{"t":"Tu traces une ligne à 160 et une à 250 (160 + 090)","pourquoi":"250 n’existe pas : 160 - 090 = 070."}],"expl":"Option A : les méridiens réels. La ligne 160 est presque horizontale, la ligne 070 presque verticale, à angle droit.","source":"7.3-d15, d28"},{"id":"b-027","fam":"b-croix-oblique","kc":"B7.12","mod":7,"k":"qcm","q":"En option A, la ligne 160 est presque horizontale. Verre vu de face, de quel côté monte-t-elle ?","choix":[{"t":"Vers la gauche : 160 en haut à gauche","ok":true},{"t":"Vers la droite : 160 en haut à droite","pourquoi":"Les lignes qui montent vers la droite sont entre 0 et 090, comme 045."},{"t":"Elle ne monte pas : elle est horizontale","pourquoi":"L’horizontale exacte, c’est 180 ; 160 penche de 20°."},{"t":"Elle monte presque à la verticale","pourquoi":"Presque verticale, c’est 070, le 2e méridien."}],"expl":"Vu de face : 180 à gauche, 090 en haut. 160 est à 20° de 180, en haut à gauche (« 160 degrees » sur 7.3-d28).","source":"7.3-d28 ; 7.1-d23"},{"id":"b-028","fam":"b-croix-oblique","kc":"B7.13","mod":7,"k":"qcm","q":"Option B, croix droite. Pour -5.00 -1.50 x 160, quel méridien va sur le bras horizontal ?","choix":[{"t":"160, car il est plus près de 180 que de 090","ok":true},{"t":"070, car c’est le 2e méridien","pourquoi":"Le bras se choisit par la proximité : 160 est à 20° de 180, 070 à 20° de 090."},{"t":"Aucun : en option B, on n’étiquette pas les bras","pourquoi":"Au contraire : l’option B garde une croix droite et étiquette chaque bras."},{"t":"Celui qui porte le plus grand pouvoir","pourquoi":"Le bras se choisit par le degré du méridien, pas par la valeur du pouvoir."}],"expl":"« Méridien Horizontal » = « (axe le plus près de 180 ou 0) » ; « Méridien Vertical » = « (axe le plus près de 090) ».","source":"7.3-d16–d17, d28"},{"id":"b-029","fam":"b-croix-oblique","kc":"B7.13","mod":7,"k":"qcm","q":"Option B pour +2.00 -1.00 x 065 : quel bras porte l’axe 065 ?","choix":[{"t":"Le bras vertical : 065 est à 25° de 090","ok":true},{"t":"Le bras horizontal : l’axe va toujours à l’horizontale","pourquoi":"L’axe ne va pas toujours à l’horizontale : 065 est plus près de 090."},{"t":"Le bras horizontal : 065 est plus près de 0 que de 090","pourquoi":"C’est l’inverse : 065 est à 65° de 0 et à 25° de 090."},{"t":"Aucun : un axe oblique ne se met pas en option B","pourquoi":"L’option B sert justement aux axes obliques : on étiquette les bras."}],"expl":"065 : 25° de 090, 65° de 0. Bras vertical 065 / +2.00 ; bras horizontal 155 / +1.00 (065 + 090).","source":"7.3-d17 ; 7.1-d1"},{"id":"b-030","fam":"b-croix-oblique","kc":"B7.30","mod":7,"k":"qcm","q":"Croix de OD -1.00 +0.50 x 065 : -1.00 sur 065 (bras vertical), -0.50 sur 155 (bras horizontal). Quelles valeurs portent les deux flèches du cylindre ?","choix":[{"t":"-0.50 vers le bras vertical et +0.50 vers le bras horizontal","ok":true},{"t":"+0.50 vers le bras vertical et +0.50 vers le bras horizontal","pourquoi":"Les deux flèches ont des signes contraires : -0.50 et +0.50."},{"t":"+0.50 vers le bras vertical et -0.50 vers le bras horizontal","pourquoi":"Signes inversés : la flèche vers le bras le plus négatif (-1.00) porte -0.50."},{"t":"-1.00 vers le bras vertical et -0.50 vers le bras horizontal","pourquoi":"Ce sont les pouvoirs des bras ; les flèches portent le cylindre, ±0.50."}],"expl":"Deux flèches, dans le quart en bas à droite : le cylindre avec ses deux signes. Vers le bras le plus négatif, -0.50 ; vers l’autre, +0.50.","source":"7.2T-d12–d15"},{"id":"b-031","fam":"b-croix-oblique","kc":"B7.30","mod":7,"k":"vf","q":"Par convention, les flèches du cylindre vont dans le quart en bas à droite de la croix.","v":true,"expl":"Gabarit du cours : deux flèches « CYL » en bas à droite. Elles portent la valeur du cylindre, une fois avec +, une fois avec -.","source":"7.2T-d15–d16 ; YT 01:51–02:15"},{"id":"b-032","fam":"b-croix-types","kc":"B7.14","mod":7,"k":"qcm","q":"Sans correction, où tombe le foyer d’un méridien de -1.50 ?","choix":[{"t":"Devant la rétine","ok":true},{"t":"Derrière la rétine","pourquoi":"Signes inversés : négatif = myope = devant ; positif = derrière."},{"t":"Sur la rétine","pourquoi":"Sur la rétine, c’est Plano (emmétrope) ou un œil corrigé."},{"t":"Ça dépend de l’axe","pourquoi":"L’axe dit où est le méridien, pas où tombe son foyer : c’est le signe qui décide."}],"expl":"« Rappel: Myope Sphérique = 1 points focaux (sic) devant la rétine ». Négatif = myope = foyer devant.","source":"7.1-d50"},{"id":"b-033","fam":"b-croix-types","kc":"B7.14","mod":7,"k":"qcm","q":"Sans correction, un méridien a son foyer derrière la rétine. Quel est le signe de sa puissance ?","choix":[{"t":"Positif","ok":true},{"t":"Négatif","pourquoi":"Négatif, c’est un foyer devant la rétine (myope)."},{"t":"Plano","pourquoi":"Plano met le foyer sur la rétine."},{"t":"On ne peut pas le savoir","pourquoi":"Le signe et la place du foyer vont ensemble : derrière = positif."}],"expl":"« Rappel: Hypermétrope Sphérique = 1 points focaux (sic) derrière la rétine » : positif = hypermétrope = derrière.","source":"7.1-d50"},{"id":"b-034","fam":"b-croix-types","kc":"B7.14","mod":7,"k":"qcm","q":"OD -1.00 DS. Le patient porte sa correction. Où est son foyer ?","choix":[{"t":"Sur la rétine, grâce à la correction","ok":true},{"t":"Devant la rétine, comme sans correction","pourquoi":"Devant, c’est sans correction. Corrigé, le foyer revient sur la rétine."},{"t":"Derrière la rétine, poussé par la correction","pourquoi":"La correction ne pousse pas le foyer derrière : elle le ramène sur la rétine."},{"t":"Deux foyers : devant et sur la rétine","pourquoi":"Une Rx DS a un seul foyer : même force partout."}],"expl":"Sans correction : « OD: UN POINT FOCAUX DEVANT LA RÉTINE » (sic). Corrigé : « OD: UN POINT FOCAUX SUR LA RÉTINE » (sic).","source":"7.1-d40–d41"},{"id":"b-035","fam":"b-croix-types","kc":"B7.14","mod":7,"k":"qcm","q":"Croix : -0.50 sur 180 et -2.00 sur 090. Où sont les foyers sans correction ?","choix":[{"t":"Deux foyers, tous deux devant la rétine","ok":true},{"t":"Deux foyers, un devant et un derrière","pourquoi":"Les deux méridiens sont négatifs : les deux foyers sont devant."},{"t":"Un seul foyer, devant la rétine","pourquoi":"Deux forces différentes : deux foyers, pas un."},{"t":"Deux foyers, un sur la rétine et un devant","pourquoi":"Aucun méridien n’est Plano : aucun foyer n’est sur la rétine."}],"expl":"Chaque méridien a son foyer. Deux négatifs différents : deux foyers devant la rétine (astigmatisme myope composé).","source":"UA1 M3 ; 7.1-d50 ; distillation A3"},{"id":"b-036","fam":"b-croix-types","kc":"B7.15","mod":7,"k":"qcm","q":"+2.50 -3.75 x 090 : quel est le type d’astigmatisme ?","choix":[{"t":"Astigmatisme mixte","ok":true},{"t":"Astigmatisme hypermétrope composé","pourquoi":"Type lu avec la sphère seule : le 2e méridien vaut -1.25, de signe contraire."},{"t":"Astigmatisme hypermétrope simple","pourquoi":"Simple demande un méridien Plano ; ici +2.50 et -1.25."},{"t":"Astigmatisme myope composé","pourquoi":"Composé demande deux signes pareils ; ici un + et un -."}],"expl":"② +2.50 + (-3.75) = -1.25. Un méridien +, un - : « Deux points focaux, 1xmyope et 1x hypermétrope = Mixte ».","source":"7.2-d30 (n° 4) ; UA1 M3"},{"id":"b-037","fam":"b-croix-types","kc":"B7.15","mod":7,"k":"qcm","q":"Croix : +6.50 sur 160 et +5.50 sur 070. Quel type ?","choix":[{"t":"Astigmatisme hypermétrope composé","ok":true},{"t":"Astigmatisme hypermétrope simple","pourquoi":"Simple demande un méridien Plano ; les deux sont positifs."},{"t":"Astigmatisme mixte","pourquoi":"Mixte demande un + et un - ; ici deux +."},{"t":"Hypermétrope sphérique","pourquoi":"Sphérique demande deux méridiens égaux ; +6.50 et +5.50 diffèrent."}],"expl":"Deux positifs différents : « 2 point (sic) focaux du même type d’amétropie = composé ». Corrigé : « Astigmatisme Hypermétrope Composé ».","source":"7.3-d34–d35"},{"id":"b-038","fam":"b-croix-types","kc":"B7.15","mod":7,"k":"qcm","q":"Plano -1.25 x 180 : quel est le type d’astigmatisme ?","choix":[{"t":"Astigmatisme myope simple","ok":true},{"t":"Astigmatisme myope composé","pourquoi":"Composé demande deux méridiens du même signe ; Plano n’a pas de signe."},{"t":"Astigmatisme mixte","pourquoi":"Mixte demande un + et un - ; Plano n’est ni l’un ni l’autre."},{"t":"Astigmatisme hypermétrope simple","pourquoi":"L’autre méridien est négatif (-1.25) : c’est myope, pas hypermétrope."}],"expl":"Plano sur 180, -1.25 sur 090. Un méridien emmétrope, l’autre myope : astigmatisme myope simple.","source":"UA1 M3 ; distillation M7, question 12"},{"id":"b-039","fam":"b-croix-types","kc":"B7.15","mod":7,"k":"qcm","q":"Laquelle de ces Rx est un astigmatisme hypermétrope simple ?","choix":[{"t":"+2.00 -2.00 x 180","ok":true},{"t":"+2.00 -1.75 x 180","pourquoi":"+2.00 et +0.25 : deux positifs, donc composé."},{"t":"+2.00 -2.25 x 180","pourquoi":"+2.00 et -0.25 : signes contraires, donc mixte."},{"t":"+2.00 DS","pourquoi":"Sans cylindre, pas d’astigmatisme : hypermétrope sphérique."}],"expl":"Simple = un méridien Plano. Seul +2.00 + (-2.00) donne Plano. Un quart de dioptrie de plus ou de moins change le type.","source":"UA1 M3 ; 7.2-d30 (n° 2)"},{"id":"b-040","fam":"b-croix-types","kc":"B7.15","mod":7,"k":"vf","q":"Pour trouver le type d’astigmatisme, le signe de la sphère suffit.","v":false,"expl":"Il faut les deux méridiens. +0.25 -0.75 x 090 : +0.25 et -0.50, donc mixte, même si la sphère est positive.","source":"7.2-d30 (n° 6) ; UA1 M3"},{"id":"b-041","fam":"b-croix-types","kc":"B7.16","mod":7,"k":"qcm","q":"+2.00 -2.00 x 135 : quel nom le cours donne-t-il à la Rx, et quel type d’astigmatisme ?","choix":[{"t":"Rx hypermétrope torique ; astigmatisme hypermétrope simple","ok":true},{"t":"Rx hypermétrope simple ; astigmatisme hypermétrope torique","pourquoi":"Réponses échangées : le nom suit la sphère, le type suit les deux méridiens."},{"t":"Rx emmétrope ; astigmatisme hypermétrope simple","pourquoi":"Le nom suit le signe de la sphère, +2.00 : hypermétrope."},{"t":"Rx hypermétrope torique ; astigmatisme hypermétrope composé","pourquoi":"Composé demande deux méridiens positifs ; ici +2.00 et Plano."}],"expl":"Deux questions, deux réponses : « rx: Hypermétrope Torique; » (la sphère + un cylindre) et « Astigmatisme Hypermétrope Simple » (+2.00 / Plano).","source":"7.3-d30–d32"},{"id":"b-042","fam":"b-croix-types","kc":"B7.16","mod":7,"k":"vf","q":"Le nom d’une Rx (par exemple hypermétrope torique) et son type d’astigmatisme répondent à la même question.","v":false,"expl":"Le nom suit le signe de la sphère ; le type suit les deux méridiens. Le cours les demande à part : « Quel est l’amétropie? » (sic) et « Quel est le type d’astigmatisme? ».","source":"7.2-d31 ; 7.3-d32"},{"id":"b-043","fam":"b-croix-types","kc":"B7.18","mod":7,"k":"qcm","q":"Le cours pose deux questions sur les points focaux d’une croix. Qu’est-ce qui change de l’une à l’autre ?","choix":[{"t":"On regarde l’œil sans correction, puis avec","ok":true},{"t":"On regarde l’OD, puis on passe à l’OS","pourquoi":"Les deux questions portent sur le même œil : sans correction, puis avec."},{"t":"On regarde le loin, puis le près avec l’ADD","pourquoi":"La croix est la Rx de loin seulement ; le près n’y est pas."},{"t":"On regarde la sphère, puis le cylindre","pourquoi":"Les deux questions portent sur tous les foyers : sans, puis avec correction."}],"expl":"« Ou se trouve le point focaux lorsque le patient n’est pas corrigé par une orthèse visuelle? » (sic), puis la même avec « EST corrigé ».","source":"7.1-d40"},{"id":"b-044","fam":"b-croix-types","kc":"B7.18","mod":7,"k":"qcm","q":"Quelles questions le cours pose-t-il dans l’« Analyse avancée » d’une croix ?","choix":[{"t":"L’amétropie, les foyers sans correction, le type d’astigmatisme","ok":true},{"t":"L’œil (OD ou OS), le prisme et sa base, l’addition","pourquoi":"La croix ne dit ni l’œil, ni le prisme, ni l’addition."},{"t":"La distance de lecture, l’addition de près, le type d’astigmatisme","pourquoi":"La croix est la Rx de loin : ni addition ni distance de lecture."},{"t":"Le prescripteur, le format du cylindre, l’axe","pourquoi":"L’analyse de la croix porte sur les foyers, l’amétropie et le type."}],"expl":"« Ou se trouve les points focaux lorsque le patient n’est pas corrigé par une orthèse visuelle? » (sic), « Quel est l’amétropie? » (sic), « Quel est le type d’astigmatisme? ».","source":"7.2-d31"},{"id":"b-045","fam":"b-croix-types","kc":"B7.19","mod":7,"k":"qcm","q":"Rx : -6.75 -1.25 x 060. Quelle analyse complète est juste ?","choix":[{"t":"-6.75 sur 060, -8.00 sur 150 ; deux foyers devant ; astigmatisme myope composé","ok":true},{"t":"-6.75 sur 060, -8.00 sur 150 ; deux foyers derrière ; astigmatisme myope composé","pourquoi":"Méridiens négatifs : les foyers sont devant la rétine, pas derrière."},{"t":"-6.75 sur 150, -8.00 sur 060 ; deux foyers devant ; astigmatisme myope composé","pourquoi":"Bras inversés : la sphère -6.75 va sur l’axe 060."},{"t":"-6.75 sur 060, -5.50 sur 150 ; deux foyers devant ; astigmatisme myope composé","pourquoi":"Valeurs soustraites : (-6.75) + (-1.25) = -8.00."}],"expl":"① -6.75 sur 060 ; ② -8.00 ; ③ 060 + 090 = 150. Deux négatifs différents : deux foyers devant, myope composé.","source":"7.3-d36"},{"id":"b-046","fam":"b-croix-types","kc":"B7.19","mod":7,"k":"qcm","q":"Rx : +7.75 -1.00 x 138. Quelle analyse complète est juste (option B) ?","choix":[{"t":"+7.75 sur 138, +6.75 sur 048 ; hypermétrope composé ; 138 au bras horizontal","ok":true},{"t":"+7.75 sur 138, +6.75 sur 048 ; hypermétrope composé ; 138 au bras vertical","pourquoi":"138 est à 42° de 180 et à 48° de 090 : il va à l’horizontale."},{"t":"+7.75 sur 138, +6.75 sur 228 ; hypermétrope composé ; 138 au bras horizontal","pourquoi":"228 dépasse 180 : 138 - 090 = 048."},{"t":"+7.75 sur 138, +6.75 sur 048 ; mixte ; 138 au bras horizontal","pourquoi":"Deux méridiens positifs : composé, deux foyers derrière la rétine."}],"expl":"① +7.75 sur 138 ; ② +7.75 + (-1.00) = +6.75 ; ③ 138 - 090 = 048. Deux + différents : hypermétrope composé.","source":"7.3-d17, d36"},{"id":"b-047","fam":"b-croix-rx","kc":"B7.17","mod":7,"k":"qcm","q":"« ANALYSE INVERSE » : la croix porte +2.00 sur ses deux bras. Quelle est la Rx ?","choix":[{"t":"+2.00 DS","ok":true},{"t":"+2.00 -2.00 x 180","pourquoi":"Deux bras égaux : aucun cylindre, donc une Rx DS."},{"t":"+2.00 +2.00 x 090","pourquoi":"Le cylindre n’est pas la valeur de l’autre bras : bras égaux = pas de cylindre."},{"t":"+1.00 DS","pourquoi":"On ne partage pas : la sphère vaut la force de chaque bras, +2.00."}],"expl":"Même force partout = Rx sphérique : +2.00 DS, hypermétrope sphérique, un foyer derrière la rétine.","source":"7.1-d43–d45"},{"id":"b-048","fam":"b-croix-rx","kc":"B7.17","mod":7,"k":"qcm","q":"Une croix porte -2.00 sur 180 et -3.50 sur 090. Quelle est la Rx en cylindre négatif ?","choix":[{"t":"-2.00 -1.50 x 180","ok":true},{"t":"-3.50 +1.50 x 090","pourquoi":"C’est la Rx en CYL positif. En CYL négatif, la sphère est le méridien le plus positif."},{"t":"-2.00 -3.50 x 180","pourquoi":"Le cylindre n’est pas l’autre valeur : -3.50 - (-2.00) = -1.50."},{"t":"-2.00 -1.50 x 090","pourquoi":"L’axe est le degré de la sphère, 180, pas celui de l’autre méridien."}],"expl":"SPH = le méridien le plus positif (-2.00), AXE = son degré (180), CYL = -3.50 - (-2.00) = -1.50.","source":"distillation M7, question 6 ; 7.2T-d18–d25"},{"id":"b-049","fam":"b-croix-rx","kc":"B7.17","mod":7,"k":"qcm","q":"Une croix porte -0.75 sur 045 et -2.25 sur 135. Quelle est la Rx en cylindre négatif ?","choix":[{"t":"-0.75 -1.50 x 045","ok":true},{"t":"-2.25 -1.50 x 135","pourquoi":"La sphère doit être le méridien le plus positif : -0.75, pas -2.25."},{"t":"-0.75 +1.50 x 045","pourquoi":"Signe du cylindre : -2.25 - (-0.75) = -1.50, négatif."},{"t":"-0.75 -2.25 x 045","pourquoi":"Le cylindre n’est pas l’autre valeur : c’est la différence, -1.50."}],"expl":"Le plus positif (-0.75) devient la sphère, son degré l’axe. Contrôle : -0.75 + (-1.50) = -2.25 sur 135.","source":"distillation M7, question 16"},{"id":"b-050","fam":"b-croix-rx","kc":"B7.28","mod":7,"k":"qcm","q":"Croix de OD -1.00 +0.50 x 065, sans transposer. Quelle croix est juste ?","choix":[{"t":"-1.00 sur 065 et -0.50 sur 155","ok":true},{"t":"-1.00 sur 065 et -1.50 sur 155","pourquoi":"Signe du cylindre perdu : (-1.00) + (+0.50) = -0.50."},{"t":"-0.50 sur 065 et -1.00 sur 155","pourquoi":"Bras inversés : la sphère -1.00 va sur l’axe 065, même en CYL positif."},{"t":"-1.00 sur 065 et +0.50 sur 155","pourquoi":"Cylindre seul : le 2e méridien porte SPH + CYL, soit -0.50."}],"expl":"① ② ③ valent aussi en CYL positif : -1.00 sur 065 ; (-1.00) + (+0.50) = -0.50 sur 155 (065 + 090).","source":"7.2T-d5–d12"},{"id":"b-051","fam":"b-croix-rx","kc":"B7.28","mod":7,"k":"vf","q":"Pour faire la croix d’une Rx en cylindre positif, il faut d’abord la transposer.","v":false,"expl":"Pas obligé : ① ② ③ marchent dans les deux formats. OS -1.50 +0.75 x 105 → -1.50 sur 105, -0.75 sur 015. Transposer d’abord donne la même croix.","source":"7.2T-d5–d12 ; YT"},{"id":"b-052","fam":"b-croix-rx","kc":"B7.29","mod":7,"k":"qcm","q":"Croix : -0.50 sur 180 et -1.50 sur 090. Quelle est la Rx en cylindre positif (format « MD ») ?","choix":[{"t":"-1.50 +1.00 x 090","ok":true},{"t":"-0.50 -1.00 x 180","pourquoi":"C’est la Rx en CYL négatif. En CYL positif, la sphère est le méridien le plus négatif."},{"t":"-1.50 +1.00 x 180","pourquoi":"L’axe est le degré de la sphère choisie : -1.50 est sur 090."},{"t":"-1.50 -1.00 x 090","pourquoi":"En CYL positif, CYL = -0.50 - (-1.50) = +1.00."}],"expl":"Le plus négatif, -1.50 sur 090, devient la sphère : « Rx - MD - CYL POSITIF ». Avec la Rx en CYL négatif : « TRANSPOSITION ! ».","source":"7.2T-d18–d25"},{"id":"b-053","fam":"b-croix-rx","kc":"B7.29","mod":7,"k":"qcm","q":"Croix : +1.00 sur 020 et -0.50 sur 110. Quelle paire de Rx est juste ?","choix":[{"t":"CYL - : +1.00 -1.50 x 020 · CYL + : -0.50 +1.50 x 110","ok":true},{"t":"CYL - : -0.50 -1.50 x 110 · CYL + : +1.00 +1.50 x 020","pourquoi":"Formats croisés : en CYL négatif, la sphère est le plus positif, +1.00."},{"t":"CYL - : +1.00 -0.50 x 020 · CYL + : -0.50 +1.00 x 110","pourquoi":"Le cylindre n’est pas l’autre valeur : c’est la différence, 1.50."},{"t":"CYL - : +1.00 -1.50 x 110 · CYL + : -0.50 +1.50 x 020","pourquoi":"Axes échangés : l’axe est le degré de la sphère choisie."}],"expl":"CYL - : SPH +1.00 (le plus positif), axe 020, CYL = -0.50 - (+1.00) = -1.50. CYL + : SPH -0.50, axe 110, CYL +1.50.","source":"distillation M7 suite, exercice 8 ; 7.2T-d18–d25"},{"id":"b-054","fam":"b-transposer","kc":"B7.20","mod":8,"k":"qcm","q":"En général, qui écrit le cylindre en positif ?","choix":[{"t":"L’ophtalmologiste (MD)","ok":true},{"t":"L’optométriste (OD)","pourquoi":"L’optométriste écrit en général le cylindre en négatif."},{"t":"L’opticien (RO)","pourquoi":"L’opticien, comme l’optométriste, emploie en général le cylindre négatif."},{"t":"Ça dépend de l’œil du patient","pourquoi":"Le format dépend du prescripteur, pas de l’œil."}],"expl":"« MD = + cyl » ; optométristes et opticiens écrivent en cylindre négatif, « en général ».","source":"7.1T-d5, d23 ; PDF p1"},{"id":"b-055","fam":"b-transposer","kc":"B7.20","mod":8,"k":"qcm","q":"Sur une diapo : « RX - OD - CYL NÉGATIF ». Que veut dire OD ici ?","choix":[{"t":"L’optométriste (docteur en optométrie)","ok":true},{"t":"L’œil droit, comme dans un tableau de Rx","pourquoi":"Ici OD nomme le professionnel qui écrit en CYL négatif, pas l’œil."},{"t":"L’ophtalmologiste (le MD)","pourquoi":"L’ophtalmologiste, c’est MD, qui écrit en CYL positif."},{"t":"L’opticien (le RO)","pourquoi":"L’opticien, c’est RO ; OD désigne l’optométriste."}],"expl":"« OD et RO » = optométristes et opticiens, CYL négatif ; « MD » = ophtalmologiste, CYL positif. Dans un tableau de Rx, OD redevient l’œil droit.","source":"7.1T-d5 ; 7.2T-d22"},{"id":"b-056","fam":"b-transposer","kc":"B7.21","mod":8,"k":"vf","q":"Une Rx et sa transposée corrigent deux amétropies différentes.","v":false,"expl":"« Transposer, ce n’est pas changer la correction : c’est apprendre à la lire sous une autre forme. »","source":"7.1T-d7"},{"id":"b-057","fam":"b-transposer","kc":"B7.21","mod":8,"k":"qcm","q":"+2.00 -1.00 x 065 et +1.00 +1.00 x 155 : que peux-tu dire de leurs croix ?","choix":[{"t":"C’est la même croix : +2.00 sur 065, +1.00 sur 155","ok":true},{"t":"Deux croix différentes : la 2e est plus faible","pourquoi":"La sphère a changé, pas la correction : mêmes pouvoirs sur les mêmes méridiens."},{"t":"La même croix, mais tournée de 90°","pourquoi":"Les méridiens ne bougent pas : +2.00 reste sur 065 et +1.00 sur 155."},{"t":"On ne peut pas comparer un CYL - et un CYL +","pourquoi":"On peut : la croix montre les mêmes pouvoirs, quelle que soit l’écriture."}],"expl":"1re : +2.00 sur 065, +2.00 + (-1.00) = +1.00 sur 155. 2e : +1.00 sur 155, +1.00 + 1.00 = +2.00 sur 065. « Rx équivalente ».","source":"7.1T-d7, d10–d15"},{"id":"b-058","fam":"b-transposer","kc":"B7.21","mod":8,"k":"qcm","q":"Pour le même patient, l’optométriste écrit +2.00 -1.00 x 065 et l’ophtalmologiste +1.00 +1.00 x 155. Pourquoi ces nombres différents ?","choix":[{"t":"Ils écrivent la même correction en deux formats de cylindre","ok":true},{"t":"Ils ont trouvé deux amétropies différentes chez ce patient","pourquoi":"Les nombres diffèrent, la correction non : c’est la même Rx transposée."},{"t":"L’un a mesuré la Rx de loin, l’autre celle de près","pourquoi":"Les deux Rx sont de loin ; seul le format du cylindre change."},{"t":"L’ophtalmologiste arrondit ses valeurs à la dioptrie","pourquoi":"Aucun arrondi : les 4 étapes donnent exactement l’autre Rx."}],"expl":"« Une même correction peut s’écrire de deux façons… et corriger la même amétropie. »","source":"7.1T-d2, d7, d23"},{"id":"b-059","fam":"b-transposer","kc":"B7.21","mod":8,"k":"vf","q":"-8.00 +2.00 x 135 et -6.00 -2.00 x 045 mettent les mêmes pouvoirs sur les mêmes méridiens.","v":true,"expl":"Dans les deux écritures : -8.00 sur 135 et -6.00 sur 045. « Même puissance d’optique! »","source":"7.1T-d16–d22"},{"id":"b-060","fam":"b-transposer","kc":"B7.22","mod":8,"k":"qcm","q":"Transposer -8.00 +2.00 x 135 : quel est le nouveau SPH ?","choix":[{"t":"-6.00","ok":true},{"t":"-10.00","pourquoi":"Valeurs additionnées sans le signe : ajouter +2.00, c’est monter de -8.00 vers -6.00."},{"t":"-8.00","pourquoi":"Ancienne sphère gardée : à l’étape 1, SPH + CYL = nouveau SPH."},{"t":"+2.00","pourquoi":"C’est le cylindre d’origine ; le nouveau SPH est la somme SPH + CYL."}],"expl":"« Additionner le SPH et CYL algébriquement » : (-8.00) + (+2.00) = -6.00. Ajouter un positif, c’est monter sur la droite des nombres.","source":"7.1T-d16–d18 ; PDF ; MP4 11:31"},{"id":"b-061","fam":"b-transposer","kc":"B7.22","mod":8,"k":"qcm","q":"Transposer +1.00 -0.75 x 025 : quel est le nouveau SPH ?","choix":[{"t":"+0.25","ok":true},{"t":"+1.75","pourquoi":"Signe du cylindre ignoré : on additionne du négatif, donc on recule de 0.75."},{"t":"-0.25","pourquoi":"Signe perdu : +1.00 - 0.75 = +0.25, on reste au-dessus de zéro."},{"t":"+1.00","pourquoi":"Ancienne sphère gardée : le nouveau SPH est SPH + CYL."}],"expl":"(+1.00) + (-0.75) = +0.25 : « on additionne du négatif. Donc, on doit reculer dans l'échelle » (MP4).","source":"MP4 05:46–07:30"},{"id":"b-062","fam":"b-transposer","kc":"B7.23","mod":8,"k":"vf","q":"À l’étape 2, le cylindre garde sa valeur et change seulement de signe.","v":true,"expl":"« Changer le signe du CYL » (PDF) : +2.00 devient -2.00, -1.00 devient +1.00.","source":"7.1T-d8 ; PDF ; MP4"},{"id":"b-063","fam":"b-transposer","kc":"B7.23","mod":8,"k":"qcm","q":"Transposer -1.00 -0.50 x 090 : quel est le nouveau CYL ?","choix":[{"t":"+0.50","ok":true},{"t":"-0.50","pourquoi":"Signe gardé : l’étape 2 inverse le signe du cylindre."},{"t":"-1.50","pourquoi":"C’est le nouveau SPH (SPH + CYL), pas le nouveau CYL."},{"t":"+1.50","pourquoi":"Le cylindre garde sa valeur, 0.50 ; seul son signe change."}],"expl":"« Inverser la force du CYL = nouveau CYL » : -0.50 devient +0.50. Rx transposée : -1.50 +0.50 x 180.","source":"7.1T-d8 ; MP4 04:02–05:36"},{"id":"b-064","fam":"b-transposer","kc":"B7.24","mod":8,"k":"qcm","q":"Transposer -3.75 +1.00 x 095 Add +1.50 : quel est le nouvel axe ?","choix":[{"t":"005","ok":true},{"t":"185","pourquoi":"185 dépasse 180 : l’axe doit rester entre 001 et 180, donc 095 - 090."},{"t":"095","pourquoi":"Axe gardé : l’étape 3 ajoute ou retire 090."},{"t":"180","pourquoi":"Le nouvel axe n’est pas toujours 180 : il est à 90° de 095."}],"expl":"« 095 - 090 = 005 ». « (Rappel: axe doit se retrouver entre 001 et 180) ». Rx : -2.75 -1.00 x 005 Add +1.50.","source":"7.1T-d8, d30–d34"},{"id":"b-065","fam":"b-transposer","kc":"B7.24","mod":8,"k":"qcm","q":"Transposer Plano -1.00 x 180 : quel est le nouvel axe ?","choix":[{"t":"090","ok":true},{"t":"270","pourquoi":"180 + 090 dépasse 180 : on soustrait, 180 - 090 = 090."},{"t":"180","pourquoi":"Axe gardé : l’étape 3 ajoute ou retire toujours 090."},{"t":"000","pourquoi":"Zéro n’est pas un axe : 180 - 090 = 090."}],"expl":"À 180, additionner « va surpasser le 180 » : on soustrait. Rx transposée : -1.00 +1.00 x 090.","source":"MP4 07:41–09:00"},{"id":"b-066","fam":"b-transposer","kc":"B7.24","mod":8,"k":"vf","q":"Pour un axe de 025, on soustrait 090 à l’étape 3.","v":false,"expl":"025 - 090 donne un axe négatif : « Ceci n'existe pas ». On additionne : 025 + 090 = 115.","source":"MP4 05:46–07:30"},{"id":"b-067","fam":"b-transposer","kc":"B7.25","mod":8,"k":"qcm","q":"Transposer -1.00 -1.00 x 065 1△BU Add +1.50 : que deviennent le prisme et l’addition ?","choix":[{"t":"Ils sont recopiés tels quels : 1△BU Add +1.50","ok":true},{"t":"Ils disparaissent, comme sur la croix","pourquoi":"Absents de la croix, oui, mais pas de la Rx : on les recopie."},{"t":"L’addition change de signe : Add -1.50","pourquoi":"Seul le cylindre change de signe ; l’ADD reste +1.50."},{"t":"Le prisme change de base : 1△BU devient 1△BD","pourquoi":"La base du prisme ne change pas : 1△BU reste 1△BU."}],"expl":"« Pouvoir addition et prisme demeurent les mêmes ». Rx transposée : -2.00 +1.00 x 155 1△BU Add +1.50.","source":"7.1T-d8, d35–d39"},{"id":"b-068","fam":"b-transposer","kc":"B7.25","mod":8,"k":"vf","q":"À la transposition, tu peux laisser tomber le prisme et l’ADD, puisque la croix ne les montre pas.","v":false,"expl":"« Le prisme et l'addition ne changent pas. » « Mais il doit être transféré. » (MP4) : ils passent dans la Rx transposée.","source":"MP4 14:34–14:38 ; 7.1T-d8"},{"id":"b-069","fam":"b-transposer","kc":"B7.26","mod":8,"k":"qcm","q":"Quelle est la transposée de +2.00 -1.50 x 090 Add +1.75 ?","choix":[{"t":"+0.50 +1.50 x 180 Add +1.75","ok":true},{"t":"+0.50 -1.50 x 180 Add +1.75","pourquoi":"Signe du cylindre gardé : -1.50 devient +1.50."},{"t":"+3.50 +1.50 x 180 Add +1.75","pourquoi":"Valeurs additionnées sans signe : (+2.00) + (-1.50) = +0.50."},{"t":"+0.50 +1.50 x 180 Add -1.75","pourquoi":"L’ADD ne change pas de signe : elle se recopie, +1.75."}],"expl":"« Étape 1 : (+2) + (-1.50) = +0.50 » ; -1.50 devient +1.50 ; « 090 + 090 = 180 » ; « Add +1.75 demeure ».","source":"7.1T-d24–d29"},{"id":"b-070","fam":"b-transposer","kc":"B7.26","mod":8,"k":"qcm","q":"Quelle est la transposée de -2.00 +2.00 x 110 ?","choix":[{"t":"Plano -2.00 x 020","ok":true},{"t":"-4.00 -2.00 x 020","pourquoi":"Signe ignoré : (-2.00) + (+2.00) = zéro, donc Plano."},{"t":"Plano -2.00 x 200","pourquoi":"200 dépasse 180 : 110 - 090 = 020."},{"t":"Plano +2.00 x 020","pourquoi":"Signe du cylindre gardé : +2.00 devient -2.00."}],"expl":"(-2.00) + (+2.00) = Plano ; +2.00 devient -2.00 ; 110 + 090 = 200, « qui dépassent le 180 », donc 110 - 090 = 020.","source":"MP4 10:54–12:31"},{"id":"b-071","fam":"b-transposer","kc":"B7.26","mod":8,"k":"ordre","q":"Remets les 4 étapes de la transposition dans l’ordre.","etapes":["SPH + CYL = nouveau SPH","Inverser le signe du CYL","Axe ± 090, pour rester entre 001 et 180","Recopier le prisme et l’ADD"],"expl":"Au tableau, la prof l’abrège : « 1: Sph + Cyl 2: +/- cyl 3: +/- 90 ». Puis « Pouvoir addition et prisme demeurent les mêmes ».","source":"7.1T-d8, d40"},{"id":"b-072","fam":"b-transposer","kc":"B7.26","mod":8,"k":"vf","q":"La Rx -3.00 DS n’a rien à transposer.","v":true,"expl":"« pour faire une transposition, nous devons avoir la cylindre » (MP4) : sans cylindre, -3.00 reste -3.00.","source":"MP4 02:08–03:27"},{"id":"b-073","fam":"b-transposer","kc":"B7.27","mod":8,"k":"qcm","q":"Une Rx transposée vaut -1.25 +0.50 x 095. Quelle était la Rx d’origine ?","choix":[{"t":"-0.75 -0.50 x 005","ok":true},{"t":"-1.75 -0.50 x 005","pourquoi":"Signe du cylindre ignoré : (-1.25) + (+0.50) = -0.75."},{"t":"-0.75 +0.50 x 005","pourquoi":"Le cylindre doit changer de signe : +0.50 devient -0.50."},{"t":"-0.75 -0.50 x 185","pourquoi":"185 dépasse 180 : 095 - 090 = 005."}],"expl":"Transpose la transposée : (-1.25) + (+0.50) = -0.75 ; -0.50 ; 095 - 090 = 005. Deux transpositions redonnent la Rx.","source":"distillation M7 suite, exercice 11 (déduit)"},{"id":"b-074","fam":"b-transposer","kc":"B7.27","mod":8,"k":"vf","q":"Si tu transposes deux fois une Rx, tu retrouves la Rx de départ.","v":true,"expl":"-8.00 +2.00 x 135 → -6.00 -2.00 x 045 → (-6.00) + (-2.00) = -8.00 ; +2.00 ; 045 + 090 = 135.","source":"7.1T-d16–d22 ; distillation M7 suite (déduit)"},{"id":"b-075","fam":"b-analyse","kc":"B7.31","mod":8,"k":"qcm","q":"OD -3.75 +4.00 x 166 Add +2.00. Pour nommer son type, que fais-tu en premier ?","choix":[{"t":"Je la transpose, car son CYL est positif","ok":true},{"t":"Je lis la sphère : -3.75, donc myope","pourquoi":"Lue en CYL positif, la sphère trompe : transposée, elle vaut +0.25."},{"t":"Je regarde l’ADD : presbyte","pourquoi":"L’ADD vient en dernier ; avant tout, le CYL doit être absent ou négatif."},{"t":"Je fais la croix et je lis l’axe","pourquoi":"L’axe ne dit pas le type ; on vérifie d’abord le signe du CYL."}],"expl":"« AVANT TOUT ==== CYL de l’ordonnance doit être ABSENT OU NÉGATIF ». Ici +4.00 : transposer d’abord.","source":"7.3T-d5–d7, d61–d62"},{"id":"b-076","fam":"b-analyse","kc":"B7.31","mod":8,"k":"qcm","q":"OD -3.75 +4.00 x 166 Add +2.00 : quel nom donne le corrigé du cours ?","choix":[{"t":"Hypermétrope Torique et Presbyte","ok":true},{"t":"Myope Torique et Presbyte","pourquoi":"Sphère lue avant de transposer. Transposée : +0.25 -4.00 x 076, hypermétrope."},{"t":"Hypermétrope Torique seulement","pourquoi":"L’ADD +2.00 ajoute presbyte au nom (dernière étape)."},{"t":"Myope Sphérique et Presbyte","pourquoi":"Il y a un cylindre : torique ; et la sphère transposée est positive."}],"expl":"(-3.75) + (+4.00) = +0.25 ; -4.00 ; 166 - 090 = 076. Corrigé : « OD: Hypermétrope Torique et Presbyte ».","source":"7.3T-d61–d62"},{"id":"b-077","fam":"b-analyse","kc":"B7.31","mod":8,"k":"vf","q":"Une Rx écrite en CYL positif avec une sphère négative peut être hypermétrope.","v":true,"expl":"-1.00 +2.50 x 175 se transpose en +1.50 -2.50 x 085 : « Hypermétrope Torique ». Au cours, cinq Rx de ce genre sur sept l’étaient.","source":"7.3T-d61–d67"},{"id":"b-078","fam":"b-analyse","kc":"B7.31","mod":8,"k":"qcm","q":"Laquelle de ces Rx peux-tu analyser sans transposer ?","choix":[{"t":"-1.25 -0.50 x 180","ok":true},{"t":"-1.25 +0.50 x 090","pourquoi":"Le CYL est positif : il faut transposer d’abord."},{"t":"+0.75 +1.00 x 180","pourquoi":"CYL positif : transposée, elle devient +1.75 -1.00 x 090."},{"t":"Plano +0.75 x 090","pourquoi":"CYL positif : transposer d’abord, même avec une sphère Plano."}],"expl":"Étape 1 : « Ordonnance avec CYL Positif = Transposition (à suivre) ». Un CYL absent ou négatif se lit tout de suite.","source":"7.3T-d6–d7"},{"id":"b-079","fam":"b-analyse","kc":"B7.32","mod":8,"k":"ordre","q":"Remets dans l’ordre les étapes pour nommer le type d’une Rx.","etapes":["Le CYL est-il absent ou négatif ? Sinon, transposer","Signe de la sphère : myope ou hypermétrope","Cylindre ? sphérique ou torique","Prisme ? prismatique","Addition ? presbyte"],"expl":"Les 5 étapes du cours, de « Pouvons-nous faire l’analyse? » à « As-t-il un pouvoir d’addition? ». Résultat œil par œil.","source":"7.3T-d31, d33"},{"id":"b-080","fam":"b-analyse","kc":"B7.32","mod":8,"k":"qcm","q":"OD +2.25 -0.50 x 166 Add +2.25 : quel est son type ?","choix":[{"t":"Hypermétrope Torique et Presbyte","ok":true},{"t":"Hypermétrope Sphérique et Presbyte","pourquoi":"Il y a un cylindre (-0.50) et un axe : torique."},{"t":"Myope Torique et Presbyte","pourquoi":"La sphère, +2.25, est positive : hypermétrope."},{"t":"Hypermétrope Torique","pourquoi":"L’ADD +2.25 ajoute presbyte (dernière étape)."}],"expl":"CYL négatif : on analyse. +2.25 → hypermétrope ; cylindre → torique ; pas de prisme ; ADD → presbyte (corrigé du cours).","source":"7.3T-d34–d42"},{"id":"b-081","fam":"b-analyse","kc":"B7.32","mod":8,"k":"qcm","q":"OS +2.75 2△BI Add +2.25 : quel est son type ?","choix":[{"t":"Hypermétrope Sphérique, Prismatique et Presbyte","ok":true},{"t":"Hypermétrope Sphérique et Presbyte","pourquoi":"Le prisme 2△BI ajoute prismatique."},{"t":"Hypermétrope Torique, Prismatique et Presbyte","pourquoi":"Pas de cylindre : sphère seule = sphérique."},{"t":"Myope Sphérique, Prismatique et Presbyte","pourquoi":"La sphère +2.75 est positive : hypermétrope."}],"expl":"« Ordonnance avec Prisme = PRISMATIQUE » ; « Ordonnance avec ADD =PRESBYTE ». Sphère seule, positive : hypermétrope sphérique.","source":"7.3T-d15, d17, d34–d42"},{"id":"b-082","fam":"b-analyse","kc":"B7.33","mod":8,"k":"qcm","q":"OS Plano -0.50 x 180 : que dis-tu des points focaux et du type d’astigmatisme ?","choix":[{"t":"Un foyer sur la rétine, un devant ; astigmatisme myope simple","ok":true},{"t":"Un seul foyer, sur la rétine ; pas d’astigmatisme","pourquoi":"Il y a un cylindre : deux méridiens, deux foyers (Plano et -0.50)."},{"t":"Deux foyers devant la rétine ; astigmatisme myope composé","pourquoi":"Le méridien 180 est Plano : son foyer est sur la rétine, donc simple."},{"t":"Un sur la rétine, un derrière ; astigmatisme hypermétrope simple","pourquoi":"-0.50 est négatif : foyer devant, myope."}],"expl":"Croix : Plano sur 180 (sur la rétine), -0.50 sur 090 (devant). Un emmétrope, un myope : astigmatisme myope simple.","source":"7.3T-d19–d30"},{"id":"b-083","fam":"b-analyse","kc":"B7.33","mod":8,"k":"qcm","q":"OD +0.75 +1.00 x 180. Quelle analyse complète est juste ?","choix":[{"t":"Transposée +1.75 -1.00 x 090 ; Hypermétrope Torique ; astigmatisme hypermétrope composé","ok":true},{"t":"Pas de transposition ; Hypermétrope Torique ; astigmatisme hypermétrope simple","pourquoi":"CYL positif : transposer d’abord. Méridiens +1.75 et +0.75 : composé."},{"t":"Transposée +1.75 -1.00 x 270 ; Hypermétrope Torique ; astigmatisme hypermétrope composé","pourquoi":"270 dépasse 180 : 180 - 090 = 090."},{"t":"Transposée +1.75 -1.00 x 090 ; Hypermétrope Torique ; astigmatisme mixte","pourquoi":"+1.75 et +0.75 ont le même signe : composé, pas mixte."}],"expl":"(+0.75) + (+1.00) = +1.75 ; -1.00 ; 180 - 090 = 090. Croix : +1.75 sur 090, +0.75 sur 180 : deux + différents.","source":"7.3T-d63–d64 ; M7 ⑥"},{"id":"b-084","fam":"b-sv-multi","kc":"B8.1","mod":9,"k":"qcm","q":"Qu’est-ce qui fait qu’une Rx est multifocale ?","choix":[{"t":"Elle a un pouvoir d’addition","ok":true},{"t":"Sa sphère est fortement positive","pourquoi":"Une forte sphère + n’est pas une ADD : OD +3.25 sans ADD reste une SV."},{"t":"Elle a un cylindre et un axe","pourquoi":"Le cylindre rend la Rx torique ; SV et multifocale peuvent être toriques."},{"t":"Elle a un prisme","pourquoi":"Le prisme peut s’ajouter à toute Rx ; c’est l’ADD qui fait la multifocale."}],"expl":"Multifocal : « DOIT comprendre un pouvoir d’ADDITION ». SV : « Aucun pouvoir d’Addition ».","source":"d3"},{"id":"b-085","fam":"b-sv-multi","kc":"B8.1","mod":9,"k":"vf","q":"OD +3.25 / OS +3.50 -0.25 x 180, sans ADD, est une Rx multifocale parce que ses sphères sont fortes.","v":false,"expl":"Sans ADD, c’est une SV : une multifocale « DOIT comprendre un pouvoir d’ADDITION ». Sa note, « Notes: Lecture », dit le champ.","source":"d3, d7"},{"id":"b-086","fam":"b-sv-multi","kc":"B8.1","mod":9,"k":"qcm","q":"Laquelle de ces Rx est multifocale ?","choix":[{"t":"OD -1.00 -0.75 x 037 Add +1.00","ok":true},{"t":"OD -1.00 -0.75 x 037","pourquoi":"Pas d’ADD : c’est une SV, même avec un cylindre."},{"t":"OD +4.00 -0.25 x 175 Notes: Ordinateur","pourquoi":"Pas d’ADD : une SV, malgré la forte sphère positive ; une note n’est pas une ADD."},{"t":"OD -4.00 -1.25 x 090 2△BI","pourquoi":"Un prisme n’est pas une ADD : sans ADD, c’est une SV."}],"expl":"Seule la Rx avec Add +1.00 est multifocale, même si l’ADD est petite : elle « DOIT comprendre un pouvoir d’ADDITION ».","source":"d3, d8, d9, d11"},{"id":"b-087","fam":"b-sv-multi","kc":"B8.1","mod":9,"k":"vf","q":"Une Rx multifocale peut être sphérique ou torique.","v":true,"expl":"« Peut être sphérique ou torique mais DOIT comprendre un pouvoir d’ADDITION ».","source":"d3"},{"id":"b-088","fam":"b-sv-multi","kc":"B8.2","mod":9,"k":"qcm","q":"À quelle distance travaille la vision intermédiaire ?","choix":[{"t":"Environ 60 à 80 cm : ordinateur, télévision","ok":true},{"t":"Environ 30 à 40 cm : lecture, téléphone","pourquoi":"Ça, c’est la vision de près (VP)."},{"t":"Environ 6 m et plus : paysage, signalisation","pourquoi":"Ça, c’est la vision de loin (VL)."}],"expl":"Intermédiaire : « (≈ 60 cm – 80 cm) », « Ex. : ordinateur, télévision ». Près : « (≈ 30 cm – 40 cm) ». Loin : « (≈ 6 m et +) ».","source":"d13, d23, d38, d63"},{"id":"b-089","fam":"b-sv-multi","kc":"B8.2","mod":9,"k":"ordre","q":"Range les trois champs de vision du plus proche au plus loin.","etapes":["SV-VP : environ 30 à 40 cm (lecture, téléphone)","SV-VI : environ 60 à 80 cm (ordinateur, télévision)","SV-VL : environ 6 m et plus (paysage, signalisation)"],"expl":"La ligne de vue du cours va de « PROCHE » à « DISTANCE » : VP, puis VI, puis VL.","source":"d3, d52, d63"},{"id":"b-090","fam":"b-sv-multi","kc":"B8.3","mod":9,"k":"qcm","q":"OD +4.00 -0.25 x 175 / OS +3.75 -0.50 x 005, « Notes: Ordinateur ». Quel type de commande ?","choix":[{"t":"Commande SV-VI","ok":true},{"t":"Commande SV-VP","pourquoi":"L’ordinateur est un usage intermédiaire (60 à 80 cm), pas de près."},{"t":"Commande Multifocal","pourquoi":"Pas d’ADD : une multifocale « DOIT comprendre un pouvoir d’ADDITION »."},{"t":"Commande SV-VL","pourquoi":"La note dit ordinateur : vision intermédiaire, pas de loin."}],"expl":"Pas d’ADD → SV. La note dit le champ : ordinateur = intermédiaire → « Commande SV-VI ».","source":"d3–d4, d8, d38"},{"id":"b-091","fam":"b-sv-multi","kc":"B8.3","mod":9,"k":"qcm","q":"Une Rx sans ADD porte « Notes: Lecture ». Quelle commande ?","choix":[{"t":"SV-VP","ok":true},{"t":"Multifocal","pourquoi":"Sans ADD, pas de multifocale possible."},{"t":"SV-VI","pourquoi":"La lecture est un usage de près (30 à 40 cm), pas intermédiaire."},{"t":"SV-VL","pourquoi":"La note Lecture dit le près, pas le loin."}],"expl":"C’est la note qui dit le champ, pas le signe de la sphère : lecture = près = SV-VP.","source":"d3–d4, d7, d23"},{"id":"b-092","fam":"b-sv-multi","kc":"B8.4","mod":9,"k":"vf","q":"Selon les besoins visuels du patient, l’opticien peut adapter une Rx multifocale en Rx simple vision.","v":true,"expl":"Le cours : « l’opticien peut adapter l’ordonnance multifocal en ordonnance simple vision » (sic), centré sur les besoins visuels du patient.","source":"d1, d12"},{"id":"b-093","fam":"b-sv-multi","kc":"B8.4","mod":9,"k":"qcm","q":"Quand l’opticien adapte une Rx multifocale en SV, que doit-il respecter ?","choix":[{"t":"Les paramètres de l’ordonnance et son champ de pratique","ok":true},{"t":"Rien : il peut changer le cylindre s’il le juge utile","pourquoi":"Il respecte les paramètres de l’ordonnance : CYL et AXE se recopient."},{"t":"Une nouvelle Rx du prescripteur pour chaque champ","pourquoi":"Le cours dit que l’opticien peut adapter lui-même, selon les besoins du patient."},{"t":"La sphère d’origine, qui ne doit jamais changer","pourquoi":"La sphère, justement, reçoit une part de l’ADD ; CYL, AXE et prisme restent."}],"expl":"« tout en respectant les paramètres de l’ordonnance et son champ de pratique » : seul le SPH reçoit une part de l’ADD.","source":"d12"},{"id":"b-094","fam":"b-adapter","kc":"B8.5","mod":9,"k":"qcm","q":"OD +2.00 -0.25 x 135 1△BI Add +2.25 → SV-VL ?","choix":[{"t":"+2.00 -0.25 x 135 1△BI","ok":true},{"t":"+2.00 -0.25 x 135 1△BI Add +2.25","pourquoi":"L’ADD ne reste pas dans une Rx SV : « (Aucun Pouvoir d’ADD) »."},{"t":"+4.25 -0.25 x 135 1△BI","pourquoi":"En VL, on ajoute 0 % de l’ADD : la sphère ne change pas."},{"t":"+2.00 -0.25 x 135","pourquoi":"Le prisme se recopie : seule l’ADD disparaît."}],"expl":"« Addition 0% du pouvoir d’addition au SPH » : on transcrit SPH, CYL, AXE et le prisme, sans ADD.","source":"d14–d17"},{"id":"b-095","fam":"b-adapter","kc":"B8.5","mod":9,"k":"vf","q":"Pour une SV-VL, tu recopies SPH, CYL et AXE, et tu laisses tomber l’ADD.","v":true,"expl":"« (Aucun Pouvoir d’ADD) » « Transcrire » « SPH, CYL, AXE ». Le prisme, s’il y en a un, se recopie aussi.","source":"d14–d17"},{"id":"b-096","fam":"b-adapter","kc":"B8.6","mod":9,"k":"qcm","q":"OD -1.00 -0.50 x 164 Add +2.00 → SV-VP ?","choix":[{"t":"+1.00 -0.50 x 164","ok":true},{"t":"-3.00 -0.50 x 164","pourquoi":"Valeurs additionnées sans signe : (-1.00) + (+2.00) = +1.00."},{"t":"-1.00 +1.50 x 164","pourquoi":"L’ADD va au SPH, jamais au CYL."},{"t":"+1.00 -0.50 x 164 Add +2.00","pourquoi":"L’ADD est versée dans le SPH : elle ne reste pas dans la Rx SV."}],"expl":"« Additionne 100% du Pouvoir ADD au SPH » : « OD: (-1.00) + (+2.00) » = +1.00. « Transcrire CYL, AXE ».","source":"d24–d27"},{"id":"b-097","fam":"b-adapter","kc":"B8.6","mod":9,"k":"qcm","q":"OD -3.75 -0.25 x 125 Add +2.75 → SV-VP ?","choix":[{"t":"-1.00 -0.25 x 125","ok":true},{"t":"+1.00 -0.25 x 125","pourquoi":"Signe perdu : -3.75 monte de 2.75 et reste sous zéro, à -1.00."},{"t":"-6.50 -0.25 x 125","pourquoi":"Valeurs additionnées sans signe : l’ADD positive fait monter la sphère."},{"t":"-2.50 -0.25 x 125","pourquoi":"Ça, c’est la SV-VI (50 %). En VP, on ajoute toute l’ADD."}],"expl":"(-3.75) + (+2.75) = -1.00. Une Rx de près peut rester négative.","source":"d31"},{"id":"b-098","fam":"b-adapter","kc":"B8.6","mod":9,"k":"qcm","q":"OS Plano -0.25 x 015 2△BU Add +3.00 → SV-VP ?","choix":[{"t":"+3.00 -0.25 x 015 2△BU","ok":true},{"t":"Plano -0.25 x 015 2△BU","pourquoi":"Plano vaut zéro : 0 + 3.00 = +3.00 ; la sphère reçoit l’ADD."},{"t":"+3.00 -0.25 x 015","pourquoi":"Le prisme se recopie : 2△BU reste."},{"t":"Plano +2.75 x 015 2△BU","pourquoi":"L’ADD va au SPH, pas au CYL."}],"expl":"Plano = zéro : 0 + (+3.00) = +3.00. CYL, AXE et prisme recopiés : « 2△BU » reste sur l’OS.","source":"d29–d30"},{"id":"b-099","fam":"b-adapter","kc":"B8.7","mod":9,"k":"vf","q":"En SV-VP, le cylindre augmente avec l’ADD.","v":false,"expl":"Seul le SPH reçoit l’ADD : « Transcrire CYL, AXE ». -1.00 -0.50 x 164 Add +2.00 donne +1.00 -0.50 x 164.","source":"d24–d27"},{"id":"b-100","fam":"b-adapter","kc":"B8.7","mod":9,"k":"qcm","q":"En SV-VI ou en SV-VP, l’ADD disparaît. Quelle autre colonne change ?","choix":[{"t":"Seulement le SPH","ok":true},{"t":"Le SPH et le CYL","pourquoi":"Le CYL se recopie : « Transcrire CYL, AXE »."},{"t":"Le SPH et l’axe","pourquoi":"L’axe se recopie, comme le CYL et le prisme."},{"t":"Aucune : on recopie tout","pourquoi":"Tout recopier, c’est la SV-VL. En VI et en VP, le SPH reçoit 50 % ou 100 % de l’ADD."}],"expl":"SPH + une part de l’ADD ; CYL, AXE et prisme transcrits ; l’ADD disparaît.","source":"d24, d39"},{"id":"b-101","fam":"b-adapter","kc":"B8.7","mod":9,"k":"qcm","q":"-1.00 -0.50 x 164 Add +2.00 : au loin, la croix porte -1.00 sur 164 et -1.50 sur 074. Que porte la croix de la SV-VP ?","choix":[{"t":"+1.00 sur 164 et +0.50 sur 074 : les deux montent de 2.00","ok":true},{"t":"+1.00 sur 164 et -1.50 sur 074 : seul l’axe monte","pourquoi":"L’ADD monte la sphère, donc les deux méridiens : SPH et SPH + CYL."},{"t":"+1.00 sur 164 et +1.50 sur 074 : le cylindre change de signe","pourquoi":"Le CYL reste -0.50 : +1.00 + (-0.50) = +0.50."},{"t":"+1.00 sur 074 et +0.50 sur 164 : les bras tournent","pourquoi":"L’axe se recopie : la sphère reste sur 164."}],"expl":"Ajouter +2.00 au SPH monte les deux méridiens de +2.00. Leur écart (le CYL) et leur place (l’axe) ne bougent pas.","source":"d27 ; M7 ① ② (déduit)"},{"id":"b-102","fam":"b-adapter","kc":"B8.7","mod":9,"k":"vf","q":"En SV-VI, tu recopies le SPH d’origine et tu ajoutes la moitié de l’ADD au cylindre.","v":false,"expl":"C’est l’inverse : « Additionne 50% du Pouvoir ADD au SPH », puis « Transcrire CYL, AXE ».","source":"d39"},{"id":"b-103","fam":"b-adapter","kc":"B8.8","mod":9,"k":"qcm","q":"OD -1.00 -0.50 x 164 Add +2.00 → SV-VI ?","choix":[{"t":"Plano -0.50 x 164","ok":true},{"t":"+1.00 -0.50 x 164","pourquoi":"Toute l’ADD ajoutée : ça, c’est la SV-VP. En VI, on ajoute 50 %."},{"t":"-2.00 -0.50 x 164","pourquoi":"Signe perdu : (-1.00) + (+1.00) = zéro, donc Plano."},{"t":"-1.00 +0.50 x 164","pourquoi":"La part d’ADD va au SPH, pas au CYL."}],"expl":"« OD: (-1.00) + (+2.00/2) = (-1.00) + (+1.00) = 0/Plano ». CYL et AXE transcrits.","source":"d39–d42"},{"id":"b-104","fam":"b-adapter","kc":"B8.8","mod":9,"k":"qcm","q":"OD +3.25 -1.75 x 030 2△BD Add +2.50 → SV-VI ?","choix":[{"t":"+4.50 -1.75 x 030 2△BD","ok":true},{"t":"+5.50 -1.75 x 030 2△BD","pourquoi":"Coquille de la diapo d44, confirmée par la prof : +3.25 + 1.25 = +4.50."},{"t":"+5.75 -1.75 x 030 2△BD","pourquoi":"Toute l’ADD ajoutée : c’est la SV-VP. En VI, la moitié, +1.25."},{"t":"+4.50 -1.75 x 030","pourquoi":"Le prisme se recopie : 2△BD reste."}],"expl":"Moitié de +2.50 = +1.25, déjà sur un quart. (+3.25) + (+1.25) = +4.50. La diapo écrit +5.50 : coquille confirmée en classe.","source":"d43–d45 (coquille corrigée le 9 nov.)"},{"id":"b-105","fam":"b-adapter","kc":"B8.9","mod":9,"k":"qcm","q":"Plano Add +2.75 → SV-VI ?","choix":[{"t":"+1.25","ok":true},{"t":"+1.50","pourquoi":"Arrondi vers le haut : pour l’intermédiaire, on prend « l’addition le plus faible » (sic)."},{"t":"+1.375","pourquoi":"1.375 n’est pas un pouvoir : les Rx vont par quarts de dioptrie."},{"t":"+2.75","pourquoi":"Toute l’ADD : c’est la SV-VP. La VI n’en prend que la moitié."}],"expl":"« SV-VI: 1.375??, doit choisir » « +1.25 ou +1.50 ». Règle : « *BASE: Addition le plus faible » (sic), donc +1.25.","source":"d52–d54"},{"id":"b-106","fam":"b-adapter","kc":"B8.9","mod":9,"k":"qcm","q":"OD -3.00 -1.00 x 060 Add +1.75 → SV-VI ?","choix":[{"t":"-2.25 -1.00 x 060","ok":true},{"t":"-2.00 -1.00 x 060","pourquoi":"Moitié arrondie vers le haut (0.875 → +1.00) : il faut la plus faible, +0.75."},{"t":"-1.25 -1.00 x 060","pourquoi":"Toute l’ADD ajoutée : c’est la SV-VP."},{"t":"-2.125 -1.00 x 060","pourquoi":"0.875 n’est pas un quart : la part VI descend au quart du dessous, +0.75."}],"expl":"« 50% = 0.875 » → « +0.75 » : (-3.00) + (+0.75) = -2.25. CYL et AXE transcrits.","source":"d55–d57"},{"id":"b-107","fam":"b-adapter","kc":"B8.9","mod":9,"k":"qcm","q":"OD +1.50 Add +2.00 → SV-VI ?","choix":[{"t":"+2.50","ok":true},{"t":"+2.38","pourquoi":"On ne retire rien quand la moitié tombe juste : +1.00 est déjà un quart."},{"t":"+2.25","pourquoi":"Rien à arrondir avec une ADD +2.00 : la moitié, +1.00, est déjà sur le pas."},{"t":"+3.50","pourquoi":"Toute l’ADD ajoutée : c’est la SV-VP."}],"expl":"ADD +2.00 → moitié +1.00, déjà sur un quart : rien à retirer, comme en d40–d41. +1.50 + 1.00 = +2.50.","source":"d40–d41, d52"},{"id":"b-108","fam":"b-adapter","kc":"B8.9","mod":9,"k":"vf","q":"La règle de « l’addition le plus faible » (sic) s’applique aussi à la SV-VP.","v":false,"expl":"Elle ne sert qu’à l’intermédiaire : « choisir l’addition le plus faible pour l'intermédiaire » (sic). En VP, on ajoute toute l’ADD.","source":"d52"},{"id":"b-109","fam":"b-trois-rx","kc":"B8.10","mod":9,"k":"qcm","q":"-2.50 Add +1.75 : trouve les trois Rx SV.","choix":[{"t":"VL -2.50 · VI -1.75 · VP -0.75","ok":true},{"t":"VL -2.50 · VI -1.50 · VP -0.75","pourquoi":"VI arrondie vers le haut : 0.875 → la plus faible, +0.75, donc -1.75."},{"t":"VL -0.75 · VI -1.75 · VP -2.50","pourquoi":"VL et VP inversés : le près reçoit toute l’ADD, c’est le plus positif."},{"t":"VL -2.50 · VI -1.625 · VP -0.75","pourquoi":"-1.625 n’est pas un quart : la part VI descend au quart du dessous."}],"expl":"VL : -2.50. VI : moitié 0.875 → +0.75 → -1.75. VP : -2.50 + 1.75 = -0.75.","source":"d66–d67"},{"id":"b-110","fam":"b-trois-rx","kc":"B8.10","mod":9,"k":"ordre","q":"Rx : -4.00 Add +2.00. Range les trois Rx SV de la plus négative à la plus positive.","etapes":["SV-VL : -4.00","SV-VI : -3.00","SV-VP : -2.00"],"expl":"0 %, 50 %, 100 % de l’ADD : la sphère monte du loin au près. Au cours : « -2.00 », « -3.00 », « -4.00 » sous PROCHE, INTERMÉDIAIRE, DISTANCE.","source":"d64–d65"},{"id":"b-111","fam":"b-trois-rx","kc":"B8.11","mod":9,"k":"qcm","q":"Une SV-VP vaut +1.50 et la SV-VL du même œil -0.50 (même CYL). Quelle était l’ADD ?","choix":[{"t":"+2.00","ok":true},{"t":"+1.00","pourquoi":"Signe perdu : +1.50 - (-0.50) = +2.00, pas 1.50 - 0.50."},{"t":"-2.00","pourquoi":"Soustraction à l’envers : ADD = SV-VP - SV-VL = +2.00."},{"t":"+1.50","pourquoi":"C’est la SV-VP, pas l’ADD : retire-lui la SV-VL, -0.50."}],"expl":"SV-VP = SPH + ADD et SV-VL = SPH : ADD = SV-VP - SV-VL = +1.50 - (-0.50) = +2.00.","source":"déduit de d14, d24 (distillation M8, B8)"},{"id":"b-112","fam":"b-trois-rx","kc":"B8.11","mod":9,"k":"qcm","q":"Une SV-VI vaut -2.00 ; l’ADD de la Rx multifocale était +2.25. Quel était le SPH de loin ?","choix":[{"t":"-3.00","ok":true},{"t":"-3.25","pourquoi":"Part VI arrondie vers le haut (+1.25) : la règle prend la plus faible, +1.00."},{"t":"-3.125","pourquoi":"Pas un quart : la part VI de +2.25 est +1.00 (la plus faible)."},{"t":"-4.25","pourquoi":"Toute l’ADD retirée : la SV-VI n’en avait reçu que la moitié."}],"expl":"Part VI de +2.25 : 1.125 → +1.00. SPH = -2.00 - 1.00 = -3.00. Contrôle : -3.00 + 1.00 = -2.00.","source":"déduit de d39, d52–d54, d58–d59 (distillation M8, B9)"},{"id":"b-113","fam":"b-trois-rx","kc":"B8.12","mod":9,"k":"qcm","q":"Rx : OD +0.75 -0.75 x 010 Add +3.00. La patiente veut des lunettes pour la lecture. Que commandes-tu ?","choix":[{"t":"SV-VP : +3.75 -0.75 x 010","ok":true},{"t":"SV-VI : +2.25 -0.75 x 010","pourquoi":"La lecture est un usage de près : 100 % de l’ADD, pas 50 %."},{"t":"SV-VP : +3.75 -0.75 x 010 Add +3.00","pourquoi":"L’ADD est versée dans le SPH : elle disparaît de la Rx SV."},{"t":"SV-VP : +0.75 +2.25 x 010","pourquoi":"L’ADD va au SPH, jamais au CYL."}],"expl":"Lecture → près → SV-VP : (+0.75) + (+3.00) = +3.75 ; CYL et AXE transcrits ; plus d’ADD.","source":"d23, d29–d30"},{"id":"b-114","fam":"b-trois-rx","kc":"B8.12","mod":9,"k":"qcm","q":"OD -2.00 -1.00 x 070 Add +2.25. Le patient veut des lunettes pour l’ordinateur. Que commandes-tu ?","choix":[{"t":"SV-VI : -1.00 -1.00 x 070","ok":true},{"t":"SV-VI : -0.75 -1.00 x 070","pourquoi":"Part VI arrondie vers le haut : 1.125 → +1.00, la plus faible."},{"t":"SV-VP : +0.25 -1.00 x 070","pourquoi":"L’ordinateur est un usage intermédiaire (60 à 80 cm) : 50 % de l’ADD."},{"t":"SV-VI : -1.00 -1.00 x 160","pourquoi":"L’axe se recopie : 070 reste 070. On ne transpose pas."}],"expl":"Ordinateur → intermédiaire → 50 % : moitié de +2.25 = 1.125 → +1.00. (-2.00) + (+1.00) = -1.00.","source":"d38, d58–d59"},{"id":"b-115","fam":"b-trois-rx","kc":"B8.12","mod":9,"k":"ordre","q":"Remets dans l’ordre les étapes d’une commande SV faite à partir d’une Rx multifocale.","etapes":["Lire le besoin du patient : loin, intermédiaire ou près","Choisir la part de l’ADD : 0 %, 50 % ou 100 %","Ajouter cette part au SPH (au quart du dessous si la moitié tombe entre deux)","Transcrire CYL, AXE et prisme, sans l’ADD"],"expl":"Besoin → part de l’ADD → SPH + cette part → CYL, AXE et prisme recopiés, « (Aucun Pouvoir d’ADD) ».","source":"d12, d14, d24, d39, d52"}]};
+/* Générateurs du drill Bureau UA2 : une ordonnance neuve à chaque calcul. Écrits d'après la spec « generateurs » de
+   banque-notions.json (règles, notation, cas limites et exemples du cours, 14 nov.). Notation du cours : signe toujours
+   écrit, deux décimales, point décimal, tiret pour le moins, Plano pour zéro, axe à trois chiffres (x 045), prisme collé
+   à sa base (1△BU), Add +2.00 en fin de ligne. Testés par test_generateurs.js (exemples du cours recalculés). */
+const GENERATEURS = (() => {
+  const Q = n => Math.round(n * 4) / 4;
+  const proche = (a, b) => Math.abs(a - b) < 0.005;
+  const un = a => a[Math.floor(Math.random() * a.length)];
+  const entre = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const pw = x => (Math.abs(x) < 0.005 ? 'Plano' : (x > 0 ? '+' : '-') + Math.abs(x).toFixed(2));   /* une sphère, un pouvoir */
+  const cy = x => (x > 0 ? '+' : '-') + Math.abs(x).toFixed(2);                                    /* un cylindre : jamais Plano */
+  const ax = a => String(a).padStart(3, '0');
+  const rx = (s, c, a) => pw(s) + (c ? ' ' + cy(c) + ' x ' + ax(a) : '');
+  const m2 = a => (a <= 90 ? a + 90 : a - 90);   /* ③ : ≤ 090 on ajoute, sinon on enlève ; reste entre 001 et 180 */
+  const op = a => (a <= 90 ? ' + 090 = ' : ' - 090 = ');
+  const oeil = () => un(['OD', 'OS']);
+  const sphere = (min, max) => (Math.random() < 0.1 ? 0 : Q(entre(min * 4, max * 4) / 4));
+  const cylindre = () => un([0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00, 2.50, 3.00]);
+  const axe = () => (Math.random() < 0.3 ? un([90, 180, 45, 135, 5, 95, 175, 85, 1, 91, 89, 179]) : entre(1, 180));
+  const prisme = () => entre(1, 3) + '△' + un(['BU', 'BD', 'BI', 'BO']);
+  const add = () => un([1.00, 1.25, 1.50, 1.75, 2.00, 2.25, 2.50, 2.75, 3.00]);
+  const addTxt = x => 'Add +' + x.toFixed(2);
+
+  /* ---------- transposition (7.1T-d8 et la vidéo) ---------- */
+  function transposition(){
+    let s, c;
+    do { s = sphere(-8, 6); c = un([-1, 1]) * cylindre(); } while(Math.abs(s + c) > 12);
+    const a = axe(), r = Math.random();
+    const extras = r < 0.25 ? ' ' + addTxt(add()) : r < 0.4 ? ' ' + prisme() : r < 0.5 ? ' ' + prisme() + ' ' + addTxt(add()) : '';
+    const s2 = Q(s + c), c2 = -c, a2 = m2(a), o = oeil();
+    return {k:'rx', q:'Transpose cette ordonnance : ' + o + ' ' + rx(s, c, a) + extras + '.',
+      rep:{sph:s2, cyl:c2, axe:a2}, repTxt:o + ' ' + rx(s2, c2, a2) + extras,
+      extra:extras ? 'Le prisme et l’addition n’ont pas de case ici : tu sais ce qu’ils deviennent.' : '',
+      dem:[['Étape 1 : nouveau SPH', '(' + pw(s) + ') + (' + cy(c) + ') = ' + pw(s2)], ['Étape 2 : nouveau CYL', cy(c) + ' devient ' + cy(c2)],
+        ['Étape 3 : nouvel axe', ax(a) + op(a) + ax(a2)], ['Étape 4 : prisme et ADD', extras ? extras.trim() + ' demeure' : 'rien d’autre à recopier']],
+      pieges:[
+        {test:x => (x.axe === a ? 'L’axe change aussi : ' + ax(a) + op(a) + ax(a2) + '.' : '')},
+        {test:x => (proche(x.cyl, c) ? 'Le CYL garde sa valeur mais change de signe : ' + cy(c) + ' devient ' + cy(c2) + '.' : '')},
+        {test:x => (proche(x.sph, s) && !proche(s, s2) ? 'Le SPH change aussi : nouveau SPH = SPH + CYL.' : '')},
+        {test:x => (proche(x.sph, Q(s - c)) && !proche(s - c, s2) ? 'C’est SPH + CYL, une somme algébrique : (' + pw(s) + ') + (' + cy(c) + ').' : '')},
+        {test:x => (x.axe > 180 || x.axe < 1 ? 'L’axe doit rester entre 001 et 180 : ici ' + ax(a) + op(a) + ax(a2) + '.' : '')}
+      ],
+      expl:'La transposée donne la même croix : « Même puissance d’optique! ». Nouveau SPH = SPH + CYL, le CYL change de signe, l’axe ± 090 (entre 001 et 180) ; prisme et ADD demeurent.',
+      source:'7.1T-d8, vidéo Transposition'};
+  }
+
+  /* ---------- la croix : ① ② ③ (7.2-d18, 7.3-d15) ---------- */
+  function croix(){
+    let s, c;
+    do { s = sphere(-7, 5); c = Math.random() < 0.8 ? -cylindre() : cylindre(); } while(Math.abs(s + c) > 10);
+    const a = axe(), a2 = m2(a), p2 = Q(s + c), o = oeil(), ligne = o + ' ' + rx(s, c, a), sorte = un(['axe', 'deux', 'meridien']);
+    const dem = [['① La sphère', pw(s) + ' sur ' + ax(a)], ['② Le 2e pouvoir', '(' + pw(s) + ') + (' + cy(c) + ') = ' + pw(p2)], ['③ Le 2e méridien', ax(a) + op(a) + ax(a2)]];
+    const expl = 'La croix de ' + ligne + ' : ' + pw(s) + ' sur ' + ax(a) + ', ' + pw(p2) + ' sur ' + ax(a2) + '. « SPH + CYL = Force du 2e méridien ».';
+    if(sorte === 'meridien') return {k:'num', q:'Sur la croix optique de ' + ligne + ', quel est le 2e méridien ?',
+      rep:{v:a2, u:'', tol:0.1, dec:0}, repTxt:ax(a2), dem, expl, source:'7.3-d15',
+      pieges:[{v:a, m:'Ça, c’est le méridien de l’axe (la sphère). L’autre est à angle droit : ± 090.'}, {v:a + 90, m:'Le méridien doit rester entre 001 et 180 : ici on enlève 090.'}, {v:a - 90, m:'Le méridien doit rester entre 001 et 180 : ici on ajoute 090.'}]};
+    if(sorte === 'axe') return {k:'num', q:'Sur la croix optique de ' + ligne + ', quel pouvoir va sur le méridien ' + ax(a) + ' ?',
+      rep:{v:s, u:'D', tol:0.01, dec:2, signe:true}, repTxt:pw(s), dem, expl, source:'7.2-d18',
+      pieges:[{v:p2, m:'Ça, c’est le pouvoir du 2e méridien (SPH + CYL). Sur le méridien de l’axe, on met la sphère.'}, {v:c, m:'Le CYL seul ne va sur aucun bras : sur le méridien de l’axe, c’est la sphère.'}]};
+    return {k:'num', q:'Sur la croix optique de ' + ligne + ', quel pouvoir va sur le méridien ' + ax(a2) + ' ?',
+      rep:{v:p2, u:'D', tol:0.01, dec:2, signe:true}, repTxt:pw(p2), dem, expl, source:'7.2-d18',
+      pieges:[{v:s, m:'Ça, c’est le pouvoir du méridien de l’axe. Le 2e méridien porte SPH + CYL.'}, {v:c, m:'Pas le CYL seul : le 2e méridien porte SPH + CYL.'}, {v:Q(s - c), m:'C’est une somme algébrique : (' + pw(s) + ') + (' + cy(c) + ').'}]};
+  }
+
+  /* ---------- le type d'astigmatisme, d'après les deux pouvoirs (7.3-d32, d35) ---------- */
+  const TYPES_A = {
+    ms:{t:'Astigmatisme myope simple', def:'un méridien Plano et l’autre négatif'},
+    hs:{t:'Astigmatisme hypermétrope simple', def:'un méridien Plano et l’autre positif'},
+    mc:{t:'Astigmatisme myope composé', def:'deux méridiens négatifs différents'},
+    hc:{t:'Astigmatisme hypermétrope composé', def:'deux méridiens positifs différents'},
+    mx:{t:'Astigmatisme mixte', def:'un méridien positif et un méridien négatif'}
+  };
+  function typeAstig(){
+    const cle = un(Object.keys(TYPES_A)), q4 = (a, b) => Q(entre(a * 4, b * 4) / 4);
+    let p1, p2;   /* p1 ≥ p2 : la Rx en CYL négatif s'en déduit (SPH = le plus positif) */
+    if(cle === 'ms'){ p1 = 0; p2 = -q4(0.25, 3); }
+    else if(cle === 'hs'){ p1 = q4(0.25, 3); p2 = 0; }
+    else if(cle === 'mc'){ p1 = -q4(0.25, 5); p2 = p1 - q4(0.25, 3); }
+    else if(cle === 'hc'){ p2 = q4(0.25, 4); p1 = p2 + q4(0.25, 3); }
+    else { p1 = q4(0.25, 3); p2 = -q4(0.25, 3); }
+    const a = axe(), a2 = m2(a), ligne = oeil() + ' ' + rx(p1, Q(p2 - p1), a);
+    const ici = ' Ici : ' + pw(p1) + ' sur ' + ax(a) + ' et ' + pw(p2) + ' sur ' + ax(a2) + '.';
+    const autres = Object.keys(TYPES_A).filter(k => k !== cle).sort(() => Math.random() - 0.5).slice(0, 3);
+    return {k:'qcm', q:'Quel type d’astigmatisme pour ' + ligne + ' ?',
+      choix:[{t:TYPES_A[cle].t, ok:true}].concat(autres.map(k => ({t:TYPES_A[k].t, pourquoi:TYPES_A[k].t.replace('Astigmatisme ', 'Le ') + ' veut ' + TYPES_A[k].def + '.' + ici}))),
+      dem:[['① La sphère', pw(p1) + ' sur ' + ax(a)], ['② Le 2e pouvoir', '(' + pw(p1) + ') + (' + cy(Q(p2 - p1)) + ') = ' + pw(p2)], ['Les deux pouvoirs', TYPES_A[cle].def]],
+      expl:'Construis la croix, puis lis ses deux pouvoirs :' + ici + ' Donc ' + TYPES_A[cle].def + ' : ' + TYPES_A[cle].t.toLowerCase() + '.', source:'7.3-d32, d35'};
+  }
+
+  /* ---------- de la croix à la Rx (7.2T-d18–d25) ---------- */
+  function croixVersRx(){
+    const q4 = (a, b) => Q(entre(a * 4, b * 4) / 4);
+    let pa, pb;
+    do { pa = Math.random() < 0.1 ? 0 : q4(-6, 4); pb = Math.random() < 0.1 ? 0 : q4(-6, 4); } while(proche(pa, pb) || Math.abs(pa - pb) > 4);
+    const ma = axe(), mb = m2(ma), neg = Math.random() < 0.75;
+    const [sph, mS, autre] = (neg ? pa > pb : pa < pb) ? [pa, ma, pb] : [pb, mb, pa];
+    const cyl = Q(autre - sph), mAutre = mS === ma ? mb : ma;
+    return {k:'rx', q:'La croix optique porte ' + pw(pa) + ' sur ' + ax(ma) + ' et ' + pw(pb) + ' sur ' + ax(mb) + '. Écris la Rx en cylindre ' + (neg ? 'négatif' : 'positif') + '.',
+      rep:{sph, cyl, axe:mS}, repTxt:rx(sph, cyl, mS),
+      dem:[['La sphère', (neg ? 'le pouvoir le plus positif : ' : 'le pouvoir le plus négatif : ') + pw(sph)], ['L’axe', 'le méridien de la sphère : ' + ax(mS)], ['Le CYL', 'l’autre moins la sphère : (' + pw(autre) + ') - (' + pw(sph) + ') = ' + cy(cyl)]],
+      pieges:[
+        {test:x => (x.axe === mAutre ? 'L’axe, c’est le méridien de la sphère (' + ax(mS) + '), pas celui de l’autre pouvoir.' : '')},
+        {test:x => (proche(x.sph, autre) ? 'En cylindre ' + (neg ? 'négatif, la sphère est le pouvoir le plus positif.' : 'positif, la sphère est le pouvoir le plus négatif.') : '')},
+        {test:x => (proche(x.cyl, -cyl) ? 'Le CYL = l’autre pouvoir moins la sphère : en cylindre ' + (neg ? 'négatif, il est négatif.' : 'positif, il est positif.') : '')}
+      ],
+      expl:'À rebours : en CYL ' + (neg ? 'négatif, SPH = le pouvoir le plus positif' : 'positif, SPH = le plus négatif') + ', AXE = son méridien, CYL = l’autre moins SPH. Les deux écritures sont la transposition l’une de l’autre.',
+      source:'7.2T-d18–d25'};
+  }
+
+  /* ---------- nommer le type d'une Rx (7.3T-d33) ---------- */
+  function nommer(){
+    let s, c;
+    do { s = sphere(-6, 5); c = Math.random() < 0.25 ? 0 : un([-1, 1]) * cylindre(); } while(proche(Q(s + Math.max(c, 0)), 0) || (c === 0 && proche(s, 0)));
+    const sT = c > 0 ? Q(s + c) : s, aP = Math.random() < 0.3, aA = Math.random() < 0.5, a = axe(), o = oeil();
+    const ligne = o + ' ' + rx(s, c, a) + (aP ? ' ' + prisme() : '') + (aA ? ' ' + addTxt(add()) : '');
+    const nom = (m, t, p, pr) => { const x = (p ? ['Prismatique'] : []).concat(pr ? ['Presbyte'] : []), b = m + ' ' + t; return x.length ? b + (x.length > 1 ? ', ' + x[0] + ' et ' + x[1] : ' et ' + x[0]) : b; };
+    const M = sT < 0 ? 'Myope' : 'Hypermétrope', autreM = sT < 0 ? 'Hypermétrope' : 'Myope', T = c ? 'Torique' : 'Sphérique', autreT = c ? 'Sphérique' : 'Torique';
+    const bon = nom(M, T, aP, aA);
+    const faux = [
+      {t:nom(autreM, T, aP, aA), pourquoi:c > 0 ? 'Transpose d’abord (CYL positif) : la sphère devient ' + pw(sT) + ', donc ' + M + '.' : 'La sphère est ' + pw(sT) + ' : ' + M + '.'},
+      {t:nom(M, autreT, aP, aA), pourquoi:c ? 'Il y a un CYL : Torique.' : 'Pas de CYL : Sphérique.'},
+      {t:nom(M, T, !aP, aA), pourquoi:aP ? 'La Rx a un prisme : Prismatique.' : 'Pas de prisme dans cette Rx : pas Prismatique.'},
+      {t:nom(M, T, aP, !aA), pourquoi:aA ? 'La Rx a une addition : Presbyte.' : 'Pas d’addition dans cette Rx : pas Presbyte.'}
+    ].filter((x, i, l) => x.t !== bon && l.findIndex(y => y.t === x.t) === i).sort(() => Math.random() - 0.5).slice(0, 3);
+    return {k:'qcm', q:'Nomme le type de cette ordonnance : ' + ligne + '.', choix:[{t:bon, ok:true}].concat(faux),
+      expl:(c > 0 ? 'CYL positif : on transpose d’abord, la sphère devient ' + pw(sT) + '. ' : '') + 'Sphère ' + (sT < 0 ? 'négative : Myope' : 'positive : Hypermétrope') + ' ; ' + (c ? 'un CYL : Torique' : 'pas de CYL : Sphérique') + (aP ? ' ; un prisme : Prismatique' : '') + (aA ? ' ; une ADD : Presbyte' : '') + '.',
+      source:'7.3T-d33'};
+  }
+
+  /* ---------- Rx multifocale → SV (Mod 8.1) ---------- */
+  const CHAMPS = {
+    VL:{k:0, nom:'SV-VL', regle:'0 % de l’ADD', usages:['regarder le paysage', 'lire la signalisation sur la route']},
+    VI:{k:0.5, nom:'SV-VI', regle:'50 % de l’ADD', usages:['travailler à l’ordinateur', 'regarder la télévision'], note:'Notes: Ordinateur'},
+    VP:{k:1, nom:'SV-VP', regle:'100 % de l’ADD', usages:['lire', 'lire sur son téléphone'], note:'Notes: Lecture'}
+  };
+  const partVI = ad => Math.floor(ad / 2 * 4 + 1e-9) / 4;   /* « choisir l'addition le plus faible » quand ADD/2 tombe entre deux quarts */
+  function multifocal(){
+    const s = sphere(-6, 4), c = Math.random() < 0.25 ? 0 : -cylindre(), a = axe(), ad = add(), pr = Math.random() < 0.2 ? prisme() : '', o = oeil();
+    const cle = un(['VL', 'VI', 'VP', 'VI']), ch = CHAMPS[cle], mode = Math.random();
+    const part = cle === 'VL' ? 0 : cle === 'VP' ? ad : partVI(ad), s2 = Q(s + part);
+    const ligne = o + ' ' + rx(s, c, a) + (pr ? ' ' + pr : '') + ' ' + addTxt(ad);
+    let demande;
+    if(mode < 0.5 || (!ch.note && mode < 0.75)) demande = 'Adapte-la en ' + ch.nom + '.';
+    else if(mode < 0.75) demande = 'La commande porte « ' + ch.note + ' ». Quelle Rx SV commandes-tu ?';
+    else demande = 'Le patient veut des lunettes simple vision pour ' + un(ch.usages) + '. Quelle Rx SV commandes-tu ?';
+    const impaire = cle === 'VI' && !proche(ad / 2, partVI(ad));
+    return {k:'rx', q:'Rx multifocale : ' + ligne + '. ' + demande, sansCyl:!c,
+      rep:{sph:s2, cyl:c, axe:c ? a : 0}, repTxt:o + ' ' + rx(s2, c, a) + (pr ? ' ' + pr : '') + ' (' + ch.nom + ', plus d’ADD)',
+      extra:pr ? 'Le prisme n’a pas de case ici : il passe tel quel.' : '',
+      dem:[['Le champ', ch.nom + ' : ' + ch.regle], ['La part d’ADD', cle === 'VL' ? 'aucune' : cle === 'VP' ? addTxt(ad).replace('Add ', '') : '+' + ad.toFixed(2) + ' / 2 = ' + (ad / 2).toFixed(3).replace(/0$/, '') + (impaire ? ', entre deux quarts : on prend +' + part.toFixed(2) : '')],
+        ['La sphère', '(' + pw(s) + ') + (+' + part.toFixed(2) + ') = ' + pw(s2)], ['CYL, axe, prisme', c || pr ? 'recopiés : ' + (c ? cy(c) + ' x ' + ax(a) : '') + (pr ? ' ' + pr : '') : 'rien à recopier'], ['L’ADD', 'disparaît de la Rx SV']],
+      pieges:[
+        {test:x => (cle !== 'VP' && proche(x.sph, Q(s + ad)) ? 'Ça, c’est la SV-VP (100 % de l’ADD). Ici : ' + ch.nom + ', ' + ch.regle + '.' : '')},
+        {test:x => (cle !== 'VL' && proche(x.sph, s) ? 'Ça, c’est la SV-VL (0 % de l’ADD). Ici : ' + ch.nom + ', ' + ch.regle + '.' : '')},
+        {test:x => (cle === 'VP' && proche(x.sph, Q(s + partVI(ad))) ? 'Ça, c’est la SV-VI (50 %). La vision de près prend 100 % de l’ADD.' : '')},
+        {test:x => (impaire && proche(x.sph, Q(s + partVI(ad) + 0.25)) ? 'L’ADD / 2 tombe entre deux quarts : on prend l’addition la plus faible, « (ADD/2) -0.12 ».' : '')},
+        {test:x => (c && !proche(x.cyl, c) ? 'Le CYL et l’axe passent tels quels : ' + cy(c) + ' x ' + ax(a) + '.' : '')}
+      ],
+      expl:'SV-VL = 0 % de l’ADD, SV-VI = 50 % (entre deux quarts, l’addition la plus faible), SV-VP = 100 % ; CYL, axe et prisme recopiés, et la nouvelle Rx n’a plus d’ADD.',
+      source:'Mod 8.1 Adaptation Rx-Multifocal, d14–d54'};
+  }
+
+  return [
+    {id:'gen-transpo', fam:'b-transposer', kc:'B7.21', f:transposition},
+    {id:'gen-croix', fam:'b-croix-construire', kc:'B7.6', f:croix},
+    {id:'gen-types', fam:'b-croix-types', kc:'B7.15', f:typeAstig},
+    {id:'gen-croix-rx', fam:'b-croix-rx', kc:'B7.17', f:croixVersRx},
+    {id:'gen-nommer', fam:'b-analyse', kc:'B7.32', f:nommer},
+    {id:'gen-multi', fam:'b-adapter', kc:'B8.6', f:multifocal}
+  ];
+})();
+/* pour test_generateurs.js (node) */
+if(typeof module !== 'undefined') module.exports = GENERATEURS;
+
+const GENS = typeof GENERATEURS !== 'undefined' ? GENERATEURS : [];
+
+/* === moteur : début (pur) === */
+const FAMILLES = {};
+BANQUE.familles.forEach(f => { FAMILLES[f.id] = f; });
+const copie = o => JSON.parse(JSON.stringify(o));
+const TYPES = BANQUE.items.map(it => ({id:it.id, fam:it.fam, mod:it.mod, kc:it.kc || '', f:() => copie(it)}))
+  .concat(GENS.map(g => ({id:g.id, fam:g.fam, mod:g.mod || (FAMILLES[g.fam] || {}).mod, kc:g.kc || '', gen:true, f:g.f})));
+const num = (x, d = 2) => Math.abs(x).toFixed(d).replace('.', ',');
+const fmt = (x, d = 2) => (x < 0 ? '−' : '') + num(x, d);
+const sg = (x, d = 2) => (x > 0 ? '+' : x < 0 ? '−' : '') + num(x, d);
+function lire(s){
+  if(/^\s*pl/i.test(String(s == null ? '' : s))) return 0;  /* « Plano » = 0 */
+  const t = String(s == null ? '' : s).trim().replace(/\s/g, '').replace(',', '.').replace(/[−–]/g, '-');
+  const r = t.match(/^[+-]?(\d+(\.\d*)?|\.\d+)/);
+  return r ? parseFloat(r[0]) : null;
+}
+const pres = (a, b, t) => Math.abs(a - b) <= t + 1e-9;
+/* un nombre : {ok} ; {vide, m} s'il manque ; {m, reconnu} pour un piège connu ; {} sinon */
+function jugerNum(p, s){
+  const r = p.rep, x = lire(s);
+  if(x === null) return {vide:true, m:'Écris un nombre.'};
+  if(pres(x, r.v, r.tol)) return {ok:true};
+  for(const e of (p.pieges || [])) if(pres(x, e.v, r.tol)) return {m:e.m, reconnu:true};
+  if(r.v !== 0 && pres(-x, r.v, r.tol)) return {m:'Vérifie le signe de ta réponse.', reconnu:true};
+  return {};
+}
+/* une ordonnance : {sph, cyl, axe}. Les pièges du générateur sont des fonctions (saisie → message) */
+function jugerRx(p, s){
+  const r = p.rep, sph = lire(s.sph), cyl = lire(s.cyl), axe = lire(s.axe);
+  if(sph === null || (r.cyl !== undefined && r.cyl !== 0 && (cyl === null || axe === null))) return {vide:true, m:'Remplis la sphère' + (r.cyl ? ', le cylindre et l’axe.' : '.')};
+  const c = cyl === null ? 0 : cyl, a = axe === null ? 0 : axe, rc = r.cyl || 0;
+  const axeOk = !rc || pres(a, r.axe, 0.5);  /* un axe s'écrit de 001 à 180 : 000 n'est pas 180 */
+  if(pres(sph, r.sph, 0.01) && pres(c, rc, 0.01) && axeOk) return {ok:true};
+  for(const e of (p.pieges || [])){ const m = e.test({sph, cyl:c, axe:a}); if(m) return {m, reconnu:true}; }
+  if(rc && (a < 1 || a > 180)) return {m:'Un axe s’écrit entre 001 et 180 (jamais 000).', reconnu:true};
+  const faux = [];
+  if(!pres(sph, r.sph, 0.01)) faux.push('la sphère');
+  if(!pres(c, rc, 0.01)) faux.push('le cylindre');
+  if(!axeOk) faux.push('l’axe');
+  return {m:'À revoir : ' + faux.join(', ') + '.'};
+}
+/* le critère du blueprint §4.2 */
+function reussi(e){ return !!e && e.serie >= 3 && e.n >= 5; }
+function histoire(e){ return e && e.h ? e.h : []; }
+/* la maîtrise estimée d'une famille (0 à 1), comme dans « Quelle formule ? » : réussite du premier coup, sans aide,
+   sur les 10 derniers essais, les récents pèsent plus, lissée, freinée tant qu'il y a moins de 3 réussites */
+function maitriseFamille(e){
+  if(!e || !e.n) return 0;
+  if(reussi(e)) return 1;
+  const h = histoire(e);
+  let w = 1, a = 0, b = 0, k = 0;
+  for(let i = h.length - 1; i >= 0; i--){ a += w * h[i]; b += w; k += h[i]; w *= 0.8; }
+  return Math.min(0.95, (a + 1) / (b + 2) * Math.min(1, k / 3));
+}
+function maitriseTout(fam){ const fs = Object.keys(FAMILLES); return Math.round(fs.reduce((x, f) => x + maitriseFamille(fam[f]), 0) / fs.length * 1000) / 10; }
+function vitesse(journal){
+  const j = (journal || []).slice(-40), n = j.length;
+  if(n < 8) return null;
+  const mx = (n - 1) / 2, my = j.reduce((a, x) => a + x.p, 0) / n;
+  let nm = 0, den = 0;
+  j.forEach((x, i) => { nm += (i - mx) * (x.p - my); den += (i - mx) * (i - mx); });
+  return {par10:nm / den * 10, n};
+}
+function parJour(journal){
+  const jours = {};
+  (journal || []).forEach(x => { const d = new Date(x.t), k = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); jours[k] = (jours[k] || 0) + 1; });
+  const v = Object.values(jours);
+  return v.length ? {moy:v.reduce((a, b) => a + b, 0) / v.length, jours:v.length} : null;
+}
+/* la prochaine question. La famille d'abord (chaque notion compte autant, quel que soit son nombre de questions) :
+   tant qu'une famille reste à découvrir, une question sur deux en vient ; sinon, ce qui n'est pas réussi revient plus
+   souvent. Dans la famille : la question la moins vue, puis celle qu'on a ratée la dernière fois. */
+function choisirType(l, etat, rnd = Math.random){
+  const un = a => a[Math.min(a.length - 1, Math.floor(rnd() * a.length))];
+  const fams = [...new Set(l.map(t => t.fam))];
+  const autres = fams.filter(f => f !== etat.dernierFam), base = autres.length ? autres : fams;
+  const neuves = base.filter(f => !etat.fam[f] || !etat.fam[f].n);
+  let fam;
+  if(neuves.length && !etat.decouverte) fam = un(neuves);
+  else {
+    const poids = f => { const e = etat.fam[f]; return reussi(e) ? 1 : e ? 3 : 4; };
+    let x = rnd() * base.reduce((n, f) => n + poids(f), 0);
+    fam = base[base.length - 1];
+    for(const f of base){ x -= poids(f); if(x <= 0){ fam = f; break; } }
+  }
+  const ts = l.filter(t => t.fam === fam && t.id !== etat.dernierType);
+  let pool = ts.length ? ts : l.filter(t => t.fam === fam);
+  /* une famille qui a un générateur : une fois sur deux un calcul neuf, une fois sur deux une question écrite */
+  const gens = pool.filter(t => t.gen), ecrites = pool.filter(t => !t.gen);
+  if(gens.length && ecrites.length) pool = rnd() < 0.5 ? gens : ecrites;
+  const vu = t => (etat.typ && etat.typ[t.id]) || 0, min = Math.min(...pool.map(vu));
+  const moins = pool.filter(t => vu(t) === min);
+  const ratees = moins.filter(t => etat.it && etat.it[t.id] && etat.it[t.id].der === 0);
+  return {t:un(ratees.length ? ratees : moins), neuve:!etat.fam[fam] || !etat.fam[fam].n};
+}
+/* === moteur : fin === */
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+const memo = {get(){ try{ return JSON.parse(localStorage.getItem(COURS.cle)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(COURS.cle, JSON.stringify(v)); }catch(e){} }};
+const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[]});
+let D = Object.assign(VIDE(), memo.get() || {});
+const sauver = () => memo.set(D);
+const MODS = [...new Set(BANQUE.familles.map(f => f.mod))].sort((a, b) => a - b);
+const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, 'Module ' + m]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
+if(/^\d+$/.test(String(D.portee))) D.portee = +D.portee;
+if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'tout';
+['typ', 'it', 'fam'].forEach(k => { if(!D[k] || typeof D[k] !== 'object') D[k] = {}; });
+if(!Array.isArray(D.err)) D.err = [];
+if(!Array.isArray(D.choix)) D.choix = [];
+D.choix = D.choix.filter(f => FAMILLES[f]);
+if(D.portee === 'perso' && !D.choix.length) D.portee = 'tout';
+/* « Mes erreurs » : les questions dont la dernière réponse comptée était fausse (les générées n'y vont pas) */
+const dansPortee = t => D.portee === 'perso' ? D.choix.includes(t.fam)
+  : D.portee === 'erreurs' ? !t.gen && D.it[t.id] && D.it[t.id].der === 0
+  : D.portee === 'tout' || t.mod === D.portee;
+const famillesActives = () => new Set(TYPES.filter(dansPortee).map(t => t.fam));
+function basculer(f){
+  const act = D.portee === 'erreurs' ? new Set(Object.keys(FAMILLES)) : famillesActives(), toutes = Object.keys(FAMILLES);
+  if(f === '*'){ if(act.size === toutes.length) act.clear(); else toutes.forEach(x => act.add(x)); }
+  else if(act.has(f)) act.delete(f); else act.add(f);
+  D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
+  $('#annonce-carte').textContent = act.size ? '' : 'Tout est éteint : allume une notion (ou plus) pour continuer.';
+  if(act.size && SESS.vide) nouveau(); else peindreCote();
+  const b = document.querySelector('.inter[data-tg="' + f + '"]'); if(b) b.focus();
+}
+const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false};
+
+/* ---------- la prochaine question : les rappels d'abord (une autre question de la même notion si possible) ---------- */
+function prochain(){
+  SESS.rappels.forEach(x => { x.dans--; });
+  const l = TYPES.filter(dansPortee);
+  const du = SESS.rappels.find(x => x.dans <= 0 && l.some(t => t.fam === x.fam && t.fam !== SESS.dernierFam));
+  if(du){
+    SESS.rappels = SESS.rappels.filter(x => x !== du); SESS.decouverte = false;
+    const meme = l.filter(t => t.kc && t.kc === du.kc && t.id !== du.id), fam = l.filter(t => t.fam === du.fam && t.id !== du.id);
+    const vu = t => D.typ[t.id] || 0, pire = a => a.sort((x, y) => vu(x) - vu(y))[0];
+    return (meme.length ? pire(meme) : fam.length ? pire(fam) : null) || l.find(t => t.id === du.id) || l[0];
+  }
+  const r = choisirType(l, {fam:D.fam, typ:D.typ, it:D.it, dernierFam:SESS.dernierFam, dernierType:SESS.dernierType, decouverte:SESS.decouverte});
+  SESS.decouverte = r.neuve;
+  return r.t;
+}
+/* ---------- la question en cours ---------- */
+let S = null;
+const melange = a => { if(a.length < 2) return a.slice(); let r; do { r = a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]); } while(r.every((x, i) => x === a[i])); return r; };
+function nouveau(type, jumelle){
+  if(!type && !TYPES.some(dansPortee)){
+    SESS.vide = true; if(S) S.etape = 'vide';
+    $('#scene').innerHTML = D.portee === 'erreurs'
+      ? '<p class="msg ok">Aucune erreur en attente : chaque question ratée a été réussie depuis. Choisis une autre portée en haut.</p>'
+      : '<p class="msg warn">Aucune notion allumée. Allume celles que tu veux pratiquer sur ta carte (à droite, ou plus bas sur un téléphone), et la question suivante arrive.</p>';
+    peindreCote(); return;
+  }
+  SESS.vide = false;
+  const t = type || prochain(), p = t.f();
+  p.type = t;
+  if(p.k === 'qcm') p.ordreChoix = melange(p.choix.map((c, i) => i));
+  if(p.k === 'ordre') p.ordreEtapes = melange(p.etapes.map((e, i) => i));
+  S = {p, etape:'question', essais:0, aide:!!jumelle, jumelle:!!jumelle, messages:[], tentes:[], seq:[], ecartes:[]};
+  SESS.dernierFam = t.fam; SESS.dernierType = t.id;
+  D.typ[t.id] = (D.typ[t.id] || 0) + 1; sauver();
+  peindre();
+}
+const SORTES = {qcm:'Choix multiple', vf:'Vrai ou faux', num:'Calcul', ordre:'Mise en ordre', rx:'Ordonnance'};
+function peindre(){
+  const z = $('#scene'), p = S.p, fam = FAMILLES[p.type.fam];
+  let h = '<div class="sujet"><span class="chip">' + esc(fam.t) + '</span>' + qm(fam.id) + '<span class="sorte">' + SORTES[p.k] + '</span></div>';
+  if(SESS.avis){ h += msg(SESS.avis, 'warn'); SESS.avis = ''; }
+  h += '<p class="enonce">' + esc(p.q) + '</p>';
+  if(S.etape === 'question') h += question(p);
+  else h += '<div id="fb">' + S.messages.join('') + '</div>' + finHtml(p);
+  z.innerHTML = nb(h);
+  peindreCote();
+  if(S.etape === 'question'){
+    const champ = $('#rep, [data-rx="sph"]', z);
+    if(champ) champ.focus({preventScroll:true});
+    if(z.getBoundingClientRect().top < 0) z.scrollIntoView({block:'start'});
+  } else {
+    const suite = $('[data-a="suivant"]', z); if(suite) suite.focus({preventScroll:true});
+    const bas = $('.bas', z); if(bas) bas.scrollIntoView({block:'nearest'});
+  }
+}
+const sorties = () => '<div class="bas" id="sorties"><button type="button" class="lien" data-a="passer">Passer cette question</button>' + BOUTON_COPIER + '</div>';
+function question(p){
+  const fb = '<div id="fb">' + S.messages.join('') + '</div>';
+  if(p.k === 'qcm'){
+    return '<div class="tuiles">' + p.ordreChoix.map((i, n) => '<button type="button" class="tuile' + (S.ecartes.includes(i) ? ' non' : '') + '" data-c="' + i + '"' + (S.ecartes.includes(i) ? ' disabled' : '') + '><kbd>' + (n + 1) + '</kbd><span class="f">' + esc(p.choix[i].t) + '</span></button>').join('') + '</div>' + fb + sorties();
+  }
+  if(p.k === 'vf'){
+    return '<div class="tuiles deux"><button type="button" class="tuile" data-v="1"><kbd>V</kbd><span class="f">Vrai</span></button><button type="button" class="tuile" data-v="0"><kbd>F</kbd><span class="f">Faux</span></button></div>' + fb + sorties();
+  }
+  if(p.k === 'ordre'){
+    const reste = p.ordreEtapes.filter(i => !S.seq.includes(i));
+    return '<p class="suite-t">Ta suite (touche les étapes dans l’ordre)</p><ol class="suite' + (S.seq.length ? '' : ' vide-s') + '">' + (S.seq.length ? S.seq.map(i => '<li>' + esc(p.etapes[i]) + '</li>').join('') : '<li>Rien encore : touche la première étape ci-dessous.</li>') + '</ol>'
+      + (reste.length ? '<div class="tuiles">' + reste.map(i => '<button type="button" class="tuile" data-e="' + i + '"><span class="f">' + esc(p.etapes[i]) + '</span></button>').join('') + '</div>' : '')
+      + fb + '<div class="bas">' + (S.seq.length ? '<button type="button" class="bouton" data-a="defaire">Retirer la dernière</button>' : '') + '<button type="button" class="lien" data-a="passer">Passer cette question</button>' + BOUTON_COPIER + '</div>';
+  }
+  const aide = '<div class="bas"><button type="button" class="bouton plein" data-a="valider">Vérifier</button>' + (p.dem && p.dem.length ? '<button type="button" class="lien" data-a="depart">Je ne sais pas par où commencer</button>' : '') + '<button type="button" class="lien" data-a="passer">Passer cette question</button>' + BOUTON_COPIER + '</div>';
+  const signe = d => '<button type="button" class="bouton signe" data-a="signe" data-cible="' + d + '" aria-label="Changer le signe" title="Changer le signe">±</button>';
+  if(p.k === 'rx'){
+    const v = k => esc((S.saisie || {})[k] || '');
+    return '<div class="rx"><label>SPH<input data-rx="sph" inputmode="decimal" autocomplete="off" placeholder="ex. -2.00" value="' + v('sph') + '"></label>' + signe('sph')
+      + (p.sansCyl ? '' : '<label>CYL<input data-rx="cyl" inputmode="decimal" autocomplete="off" placeholder="ex. -0.75" value="' + v('cyl') + '"></label>' + signe('cyl') + '<label>AXE<input data-rx="axe" inputmode="numeric" autocomplete="off" placeholder="ex. 045" value="' + v('axe') + '"></label>')
+      + '</div><p class="source">Écris 0 ou Plano pour une sphère nulle.' + (p.extra ? ' ' + esc(p.extra) : '') + '</p>' + fb + brouillonHtml() + aide;
+  }
+  const r = p.rep;
+  return '<div class="saisie"><label for="rep" class="u">Ta réponse</label><input id="rep" inputmode="decimal" autocomplete="off" value="' + esc(S.saisie || '') + '"><span class="u">' + esc(r.u || '') + '</span>' + (r.v < 0 || r.signe ? signe('rep') : '') + '</div>' + fb + brouillonHtml() + aide;
+}
+const brouillonHtml = () => S.brouillonOuvert
+  ? '<div class="brouillon-boite"><label for="brouillon" class="brouillon-t">Écris tes calculs ici <span class="facultatif">(facultatif : ce brouillon n’est jamais corrigé)</span></label><textarea id="brouillon" class="brouillon" rows="4" spellcheck="false" autocomplete="off">' + esc(S.brouillon || '') + '</textarea><button type="button" class="lien petit" data-a="brouillon" aria-expanded="true">Masquer le brouillon</button></div>'
+  : '<button type="button" class="lien petit" data-a="brouillon" aria-expanded="false">✎ Écris tes calculs ici (facultatif)</button>';
+const BOUTON_COPIER = '<button type="button" class="lien" data-a="copier">Copier pour une IA</button>';
+const qm = f => '<button type="button" class="qm" data-x="' + f + '" aria-label="Fiche : ' + esc(FAMILLES[f].t) + '" title="La fiche de cette notion (ouverte pendant une question : pas de point, rien de perdu)">?</button>';
+const demHtml = p => p.dem && p.dem.length ? '<ul class="dem">' + p.dem.map(([l, c]) => '<li><span class="l">' + esc(l) + '</span><span class="c">' + esc(c) + '</span></li>').join('') + '</ul>' : '';
+const nb = h => String(h).split(/(<textarea[\s\S]*?<\/textarea>)/).map((x, i) => i % 2 ? x : x.replace(/ ([?!:;»])/g, ' $1').replace(/« /g, '« ')).join('');
+const msg = (t, c) => '<p class="msg ' + c + '">' + esc(t) + '</p>';
+const rxTxt = r => sg(r.sph) + (r.cyl ? ' ' + sg(r.cyl) + ' x ' + String(Math.round(r.axe)).padStart(3, '0') : '');
+function repTxt(p){
+  if(p.repTxt) return p.repTxt;  /* un générateur l'écrit dans la notation du cours */
+  if(p.k === 'qcm') return p.choix.find(c => c.ok).t;
+  if(p.k === 'vf') return p.v ? 'Vrai' : 'Faux';
+  if(p.k === 'ordre') return p.etapes.map((e, i) => (i + 1) + '. ' + e).join(' ; ');
+  if(p.k === 'rx') return rxTxt(p.rep);
+  const r = p.rep, d = r.dec === undefined ? 2 : r.dec;
+  return (r.signe ? sg(r.v, d) : fmt(r.v, d)) + (r.u ? ' ' + r.u : '');
+}
+function finHtml(p){
+  let h = bilanHtml();
+  if(p.k === 'ordre') h += '<ol class="suite">' + p.etapes.map(e => '<li>' + esc(e) + '</li>').join('') + '</ol>';
+  if(p.k === 'qcm') h += '<div class="tuiles">' + p.ordreChoix.map((i, n) => '<div class="tuile' + (p.choix[i].ok ? ' oui' : S.ecartes.includes(i) ? ' non' : '') + '"><kbd>' + (n + 1) + '</kbd><span class="f">' + esc(p.choix[i].t) + (S.ecartes.includes(i) && p.choix[i].pourquoi ? '<br><small>' + esc(p.choix[i].pourquoi) + '</small>' : '') + '</span></div>').join('') + '</div>';
+  if(p.expl) h += msg(p.expl, 'info');
+  h += demHtml(p);
+  if(p.source) h += '<p class="source">Source : ' + esc(p.source) + '</p>';
+  return h + '<div class="bas"><button type="button" class="bouton plein" data-a="suivant">Question suivante</button>' + (S.bon ? '' : '<button type="button" class="bouton" data-a="jumelle">Une autre sur cette notion</button>') + BOUTON_COPIER + '</div>';
+}
+const aider = raison => { S.aide = true; if(!S.pourquoi) S.pourquoi = raison; };
+function choisirQcm(i){
+  const p = S.p, c = p.choix[i];
+  if(c.ok){ conclure(true); return; }
+  S.essais++; aider('une mauvaise réponse'); S.ecartes.push(i); S.tentes.push(c.t);
+  const restants = p.choix.filter((x, j) => !x.ok && !S.ecartes.includes(j)).length;
+  if(S.essais >= 2 || !restants){ S.messages = [msg(c.pourquoi || 'Ce n’est pas ça.', 'bad')]; conclure(false); return; }
+  S.messages = [msg((c.pourquoi || 'Ce n’est pas ça.') + ' Essaie encore (ce sera sans point).', 'bad')];
+  peindre();
+}
+function choisirVf(v){
+  const p = S.p;
+  if(v === p.v){ conclure(true); return; }
+  S.essais++; aider('une mauvaise réponse'); S.tentes.push(v ? 'Vrai' : 'Faux');
+  S.messages = []; conclure(false);
+}
+function ajouterEtape(i){
+  const p = S.p;
+  S.seq.push(i);
+  if(S.seq.length < p.etapes.length){ peindre(); return; }
+  if(S.seq.every((x, k) => x === k)){ conclure(true); return; }
+  S.essais++; aider('une suite dans le désordre'); S.tentes.push(S.seq.map(x => p.etapes[x]).join(' → '));
+  const bons = S.seq.findIndex((x, k) => x !== k);
+  if(S.essais >= 2){ S.messages = [msg('Encore dans le désordre. Voici la bonne suite.', 'bad')]; conclure(false); return; }
+  S.seq = S.seq.slice(0, bons);
+  S.messages = [msg((bons === 1 ? 'La première étape est à sa place ; la suite, non.' : bons > 1 ? 'Les ' + bons + ' premières étapes sont à leur place ; la suite, non.' : 'La première étape n’est pas la bonne.') + (bons ? ' Continue à partir de là' : ' Recommence') + ' (ce sera sans point).', 'bad')];
+  peindre();
+}
+function lireSaisie(){
+  if(S.p.k === 'rx'){ S.saisie = S.saisie || {}; document.querySelectorAll('[data-rx]').forEach(x => { S.saisie[x.dataset.rx] = x.value; }); }
+  else { const ch = $('#rep'); if(ch) S.saisie = ch.value; }
+}
+function valider(){
+  const p = S.p;
+  lireSaisie();
+  const v = p.k === 'rx' ? jugerRx(p, S.saisie || {}) : jugerNum(p, S.saisie);
+  if(v.vide){ $('#fb').innerHTML = S.messages.join('') + msg(v.m, 'warn'); return; }
+  if(v.ok){ conclure(true); return; }
+  S.essais++; aider('un essai manqué'); S.tentes.push(p.k === 'rx' ? ['sph', 'cyl', 'axe'].map(k => (S.saisie || {})[k] || '·').join(' ') : S.saisie + (p.rep.u ? ' ' + p.rep.u : ''));
+  if(S.essais >= 3){ S.messages = [msg('Voici la démarche. Tu peux en faire une autre sur cette notion, ou passer à autre chose.', 'warn')]; conclure(false); return; }
+  let t = v.m || 'Pas encore.';
+  if(S.essais === 2 && p.dem && p.dem.length) t += ' Première étape, ' + p.dem[0][0].toLowerCase() + ' : ' + p.dem[0][1];
+  S.messages = [msg(t, 'bad')];
+  peindre();
+}
+function depart(){
+  lireSaisie();
+  aider('l’indice de départ');
+  const [l, c] = S.p.dem[0];
+  S.messages = [msg('Commence ici, ' + l.toLowerCase() + ' : ' + c, 'warn')];
+  peindre();
+}
+function passer(){ abandonner(); nouveau(); }
+function abandonner(){
+  if(!S || !S.p || S.etape === 'fini' || S.etape === 'vide') return;
+  if((S.essais || S.aide) && !S.jumelle){
+    const t = S.p.type, e = D.fam[t.fam], s0 = e ? Math.min(3, e.serie) : 0;
+    noter(S.p, false);
+    SESS.avis = 'Question laissée après ' + (S.pourquoi || 'un essai') + '. La réponse : ' + repTxt(S.p) + '.' + (s0 ? ' Ta série sur « ' + FAMILLES[t.fam].t + ' » repart de zéro (elle était à ' + s0 + ').' : '');
+  }
+}
+/* la fin d'une question : « point » (juste du premier coup, sans aide), « neutre » (juste après la fiche ou une copie),
+   « jumelle » (entraînement), « rate » (faux, ou juste avec de l'aide : la série repart de zéro) */
+function conclure(bon){
+  const p = S.p, f = p.type.fam, e0 = D.fam[f];
+  const avant = {s:e0 ? Math.min(3, e0.serie) : 0, r:reussi(e0), pct:maitriseTout(D.fam)};
+  const net = bon && !S.aide && !S.lu && !S.jumelle;
+  const sorte = S.jumelle ? 'jumelle' : net ? 'point' : bon && S.lu && !S.aide ? 'neutre' : 'rate';
+  S.etape = 'fini'; S.bon = bon;
+  if(bon) S.messages = [msg((net ? 'Juste, du premier coup' : 'Juste') + (p.k === 'qcm' || p.k === 'ordre' ? '.' : ' : ' + repTxt(p) + '.'), 'ok')];
+  else S.messages = S.messages.concat(msg('La réponse : ' + repTxt(p) + '.', 'warn'));
+  noter(p, net, sorte === 'neutre' || sorte === 'jumelle');
+  const e1 = D.fam[f];
+  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:maitriseTout(D.fam)}};
+  peindre();
+}
+function noter(p, net, neutre){
+  const t = p.type;
+  SESS.n++; if(net) SESS.net++;
+  const e = D.fam[t.fam] || (D.fam[t.fam] = {n:0, ok:0, serie:0, h:[]});
+  if(!neutre){
+    e.n++; e.h = histoire(e).concat(net ? 1 : 0).slice(-10);
+    if(!t.gen){ const it = D.it[t.id] || (D.it[t.id] = {n:0, ok:0}); it.n++; if(net) it.ok++; it.der = net ? 1 : 0; }
+  }
+  if(net){ e.ok++; e.serie++; D.dernier = {fam:t.fam, i:Math.min(3, e.serie) - 1}; }
+  else {
+    if(!neutre){
+      e.serie = 0; if(D.dernier && D.dernier.fam === t.fam) D.dernier = null;
+      D.err = [{q:p.q, r:repTxt(p), f:t.fam}].concat(D.err.filter(x => x.q !== p.q)).slice(0, 6);
+    }
+    if(!SESS.rappels.some(r => r.id === t.id)) SESS.rappels.push({id:t.id, kc:t.kc, fam:t.fam, dans:2 + Math.floor(Math.random() * 3)});
+  }
+  if(!neutre) D.journal = (D.journal || []).concat({t:Date.now(), p:maitriseTout(D.fam)}).slice(-300);
+  sauver();
+}
+const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : i < perdus ? 'perdu' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span>';
+function bilanHtml(){
+  const b = S.bilan; if(!b) return '';
+  const nom = '« ' + FAMILLES[b.fam].t + ' »', a = b.avant, z = b.apres;
+  let cls, titre, texte, dots;
+  if(b.sorte === 'point'){
+    cls = 'ok'; titre = '+1 point'; dots = pts(z.s, z.s - 1, 0);
+    texte = z.r && !a.r ? nom + ' : notion réussie ✓' : z.r ? nom + ' : déjà réussie, tu l’entretiens.'
+      : z.serie >= 3 ? nom + ' : 3 de suite. Encore ' + (5 - z.n) + ' comme ça et elle est réussie.' : nom + ' : ' + z.s + ' de suite sur 3.';
+  } else if(b.sorte === 'neutre'){
+    cls = 'neutre'; titre = 'Juste, sans point cette fois'; dots = pts(z.s, -1, 0);
+    texte = 'Tu as ouvert la fiche ou copié la question : c’est permis, et ta série sur ' + nom + ' reste à ' + z.s + ' sur 3. Un point demande le premier coup, sans aide.';
+  } else if(b.sorte === 'jumelle'){
+    cls = 'neutre'; titre = 'Entraînement'; dots = pts(z.s, -1, 0);
+    texte = 'Une question d’entraînement ne donne pas de point et n’en enlève pas. Cette notion revient bientôt, pour un vrai point.';
+  } else {
+    cls = 'perdu'; titre = b.bon ? 'Juste, mais sans point' : 'Pas de point'; dots = pts(0, -1, a.s);
+    texte = (b.bon ? 'C’était après ' + (b.pourquoi || 'une aide') + ' : un point demande le premier coup. ' : '')
+      + 'Ta série sur ' + nom + (a.s ? ' repart de zéro (elle était à ' + a.s + ').' : ' reste à zéro.')
+      + (a.r && !z.r ? ' La notion n’est plus « réussie » pour l’instant : trois de suite et elle le redevient.' : '') + ' Cette notion revient bientôt, avec une autre question.';
+  }
+  const d = Math.round(z.pct) - Math.round(a.pct);
+  return '<div class="bilan ' + cls + '">' + dots + '<p><b>' + esc(titre) + '</b> · ' + esc(texte) + '</p>'
+    + (d ? '<p class="sous">Ta maîtrise : ' + virg(a.pct, 0) + ' % → ' + virg(z.pct, 0) + ' %</p>' : '') + '</div>';
+}
+/* ---------- la fiche d'une notion ---------- */
+let fond = null, retour = null;
+function expliquer(f, depuis){
+  fermerExpl();
+  const x = FAMILLES[f], c = x.carte || {}, enCours = S && S.etape === 'question';
+  if(enCours) S.lu = true;
+  retour = depuis || null;
+  ouvrirFond(x.t, '<p>' + esc(c.quoi || '') + '</p>' + (c.quand ? '<div><h3>Quand y penser</h3><p>' + esc(c.quand) + '</p></div>' : '')
+    + (c.exemple ? '<div><h3>Un exemple du cours</h3><p class="ex">' + esc(c.exemple) + '</p></div>' : '')
+    + (c.piege ? '<div class="piege"><h3>Le piège</h3><p>' + esc(c.piege) + '</p></div>' : '')
+    + '<small>' + esc(c.source ? 'Source : ' + c.source + '.' : '') + (enCours ? ' Réussie après cette lecture, cette question ne comptera pas dans ta série, mais elle ne la cassera pas.' : '') + '</small>');
+  $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
+}
+function ouvrirFond(titre, corps){
+  fond = document.createElement('div');
+  fond.className = 'expl-fond';
+  fond.innerHTML = nb('<section class="expl" role="dialog" aria-modal="true" aria-labelledby="expl-t"><div class="haut"><h2 id="expl-t">' + esc(titre) + '</h2><button type="button" class="bouton" data-a="fermer-expl">Fermer</button></div>' + corps + '</section>');
+  document.body.appendChild(fond);
+}
+function fermerExpl(){
+  if(!fond) return;
+  fond.remove(); fond = null;
+  if(retour && retour.isConnected) retour.focus({preventScroll:true});
+  retour = null;
+}
+/* ---------- copier pour une IA : la question telle quelle ; la réponse seulement une fois la question finie ---------- */
+function pourIA(p, o = {}){
+  const fini = o.etape === 'fini';
+  const l = ['Je suis en formation d’opticien·ne au Collège La Cité (cours « ' + COURS.nom + ' »). Aide-moi avec cette question de révision.', '', 'LA NOTION', FAMILLES[p.type.fam].t, '', 'LA QUESTION', p.q, ''];
+  if(p.k === 'qcm'){ l.push('LES CHOIX'); p.ordreChoix.forEach((i, n) => l.push((n + 1) + '. ' + p.choix[i].t)); l.push(''); }
+  if(p.k === 'vf') l.push('C’EST UN VRAI OU FAUX', '');
+  if(p.k === 'ordre'){ l.push('LES ÉTAPES À METTRE DANS L’ORDRE'); p.ordreEtapes.forEach(i => l.push('- ' + p.etapes[i])); l.push(''); }
+  if(p.k === 'num') l.push('LA RÉPONSE ATTENDUE', 'un nombre' + (p.rep.u ? ', en ' + p.rep.u : ''), '');
+  if(p.k === 'rx') l.push('LA RÉPONSE ATTENDUE', 'une ordonnance : sphère, cylindre, axe', '');
+  if(o.tentes && o.tentes.length) l.push('CE QUE J’AI RÉPONDU, À TORT', ...o.tentes, '');
+  if(fini){
+    l.push('LA RÉPONSE DE MON CORRIGÉ', repTxt(p), '');
+    if(p.expl) l.push('L’EXPLICATION DU CORRIGÉ', p.expl, '');
+    if(p.dem && p.dem.length) l.push('LA DÉMARCHE', ...p.dem.map(([a, b]) => '- ' + a + ' : ' + b), '');
+  }
+  if(COURS.conventions && COURS.conventions.length) l.push('LES CONVENTIONS DE MON COURS', ...COURS.conventions.map(c => '- ' + c), '');
+  l.push('CE QUE J’AIMERAIS', fini
+    ? 'Explique-moi simplement pourquoi c’est la bonne réponse' + (p.k === 'qcm' ? ' et pourquoi chacun des autres choix est faux' : '') + '. Ensuite, pose-moi une question semblable, sans la réponse, pour vérifier que j’ai compris. Mon cours a le dernier mot : si tu n’es pas d’accord avec mon corrigé, dis-le, mais garde la réponse du cours.'
+    : 'Aide-moi à raisonner, une question à la fois, sans me donner la réponse avant que j’aie essayé.');
+  return l.join('\n');
+}
+async function versPressePapiers(t){
+  try{ await navigator.clipboard.writeText(t); return true; }catch(e){}
+  const z = document.createElement('textarea');
+  z.value = t; z.readOnly = true; z.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(z); z.select(); z.setSelectionRange(0, t.length);
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){}
+  z.remove();
+  return ok;
+}
+async function copier(b){
+  const texte = pourIA(S.p, {etape:S.etape, tentes:S.tentes}), enCours = S.etape === 'question';
+  if(enCours) S.lu = true;
+  const suite = enCours ? ' Réussie après cette aide, cette question ne comptera pas dans ta série, mais elle ne la cassera pas.' : '';
+  if(!(await versPressePapiers(texte))){
+    fermerExpl(); retour = b;
+    ouvrirFond('À copier', '<p>Ton navigateur bloque la copie automatique. Sélectionne ce texte, copie-le, puis colle-le dans ton IA.</p><textarea readonly aria-label="La question, à copier">' + esc(texte) + '</textarea><small>Une IA peut se tromper : ton cours a le dernier mot.' + suite + '</small>');
+    const z = $('textarea', fond); z.focus({preventScroll:true}); z.select();
+    return;
+  }
+  if(!b.isConnected) return;
+  b.textContent = 'Copié ✓';
+  setTimeout(() => { if(b.isConnected) b.textContent = 'Copier pour une IA'; }, 2200);
+  const bas = b.parentElement;
+  let n = $('.copie-note', bas);
+  if(!n){ n = document.createElement('p'); n.className = 'copie-note'; bas.appendChild(n); }
+  n.textContent = 'Colle-le dans ton IA. Elle peut se tromper : ton cours a le dernier mot.' + suite;
+}
+/* ---------- la colonne ---------- */
+const virg = (x, d = 1) => x.toFixed(d).replace('.', ',');
+function peindreProgression(){
+  const fs = Object.keys(FAMILLES), pct = maitriseTout(D.fam), pl = n => (n > 1 ? 's' : '');
+  const nR = fs.filter(f => reussi(D.fam[f])).length, nV = fs.filter(f => !D.fam[f] || !D.fam[f].n).length, nC = fs.length - nR - nV;
+  const v = vitesse(D.journal), pj = parJour(D.journal), nj = (D.journal || []).length;
+  const j0 = new Date(), [ya, mo, da] = COURS.examen.date.split('-').map(Number), jours = Math.round((new Date(ya, mo - 1, da) - new Date(j0.getFullYear(), j0.getMonth(), j0.getDate())) / 864e5);
+  const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null, d = b ? Math.round(b.apres.pct) - Math.round(b.avant.pct) : 0;
+  let court, long;
+  if(pct >= 99.95){ court = 'Tout est réussi'; long = 'Toutes tes notions sont réussies. Garde-les vivantes avec quelques questions par jour.'; }
+  else if(!v){ court = 'Vitesse : encore ' + (8 - nj) + ' question' + pl(8 - nj) + ' pour l’estimer'; long = 'Il faut 8 questions notées pour estimer ta vitesse.'; }
+  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' dernières questions. Éteins les notions réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer.'; }
+  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' dernières questions. Éteins les notions réussies, garde celles en cours, et lis leur fiche « ? ».'; }
+  else {
+    const reste = Math.ceil((100 - pct) / v.par10 * 10);
+    court = 'Vitesse : +' + virg(v.par10) + ' point' + (v.par10 >= 2 ? 's' : '') + ' par 10 questions';
+    long = 'À ce rythme (sur tes ' + v.n + ' dernières questions), toutes tes notions réussies dans environ ' + reste + ' questions';
+    if(pj && pj.moy >= 1){ const jr = Math.max(1, Math.ceil(reste / pj.moy)); long += ', soit ' + jr + ' jour' + pl(jr) + ' d’étude à ton rythme (≈ ' + Math.round(pj.moy) + ' question' + pl(Math.round(pj.moy)) + ' par jour)'; }
+    long += '. C’est une estimation grossière, qui change vite au début.';
+  }
+  if(jours >= 0) long += ' L’examen : ' + COURS.examen.txt + (jours === 0 ? ', aujourd’hui.' : jours === 1 ? ', demain.' : ', dans ' + jours + ' jours.');
+  const z = $('#progression'), ouvert = !!(z.querySelector('details') && z.querySelector('details').open);
+  z.innerHTML = '<div class="m-ligne"><h2 class="m-t" id="t-prog">' + esc(COURS.maitrise || 'Ta maîtrise de l’UA2') + '</h2><b class="m-pct">' + virg(pct, 0) + ' %</b>'
+    + (d ? '<span class="m-delta' + (d < 0 ? ' moins' : '') + '">' + (d > 0 ? '+' : '−') + Math.abs(d) + '</span>' : '')
+    + '<div class="jauge" aria-hidden="true"><i style="width:' + Math.max(0, Math.min(100, pct)) + '%"></i></div>'
+    + '<span class="m-rep">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir</span><span class="m-vit">' + esc(court) + '</span></div>'
+    + '<details class="calcul"' + (ouvert ? ' open' : '') + '><summary>Détails et calcul</summary><p class="seul-mobile">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir. ' + esc(court) + '.</p><p>' + esc(long) + '</p>'
+    + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.</p></details>';
+}
+function peindreCote(){
+  const act = famillesActives(), nbf = Object.keys(FAMILLES).length, tout = act.size === nbf, pl = n => (n > 1 ? 's' : '');
+  const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null;
+  let h = '<div class="fam tout"><button type="button" class="inter" role="switch" aria-checked="' + tout + '" data-tg="*" aria-label="Toutes les notions"><span></span></button><span class="nom">Toutes les notions<small>' + act.size + ' sur ' + nbf + '</small></span><span></span></div>';
+  MODS.forEach(m => {
+    h += '<p class="mod-t">Module ' + m + '</p>';
+    BANQUE.familles.filter(f => f.mod === m).forEach(F => {
+      const f = F.id, on = act.has(f), e = D.fam[f], essaye = !!(e && e.n), r = reussi(e), s = e ? Math.min(3, e.serie) : 0;
+      const neuf = D.dernier && D.dernier.fam === f && D.dernier.i < s ? D.dernier.i : -1;
+      const etat = r ? 'réussie ✓' : !essaye ? 'à découvrir' : e.serie >= 3 ? 'encore ' + (5 - e.n) + ' pour réussie' : '';
+      const v = b && b.fam === f ? b : null, cls = v ? ' vient ' + (v.sorte === 'point' ? 'ok' : v.sorte === 'rate' ? 'perdu' : 'neutre') : '';
+      const tag = v ? (v.sorte === 'point' ? '+1' : v.sorte === 'rate' && v.avant.s ? 'à zéro' : '') : '';
+      h += '<div class="fam' + (on ? '' : ' eteinte') + cls + '"><button type="button" class="inter" role="switch" aria-checked="' + on + '" data-tg="' + f + '" aria-label="Pratiquer : ' + esc(F.t) + '"><span></span></button>'
+        + '<span class="nom">' + esc(F.t) + (etat ? '<small' + (r ? ' class="bon"' : '') + '>' + etat + '</small>' : '') + '</span>'
+        + '<span class="fin">' + (tag ? '<em class="tag">' + tag + '</em>' : '') + qm(f) + '<span class="ser" role="img" aria-label="' + s + ' de suite sur 3' + (neuf >= 0 ? ', dont ton dernier point' : '') + '">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span></span></div>';
+    });
+  });
+  $('#carte').innerHTML = h;
+  peindreProgression();
+  $('#erreurs').innerHTML = D.err.length ? D.err.slice(0, 5).map(x => '<li><span>' + esc(x.q.length > 110 ? x.q.slice(0, 108) + '…' : x.q) + '</span><span class="r">→ ' + esc(x.r.length > 120 ? x.r.slice(0, 118) + '…' : x.r) + '</span></li>').join('') : '<li class="vide">Rien encore. Tes réponses ratées apparaîtront ici, avec la bonne.</li>';
+  const nErr = TYPES.filter(t => !t.gen && D.it[t.id] && D.it[t.id].der === 0).length;
+  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (String(D.portee) === String(k)) + '">' + esc(t) + (k === 'erreurs' ? '<span class="n">' + nErr + '</span>' : '') + '</button>').join('') + '<span class="compte">' + SESS.n + ' faite' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
+  const col = $('.cote'), l = $('.fam.vient');
+  if(l && col.scrollHeight > col.clientHeight + 4 && getComputedStyle(col).overflowY === 'auto'){
+    const a = l.getBoundingClientRect(), c = col.getBoundingClientRect(), haut = Math.max(c.top, 0), bas = Math.min(c.bottom, window.innerHeight);
+    if(a.top < haut) col.scrollTop -= haut - a.top + 8; else if(a.bottom > bas) col.scrollTop += a.bottom - bas + 8;
+  }
+}
+/* ---------- les gestes ---------- */
+document.addEventListener('click', e => {
+  if(fond && e.target === fond){ fermerExpl(); return; }
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.x){ expliquer(b.dataset.x, b); return; }
+  if(b.dataset.a === 'fermer-expl'){ fermerExpl(); return; }
+  if(b.dataset.tg){ basculer(b.dataset.tg); return; }
+  if(b.dataset.p !== undefined){
+    if(String(D.portee) === b.dataset.p) return;
+    abandonner(); const k = b.dataset.p;
+    if(k === 'perso' && !D.choix.length) D.choix = Object.keys(FAMILLES).filter(x => famillesActives().has(x));
+    D.portee = /^\d+$/.test(k) ? +k : k; $('#annonce-carte').textContent = ''; sauver(); SESS.dernierFam = ''; nouveau();
+    { const c = $('.puce[aria-pressed="true"]'); if(c) c.focus({preventScroll:true}); } return;
+  }
+  if(S && S.etape === 'question'){
+    if(b.dataset.c !== undefined){ choisirQcm(+b.dataset.c); return; }
+    if(b.dataset.v !== undefined){ choisirVf(b.dataset.v === '1'); return; }
+    if(b.dataset.e !== undefined){ ajouterEtape(+b.dataset.e); return; }
+  }
+  const a = b.dataset.a;
+  if(a === 'valider') valider();
+  else if(a === 'depart') depart();
+  else if(a === 'suivant') nouveau();
+  else if(a === 'passer') passer();
+  else if(a === 'copier') copier(b);
+  else if(a === 'defaire'){ S.seq.pop(); peindre(); }
+  else if(a === 'jumelle'){ const l = TYPES.filter(t => t.fam === S.p.type.fam && t.id !== S.p.type.id); const vu = t => D.typ[t.id] || 0; nouveau(l.length ? l.sort((x, y) => vu(x) - vu(y))[0] : S.p.type, true); }
+  else if(a === 'signe'){ const ch = b.dataset.cible === 'rep' ? $('#rep') : $('[data-rx="' + b.dataset.cible + '"]'); if(ch){ const t = ch.value.trim(); ch.value = /^[-−–]/.test(t) ? t.replace(/^[-−–]\s*/, '') : /^\+/.test(t) ? '−' + t.slice(1) : '−' + t; ch.focus(); lireSaisie(); } }
+  else if(a === 'brouillon'){ lireSaisie(); S.brouillonOuvert = !S.brouillonOuvert; peindre(); const z = $('#brouillon'); if(z) z.focus(); }
+});
+document.addEventListener('keydown', e => {
+  if(fond){ if(e.key === 'Escape') fermerExpl(); else if(e.key === 'Tab'){ const l = [...fond.querySelectorAll('button, textarea')], i = l.indexOf(document.activeElement); e.preventDefault(); l[(i + (e.shiftKey ? -1 : 1) + l.length) % l.length].focus(); } return; }
+  if(e.ctrlKey || e.metaKey || e.altKey || !S || !S.p || S.etape !== 'question') return;
+  if(e.target.closest('textarea')) return;
+  const dansChamp = !!e.target.closest('input');
+  if(S.p.k === 'qcm' && !dansChamp && /^[1-4]$/.test(e.key)){ e.preventDefault(); if(e.repeat) return; const t = document.querySelectorAll('.tuile')[+e.key - 1]; if(t && !t.disabled) t.click(); return; }
+  if(S.p.k === 'vf' && !dansChamp && /^[vVfF]$/.test(e.key)){ e.preventDefault(); if(!e.repeat) choisirVf(/v/i.test(e.key)); return; }
+  if(e.key === 'Enter' && (S.p.k === 'num' || S.p.k === 'rx') && (dansChamp || e.target === document.body)){ e.preventDefault(); if(!e.repeat) valider(); }
+});
+document.addEventListener('input', e => { if(e.target.id === 'brouillon' && S) S.brouillon = e.target.value; });
+/* ---------- mise en place ---------- */
+document.title = COURS.titre;
+$('#titre').textContent = COURS.titre;
+$('#sous-titre').textContent = COURS.sousTitre;
+$('#note').innerHTML = esc(COURS.note) + ' <button type="button" class="lien" id="effacer">Effacer ma progression</button>';
+$('#effacer').addEventListener('click', e => {
+  const b = e.target;
+  if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
+  const p = D.portee, c = D.choix; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; sauver();
+  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false;
+  b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
+});
+/* pour les tests (build/…/test) : afficher une question précise, lire l'état */
+window.__drill = {TYPES, FAMILLES, choisirType, jugerNum, jugerRx, maitriseTout, reussi, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
+nouveau();
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'ac3595e88124';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body>
+</html>

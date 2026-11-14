@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quelle formule ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* « Quelle formule ? » : le « Mélange » du blueprint (§4.5) pour l'optique, M6 à M8. Des problèmes mêlés, en mots d'examen :
+   on choisit la formule avant de voir une case, puis on calcule, avec l'échelle des essais (§4.3) et le critère (§4.2).
+   Mise en page : le problème au centre, la carte des compétences à côté. Couleurs : celles du Banc, raie d. */
+:root{
+  --bg:#ECF0F2; --panel:#FFFFFF; --panel-2:#F3F6F8; --ink:#13202A; --ink-2:#465763; --ink-3:#5F717D; --line:#D3DBE0;
+  --accent:#8C5A00; --accent-soft:rgba(140,90,0,.11); --on-accent:#FFFFFF;
+  --ok:#1B7A4B; --ok-soft:rgba(27,122,75,.12); --warn:#9A5F0C; --warn-soft:rgba(158,99,13,.14); --bad:#B3352A; --bad-soft:rgba(179,53,42,.11);
+  --f-display:"STIX Two Text", Cambria, Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono", ui-monospace, Consolas, monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+    --accent:#FFD23F; --accent-soft:rgba(255,210,63,.14); --on-accent:#1F1600;
+    --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1217; --panel:#131B22; --panel-2:#19232B; --ink:#E1E7EB; --ink-2:#A7B3BC; --ink-3:#8494A0; --line:#26323B;
+  --accent:#FFD23F; --accent-soft:rgba(255,210,63,.14); --on-accent:#1F1600;
+  --ok:#55C68E; --ok-soft:rgba(85,198,142,.14); --warn:#E5B256; --warn-soft:rgba(229,178,86,.14); --bad:#F2705F; --bad-soft:rgba(242,112,95,.14);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 var(--f-body)}
+[hidden]{display:none!important}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.page{max-width:1080px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
+.tete{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+h1{margin:0;font:600 30px/1.1 var(--f-display);letter-spacing:-.01em}
+.tete p{margin:0;color:var(--ink-2);font-size:15.5px}
+.bande{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.puce{min-height:38px;padding:5px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:15px}
+.puce[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.compte{margin-left:auto;font:600 13px var(--f-mono);color:var(--ink-2)}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.scene,.cote section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.scene{padding:20px;display:flex;flex-direction:column;gap:14px;min-height:380px}
+.etapes{display:flex;gap:8px;margin:0;padding:0;list-style:none;font:600 12.5px var(--f-mono);color:var(--ink-3)}
+.etapes li{padding:2px 9px;border-radius:999px;background:var(--panel-2)}
+.etapes li.ici{background:var(--accent-soft);color:var(--accent)}
+.etapes li.fait{color:var(--ok)}
+.enonce{margin:0;font-size:19px;line-height:1.5;max-width:62ch}
+.enonce .indice{transition:background .2s}
+.scene.revele .enonce .indice{background:var(--accent-soft);border-radius:4px;padding:0 3px;font-weight:700}
+.q{margin:0;font-weight:700}
+.tuiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tuile{display:flex;align-items:center;gap:10px;min-height:60px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-align:left}
+.tuile:hover:not(:disabled){border-color:var(--accent)}
+.tuile kbd{flex:none;width:22px;height:22px;display:grid;place-items:center;border-radius:6px;background:var(--panel);border:1px solid var(--line);font:600 12px var(--f-mono);color:var(--ink-3)}
+.tuile .f{min-width:0;font:400 18px/1.25 var(--f-display);overflow-wrap:anywhere}
+.tuile.non{border-color:var(--bad);background:var(--bad-soft)}
+.tuile.oui{border-color:var(--ok);background:var(--ok-soft)}
+.tuile.ensuite{border-color:var(--ok);border-style:dashed;background:var(--ok-soft)}
+.tuile.ensuite .f::after{content:'  · en 2e';font:600 12px var(--f-mono);color:var(--ok)}
+.tuile:disabled{cursor:default}
+.tuile-boite{position:relative;display:flex;min-width:0}
+.tuile-boite .tuile{flex:1;min-width:0;padding-right:46px}
+.qm{position:relative;flex:none;width:28px;height:28px;padding:0;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--panel);color:var(--ink-2);font:700 14px/1 var(--f-body)}
+.qm::after{content:"";position:absolute;inset:-8px}
+.qm:hover{border-color:var(--accent);color:var(--accent)}
+.tuile-boite .qm{position:absolute;right:10px;top:50%;transform:translateY(-50%)}
+.choisies{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.choisies .puis{color:var(--ink-3);font-size:14.5px}
+.formule-choisie{display:inline-flex;padding:4px 12px;border-radius:9px;background:var(--ok-soft);color:var(--ok);font:400 18px/1.3 var(--f-display)}
+.expl-fond{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;background:rgba(8,12,16,.5)}
+.expl{width:min(440px,100%);height:100%;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--panel);border-left:1px solid var(--line)}
+.expl h2{margin:0;font:600 24px/1.2 var(--f-display);overflow-wrap:anywhere}
+.expl h3{margin:0 0 3px;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.expl p{margin:0}
+.expl .haut{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.expl dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px}
+.expl dt{font:400 17px/1.35 var(--f-display)}
+.expl dd{margin:0}
+.expl .ex{padding:10px 12px;border-radius:10px;background:var(--panel-2);font-family:var(--f-mono);font-size:14.5px;overflow-wrap:anywhere}
+.expl .piege{padding:10px 12px;border-radius:10px;background:var(--warn-soft)}
+.expl small{color:var(--ink-3);font-size:13.5px}
+.expl textarea{width:100%;min-height:42vh;padding:10px 12px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);font:400 14px/1.5 var(--f-mono)}
+.copie-note{flex-basis:100%;color:var(--ink-2);font-size:14.5px}
+.saisie{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.saisie input{width:150px;min-height:46px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);font:600 18px var(--f-mono)}
+.saisie .u{color:var(--ink-2)}
+.bouton.signe{min-width:46px;padding:8px 10px;font-size:18px}
+.bouton{min-height:44px;padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);font-weight:700}
+.bouton:hover{border-color:var(--accent)}
+.bouton.plein{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.bouton[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.lien{border:0;background:none;padding:8px 2px;min-height:36px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;font-size:15px}
+.lien.petit{align-self:flex-start;font-size:14px;color:var(--ink-3)}
+.brouillon-boite{display:flex;flex-direction:column;gap:6px}
+.brouillon-t{font-size:14px;font-weight:700;color:var(--ink-2)}
+.brouillon-t .facultatif{font-weight:400;color:var(--ink-3)}
+.brouillon{width:100%;min-height:104px;padding:10px 12px;border:1px dashed var(--ink-3);border-radius:10px;background:var(--panel-2);color:var(--ink);font:400 16px/1.55 var(--f-mono);resize:vertical}
+.brouillon::placeholder{color:var(--ink-3);opacity:.8}
+.msg{margin:0;padding:10px 13px;border-radius:10px;font-size:16px}
+.msg.bad{background:var(--bad-soft)}
+.msg.warn{background:var(--warn-soft)}
+.msg.ok{background:var(--ok-soft)}
+.dem{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.dem li{display:grid;grid-template-columns:168px minmax(0,1fr);gap:10px;font-size:16px}
+.dem .l{color:var(--ink-3);font-size:14px}
+.dem .c{font-family:var(--f-mono);font-size:15px;overflow-wrap:anywhere}
+.bas{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-top:auto}
+.cote{display:flex;flex-direction:column;gap:12px}
+.cote section{padding:14px}
+.cote h2{margin:0 0 8px;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.fam{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:0 9px;margin:0 -7px;padding:6px 7px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.3}
+.fam:first-of-type{border-top:0}
+.fam .nom small{margin-left:7px;color:var(--ink-3);font-size:12.5px}
+.fam .nom small.bon{color:var(--ok);font-weight:700}
+.fam .fin{display:flex;align-items:center;gap:7px}
+.ser{display:inline-flex;gap:4px;align-items:center;flex:none}
+.ser i{width:10px;height:10px;border-radius:50%;background:transparent;border:1px solid var(--ink-3);flex:none}
+.ser i.on{background:var(--accent);border-color:var(--accent)}
+.ser i.neuf{width:12px;height:12px;background:var(--ok);border-color:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+.ser i.perdu{background:transparent;border:1px dashed var(--bad)}
+.fam.eteinte .nom{color:var(--ink-3)}
+.fam.eteinte .fin{opacity:.55}
+.fam.vient{border-radius:9px;border-top-color:transparent}
+.fam.vient + .fam{border-top-color:transparent}
+.fam.vient.ok{background:var(--ok-soft);box-shadow:inset 3px 0 0 var(--ok)}
+.fam.vient.perdu{background:var(--bad-soft);box-shadow:inset 3px 0 0 var(--bad)}
+.fam.vient.neutre{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--ink-3)}
+.fam .tag{font:600 12.5px var(--f-mono);font-style:normal;white-space:nowrap}
+.fam.vient.ok .tag{color:var(--ok)}
+.fam.vient.perdu .tag{color:var(--bad)}
+.legende{margin:9px 0 0;font-size:12.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.inter{position:relative;flex:none;width:36px;height:21px;padding:0;border:1px solid var(--ink-3);border-radius:999px;background:var(--panel-2);cursor:pointer}
+.inter::before{content:'';position:absolute;inset:-9px -6px}
+.inter span{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--ink-3);transition:transform .15s ease}
+.inter[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.inter[aria-checked="true"] span{transform:translateX(15px);background:var(--on-accent)}
+.fam.tout{padding-bottom:8px}
+.fam.tout .nom{font-weight:700}
+.fam.tout .nom small{font-weight:400}
+.aide-carte{margin:-2px 0 8px;font-size:12.5px;color:var(--ink-3);line-height:1.35}
+.annonce-carte{margin:6px 0 0;font-size:12.5px;color:var(--warn);min-height:0}
+.annonce-carte:empty{display:none}
+.maitrise{padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.m-ligne{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.m-t{margin:0;font:600 12px var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.m-pct{font:600 26px/1 var(--f-display)}
+.m-delta{padding:1px 8px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font:600 13px var(--f-mono)}
+.m-delta.moins{background:var(--bad-soft);color:var(--bad)}
+.jauge{flex:1 1 130px;min-width:110px;max-width:240px;height:8px;border-radius:999px;background:var(--accent-soft);overflow:hidden}
+.jauge i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.m-rep,.m-vit{font-size:13.5px;color:var(--ink-2)}
+.m-vit{margin-left:auto}
+.calcul{margin-top:6px}
+.seul-mobile{display:none}
+.calcul summary{font-weight:400;font-size:13px;color:var(--ink-3)}
+.calcul p{margin:6px 0 0;font-size:13.5px;line-height:1.45;color:var(--ink-2);max-width:86ch}
+.bilan{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:3px 13px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)}
+.bilan.ok{border-color:var(--ok);background:var(--ok-soft)}
+.bilan.perdu{border-color:var(--bad);background:var(--bad-soft)}
+.bilan p{margin:0;font-size:15.5px;line-height:1.45}
+.bilan .sous{grid-column:2;font-size:13.5px;color:var(--ink-2)}
+.bilan .ser{gap:5px}
+.bilan .ser i{width:15px;height:15px}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.4)}100%{transform:scale(1)}}
+.bilan .ser i.neuf{animation:pop .5s ease-out}
+.dem-d summary{font-weight:400;font-size:15px;color:var(--ink-2)}
+.dem-d .dem{margin-top:8px}
+@media (prefers-reduced-motion:reduce){.inter span{transition:none} .bilan .ser i.neuf{animation:none}}
+@media (min-width:881px){ .cote{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow-y:auto;scrollbar-width:thin;padding-right:2px} }
+.conf{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14.5px;line-height:1.35}
+.conf b{font:400 15.5px var(--f-display)}
+.vide{margin:0;color:var(--ink-3);font-size:14.5px}
+details summary{cursor:pointer;font-weight:700;font-size:15px}
+.mots{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.35}
+.mots li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 8px;align-items:start}
+.mots b{font:400 16px var(--f-display);overflow-wrap:anywhere}
+.mots .qm{grid-row:span 2}
+.note{margin:0;font-size:13.5px;color:var(--ink-2);max-width:80ch}
+@media (max-width:880px){ .corps{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  h1{font-size:26px}
+  .scene{padding:15px}
+  .enonce{font-size:18px}
+  .tuiles{grid-template-columns:minmax(0,1fr)}
+  .dem li{grid-template-columns:minmax(0,1fr);gap:0}
+  .compte{display:none}
+  .page{gap:12px;padding-top:12px}
+  .tete p{display:none}
+  .bande{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+  .bande::-webkit-scrollbar{display:none}
+  .puce{flex:none}
+  .maitrise{padding:8px 12px}
+  .m-rep,.m-vit{display:none}
+  .seul-mobile{display:block!important}
+  .jauge{flex-basis:100%;max-width:none;order:9}
+  .bilan{grid-template-columns:minmax(0,1fr)}
+  .bilan .sous{grid-column:1}
+  .saisie label{flex-basis:100%}
+  .saisie input{width:140px}
+  .expl-fond{align-items:flex-end;justify-content:stretch}
+  .expl{width:100%;height:auto;max-height:84vh;border-left:0;border-radius:16px 16px 0 0}
+}
+@media (prefers-reduced-motion:reduce){ .enonce .indice{transition:none} }
+</style>
+<style>
+.lum-nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px 7px;font-size:14px;line-height:1.3}
+.lum-nav a{display:inline-flex;align-items:center;min-height:34px;padding:3px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink-2);text-decoration:none;white-space:nowrap}
+.lum-nav a:hover{border-color:var(--ink-3);color:var(--ink)}
+.lum-nav a.acc{color:var(--ink);font-weight:700}
+.lum-nav a[aria-current]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:700}
+.lum-nav span{margin:0 2px 0 8px;color:var(--ink-3);white-space:nowrap}
+@media (max-width:600px){ .lum-nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px} .lum-nav::-webkit-scrollbar{display:none} .lum-nav span{display:none} }
+@media print{ .lum-nav{display:none} }
+</style>
+</head>
+<body>
+<main class="page">
+<nav class="lum-nav" aria-label="Lumière et les autres exerciseurs"><a class="acc" href="./">← Lumière</a><span>Exerciseurs</span><a href="drill-to.html">Tests ophtalmiques</a><a href="drill-formules.html" aria-current="page">Optique</a><a href="drill-bureau.html">Bureau</a></nav>
+  <header class="tete">
+    <h1>Quelle formule&nbsp;?</h1>
+    <p>Optique, modules 6 à 8. Des problèmes mêlés : tu choisis la formule, puis tu calcules. Le «&nbsp;?&nbsp;» explique chaque formule ; ouvert pendant un problème, il le rend sans point, sans rien enlever.</p>
+  </header>
+  <div class="bande" role="group" aria-label="Ce que tu pratiques" id="portees"></div>
+  <section class="maitrise" id="progression" aria-labelledby="t-prog"></section>
+  <div class="corps">
+    <section class="scene" id="scene" aria-live="polite"></section>
+    <aside class="cote">
+      <section aria-labelledby="t-carte"><h2 id="t-carte">Ta carte</h2><p class="aide-carte">Un interrupteur par formule : allumée, tu la pratiques.</p><div id="carte"></div><p class="annonce-carte" id="annonce-carte" role="status" aria-live="polite"></p><p class="legende"><span class="ser" aria-hidden="true"><i class="on"></i></span>un point (juste du premier coup, sans aide)<span class="ser" aria-hidden="true"><i class="neuf"></i></span>ton dernier point</p></section>
+      <section aria-labelledby="t-conf"><h2 id="t-conf">Tes confusions</h2><ul class="conf" id="confusions"></ul></section>
+      <section><details id="mots-d"><summary>Toutes les formules et leurs mots-indices</summary><p class="aide-carte">Ouverte pendant un problème, cette liste compte comme une aide : pas de point pour ce problème, rien de perdu.</p><ul class="mots" id="mots"></ul></details></section>
+    </aside>
+  </div>
+  <p class="note">Nombres neufs à chaque problème, d’après les modules 6 à 8. Un point = une réponse juste du premier coup, sans aide. Réussi = trois points de suite, en au moins cinq essais, dont un problème à l’envers quand la formule en a un. Une explication «&nbsp;?&nbsp;», une copie pour une IA ou une jumelle ne donnent pas de point et n’en enlèvent pas. <button type="button" class="lien" id="effacer">Effacer ma progression</button></p>
+</main>
+<script>
+(() => {
+'use strict';
+/* === problèmes : début (pur, testé par build/drill/test_drill.js) === */
+const C = {
+  pr:R => 100 / Math.abs(R),
+  rxDePr:(cm, devant) => (devant ? -1 : 1) * 100 / cm,
+  pp:(Am, R) => 100 / (Am - R),
+  am:(PpCm, R) => 100 / PpCm + R,
+  a:(dCm, R) => 100 / dCm + R,
+  add:(dCm, Am) => 100 / dCm - 0.5 * Am,
+  gi:(Fl, vMm) => 1 / (1 - vMm / 1000 * Fl),
+  pct:g => (g - 1) * 100
+};
+const FORMULES = {
+  dem:{t:'A = 1/d', usage:'la demande d’un objet, pour un œil sans erreur',
+    quoi:'Plus un objet est près, plus ses rayons divergent, et plus l’œil doit accommoder. La demande est l’inverse de la distance.',
+    lettres:[['A', 'la demande, en dioptries (D)'], ['d', 'la distance de l’objet, en mètres']],
+    quand:'Un œil emmétrope, ou un œil corrigé, regarde un objet à une distance connue.',
+    ex:'À 25 cm : A = 1 / 0,25 = 4 D', piege:'d en mètres : 25 cm s’écrit 0,25. La demande suit l’inverse de la distance : deux fois plus près, deux fois plus de dioptries (40 cm : 2,50 D ; 20 cm : 5,00 D).', source:'Vue à l’UA1, rappelée aux modules 6 et 7.'},
+  foc:{t:'F = 1/f′', usage:'passer d’une focale à une puissance, et retour',
+    quoi:'La puissance d’une lentille est l’inverse de sa focale : focale courte, lentille forte.',
+    lettres:[['F', 'la puissance, en dioptries (D)'], ['f′', 'la focale, en mètres']],
+    quand:'L’énoncé donne une focale et demande une puissance, ou l’inverse.',
+    ex:'Œil simplifié, f′ = 17 mm : F = 1 / 0,017 = +58,8 D', piege:'Le 17 mm est la focale du modèle dans l’air. On n’inverse jamais la longueur de l’œil, 24 mm.', source:'Vue à l’UA1, rappelée au module 6.'},
+  sur:{t:'D = (nr − ni)/r', usage:'la puissance d’une seule surface',
+    quoi:'Une surface dévie la lumière selon le saut d’indice entre ses deux côtés, divisé par son rayon. Pas de saut d’indice, pas de déviation.',
+    lettres:[['nr', 'l’indice du milieu où la lumière entre'], ['ni', 'l’indice du milieu d’où elle vient'], ['r', 'le rayon de courbure, en mètres, signé']],
+    quand:'Une seule surface, avec un rayon et les indices de chaque côté.',
+    ex:'Cornée, face avant : (1,376 − 1,000) / 0,0078 = +48,21 D', piege:'Le rayon va en mètres : des mm se divisent par 1000, des cm par 100.', source:'Vue à l’UA1, rappelée au module 6.'},
+  lun:{t:'F = (nᵥ − n avant)/r₁ − (nᵥ − n arrière)/r₂', usage:'la puissance d’une lentille à deux faces',
+    quoi:'C’est la formule d’une surface, appliquée aux deux faces. En sortant du verre, ni et nr changent de place : d’où le moins.',
+    lettres:[['nᵥ', 'l’indice du verre'], ['n avant, n arrière', 'les milieux de chaque côté'], ['r₁, r₂', 'les rayons des faces, en mètres, signés']],
+    quand:'L’énoncé donne deux rayons : r₁ et r₂.',
+    ex:'Cornée : +48,21 − 6,15 = +42,06 D', piege:'Le second terme se soustrait, même quand r₂ est positif.', source:'Module 6, formule du lunetier.'},
+  add:{t:'Add = 1/d − 0,5 Am', usage:'l’addition, la correction de loin en place',
+    quoi:'Avec la correction de loin en place, l’œil paie la moitié de son amplitude. L’addition paie le reste de la demande.',
+    lettres:[['Add', 'l’addition, en dioptries (D)'], ['d', 'la distance de lecture, en mètres'], ['Am', 'l’amplitude d’accommodation, en D']],
+    quand:'Un patient presbyte veut lire, sa correction de loin en place. Au module 6, elle s’écrit Addition = A − 0,5 (Am).',
+    ex:'Arthur, Am 2,00, à 40 cm : 2,50 − 1,00 = +1,50', piege:'Le 0,5 porte sur Am, pas sur 1/d. Et si le résultat est négatif, aucune addition n’est indiquée.', source:'Module 6, rappelée au module 7.'},
+  cfd:{t:'d = 1/(0,5 Am)', usage:'la distance de lecture confortable la plus proche',
+    quoi:'Sans addition, une lecture prolongée ne peut utiliser que la moitié de l’amplitude. On inverse cette moitié pour trouver la distance.',
+    lettres:[['d', 'la distance confortable, en mètres'], ['Am', 'l’amplitude d’accommodation, en D']],
+    quand:'On demande de combien près on peut lire longtemps, sans fatigue, avec un œil emmétrope ou corrigé pour le loin.',
+    ex:'À 10 ans, Am 14 : 1 / 7 = 0,143 m ≈ 14 cm', piege:'1/Am donne le Pp : un point qu’on tient un instant, pas une lecture prolongée.', source:'Module 6.'},
+  mm:{t:'1 mm ≈ 3,00 D', usage:'traduire un écart de longueur axiale en dioptries',
+    quoi:'Un millimètre de longueur axiale change la réfraction d’environ 3,00 D. Plus long : myopie. Plus court : hypermétropie.',
+    lettres:[['1 mm', 'un écart par rapport à 24 mm, à puissance égale'], ['3,00 D', 'la correction qui y répond, à peu près']],
+    quand:'L’énoncé parle d’une longueur d’œil en mm.',
+    ex:'25,5 mm au lieu de 24 : +1,5 mm, donc environ −4,50 D', piege:'C’est une règle approchée, et le signe vient du sens : plus long, moins.', source:'Module 6.'},
+  acc:{t:'A = 1/d + R', usage:'ce qu’un œil non corrigé accommode pour voir à d',
+    quoi:'La « formule commune » du module 7 : ce que l’œil doit fournir, c’est la demande de l’objet, plus son erreur.',
+    lettres:[['A', 'l’accommodation à fournir, en D'], ['d', 'la distance de l’objet, en mètres'], ['R', 'l’erreur réfractive : − myope, + hypermétrope']],
+    quand:'Un œil non corrigé regarde un objet. Pour savoir s’il le voit net, compare A à 0 et à Am.',
+    ex:'Marie, +2,00, à 40 cm : 2,50 + 2,00 = 4,50 D', piege:'Si A est négatif, l’objet est flou : l’œil ne peut pas accommoder en négatif.', source:'Module 7, rappelée au module 8.'},
+  pr:{t:'R = 1/Pr', usage:'relier la correction et le point net sans accommoder',
+    quoi:'Au repos, l’œil voit net à son punctum remotum. La lentille qui corrige l’œil vaut 1/Pr. Les diapos l’écrivent D = 1/Pr.',
+    lettres:[['R', 'l’erreur réfractive, en D'], ['Pr', 'le point net au repos, en mètres, signé : devant −, derrière +']],
+    quand:'« Sans accommoder », « au repos », ou quelle lentille corrige cet œil. L’amplitude n’y joue aucun rôle.',
+    ex:'R = −4,50 : Pr = 1 / (−4,50) = −0,222 m, soit 22,2 cm devant l’œil', piege:'Le signe décide du côté. Myope : devant, réel. Hypermétrope : derrière, virtuel.', source:'Module 7, rappelée au module 8.'},
+  pp:{t:'1/Pp = Am − R', usage:'le point net le plus proche sans lunettes, Am connue',
+    quoi:'Le punctum proximum est le plus près qu’on voit net en dépensant toute l’amplitude, sans lunettes.',
+    lettres:[['Pp', 'le point net le plus proche, en mètres, devant l’œil'], ['Am', 'l’amplitude d’accommodation, en D'], ['R', 'l’erreur réfractive, signée']],
+    quand:'Sans lunettes, « au plus près », « accommodation maximale ».',
+    ex:'10 ans, −5,00, Am 14 : 14 + 5 = 19, donc 1/19 = 5,3 cm', piege:'R est signé : Am − (−5) = Am + 5. La myopie s’ajoute, l’hypermétropie se retranche.', source:'Module 7, rappelée au module 8.'},
+  amn:{t:'Am = 1/Pp + R', usage:'retrouver Am depuis un Pp mesuré à l’œil nu',
+    quoi:'La formule du Pp, lue à l’envers : un Pp mesuré sans lunettes contient encore l’erreur R.',
+    lettres:[['Am', 'l’amplitude d’accommodation, en D'], ['Pp', 'le Pp mesuré sans lunettes, en mètres'], ['R', 'l’erreur réfractive, signée']],
+    quand:'On cherche l’amplitude, et le Pp est donné à l’œil nu.',
+    ex:'+4,00, Pp 50 cm : 2 + 4 = 6 D', piege:'Si le Pp est mesuré avec les lunettes, R = 0 : Am = 1/Pp tout court.', source:'Module 7, corrigé.'},
+  amc:{t:'Am = 1/Pp', usage:'relier Am et le Pp avec la correction en place (R = 0)',
+    quoi:'Corrigé, l’œil est comme un emmétrope : R = 0. Le Pp dépend alors de la seule amplitude, et le Pr part à l’infini.',
+    lettres:[['Am', 'l’amplitude d’accommodation, en D'], ['Pp', 'le Pp avec les lunettes, en mètres']],
+    quand:'« Avec ses lunettes » : pour trouver le Pp, ou pour lire Am avant de calculer le Pp sans lunettes.',
+    ex:'Caroline voit net à 25 cm avec ses lunettes −2,00 : Am = 4, puis sans lunettes 4 + 2 = 6, donc 16,7 cm', piege:'Avec les lunettes, ne garde pas R dans le calcul.', source:'Module 7, rappelée au module 8.'},
+  pre:{t:'près = loin + Add', usage:'la puissance des lunettes de lecture',
+    quoi:'Les lunettes de lecture, c’est la correction de loin, plus l’addition.',
+    lettres:[['loin', 'la correction de loin, signée'], ['Add', 'l’addition, positive']],
+    quand:'« Lunettes de lecture » : l’addition est donnée, ou tu viens de la calculer.',
+    ex:'−3,00 + 2,50 = −0,50', piege:'Garde le signe de la correction de loin : un myope peut rester en négatif de près.', source:'Module 7.'},
+  cft:{t:'1/d + R ≤ 0,5 Am', usage:'savoir si une lecture est confortable',
+    quoi:'Pour lire longtemps, ce que l’œil accommode doit tenir dans la moitié de son amplitude. Le cours le dit en mots ; c’est A = 1/d + R, comparé à 0,5 Am. Et A doit rester positif : négatif, l’objet est au-delà du Pr, donc flou.',
+    lettres:[['1/d + R', 'ce que l’œil non corrigé doit fournir'], ['0,5 Am', 'ce qu’il tient en effort prolongé']],
+    quand:'« De façon confortable », une lecture prolongée.',
+    ex:'Sébastien, −1,50, Am 2,5, à 40 cm : 2,50 − 1,50 = 1,00, et 1,00 ≤ 1,25 : oui', piege:'« Même quelques instants » utilise toute l’amplitude. « Confortable » n’en utilise que la moitié.', source:'Module 8, cas extra.'},
+  gi:{t:'Gi = 1/(1 − d·Fl)', usage:'le facteur de grandeur de l’image donné par un verre',
+    quoi:'Un verre porté devant l’œil change la taille de l’image sur la rétine : le + l’agrandit, le − la réduit, et le vertex amplifie l’effet.',
+    lettres:[['Gi', 'le facteur de grandeur de l’image'], ['d', 'le vertex, distance cornée-lunette, en mètres'], ['Fl', 'la puissance du verre, signée']],
+    quand:'Un verre, un vertex, et la taille de l’image.',
+    ex:'−10,00 à 13 mm : 1 − (0,013 × −10) = 1,13, donc Gi = 1 / 1,13 = 0,885', piege:'Vertex en mètres : 13 mm = 0,013. Et moins par moins donne plus.', source:'Module 8.'},
+  pct:{t:'% = (Gi − 1) × 100', usage:'changer un facteur en pourcentage',
+    quoi:'Soustrais 1 du facteur, puis multiplie par 100. Positif : image plus grande. Négatif : plus petite.',
+    lettres:[['Gi', 'le facteur trouvé avec le vertex'], ['%', 'le changement de taille de l’image']],
+    quand:'On veut un pourcentage, ou comparer les deux yeux. Une différence de 3 % ou plus : aniséiconie possible.',
+    ex:'Gi 1,03 : +3 %. Gi 0,98 : −2 %', piege:'Entre les deux yeux, un + et un − s’écartent : c’est le plus grand % moins le plus petit, signes compris.', source:'Module 8.'}
+};
+const ENSUITE = {lecture:'pre', 'sans-lunettes':'pp', pct:'pct', aniso:'pct'};
+/* ce que la 2e formule utilise et que la 1re donne : choisir la 2e en premier n'est pas une erreur de formule */
+const AVANT = {lecture:'de l’addition', 'sans-lunettes':'de l’amplitude Am', pct:'du facteur Gi', aniso:'du facteur Gi de chaque œil'};
+const FAMILLES = {
+  dio:{t:'Dioptrie = 1/mètres', inv:true}, sur:{t:'Une surface'}, lun:{t:'Deux faces'}, cfd:{t:'Lecture confortable : distance'},
+  mm:{t:'Longueur axiale'}, add:{t:'Addition et lunettes de lecture'}, pr:{t:'Le Pr', inv:true}, pp:{t:'Le Pp', inv:true},
+  cor:{t:'Avec les lunettes'}, acc:{t:'Accommodation et vision nette'}, cft:{t:'Lecture confortable : oui ou non'},
+  gi:{t:'Taille de l’image'}, ani:{t:'Aniséiconie'}
+};
+const NOMS = ['Luc', 'Caroline', 'Marie', 'Arthur', 'Paul', 'Sébastien', 'Inès', 'Karim', 'Léa', 'Noah', 'Amina', 'Théo', 'Chloé', 'Mateo', 'Nadia', 'Hugo'];
+const DONDERS = [[10, 14], [20, 10], [25, 8.5], [30, 7], [40, 4.5], [44, 4], [50, 2.5], [60, 1]];
+const MYOPES = [-0.5, -0.75, -1, -1.25, -1.5, -2, -2.5, -3, -3.5, -4, -4.5, -5, -6, -7, -8];
+const HYPERS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+/* « de » devant un prénom : « d’Arthur », « d’Hugo », « de Luc » */
+const de = n => (/^[AEIOUYÂÉÈÊÎÏÔH]/.test(n) ? 'd’' : 'de ') + n;
+const num = (x, d = 2) => Math.abs(x).toFixed(d).replace('.', ',');
+const fmt = (x, d = 2) => (x < 0 ? '−' : '') + num(x, d);
+const sg = (x, d = 2) => (x > 0 ? '+' : x < 0 ? '−' : '') + num(x, d);
+const cm = x => { const r = Math.round(x * 10) / 10; return Number.isInteger(r) ? String(r) : num(r, 1); };
+const m = c => num(c / 100, 2);
+const am = x => (Number.isInteger(x) ? String(x) : num(x, 1));
+const amt = R => (R < 0 ? 'myope' : 'hypermétrope');
+const tolCm = x => (x > 20 ? 0.75 : 0.5);
+const paire = l => pick(l.filter(x => x[0] >= 20));
+const LUNETTES = 'Avec la correction en place, l’œil se comporte comme un emmétrope : R = 0.';
+
+const TYPES = [
+  {id:'demande', fam:'dio', mod:6, f(){
+    const N = pick(NOMS), d = pick([20, 25, 40, 50, 80, 100, 125, 200]), A = 100 / d, objet = pick(['regarde un écran', 'lit un livre', 'regarde son téléphone', 'lit une affiche', 'regarde une partition']);
+    return {q:`${N}, emmétrope, ${objet} à ${d} cm. <span class="indice">Combien cet œil doit-il accommoder</span> ?`, f:'dem', conf:['pp', 'add', 'pr'],
+      indice:'Un œil emmétrope et un objet à une distance : c’est la demande, sans erreur à ajouter.',
+      rep:{k:'num', v:A, u:'D', tol:0.04},
+      dem:[['Convertir en mètres', `d = ${d} cm = ${m(d)} m`], ['Inverser', `A = 1 / ${m(d)} = ${sg(A)} D`]],
+      pieges:[{v:1 / d, m:'Distance gardée en cm : convertis-la en mètres d’abord.'}, {v:d / 100, m:'Tu as donné la distance en mètres, pas son inverse : A = 1/d.'}], estim:'Une demande de lecture tombe entre 1 et 5 D.'};
+  }},
+  {id:'focale', fam:'dio', mod:6, inv:true, f(){
+    const F = pick([1.25, 2, 2.5, 4, 5, 6.25, 8, 10, 12.5, 16, 20, 25]), c = 100 / F;
+    return {q:`Une lentille mince de <span class="indice">${sg(F)} D</span>, dans l’air. Quelle est sa <span class="indice">focale</span>, en cm ?`, f:'foc', conf:['dem', 'sur', 'mm'],
+      indice:'Une puissance et une focale : F = 1/f′, lue à l’envers.',
+      rep:{k:'num', v:c, u:'cm', tol:0.06},
+      dem:[['Isoler f′', `f′ = 1 / F = 1 / ${num(F)}`], ['Calculer', `f′ = ${num(1 / F, 3)} m`], ['Mettre en cm', `f′ = ${cm(c)} cm`]],
+      pieges:[{v:1 / F, m:'Ta réponse est en mètres : × 100 pour des cm.'}, {v:F * 100, m:'Inverse d’abord : f′ = 1/F.'}], estim:'Plus la puissance est forte, plus la focale est courte.'};
+  }},
+  {id:'surface', fam:'sur', mod:6, f(){
+    const n = pick([1.5, 1.523, 1.6, 1.7]), r = pick([5, 8, 10, 12.5, 20]) * pick([1, 1, -1]), D = (n - 1) / (r / 100), nt = n.toFixed(3).replace(/0+$/, '').replace('.', ',');
+    return {q:`Une <span class="indice">surface</span> sépare l’air (n = 1) d’un verre d’indice ${nt} ; la lumière passe de l’air au verre. Son rayon : ${sg(r, 1)} cm. Quelle est sa puissance ?`, f:'sur', conf:['lun', 'foc', 'mm'],
+      indice:'Une seule surface, un saut d’indice, un rayon.',
+      rep:{k:'num', v:D, u:'D', tol:0.03},
+      dem:[['Convertir en mètres', `r = ${sg(r, 1)} cm = ${sg(r / 100, 3)} m`], ['Saut d’indice', `nr − ni = ${nt} − 1 = ${num(n - 1, 3)}`], ['Diviser', `D = ${num(n - 1, 3)} / ${fmt(r / 100, 3)} = ${sg(D)} D`]],
+      pieges:[{v:(n - 1) / r, m:'Rayon gardé en cm : convertis-le en mètres.'}, {v:n / (r / 100), m:'Il faut le saut d’indice, n − 1, pas n seul.'}, {v:-D, m:'Le signe de D suit celui du rayon.'}], estim:'Compare ton signe à celui du rayon.'};
+  }},
+  {id:'lunetier', fam:'lun', mod:6, f(){
+    let nv, r1, r2, F1, F2, F, k = 0;
+    do { nv = pick([1.5, 1.6]); r1 = pick([5, 8, 10, 12.5]); r2 = pick([10, 20, 25, -10, -20]); F1 = (nv - 1) / (r1 / 100); F2 = -(nv - 1) / (r2 / 100); F = F1 + F2; k++; } while(Math.abs(F) < 0.25 && k < 50);
+    const nt = num(nv, 2);
+    return {q:`Une lentille d’indice ${nt}, dans l’air, avec <span class="indice">r₁ = ${sg(r1, 1)} cm et r₂ = ${sg(r2, 1)} cm</span>. Quelle est sa puissance totale ?`, f:'lun', conf:['sur', 'foc', 'gi'],
+      indice:'Deux rayons, donc deux faces : la formule du lunetier.',
+      rep:{k:'num', v:F, u:'D', tol:0.03},
+      dem:[['Face avant', `F₁ = (${nt} − 1) / ${num(r1 / 100, 3)} = ${sg(F1)}`], ['Face arrière, avec le moins', `F₂ = −(${nt} − 1) / ${fmt(r2 / 100, 3)} = ${sg(F2)}`], ['Additionner', `F = ${sg(F1)} ${F2 < 0 ? '−' : '+'} ${num(F2)} = ${sg(F)} D`]],
+      pieges:[{v:F1 - F2, m:'Le second terme se soustrait : à la sortie du verre, les indices changent de place.'}, {v:F / 100, m:'Rayons gardés en cm : convertis-les en mètres.'}, {v:F1, m:'Tu as oublié la face arrière.'}], estim:'Calcule chaque face, puis additionne.'};
+  }},
+  {id:'distance-confort', fam:'cfd', mod:6, f(){
+    const N = pick(NOMS), donders = Math.random() < 0.5, [age, Am] = donders ? pick(DONDERS.filter(x => x[0] <= 44)) : [0, pick([3, 3.5, 5, 6, 8, 12])], c = 100 / (0.5 * Am);
+    return {q:`${N}${donders ? ', ' + age + ' ans' : ''}, Am ${am(Am)}, porte sa correction de loin. <span class="indice">De combien près peut-on lire de façon prolongée, sans fatigue</span> ?`, f:'cfd', conf:['amc', 'pp', 'add'],
+      indice:'Une lecture prolongée n’utilise que la moitié de l’amplitude.',
+      rep:{k:'num', v:c, u:'cm', tol:tolCm(c)},
+      dem:[['La moitié de Am', `0,5 × ${am(Am)} = ${num(0.5 * Am)} D`], ['Inverser', `d = 1 / ${num(0.5 * Am)} = ${num(c / 100, 3)} m`], ['Mettre en cm', `d ≈ ${cm(c)} cm`]],
+      pieges:[{v:100 / Am, m:'Toute l’amplitude ne tient qu’un instant : en effort prolongé, l’œil en fournit la moitié.'}, {v:c / 100, m:'Ta réponse est en mètres : × 100 pour des cm.'}], estim:'C’est deux fois plus loin que le Pp de cet œil corrigé.'};
+  }},
+  {id:'longueur', fam:'mm', mod:6, f(){
+    const N = pick(NOMS), dl = pick([0.5, 1, 1.5, 2, 2.5, 3]), long = Math.random() < 0.6, L = 24 + (long ? dl : -dl), rx = (long ? -3 : 3) * dl;
+    return {q:`L’œil ${de(N)} mesure <span class="indice">${num(L, 1)} mm au lieu de 24 mm</span>, avec une puissance normale. Quelle correction faut-il, environ ?`, f:'mm', conf:['foc', 'dem', 'pr'],
+      indice:'Un écart de longueur axiale : la règle de 1 mm pour environ 3,00 D.',
+      rep:{k:'num', v:rx, u:'D', tol:0.02, signe:true},
+      dem:[['Écart de longueur', `${num(L, 1)} − 24 = ${sg(L - 24, 1)} mm`], ['Règle', `1 mm ≈ 3,00 D : ${num(dl, 1)} × 3,00 = ${num(3 * dl)} D`], ['Signe', `${long ? 'Plus long : myopie, donc −' : 'Plus court : hypermétropie, donc +'}`], ['Conclure', `Correction ≈ ${sg(rx)} D`]],
+      pieges:[{v:-rx, m:'Regarde le signe : plus long, myopie (−) ; plus court, hypermétropie (+).'}], estim:'Un œil plus long est myope.'};
+  }},
+  {id:'addition', fam:'add', mod:6, f(){
+    const N = pick(NOMS), [age, Am] = pick(DONDERS.filter(x => x[0] >= 40)), d = pick([33, 40, 50]), ad = C.add(d, Am), A = 100 / d;
+    const aucune = ad <= 0;
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), porte sa correction de loin et <span class="indice">veut lire à ${d} cm</span>. <span class="indice">Quelle addition</span> faut-il ? Écris 0 s’il n’en faut aucune.`, f:'add', conf:['acc', 'pp', 'amc'],
+      indice:'Correction de loin en place, lecture prolongée : la demande moins la moitié de Am.',
+      rep:{k:'num', v:aucune ? 0 : ad, u:'D', tol:0.04, zeroOk:aucune},
+      dem:[['La demande', `1/d = 1 / ${m(d)} = ${sg(A)} D`], ['Ce que l’œil paie', `0,5 × ${am(Am)} = ${num(0.5 * Am)} D`], ['La différence', `Add = ${num(A)} − ${num(0.5 * Am)} = ${sg(ad)} D`]].concat(aucune ? [['Conclure', (ad < 0 ? 'Négatif' : 'Zéro') + ' : aucune addition n’est indiquée.']] : []),
+      pieges:aucune ? [] : [{v:A - Am, m:'Tu as retiré toute l’amplitude : en effort prolongé, l’œil n’en fournit que la moitié.'}, {v:A / 2 - Am, m:'Le 0,5 porte sur Am, pas sur A.'}], estim:'Une addition va de 0 (aucune) à environ +3,00 D.'};
+  }},
+  {id:'lecture', fam:'add', mod:7, f(){
+    const N = pick(NOMS), R = pick([-4, -3, -2, -1.5, 1, 2, 3]), [age, Am] = pick(DONDERS.filter(x => x[0] >= 44 && x[0] <= 60)), d = 40, ad = C.add(d, Am), pres = R + ad;
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), porte ${sg(R)} D de loin. <span class="indice">Quelle puissance pour des lunettes de lecture</span>, à 40 cm ?`, f:'add', conf:['pre', 'pp', 'acc'],
+      indice:'Deux étapes : d’abord l’addition, ensuite près = loin + Add.',
+      rep:{k:'num', v:pres, u:'D', tol:0.03, signe:true},
+      dem:[['L’addition d’abord', `Add = 1/0,40 − 0,5 × ${am(Am)} = 2,50 − ${num(0.5 * Am)} = ${sg(ad)} D`], ['Ajouter à la correction de loin', `près = ${sg(R)} ${ad < 0 ? '−' : '+'} ${num(ad)}`], ['Conclure', `près = ${sg(pres)} D`]],
+      pieges:[{v:ad, m:'Ça, c’est l’addition : il reste à l’ajouter à la correction de loin.'}, {v:R - ad, m:'L’addition s’ajoute : près = loin + Add.'}, {v:R + 2.5 - Am, m:'Tu as retiré toute l’amplitude : en lecture, l’œil en paie la moitié.'}], estim:'Pars de la correction de loin, puis ajoute.'};
+  }},
+  {id:'pres', fam:'add', mod:7, f(){
+    const N = pick(NOMS), R = pick([-4, -3, -2.5, -1, 1.5, 2.5, 3]), ad = pick([1, 1.5, 2, 2.5]), pres = R + ad;
+    return {q:`L’ordonnance ${de(N)} : ${sg(R)} D, add ${sg(ad)}. <span class="indice">Quelle puissance pour ses lunettes de lecture</span> ?`, f:'pre', conf:['add', 'acc', 'gi'],
+      indice:'L’addition est donnée : il ne reste qu’à l’ajouter.',
+      rep:{k:'num', v:pres, u:'D', tol:0.01, signe:true},
+      dem:[['Ajouter', `près = ${sg(R)} ${ad < 0 ? '−' : '+'} ${num(ad)}`], ['Conclure', `près = ${sg(pres)} D`]],
+      pieges:[{v:ad - R, m:'Garde le signe de la correction de loin : près = loin + Add.'}, {v:R - ad, m:'L’addition s’ajoute, elle ne se retranche pas.'}], estim:'Une add déplace la puissance vers le +.'};
+  }},
+  {id:'pr', fam:'pr', mod:7, mardi:true, f(){
+    const N = pick(NOMS), R = pick(Math.random() < 0.55 ? MYOPES : HYPERS), pr = C.pr(R), cote = R < 0 ? 'devant' : 'derriere', age = pick(DONDERS), bruit = Math.random() < 0.5 ? `, ${age[0]} ans (Am ${am(age[1])})` : '';
+    const fin = pick([`<span class="indice">Où se trouve son punctum remotum</span> ?`, `<span class="indice">Où se trouve le point net de cet œil au repos</span> ?`, `<span class="indice">Où cet œil est-il net sans accommoder</span> ?`]);
+    return {q:`${N}${bruit}, ${amt(R)}, a une correction de ${sg(R)} D. ${fin}`, f:'pr', conf:['pp', 'amc', 'acc'],
+      indice:'Œil au repos, sans accommoder : c’est le Pr, et Am n’y joue aucun rôle.',
+      rep:{k:'pr', v:pr, cote, tol:tolCm(pr)},
+      dem:[['Le signe de R', `${amt(R)} : R = ${sg(R)} D`], ['Inverser', `Pr = 1 / ${sg(R)} = ${sg(1 / R, 3)} m`], ['Lire le côté', `${cm(pr)} cm ${R < 0 ? 'devant l’œil (réel)' : 'derrière l’œil (virtuel)'}`]],
+      pieges:[{v:pr / 100, m:'Ta réponse est en mètres : × 100 pour des cm.'}], cotes:'Le signe décide du côté : myope, devant (réel) ; hypermétrope, derrière (virtuel).', estim:'Une petite correction donne un Pr loin de l’œil.'};
+  }},
+  {id:'pr-rx', fam:'pr', mod:7, mardi:true, inv:true, f(){
+    const N = pick(NOMS), devant = Math.random() < 0.6, c = devant ? pick([20, 25, 40, 50, 60, 80, 100]) : pick([25, 40, 50, 100]), R = C.rxDePr(c, devant);
+    const debut = devant ? `${N} voit net <span class="indice">sans accommoder</span> à ${c} cm devant l’œil, et pas plus loin.` : `<span class="indice">Au repos</span>, le point net ${de(N)} est à ${c} cm derrière l’œil (virtuel).`;
+    return {q:`${debut} <span class="indice">Quelle lentille corrige cet œil</span> ?`, f:'pr', conf:['pp', 'gi', 'amn'],
+      indice:'Le point net au repos donne la correction : la lentille vaut 1/Pr, Pr signé.',
+      rep:{k:'num', v:R, u:'D', tol:0.03, signe:true},
+      dem:[['Signer le Pr', `Pr = ${devant ? '−' : '+'}${m(c)} m (${devant ? 'devant' : 'derrière'})`], ['Inverser', `R = 1 / ${devant ? '(−' : '(+'}${m(c)}) = ${sg(R)} D`]],
+      pieges:[{v:-R, m:'Le signe vient du côté : devant = négatif (myope), derrière = positif (hypermétrope).'}, {v:c / 100, m:'Tu as donné la distance : il faut son inverse.'}, {v:1 / c, m:'Distance gardée en cm : convertis-la en mètres.'}], estim:'Devant l’œil, la lentille est négative.'};
+  }},
+  {id:'pp', fam:'pp', mod:7, mardi:true, f(){
+    const N = pick(NOMS), [age, Am] = pick(DONDERS), R = pick(Math.random() < 0.55 ? MYOPES : HYPERS.filter(x => x < Am - 0.5)) || -2, pp = C.pp(Am, R);
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), ${amt(R)} de ${sg(R)} D, enlève ses lunettes. <span class="indice">À quelle distance, au plus près, voit-on net en accommodant au maximum</span> ?`, f:'pp', conf:['pr', 'amc', 'cfd'],
+      indice:'Sans lunettes, accommodation maximale : c’est le Pp, avec R dedans.',
+      rep:{k:'num', v:pp, u:'cm', tol:tolCm(pp)},
+      dem:[['Remplacer', `1/Pp = ${am(Am)} − (${sg(R)}) = ${num(Am - R)} D`], ['Inverser', `Pp = 1 / ${num(Am - R)} = ${num(pp / 100, 3)} m`], ['Mettre en cm', `Pp ≈ ${cm(pp)} cm devant l’œil`]],
+      pieges:[{v:C.pp(Am, -R), m:'Attention au double signe : Am − R ; une myopie s’ajoute, une hypermétropie se retranche.'}, {v:100 / Am, m:'Tu as oublié R : sans lunettes, l’erreur compte.'}, {v:pp / 100, m:'Ta réponse est en mètres : × 100 pour des cm.'}, {v:C.pp(0.5 * Am, R), m:'Le Pp dépense toute l’amplitude, pas la moitié.'}], estim:'À amplitude égale, le Pp d’un myope est plus proche.'};
+  }},
+  {id:'am-nu', fam:'pp', mod:7, mardi:true, inv:true, f(){
+    const N = pick(NOMS); let Pp, R, a, k = 0;
+    do { Pp = pick([10, 12.5, 20, 25, 40, 50]); R = pick([-4, -3, -2, -1, 1, 2, 3, 4]); a = C.am(Pp, R); k++; } while((a < 1 || a > 14) && k < 50);
+    return {q:`${N}, ${amt(R)} (${sg(R)} D), <span class="indice">sans correction</span>, ne voit pas net plus près que ${cm(Pp)} cm. <span class="indice">Quelle est son amplitude</span> ?`, f:'amn', conf:['amc', 'pp', 'pr'], aussi:['pp'],
+      indice:'Le Pp mesuré à l’œil nu contient encore R : Am = 1/Pp + R.',
+      rep:{k:'num', v:a, u:'D', tol:0.03},
+      dem:[['Inverser le Pp', `1/Pp = 1 / ${m(Pp)} = ${num(100 / Pp)} D`], ['Ajouter R', `Am = ${num(100 / Pp)} ${R < 0 ? '−' : '+'} ${num(R)} = ${num(a)} D`]],
+      pieges:[{v:100 / Pp, m:'Ça, c’est 1/Pp : à l’œil nu, il faut encore ajouter R.'}, {v:100 / Pp - R, m:'Le signe de R : Am = 1/Pp + R, avec R signé.'}], estim:'L’amplitude est toujours positive.'};
+  }},
+  {id:'sans-lunettes', fam:'pp', mod:7, mardi:true, f(){
+    const N = pick(NOMS), R = pick([-2, -3, -4, 1, 2]), Pc = pick([20, 25]), a = 100 / Pc, pp = C.pp(a, R);
+    return {q:`${N} porte ${sg(R)} D et, <span class="indice">avec ses lunettes</span>, ne voit pas net plus près que ${Pc} cm. <span class="indice">Et sans ses lunettes</span> : quel est le Pp ?`, f:'amc', conf:['pp', 'amn', 'pr'],
+      indice:'Deux étapes : avec lunettes, R = 0 donne Am ; ensuite seulement, 1/Pp = Am − R.',
+      rep:{k:'num', v:pp, u:'cm', tol:tolCm(pp)},
+      dem:[['Am avec lunettes', `Am = 1 / ${m(Pc)} = ${num(a)} D`], ['Sans lunettes', `1/Pp = ${num(a)} − (${sg(R)}) = ${num(a - R)} D`], ['Inverser', `Pp ≈ ${cm(pp)} cm`]],
+      pieges:[{v:Pc, m:'Ça, c’est le Pp avec lunettes : la question porte sur l’œil nu.'}, {v:C.pp(a, -R), m:'Attention au double signe : Am − R.'}], estim:'Sans lunettes, un myope voit plus près, un hypermétrope moins près.'};
+  }},
+  {id:'corrige', fam:'cor', mod:7, mardi:true, f(){
+    const N = pick(NOMS), [age, Am] = pick(DONDERS), R = pick(MYOPES.concat(HYPERS)), pp = 100 / Am;
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), ${amt(R)} (${sg(R)} D), <span class="indice">porte ses lunettes</span>. Quel est son Pp ?`, f:'amc', conf:['pp', 'cfd', 'pr'], aussi:['pp'],
+      indice:LUNETTES,
+      rep:{k:'num', v:pp, u:'cm', tol:tolCm(pp)},
+      dem:[['Corrigé', 'R = 0, l’œil est comme un emmétrope'], ['Inverser Am', `Pp = 1 / ${am(Am)} = ${num(1 / Am, 3)} m`], ['Mettre en cm', `Pp ≈ ${cm(pp)} cm`]],
+      pieges:[{v:C.pp(Am, R), m:'Avec ses lunettes, R = 0 : l’erreur ne compte plus.'}, {v:pp / 100, m:'Ta réponse est en mètres : × 100 pour des cm.'}, {v:C.pp(0.5 * Am, 0), m:'Le Pp dépense toute l’amplitude, pas la moitié.'}], estim:'Plus on est jeune, plus le Pp est proche.'};
+  }},
+  {id:'accommode', fam:'acc', mod:7, f(){
+    const N = pick(NOMS), R = pick([-1, -1.5, -2, 1, 1.5, 2, 3, 4]), d = pick([25, 33, 40, 50]), a = C.a(d, R);
+    if(a <= 0) return TYPES.find(t => t.id === 'accommode').f();
+    return {q:`${N}, ${amt(R)} (${sg(R)} D), <span class="indice">sans ses lunettes</span>, lit à ${d} cm. <span class="indice">Combien cet œil accommode-t-il</span> ?`, f:'acc', conf:['dem', 'add', 'pp'],
+      indice:'Un œil non corrigé : la demande, plus son erreur R.',
+      rep:{k:'num', v:a, u:'D', tol:0.04},
+      dem:[['La demande', `1/d = 1 / ${m(d)} = ${num(100 / d)} D`], ['Ajouter R, signé', `A = ${num(100 / d)} ${R < 0 ? '−' : '+'} ${num(R)} = ${num(a)} D`]],
+      pieges:[{v:100 / d, m:'Tu as oublié R : sans lunettes, l’erreur s’ajoute à la demande.'}, {v:100 / d - R, m:'Le signe de R : un myope accommode moins, un hypermétrope plus.'}], estim:'Un myope accommode moins qu’un emmétrope.'};
+  }},
+  {id:'voir', fam:'acc', mod:8, mardi:true, f(){
+    const N = pick(NOMS); let age, Am, R, d, a, k = 0;
+    /* le cours compare la distance au Pp ; A = 1/d + R comparé à Am dit la même chose tant que l'objet est en deçà du Pr et que le Pp existe */
+    do { [age, Am] = pick(DONDERS.filter(x => x[0] >= 25)); R = pick([-3, -2.5, -1.5, -1, 1, 2, 2.5]); d = pick([25, 40, 50]); a = C.a(d, R); k++; } while((Am - R < 0.5 || (R < 0 && d > C.pr(R)) || Math.abs(a - Am) < 0.2) && k < 200);
+    const net = a <= Am, pp = C.pp(Am, R);
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), ${amt(R)} (${sg(R)} D), sans lunettes. Un objet à ${d} cm est-il <span class="indice">net, même quelques instants</span> ?`, f:'acc', conf:['cft', 'pp', 'cfd'], aussi:['pp'],
+      indice:'Même quelques instants : toute l’amplitude compte. Compare A à Am, ou la distance au Pp, comme au cours.',
+      rep:{k:'ouinon', v:net, val:{acc:{v:a, u:'D', q:'A', tol:0.04}, pp:{v:pp, u:'cm', q:'Pp', tol:tolCm(pp)}}},
+      dem:[['Calculer A', `A = ${num(100 / d)} ${R < 0 ? '−' : '+'} ${num(R)} = ${fmt(a)} D`], ['Comparer', `Am = ${am(Am)} : ${a < 0 ? 'A négatif, l’objet est au-delà du Pr' : a > Am ? 'A dépasse Am' : 'A est entre 0 et Am'}`], ['Ou, comme au cours', `Pp = 1 / (${am(Am)} − (${sg(R)})) ≈ ${cm(pp)} cm : l’objet à ${d} cm est ${net ? 'au-delà du Pp' : 'plus près que le Pp'}`], ['Conclure', net ? 'Oui, net.' : 'Non, flou.']], pieges:[], estim:'Calcule A (ou le Pp), puis compare.'};
+  }},
+  {id:'confortable', fam:'cft', mod:8, f(){
+    const N = pick(NOMS); let age, Am, R, a, k = 0;
+    do { [age, Am] = pick(DONDERS.filter(x => x[0] >= 25)); R = pick([-2, -1.5, -1, 1, 1.5]); a = C.a(40, R); k++; } while(a < 0 && k < 50);
+    const ok = a <= 0.5 * Am;
+    if(Math.abs(a - 0.5 * Am) < 0.2) return TYPES.find(t => t.id === 'confortable').f();
+    return {q:`${N}, ${age} ans (Am ${am(Am)}), ${amt(R)} (${sg(R)} D), lit à 40 cm sans lunettes. Le fait-on <span class="indice">de façon confortable</span> ?`, f:'cft', conf:['acc', 'pp', 'add'], aussi:['acc'],
+      indice:'Confortable : A doit tenir dans la moitié de l’amplitude.',
+      rep:{k:'ouinon', v:ok, val:{cft:{v:a, u:'D', q:'A', tol:0.04}, acc:{v:a, u:'D', q:'A', tol:0.04}}},
+      dem:[['Calculer A', `A = 2,50 ${R < 0 ? '−' : '+'} ${num(R)} = ${num(a)} D`], ['La moitié de Am', `0,5 × ${am(Am)} = ${num(0.5 * Am)} D`], ['Conclure', ok ? 'A tient dedans : oui, confortable.' : 'A dépasse : non, pas de façon confortable.']], pieges:[], estim:'Compare A à la moitié de Am.'};
+  }},
+  {id:'gi', fam:'gi', mod:8, f(){
+    const N = pick(NOMS), Fl = pick([-10, -6, -4, -3, 2, 4, 6]), v = pick([8, 10, 12, 13, 15]), g = C.gi(Fl, v);
+    return {q:`${N} porte ${sg(Fl)} D à un <span class="indice">vertex de ${v} mm</span>. Quel est le <span class="indice">facteur de grandeur de l’image</span> (3 décimales) ?`, f:'gi', conf:['pct', 'foc', 'pr'],
+      indice:'Un verre, un vertex, une taille d’image : Gi.',
+      rep:{k:'num', v:g, u:'', tol:0.0015, dec:3},
+      dem:[['Convertir en mètres', `d = ${v} mm = ${num(v / 1000, 3)} m`], ['Le dénominateur', `1 − (${num(v / 1000, 3)} × ${sg(Fl)}) = ${num(1 - v / 1000 * Fl, 3)}`], ['Inverser', `Gi = 1 / ${num(1 - v / 1000 * Fl, 3)} = ${num(g, 3)}`]],
+      pieges:[{v:C.gi(-Fl, v), m:'Le signe de Fl : un verre + agrandit, Gi > 1 ; un verre − réduit, Gi < 1.'}, {v:1 - v / 1000 * Fl, m:'Il reste à inverser : Gi = 1 / (ce résultat).'}], estim:'Verre +, Gi au-dessus de 1 ; verre −, en dessous.'};
+  }},
+  {id:'pct', fam:'gi', mod:8, f(){
+    const Fl = pick([-10, -6, -4, -3, 2, 4, 6]), v = pick([10, 12, 13]), g = C.gi(Fl, v), p = C.pct(g);
+    return {q:`Un verre de ${sg(Fl)} D, à un vertex de ${v} mm. <span class="indice">De combien de pour cent l’image change-t-elle</span> ? Donne le signe : + plus grande, − plus petite.`, f:'gi', conf:['pct', 'foc', 'dem'],
+      indice:'Deux étapes : d’abord le facteur Gi, ensuite le pourcentage.',
+      rep:{k:'num', v:p, u:'%', tol:0.2, signe:true},
+      dem:[['Le facteur d’abord', `Gi = 1 / ${num(1 - v / 1000 * Fl, 3)} = ${num(g, 3)}`], ['Soustraire 1', `${num(g, 3)} − 1 = ${fmt(g - 1, 3)}`], ['Multiplier par 100', `${sg(p, 1)} %`]],
+      pieges:[{v:g, m:'Ça, c’est le facteur : soustrais 1, puis multiplie par 100.'}, {v:g - 1, m:'Il reste à multiplier par 100.'}, {v:-p, m:'Positif : image plus grande ; négatif : plus petite.'}, {v:C.pct(Math.round(g * 100) / 100), m:'Garde 3 décimales au facteur : arrondi à 2, le % s’écarte.'}], estim:'Un verre − donne un pourcentage négatif.'};
+  }},
+  {id:'aniso', fam:'ani', mod:8, f(){
+    const N = pick(NOMS), od = pick([-6, -4, -2, 1, 2, 4]), os = pick([-3, -1, 2.5, 3, 5, 6]), v = pick([10, 12, 13]), pa = C.pct(C.gi(od, v)), pb = C.pct(C.gi(os, v)), e = Math.abs(pa - pb);
+    if(e < 0.5 || Math.abs(e - 3) < 0.25) return TYPES.find(t => t.id === 'aniso').f();
+    return {q:`${N} : OD ${sg(od)} D, OS ${sg(os)} D, vertex ${v} mm. <span class="indice">Quelle est la différence de taille d’image entre les deux yeux</span>, en % (une décimale) ?`, f:'gi', conf:['pct', 'pp', 'foc'],
+      indice:'Un Gi par œil, deux pourcentages, puis leur écart.',
+      rep:{k:'num', v:e, u:'%', tol:0.3},
+      dem:[['OD', `Gi = ${num(C.gi(od, v), 3)}, soit ${sg(pa, 1)} %`], ['OS', `Gi = ${num(C.gi(os, v), 3)}, soit ${sg(pb, 1)} %`], ['L’écart', `${num(e, 1)} %`], ['Conclure', e >= 3 ? '3 % ou plus : aniséiconie possible.' : 'Moins de 3 %.']],
+      pieges:[{v:Math.abs(Math.abs(pa) - Math.abs(pb)), m:'Un + et un − s’écartent : c’est le plus grand % moins le plus petit, signes compris.'}], estim:'L’écart est toujours positif.'};
+  }}
+];
+/* une erreur reconnue qui divise par zéro n'a pas de valeur à reconnaître */
+/* et une erreur nommée qui tombe dans la tolérance de la bonne réponse serait acceptée comme juste : on retire */
+TYPES.forEach(t => { const f = t.f; t.f = () => {
+  for(let k = 0; ; k++){
+    const p = f(); p.pieges = p.pieges.filter(e => Number.isFinite(e.v));
+    const r = p.rep, colle = r.k !== 'ouinon' && p.pieges.some(e => Math.abs(e.v - r.v) <= r.tol);
+    if(!colle || k > 40) return p;
+  }
+}; });
+
+/* lit un nombre tel qu'on le tape : virgule, moins typographique, unité collée */
+function lire(s){
+  const t = String(s == null ? '' : s).trim().replace(/\s/g, '').replace(',', '.').replace(/[−–]/g, '-');
+  const r = t.match(/^[+-]?(\d+(\.\d*)?|\.\d+)/);
+  return r ? parseFloat(r[0]) : null;
+}
+/* la valeur à écrire dans un problème oui/non : celle de la formule choisie (A, ou le Pp), sinon celle de la formule attendue */
+const valeur = (p, f) => p.rep.val[f] || p.rep.val[p.f];
+/* {ok} ; {vide, m} s'il manque quelque chose ; {m, reconnu} sinon */
+function juger(p, s){
+  const r = p.rep;
+  if(r.k === 'ouinon'){
+    const w = valeur(p, s.f), x = lire(s.n);
+    if(x === null) return {vide:true, m:'Écris d’abord ta valeur de ' + w.q + ' (en ' + w.u + '), puis choisis oui ou non.'};
+    if(s.oui !== true && s.oui !== false) return {vide:true, m:'Choisis oui ou non.'};
+    const juste = Math.abs(x - w.v) <= w.tol;
+    if(juste && s.oui === r.v) return {ok:true};
+    if(!juste) return {m:'Ta valeur de ' + w.q + ' ne tombe pas juste : refais ce calcul avant de décider.', reconnu:true};
+    return {m:'Ta valeur de ' + w.q + ' est juste ; c’est la comparaison qui ne va pas.', reconnu:true};
+  }
+  const x = lire(s.n);
+  if(x === null) return {vide:true, m:'Écris un nombre.'};
+  const pres = (a, b, t) => Math.abs(a - b) <= t;
+  if(r.k === 'pr'){
+    if(!s.cote) return {vide:true, m:'Choisis devant ou derrière.'};
+    const v = Math.abs(x);
+    if(pres(v, r.v, r.tol)) return s.cote === r.cote ? {ok:true} : {m:p.cotes, reconnu:true};
+    for(const e of p.pieges) if(pres(v, e.v, Math.max(r.tol * 0.02, 0.005))) return {m:e.m, reconnu:true};
+    return {};
+  }
+  if(pres(x, r.v, r.tol) || (r.zeroOk && x <= 0)) return {ok:true};
+  for(const e of p.pieges) if(pres(x, e.v, r.tol)) return {m:e.m, reconnu:true};
+  if(!r.signe && pres(-x, r.v, r.tol)) return {m:'Vérifie le signe de ta réponse.', reconnu:true};
+  return {};
+}
+const repTxt = p => { const r = p.rep; if(r.k === 'ouinon'){ const w = r.val[p.f]; return (r.v ? 'Oui' : 'Non') + ' (' + w.q + ' = ' + (w.u === 'cm' ? cm(w.v) : num(w.v)) + ' ' + w.u + ')'; } if(r.k === 'pr') return cm(r.v) + ' cm ' + (r.cote === 'devant' ? 'devant' : 'derrière'); const d = r.dec || (r.u === '%' ? 1 : r.u === 'cm' ? 1 : 2); return (r.signe ? sg(r.v, d) : fmt(r.v, d)) + (r.u ? ' ' + r.u : ''); };
+/* le problème en texte brut, à coller dans une IA. Il garde l'ordre des tuiles et ne dit ni la bonne formule ni la réponse avant la fin du problème.
+   Les conventions du cours voyagent avec lui : sinon, l'IA calcule avec les siennes */
+const brut = h => String(h).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/[ \t\u00a0]+/g, ' ').trim();
+const CONVENTIONS = [
+  'Dans les formules, les distances sont en mètres et les puissances en dioptries (D).',
+  'R : l’erreur réfractive, signée (myope −, hypermétrope +).',
+  'Pr : le punctum remotum, signé (devant l’œil −, derrière +).',
+  'Pp : le punctum proximum, le point net le plus proche.',
+  'Am : l’amplitude d’accommodation, en D.',
+  'Gi : le facteur de grandeur de l’image. Dans sa formule, d est le vertex (la distance cornée-lunette) et Fl la puissance du verre, signée.'
+];
+const DEMANDES = {
+  formule:'Guide-moi une étape à la fois. Aide-moi d’abord à repérer, dans l’énoncé, ce qui désigne la bonne formule, puis à faire le calcul. Pose-moi une seule question à la fois, et ne me donne pas la réponse finale avant que j’aie essayé.',
+  calcul:'Guide-moi dans le calcul, une étape à la fois. Si j’ai déjà essayé, aide-moi à trouver où je me trompe. Pose-moi une seule question à la fois, et ne me donne pas la réponse finale avant que j’aie essayé.',
+  fini:'Explique-moi cette démarche simplement : ce qui, dans l’énoncé, désigne cette formule, puis chaque étape. Ensuite, donne-moi un problème semblable avec d’autres nombres, sans la réponse, pour que je vérifie si j’ai compris.'
+};
+function pourIA(p, o = {}){
+  const etape = o.etape || 'formule', r = p.rep, puis = ENSUITE[p.type.id], faux = o.ecartees || [], tentes = o.tentes || [];
+  const attendu = r.k === 'ouinon' ? 'une valeur (' + r.val[p.f].q + ', en ' + r.val[p.f].u + '), puis oui ou non' : r.k === 'pr' ? 'une distance en cm, devant ou derrière l’œil' : 'un nombre' + (r.u ? ', en ' + r.u : '') + (r.signe ? ', avec son signe' : '');
+  const l = ['Je suis en formation d’opticien·ne. Aide-moi avec ce problème d’optique de la vue.', '', 'LE PROBLÈME', brut(p.q), ''];
+  if(etape === 'formule'){
+    l.push('LA FORMULE À CHOISIR' + (puis ? ' D’ABORD' : '') + ', PARMI CES QUATRE');
+    p.tuiles.forEach((f, i) => l.push((i + 1) + '. ' + FORMULES[f].t));
+  } else l.push(puis ? 'LES FORMULES' : 'LA FORMULE', FORMULES[p.f].t + (puis ? ', puis ' + FORMULES[puis].t : ''));
+  l.push('');
+  if(faux.length) l.push('LES FORMULES QUE J’AI CHOISIES À TORT', ...faux.map(f => FORMULES[f].t), '');
+  l.push('LA RÉPONSE ATTENDUE', attendu, '');
+  if(tentes.length) l.push('CE QUE J’AI RÉPONDU, À TORT', ...tentes, '');
+  if(o.brouillon && String(o.brouillon).trim()) l.push('MES CALCULS (MON BROUILLON)', String(o.brouillon).trim(), '');
+  if(etape === 'fini') l.push('LA RÉPONSE DU CORRIGÉ', repTxt(p), '', 'LA DÉMARCHE DU CORRIGÉ', ...p.dem.map(([a, b]) => '- ' + brut(a) + ' : ' + brut(b)), '');
+  l.push('LES CONVENTIONS DE MON COURS', ...CONVENTIONS.map(c => '- ' + c), '- Utilise ces conventions, même si tu en connais d’autres.', '', 'CE QUE J’AIMERAIS', DEMANDES[etape]);
+  return l.join('\n');
+}
+/* le critère du blueprint §4.2 */
+function reussi(e, familleInv){ return !!e && e.serie >= 3 && e.n >= 5 && (!familleInv || !!e.inv); }
+/* Les 10 derniers essais comptés d'une formule (1 = juste du premier coup, sans aide ; 0 = le reste), du plus ancien
+   au plus récent. Les données d'avant ce journal n'ont que des totaux : on les reconstitue (la série en cours à la
+   fin, l'échec qui l'a précédée, puis les réussites plus anciennes en proportion), pour que rien ne saute au passage. */
+function histoire(e){
+  if(!e || !e.n) return [];
+  if(e.h && e.h.length) return e.h;
+  const n = Math.min(10, e.n), fin = Math.min(e.serie || 0, n), coupe = e.n > (e.serie || 0) ? 1 : 0, vieux = Math.max(0, n - fin - coupe);
+  const avant = e.n - (e.serie || 0) - coupe, p = avant > 0 ? Math.max(0, Math.min(1, ((e.ok || 0) - (e.serie || 0)) / avant)) : 0, bons = Math.round(vieux * p), h = [];
+  for(let i = 0; i < vieux; i++) h.push(i >= vieux - bons ? 1 : 0);
+  if(coupe && h.length + fin < n) h.push(0);
+  for(let i = 0; i < fin; i++) h.push(1);
+  return h;
+}
+/* La maîtrise estimée d'une formule (0 à 1) : la réussite du premier coup, sans aide, sur les 10 derniers essais, où
+   les récents pèsent plus (×0,8 par essai plus ancien), lissée (+1 réussite, +1 échec), puis freinée tant qu'il y a
+   moins de 3 réussites. « Réussi » vaut 1 ; sinon, au plus 0,95. Un échec ne la fait jamais monter, une réussite
+   jamais descendre (vérifié par build/drill/test_drill.js). */
+function maitriseFamille(e, familleInv){
+  if(!e || !e.n) return 0;
+  if(reussi(e, familleInv)) return 1;
+  const h = histoire(e);
+  let w = 1, a = 0, b = 0, k = 0;
+  for(let i = h.length - 1; i >= 0; i--){ a += w * h[i]; b += w; k += h[i]; w *= 0.8; }
+  return Math.min(0.95, (a + 1) / (b + 2) * Math.min(1, k / 3));
+}
+/* toutes les formules de l'UA2 comptent autant, en % (une décimale) */
+function maitriseUA2(fam){ const fs = Object.keys(FAMILLES); return Math.round(fs.reduce((x, f) => x + maitriseFamille(fam[f], FAMILLES[f].inv), 0) / fs.length * 1000) / 10; }
+/* la vitesse : la pente (moindres carrés) du % sur les 40 derniers problèmes notés, en points par 10 problèmes ;
+   null s'il y en a moins de 8. journal : [{t: horodatage, p: %}] */
+function vitesse(journal){
+  const j = (journal || []).slice(-40), n = j.length;
+  if(n < 8) return null;
+  const mx = (n - 1) / 2, my = j.reduce((a, x) => a + x.p, 0) / n;
+  let num = 0, den = 0;
+  j.forEach((x, i) => { num += (i - mx) * (x.p - my); den += (i - mx) * (i - mx); });
+  return {par10:num / den * 10, n};
+}
+/* problèmes par jour d'étude : la moyenne sur les jours où tu en as fait au moins un (date locale) */
+function parJour(journal){
+  const jours = {};
+  (journal || []).forEach(x => { const d = new Date(x.t), k = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); jours[k] = (jours[k] || 0) + 1; });
+  const v = Object.values(jours);
+  return v.length ? {moy:v.reduce((a, b) => a + b, 0) / v.length, jours:v.length} : null;
+}
+/* le prochain type. La famille d'abord : chaque formule compte autant, qu'elle ait un type de problème ou trois.
+   Tant qu'une famille reste à découvrir, un problème sur deux en vient (toutes se montrent tôt) ; sinon, ce qui n'est
+   pas réussi revient plus souvent. Dans la famille : le problème à l'envers s'il manque, sinon le type le moins vu.
+   l : les types de la portée ; etat : {fam, typ, dernierFam, decouverte, portee} ; rnd : le hasard (testable). */
+function choisirType(l, etat, rnd = Math.random){
+  const un = a => a[Math.min(a.length - 1, Math.floor(rnd() * a.length))];
+  const fams = [...new Set(l.map(t => t.fam))];
+  const autres = fams.filter(f => f !== etat.dernierFam), base = autres.length ? autres : fams;
+  const neuves = base.filter(f => !etat.fam[f] || !etat.fam[f].n);
+  let fam;
+  if(neuves.length && !etat.decouverte) fam = un(neuves);
+  else {
+    const poids = f => { const e = etat.fam[f]; return (reussi(e, FAMILLES[f].inv) ? 1 : e ? 3 : 4) * (etat.portee === 'ua2' && l.some(t => t.fam === f && t.mardi) ? 1.5 : 1); };
+    let x = rnd() * base.reduce((n, f) => n + poids(f), 0);
+    fam = base[base.length - 1];
+    for(const f of base){ x -= poids(f); if(x <= 0){ fam = f; break; } }
+  }
+  const ts = l.filter(t => t.fam === fam), e = etat.fam[fam];
+  if(e && e.serie >= 3 && FAMILLES[fam].inv && !e.inv && ts.some(t => t.inv)) return {t:un(ts.filter(t => t.inv)), neuve:false};
+  const vu = t => (etat.typ && etat.typ[t.id]) || 0, min = Math.min(...ts.map(vu));
+  return {t:un(ts.filter(t => vu(t) === min)), neuve:!e || !e.n};
+}
+/* === problèmes : fin === */
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+const CLE = 'drill-optique-v1';
+const memo = {get(){ try{ return JSON.parse(localStorage.getItem(CLE)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(CLE, JSON.stringify(v)); }catch(e){} }};
+const VIDE = () => ({fam:{}, conf:{}, typ:{}, dernier:null, portee:'ua2', choix:[], journal:[]});
+let D = Object.assign(VIDE(), memo.get() || {});
+const sauver = () => memo.set(D);
+const PORTEES = [['ua2', 'Tout l’UA2'], ['mardi', 'Pr et Pp'], [6, 'Module 6'], [7, 'Module 7'], [8, 'Module 8'], ['perso', 'Perso']];
+if(/^[678]$/.test(String(D.portee))) D.portee = +D.portee;
+if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'ua2';
+if(!Array.isArray(D.choix)) D.choix = [];
+D.choix = D.choix.filter(f => FAMILLES[f]);
+if(D.portee === 'perso' && !D.choix.length) D.portee = 'ua2';
+/* Perso : une famille allumée compte avec tous ses types (tous modules) */
+const dansPortee = t => D.portee === 'perso' ? D.choix.includes(t.fam) : D.portee === 'ua2' || (D.portee === 'mardi' ? t.mardi : t.mod === D.portee);
+const famillesActives = () => new Set(TYPES.filter(dansPortee).map(t => t.fam));
+/* un interrupteur : on passe en Perso avec les familles allumées, plus ou moins celle-ci ; jamais zéro */
+/* « * » : l'interrupteur de toutes les formules (tout allumé → tout éteint ; sinon → tout allumé), pour isoler vite */
+function basculer(f){
+  const act = famillesActives(), toutes = Object.keys(FAMILLES);
+  if(f === '*'){ if(act.size === toutes.length) act.clear(); else toutes.forEach(x => act.add(x)); }
+  else if(act.has(f)) act.delete(f); else act.add(f);
+  D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
+  $('#annonce-carte').textContent = act.size ? '' : 'Tout est éteint : allume une formule (ou plus) pour continuer.';
+  if(act.size && SESS.vide) nouveau(); else peindreCote();
+  const b = document.querySelector('.inter[data-tg="' + f + '"]'); if(b) b.focus();
+}
+const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false};
+const MOTS = [
+  ['pr', '« sans accommoder », « au repos », « quelle lentille corrige »'],
+  ['pp', '« au plus près », « accommodation maximale », « même quelques instants », sans lunettes'],
+  ['amc', '« avec ses lunettes » : R = 0'],
+  ['amn', '« amplitude », un Pp mesuré à l’œil nu'],
+  ['acc', '« combien accommode-t-il », « sans ses lunettes »'],
+  ['dem', '« emmétrope », « combien doit-il accommoder »'],
+  ['cft', '« de façon confortable », une lecture à décider'],
+  ['cfd', '« lire de façon prolongée », « de combien près »'],
+  ['add', '« quelle addition », correction de loin en place'],
+  ['pre', '« lunettes de lecture », add donnée'],
+  ['gi', '« vertex », « grandeur de l’image », « différence entre les yeux »'],
+  ['pct', 'un facteur à changer en %'],
+  ['foc', '« focale »'], ['sur', 'une seule surface, un rayon'], ['lun', 'deux rayons, r₁ et r₂'], ['mm', 'une longueur axiale en mm']
+];
+
+/* ---------- le prochain problème : les rappels d'abord, puis choisirType (jamais deux fois la même famille de suite) ---------- */
+function prochain(){
+  SESS.rappels.forEach(x => { x.dans--; });
+  const du = SESS.rappels.find(x => x.dans <= 0 && TYPES.find(t => t.id === x.id && dansPortee(t) && t.fam !== SESS.dernierFam));
+  if(du){ SESS.rappels = SESS.rappels.filter(x => x !== du); SESS.decouverte = false; return TYPES.find(t => t.id === du.id); }
+  const r = choisirType(TYPES.filter(dansPortee), {fam:D.fam, typ:D.typ, dernierFam:SESS.dernierFam, decouverte:SESS.decouverte, portee:D.portee});
+  SESS.decouverte = r.neuve;
+  return r.t;
+}
+/* ---------- le problème en cours ---------- */
+let S = null;
+function nouveau(type, jumelle){
+  if(!type && !TYPES.some(dansPortee)){
+    SESS.vide = true; if(S) S.etape = 'vide';
+    $('#scene').innerHTML = '<p class="msg warn">Aucune formule allumée. Allume celles que tu veux pratiquer sur ta carte (à droite, ou plus bas sur un téléphone), et le problème suivant arrive.</p>';
+    peindreCote(); return;
+  }
+  SESS.vide = false;
+  { const md = $('#mots-d'); if(md) md.open = false; }
+  const t = type || prochain(), p = t.f();
+  p.type = t; p.tuiles = melange([p.f].concat(p.conf));
+  S = {p, etape:'formule', fauxF:0, essais:0, aide:!!jumelle, jumelle:!!jumelle, oui:null, cote:null, messages:[], fini:false, ecartees:[], tentes:[]};
+  SESS.dernierFam = t.fam; SESS.dernierType = t.id;
+  D.typ[t.id] = (D.typ[t.id] || 0) + 1; sauver();
+  peindre();
+}
+const minus1 = t => (/^[A-ZÀ-Ý][a-zà-ÿ’' ]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
+const melange = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]);
+function etapesHtml(){
+  const c = S.etape === 'formule' ? 0 : S.etape === 'calcul' ? 1 : 2;
+  return '<ol class="etapes"><li class="' + (c === 0 ? 'ici' : 'fait') + '">1 · La formule</li><li class="' + (c === 1 ? 'ici' : c > 1 ? 'fait' : '') + '">2 · Le calcul</li></ol>';
+}
+function peindre(){
+  const z = $('#scene'), p = S.p;
+  z.classList.toggle('revele', S.etape !== 'formule');
+  let h = '';
+  if(SESS.avis && S.etape === 'formule'){ h = msg(SESS.avis, 'warn'); SESS.avis = ''; }
+  h += etapesHtml() + '<p class="enonce">' + p.q + '</p>';
+  if(S.etape === 'formule'){
+    h += '<p class="q">Quelle formule utilises-tu' + (ENSUITE[p.type.id] ? ' d’abord' : '') + '&nbsp;?</p><div class="tuiles">' +
+      p.tuiles.map((f, i) => '<div class="tuile-boite"><button type="button" class="tuile" data-f="' + f + '"><kbd>' + (i + 1) + '</kbd><span class="f">' + esc(FORMULES[f].t) + '</span></button>' + qm(f) + '</div>').join('') + '</div><div id="fb"></div>' + brouillonHtml() +
+      '<div class="bas" id="sorties"><button type="button" class="lien" data-a="passer">Passer ce problème</button>' + BOUTON_COPIER + '</div>';
+  } else {
+    const puis = ENSUITE[p.type.id];
+    const fc = S.choisie || p.f;
+    h += '<div class="choisies"><span class="formule-choisie">' + esc(FORMULES[fc].t) + '</span>' + qm(fc) + (puis ? '<span class="puis">puis</span><span class="formule-choisie">' + esc(FORMULES[puis].t) + '</span>' + qm(puis) : '') + '</div>';
+    if(S.etape === 'calcul') h += formulaire(p);
+    else h += '<div id="fb">' + S.messages.join('') + '</div>';
+    if(S.etape === 'calcul' || (S.etape === 'fini' && S.brouillon)) h += brouillonHtml();
+    if(S.etape === 'fini') h += bilanHtml() + (S.bilan && S.bilan.sorte === 'point' ? '<details class="dem-d"><summary>Voir la démarche</summary>' + demHtml(p) + '</details>' : demHtml(p)) + basHtml();
+  }
+  z.innerHTML = nb(h);
+  peindreCote();
+  const champ = $('#rep', z), br = $('#brouillon', z);
+  if(S.focusBrouillon && br){ S.focusBrouillon = false; br.focus({preventScroll:true}); br.setSelectionRange(br.value.length, br.value.length); br.scrollIntoView({block:'nearest'}); }
+  else if(champ && S.etape === 'calcul') champ.focus({preventScroll:true});
+  const suite = $('[data-a="suivant"]', z); if(suite) suite.focus({preventScroll:true});
+  if(S.etape === 'fini'){ const bas = $('.bas:last-of-type', z) || $('.bas', z); if(bas) bas.scrollIntoView({block:'nearest'}); }
+  else if(S.etape === 'formule' && z.getBoundingClientRect().top < 0) z.scrollIntoView({block:'start'});
+}
+function formulaire(p){
+  const r = p.rep;
+  const aide = '<div class="bas"><button type="button" class="bouton plein" data-a="valider">Vérifier</button><button type="button" class="lien" data-a="depart">Je ne sais pas par où commencer</button>' + (S.essais ? '<button type="button" class="lien" data-a="voir">Voir la démarche</button>' : '') + '<button type="button" class="lien" data-a="passer">Passer ce problème</button>' + BOUTON_COPIER + '</div>';
+  const fb = '<div id="fb">' + S.messages.join('') + '</div>', v = S.saisie ? esc(S.saisie) : '';
+  /* le signe : un bouton ±, car le clavier décimal d'un iPhone n'a pas de moins */
+  const signe = '<button type="button" class="bouton signe" data-a="signe" aria-label="Changer le signe" title="Changer le signe">±</button>';
+  if(r.k === 'ouinon'){
+    const w = valeur(p, S.choisie || p.f);
+    return '<div class="saisie"><label for="rep" class="u">Ta valeur de ' + w.q + '</label><input id="rep" inputmode="decimal" autocomplete="off" value="' + v + '"><span class="u">' + esc(w.u) + '</span>' + (w.u === 'D' ? signe : '') + '</div>'
+      + '<div class="saisie" role="group" aria-label="Ta réponse"><span class="u">Donc :</span><button type="button" class="bouton" data-o="1" aria-pressed="' + (S.oui === true) + '">Oui</button><button type="button" class="bouton" data-o="0" aria-pressed="' + (S.oui === false) + '">Non</button></div>' + fb + aide;
+  }
+  let c = '<div class="saisie"><label for="rep" class="u">Ta réponse</label><input id="rep" inputmode="decimal" autocomplete="off" value="' + v + '"><span class="u">' + esc(r.k === 'pr' ? 'cm' : r.u) + '</span>';
+  if(r.k === 'num') c += signe;
+  if(r.k === 'pr') c += '<button type="button" class="bouton" data-c="devant" aria-pressed="' + (S.cote === 'devant') + '">devant</button><button type="button" class="bouton" data-c="derriere" aria-pressed="' + (S.cote === 'derriere') + '">derrière</button>';
+  return c + '</div>' + fb + aide;
+}
+/* le brouillon : rien qu'un lien tant qu'on ne s'en sert pas ; son texte vit avec le problème (un nouveau problème repart à blanc) */
+const brouillonHtml = () => S.brouillonOuvert
+  ? '<div class="brouillon-boite"><label for="brouillon" class="brouillon-t">Écris tes calculs ici <span class="facultatif">(facultatif : ce brouillon n’est jamais corrigé)</span></label>'
+    + '<textarea id="brouillon" class="brouillon" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="ex. 1/Pp = 7 − (−2) = 9, donc Pp = 1/9 m = 11,1 cm">' + esc(S.brouillon || '') + '</textarea>'
+    + '<button type="button" class="lien petit" data-a="brouillon" aria-expanded="true" aria-controls="brouillon">Masquer le brouillon</button></div>'
+  : '<button type="button" class="lien petit" data-a="brouillon" aria-expanded="false">✎ Écris tes calculs ici (facultatif)</button>';
+const BOUTON_COPIER = '<button type="button" class="lien" data-a="copier">Copier pour une IA</button>';
+const qm = f => '<button type="button" class="qm" data-x="' + f + '" aria-label="Expliquer ' + esc(FORMULES[f].t) + '" title="Expliquer cette formule (ce problème ne donnera pas de point, sans rien enlever)">?</button>';
+const demHtml = p => '<ul class="dem">' + p.dem.map(([l, c]) => '<li><span class="l">' + esc(l) + '</span><span class="c">' + esc(c) + '</span></li>').join('') + '</ul>';
+const basHtml = () => '<div class="bas"><button type="button" class="bouton plein" data-a="suivant">Problème suivant</button>' + (S.bon ? '' : '<button type="button" class="bouton" data-a="jumelle">Une jumelle, à toi</button>') + BOUTON_COPIER + '</div>';
+/* sauf dans une zone de texte : le brouillon et le texte à copier restent tels qu'on les a écrits */
+const nb = h => String(h).split(/(<textarea[\s\S]*?<\/textarea>)/).map((x, i) => i % 2 ? x : x.replace(/ ([?!:;»])/g, '\u00a0$1').replace(/« /g, '«\u00a0')).join('');
+const msg = (t, c) => '<p class="msg ' + c + '">' + nb(esc(t)) + '</p>';
+
+function choisirFormule(f){
+  const p = S.p;
+  if(f === p.f || (p.aussi || []).includes(f)){
+    S.etape = 'calcul'; S.choisie = f;
+    S.messages = [msg((f === p.f ? '' : 'Oui, celle-là marche aussi. ') + p.indice, 'ok')];
+    peindre(); return;
+  }
+  if(f === ENSUITE[p.type.id]){
+    const b2 = $('[data-f="' + f + '"]'); b2.classList.add('ensuite'); b2.disabled = true;
+    $('#fb').innerHTML = msg('Oui, tu t’en serviras, mais en deuxième : elle a besoin ' + AVANT[p.type.id] + '. Quelle formule choisis-tu pour l’obtenir d’abord ? (Ce choix ne compte pas contre toi.)', 'ok');
+    return;
+  }
+  S.fauxF++; aider('un mauvais choix de formule'); S.ecartees.push(f);
+  const c = FORMULES[f].t + '>' + FORMULES[p.f].t;
+  D.conf[c] = (D.conf[c] || 0) + 1; sauver();
+  const b = $('[data-f="' + f + '"]'); b.classList.add('non'); b.disabled = true;
+  $('#fb').innerHTML = msg('Cette formule, c’est pour ' + FORMULES[f].usage + '.' + (S.fauxF >= 2 ? ' Indice : ' + p.indice : ' Relis ce que l’énoncé demande.'), 'bad');
+  if(S.fauxF >= 2) $('#scene').classList.add('revele');
+  if(!$('[data-a="montrer"]')) $('#sorties').insertAdjacentHTML('afterbegin', '<button type="button" class="lien" data-a="montrer">Voir la bonne formule</button>');
+  peindreCote();
+}
+function montrerFormule(){
+  aider('avoir vu la bonne formule');
+  S.etape = 'calcul';
+  S.messages = [msg('La bonne formule : ' + FORMULES[S.p.f].t + '. ' + S.p.indice, 'warn')];
+  peindre();
+}
+/* compte comme un problème manqué seulement s'il a été tenté ; il revient plus tard, sans bloquer */
+function passer(){
+  abandonner();
+  nouveau();
+}
+/* quitter un problème pas fini : après un essai ou une aide, c'est un problème manqué, et le suivant le dit */
+function abandonner(){
+  if(!S || !S.p) return;
+  const t = S.p.type;
+  if(S.etape !== 'fini' && S.etape !== 'vide' && (S.fauxF || S.essais || S.aide) && !S.jumelle){
+    const e = D.fam[t.fam], s0 = e ? Math.min(3, e.serie) : 0;
+    noter(t, false);
+    /* une série qui tombe ne tombe jamais en silence : le problème suivant le dit, une fois */
+    SESS.avis = 'Problème laissé après ' + (S.pourquoi || 'un essai') + '. La bonne formule était ' + FORMULES[S.p.f].t + '.' + (s0 ? ' Ta série sur «\u00a0' + FAMILLES[t.fam].t + '\u00a0» repart de zéro (elle était à ' + s0 + ').' : '');
+  }
+}
+function voirDemarche(){
+  S.aide = true;
+  S.messages = [];
+  conclure(false);
+}
+const tenteTxt = () => { const r = S.p.rep; return r.k === 'ouinon' ? (S.oui ? 'Oui' : 'Non') + ' (' + valeur(S.p, S.choisie || S.p.f).q + ' = ' + S.saisie + ')' : r.k === 'pr' ? S.saisie + ' cm ' + (S.cote === 'devant' ? 'devant' : 'derrière') : S.saisie + (r.u ? ' ' + r.u : ''); };
+function valider(){
+  const p = S.p, champ = $('#rep');
+  if(champ) S.saisie = champ.value;
+  const v = juger(p, {n:S.saisie, cote:S.cote, oui:S.oui, f:S.choisie || p.f});
+  if(v.vide){ $('#fb').innerHTML = S.messages.join('') + msg(v.m, 'warn'); return; }
+  if(v.ok){ conclure(true); return; }
+  S.essais++; aider('un essai manqué au calcul'); S.tentes.push(tenteTxt());
+  if(S.essais >= 3 || (p.rep.k === 'ouinon' && S.essais >= 2)){ S.messages = [msg('Voici la démarche. Tu peux la refaire sur une jumelle, avec d’autres nombres, ou passer à autre chose.', 'warn')]; conclure(false); return; }
+  const [l, c] = p.dem[0];
+  let t = v.m || (S.essais === 1 ? 'Pas encore. ' + p.estim + ' Quelle étape as-tu faite autrement : ' + p.dem.map(x => minus1(x[0])).join(', ') + ' ?' : '');
+  if(S.essais === 2) t = (v.m ? v.m + ' ' : '') + 'Première étape, ' + minus1(l) + ' : ' + c;
+  S.messages = [msg(t, 'bad')];
+  peindre();
+}
+function depart(){
+  const [l, c] = S.p.dem[0];
+  aider('l’indice de départ');
+  S.messages = [msg('Commence ici, ' + minus1(l) + ' : ' + c, 'warn')];
+  if(S.p.rep.k !== 'ouinon'){ const ch = $('#rep'); if(ch) S.saisie = ch.value; }
+  peindre();
+}
+/* la première aide utilisée : le bilan la nomme quand le point n'est pas donné */
+const aider = raison => { S.aide = true; if(!S.pourquoi) S.pourquoi = raison; };
+/* la fin d'un problème. Quatre sortes : « point » (juste du premier coup, sans aide), « neutre » (juste après une
+   explication ou une copie : rien gagné, rien perdu), « jumelle » (un entraînement : rien gagné, rien perdu),
+   « rate » (faux, ou juste avec de l'aide : la série repart de zéro). Le bilan dit laquelle, là où l'élève regarde. */
+function conclure(bon){
+  const p = S.p, t = p.type, f = t.fam, inv = FAMILLES[f].inv, e0 = D.fam[f];
+  const avant = {s:e0 ? Math.min(3, e0.serie) : 0, r:reussi(e0, inv), pct:maitriseUA2(D.fam)};
+  const net = bon && !S.aide && !S.lu && !S.jumelle;
+  const sorte = S.jumelle ? 'jumelle' : net ? 'point' : bon && S.lu && !S.aide ? 'neutre' : 'rate';
+  S.etape = 'fini'; S.bon = bon;
+  if(bon) S.messages = [msg((net ? 'Juste, du premier coup : ' : 'Juste : ') + repTxt(p) + '.', 'ok')];
+  else S.messages = S.messages.concat(msg('La réponse : ' + repTxt(p) + '.', 'warn'));
+  noter(t, net, sorte === 'neutre' || sorte === 'jumelle');
+  const e1 = D.fam[f];
+  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1, inv), pct:maitriseUA2(D.fam)}};
+  peindre();
+}
+/* neutre : ni point ni perte, et l'essai ne compte pas (explication lue, problème copié, jumelle).
+   Apprendre ne doit rien coûter. Ce type de problème revient quand même bientôt, pour un vrai point. */
+function noter(t, net, neutre){
+  SESS.n++; if(net) SESS.net++;
+  const e = D.fam[t.fam] || (D.fam[t.fam] = {n:0, ok:0, serie:0, inv:false});
+  if(!neutre){ const h0 = histoire(e); e.n++; e.h = h0.concat(net ? 1 : 0).slice(-10); }
+  if(net){ e.ok++; e.serie++; if(t.inv) e.inv = true; D.dernier = {fam:t.fam, i:Math.min(3, e.serie) - 1}; }
+  else {
+    if(!neutre){ e.serie = 0; if(D.dernier && D.dernier.fam === t.fam) D.dernier = null; }
+    if(!SESS.rappels.some(r => r.id === t.id)) SESS.rappels.push({id:t.id, dans:2 + Math.floor(Math.random() * 3)});
+  }
+  if(!Array.isArray(D.journal)) D.journal = [];
+  if(!neutre) D.journal = D.journal.concat({t:Date.now(), p:maitriseUA2(D.fam)}).slice(-300);
+  sauver();
+}
+/* trois points : s allumés, celui d'indice neuf en vert, et jusqu'à « perdus » en pointillé (la série qui vient de tomber) */
+const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : i < perdus ? 'perdu' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span>';
+/* le bilan du problème, sous la réponse : ce qui vient d'arriver à la série, et pourquoi */
+function bilanHtml(){
+  const b = S.bilan; if(!b) return '';
+  const nom = '« ' + FAMILLES[b.fam].t + ' »', a = b.avant, z = b.apres, pl = n => (n > 1 ? 's' : '');
+  let cls, titre, texte, dots;
+  if(b.sorte === 'point'){
+    cls = 'ok'; titre = '+1 point'; dots = pts(z.s, z.s - 1, 0);
+    texte = z.r && !a.r ? nom + ' : formule réussie ✓'
+      : z.r ? nom + ' : déjà réussie, tu l’entretiens.'
+      : z.serie >= 3 ? nom + ' : 3 de suite. ' + (z.n < 5 ? 'Encore ' + (5 - z.n) + ' comme ça et elle est réussie.' : 'Il manque un problème à l’envers pour qu’elle soit réussie.')
+      : nom + ' : ' + z.s + ' de suite sur 3.';
+  } else if(b.sorte === 'neutre'){
+    cls = 'neutre'; titre = 'Juste, sans point cette fois'; dots = pts(z.s, -1, 0);
+    texte = 'Tu as ouvert une explication ou copié le problème : c’est permis, et ta série sur ' + nom + ' reste à ' + z.s + ' sur 3. Un point demande le premier coup, sans aide ; ce type de problème revient bientôt pour ça.';
+  } else if(b.sorte === 'jumelle'){
+    cls = 'neutre'; titre = 'Entraînement'; dots = pts(z.s, -1, 0);
+    texte = 'Une jumelle ne donne pas de point et n’en enlève pas. ' + (b.bon ? 'Tu la tiens : ce type de problème revient bientôt, pour un vrai point.' : 'Ce type de problème revient bientôt ; relis la démarche avant.');
+  } else {
+    cls = 'perdu'; titre = b.bon ? 'Juste, mais sans point' : 'Pas de point'; dots = pts(0, -1, a.s);
+    texte = (b.bon ? 'C’était après ' + (b.pourquoi || 'une aide') + ' : un point demande le premier coup, sans aide. ' : '')
+      + 'Ta série sur ' + nom + (a.s ? ' repart de zéro (elle était à ' + a.s + ').' : ' reste à zéro.')
+      + (a.r && !z.r ? ' La formule n’est plus « réussie » pour l’instant : trois de suite et elle le redevient.' : '') + ' Ce type de problème revient bientôt.';
+  }
+  const d = Math.round(z.pct) - Math.round(a.pct);
+  return '<div class="bilan ' + cls + '">' + dots + '<p><b>' + esc(titre) + '</b> · ' + esc(texte) + '</p>'
+    + (d ? '<p class="sous">Ta maîtrise de l’UA2 : ' + virg(a.pct, 0) + ' % → ' + virg(z.pct, 0) + ' %</p>' : '') + '</div>';
+}
+/* ---------- l'explication d'une formule : elle ne touche pas au problème en cours ---------- */
+let fond = null, retour = null;
+function expliquer(f, depuis){
+  fermerExpl();
+  const x = FORMULES[f], enCours = S && S.etape !== 'fini';
+  if(enCours) S.lu = true;
+  retour = depuis || null;
+  ouvrirFond(x.t, '<p>' + esc(x.quoi) + '</p><div><h3>Les lettres</h3><dl>' + x.lettres.map(([l, d]) => '<dt>' + esc(l) + '</dt><dd>' + esc(d) + '</dd>').join('') + '</dl></div>' +
+    '<div><h3>Quand t’en servir</h3><p>' + esc(x.quand) + '</p></div><div><h3>Un exemple du cours</h3><p class="ex">' + esc(x.ex) + '</p></div>' +
+    '<div class="piege"><h3>Le piège</h3><p>' + esc(x.piege) + '</p></div><small>' + esc(x.source) + (enCours ? ' Réussi après cette lecture, ce problème ne comptera pas dans ta série, mais il ne la cassera pas.' : '') + '</small>');
+  $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
+}
+function ouvrirFond(titre, corps){
+  fond = document.createElement('div');
+  fond.className = 'expl-fond';
+  fond.innerHTML = '<section class="expl" role="dialog" aria-modal="true" aria-labelledby="expl-t"><div class="haut"><h2 id="expl-t">' + esc(titre) + '</h2><button type="button" class="bouton" data-a="fermer-expl">Fermer</button></div>' + corps + '</section>';
+  fond.innerHTML = nb(fond.innerHTML);
+  document.body.appendChild(fond);
+}
+/* dans un cadre, le navigateur peut refuser le presse-papiers : on essaie l'ancienne voie, puis on montre le texte à copier à la main */
+async function versPressePapiers(t){
+  try{ await navigator.clipboard.writeText(t); return true; }catch(e){}
+  const z = document.createElement('textarea');
+  z.value = t; z.readOnly = true; z.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(z); z.select(); z.setSelectionRange(0, t.length);
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){}
+  z.remove();
+  return ok;
+}
+async function copier(b){
+  const texte = pourIA(S.p, {etape:S.etape, ecartees:S.ecartees, tentes:S.tentes, brouillon:S.brouillon}), enCours = S.etape !== 'fini';
+  if(enCours) S.lu = true;
+  const suite = enCours ? ' Réussi après cette aide, ce problème ne comptera pas dans ta série, mais il ne la cassera pas.' : '';
+  if(!(await versPressePapiers(texte))){
+    fermerExpl();
+    retour = b;
+    ouvrirFond('À copier', '<p>Ton navigateur bloque la copie automatique. Sélectionne ce texte, copie-le, puis colle-le dans ton IA.</p><textarea readonly aria-label="Le problème, à copier">' + esc(texte) + '</textarea><small>Une IA peut se tromper : ton cours a le dernier mot.' + suite + '</small>');
+    const z = $('textarea', fond); z.focus({preventScroll:true}); z.select();
+    return;
+  }
+  if(!b.isConnected) return;
+  b.focus({preventScroll:true});
+  b.textContent = 'Copié ✓';
+  setTimeout(() => { if(b.isConnected) b.textContent = 'Copier pour une IA'; }, 2200);
+  const bas = b.parentElement;
+  let n = $('.copie-note', bas);
+  if(!n){ n = document.createElement('p'); n.className = 'copie-note'; bas.appendChild(n); }
+  n.textContent = 'Colle-le dans ton IA. Elle peut se tromper : ton cours a le dernier mot.' + suite;
+}
+function fermerExpl(){
+  if(!fond) return;
+  fond.remove(); fond = null;
+  if(retour && retour.isConnected) retour.focus({preventScroll:true});
+  retour = null;
+}
+/* ---------- la colonne ---------- */
+const EXAMEN = '2026-11-17';  /* l'évaluation UA2 d'Optique (planificateur opt-m10) */
+const virg = (x, d = 1) => x.toFixed(d).replace('.', ',');
+/* la bande du haut : le % estimé, sa variation au dernier problème, la répartition, la vitesse en bref ; le reste se déplie */
+function peindreProgression(){
+  const fs = Object.keys(FAMILLES), pct = maitriseUA2(D.fam), pl = n => (n > 1 ? 's' : '');
+  const nR = fs.filter(f => reussi(D.fam[f], FAMILLES[f].inv)).length, nV = fs.filter(f => !D.fam[f] || !D.fam[f].n).length, nC = fs.length - nR - nV;
+  const v = vitesse(D.journal), pj = parJour(D.journal), nj = (D.journal || []).length;
+  const j0 = new Date(), [ya, mo, da] = EXAMEN.split('-').map(Number), jours = Math.round((new Date(ya, mo - 1, da) - new Date(j0.getFullYear(), j0.getMonth(), j0.getDate())) / 864e5);
+  const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null, d = b ? Math.round(b.apres.pct) - Math.round(b.avant.pct) : 0;
+  let court, long;
+  if(pct >= 99.95){ court = 'Tout est réussi'; long = 'Toutes tes formules sont réussies. Garde-les vivantes avec quelques problèmes par jour.'; }
+  else if(!v){ court = 'Vitesse : encore ' + (8 - nj) + ' problème' + pl(8 - nj) + ' pour l’estimer'; long = 'Il faut 8 problèmes notés pour estimer ta vitesse.'; }
+  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' derniers problèmes. Éteins les formules réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer : une explication lue ne coûte rien.'; }
+  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' derniers problèmes. Éteins les formules réussies (interrupteurs), garde celles en cours, et ouvre leur « ? » avant de recommencer.'; }
+  else {
+    const reste = Math.ceil((100 - pct) / v.par10 * 10);
+    court = 'Vitesse : +' + virg(v.par10) + ' point' + (v.par10 >= 2 ? 's' : '') + ' par 10 problèmes';
+    long = 'À ce rythme (sur tes ' + v.n + ' derniers problèmes), toutes tes formules réussies dans environ ' + reste + ' problèmes';
+    if(pj && pj.moy >= 1){ const jr = Math.max(1, Math.ceil(reste / pj.moy)); long += ', soit ' + jr + ' jour' + pl(jr) + ' d’étude à ton rythme (≈ ' + Math.round(pj.moy) + ' problème' + pl(Math.round(pj.moy)) + ' par jour)'; }
+    long += '. C’est une estimation grossière, qui change vite au début.';
+  }
+  if(jours >= 0) long += ' L’examen : mardi 17 novembre' + (jours === 0 ? ', aujourd’hui.' : jours === 1 ? ', demain.' : ', dans ' + jours + ' jours.');
+  const z = $('#progression'), ouvert = !!(z.querySelector('details') && z.querySelector('details').open);
+  z.innerHTML = '<div class="m-ligne"><h2 class="m-t" id="t-prog">Ta maîtrise de l’UA2</h2><b class="m-pct">' + virg(pct, 0) + ' %</b>'
+    + (d ? '<span class="m-delta' + (d < 0 ? ' moins' : '') + '">' + (d > 0 ? '+' : '−') + Math.abs(d) + '</span>' : '')
+    + '<div class="jauge" aria-hidden="true"><i style="width:' + Math.max(0, Math.min(100, pct)) + '%"></i></div>'
+    + '<span class="m-rep">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir</span><span class="m-vit">' + esc(court) + '</span></div>'
+    + '<details class="calcul"' + (ouvert ? ' open' : '') + '><summary>Détails et calcul</summary><p class="seul-mobile">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir. ' + esc(court) + '.</p><p>' + esc(long) + '</p>'
+    + '<p>Le % : chaque formule de l’UA2 compte autant. Une formule réussie vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; elles restent sous 85 % avant « réussi », et sont freinées tant que tu n’as pas 3 réussites sur la formule. Jamais essayée : 0. La vitesse suit la pente de ce % sur tes 40 derniers problèmes.</p></details>';
+}
+/* la carte : un interrupteur, le nom, l'état s'il dit quelque chose, les trois points. La ligne du problème qui vient
+   de finir est surlignée (seulement une fois fini : avant, elle donnerait la formule). */
+function peindreCote(){
+  const act = famillesActives(), nb = Object.keys(FAMILLES).length, tout = act.size === nb, pl = n => (n > 1 ? 's' : '');
+  const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null;
+  $('#carte').innerHTML = '<div class="fam tout"><button type="button" class="inter" role="switch" aria-checked="' + tout + '" data-tg="*" aria-label="Toutes les formules"><span></span></button><span class="nom">Toutes les formules<small>' + act.size + ' sur ' + nb + '</small></span><span></span></div>' + Object.keys(FAMILLES).map(f => {
+    const on = act.has(f), e = D.fam[f], essaye = !!(e && e.n), r = reussi(e, FAMILLES[f].inv), s = e ? Math.min(3, e.serie) : 0;
+    const neuf = D.dernier && D.dernier.fam === f && D.dernier.i < s ? D.dernier.i : -1;
+    const etat = r ? 'réussi ✓' : !essaye ? 'à découvrir' : e.serie >= 3 ? (e.n < 5 ? 'encore ' + (5 - e.n) + ' pour réussi' : 'manque un problème à l’envers') : '';
+    const v = b && b.fam === f ? b : null, cls = v ? ' vient ' + (v.sorte === 'point' ? 'ok' : v.sorte === 'rate' ? 'perdu' : 'neutre') : '';
+    const tag = v ? (v.sorte === 'point' ? '+1' : v.sorte === 'rate' && v.avant.s ? 'à zéro' : '') : '';
+    return '<div class="fam' + (r ? ' fait' : '') + (on ? '' : ' eteinte') + cls + '"><button type="button" class="inter" role="switch" aria-checked="' + on + '" data-tg="' + f + '" aria-label="Pratiquer : ' + esc(FAMILLES[f].t) + '"><span></span></button>'
+      + '<span class="nom">' + esc(FAMILLES[f].t) + (etat ? '<small' + (r ? ' class="bon"' : '') + '>' + etat + '</small>' : '') + '</span>'
+      + '<span class="fin">' + (tag ? '<em class="tag">' + tag + '</em>' : '') + '<span class="ser" role="img" aria-label="' + s + ' de suite sur 3' + (neuf >= 0 ? ', dont ton dernier point' : '') + '">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span></span></div>';
+  }).join('');
+  peindreProgression();
+  const conf = Object.entries(D.conf).sort((x, y) => y[1] - x[1]).slice(0, 4);
+  $('#confusions').innerHTML = conf.length ? conf.map(([k, n]) => { const [x, y] = k.split('>'); return '<li><b>' + esc(x) + '</b> au lieu de <b>' + esc(y) + '</b> · ' + n + ' fois</li>'; }).join('') : '<li class="vide">Rien encore. Chaque mauvais choix de formule apparaîtra ici.</li>';
+  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (String(D.portee) === String(k)) + '">' + esc(t) + '</button>').join('') + '<span class="compte">' + SESS.n + ' fait' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
+  /* la ligne surlignée reste en vue quand la colonne défile toute seule (grand écran) ; la page, elle, ne bouge jamais */
+  const col = $('.cote'), l = $('.fam.vient');
+  if(l && col.scrollHeight > col.clientHeight + 4 && getComputedStyle(col).overflowY === 'auto'){
+    const a = l.getBoundingClientRect(), c = col.getBoundingClientRect();
+    const haut = Math.max(c.top, 0), bas = Math.min(c.bottom, window.innerHeight);   /* ce qu'on voit vraiment de la colonne */
+    if(a.top < haut) col.scrollTop -= haut - a.top + 8; else if(a.bottom > bas) col.scrollTop += a.bottom - bas + 8;
+  }
+}
+document.addEventListener('toggle', e => { if(e.target.id === 'mots-d' && e.target.open && S && S.etape !== 'fini' && S.etape !== 'vide') S.lu = true; }, true);
+$('#mots').innerHTML = MOTS.map(([f, t]) => '<li><b>' + esc(FORMULES[f].t) + '</b>' + qm(f) + '<span>' + esc(t) + '</span></li>').join('');
+/* ---------- les gestes ---------- */
+document.addEventListener('click', e => {
+  if(fond && e.target === fond){ fermerExpl(); return; }
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.x){ expliquer(b.dataset.x, b); return; }
+  if(b.dataset.a === 'fermer-expl'){ fermerExpl(); return; }
+  if(b.dataset.f && S.etape === 'formule'){ choisirFormule(b.dataset.f); return; }
+  if(b.dataset.tg){ basculer(b.dataset.tg); return; }
+  if(b.dataset.p !== undefined && String(D.portee) === b.dataset.p) return;
+  if(b.dataset.p !== undefined){ abandonner(); const k = b.dataset.p; if(k === 'perso' && !D.choix.length) D.choix = Object.keys(FAMILLES).filter(x => famillesActives().has(x)); D.portee = /^\d$/.test(k) ? +k : k; $('#annonce-carte').textContent = ''; sauver(); SESS.dernierFam = ''; nouveau(); { const c = $('.puce[aria-pressed="true"]'); if(c) c.focus({preventScroll:true}); } return; }
+  if(b.dataset.o !== undefined){ const ch = $('#rep'); if(ch) S.saisie = ch.value; S.oui = b.dataset.o === '1'; peindre(); const v = $('[data-a="valider"]'); if(v) v.focus({preventScroll:true}); return; }
+  if(b.dataset.c){ const ch = $('#rep'); if(ch) S.saisie = ch.value; S.cote = b.dataset.c; peindre(); return; }
+  const a = b.dataset.a;
+  if(a === 'valider') valider();
+  else if(a === 'depart') depart();
+  else if(a === 'suivant') nouveau();
+  else if(a === 'passer') passer();
+  else if(a === 'copier') copier(b);
+  else if(a === 'voir') voirDemarche();
+  else if(a === 'montrer') montrerFormule();
+  else if(a === 'jumelle') nouveau(S.p.type, true);
+  else if(a === 'signe'){ const ch = $('#rep'); if(ch){ const t = ch.value.trim(); ch.value = /^[-−–]/.test(t) ? t.replace(/^[-−–]\s*/, '') : /^\+/.test(t) ? '−' + t.slice(1) : '−' + t; S.saisie = ch.value; ch.focus(); } }
+  else if(a === 'brouillon'){ const ch = $('#rep'); if(ch) S.saisie = ch.value; S.brouillonOuvert = !S.brouillonOuvert; S.focusBrouillon = S.brouillonOuvert; peindre(); if(!S.brouillonOuvert){ const l = $('[data-a="brouillon"]'); if(l) l.focus({preventScroll:true}); } }
+});
+document.addEventListener('keydown', e => {
+  if(fond){ if(e.key === 'Escape') fermerExpl(); else if(e.key === 'Tab'){ const l = [...fond.querySelectorAll('button, textarea')], i = l.indexOf(document.activeElement); e.preventDefault(); l[(i + (e.shiftKey ? -1 : 1) + l.length) % l.length].focus(); } return; }
+  if(e.ctrlKey || e.metaKey || e.altKey) return;
+  if(e.target.id === 'brouillon'){ if(e.key === 'Escape'){ S.brouillonOuvert = false; peindre(); const l = $('[data-a="brouillon"]'); if(l) l.focus({preventScroll:true}); } return; }
+  if(!S || !S.p) return;
+  if(S.etape === 'formule' && /^[1-4]$/.test(e.key) && !e.target.closest('input, textarea')){ e.preventDefault(); if(e.repeat) return; const b = document.querySelectorAll('.tuile')[+e.key - 1]; if(b && !b.disabled) b.click(); return; }
+  if(e.key === 'Enter' && S.etape === 'calcul' && (e.target.id === 'rep' || e.target === document.body)){ e.preventDefault(); if(!e.repeat) valider(); }
+});
+document.addEventListener('input', e => { if(e.target.id === 'brouillon' && S) S.brouillon = e.target.value; else if(e.target.id === 'rep' && S) S.saisie = e.target.value; });
+$('#effacer').addEventListener('click', e => {
+  const b = e.target;
+  if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
+  const p = D.portee, c = D.choix; D = VIDE(); D.portee = p; D.choix = c; sauver();
+  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false;
+  b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
+});
+nouveau();
+})();
+</script>
+<script>
+(() => {
+  const ICI = 'ac3595e88124';
+  let montre = false;
+  const verifier = () => {
+    if(montre || location.protocol === 'file:') return;
+    fetch('version.json?_=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(v => {
+      if(!v || !v.version || v.version === ICI || montre) return;
+      montre = true;
+      const b = document.createElement('div');
+      b.setAttribute('role', 'status');
+      b.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:400;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:9px 10px 9px 14px;border-radius:12px;background:#0B0F1A;color:#F3F5FB;border:1px solid #9BF25C;font:600 14.5px system-ui,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.4)';
+      const t = document.createElement('span'); t.textContent = 'Une nouvelle version de Lumière est prête.';
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = 'Recharger';
+      k.style.cssText = 'border:0;border-radius:999px;padding:6px 14px;background:#9BF25C;color:#05070D;font:700 14px system-ui,sans-serif;cursor:pointer';
+      k.addEventListener('click', () => location.reload());
+      b.append(t, k); document.body.appendChild(b);
+    }).catch(() => {});
+  };
+  window.addEventListener('load', verifier);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) verifier(); });
+})();
+</script>
+</body>
+</html>
