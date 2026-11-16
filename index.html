@@ -318,7 +318,7 @@ const PAGES = {
     {g:'Atelier', t:'Atelier Bureau M7–M8', u:'atelier-bureau-m7.html', v:true, ua:2,
      d:'La croix optique : constructeur pas à pas, axes obliques, types d’astigmatisme, 20 exercices. La transposition. Nouveau : la Rx multifocale vers SV (0 %, 50 %, 100 % de l’addition, l’addition impaire, les trois Rx). Au comptoir, Rappel du jour, tuteur.'},
     {g:'Exerciseur', t:'Exerciseur Bureau UA2', u:'drill-bureau.html', ua:2, x:1,
-     d:'Croix optique, types d’astigmatisme, transposition, nommer une Rx, Rx multifocale vers la simple vision : 115 questions et des ordonnances toujours nouvelles.'},
+     d:'La liste de la prof pour l’examen : les rappels de l’UA1 (prestataires, parcours patient, ordonnance, amétropies, prismes), la croix optique, les types d’astigmatisme, la transposition, nommer une Rx, la Rx multifocale vers la simple vision et à l’envers. 167 questions et des ordonnances toujours nouvelles.'},
     {g:'Guide', t:'Réviser l’UA1', u:'reviser-ua1.html', ua:1, d:'Le guide de révision de l’UA1.'},
     {g:'Cartes', t:'Cartes UA1', u:'cartes-ua1.html', ua:1, d:'80 cartes éclair de l’UA1.'},
     {g:'Drills', t:'Drills Rx', u:'drills-ua1.html', ua:1, d:'40 QCM sur les Rx et la facturation.'},
@@ -721,6 +721,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-16', p:['adm-m07'], t:'L’exerciseur Bureau suit maintenant la liste de la prof pour l’examen du 23 novembre. Nouveau : « Rappels UA1 » (les prestataires et leurs titres, le parcours patient, ce que contient une ordonnance, la myopie axiale ou réfractive, les prismes) et un exercice à l’envers, de la Rx SV à la Rx multifocale. En progression guidée, tu commences par les rappels.'},
     {d:'2026-11-15', p:['to-m56', 'adm-m07', 'opt-ua2'], t:'Dans les trois exerciseurs (« Les exams me stressent »), un interrupteur tout en haut : « Progression guidée ». Allumé, il te fait avancer module par module, sans rien choisir : une notion réussie sort de ta pile, et quand la pile est vide, le module suivant arrive.'},
     {d:'2026-11-15', p:['to-m56'], t:'Exerciseur de Tests ophtalmiques : les calculs de pression corrigée te montrent maintenant la table de la prof (épaisseur de la cornée → correction), juste sous la question. À toi d’y trouver la bonne ligne et le bon signe. Le « ? » d’« Épaisseur et pression » la montre aussi, et celui des types de verres montre le tableau des âges.'},
     {d:'2026-11-14', p:['anat-m6'], t:'Réflexe de larmoiement ou réflexe de la pupille ? La prof a relevé une erreur fréquente : mettre la rétine dans le larmoiement. C’est la cornée qui reçoit le stimulus, même quand c’est une lumière qui fait pleurer. Les écrans « L’arc réflexe » et « Le réflexe à la lumière » te montrent ses deux chaînes côte à côte, avec un exercice de tri.'},
@@ -887,7 +888,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'fbbbdf4dcb57';
+  const ICI = 'a82ebe4bf57d';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

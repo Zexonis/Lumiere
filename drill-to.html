@@ -377,7 +377,11 @@ const SAUVE = memo.get();
 let D = Object.assign(VIDE(), SAUVE || {});
 const sauver = () => memo.set(D);
 const MODS = [...new Set(BANQUE.familles.map(f => f.mod))].sort((a, b) => a - b);
-const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, 'Module ' + m]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
+/* un module peut porter un nom (cours.json « modules ») : « Rappels UA1 » plutôt que « Module 6 » */
+const NOMS_MOD = COURS.modules || {};
+const modLong = m => (NOMS_MOD[m] && NOMS_MOD[m].long) || 'Module ' + m;
+const modCourt = m => (NOMS_MOD[m] && NOMS_MOD[m].court) || 'M' + m;
+const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, modLong(m)]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
 if(/^\d+$/.test(String(D.portee))) D.portee = +D.portee;
 if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'tout';
 ['typ', 'it', 'fam'].forEach(k => { if(!D[k] || typeof D[k] !== 'object') D[k] = {}; });
@@ -454,8 +458,8 @@ const notions = n => n + ' notion' + (n > 1 ? 's' : '');
 function avisGuide(m, avant){
   if(m === undefined) return {c:'ok', t:'Tous les modules sont réussis ✓. La progression guidée passe en entretien : tout l’UA2, mêlé.'};
   const k = resteGuide(m), n = famsDuModule(m).length;
-  if(typeof avant === 'number') return {c:'ok', t:'Module ' + avant + ' terminé ✓. Place au module ' + m + ' : ' + notions(k) + ' à réussir.'};
-  return {c:'info', t:'Progression guidée · module ' + m + ' : ' + notions(k) + ' à réussir' + (k < n ? ' (sur ' + n + ')' : '') + '. Chacune sort de ta pile dès qu’elle est réussie.'};
+  if(typeof avant === 'number') return {c:'ok', t:modLong(avant) + ' : terminé ✓. Ensuite, ' + modLong(m) + ' : ' + notions(k) + ' à réussir.'};
+  return {c:'info', t:'Progression guidée · ' + modLong(m) + ' : ' + notions(k) + ' à réussir' + (k < n ? ' (sur ' + n + ')' : '') + '. Chacune sort de ta pile dès qu’elle est réussie.'};
 }
 /* une table du cours (carte.tableau) : « paires » (deux colonnes, en grille compacte) ou un tableau ordinaire.
    o.ligne : la ligne à surligner (une fois la question finie) */
@@ -647,8 +651,8 @@ const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1
 /* en progression guidée, une notion réussie sort de la pile : ce qu'il en reste */
 function sortieGuide(g){
   if(!g) return '';
-  if(g.reste) return ' Elle sort de ta pile : il en reste ' + g.reste + ' dans le module ' + g.m + '.';
-  return g.suivant === undefined ? ' C’était la dernière : tous les modules sont réussis.' : ' Le module ' + g.m + ' est terminé ✓ : la question suivante ouvre le module ' + g.suivant + '.';
+  if(g.reste) return ' Elle sort de ta pile : il en reste ' + g.reste + ' (' + modLong(g.m) + ').';
+  return g.suivant === undefined ? ' C’était la dernière : tous les modules sont réussis.' : ' ' + modLong(g.m) + ' : terminé ✓. La question suivante ouvre ' + modLong(g.suivant) + '.';
 }
 function bilanHtml(){
   const b = S.bilan; if(!b) return '';
@@ -783,8 +787,8 @@ function peindreGuide(){
   let sous;
   if(!on) sous = 'Module par module, sans rien choisir : ce que tu réussis sort de ta pile, puis le module suivant arrive.';
   else if(m === undefined) sous = 'Tout est réussi ✓. Entretien : tout l’UA2, mêlé.';
-  else { const k = resteGuide(m), n = famsDuModule(m).length; sous = 'Module ' + m + ' : ' + (n - k) + ' sur ' + n + ' réussie' + (n - k > 1 ? 's' : '') + ', ' + notions(k) + ' dans ta pile.'; }
-  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">M' + x + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + '</span>' : '';
+  else { const k = resteGuide(m), n = famsDuModule(m).length; sous = modLong(m) + ' : ' + (n - k) + ' sur ' + n + ' réussie' + (n - k > 1 ? 's' : '') + ', ' + notions(k) + ' dans ta pile.'; }
+  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">' + esc(modCourt(x)) + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + '</span>' : '';
   z.classList.toggle('on', on);
   z.innerHTML = '<button type="button" class="inter" role="switch" id="guide-sw" aria-checked="' + on + '" data-a="guide" aria-labelledby="guide-t" aria-describedby="guide-s"><span></span></button><label for="guide-sw"><b id="guide-t">Progression guidée</b><span id="guide-s">' + esc(sous) + '</span>' + chemin + '</label>';
 }
@@ -793,7 +797,7 @@ function peindreCote(){
   const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null;
   let h = '<div class="fam tout"><button type="button" class="inter" role="switch" aria-checked="' + tout + '" data-tg="*" aria-label="Toutes les notions"><span></span></button><span class="nom">Toutes les notions<small>' + act.size + ' sur ' + nbf + '</small></span><span></span></div>';
   MODS.forEach(m => {
-    h += '<p class="mod-t">Module ' + m + '</p>';
+    h += '<p class="mod-t">' + esc(modLong(m)) + '</p>';
     BANQUE.familles.filter(f => f.mod === m).forEach(F => {
       const f = F.id, on = act.has(f), e = D.fam[f], essaye = !!(e && e.n), r = reussi(e), s = e ? Math.min(3, e.serie) : 0;
       const neuf = D.dernier && D.dernier.fam === f && D.dernier.i < s ? D.dernier.i : -1;
@@ -881,7 +885,7 @@ nouveau();
 </script>
 <script>
 (() => {
-  const ICI = 'fbbbdf4dcb57';
+  const ICI = 'a82ebe4bf57d';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
