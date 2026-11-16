@@ -182,6 +182,32 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
 .mots{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35}
 .mots li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 8px;align-items:center}
 .note{margin:0;font-size:13.5px;color:var(--ink-2);max-width:80ch}
+/* la progression guidée : module par module, ce qui est réussi sort de la pile */
+.guide{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+.guide.on{border-color:var(--accent);background:var(--accent-soft)}
+.guide label{display:flex;flex-direction:column;gap:2px;min-width:0;cursor:pointer;font-size:14.5px;line-height:1.35}
+.guide label b{font-size:15.5px}
+.guide label span{color:var(--ink-2)}
+.guide .chemin{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:2px;font:600 12.5px var(--f-mono);color:var(--ink-3)}
+.guide .chemin i{font-style:normal;padding:1px 8px;border-radius:999px;background:var(--panel)}
+.guide .chemin i.fait{color:var(--ok)}
+.guide .chemin i.ici{background:var(--accent);color:var(--on-accent)}
+/* une table du cours, dans la question ou dans la fiche */
+.tableau{display:flex;flex-direction:column;gap:6px}
+.tableau-t{margin:0;font-size:14px;font-weight:700;color:var(--ink-2)}
+.tableau-c{margin:0;font:600 12.5px var(--f-mono);color:var(--ink-3)}
+.paires{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:4px}
+.paires div{display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:4px 9px;border-radius:7px;background:var(--panel-2);font:600 14.5px var(--f-mono)}
+.paires dt{color:var(--ink-2);font-weight:400}
+.paires dd{margin:0}
+.paires .fort{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.paires .ta-ligne{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.tab-wrap{overflow-x:auto}
+.tab-libre{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.4}
+.tab-libre th,.tab-libre td{padding:6px 8px;border-top:1px solid var(--line);text-align:left;vertical-align:top}
+.tab-libre thead th{font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tab-libre tbody th{font-weight:700}
+.tableau small{color:var(--ink-3);font-size:13px;line-height:1.4}
 @media (max-width:880px){ .corps{grid-template-columns:minmax(0,1fr)} }
 @media (max-width:560px){
   h1{font-size:26px}
@@ -226,6 +252,7 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
     <h1 id="titre"></h1>
     <p id="sous-titre"></p>
   </header>
+  <div class="guide" id="guide"></div>
   <div class="bande" role="group" aria-label="Ce que tu pratiques" id="portees"></div>
   <section class="maitrise" id="progression" aria-labelledby="t-prog"></section>
   <div class="corps">
@@ -518,7 +545,7 @@ function choisirType(l, etat, rnd = Math.random){
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const memo = {get(){ try{ return JSON.parse(localStorage.getItem(COURS.cle)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(COURS.cle, JSON.stringify(v)); }catch(e){} }};
-const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[]});
+const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false});
 let D = Object.assign(VIDE(), memo.get() || {});
 const sauver = () => memo.set(D);
 const MODS = [...new Set(BANQUE.familles.map(f => f.mod))].sort((a, b) => a - b);
@@ -530,21 +557,30 @@ if(!Array.isArray(D.err)) D.err = [];
 if(!Array.isArray(D.choix)) D.choix = [];
 D.choix = D.choix.filter(f => FAMILLES[f]);
 if(D.portee === 'perso' && !D.choix.length) D.portee = 'tout';
+D.guide = D.guide === true;
+/* la progression guidée : le premier module qui a une notion pas encore réussie ; sa pile = ses notions pas encore
+   réussies. Une notion réussie sort de la pile ; la pile vide, le module suivant arrive. Tout réussi : tout l'UA2. */
+const AVEC = new Set(TYPES.map(t => t.fam));
+const famsDuModule = m => BANQUE.familles.filter(f => f.mod === m && AVEC.has(f.id)).map(f => f.id);
+const modGuide = () => MODS.find(m => famsDuModule(m).some(f => !reussi(D.fam[f])));
+const dansGuide = (t, m = modGuide()) => m === undefined || (FAMILLES[t.fam].mod === m && !reussi(D.fam[t.fam]));
 /* « Mes erreurs » : les questions dont la dernière réponse comptée était fausse (les générées n'y vont pas) */
-const dansPortee = t => D.portee === 'perso' ? D.choix.includes(t.fam)
+const dansPortee = t => D.guide ? dansGuide(t) : D.portee === 'perso' ? D.choix.includes(t.fam)
   : D.portee === 'erreurs' ? !t.gen && D.it[t.id] && D.it[t.id].der === 0
   : D.portee === 'tout' || t.mod === D.portee;
 const famillesActives = () => new Set(TYPES.filter(dansPortee).map(t => t.fam));
 function basculer(f){
-  const act = D.portee === 'erreurs' ? new Set(Object.keys(FAMILLES)) : famillesActives(), toutes = Object.keys(FAMILLES);
+  const act = D.portee === 'erreurs' && !D.guide ? new Set(Object.keys(FAMILLES)) : famillesActives(), toutes = Object.keys(FAMILLES);
   if(f === '*'){ if(act.size === toutes.length) act.clear(); else toutes.forEach(x => act.add(x)); }
   else if(act.has(f)) act.delete(f); else act.add(f);
-  D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
-  $('#annonce-carte').textContent = act.size ? '' : 'Tout est éteint : allume une notion (ou plus) pour continuer.';
+  const etaitGuide = D.guide;
+  D.guide = false; D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
+  $('#annonce-carte').textContent = !act.size ? 'Tout est éteint : allume une notion (ou plus) pour continuer.'
+    : etaitGuide ? 'Progression guidée coupée : c’est ta carte qui décide. Rallume-la en haut quand tu veux.' : '';
   if(act.size && SESS.vide) nouveau(); else peindreCote();
   const b = document.querySelector('.inter[data-tg="' + f + '"]'); if(b) b.focus();
 }
-const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false};
+const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false, avis:[], mg:null};
 
 /* ---------- la prochaine question : les rappels d'abord (une autre question de la même notion si possible) ---------- */
 function prochain(){
@@ -573,6 +609,7 @@ function nouveau(type, jumelle){
     peindreCote(); return;
   }
   SESS.vide = false;
+  if(D.guide && !type){ const m = modGuide(); if(m !== SESS.mg){ SESS.avis.push(avisGuide(m, SESS.mg)); SESS.mg = m; } }
   const t = type || prochain(), p = t.f();
   p.type = t;
   if(p.k === 'qcm') p.ordreChoix = melange(p.choix.map((c, i) => i));
@@ -582,12 +619,38 @@ function nouveau(type, jumelle){
   D.typ[t.id] = (D.typ[t.id] || 0) + 1; sauver();
   peindre();
 }
+/* ce qu'il reste dans la pile guidée d'un module */
+const resteGuide = m => famsDuModule(m).filter(f => !reussi(D.fam[f])).length;
+const notions = n => n + ' notion' + (n > 1 ? 's' : '');
+function avisGuide(m, avant){
+  if(m === undefined) return {c:'ok', t:'Tous les modules sont réussis ✓. La progression guidée passe en entretien : tout l’UA2, mêlé.'};
+  const k = resteGuide(m), n = famsDuModule(m).length;
+  if(typeof avant === 'number') return {c:'ok', t:'Module ' + avant + ' terminé ✓. Place au module ' + m + ' : ' + notions(k) + ' à réussir.'};
+  return {c:'info', t:'Progression guidée · module ' + m + ' : ' + notions(k) + ' à réussir' + (k < n ? ' (sur ' + n + ')' : '') + '. Chacune sort de ta pile dès qu’elle est réussie.'};
+}
+/* une table du cours (carte.tableau) : « paires » (deux colonnes, en grille compacte) ou un tableau ordinaire.
+   o.ligne : la ligne à surligner (une fois la question finie) */
+function tableauHtml(T, o = {}){
+  if(!T || !T.lignes) return '';
+  let h = '<div class="tableau">' + (T.t ? '<p class="tableau-t">' + esc(T.t) + '</p>' : '');
+  if(T.forme === 'paires'){
+    h += '<p class="tableau-c">' + esc(T.cols.join(' → ')) + '</p><dl class="paires">' + T.lignes.map(([a, b]) => '<div class="' + (String(a) === String(o.ligne) ? 'ta-ligne' : String(a) === String(T.fort) ? 'fort' : '') + '"><dt>' + esc(a) + '</dt><dd>' + esc(b) + '</dd></div>').join('') + '</dl>';
+  } else {
+    h += '<div class="tab-wrap"><table class="tab-libre"><thead><tr>' + T.cols.map(c => '<th scope="col">' + esc(c) + '</th>').join('') + '</tr></thead><tbody>'
+      + T.lignes.map(r => '<tr>' + r.map((c, i) => i ? '<td>' + esc(c) + '</td>' : '<th scope="row">' + esc(c) + '</th>').join('') + '</tr>').join('') + '</tbody></table></div>';
+  }
+  const pieds = [o.pied, T.note, T.source ? 'Source : ' + T.source + '.' : ''].filter(Boolean);
+  return h + (pieds.length ? '<small>' + esc(pieds.join(' ')) + '</small>' : '') + '</div>';
+}
 const SORTES = {qcm:'Choix multiple', vf:'Vrai ou faux', num:'Calcul', ordre:'Mise en ordre', rx:'Ordonnance'};
 function peindre(){
   const z = $('#scene'), p = S.p, fam = FAMILLES[p.type.fam];
   let h = '<div class="sujet"><span class="chip">' + esc(fam.t) + '</span>' + qm(fam.id) + '<span class="sorte">' + SORTES[p.k] + '</span></div>';
-  if(SESS.avis){ h += msg(SESS.avis, 'warn'); SESS.avis = ''; }
+  SESS.avis.forEach(a => { h += msg(a.t, a.c); }); SESS.avis = [];
   h += '<p class="enonce">' + esc(p.q) + '</p>';
+  if(p.tableau && fam.carte && fam.carte.tableau) h += tableauHtml(fam.carte.tableau, S.etape === 'question'
+    ? {pied:'Elle est donnée avec la question : t’en servir ne coûte pas de point. Ce qui compte, c’est la bonne ligne et le bon signe.'}
+    : {ligne:p.ligne, pied:p.ligne ? 'Encadrée : la ligne de cette question.' : ''});
   if(S.etape === 'question') h += question(p);
   else h += '<div id="fb">' + S.messages.join('') + '</div>' + finHtml(p);
   z.innerHTML = nb(h);
@@ -712,7 +775,7 @@ function abandonner(){
   if((S.essais || S.aide) && !S.jumelle){
     const t = S.p.type, e = D.fam[t.fam], s0 = e ? Math.min(3, e.serie) : 0;
     noter(S.p, false);
-    SESS.avis = 'Question laissée après ' + (S.pourquoi || 'un essai') + '. La réponse : ' + repTxt(S.p) + '.' + (s0 ? ' Ta série sur « ' + FAMILLES[t.fam].t + ' » repart de zéro (elle était à ' + s0 + ').' : '');
+    SESS.avis.push({c:'warn', t:'Question laissée après ' + (S.pourquoi || 'un essai') + '. La réponse : ' + repTxt(S.p) + '.' + (s0 ? ' Ta série sur « ' + FAMILLES[t.fam].t + ' » repart de zéro (elle était à ' + s0 + ').' : '')});
   }
 }
 /* la fin d'une question : « point » (juste du premier coup, sans aide), « neutre » (juste après la fiche ou une copie),
@@ -727,7 +790,9 @@ function conclure(bon){
   else S.messages = S.messages.concat(msg('La réponse : ' + repTxt(p) + '.', 'warn'));
   noter(p, net, sorte === 'neutre' || sorte === 'jumelle');
   const e1 = D.fam[f];
-  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:maitriseTout(D.fam)}};
+  const mf = FAMILLES[f].mod;
+  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:maitriseTout(D.fam)},
+    guide:D.guide ? {m:mf, reste:resteGuide(mf), suivant:modGuide()} : null};
   peindre();
 }
 function noter(p, net, neutre){
@@ -750,13 +815,19 @@ function noter(p, net, neutre){
   sauver();
 }
 const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : i < perdus ? 'perdu' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span>';
+/* en progression guidée, une notion réussie sort de la pile : ce qu'il en reste */
+function sortieGuide(g){
+  if(!g) return '';
+  if(g.reste) return ' Elle sort de ta pile : il en reste ' + g.reste + ' dans le module ' + g.m + '.';
+  return g.suivant === undefined ? ' C’était la dernière : tous les modules sont réussis.' : ' Le module ' + g.m + ' est terminé ✓ : la question suivante ouvre le module ' + g.suivant + '.';
+}
 function bilanHtml(){
   const b = S.bilan; if(!b) return '';
   const nom = '« ' + FAMILLES[b.fam].t + ' »', a = b.avant, z = b.apres;
   let cls, titre, texte, dots;
   if(b.sorte === 'point'){
     cls = 'ok'; titre = '+1 point'; dots = pts(z.s, z.s - 1, 0);
-    texte = z.r && !a.r ? nom + ' : notion réussie ✓' : z.r ? nom + ' : déjà réussie, tu l’entretiens.'
+    texte = z.r && !a.r ? nom + ' : notion réussie ✓.' + sortieGuide(b.guide) : z.r ? nom + ' : déjà réussie, tu l’entretiens.'
       : z.serie >= 3 ? nom + ' : 3 de suite. Encore ' + (5 - z.n) + ' comme ça et elle est réussie.' : nom + ' : ' + z.s + ' de suite sur 3.';
   } else if(b.sorte === 'neutre'){
     cls = 'neutre'; titre = 'Juste, sans point cette fois'; dots = pts(z.s, -1, 0);
@@ -781,7 +852,7 @@ function expliquer(f, depuis){
   const x = FAMILLES[f], c = x.carte || {}, enCours = S && S.etape === 'question';
   if(enCours) S.lu = true;
   retour = depuis || null;
-  ouvrirFond(x.t, '<p>' + esc(c.quoi || '') + '</p>' + (c.quand ? '<div><h3>Quand y penser</h3><p>' + esc(c.quand) + '</p></div>' : '')
+  ouvrirFond(x.t, '<p>' + esc(c.quoi || '') + '</p>' + tableauHtml(c.tableau) + (c.quand ?'<div><h3>Quand y penser</h3><p>' + esc(c.quand) + '</p></div>' : '')
     + (c.exemple ? '<div><h3>Un exemple du cours</h3><p class="ex">' + esc(c.exemple) + '</p></div>' : '')
     + (c.piege ? '<div class="piege"><h3>Le piège</h3><p>' + esc(c.piege) + '</p></div>' : '')
     + '<small>' + esc(c.source ? 'Source : ' + c.source + '.' : '') + (enCours ? ' Réussie après cette lecture, cette question ne comptera pas dans ta série, mais elle ne la cassera pas.' : '') + '</small>');
@@ -806,6 +877,7 @@ function pourIA(p, o = {}){
   if(p.k === 'qcm'){ l.push('LES CHOIX'); p.ordreChoix.forEach((i, n) => l.push((n + 1) + '. ' + p.choix[i].t)); l.push(''); }
   if(p.k === 'vf') l.push('C’EST UN VRAI OU FAUX', '');
   if(p.k === 'ordre'){ l.push('LES ÉTAPES À METTRE DANS L’ORDRE'); p.ordreEtapes.forEach(i => l.push('- ' + p.etapes[i])); l.push(''); }
+  { const T = p.tableau && (FAMILLES[p.type.fam].carte || {}).tableau; if(T) l.push('LA TABLE DONNÉE AVEC LA QUESTION' + (T.t ? ' : ' + T.t : '') + ' (' + T.cols.join(' → ') + ')', ...T.lignes.map(r => r.join(' → ')), ...(T.note ? [T.note] : []), ''); }
   if(p.k === 'num') l.push('LA RÉPONSE ATTENDUE', 'un nombre' + (p.rep.u ? ', en ' + p.rep.u : ''), '');
   if(p.k === 'rx') l.push('LA RÉPONSE ATTENDUE', 'une ordonnance : sphère, cylindre, axe', '');
   if(o.tentes && o.tentes.length) l.push('CE QUE J’AI RÉPONDU, À TORT', ...o.tentes, '');
@@ -859,8 +931,8 @@ function peindreProgression(){
   let court, long;
   if(pct >= 99.95){ court = 'Tout est réussi'; long = 'Toutes tes notions sont réussies. Garde-les vivantes avec quelques questions par jour.'; }
   else if(!v){ court = 'Vitesse : encore ' + (8 - nj) + ' question' + pl(8 - nj) + ' pour l’estimer'; long = 'Il faut 8 questions notées pour estimer ta vitesse.'; }
-  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' dernières questions. Éteins les notions réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer.'; }
-  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' dernières questions. Éteins les notions réussies, garde celles en cours, et lis leur fiche « ? ».'; }
+  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' dernières questions. ' + (D.guide ? 'Ouvre le « ? » des notions de ta pile avant de recommencer.' : 'Éteins les notions réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer.'); }
+  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' dernières questions. ' + (D.guide ? 'Lis la fiche « ? » des notions de ta pile.' : 'Éteins les notions réussies, garde celles en cours, et lis leur fiche « ? ».'); }
   else {
     const reste = Math.ceil((100 - pct) / v.par10 * 10);
     court = 'Vitesse : +' + virg(v.par10) + ' point' + (v.par10 >= 2 ? 's' : '') + ' par 10 questions';
@@ -876,6 +948,16 @@ function peindreProgression(){
     + '<span class="m-rep">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir</span><span class="m-vit">' + esc(court) + '</span></div>'
     + '<details class="calcul"' + (ouvert ? ' open' : '') + '><summary>Détails et calcul</summary><p class="seul-mobile">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir. ' + esc(court) + '.</p><p>' + esc(long) + '</p>'
     + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.</p></details>';
+}
+function peindreGuide(){
+  const z = $('#guide'), on = D.guide, m = on ? modGuide() : undefined, mods = MODS.filter(x => famsDuModule(x).length);
+  let sous;
+  if(!on) sous = 'Module par module, sans rien choisir : ce que tu réussis sort de ta pile, puis le module suivant arrive.';
+  else if(m === undefined) sous = 'Tout est réussi ✓. Entretien : tout l’UA2, mêlé.';
+  else { const k = resteGuide(m), n = famsDuModule(m).length; sous = 'Module ' + m + ' : ' + (n - k) + ' sur ' + n + ' réussie' + (n - k > 1 ? 's' : '') + ', ' + notions(k) + ' dans ta pile.'; }
+  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">M' + x + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + '</span>' : '';
+  z.classList.toggle('on', on);
+  z.innerHTML = '<button type="button" class="inter" role="switch" id="guide-sw" aria-checked="' + on + '" data-a="guide" aria-labelledby="guide-t" aria-describedby="guide-s"><span></span></button><label for="guide-sw"><b id="guide-t">Progression guidée</b><span id="guide-s">' + esc(sous) + '</span>' + chemin + '</label>';
 }
 function peindreCote(){
   const act = famillesActives(), nbf = Object.keys(FAMILLES).length, tout = act.size === nbf, pl = n => (n > 1 ? 's' : '');
@@ -895,10 +977,11 @@ function peindreCote(){
     });
   });
   $('#carte').innerHTML = h;
+  peindreGuide();
   peindreProgression();
   $('#erreurs').innerHTML = D.err.length ? D.err.slice(0, 5).map(x => '<li><span>' + esc(x.q.length > 110 ? x.q.slice(0, 108) + '…' : x.q) + '</span><span class="r">→ ' + esc(x.r.length > 120 ? x.r.slice(0, 118) + '…' : x.r) + '</span></li>').join('') : '<li class="vide">Rien encore. Tes réponses ratées apparaîtront ici, avec la bonne.</li>';
   const nErr = TYPES.filter(t => !t.gen && D.it[t.id] && D.it[t.id].der === 0).length;
-  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (String(D.portee) === String(k)) + '">' + esc(t) + (k === 'erreurs' ? '<span class="n">' + nErr + '</span>' : '') + '</button>').join('') + '<span class="compte">' + SESS.n + ' faite' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
+  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (!D.guide && String(D.portee) === String(k)) + '">' + esc(t) + (k === 'erreurs' ? '<span class="n">' + nErr + '</span>' : '') + '</button>').join('') + '<span class="compte">' + SESS.n + ' faite' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
   const col = $('.cote'), l = $('.fam.vient');
   if(l && col.scrollHeight > col.clientHeight + 4 && getComputedStyle(col).overflowY === 'auto'){
     const a = l.getBoundingClientRect(), c = col.getBoundingClientRect(), haut = Math.max(c.top, 0), bas = Math.min(c.bottom, window.innerHeight);
@@ -912,9 +995,14 @@ document.addEventListener('click', e => {
   if(b.dataset.x){ expliquer(b.dataset.x, b); return; }
   if(b.dataset.a === 'fermer-expl'){ fermerExpl(); return; }
   if(b.dataset.tg){ basculer(b.dataset.tg); return; }
+  if(b.dataset.a === 'guide'){
+    abandonner(); D.guide = !D.guide; SESS.mg = null; SESS.dernierFam = ''; $('#annonce-carte').textContent = ''; sauver();
+    if(!D.guide){ const pt = PORTEES.find(([k]) => String(k) === String(D.portee)); SESS.avis.push({c:'info', t:'Progression guidée coupée. Tu reprends « ' + (pt ? pt[1] : '') + ' » : choisis ta portée en haut, ou tes notions sur ta carte.'}); }
+    nouveau(); { const g = $('#guide-sw'); if(g) g.focus({preventScroll:true}); } return;
+  }
   if(b.dataset.p !== undefined){
-    if(String(D.portee) === b.dataset.p) return;
-    abandonner(); const k = b.dataset.p;
+    if(String(D.portee) === b.dataset.p && !D.guide) return;
+    abandonner(); D.guide = false; SESS.mg = null; const k = b.dataset.p;
     if(k === 'perso' && !D.choix.length) D.choix = Object.keys(FAMILLES).filter(x => famillesActives().has(x));
     D.portee = /^\d+$/.test(k) ? +k : k; $('#annonce-carte').textContent = ''; sauver(); SESS.dernierFam = ''; nouveau();
     { const c = $('.puce[aria-pressed="true"]'); if(c) c.focus({preventScroll:true}); } return;
@@ -953,18 +1041,18 @@ $('#note').innerHTML = esc(COURS.note) + ' <button type="button" class="lien" id
 $('#effacer').addEventListener('click', e => {
   const b = e.target;
   if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
-  const p = D.portee, c = D.choix; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; sauver();
-  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false;
+  const p = D.portee, c = D.choix, g = D.guide; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; D.guide = g; sauver();
+  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false; SESS.mg = null;
   b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
 });
 /* pour les tests (build/…/test) : afficher une question précise, lire l'état */
-window.__drill = {TYPES, FAMILLES, choisirType, jugerNum, jugerRx, maitriseTout, reussi, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
+window.__drill = {TYPES, FAMILLES, choisirType, jugerNum, jugerRx, maitriseTout, reussi, modGuide, dansGuide, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
 nouveau();
 })();
 </script>
 <script>
 (() => {
-  const ICI = '9507724a8ca9';
+  const ICI = '0c191a5d323b';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

@@ -112,6 +112,17 @@ h1{margin:0;font:600 30px/1.1 var(--f-display);letter-spacing:-.01em}
 .msg.bad{background:var(--bad-soft)}
 .msg.warn{background:var(--warn-soft)}
 .msg.ok{background:var(--ok-soft)}
+.msg.info{background:var(--panel-2)}
+/* la progression guidée : module par module, ce qui est réussi sort de la pile */
+.guide{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+.guide.on{border-color:var(--accent);background:var(--accent-soft)}
+.guide label{display:flex;flex-direction:column;gap:2px;min-width:0;cursor:pointer;font-size:14.5px;line-height:1.35}
+.guide label b{font-size:15.5px}
+.guide label span{color:var(--ink-2)}
+.guide .chemin{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:2px;font:600 12.5px var(--f-mono);color:var(--ink-3)}
+.guide .chemin i{font-style:normal;padding:1px 8px;border-radius:999px;background:var(--panel)}
+.guide .chemin i.fait{color:var(--ok)}
+.guide .chemin i.ici{background:var(--accent);color:var(--on-accent)}
 .dem{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 .dem li{display:grid;grid-template-columns:168px minmax(0,1fr);gap:10px;font-size:16px}
 .dem .l{color:var(--ink-3);font-size:14px}
@@ -232,6 +243,7 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
     <h1>Quelle formule&nbsp;?</h1>
     <p>Optique, modules 6 à 8. Des problèmes mêlés : tu choisis la formule, puis tu calcules. Le «&nbsp;?&nbsp;» explique chaque formule ; ouvert pendant un problème, il le rend sans point, sans rien enlever.</p>
   </header>
+  <div class="guide" id="guide"></div>
   <div class="bande" role="group" aria-label="Ce que tu pratiques" id="portees"></div>
   <section class="maitrise" id="progression" aria-labelledby="t-prog"></section>
   <div class="corps">
@@ -702,7 +714,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const CLE = 'drill-optique-v1';
 const memo = {get(){ try{ return JSON.parse(localStorage.getItem(CLE)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(CLE, JSON.stringify(v)); }catch(e){} }};
-const VIDE = () => ({fam:{}, conf:{}, typ:{}, dernier:null, portee:'ua2', choix:[], journal:[]});
+const VIDE = () => ({fam:{}, conf:{}, typ:{}, dernier:null, portee:'ua2', choix:[], journal:[], guide:false});
 let D = Object.assign(VIDE(), memo.get() || {});
 const sauver = () => memo.set(D);
 const PORTEES = [['ua2', 'Tout l’UA2'], ['mardi', 'Pr et Pp'], [6, 'Module 6'], [7, 'Module 7'], [8, 'Module 8'], ['perso', 'Perso']];
@@ -711,8 +723,28 @@ if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'ua2';
 if(!Array.isArray(D.choix)) D.choix = [];
 D.choix = D.choix.filter(f => FAMILLES[f]);
 if(D.portee === 'perso' && !D.choix.length) D.portee = 'ua2';
+D.guide = D.guide === true;
+/* la progression guidée : une formule appartient au dernier module où l'un de ses problèmes est enseigné (l'addition
+   au module 7, l'accommodation au 8). Le premier module qui a une formule pas encore réussie ; sa pile = ses formules
+   pas encore réussies, avec tous leurs problèmes. Réussie, une formule sort de la pile ; la pile vide, le module
+   suivant arrive. Tout réussi : tout l'UA2. */
+const MOD_FAM = {};
+TYPES.forEach(t => { MOD_FAM[t.fam] = Math.max(MOD_FAM[t.fam] || 0, t.mod); });
+const MODS_G = [...new Set(Object.values(MOD_FAM))].sort((a, b) => a - b);
+const famsDuModule = m => Object.keys(FAMILLES).filter(f => MOD_FAM[f] === m);
+const reussieF = f => reussi(D.fam[f], FAMILLES[f].inv);
+const modGuide = () => MODS_G.find(m => famsDuModule(m).some(f => !reussieF(f)));
+const dansGuide = (t, m = modGuide()) => m === undefined || (MOD_FAM[t.fam] === m && !reussieF(t.fam));
+const resteGuide = m => famsDuModule(m).filter(f => !reussieF(f)).length;
+const formules = n => n + ' formule' + (n > 1 ? 's' : '');
+function avisGuide(m, avant){
+  if(m === undefined) return {c:'ok', t:'Toutes les formules sont réussies ✓. La progression guidée passe en entretien : tout l’UA2, mêlé.'};
+  const k = resteGuide(m), n = famsDuModule(m).length;
+  if(typeof avant === 'number') return {c:'ok', t:'Module ' + avant + ' terminé ✓. Place au module ' + m + ' : ' + formules(k) + ' à réussir.'};
+  return {c:'info', t:'Progression guidée · module ' + m + ' : ' + formules(k) + ' à réussir' + (k < n ? ' (sur ' + n + ')' : '') + '. Chacune sort de ta pile dès qu’elle est réussie.'};
+}
 /* Perso : une famille allumée compte avec tous ses types (tous modules) */
-const dansPortee = t => D.portee === 'perso' ? D.choix.includes(t.fam) : D.portee === 'ua2' || (D.portee === 'mardi' ? t.mardi : t.mod === D.portee);
+const dansPortee = t => D.guide ? dansGuide(t) : D.portee === 'perso' ? D.choix.includes(t.fam) : D.portee === 'ua2' || (D.portee === 'mardi' ? t.mardi : t.mod === D.portee);
 const famillesActives = () => new Set(TYPES.filter(dansPortee).map(t => t.fam));
 /* un interrupteur : on passe en Perso avec les familles allumées, plus ou moins celle-ci ; jamais zéro */
 /* « * » : l'interrupteur de toutes les formules (tout allumé → tout éteint ; sinon → tout allumé), pour isoler vite */
@@ -720,12 +752,14 @@ function basculer(f){
   const act = famillesActives(), toutes = Object.keys(FAMILLES);
   if(f === '*'){ if(act.size === toutes.length) act.clear(); else toutes.forEach(x => act.add(x)); }
   else if(act.has(f)) act.delete(f); else act.add(f);
-  D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
-  $('#annonce-carte').textContent = act.size ? '' : 'Tout est éteint : allume une formule (ou plus) pour continuer.';
+  const etaitGuide = D.guide;
+  D.guide = false; SESS.mg = null; D.portee = 'perso'; D.choix = toutes.filter(x => act.has(x)); sauver();
+  $('#annonce-carte').textContent = !act.size ? 'Tout est éteint : allume une formule (ou plus) pour continuer.'
+    : etaitGuide ? 'Progression guidée coupée : c’est ta carte qui décide. Rallume-la en haut quand tu veux.' : '';
   if(act.size && SESS.vide) nouveau(); else peindreCote();
   const b = document.querySelector('.inter[data-tg="' + f + '"]'); if(b) b.focus();
 }
-const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false};
+const SESS = {n:0, net:0, rappels:[], dernierFam:'', dernierType:'', decouverte:false, avis:[], mg:null};
 const MOTS = [
   ['pr', '« sans accommoder », « au repos », « quelle lentille corrige »'],
   ['pp', '« au plus près », « accommodation maximale », « même quelques instants », sans lunettes'],
@@ -747,7 +781,7 @@ function prochain(){
   SESS.rappels.forEach(x => { x.dans--; });
   const du = SESS.rappels.find(x => x.dans <= 0 && TYPES.find(t => t.id === x.id && dansPortee(t) && t.fam !== SESS.dernierFam));
   if(du){ SESS.rappels = SESS.rappels.filter(x => x !== du); SESS.decouverte = false; return TYPES.find(t => t.id === du.id); }
-  const r = choisirType(TYPES.filter(dansPortee), {fam:D.fam, typ:D.typ, dernierFam:SESS.dernierFam, decouverte:SESS.decouverte, portee:D.portee});
+  const r = choisirType(TYPES.filter(dansPortee), {fam:D.fam, typ:D.typ, dernierFam:SESS.dernierFam, decouverte:SESS.decouverte, portee:D.guide ? 'guide' : D.portee});
   SESS.decouverte = r.neuve;
   return r.t;
 }
@@ -760,6 +794,7 @@ function nouveau(type, jumelle){
     peindreCote(); return;
   }
   SESS.vide = false;
+  if(D.guide && !type){ const m = modGuide(); if(m !== SESS.mg){ SESS.avis.push(avisGuide(m, SESS.mg)); SESS.mg = m; } }
   { const md = $('#mots-d'); if(md) md.open = false; }
   const t = type || prochain(), p = t.f();
   p.type = t; p.tuiles = melange([p.f].concat(p.conf));
@@ -778,7 +813,7 @@ function peindre(){
   const z = $('#scene'), p = S.p;
   z.classList.toggle('revele', S.etape !== 'formule');
   let h = '';
-  if(SESS.avis && S.etape === 'formule'){ h = msg(SESS.avis, 'warn'); SESS.avis = ''; }
+  if(SESS.avis.length && S.etape === 'formule'){ h = SESS.avis.map(a => msg(a.t, a.c)).join(''); SESS.avis = []; }
   h += etapesHtml() + '<p class="enonce">' + p.q + '</p>';
   if(S.etape === 'formule'){
     h += '<p class="q">Quelle formule utilises-tu' + (ENSUITE[p.type.id] ? ' d’abord' : '') + '&nbsp;?</p><div class="tuiles">' +
@@ -872,7 +907,7 @@ function abandonner(){
     const e = D.fam[t.fam], s0 = e ? Math.min(3, e.serie) : 0;
     noter(t, false);
     /* une série qui tombe ne tombe jamais en silence : le problème suivant le dit, une fois */
-    SESS.avis = 'Problème laissé après ' + (S.pourquoi || 'un essai') + '. La bonne formule était ' + FORMULES[S.p.f].t + '.' + (s0 ? ' Ta série sur «\u00a0' + FAMILLES[t.fam].t + '\u00a0» repart de zéro (elle était à ' + s0 + ').' : '');
+    SESS.avis.push({c:'warn', t:'Problème laissé après ' + (S.pourquoi || 'un essai') + '. La bonne formule était ' + FORMULES[S.p.f].t + '.' + (s0 ? ' Ta série sur «\u00a0' + FAMILLES[t.fam].t + '\u00a0» repart de zéro (elle était à ' + s0 + ').' : '')});
   }
 }
 function voirDemarche(){
@@ -917,7 +952,8 @@ function conclure(bon){
   else S.messages = S.messages.concat(msg('La réponse : ' + repTxt(p) + '.', 'warn'));
   noter(t, net, sorte === 'neutre' || sorte === 'jumelle');
   const e1 = D.fam[f];
-  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1, inv), pct:maitriseUA2(D.fam)}};
+  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1, inv), pct:maitriseUA2(D.fam)},
+    guide:D.guide ? {m:MOD_FAM[f], reste:resteGuide(MOD_FAM[f]), suivant:modGuide()} : null};
   peindre();
 }
 /* neutre : ni point ni perte, et l'essai ne compte pas (explication lue, problème copié, jumelle).
@@ -938,13 +974,19 @@ function noter(t, net, neutre){
 /* trois points : s allumés, celui d'indice neuf en vert, et jusqu'à « perdus » en pointillé (la série qui vient de tomber) */
 const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : i < perdus ? 'perdu' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span>';
 /* le bilan du problème, sous la réponse : ce qui vient d'arriver à la série, et pourquoi */
+/* en progression guidée, une formule réussie sort de la pile : ce qu'il en reste */
+function sortieGuide(g){
+  if(!g) return '';
+  if(g.reste) return ' Elle sort de ta pile : il en reste ' + g.reste + ' dans le module ' + g.m + '.';
+  return g.suivant === undefined ? ' C’était la dernière : toutes les formules sont réussies.' : ' Le module ' + g.m + ' est terminé ✓ : le problème suivant ouvre le module ' + g.suivant + '.';
+}
 function bilanHtml(){
   const b = S.bilan; if(!b) return '';
   const nom = '« ' + FAMILLES[b.fam].t + ' »', a = b.avant, z = b.apres, pl = n => (n > 1 ? 's' : '');
   let cls, titre, texte, dots;
   if(b.sorte === 'point'){
     cls = 'ok'; titre = '+1 point'; dots = pts(z.s, z.s - 1, 0);
-    texte = z.r && !a.r ? nom + ' : formule réussie ✓'
+    texte = z.r && !a.r ? nom + ' : formule réussie ✓.' + sortieGuide(b.guide)
       : z.r ? nom + ' : déjà réussie, tu l’entretiens.'
       : z.serie >= 3 ? nom + ' : 3 de suite. ' + (z.n < 5 ? 'Encore ' + (5 - z.n) + ' comme ça et elle est réussie.' : 'Il manque un problème à l’envers pour qu’elle soit réussie.')
       : nom + ' : ' + z.s + ' de suite sur 3.';
@@ -1033,8 +1075,8 @@ function peindreProgression(){
   let court, long;
   if(pct >= 99.95){ court = 'Tout est réussi'; long = 'Toutes tes formules sont réussies. Garde-les vivantes avec quelques problèmes par jour.'; }
   else if(!v){ court = 'Vitesse : encore ' + (8 - nj) + ' problème' + pl(8 - nj) + ' pour l’estimer'; long = 'Il faut 8 problèmes notés pour estimer ta vitesse.'; }
-  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' derniers problèmes. Éteins les formules réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer : une explication lue ne coûte rien.'; }
-  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' derniers problèmes. Éteins les formules réussies (interrupteurs), garde celles en cours, et ouvre leur « ? » avant de recommencer.'; }
+  else if(v.par10 <= -0.5){ court = 'Vitesse : en baisse'; long = 'Ton estimation baisse sur tes ' + v.n + ' derniers problèmes. ' + (D.guide ? 'Ouvre le « ? » des formules de ta pile avant de recommencer : une explication lue ne coûte rien.' : 'Éteins les formules réussies, garde celles en cours, et ouvre leur « ? » avant de recommencer : une explication lue ne coûte rien.'); }
+  else if(v.par10 < 0.5){ court = 'Vitesse : à plat'; long = 'Ta courbe est à plat sur tes ' + v.n + ' derniers problèmes. ' + (D.guide ? 'Ouvre le « ? » des formules de ta pile avant de recommencer.' : 'Éteins les formules réussies (interrupteurs), garde celles en cours, et ouvre leur « ? » avant de recommencer.'); }
   else {
     const reste = Math.ceil((100 - pct) / v.par10 * 10);
     court = 'Vitesse : +' + virg(v.par10) + ' point' + (v.par10 >= 2 ? 's' : '') + ' par 10 problèmes';
@@ -1053,6 +1095,16 @@ function peindreProgression(){
 }
 /* la carte : un interrupteur, le nom, l'état s'il dit quelque chose, les trois points. La ligne du problème qui vient
    de finir est surlignée (seulement une fois fini : avant, elle donnerait la formule). */
+function peindreGuide(){
+  const z = $('#guide'), on = D.guide, m = on ? modGuide() : undefined, mods = MODS_G.filter(x => famsDuModule(x).length);
+  let sous;
+  if(!on) sous = 'Module par module, sans rien choisir : ce que tu réussis sort de ta pile, puis le module suivant arrive.';
+  else if(m === undefined) sous = 'Tout est réussi ✓. Entretien : tout l’UA2, mêlé.';
+  else { const k = resteGuide(m), n = famsDuModule(m).length; sous = 'Module ' + m + ' : ' + (n - k) + ' sur ' + n + ' réussie' + (n - k > 1 ? 's' : '') + ', ' + formules(k) + ' dans ta pile.'; }
+  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">M' + x + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + '</span>' : '';
+  z.classList.toggle('on', on);
+  z.innerHTML = '<button type="button" class="inter" role="switch" id="guide-sw" aria-checked="' + on + '" data-a="guide" aria-labelledby="guide-t" aria-describedby="guide-s"><span></span></button><label for="guide-sw"><b id="guide-t">Progression guidée</b><span id="guide-s">' + esc(sous) + '</span>' + chemin + '</label>';
+}
 function peindreCote(){
   const act = famillesActives(), nb = Object.keys(FAMILLES).length, tout = act.size === nb, pl = n => (n > 1 ? 's' : '');
   const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null;
@@ -1066,10 +1118,11 @@ function peindreCote(){
       + '<span class="nom">' + esc(FAMILLES[f].t) + (etat ? '<small' + (r ? ' class="bon"' : '') + '>' + etat + '</small>' : '') + '</span>'
       + '<span class="fin">' + (tag ? '<em class="tag">' + tag + '</em>' : '') + '<span class="ser" role="img" aria-label="' + s + ' de suite sur 3' + (neuf >= 0 ? ', dont ton dernier point' : '') + '">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span></span></div>';
   }).join('');
+  peindreGuide();
   peindreProgression();
   const conf = Object.entries(D.conf).sort((x, y) => y[1] - x[1]).slice(0, 4);
   $('#confusions').innerHTML = conf.length ? conf.map(([k, n]) => { const [x, y] = k.split('>'); return '<li><b>' + esc(x) + '</b> au lieu de <b>' + esc(y) + '</b> · ' + n + ' fois</li>'; }).join('') : '<li class="vide">Rien encore. Chaque mauvais choix de formule apparaîtra ici.</li>';
-  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (String(D.portee) === String(k)) + '">' + esc(t) + '</button>').join('') + '<span class="compte">' + SESS.n + ' fait' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
+  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (!D.guide && String(D.portee) === String(k)) + '">' + esc(t) + '</button>').join('') + '<span class="compte">' + SESS.n + ' fait' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
   /* la ligne surlignée reste en vue quand la colonne défile toute seule (grand écran) ; la page, elle, ne bouge jamais */
   const col = $('.cote'), l = $('.fam.vient');
   if(l && col.scrollHeight > col.clientHeight + 4 && getComputedStyle(col).overflowY === 'auto'){
@@ -1088,8 +1141,13 @@ document.addEventListener('click', e => {
   if(b.dataset.a === 'fermer-expl'){ fermerExpl(); return; }
   if(b.dataset.f && S.etape === 'formule'){ choisirFormule(b.dataset.f); return; }
   if(b.dataset.tg){ basculer(b.dataset.tg); return; }
-  if(b.dataset.p !== undefined && String(D.portee) === b.dataset.p) return;
-  if(b.dataset.p !== undefined){ abandonner(); const k = b.dataset.p; if(k === 'perso' && !D.choix.length) D.choix = Object.keys(FAMILLES).filter(x => famillesActives().has(x)); D.portee = /^\d$/.test(k) ? +k : k; $('#annonce-carte').textContent = ''; sauver(); SESS.dernierFam = ''; nouveau(); { const c = $('.puce[aria-pressed="true"]'); if(c) c.focus({preventScroll:true}); } return; }
+  if(b.dataset.a === 'guide'){
+    abandonner(); D.guide = !D.guide; SESS.mg = null; SESS.dernierFam = ''; $('#annonce-carte').textContent = ''; sauver();
+    if(!D.guide){ const pt = PORTEES.find(([k]) => String(k) === String(D.portee)); SESS.avis.push({c:'info', t:'Progression guidée coupée. Tu reprends « ' + (pt ? pt[1] : '') + ' » : choisis ta portée en haut, ou tes formules sur ta carte.'}); }
+    nouveau(); { const g = $('#guide-sw'); if(g) g.focus({preventScroll:true}); } return;
+  }
+  if(b.dataset.p !== undefined && String(D.portee) === b.dataset.p && !D.guide) return;
+  if(b.dataset.p !== undefined){ abandonner(); D.guide = false; SESS.mg = null; const k = b.dataset.p; if(k === 'perso' && !D.choix.length) D.choix = Object.keys(FAMILLES).filter(x => famillesActives().has(x)); D.portee = /^\d$/.test(k) ? +k : k; $('#annonce-carte').textContent = ''; sauver(); SESS.dernierFam = ''; nouveau(); { const c = $('.puce[aria-pressed="true"]'); if(c) c.focus({preventScroll:true}); } return; }
   if(b.dataset.o !== undefined){ const ch = $('#rep'); if(ch) S.saisie = ch.value; S.oui = b.dataset.o === '1'; peindre(); const v = $('[data-a="valider"]'); if(v) v.focus({preventScroll:true}); return; }
   if(b.dataset.c){ const ch = $('#rep'); if(ch) S.saisie = ch.value; S.cote = b.dataset.c; peindre(); return; }
   const a = b.dataset.a;
@@ -1116,16 +1174,18 @@ document.addEventListener('input', e => { if(e.target.id === 'brouillon' && S) S
 $('#effacer').addEventListener('click', e => {
   const b = e.target;
   if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
-  const p = D.portee, c = D.choix; D = VIDE(); D.portee = p; D.choix = c; sauver();
-  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false;
+  const p = D.portee, c = D.choix, g = D.guide; D = VIDE(); D.portee = p; D.choix = c; D.guide = g; sauver();
+  SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false; SESS.mg = null;
   b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
 });
+/* pour les tests : lire l'état, la progression guidée */
+window.__drillG = {etat:() => ({D, S, SESS}), modGuide, dansGuide, MOD_FAM, reussieF};
 nouveau();
 })();
 </script>
 <script>
 (() => {
-  const ICI = '9507724a8ca9';
+  const ICI = '0c191a5d323b';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
