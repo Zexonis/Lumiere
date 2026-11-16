@@ -373,7 +373,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const memo = {get(){ try{ return JSON.parse(localStorage.getItem(COURS.cle)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(COURS.cle, JSON.stringify(v)); }catch(e){} }};
 const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false});
-let D = Object.assign(VIDE(), memo.get() || {});
+const SAUVE = memo.get();
+let D = Object.assign(VIDE(), SAUVE || {});
 const sauver = () => memo.set(D);
 const MODS = [...new Set(BANQUE.familles.map(f => f.mod))].sort((a, b) => a - b);
 const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, 'Module ' + m]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
@@ -384,7 +385,8 @@ if(!Array.isArray(D.err)) D.err = [];
 if(!Array.isArray(D.choix)) D.choix = [];
 D.choix = D.choix.filter(f => FAMILLES[f]);
 if(D.portee === 'perso' && !D.choix.length) D.portee = 'tout';
-D.guide = D.guide === true;
+/* un nouvel étudiant (rien d'enregistré) commence en progression guidée ; les autres gardent leur choix */
+D.guide = SAUVE ? D.guide === true : true;
 /* la progression guidée : le premier module qui a une notion pas encore réussie ; sa pile = ses notions pas encore
    réussies. Une notion réussie sort de la pile ; la pile vide, le module suivant arrive. Tout réussi : tout l'UA2. */
 const AVEC = new Set(TYPES.map(t => t.fam));
@@ -879,7 +881,7 @@ nouveau();
 </script>
 <script>
 (() => {
-  const ICI = '0c191a5d323b';
+  const ICI = 'fbbbdf4dcb57';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
