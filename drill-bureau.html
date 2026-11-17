@@ -1206,8 +1206,213 @@ nouveau();
 })();
 </script>
 <script>
+/* ======================================================================
+   Bruit de fond : un petit bouton pour se concentrer pendant l'étude.
+   Blanc, rose, brun, et quatre ambiances imitées : vagues, pluie, vent,
+   feu de foyer. Tout est fabriqué dans le navigateur (Web Audio) : aucun
+   fichier son, rien à télécharger, rien d'envoyé. Le module ne dépend de
+   rien : il pose son bouton (en bas à droite) et son style lui-même ; il
+   prend les couleurs de la page si elle les définit (--panel, --ink…).
+   Le dernier son et le volume sont gardés sur l'appareil (lumiere-bruit),
+   mais rien ne joue tout seul : il faut toucher un son.
+   Inclus dans les exerciseurs par drill-notions/construire.py, et dans
+   « Quelle formule ? » par outils/poser_bruit.py.
+   ====================================================================== */
 (() => {
-  const ICI = '20ec8492600d';
+'use strict';
+if(window.__bruit) return;
+
+/* === bruit : début (pur, testé par outils/test_bruit.js) === */
+/* n échantillons d'un bruit qui boucle sans « clic » : on en fabrique un peu plus (f), et la queue se fond dans la tête */
+function fabriquerBruit(type, n, f, rnd = Math.random){
+  const d = new Float32Array(n + f);
+  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0, dernier = 0;
+  for(let i = 0; i < n + f; i++){
+    const w = rnd() * 2 - 1;
+    if(type === 'blanc') d[i] = w * 0.5;
+    else if(type === 'rose'){   /* le filtre de Paul Kellet : −3 dB par octave */
+      b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759; b2 = 0.96900 * b2 + w * 0.1538520;
+      b3 = 0.86650 * b3 + w * 0.3104856; b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980;
+      d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11; b6 = w * 0.115926;
+    } else { dernier = (dernier + 0.02 * w) / 1.02; d[i] = dernier * 3.5; }   /* brun : un intégrateur qui fuit, −6 dB par octave */
+  }
+  const c = new Float32Array(n);
+  for(let i = 0; i < n; i++) c[i] = d[i];
+  for(let i = 0; i < f; i++){ const t = i / f; c[i] = d[i] * Math.sqrt(t) + d[n + i] * Math.sqrt(1 - t); }
+  for(let i = 0; i < n; i++) c[i] = Math.max(-1, Math.min(1, c[i]));
+  return c;
+}
+/* des éclats : de très courtes bouffées de bruit qui s'éteignent (crépitements du feu, gouttes de pluie).
+   Presque toutes sont faibles, quelques-unes fortes (puissance 3) ; la fin du tampon reste vide pour boucler proprement */
+function fabriquerEclats(n, sr, parSec, durMin, durMax, ampMin, ampMax, rnd = Math.random){
+  const c = new Float32Array(n), N = Math.floor(n / sr * parSec), marge = Math.floor(sr * (durMax + 0.02));
+  for(let k = 0; k < N; k++){
+    const p = Math.floor(rnd() * (n - marge)), L = Math.max(2, Math.floor(sr * (durMin + rnd() * (durMax - durMin))));
+    const a = ampMin + Math.pow(rnd(), 3) * (ampMax - ampMin);
+    for(let i = 0; i < L; i++) c[p + i] += (rnd() * 2 - 1) * a * Math.exp(-6 * i / L);
+  }
+  for(let i = 0; i < n; i++) c[i] = Math.max(-1, Math.min(1, c[i]));
+  return c;
+}
+/* === bruit : fin === */
+
+const CLE = 'lumiere-bruit';
+const SONS = [['blanc', 'Blanc'], ['rose', 'Rose'], ['brun', 'Brun'], ['vagues', 'Vagues'], ['pluie', 'Pluie'], ['vent', 'Vent'], ['feu', 'Feu de foyer']];
+const etat = {son:'', vol:0.5};
+try{ const s = JSON.parse(localStorage.getItem(CLE)); if(s && typeof s === 'object'){ if(SONS.some(([k]) => k === s.son)) etat.son = s.son; if(typeof s.vol === 'number' && s.vol >= 0 && s.vol <= 1) etat.vol = s.vol; } }catch(e){}
+const garder = () => { try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} };
+
+let ctx = null, maitre = null, analyse = null, courant = null, joue = '';
+const tampons = {};
+function tampon(cle, fabrique){
+  if(!tampons[cle]){ const d = fabrique(ctx.sampleRate), b = ctx.createBuffer(1, d.length, ctx.sampleRate); b.getChannelData(0).set(d); tampons[cle] = b; }
+  return tampons[cle];
+}
+const bruit = (type, sec) => tampon(type + sec, sr => fabriquerBruit(type, Math.floor(sr * sec), Math.floor(sr * 0.3)));
+const eclats = (nom, sec, ...r) => tampon(nom, sr => fabriquerEclats(Math.floor(sr * sec), sr, ...r));
+
+/* chaque son : une fonction qui branche ses nœuds sur « sortie » et rend ceux qu'il faudra arrêter */
+function monter(nom, sortie){
+  const aArreter = [];
+  const source = b => { const s = ctx.createBufferSource(); s.buffer = b; s.loop = true; s.start(0, Math.random() * b.duration); aArreter.push(s); return s; };
+  const gain = v => { const g = ctx.createGain(); g.gain.value = v; return g; };
+  const filtre = (type, hz, q) => { const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = hz; if(q) f.Q.value = q; return f; };
+  /* un oscillateur très lent qui fait monter et descendre un réglage (la houle, les rafales, la flamme) */
+  const lent = (hz, ampleur, param) => { const o = ctx.createOscillator(), g = gain(ampleur); o.frequency.value = hz; o.connect(g).connect(param); o.start(); aArreter.push(o); };
+
+  if(nom === 'blanc') source(bruit('blanc', 4)).connect(gain(0.3)).connect(sortie);
+  else if(nom === 'rose') source(bruit('rose', 5)).connect(gain(0.85)).connect(sortie);
+  else if(nom === 'brun') source(bruit('brun', 6)).connect(gain(1)).connect(sortie);
+  else if(nom === 'vagues'){
+    /* le corps de la vague : du bruit brun dont le volume et la clarté montent et retombent, à deux rythmes qui ne tombent jamais ensemble */
+    const lp = filtre('lowpass', 480, 0.5), g = gain(0.55);
+    source(bruit('brun', 6)).connect(lp).connect(g).connect(sortie);
+    lent(0.083, 0.38, g.gain); lent(0.131, 0.12, g.gain); lent(0.083, 300, lp.frequency);
+    /* l'écume : un souffle aigu qui arrive avec la vague */
+    const hp = filtre('highpass', 1700), g2 = gain(0.045);
+    source(bruit('rose', 5)).connect(hp).connect(g2).connect(sortie);
+    lent(0.083, 0.04, g2.gain);
+  } else if(nom === 'pluie'){
+    const g = gain(0.5);
+    source(bruit('rose', 5)).connect(filtre('highpass', 450)).connect(filtre('lowpass', 8500)).connect(g).connect(sortie);
+    lent(0.05, 0.07, g.gain);
+    source(eclats('gouttes', 7, 150, 0.001, 0.005, 0.02, 0.45)).connect(filtre('bandpass', 3200, 0.6)).connect(gain(0.7)).connect(sortie);
+  } else if(nom === 'vent'){
+    const bp = filtre('bandpass', 430, 0.9), g = gain(0.95);
+    source(bruit('rose', 5)).connect(bp).connect(g).connect(sortie);
+    lent(0.071, 210, bp.frequency); lent(0.19, 90, bp.frequency); lent(0.113, 0.4, g.gain); lent(0.047, 0.2, g.gain);
+    source(bruit('brun', 6)).connect(filtre('lowpass', 160)).connect(gain(0.35)).connect(sortie);
+  } else if(nom === 'feu'){
+    /* le ronflement de la flamme, qui vacille */
+    const g = gain(0.6);
+    source(bruit('brun', 6)).connect(filtre('lowpass', 420)).connect(g).connect(sortie);
+    lent(0.9, 0.09, g.gain); lent(2.3, 0.05, g.gain); lent(0.17, 0.1, g.gain);
+    /* les crépitements : beaucoup de petits, quelques claquements */
+    source(eclats('crepite', 11, 11, 0.003, 0.028, 0.03, 1)).connect(filtre('highpass', 1100)).connect(gain(0.55)).connect(sortie);
+    source(eclats('braise', 13, 1.3, 0.02, 0.07, 0.15, 0.9)).connect(filtre('bandpass', 520, 0.7)).connect(gain(0.5)).connect(sortie);
+  }
+  return aArreter;
+}
+function arreter(){
+  if(!courant) return;
+  const c = courant, t = ctx.currentTime;
+  courant = null; joue = '';
+  c.sortie.gain.cancelScheduledValues(t); c.sortie.gain.setTargetAtTime(0, t, 0.08);
+  setTimeout(() => { c.noeuds.forEach(x => { try{ x.stop(); }catch(e){} }); try{ c.sortie.disconnect(); }catch(e){} }, 600);
+}
+function jouer(nom){
+  if(!ctx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return false;
+    ctx = new AC(); maitre = ctx.createGain(); analyse = ctx.createAnalyser(); analyse.fftSize = 2048;
+    /* un limiteur avant la sortie : un claquement du feu ne doit jamais surprendre dans des écouteurs */
+    const limite = ctx.createDynamicsCompressor();
+    limite.threshold.value = -8; limite.knee.value = 6; limite.ratio.value = 12; limite.attack.value = 0.003; limite.release.value = 0.2;
+    maitre.connect(limite); limite.connect(analyse); limite.connect(ctx.destination);
+  }
+  if(ctx.state === 'suspended') ctx.resume();
+  arreter();
+  const sortie = ctx.createGain(), t = ctx.currentTime;
+  sortie.gain.value = 0; sortie.connect(maitre);
+  courant = {sortie, noeuds:monter(nom, sortie)}; joue = nom;
+  sortie.gain.setTargetAtTime(1, t, 0.25);
+  regler(etat.vol);
+  etat.son = nom; garder();
+  return true;
+}
+/* le volume : au carré, pour que le curseur suive l'oreille */
+function regler(v){ etat.vol = v; if(maitre) maitre.gain.setTargetAtTime(v * v * 0.9, ctx.currentTime, 0.04); }
+
+/* ---------- le bouton et son panneau ---------- */
+const style = document.createElement('style');
+style.textContent = `
+.bruit{position:fixed;z-index:15;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:8px;font:15px/1.4 var(--f-body,system-ui,sans-serif)}
+.bruit-btn{width:44px;height:44px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line,#D3DBE0);background:var(--panel,#fff);color:var(--ink-2,#465763);cursor:pointer;box-shadow:0 2px 10px rgba(8,12,16,.14)}
+.bruit-btn:hover{border-color:var(--accent,#0F6E8C);color:var(--accent,#0F6E8C)}
+.bruit-btn svg{width:22px;height:22px}
+.bruit.joue .bruit-btn{background:var(--accent,#0F6E8C);border-color:var(--accent,#0F6E8C);color:var(--on-accent,#fff)}
+.bruit.joue .bruit-btn path{transform-box:fill-box;transform-origin:center;animation:bruit-barre 1.1s ease-in-out infinite}
+.bruit.joue .bruit-btn path:nth-child(2){animation-delay:-.3s}
+.bruit.joue .bruit-btn path:nth-child(3){animation-delay:-.6s}
+.bruit.joue .bruit-btn path:nth-child(4){animation-delay:-.15s}
+.bruit.joue .bruit-btn path:nth-child(5){animation-delay:-.45s}
+@keyframes bruit-barre{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.bruit.joue .bruit-btn path{animation:none}}
+.bruit-panneau{width:min(280px,calc(100vw - 28px));padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;border-radius:14px;border:1px solid var(--line,#D3DBE0);background:var(--panel,#fff);color:var(--ink,#13202A);box-shadow:0 8px 28px rgba(8,12,16,.2)}
+.bruit-panneau[hidden]{display:none}
+.bruit-t{margin:0;font:600 12px var(--f-mono,ui-monospace,monospace);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3,#5F717D)}
+.bruit-sons{display:flex;flex-wrap:wrap;gap:6px}
+.bruit-son{min-height:38px;padding:5px 12px;border:1px solid var(--line,#D3DBE0);border-radius:999px;background:var(--panel-2,#F3F6F8);color:inherit;font:inherit;cursor:pointer}
+.bruit-son:hover{border-color:var(--accent,#0F6E8C)}
+.bruit-son[aria-pressed="true"]{background:var(--accent,#0F6E8C);border-color:var(--accent,#0F6E8C);color:var(--on-accent,#fff);font-weight:700}
+.bruit-vol{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2,#465763)}
+.bruit-vol input{flex:1;min-width:0;height:28px;accent-color:var(--accent,#0F6E8C)}
+.bruit-aide{margin:0;font-size:12.5px;line-height:1.35;color:var(--ink-3,#5F717D)}
+@media print{.bruit{display:none}}`;
+document.head.appendChild(style);
+
+const racine = document.createElement('div');
+racine.className = 'bruit';
+racine.innerHTML = '<div class="bruit-panneau" id="bruit-panneau" role="group" aria-label="Bruit de fond" hidden><p class="bruit-t">Bruit de fond<\/p>'
+  + '<div class="bruit-sons">' + SONS.map(([k, t]) => '<button type="button" class="bruit-son" data-son="' + k + '" aria-pressed="false">' + t + '<\/button>').join('') + '<\/div>'
+  + '<label class="bruit-vol"><span>Volume<\/span><input type="range" min="0" max="100" step="1" id="bruit-vol" aria-label="Volume du bruit de fond"><\/label>'
+  + '<p class="bruit-aide" id="bruit-aide">Touche un son pour le lancer, touche-le encore pour l’arrêter.<\/p><\/div>'
+  + '<button type="button" class="bruit-btn" id="bruit-btn" aria-expanded="false" aria-controls="bruit-panneau" aria-label="Bruit de fond pour se concentrer" title="Bruit de fond">'
+  + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 8v8"/><path d="M20 11v2"/><\/svg><\/button>';
+document.body.appendChild(racine);
+const $ = s => racine.querySelector(s), panneau = $('#bruit-panneau'), bouton = $('#bruit-btn'), curseur = $('#bruit-vol');
+curseur.value = Math.round(etat.vol * 100);
+function peindre(){
+  racine.classList.toggle('joue', !!joue);
+  racine.querySelectorAll('[data-son]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.son === joue)));
+  bouton.setAttribute('aria-label', joue ? 'Bruit de fond : ' + SONS.find(([k]) => k === joue)[1] + ' joue' : 'Bruit de fond pour se concentrer');
+}
+function ouvrir(v){ panneau.hidden = !v; bouton.setAttribute('aria-expanded', String(v)); if(v){ const b = racine.querySelector('[data-son="' + (joue || etat.son || 'brun') + '"]'); if(b) b.focus({preventScroll:true}); } }
+/* les gestes restent dans le module : la page ne les voit pas (ses raccourcis clavier non plus) */
+racine.addEventListener('click', e => {
+  e.stopPropagation();
+  const b = e.target.closest('button'); if(!b) return;
+  if(b === bouton){ ouvrir(panneau.hidden); return; }
+  const k = b.dataset.son; if(!k) return;
+  if(joue === k) arreter();
+  else if(!jouer(k)) $('#bruit-aide').textContent = 'Ton navigateur ne peut pas fabriquer de son ici.';
+  peindre();
+});
+racine.addEventListener('keydown', e => { e.stopPropagation(); if(e.key === 'Escape' && !panneau.hidden){ ouvrir(false); bouton.focus({preventScroll:true}); } });
+curseur.addEventListener('input', () => { regler(curseur.value / 100); garder(); });
+document.addEventListener('click', () => { if(!panneau.hidden) ouvrir(false); });
+peindre();
+
+/* pour les tests : ce qui joue, et le niveau mesuré à la sortie (0 = silence) */
+window.__bruit = {SONS, jouer:k => { const r = jouer(k); peindre(); return r; }, arreter:() => { arreter(); peindre(); },
+  etat:() => ({joue, vol:etat.vol, dernier:etat.son, contexte:ctx ? ctx.state : 'aucun'}),
+  niveau(){ if(!analyse) return 0; const d = new Float32Array(analyse.fftSize); analyse.getFloatTimeDomainData(d); let s = 0; for(const x of d) s += x * x; return Math.sqrt(s / d.length); }};
+})();
+
+</script>
+<script>
+(() => {
+  const ICI = 'c81d634ae220';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
