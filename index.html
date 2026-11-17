@@ -337,6 +337,8 @@ const PAGES = {
   anat:[
     {g:'Atelier', t:'Atelier Anatomie M6–M8', u:'atelier-anatomie-m6.html', v:true, ua:2,
      d:'Larmes et clignement (M6) ; cornée, limbe et sclère, cristallin et vitré (M7) ; rétine, voies visuelles, pupille et horloge biologique (M8) : simulateurs, dessins à étiqueter, gestes, fiches de cas. Rappel du jour, guide pas à pas, annotations et tuteur.'},
+    {g:'Exerciseur', t:'Exerciseur Anatomie UA2', u:'drill-anatomie.html', ua:2, x:1,
+     d:'203 questions sur les modules 6 à 8 : système nerveux et réflexes, larmes et clignement, cornée, cristallin et vitré, rétine, voies visuelles et non visuelles, réflexes pupillaires. Le « ? » ouvre la fiche de chaque notion.'},
     {g:'Document', t:'Anatomie M6 — système nerveux, larmes, clignement', u:A('UQFUMh5vm1qkPwrBYmy65V'), ua:2,
      d:'La distillation du module 6, en document.'},
     {g:'Planches', t:'Œil — planches d’anatomie', u:'planches-oeil.html', ua:1,
@@ -721,6 +723,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-17', p:['anat-m6'], t:'Nouvel exerciseur d’Anatomie pour préparer l’évaluation du 20 novembre : 203 questions sur les modules 6 à 8, corrigées tout de suite, avec la fiche « ? » de chaque notion. En progression guidée, il te fait avancer du module 6 au module 8. Tu le trouves sur la page d’accueil, dans « 😢 Les exams me stressent ».'},
     {d:'2026-11-16', p:['adm-m07'], t:'L’exerciseur Bureau suit maintenant la liste de la prof pour l’examen du 23 novembre. Nouveau : « Rappels UA1 » (les prestataires et leurs titres, le parcours patient, ce que contient une ordonnance, la myopie axiale ou réfractive, les prismes) et un exercice à l’envers, de la Rx SV à la Rx multifocale. En progression guidée, tu commences par les rappels.'},
     {d:'2026-11-15', p:['to-m56', 'adm-m07', 'opt-ua2'], t:'Dans les trois exerciseurs (« Les exams me stressent »), un interrupteur tout en haut : « Progression guidée ». Allumé, il te fait avancer module par module, sans rien choisir : une notion réussie sort de ta pile, et quand la pile est vide, le module suivant arrive.'},
     {d:'2026-11-15', p:['to-m56'], t:'Exerciseur de Tests ophtalmiques : les calculs de pression corrigée te montrent maintenant la table de la prof (épaisseur de la cornée → correction), juste sous la question. À toi d’y trouver la bonne ligne et le bon signe. Le « ? » d’« Épaisseur et pression » la montre aussi, et celui des types de verres montre le tableau des âges.'},
@@ -888,7 +891,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'a82ebe4bf57d';
+  const ICI = 'fca5ef133ff9';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
