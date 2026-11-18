@@ -192,6 +192,15 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
 .guide .chemin i{font-style:normal;padding:1px 8px;border-radius:999px;background:var(--panel)}
 .guide .chemin i.fait{color:var(--ok)}
 .guide .chemin i.ici{background:var(--accent);color:var(--on-accent)}
+.guide .chemin i.hors{background:none;border:1px dashed var(--ink-3);text-decoration:line-through;text-decoration-thickness:1px}
+/* les notions reportées : la prof ne les évalue pas à cet examen. Éteint par défaut */
+.reporte{border-style:dashed;border-color:var(--warn);background:var(--warn-soft)}
+.reporte.on{border-style:solid;border-color:var(--warn);background:var(--warn-soft)}
+.reporte .inter[aria-checked="true"]{background:var(--warn);border-color:var(--warn)}
+.reporte .badge,.sujet .hors-ex{align-self:flex-start;padding:1px 9px;border-radius:999px;background:var(--warn);color:var(--panel);font:700 11.5px var(--f-mono);font-style:normal;letter-spacing:.05em;text-transform:uppercase}
+.mod-t.hors-t{color:var(--warn)}
+.hors-n{margin:0 0 4px;font-size:13px;line-height:1.35;color:var(--ink-2)}
+.inter:disabled{opacity:.45;cursor:not-allowed}
 /* une table du cours, dans la question ou dans la fiche */
 .tableau{display:flex;flex-direction:column;gap:6px}
 .tableau-t{margin:0;font-size:14px;font-weight:700;color:var(--ink-2)}
@@ -211,6 +220,27 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
 .figure{margin:0;display:flex;flex-direction:column;gap:5px;align-items:center}
 .figure svg{display:block;width:100%;max-width:480px;height:auto;border-radius:10px;border:1px solid var(--line);background:#FAFAF7}
 .figure figcaption{font-size:13px;color:var(--ink-3);text-align:center}
+/* la loupe, à côté de la conclusion : elle ouvre le dessin du cours, avec ses noms */
+.conclu{display:flex;align-items:flex-start;gap:10px}
+.conclu #fb{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.modele-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.loupe{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:0;min-width:52px;min-height:52px;padding:5px 8px;border:1.5px solid var(--accent);border-radius:14px;background:var(--accent-soft);color:var(--accent);font:700 11.5px/1.2 var(--f-mono)}
+.loupe:hover{background:var(--accent);color:var(--on-accent)}
+.expl.large{width:min(600px,100%)}
+.planche{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.planche-z{width:100%;overflow:auto;border-radius:10px;border:1px solid var(--line);background:#FAFAF7}
+.planche-z svg{display:block;width:100%;height:auto;max-height:72vh}
+.planche.gros .planche-z{max-height:76vh}
+.planche.gros .planche-z svg{width:200%;max-height:none}
+.expl a{color:var(--accent)}
+.ici-n{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.ici-n i{flex:none;width:16px;height:16px;border-radius:50%;border:3px solid #D92D20}
+.noms{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.noms li{display:flex;gap:10px;align-items:baseline;padding:6px 10px;border-radius:9px;background:var(--panel-2);font-size:15.5px;line-height:1.35}
+.noms li.ici{box-shadow:inset 0 0 0 2px #D92D20}
+.noms b{flex:none;min-width:24px;text-align:center;font:700 14px var(--f-mono)}
+.noms small{display:block;color:var(--ink-2);font-size:13.5px}
+.fiche-dessin{display:flex;flex-direction:column;gap:8px}
 /* courte réponse : on écrit, on compare à la réponse attendue, on se corrige élément par élément */
 .court-zone{display:flex;flex-direction:column;gap:6px}
 .court{width:100%;min-height:104px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);font:400 16.5px/1.5 var(--f-body);resize:vertical}
@@ -281,6 +311,7 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
     <p id="sous-titre"></p>
   </header>
   <div class="guide" id="guide"></div>
+  <div class="guide reporte" id="reportes" hidden></div>
   <div class="bande" role="group" aria-label="Ce que tu pratiques" id="portees"></div>
   <div class="formats" id="formats" hidden></div>
   <section class="maitrise" id="progression" aria-labelledby="t-prog"></section>
@@ -356,7 +387,7 @@ function maitriseFamille(e){
   for(let i = h.length - 1; i >= 0; i--){ a += w * h[i]; b += w; k += h[i]; w *= 0.8; }
   return Math.min(0.95, (a + 1) / (b + 2) * Math.min(1, k / 3));
 }
-function maitriseTout(fam){ const fs = Object.keys(FAMILLES); return Math.round(fs.reduce((x, f) => x + maitriseFamille(fam[f]), 0) / fs.length * 1000) / 10; }
+function maitriseTout(fam, fs = Object.keys(FAMILLES)){ if(!fs.length) return 0; return Math.round(fs.reduce((x, f) => x + maitriseFamille(fam[f]), 0) / fs.length * 1000) / 10; }
 function vitesse(journal){
   const j = (journal || []).slice(-40), n = j.length;
   if(n < 8) return null;
@@ -402,15 +433,25 @@ function choisirType(l, etat, rnd = Math.random){
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const memo = {get(){ try{ return JSON.parse(localStorage.getItem(COURS.cle)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(COURS.cle, JSON.stringify(v)); }catch(e){} }};
-const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false, format:''});
+const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false, format:'', reportes:false});
 const SAUVE = memo.get();
 let D = Object.assign(VIDE(), SAUVE || {});
 const sauver = () => memo.set(D);
 const MODS = [...new Set(BANQUE.familles.map(f => f.mod))].sort((a, b) => a - b);
 /* un module peut porter un nom (cours.json « modules ») : « Rappels UA1 » plutôt que « Module 6 » */
 const NOMS_MOD = COURS.modules || {};
-const modLong = m => (NOMS_MOD[m] && NOMS_MOD[m].long) || 'Module ' + m;
-const modCourt = m => (NOMS_MOD[m] && NOMS_MOD[m].court) || 'M' + m;
+/* des notions reportées (cours.json « reportes ») : la prof a annoncé qu'elle ne les évalue pas à cet examen. Éteintes par
+   défaut : aucune question, hors de la progression guidée. Allumées : elles viennent après tout le reste (une étape de
+   plus, à la fin du chemin). Allumées ou non, elles ne comptent jamais dans la maîtrise, qui dit où tu en es pour l'examen */
+const REP = COURS.reportes || null;
+const HORS = new Set(REP ? (REP.familles || []).filter(f => FAMILLES[f]) : []);
+const APRES = 'apres';   /* l'étape des notions reportées, dans la progression guidée */
+D.reportes = D.reportes === true && HORS.size > 0;
+const hors = f => HORS.has(f) && !D.reportes;
+const COMPTEES = Object.keys(FAMILLES).filter(f => !HORS.has(f));
+const pctTout = () => maitriseTout(D.fam, COMPTEES);
+const modLong = m => m === APRES ? (REP && REP.long) || 'Notions reportées' : (NOMS_MOD[m] && NOMS_MOD[m].long) || 'Module ' + m;
+const modCourt = m => m === APRES ? (REP && REP.court) || 'Reporté' : (NOMS_MOD[m] && NOMS_MOD[m].court) || 'M' + m;
 const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, modLong(m)]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
 if(/^\d+$/.test(String(D.portee))) D.portee = +D.portee;
 if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'tout';
@@ -418,27 +459,32 @@ if(!PORTEES.some(([k]) => k === D.portee)) D.portee = 'tout';
 if(!Array.isArray(D.err)) D.err = [];
 if(!Array.isArray(D.choix)) D.choix = [];
 D.choix = D.choix.filter(f => FAMILLES[f]);
-if(D.portee === 'perso' && !D.choix.length) D.portee = 'tout';
+if(D.portee === 'perso' && !D.choix.some(f => !hors(f))) D.portee = 'tout';
 /* un nouvel étudiant (rien d'enregistré) commence en progression guidée ; les autres gardent leur choix */
 D.guide = SAUVE ? D.guide === true : true;
 /* la progression guidée : le premier module qui a une notion pas encore réussie ; sa pile = ses notions pas encore
    réussies. Une notion réussie sort de la pile ; la pile vide, le module suivant arrive. Tout réussi : tout l'UA2. */
 const AVEC = new Set(TYPES.map(t => t.fam));
-const famsDuModule = m => BANQUE.familles.filter(f => f.mod === m && AVEC.has(f.id)).map(f => f.id);
-const modGuide = () => MODS.find(m => famsDuModule(m).some(f => !reussi(D.fam[f])));
-const dansGuide = (t, m = modGuide()) => m === undefined || (FAMILLES[t.fam].mod === m && !reussi(D.fam[t.fam]));
+const famsDuModule = m => BANQUE.familles.filter(f => AVEC.has(f.id) && (m === APRES ? HORS.has(f.id) : f.mod === m && !HORS.has(f.id))).map(f => f.id);
+const etapesGuide = () => MODS.filter(m => famsDuModule(m).length).concat(D.reportes && famsDuModule(APRES).length ? [APRES] : []);
+const etapeDe = f => HORS.has(f) ? APRES : FAMILLES[f].mod;
+const modGuide = () => etapesGuide().find(m => famsDuModule(m).some(f => !reussi(D.fam[f])));
+const dansGuide = (t, m = modGuide()) => !hors(t.fam) && (m === undefined || (etapeDe(t.fam) === m && !reussi(D.fam[t.fam])));
+/* une portée « Module n » disparaît quand toutes ses notions sont reportées et éteintes */
+const moduleVide = m => !TYPES.some(t => t.mod === m && !hors(t.fam));
+if(typeof D.portee === 'number' && moduleVide(D.portee)) D.portee = 'tout';
 /* « Mes erreurs » : les questions dont la dernière réponse comptée était fausse (les générées n'y vont pas) */
 /* le format (cours.json « formats ») : une seule sorte de question à la fois, par-dessus la portée */
 const FORMATS = (COURS.formats && COURS.formats.liste) || [];
 if(!FORMATS.some(([k]) => k === D.format)) D.format = '';
 const dansFormat = t => !D.format || t.k === D.format;
-const dansScope = t => D.guide ? dansGuide(t) : D.portee === 'perso' ? D.choix.includes(t.fam)
+const dansScope = t => !hors(t.fam) && (D.guide ? dansGuide(t) : D.portee === 'perso' ? D.choix.includes(t.fam)
   : D.portee === 'erreurs' ? !t.gen && D.it[t.id] && D.it[t.id].der === 0
-  : D.portee === 'tout' || t.mod === D.portee;
+  : D.portee === 'tout' || t.mod === D.portee);
 const dansPortee = t => dansFormat(t) && dansScope(t);
 const famillesActives = () => new Set(TYPES.filter(dansScope).map(t => t.fam));
 function basculer(f){
-  const act = D.portee === 'erreurs' && !D.guide ? new Set(Object.keys(FAMILLES)) : famillesActives(), toutes = Object.keys(FAMILLES);
+  const toutes = Object.keys(FAMILLES).filter(x => !hors(x)), act = D.portee === 'erreurs' && !D.guide ? new Set(toutes) : famillesActives();
   if(f === '*'){ if(act.size === toutes.length) act.clear(); else toutes.forEach(x => act.add(x)); }
   else if(act.has(f)) act.delete(f); else act.add(f);
   const etaitGuide = D.guide;
@@ -496,7 +542,7 @@ const notions = n => n + ' notion' + (n > 1 ? 's' : '');
 function avisGuide(m, avant){
   if(m === undefined) return {c:'ok', t:'Tous les modules sont réussis ✓. La progression guidée passe en entretien : tout l’UA2, mêlé.'};
   const k = resteGuide(m), n = famsDuModule(m).length;
-  if(typeof avant === 'number') return {c:'ok', t:modLong(avant) + ' : terminé ✓. Ensuite, ' + modLong(m) + ' : ' + notions(k) + ' à réussir.'};
+  if(typeof avant === 'number' && !resteGuide(avant)) return {c:'ok', t:modLong(avant) + ' : terminé ✓. Ensuite, ' + modLong(m) + ' : ' + notions(k) + ' à réussir.' + (m === APRES && REP.badge ? ' Rappel : ' + REP.badge.toLowerCase() + '.' : '')};
   return {c:'info', t:'Progression guidée · ' + modLong(m) + ' : ' + notions(k) + ' à réussir' + (k < n ? ' (sur ' + n + ')' : '') + '. Chacune sort de ta pile dès qu’elle est réussie.'};
 }
 /* une table du cours (carte.tableau) : « paires » (deux colonnes, en grille compacte) ou un tableau ordinaire.
@@ -517,10 +563,48 @@ const SORTES = {qcm:'Choix multiple', vf:'Vrai ou faux', num:'Calcul', ordre:'Mi
 /* une figure du cours : posée après nb(), pour ne pas toucher au SVG */
 const figHtml = id => (FIGURES[id] ? '<figure class="figure">@@FIG:' + id + '@@' + (FIGURES[id].legende ? '<figcaption>' + esc(FIGURES[id].legende) + '</figcaption>' : '') + '</figure>' : '');
 const poserFigures = h => h.replace(/@@FIG:([\w-]+)@@/g, (m, id) => FIGURES[id].svg);
-const modeleHtml = p => '<div class="modele"><h3>La réponse attendue</h3><p>' + esc(p.rep) + '</p>' + (p.figureRep ? figHtml(p.figureRep) : '') + '</div>';
+const modeleHtml = (p, loupe) => '<div class="modele"><div class="modele-h"><h3>La réponse attendue</h3>' + (loupe ? loupeHtml(p) : '') + '</div><p>' + esc(p.rep) + '</p>' + (p.figureRep ? figHtml(p.figureRep) : '') + '</div>';
+/* la loupe : le dessin du cours qui va avec la question (construire.py pose « voir » sur chaque question qui en a un).
+   Elle n'apparaît qu'une fois la réponse donnée : le dessin porte les noms */
+const LOUPE = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="10" cy="10" r="6.4" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15,15 L21,21" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+const planche = v => (v && FIGURES[v.p]) || null;
+const loupeHtml = p => planche(p.voir) ? '<button type="button" class="loupe" data-a="voir" aria-label="Voir le dessin : ' + esc(planche(p.voir).titre || 'le dessin du cours') + '" title="Voir le dessin du cours">' + LOUPE + '<span>Voir</span></button>' : '';
+/* le dessin, avec ses noms ; v.r : les repères dont parle la question, entourés */
+function plancheHtml(v){
+  const F = planche(v), ici = new Set(v.r || []);
+  /* un repère écrit sur le dessin (une lettre, un chiffre) se montre ; une clé (« limbe ») ne sert qu'à entourer */
+  const noms = (F.noms || []).map(([l, n, d]) => '<li' + (ici.has(l) ? ' class="ici"' : '') + '>' + (/^[A-Za-z0-9?]{1,2}$/.test(l) ? '<b>' + esc(l) + '</b>' : '<b aria-hidden="true">·</b>') + '<span>' + esc(n) + (d ? '<small>' + esc(d) + '</small>' : '') + '</span></li>').join('');
+  const entoure = [...ici].some(k => F.pos && F.pos[k]);
+  return '<div class="planche" data-planche="' + esc(v.p) + '" data-ici="' + esc([...ici].join(' ')) + '"><div class="planche-z"></div>'
+    + '<button type="button" class="lien petit" data-a="zoom" aria-pressed="false">Agrandir le dessin</button></div>'
+    + (entoure ? '<p class="ici-n"><i aria-hidden="true"></i>Entouré en rouge : ce dont parle la question.</p>' : '')
+    + (F.legende ? '<p>' + esc(F.legende) + '</p>' : '') + (noms ? '<ul class="noms">' + noms + '</ul>' : '')
+    + (F.credit ? '<small>Image : ' + esc(F.credit) + '.' + (F.lien ? ' <a href="' + esc(F.lien) + '" target="_blank" rel="noopener">Wikimedia Commons</a>' : '') + '</small>' : '');
+}
+/* le SVG est posé après nb(), pour ne pas y toucher ; les repères entourés s'ajoutent par-dessus */
+function poserPlanches(racine){
+  racine.querySelectorAll('[data-planche]').forEach(z => {
+    const F = FIGURES[z.dataset.planche], ici = z.dataset.ici ? z.dataset.ici.split(' ') : [];
+    const vb = (F.svg.match(/viewBox="([^"]+)"/) || [0, '0 0 460 300'])[1].split(/[\s,]+/).map(Number), trait = (vb[2] / 130).toFixed(1);
+    /* une place : [x, y] ou [x, y, r] (un cercle), [x, y, l, h] (un cadre) ; ou une liste de places */
+    const une = q => q.length > 3
+      ? '<rect x="' + (q[0] - 5) + '" y="' + (q[1] - 5) + '" width="' + (q[2] + 10) + '" height="' + (q[3] + 10) + '" rx="12" fill="none" stroke="#D92D20" stroke-width="' + trait + '"/>'
+      : '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (q[2] || 19) + '" fill="none" stroke="#D92D20" stroke-width="' + trait + '"/>';
+    const marques = ici.filter(k => F.pos && F.pos[k]).map(k => (Array.isArray(F.pos[k][0]) ? F.pos[k] : [F.pos[k]]).map(une).join('')).join('');
+    z.querySelector('.planche-z').innerHTML = F.svg.replace(/<\/svg>\s*$/, marques + '</svg>');
+    /* un dessin large, sur un petit écran : il s'ouvre agrandi (on le fait défiler), sinon ses mots sont illisibles */
+    if(vb[2] / vb[3] > 1.9 && window.innerWidth < 560){ z.classList.add('gros'); const b = z.querySelector('[data-a="zoom"]'); b.setAttribute('aria-pressed', 'true'); b.textContent = 'Réduire le dessin'; }
+  });
+}
+function voir(depuis){
+  const v = S && S.p && S.p.voir; if(!planche(v)) return;
+  fermerExpl(); retour = depuis || null;
+  ouvrirFond(planche(v).titre || 'Le dessin du cours', plancheHtml(v), 'large');
+  $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
+}
 function peindre(){
   const z = $('#scene'), p = S.p, fam = FAMILLES[p.type.fam];
-  let h = '<div class="sujet"><span class="chip">' + esc(fam.t) + '</span>' + qm(fam.id) + '<span class="sorte">' + SORTES[p.k] + '</span></div>';
+  let h = '<div class="sujet"><span class="chip">' + esc(fam.t) + '</span>' + qm(fam.id) + '<span class="sorte">' + SORTES[p.k] + '</span>' + (HORS.has(fam.id) && REP.badge ? '<span class="sorte hors-ex">' + esc(REP.badge) + '</span>' : '') + '</div>';
   SESS.avis.forEach(a => { h += msg(a.t, a.c); }); SESS.avis = [];
   h += '<p class="enonce">' + esc(p.q) + '</p>';
   if(p.figure) h += figHtml(p.figure);
@@ -528,7 +612,7 @@ function peindre(){
     ? {pied:'Elle est donnée avec la question : t’en servir ne coûte pas de point. Ce qui compte, c’est la bonne ligne et le bon signe.'}
     : {ligne:p.ligne, pied:p.ligne ? 'Encadrée : la ligne de cette question.' : ''});
   if(S.etape === 'question') h += question(p);
-  else h += '<div id="fb">' + S.messages.join('') + '</div>' + finHtml(p);
+  else h += '<div class="conclu"><div id="fb">' + S.messages.join('') + '</div>' + loupeHtml(p) + '</div>' + finHtml(p);
   z.innerHTML = poserFigures(nb(h));
   peindreCote();
   if(S.etape === 'question'){
@@ -558,7 +642,7 @@ function question(p){
   if(p.k === 'court'){
     if(!S.revele) return '<div class="court-zone"><label for="court" class="brouillon-t">Ta réponse, comme sur ta copie <span class="facultatif">(ici ou sur papier ; ensuite tu compares)</span></label><textarea id="court" class="court" rows="4" autocomplete="off">' + esc(S.ecrit || '') + '</textarea></div>' + fb
       + '<div class="bas"><button type="button" class="bouton plein" data-a="reveler">Voir la réponse attendue</button><button type="button" class="lien" data-a="passer">Passer cette question</button>' + BOUTON_COPIER + '</div>';
-    return (S.ecrit ? '<p class="ta-rep">' + esc(S.ecrit) + '</p>' : '') + modeleHtml(p)
+    return (S.ecrit ? '<p class="ta-rep">' + esc(S.ecrit) + '</p>' : '') + modeleHtml(p, true)
       + '<p class="suite-t">Corrige-toi : coche ce que ta réponse contenait vraiment. Tout coché = un point.</p><ul class="points">' + p.points.map((t, i) => '<li><label><input type="checkbox" data-pt="' + i + '"><span>' + esc(t) + '</span></label></li>').join('') + '</ul>' + fb
       + '<div class="bas"><button type="button" class="bouton plein" data-a="corriger">J’ai corrigé ma réponse</button>' + BOUTON_COPIER + '</div>';
   }
@@ -702,7 +786,7 @@ function abandonner(){
    « jumelle » (entraînement), « rate » (faux, ou juste avec de l'aide : la série repart de zéro) */
 function conclure(bon){
   const p = S.p, f = p.type.fam, e0 = D.fam[f];
-  const avant = {s:e0 ? Math.min(3, e0.serie) : 0, r:reussi(e0), pct:maitriseTout(D.fam)};
+  const avant = {s:e0 ? Math.min(3, e0.serie) : 0, r:reussi(e0), pct:pctTout()};
   const net = bon && !S.aide && !S.lu && !S.jumelle;
   const sorte = S.jumelle ? 'jumelle' : net ? 'point' : bon && S.lu && !S.aide ? 'neutre' : 'rate';
   S.etape = 'fini'; S.bon = bon;
@@ -711,8 +795,8 @@ function conclure(bon){
   else if(p.k !== 'schema') S.messages = S.messages.concat(msg('La réponse : ' + repTxt(p) + '.', 'warn'));
   noter(p, net, sorte === 'neutre' || sorte === 'jumelle');
   const e1 = D.fam[f];
-  const mf = FAMILLES[f].mod;
-  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:maitriseTout(D.fam)},
+  const mf = etapeDe(f);
+  S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:pctTout()},
     guide:D.guide ? {m:mf, reste:resteGuide(mf), suivant:modGuide()} : null};
   peindre();
 }
@@ -732,7 +816,7 @@ function noter(p, net, neutre){
     }
     if(!SESS.rappels.some(r => r.id === t.id)) SESS.rappels.push({id:t.id, kc:t.kc, fam:t.fam, dans:2 + Math.floor(Math.random() * 3)});
   }
-  if(!neutre) D.journal = (D.journal || []).concat({t:Date.now(), p:maitriseTout(D.fam)}).slice(-300);
+  if(!neutre && !HORS.has(t.fam)) D.journal = (D.journal || []).concat({t:Date.now(), p:pctTout()}).slice(-300);
   sauver();
 }
 const pts = (s, neuf, perdus) => '<span class="ser" aria-hidden="true">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : i < perdus ? 'perdu' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span>';
@@ -773,16 +857,18 @@ function expliquer(f, depuis){
   const x = FAMILLES[f], c = x.carte || {}, enCours = S && S.etape === 'question';
   if(enCours) S.lu = true;
   retour = depuis || null;
-  ouvrirFond(x.t, '<p>' + esc(c.quoi || '') + '</p>' + tableauHtml(c.tableau) + (c.quand ?'<div><h3>Quand y penser</h3><p>' + esc(c.quand) + '</p></div>' : '')
+  ouvrirFond(x.t, (HORS.has(f) && REP.fiche ? msg(REP.fiche, 'warn') : '') + '<p>' + esc(c.quoi || '') + '</p>' + tableauHtml(c.tableau) + (c.quand ?'<div><h3>Quand y penser</h3><p>' + esc(c.quand) + '</p></div>' : '')
     + (c.exemple ? '<div><h3>Un exemple du cours</h3><p class="ex">' + esc(c.exemple) + '</p></div>' : '')
     + (c.piege ? '<div class="piege"><h3>Le piège</h3><p>' + esc(c.piege) + '</p></div>' : '')
+    + (planche(x.voir) ? '<div class="fiche-dessin"><h3>Le dessin</h3>' + plancheHtml(x.voir) + '</div>' : '')
     + '<small>' + esc(c.source ? 'Source : ' + c.source + '.' : '') + (enCours ? ' Réussie après cette lecture, cette question ne comptera pas dans ta série, mais elle ne la cassera pas.' : '') + '</small>');
   $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
 }
-function ouvrirFond(titre, corps){
+function ouvrirFond(titre, corps, cls){
   fond = document.createElement('div');
   fond.className = 'expl-fond';
-  fond.innerHTML = nb('<section class="expl" role="dialog" aria-modal="true" aria-labelledby="expl-t"><div class="haut"><h2 id="expl-t">' + esc(titre) + '</h2><button type="button" class="bouton" data-a="fermer-expl">Fermer</button></div>' + corps + '</section>');
+  fond.innerHTML = nb('<section class="expl' + (cls ? ' ' + cls : '') + '" role="dialog" aria-modal="true" aria-labelledby="expl-t"><div class="haut"><h2 id="expl-t">' + esc(titre) + '</h2><button type="button" class="bouton" data-a="fermer-expl">Fermer</button></div>' + corps + '</section>');
+  poserPlanches(fond);
   document.body.appendChild(fond);
 }
 function fermerExpl(){
@@ -848,7 +934,7 @@ async function copier(b){
 /* ---------- la colonne ---------- */
 const virg = (x, d = 1) => x.toFixed(d).replace('.', ',');
 function peindreProgression(){
-  const fs = Object.keys(FAMILLES), pct = maitriseTout(D.fam), pl = n => (n > 1 ? 's' : '');
+  const fs = COMPTEES, pct = pctTout(), pl = n => (n > 1 ? 's' : '');
   const nR = fs.filter(f => reussi(D.fam[f])).length, nV = fs.filter(f => !D.fam[f] || !D.fam[f].n).length, nC = fs.length - nR - nV;
   const v = vitesse(D.journal), pj = parJour(D.journal), nj = (D.journal || []).length;
   const j0 = new Date(), [ya, mo, da] = COURS.examen.date.split('-').map(Number), jours = Math.round((new Date(ya, mo - 1, da) - new Date(j0.getFullYear(), j0.getMonth(), j0.getDate())) / 864e5);
@@ -872,50 +958,66 @@ function peindreProgression(){
     + '<div class="jauge" aria-hidden="true"><i style="width:' + Math.max(0, Math.min(100, pct)) + '%"></i></div>'
     + '<span class="m-rep">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir</span><span class="m-vit">' + esc(court) + '</span></div>'
     + '<details class="calcul"' + (ouvert ? ' open' : '') + '><summary>Détails et calcul</summary><p class="seul-mobile">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir. ' + esc(court) + '.</p><p>' + esc(long) + '</p>'
-    + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.</p></details>';
+    + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.' + (HORS.size ? ' ' + esc(REP.calcul || 'Les notions reportées ne comptent pas dans ce %.') : '') + '</p></details>';
 }
 function peindreFormats(){
   const z = $('#formats');
   if(!FORMATS.length){ z.hidden = true; return; }
   z.hidden = false;
-  const n = k => TYPES.filter(t => t.k === k).length;
+  const n = k => TYPES.filter(t => t.k === k && !hors(t.fam)).length;
   z.innerHTML = nb((COURS.formats.txt ? '<p>' + esc(COURS.formats.txt) + '</p>' : '') + '<div class="bande" role="group" aria-label="Le format des questions">'
     + [['', 'Tous les formats']].concat(FORMATS).map(([k, t]) => '<button type="button" class="puce" data-fmt="' + k + '" aria-pressed="' + ((D.format || '') === k) + '">' + esc(t) + (k ? '<span class="n">' + n(k) + '</span>' : '') + '</button>').join('') + '</div>');
 }
 function peindreGuide(){
-  const z = $('#guide'), on = D.guide, m = on ? modGuide() : undefined, mods = MODS.filter(x => famsDuModule(x).length);
+  const z = $('#guide'), on = D.guide, m = on ? modGuide() : undefined, mods = etapesGuide();
   let sous;
   if(!on) sous = 'Module par module, sans rien choisir : ce que tu réussis sort de ta pile, puis le module suivant arrive.';
   else if(m === undefined) sous = 'Tout est réussi ✓. Entretien : tout l’UA2, mêlé.';
   else { const k = resteGuide(m), n = famsDuModule(m).length; sous = modLong(m) + ' : ' + (n - k) + ' sur ' + n + ' réussie' + (n - k > 1 ? 's' : '') + ', ' + notions(k) + ' dans ta pile.'; }
-  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">' + esc(modCourt(x)) + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + '</span>' : '';
+  const chemin = on ? '<span class="chemin" aria-hidden="true">' + mods.map(x => { const k = resteGuide(x), n = famsDuModule(x).length; return '<i class="' + (!k ? 'fait' : x === m ? 'ici' : '') + '">' + esc(modCourt(x)) + (!k ? ' ✓' : x === m ? ' · ' + (n - k) + '/' + n : '') + '</i>'; }).join('') + (HORS.size && !D.reportes && REP.chemin ? '<i class="hors">' + esc(REP.chemin) + '</i>' : '') + '</span>' : '';
   z.classList.toggle('on', on);
   z.innerHTML = '<button type="button" class="inter" role="switch" id="guide-sw" aria-checked="' + on + '" data-a="guide" aria-labelledby="guide-t" aria-describedby="guide-s"><span></span></button><label for="guide-sw"><b id="guide-t">Progression guidée</b><span id="guide-s">' + esc(sous) + '</span>' + chemin + '</label>';
 }
+/* l'interrupteur des notions reportées : éteint par défaut, et il dit pourquoi */
+function peindreReportes(){
+  const z = $('#reportes');
+  if(!HORS.size){ z.hidden = true; return; }
+  const on = D.reportes, n = HORS.size;
+  z.hidden = false; z.classList.toggle('on', on);
+  const ces = n > 1 ? 'ces ' + n + ' notions' : 'cette notion';
+  const suite = on ? (REP.allume || 'Allumé : ' + ces + (n > 1 ? ' reviennent' : ' revient') + ' dans tes questions (en progression guidée, après tout le reste), sans compter dans ta maîtrise.')
+    : (REP.eteint || 'Éteint : aucune question sur ' + ces + ', et rien n’en compte dans ta maîtrise.');
+  z.innerHTML = nb('<button type="button" class="inter" role="switch" id="rep-sw" aria-checked="' + on + '" data-a="reportes" aria-labelledby="rep-t" aria-describedby="rep-s"><span></span></button><label for="rep-sw">'
+    + (REP.badge ? '<em class="badge">' + esc(REP.badge) + '</em>' : '') + '<b id="rep-t">' + esc(REP.titre || 'Notions reportées') + '</b><span id="rep-s">' + esc(REP.txt || '') + ' ' + esc(suite) + '</span></label>');
+}
 function peindreCote(){
-  const act = famillesActives(), nbf = Object.keys(FAMILLES).length, tout = act.size === nbf, pl = n => (n > 1 ? 's' : '');
+  const act = famillesActives(), nbf = Object.keys(FAMILLES).filter(f => !hors(f)).length, tout = act.size === nbf, pl = n => (n > 1 ? 's' : '');
   const b = S && S.etape === 'fini' && S.bilan ? S.bilan : null;
   let h = '<div class="fam tout"><button type="button" class="inter" role="switch" aria-checked="' + tout + '" data-tg="*" aria-label="Toutes les notions"><span></span></button><span class="nom">Toutes les notions<small>' + act.size + ' sur ' + nbf + '</small></span><span></span></div>';
+  const ligne = F => {
+    const f = F.id, verrou = hors(f), on = act.has(f), e = D.fam[f], essaye = !!(e && e.n), r = reussi(e), s = e ? Math.min(3, e.serie) : 0;
+    const neuf = D.dernier && D.dernier.fam === f && D.dernier.i < s ? D.dernier.i : -1;
+    const etat = r ? 'réussie ✓' : verrou ? '' : !essaye ? 'à découvrir' : e.serie >= 3 ? 'encore ' + (5 - e.n) + ' pour réussie' : '';
+    const v = b && b.fam === f ? b : null, cls = v ? ' vient ' + (v.sorte === 'point' ? 'ok' : v.sorte === 'rate' ? 'perdu' : 'neutre') : '';
+    const tag = v ? (v.sorte === 'point' ? '+1' : v.sorte === 'rate' && v.avant.s ? 'à zéro' : '') : '';
+    return '<div class="fam' + (on ? '' : ' eteinte') + cls + '"><button type="button" class="inter" role="switch" aria-checked="' + on + '"' + (verrou ? ' disabled' : ' data-tg="' + f + '"') + ' aria-label="Pratiquer : ' + esc(F.t) + '"><span></span></button>'
+      + '<span class="nom">' + esc(F.t) + (etat ? '<small' + (r ? ' class="bon"' : '') + '>' + etat + '</small>' : '') + '</span>'
+      + '<span class="fin">' + (tag ? '<em class="tag">' + tag + '</em>' : '') + qm(f) + '<span class="ser" role="img" aria-label="' + s + ' de suite sur 3' + (neuf >= 0 ? ', dont ton dernier point' : '') + '">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span></span></div>';
+  };
   MODS.forEach(m => {
-    h += '<p class="mod-t">' + esc(modLong(m)) + '</p>';
-    BANQUE.familles.filter(f => f.mod === m).forEach(F => {
-      const f = F.id, on = act.has(f), e = D.fam[f], essaye = !!(e && e.n), r = reussi(e), s = e ? Math.min(3, e.serie) : 0;
-      const neuf = D.dernier && D.dernier.fam === f && D.dernier.i < s ? D.dernier.i : -1;
-      const etat = r ? 'réussie ✓' : !essaye ? 'à découvrir' : e.serie >= 3 ? 'encore ' + (5 - e.n) + ' pour réussie' : '';
-      const v = b && b.fam === f ? b : null, cls = v ? ' vient ' + (v.sorte === 'point' ? 'ok' : v.sorte === 'rate' ? 'perdu' : 'neutre') : '';
-      const tag = v ? (v.sorte === 'point' ? '+1' : v.sorte === 'rate' && v.avant.s ? 'à zéro' : '') : '';
-      h += '<div class="fam' + (on ? '' : ' eteinte') + cls + '"><button type="button" class="inter" role="switch" aria-checked="' + on + '" data-tg="' + f + '" aria-label="Pratiquer : ' + esc(F.t) + '"><span></span></button>'
-        + '<span class="nom">' + esc(F.t) + (etat ? '<small' + (r ? ' class="bon"' : '') + '>' + etat + '</small>' : '') + '</span>'
-        + '<span class="fin">' + (tag ? '<em class="tag">' + tag + '</em>' : '') + qm(f) + '<span class="ser" role="img" aria-label="' + s + ' de suite sur 3' + (neuf >= 0 ? ', dont ton dernier point' : '') + '">' + [0, 1, 2].map(i => '<i class="' + (i < s ? 'on' : '') + (i === neuf ? ' neuf' : '') + '"></i>').join('') + '</span></span></div>';
-    });
+    const l = BANQUE.familles.filter(f => f.mod === m && !HORS.has(f.id));
+    if(l.length) h += '<p class="mod-t">' + esc(modLong(m)) + '</p>' + l.map(ligne).join('');
   });
-  $('#carte').innerHTML = h;
+  /* les notions reportées : à part, à la fin ; verrouillées tant que leur interrupteur (en haut) est éteint */
+  if(HORS.size) h += '<p class="mod-t hors-t">' + esc(modLong(APRES)) + '</p><p class="hors-n">' + esc(D.reportes ? (REP.carteOn || 'Allumées : elles ne comptent pas dans ta maîtrise.') : (REP.carteOff || 'Éteintes : aucune question là-dessus. L’interrupteur est en haut de la page.')) + '</p>' + BANQUE.familles.filter(f => HORS.has(f.id)).map(ligne).join('');
+  $('#carte').innerHTML = nb(h);
   peindreGuide();
+  peindreReportes();
   peindreFormats();
   peindreProgression();
   $('#erreurs').innerHTML = D.err.length ? D.err.slice(0, 5).map(x => '<li><span>' + esc(x.q.length > 110 ? x.q.slice(0, 108) + '…' : x.q) + '</span><span class="r">→ ' + esc(x.r.length > 120 ? x.r.slice(0, 118) + '…' : x.r) + '</span></li>').join('') : '<li class="vide">Rien encore. Tes réponses ratées apparaîtront ici, avec la bonne.</li>';
-  const nErr = TYPES.filter(t => !t.gen && D.it[t.id] && D.it[t.id].der === 0).length;
-  $('#portees').innerHTML = PORTEES.map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (!D.guide && String(D.portee) === String(k)) + '">' + esc(t) + (k === 'erreurs' ? '<span class="n">' + nErr + '</span>' : '') + '</button>').join('') + '<span class="compte">' + SESS.n + ' faite' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
+  const nErr = TYPES.filter(t => !t.gen && !hors(t.fam) && D.it[t.id] && D.it[t.id].der === 0).length;
+  $('#portees').innerHTML = PORTEES.filter(([k]) => typeof k !== 'number' || !moduleVide(k)).map(([k, t]) => '<button type="button" class="puce" data-p="' + k + '" aria-pressed="' + (!D.guide && String(D.portee) === String(k)) + '">' + esc(t) + (k === 'erreurs' ? '<span class="n">' + nErr + '</span>' : '') + '</button>').join('') + '<span class="compte">' + SESS.n + ' faite' + pl(SESS.n) + ' · ' + SESS.net + ' du premier coup</span>';
   const col = $('.cote'), l = $('.fam.vient');
   if(l && col.scrollHeight > col.clientHeight + 4 && getComputedStyle(col).overflowY === 'auto'){
     const a = l.getBoundingClientRect(), c = col.getBoundingClientRect(), haut = Math.max(c.top, 0), bas = Math.min(c.bottom, window.innerHeight);
@@ -928,11 +1030,21 @@ document.addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
   if(b.dataset.x){ expliquer(b.dataset.x, b); return; }
   if(b.dataset.a === 'fermer-expl'){ fermerExpl(); return; }
+  if(b.dataset.a === 'voir'){ voir(b); return; }
+  if(b.dataset.a === 'zoom'){ const z = b.closest('.planche'), g = z.classList.toggle('gros'); b.setAttribute('aria-pressed', g); b.textContent = g ? 'Réduire le dessin' : 'Agrandir le dessin'; return; }
   if(b.dataset.tg){ basculer(b.dataset.tg); return; }
   if(b.dataset.a === 'guide'){
     abandonner(); D.guide = !D.guide; if(D.guide) D.format = ''; SESS.mg = null; SESS.dernierFam = ''; $('#annonce-carte').textContent = ''; sauver();
     if(!D.guide){ const pt = PORTEES.find(([k]) => String(k) === String(D.portee)); SESS.avis.push({c:'info', t:'Progression guidée coupée. Tu reprends « ' + (pt ? pt[1] : '') + ' » : choisis ta portée en haut, ou tes notions sur ta carte.'}); }
     nouveau(); { const g = $('#guide-sw'); if(g) g.focus({preventScroll:true}); } return;
+  }
+  if(b.dataset.a === 'reportes'){
+    abandonner(); D.reportes = !D.reportes; SESS.mg = null; SESS.dernierFam = ''; $('#annonce-carte').textContent = '';
+    if(typeof D.portee === 'number' && moduleVide(D.portee)) D.portee = 'tout';
+    if(D.portee === 'perso' && !D.choix.some(f => !hors(f))) D.portee = 'tout';
+    sauver();
+    SESS.avis.push({c:D.reportes ? 'warn' : 'info', t:D.reportes ? (REP.avisOn || 'Notions reportées allumées. Rappel : elles ne sont pas à cet examen.') : (REP.avisOff || 'Notions reportées éteintes : plus aucune question là-dessus.')});
+    nouveau(); { const g = $('#rep-sw'); if(g) g.focus({preventScroll:true}); } return;
   }
   if(b.dataset.fmt !== undefined){
     if((D.format || '') === b.dataset.fmt) return;
@@ -985,12 +1097,12 @@ $('#note').innerHTML = esc(COURS.note) + ' <button type="button" class="lien" id
 $('#effacer').addEventListener('click', e => {
   const b = e.target;
   if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
-  const p = D.portee, c = D.choix, g = D.guide, fm = D.format; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; D.guide = g; D.format = fm; sauver();
+  const p = D.portee, c = D.choix, g = D.guide, fm = D.format, rp = D.reportes; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; D.guide = g; D.format = fm; D.reportes = rp; sauver();
   SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false; SESS.mg = null;
   b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
 });
 /* pour les tests (build/…/test) : afficher une question précise, lire l'état */
-window.__drill = {TYPES, FAMILLES, choisirType, jugerNum, jugerRx, maitriseTout, reussi, modGuide, dansGuide, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
+window.__drill = {TYPES, FAMILLES, FIGURES, HORS, hors, dansPortee, pctTout, choisirType, jugerNum, jugerRx, maitriseTout, reussi, modGuide, dansGuide, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
 nouveau();
 })();
 </script>
@@ -1078,10 +1190,26 @@ function fabriqueAmbiances(){
     constructor(ms, amp, p, sr){ this.n = Math.max(3, Math.round(ms * sr / 1000)); this.i = 0; this.amp = amp; [this.gl, this.gr] = pan(p); }
     x(){ const v = this.i++ / this.n; return this.amp * (1 - 4 * (v - 0.5) * (v - 0.5)); }
   }
-  /* un crépitement (Farnell, « fire ») : du bruit passé dans un passe-bande, enveloppe (1 − t/d)² */
-  class Eclat{
-    constructor(r, f, q, ms, amp, p, puiss, sr){ this.r = r; this.bp = new Bq('bp', f, q, sr); this.n = Math.max(4, Math.round(ms * sr / 1000)); this.i = 0; this.amp = amp; this.puiss = puiss; [this.gl, this.gr] = pan(p); }
-    x(){ const e = 1 - this.i++ / this.n, p = this.puiss === 2 ? e * e : e * e * e; return this.amp * p * this.bp.x(this.r() * 2 - 1); }
+  /* un grain : un gain qui frémit très vite (du bruit lissé sur tau secondes, mis au carré), de moyenne 1. Il change
+     un souffle lisse en une matière qui pétille : l'écume, l'eau qui roule, une bûche qui siffle */
+  class Grain{
+    constructor(r, tau, sr){ this.r = r; this.a = 1 - Math.exp(-1 / (tau * sr)); this.y = 0; this.k = Math.sqrt(3 * (2 - this.a) / this.a); }
+    x(m){ this.y += this.a * (this.r() * 2 - 1 - this.y); const u = this.y * this.k; return 1 - m + m * u * u; }
+  }
+  /* un claquement : un choc d'un quart de milliseconde dans une résonance qui s'éteint en quelques millisecondes.
+     amp = à peu près la hauteur de la pointe */
+  class Clic{
+    constructor(r, f, q, amp, p, sr){
+      const w = TAU * f / sr; this.r = r; this.bp = new Bq('bp', f, q, sr); this.k = amp * q / Math.sin(w);
+      this.ne = Math.max(2, Math.round(sr * 0.00025)); this.i = 0; this.n = this.ne + Math.round(Math.min(0.12 * sr, 10 * q / w));
+      [this.gl, this.gr] = pan(p);
+    }
+    x(){ const i = this.i++, e = i === 0 ? 1 : i < this.ne ? (this.r() * 2 - 1) * 0.5 * (1 - i / this.ne) : 0; return this.k * this.bp.x(e); }
+  }
+  /* une bûche qui siffle : un souffle étroit et aigu, qui pétille, monte vite et s'éteint */
+  class Siffle{
+    constructor(r, f, amp, duree, p, sr){ this.r = r; this.bp = new Bq('bp', f, 2.2, sr); this.grain = new Grain(r, 0.002, sr); this.amp = amp; this.i = 0; this.n = Math.round(duree * sr); this.at = Math.round(0.08 * sr); [this.gl, this.gr] = pan(p); }
+    x(){ const i = this.i++, e = i < this.at ? i / this.at : (1 - (i - this.at) / (this.n - this.at)), v = i < this.at ? e : e * e; return this.amp * v * this.bp.x(this.r() * 2 - 1) * this.grain.x(0.85); }
   }
   /* un ensemble de voix : on les additionne, on retire celles qui ont fini */
   function voix(liste, sortie){
@@ -1138,70 +1266,93 @@ function fabriqueAmbiances(){
     }
   }
 
-  /* ---------- les vagues : chaque vague monte, déferle, puis l'écume s'étale et l'eau redescend ---------- */
+  /* ---------- les vagues : chaque vague approche (un grave qui enfle), déferle (un choc sourd, l'eau qui roule),
+     puis laisse son écume pétiller pendant que l'eau redescend. Rien d'aigu pendant la montée : un souffle lisse
+     qui monte, c'est du « statique », pas de l'eau ---------- */
   class Vague{
     constructor(sr, r, premiere){
       this.sr = sr; this.r = r; this.t = 0; this.dt = K / sr; this.k = 0;
-      this.tb = (premiere ? 0.9 : 1.5) + 1.3 * r();      /* la montée */
-      this.A = 0.55 + 0.6 * r();                          /* la force */
-      this.td = 2.2 + 1.8 * r();                          /* l'eau qui retombe */
-      this.tf = 3.2 + 3 * r();                            /* l'écume */
-      this.fc = 3200 + 4800 * r();                        /* la clarté du déferlement */
-      this.fin = this.tb + 5.5 * Math.max(this.td, this.tf);
+      this.tb = (premiere ? 1.6 : 2.6) + 1.8 * r();     /* la montée */
+      this.A = 0.55 + 0.6 * r();                         /* la force */
+      this.td = 1.8 + 1.6 * r();                         /* l'eau qui retombe */
+      this.tf = 2.6 + 2.6 * r();                         /* l'écume */
+      this.fc = 1400 + 1400 * r();                       /* la clarté du déferlement */
+      this.fin = this.tb + 4.2 * Math.max(this.td, this.tf);
       [this.gl, this.gr] = pan((r() * 2 - 1) * 0.55); this.w = 0.35 + 0.45 * r();
-      this.nl = new Rose(r); this.nd = new Rose(r); this.lpl = new Bq('lp', 300, 0.7, sr); this.lpd = new Bq('lp', 300, 0.7, sr);
-      this.ec = [new Blanc(r), new Blanc(r)]; this.ehp = [new Bq('hp', 2600, 0.7, sr), new Bq('hp', 2600, 0.7, sr)];
-      this.ret = new Brun(r); this.rlp = new Bq('lp', 700, 0.8, sr);
-      this.bulles = []; this.ab = 1; this.rb = 0; this.g = 0; this.ge = 0; this.gr2 = 0; this.cg = 0; this.ce = 0; this.cr = 0; this.o = [0, 0];
+      this.hn = new Brun(r); this.hlp = new Bq('lp', 150, 0.7, sr);                                   /* la houle */
+      this.nl = new Rose(r); this.nd = new Rose(r);                                                    /* le corps : deux passe-bas en série, un grondement */
+      this.l1 = new Bq('lp', 300, 0.7, sr); this.l2 = new Bq('lp', 300, 0.7, sr); this.d1 = new Bq('lp', 300, 0.7, sr); this.d2 = new Bq('lp', 300, 0.7, sr);
+      this.roule = new Grain(r, 0.007, sr);
+      this.cn = new Brun(r); this.clp = new Bq('lp', 110, 0.8, sr);                                   /* le choc */
+      this.ec = [new Blanc(r), new Blanc(r)]; this.ebp = [new Bq('bp', 2600, 0.8, sr), new Bq('bp', 2600, 0.8, sr)]; this.eg = [new Grain(r, 0.0025, sr), new Grain(r, 0.0025, sr)];   /* l'écume */
+      this.ret = new Brun(r); this.rlp = new Bq('lp', 600, 0.8, sr);                                  /* le ressac */
+      this.bulles = []; this.ab = 1; this.rb = 0; this.o = [0, 0];
+      this.c = new Float64Array(5); this.g = new Float64Array(5);   /* houle, corps, choc, écume, ressac */
     }
     regler(){
-      const t = this.t, u = t - this.tb, A = this.A;
-      let corps, clar, ecume = 0, retour = 0;
-      if(u < 0){ const x = t / this.tb; corps = A * (0.05 + 0.95 * Math.pow(x, 2.6)); clar = x * x; }
-      else {
-        corps = A * (1 + 0.45 * Math.exp(-u / 0.22)) * Math.exp(-u / this.td);
-        clar = Math.exp(-u / (0.5 * this.td));
-        ecume = 0.5 * A * (1 - Math.exp(-u / 0.15)) * Math.exp(-u / this.tf);
-        const v = (u - 1.15 * this.td) / (0.9 + 0.3 * this.td); retour = 0.28 * A * Math.exp(-v * v);   /* le ressac : l'eau qui redescend */
-        this.rlp.regler(250 + 650 * Math.exp(-Math.max(0, u - this.td) / 1.4), 0.8);
+      const t = this.t, u = t - this.tb, A = this.A, c = this.c;
+      let fh, fcorps;
+      if(u < 0){
+        const x = t / this.tb;
+        c[0] = A * (0.04 + 0.96 * x * x); c[1] = A * 0.5 * Math.pow(x, 3.2); c[2] = 0; c[3] = 0; c[4] = 0;
+        fh = 120 + 200 * x; fcorps = 260 + 520 * x * x * x;
+      } else {
+        const e = Math.exp(-u / (0.5 * this.td));
+        c[0] = A * Math.exp(-u / (0.7 * this.td));
+        c[1] = A * (0.5 + 0.6 * (1 - Math.exp(-u / 0.08))) * Math.exp(-u / this.td);
+        c[2] = A * 0.7 * (1 - Math.exp(-u / 0.04)) * Math.exp(-u / 0.45);
+        c[3] = A * 0.42 * (1 - Math.exp(-u / 0.35)) * Math.exp(-u / this.tf);
+        const v = (u - 1.15 * this.td) / (0.9 + 0.3 * this.td); c[4] = A * 0.3 * Math.exp(-v * v);
+        fh = 160 + 160 * Math.exp(-u / this.td);
+        fcorps = 450 + 330 * e + (this.fc - 780) * (1 - Math.exp(-u / 0.05)) * e;
+        const fe = 1700 + 1100 * Math.exp(-u / this.tf); this.ebp[0].regler(fe, 0.8); this.ebp[1].regler(fe * 1.07, 0.8);
+        this.rlp.regler(250 + 450 * Math.exp(-Math.max(0, u - this.td) / 1.4), 0.8);
       }
-      const f = 260 + (this.fc - 260) * clar;
-      this.lpl.regler(f, 0.7); this.lpd.regler(f * (0.92 + 0.16 * this.w), 0.7);
-      this.cg = corps; this.ce = ecume; this.cr = retour;
-      this.rb = 1400 * ecume / A;      /* les microbulles de l'écume */
+      this.hlp.regler(fh, 0.7);
+      this.l1.regler(fcorps, 0.7); this.l2.regler(fcorps, 0.7); const fd = fcorps * (0.92 + 0.16 * this.w); this.d1.regler(fd, 0.7); this.d2.regler(fd, 0.7);
+      this.rb = 900 * c[3] / A;      /* les bulles de l'écume */
       this.t += this.dt;
+      if(u > 1 && c[0] + c[1] + c[2] + c[3] + c[4] < 3e-4 * A && !this.bulles.length) this.t = this.fin;   /* la vague est finie */
     }
     x(sortie){
       if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-      this.g += (this.cg - this.g) * 0.02; this.ge += (this.ce - this.ge) * 0.02; this.gr2 += (this.cr - this.gr2) * 0.02;
-      const r = this.r, a = this.lpl.x(this.nl.x()) * this.g, b = this.lpd.x(this.nd.x()) * this.g;
-      const m = (a + b) * 0.5, l = m + (a - m) * this.w, d = m + (b - m) * this.w;   /* la largeur de la vague */
-      const el = this.ehp[0].x(this.ec[0].x()) * this.ge * 0.22, ed = this.ehp[1].x(this.ec[1].x()) * this.ge * 0.22;
-      if(this.rb > 1 && --this.ab <= 0){ this.bulles.push(new Bulle(0.00035 + 0.0007 * r(), 0.004 + 0.02 * r() * r(), r() * 2 - 1, this.sr)); this.ab = attente(r, this.rb, this.sr); }
+      const g = this.g, c = this.c, r = this.r;
+      for(let j = 0; j < 5; j++) g[j] += (c[j] - g[j]) * 0.02;
+      let l = 0, d = 0;
+      if(g[1] > 1e-4){
+        const ro = Math.min(2.2, this.roule.x(0.4));
+        const a = this.l2.x(this.l1.x(this.nl.x())) * g[1] * ro * 1.9, b = this.d2.x(this.d1.x(this.nd.x())) * g[1] * ro * 1.9;
+        const m = (a + b) * 0.5; l = m + (a - m) * this.w; d = m + (b - m) * this.w;   /* la largeur de la vague */
+      }
+      /* une couche qui se tait ne coûte rien : le choc, l'écume et le ressac ne vivent qu'un moment de la vague */
+      let bas = g[0] > 1e-4 ? this.hlp.x(this.hn.x()) * g[0] * 0.5 : 0, el = 0, ed = 0;
+      if(g[2] > 1e-4) bas += this.clp.x(this.cn.x()) * g[2] * 0.75;
+      if(g[4] > 1e-4) bas += this.rlp.x(this.ret.x()) * g[4] * 0.8;
+      if(g[3] > 1e-4){ el = this.ebp[0].x(this.ec[0].x()) * this.eg[0].x(0.8) * g[3] * 0.3; ed = this.ebp[1].x(this.ec[1].x()) * this.eg[1].x(0.8) * g[3] * 0.3; }
+      if(this.rb > 1 && --this.ab <= 0){ this.bulles.push(new Bulle(0.0005 + 0.0011 * r(), 0.003 + 0.013 * r() * r(), r() * 2 - 1, this.sr)); this.ab = attente(r, this.rb, this.sr); }
       voix(this.bulles, this.o);
-      const re = this.rlp.x(this.ret.x()) * this.gr2;
-      sortie[0] = (l + re) * this.gl * 1.41 + el + this.o[0];
-      sortie[1] = (d + re) * this.gr * 1.41 + ed + this.o[1];
+      sortie[0] = (l + bas) * this.gl * 1.41 + el + this.o[0];
+      sortie[1] = (d + bas) * this.gr * 1.41 + ed + this.o[1];
     }
   }
   class Vagues{
     constructor(sr, r){
       this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
       this.vagues = [new Vague(sr, r, true)]; this.prochaine = Math.round((6 + 5 * r()) * sr);
-      this.fond = [new Brun(r), new Brun(r)]; this.flp = [new Bq('lp', 220, 0.7, sr), new Bq('lp', 220, 0.7, sr)];
-      this.loin = [new Rose(r), new Rose(r)]; this.lbp = [new Bq('bp', 900, 0.5, sr), new Bq('bp', 900, 0.5, sr)];
-      this.F = new Errant(r, 1, 0.18, 15); this.gF = 0.18; this.o = [0, 0];
+      this.fond = [new Brun(r), new Brun(r)]; this.flp = [new Bq('lp', 200, 0.7, sr), new Bq('lp', 200, 0.7, sr)];
+      this.loin = [new Rose(r), new Rose(r)]; this.lbp = [new Bq('bp', 480, 0.6, sr), new Bq('bp', 480, 0.6, sr)]; this.llp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];   /* la mer au loin : sourde */
+      this.F = new Errant(r, 1, 0.18, 15); this.gF = 0.13; this.o = [0, 0];
     }
     process(L, R, n){
       const sr = this.sr, r = this.r;
       for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.gF = 0.1 * borne(this.F.pas(this.dt), 0.6, 1.4); }
-        if(--this.prochaine <= 0){   /* une vague toutes les 7 à 16 s, jamais au même rythme */
-          if(this.vagues.length < 4) this.vagues.push(new Vague(sr, r, false));
-          this.prochaine = Math.round(Math.min(16, 7 + -Math.log(1 - r()) * 3.2) * sr);
+        if(this.k-- <= 0){ this.k = K - 1; this.gF = 0.13 * borne(this.F.pas(this.dt), 0.6, 1.4); }
+        if(--this.prochaine <= 0){   /* une vague toutes les 6 à 19 s, jamais au même rythme */
+          if(this.vagues.length < 3) this.vagues.push(new Vague(sr, r, false));
+          this.prochaine = Math.round(Math.min(19, 6 + -Math.log(1 - r()) * 4.2) * sr);
         }
-        let l = this.flp[0].x(this.fond[0].x()) * this.gF + this.lbp[0].x(this.loin[0].x()) * 0.035;
-        let d = this.flp[1].x(this.fond[1].x()) * this.gF + this.lbp[1].x(this.loin[1].x()) * 0.035;
+        let l = this.flp[0].x(this.fond[0].x()) * this.gF + this.llp[0].x(this.lbp[0].x(this.loin[0].x())) * this.gF * 0.25;
+        let d = this.flp[1].x(this.fond[1].x()) * this.gF + this.llp[1].x(this.lbp[1].x(this.loin[1].x())) * this.gF * 0.25;
         for(let j = this.vagues.length - 1; j >= 0; j--){
           const v = this.vagues[j]; v.x(this.o); l += this.o[0]; d += this.o[1];
           if(v.t >= v.fin){ this.vagues.splice(j, 1); }
@@ -1261,67 +1412,58 @@ function fabriqueAmbiances(){
     }
   }
 
-  /* ---------- le feu (Farnell, « fire ») : quatre foyers, chacun avec son léchement (bruit passé à 30 Hz, amplifié et
-     écrêté), son sifflement par bouffées, ses crépitements en grappes ; chacun coloré par son propre filtre ---------- */
-  class Foyer{
-    constructor(sr, r, type, f, q, p){
-      this.sr = sr; this.r = r; this.lap = new Bq('bp', 30, 5, sr); this.lhp1 = new Bq('hp', 25, 0.7, sr); this.lhp2 = new Bq('hp', 25, 0.7, sr);
-      this.shp = new Bq('hp', 1000, 0.7, sr); this.sif = new Errant(r, 0, 0.12, 0.16); this.gs = 0; this.cs = 0;
-      this.coul = new Bq(type, f, q, sr); this.eclats = []; [this.gl, this.gr] = pan(p); this.o = [0, 0];
-      this.niv = new Errant(r, 0, 1, 0.16); this.attente = 0; this.fen = 0.62 + 0.1 * r();
-    }
-    regler(dt, F){
-      const x = this.sif.pas(dt) * 10; this.cs = Math.min(3, 600 * x * x * x * x * 0.0024) * F;   /* le sifflement : (bruit lent × 10)⁴, des bouffées rares */
-      /* le déclencheur de Farnell : une enveloppe lente qui passe dans une fenêtre étroite ; on la regarde toutes les 11,6 ms */
-      this.attente -= dt;
-      if(this.attente <= 0){
-        this.attente += 0.0116;
-        const y = Math.abs(this.niv.v); if(y > this.fen && y < this.fen + 0.075 * F){
-          const k = Math.floor(30 * Math.pow(this.r(), 1.6)), u = this.r();   /* plus de crépitements graves qu'aigus */
-          this.eclats.push(new Eclat(this.r, 1500 + 500 * k, 1, 1 + k, (0.25 + 0.75 * u * u) * 1.6, (this.r() * 2 - 1) * 0.25, 2, this.sr));
-        }
-      }
-      this.niv.pas(dt);
-    }
-    x(){
-      const r = this.r, l = this.lhp2.x(borne(this.lhp1.x(this.lap.x(r() * 2 - 1) * 100), -0.9, 0.9)) * 0.6;   /* écrêté à ±0,9 */
-      this.gs += (this.cs - this.gs) * 0.01;
-      const s = this.shp.x(r() * 2 - 1) * this.gs * 0.12;
-      voix(this.eclats, this.o);
-      const m = this.coul.x(l * 0.6 + s + (this.o[0] + this.o[1]) * 0.5 * 0.2);
-      return m;
-    }
-  }
+  /* ---------- le feu de foyer : un ronflement grave qui vacille (le « léchement » de Farnell et le souffle des
+     flammes), et par-dessus, des crépitements secs : chacun est un choc bref dans une petite résonance (un claquement,
+     pas un « tchh »), en grappes irrégulières ; de temps en temps une bûche claque ou siffle. Entre les crépitements,
+     aucun aigu : un souffle aigu continu, c'est du « statique », pas un feu ---------- */
   class Feu{
     constructor(sr, r){
       this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.F = new Errant(r, 1, 0.18, 7);   /* la flamme s'anime et se calme */
-      this.foyers = [new Foyer(sr, r, 'bp', 600, 0.2, -0.3), new Foyer(sr, r, 'bp', 1200, 0.6, -0.1), new Foyer(sr, r, 'bp', 2600, 0.4, 0.12), new Foyer(sr, r, 'hp', 1000, 0.7, 0.3)];
-      this.pops = []; this.ap = attente(r, 0.14, sr); this.braise = new Brun(r); this.blp = new Bq('lp', 160, 0.7, sr); this.gF = 1; this.o = [0, 0];
-      this.souffle = [new Rose(r), new Rose(r)]; this.slp = [new Bq('lp', 600, 0.7, sr), new Bq('lp', 600, 0.7, sr)];   /* le souffle des flammes, qui vacille vite */
-      this.vac = new Errant(r, 1, 0.35, 0.06); this.cv = 1; this.gv = 1;
+      this.F = new Errant(r, 1, 0.16, 8);                                             /* la flamme s'anime et se calme */
+      this.v1 = new Errant(r, 0, 1, 0.07); this.v2 = new Errant(r, 0, 1, 0.11);     /* le vacillement */
+      this.bas = [new Brun(r), new Brun(r)]; this.blp = [new Bq('lp', 190, 0.7, sr), new Bq('lp', 190, 0.7, sr)];
+      this.mil = [new Rose(r), new Rose(r)]; this.mbp = [new Bq('bp', 430, 0.9, sr), new Bq('bp', 430, 0.9, sr)]; this.mlp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];
+      this.lap = new Bq('bp', 30, 5, sr); this.lhp = new Bq('hp', 25, 0.7, sr); this.llp = new Bq('lp', 320, 0.7, sr);
+      this.clics = []; this.sif = []; this.o = [0, 0]; this.p = [0, 0];
+      this.ac = attente(r, 2, sr); this.reste = 0; this.base = 0.3; this.pg = 0; this.ap = attente(r, 0.11, sr); this.as = attente(r, 0.09, sr);
+      this.cb = 0.1; this.cm = 0.6; this.gb = 0.1; this.gm = 0.6; this.gF = 1;
+    }
+    regler(){
+      const F = this.gF = borne(this.F.pas(this.dt), 0.6, 1.5);
+      this.cb = 0.1 * F * borne(1 + 0.55 * this.v1.pas(this.dt), 0.2, 2.2);
+      this.cm = 0.6 * F * borne(1 + 0.7 * this.v2.pas(this.dt), 0.1, 2.6);
     }
     process(L, R, n){
       const r = this.r, sr = this.sr;
       for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.gF = borne(this.F.pas(this.dt), 0.55, 1.6); this.cv = borne(this.vac.pas(this.dt), 0.25, 1.9) * this.gF; for(const f of this.foyers) f.regler(this.dt, this.gF); }
-        if(--this.ap <= 0){   /* un claquement de bûche, de temps en temps */
-          this.pops.push(new Eclat(r, 260 + 520 * r(), 2.5, 22 + 45 * r(), 0.5 + 0.9 * r(), (r() * 2 - 1) * 0.3, 3, sr));
-          this.ap = attente(r, 0.14 * this.gF, sr);
+        if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
+        this.gb += (this.cb - this.gb) * 0.003; this.gm += (this.cm - this.gm) * 0.003;
+        if(--this.ac <= 0){   /* un crépitement ; souvent une grappe de 2 à 6, à quelques centièmes de seconde */
+          this.clics.push(new Clic(r, 900 * Math.pow(6.5, r()), 2.2 + 3.8 * r(), this.base * (0.45 + 0.55 * r()), this.pg + (r() * 2 - 1) * 0.15, sr));
+          if(this.reste > 0){ this.reste--; this.ac = attente(r, 16, sr); }
+          else {
+            this.base = Math.min(0.5, 0.09 * Math.exp(0.85 * gauss(r)));   /* beaucoup de petits, quelques forts */
+            this.reste = r() < 0.5 ? 1 + Math.floor(4 * r() * r()) : 0; this.pg = (r() * 2 - 1) * 0.55;
+            this.ac = attente(r, 1.2 * this.gF, sr);
+          }
         }
-        let l = 0, d = 0;
-        for(const f of this.foyers){ const m = f.x(); l += m * f.gl; d += m * f.gr; }
-        voix(this.pops, this.o);
-        this.gv += (this.cv - this.gv) * 0.004;
-        const b = this.blp.x(this.braise.x()) * 0.25 * this.gF, sl = this.slp[0].x(this.souffle[0].x()) * 0.3 * this.gv, sd = this.slp[1].x(this.souffle[1].x()) * 0.3 * this.gv;
-        L[i] = (l * 0.2 + this.o[0] + b + sl); R[i] = (d * 0.2 + this.o[1] + b + sd);
+        if(--this.ap <= 0){   /* une bûche claque : un coup grave et son éclat */
+          const a = 0.22 + 0.28 * r(), p = (r() * 2 - 1) * 0.4;
+          this.clics.push(new Clic(r, 170 + 300 * r(), 4 + 3 * r(), a, p, sr)); this.clics.push(new Clic(r, 1600 + 2200 * r(), 3, a * 0.7, p, sr));
+          this.ap = attente(r, 0.11 * this.gF, sr);
+        }
+        if(--this.as <= 0){ this.sif.push(new Siffle(r, 4200 + 3000 * r(), 0.05 + 0.06 * r(), 0.5 + 1.1 * r(), (r() * 2 - 1) * 0.5, sr)); this.as = attente(r, 0.09, sr); }
+        voix(this.clics, this.o); voix(this.sif, this.p);
+        const la = this.llp.x(this.lhp.x(borne(this.lap.x(r() * 2 - 1) * 100, -0.9, 0.9))) * 0.05 * this.gF;   /* le léchement : bruit à 30 Hz, amplifié, écrêté */
+        L[i] = this.blp[0].x(this.bas[0].x()) * this.gb + this.mlp[0].x(this.mbp[0].x(this.mil[0].x())) * this.gm + la + this.o[0] + this.p[0];
+        R[i] = this.blp[1].x(this.bas[1].x()) * this.gb + this.mlp[1].x(this.mbp[1].x(this.mil[1].x())) * this.gm + la + this.o[1] + this.p[1];
       }
     }
   }
 
   /* le niveau de chaque son, réglé par outils/test_bruit.js pour qu'ils sonnent aussi fort les uns que les autres
      (même niveau pondéré A, comme le bruit rose) */
-  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902, pluie:3.02, vagues:2.19, vent:2.95, feu:2.66};
+  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902, pluie:3.02, vagues:1.85, vent:2.95, feu:3.18};
   const NOMS = ['blanc', 'rose', 'brun', 'vagues', 'pluie', 'vent', 'feu'];
   function creer(nom, sr, r){
     const a = nom === 'pluie' ? new Pluie(sr, r) : nom === 'vagues' ? new Vagues(sr, r) : nom === 'vent' ? new Vent(sr, r) : nom === 'feu' ? new Feu(sr, r) : new Couleur(sr, r, nom, 1);
@@ -1463,7 +1605,7 @@ window.__bruit = {SONS, jouer:k => { const r = jouer(k); peindre(); return r; },
 </script>
 <script>
 (() => {
-  const ICI = 'f8984eb78953';
+  const ICI = '33d19b951ef1';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

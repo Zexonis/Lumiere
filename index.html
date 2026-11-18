@@ -338,7 +338,7 @@ const PAGES = {
     {g:'Atelier', t:'Atelier Anatomie M6–M8', u:'atelier-anatomie-m6.html', v:true, ua:2,
      d:'Larmes et clignement (M6) ; cornée, limbe et sclère, cristallin et vitré (M7) ; rétine, voies visuelles, pupille et horloge biologique (M8) : simulateurs, dessins à étiqueter, gestes, fiches de cas. Rappel du jour, guide pas à pas, annotations et tuteur.'},
     {g:'Exerciseur', t:'Exerciseur Anatomie UA2', u:'drill-anatomie.html', ua:2, x:1,
-     d:'290 questions sur les modules 6 à 9, dans les trois formats de l’examen sur papier : choix multiples, courtes réponses à corriger soi-même, schémas à étiqueter. Réflexes, larmes, cornée, cristallin, vitré, rétine, voies visuelles, champ visuel.'},
+     d:'Les modules 6 à 9, dans les trois formats de l’examen sur papier : choix multiples, courtes réponses à corriger soi-même, schémas à étiqueter. Après chaque réponse, une loupe ouvre le dessin du cours. Les voies visuelles et le champ visuel, que la prof a reportés à l’UA3, sont éteints au départ.'},
     {g:'Document', t:'Anatomie M6 — système nerveux, larmes, clignement', u:A('UQFUMh5vm1qkPwrBYmy65V'), ua:2,
      d:'La distillation du module 6, en document.'},
     {g:'Planches', t:'Œil — planches d’anatomie', u:'planches-oeil.html', ua:1,
@@ -723,6 +723,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-18', p:['anat-m6'], t:'Voies visuelles et champ visuel : la prof a annoncé le 18 novembre qu’elle ne les évalue pas à l’examen de vendredi, mais à l’UA3. Dans l’exerciseur d’Anatomie, ces questions sont maintenant éteintes au départ, et la progression guidée ne te les donne plus. Un interrupteur, en haut, les rallume si tu veux prendre de l’avance. Dans l’atelier, les deux écrans sur les voies visuelles le disent aussi.'},
+    {d:'2026-11-18', p:['anat-m6'], t:'Exerciseur d’Anatomie : après chaque réponse, une loupe apparaît à côté du résultat. Touche-la pour voir le dessin qui va avec la question, avec ses noms, et ce dont parle la question entouré en rouge : le trajet des larmes, la paupière en coupe, les couches de la cornée, la rétine… Le « ? » de chaque notion montre aussi son dessin.'},
+    {d:'2026-11-18', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Bruit de fond : le feu de foyer et les vagues ont été refaits. Le feu ne grésille plus comme une radio : un ronflement grave qui vacille, et des crépitements secs. Les vagues ne soufflent plus en montant : un grave qui enfle, le déferlement, puis l’écume qui pétille.'},
     {d:'2026-11-17', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Le bruit de fond sonne plus vrai. La pluie tombe goutte à goutte, jamais deux fois pareil, avec des flaques ; les vagues montent, déferlent et laissent leur écume ; le vent souffle par rafales et siffle quand il forcit ; le feu crépite par grappes et ronfle. Tous les sons ont maintenant le même volume.'},
     {d:'2026-11-17', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Pour te concentrer : un petit bouton en bas à droite des quatre exerciseurs lance un bruit de fond. Blanc, rose ou brun, ou une ambiance : vagues, pluie, vent, feu de foyer. Touche un son pour le lancer, touche-le encore pour l’arrêter ; le volume se règle juste dessous.'},
     {d:'2026-11-17', p:['anat-m6'], t:'L’exerciseur d’Anatomie suit le format annoncé par la prof pour vendredi : examen sur papier, choix multiples, courtes réponses et schémas. Nouveau : 41 courtes réponses (tu écris, tu compares, tu te corriges), dont les questions du projet du 13 novembre, 12 schémas à étiqueter (cornée, cristallin, larmes, rétine, disque optique, voies visuelles), et le module 9 sur le champ visuel. Tu peux pratiquer un format à la fois.'},
@@ -894,7 +897,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'f8984eb78953';
+  const ICI = '33d19b951ef1';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

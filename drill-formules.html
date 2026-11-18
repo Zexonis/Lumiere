@@ -1269,10 +1269,26 @@ function fabriqueAmbiances(){
     constructor(ms, amp, p, sr){ this.n = Math.max(3, Math.round(ms * sr / 1000)); this.i = 0; this.amp = amp; [this.gl, this.gr] = pan(p); }
     x(){ const v = this.i++ / this.n; return this.amp * (1 - 4 * (v - 0.5) * (v - 0.5)); }
   }
-  /* un crépitement (Farnell, « fire ») : du bruit passé dans un passe-bande, enveloppe (1 − t/d)² */
-  class Eclat{
-    constructor(r, f, q, ms, amp, p, puiss, sr){ this.r = r; this.bp = new Bq('bp', f, q, sr); this.n = Math.max(4, Math.round(ms * sr / 1000)); this.i = 0; this.amp = amp; this.puiss = puiss; [this.gl, this.gr] = pan(p); }
-    x(){ const e = 1 - this.i++ / this.n, p = this.puiss === 2 ? e * e : e * e * e; return this.amp * p * this.bp.x(this.r() * 2 - 1); }
+  /* un grain : un gain qui frémit très vite (du bruit lissé sur tau secondes, mis au carré), de moyenne 1. Il change
+     un souffle lisse en une matière qui pétille : l'écume, l'eau qui roule, une bûche qui siffle */
+  class Grain{
+    constructor(r, tau, sr){ this.r = r; this.a = 1 - Math.exp(-1 / (tau * sr)); this.y = 0; this.k = Math.sqrt(3 * (2 - this.a) / this.a); }
+    x(m){ this.y += this.a * (this.r() * 2 - 1 - this.y); const u = this.y * this.k; return 1 - m + m * u * u; }
+  }
+  /* un claquement : un choc d'un quart de milliseconde dans une résonance qui s'éteint en quelques millisecondes.
+     amp = à peu près la hauteur de la pointe */
+  class Clic{
+    constructor(r, f, q, amp, p, sr){
+      const w = TAU * f / sr; this.r = r; this.bp = new Bq('bp', f, q, sr); this.k = amp * q / Math.sin(w);
+      this.ne = Math.max(2, Math.round(sr * 0.00025)); this.i = 0; this.n = this.ne + Math.round(Math.min(0.12 * sr, 10 * q / w));
+      [this.gl, this.gr] = pan(p);
+    }
+    x(){ const i = this.i++, e = i === 0 ? 1 : i < this.ne ? (this.r() * 2 - 1) * 0.5 * (1 - i / this.ne) : 0; return this.k * this.bp.x(e); }
+  }
+  /* une bûche qui siffle : un souffle étroit et aigu, qui pétille, monte vite et s'éteint */
+  class Siffle{
+    constructor(r, f, amp, duree, p, sr){ this.r = r; this.bp = new Bq('bp', f, 2.2, sr); this.grain = new Grain(r, 0.002, sr); this.amp = amp; this.i = 0; this.n = Math.round(duree * sr); this.at = Math.round(0.08 * sr); [this.gl, this.gr] = pan(p); }
+    x(){ const i = this.i++, e = i < this.at ? i / this.at : (1 - (i - this.at) / (this.n - this.at)), v = i < this.at ? e : e * e; return this.amp * v * this.bp.x(this.r() * 2 - 1) * this.grain.x(0.85); }
   }
   /* un ensemble de voix : on les additionne, on retire celles qui ont fini */
   function voix(liste, sortie){
@@ -1329,70 +1345,93 @@ function fabriqueAmbiances(){
     }
   }
 
-  /* ---------- les vagues : chaque vague monte, déferle, puis l'écume s'étale et l'eau redescend ---------- */
+  /* ---------- les vagues : chaque vague approche (un grave qui enfle), déferle (un choc sourd, l'eau qui roule),
+     puis laisse son écume pétiller pendant que l'eau redescend. Rien d'aigu pendant la montée : un souffle lisse
+     qui monte, c'est du « statique », pas de l'eau ---------- */
   class Vague{
     constructor(sr, r, premiere){
       this.sr = sr; this.r = r; this.t = 0; this.dt = K / sr; this.k = 0;
-      this.tb = (premiere ? 0.9 : 1.5) + 1.3 * r();      /* la montée */
-      this.A = 0.55 + 0.6 * r();                          /* la force */
-      this.td = 2.2 + 1.8 * r();                          /* l'eau qui retombe */
-      this.tf = 3.2 + 3 * r();                            /* l'écume */
-      this.fc = 3200 + 4800 * r();                        /* la clarté du déferlement */
-      this.fin = this.tb + 5.5 * Math.max(this.td, this.tf);
+      this.tb = (premiere ? 1.6 : 2.6) + 1.8 * r();     /* la montée */
+      this.A = 0.55 + 0.6 * r();                         /* la force */
+      this.td = 1.8 + 1.6 * r();                         /* l'eau qui retombe */
+      this.tf = 2.6 + 2.6 * r();                         /* l'écume */
+      this.fc = 1400 + 1400 * r();                       /* la clarté du déferlement */
+      this.fin = this.tb + 4.2 * Math.max(this.td, this.tf);
       [this.gl, this.gr] = pan((r() * 2 - 1) * 0.55); this.w = 0.35 + 0.45 * r();
-      this.nl = new Rose(r); this.nd = new Rose(r); this.lpl = new Bq('lp', 300, 0.7, sr); this.lpd = new Bq('lp', 300, 0.7, sr);
-      this.ec = [new Blanc(r), new Blanc(r)]; this.ehp = [new Bq('hp', 2600, 0.7, sr), new Bq('hp', 2600, 0.7, sr)];
-      this.ret = new Brun(r); this.rlp = new Bq('lp', 700, 0.8, sr);
-      this.bulles = []; this.ab = 1; this.rb = 0; this.g = 0; this.ge = 0; this.gr2 = 0; this.cg = 0; this.ce = 0; this.cr = 0; this.o = [0, 0];
+      this.hn = new Brun(r); this.hlp = new Bq('lp', 150, 0.7, sr);                                   /* la houle */
+      this.nl = new Rose(r); this.nd = new Rose(r);                                                    /* le corps : deux passe-bas en série, un grondement */
+      this.l1 = new Bq('lp', 300, 0.7, sr); this.l2 = new Bq('lp', 300, 0.7, sr); this.d1 = new Bq('lp', 300, 0.7, sr); this.d2 = new Bq('lp', 300, 0.7, sr);
+      this.roule = new Grain(r, 0.007, sr);
+      this.cn = new Brun(r); this.clp = new Bq('lp', 110, 0.8, sr);                                   /* le choc */
+      this.ec = [new Blanc(r), new Blanc(r)]; this.ebp = [new Bq('bp', 2600, 0.8, sr), new Bq('bp', 2600, 0.8, sr)]; this.eg = [new Grain(r, 0.0025, sr), new Grain(r, 0.0025, sr)];   /* l'écume */
+      this.ret = new Brun(r); this.rlp = new Bq('lp', 600, 0.8, sr);                                  /* le ressac */
+      this.bulles = []; this.ab = 1; this.rb = 0; this.o = [0, 0];
+      this.c = new Float64Array(5); this.g = new Float64Array(5);   /* houle, corps, choc, écume, ressac */
     }
     regler(){
-      const t = this.t, u = t - this.tb, A = this.A;
-      let corps, clar, ecume = 0, retour = 0;
-      if(u < 0){ const x = t / this.tb; corps = A * (0.05 + 0.95 * Math.pow(x, 2.6)); clar = x * x; }
-      else {
-        corps = A * (1 + 0.45 * Math.exp(-u / 0.22)) * Math.exp(-u / this.td);
-        clar = Math.exp(-u / (0.5 * this.td));
-        ecume = 0.5 * A * (1 - Math.exp(-u / 0.15)) * Math.exp(-u / this.tf);
-        const v = (u - 1.15 * this.td) / (0.9 + 0.3 * this.td); retour = 0.28 * A * Math.exp(-v * v);   /* le ressac : l'eau qui redescend */
-        this.rlp.regler(250 + 650 * Math.exp(-Math.max(0, u - this.td) / 1.4), 0.8);
+      const t = this.t, u = t - this.tb, A = this.A, c = this.c;
+      let fh, fcorps;
+      if(u < 0){
+        const x = t / this.tb;
+        c[0] = A * (0.04 + 0.96 * x * x); c[1] = A * 0.5 * Math.pow(x, 3.2); c[2] = 0; c[3] = 0; c[4] = 0;
+        fh = 120 + 200 * x; fcorps = 260 + 520 * x * x * x;
+      } else {
+        const e = Math.exp(-u / (0.5 * this.td));
+        c[0] = A * Math.exp(-u / (0.7 * this.td));
+        c[1] = A * (0.5 + 0.6 * (1 - Math.exp(-u / 0.08))) * Math.exp(-u / this.td);
+        c[2] = A * 0.7 * (1 - Math.exp(-u / 0.04)) * Math.exp(-u / 0.45);
+        c[3] = A * 0.42 * (1 - Math.exp(-u / 0.35)) * Math.exp(-u / this.tf);
+        const v = (u - 1.15 * this.td) / (0.9 + 0.3 * this.td); c[4] = A * 0.3 * Math.exp(-v * v);
+        fh = 160 + 160 * Math.exp(-u / this.td);
+        fcorps = 450 + 330 * e + (this.fc - 780) * (1 - Math.exp(-u / 0.05)) * e;
+        const fe = 1700 + 1100 * Math.exp(-u / this.tf); this.ebp[0].regler(fe, 0.8); this.ebp[1].regler(fe * 1.07, 0.8);
+        this.rlp.regler(250 + 450 * Math.exp(-Math.max(0, u - this.td) / 1.4), 0.8);
       }
-      const f = 260 + (this.fc - 260) * clar;
-      this.lpl.regler(f, 0.7); this.lpd.regler(f * (0.92 + 0.16 * this.w), 0.7);
-      this.cg = corps; this.ce = ecume; this.cr = retour;
-      this.rb = 1400 * ecume / A;      /* les microbulles de l'écume */
+      this.hlp.regler(fh, 0.7);
+      this.l1.regler(fcorps, 0.7); this.l2.regler(fcorps, 0.7); const fd = fcorps * (0.92 + 0.16 * this.w); this.d1.regler(fd, 0.7); this.d2.regler(fd, 0.7);
+      this.rb = 900 * c[3] / A;      /* les bulles de l'écume */
       this.t += this.dt;
+      if(u > 1 && c[0] + c[1] + c[2] + c[3] + c[4] < 3e-4 * A && !this.bulles.length) this.t = this.fin;   /* la vague est finie */
     }
     x(sortie){
       if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-      this.g += (this.cg - this.g) * 0.02; this.ge += (this.ce - this.ge) * 0.02; this.gr2 += (this.cr - this.gr2) * 0.02;
-      const r = this.r, a = this.lpl.x(this.nl.x()) * this.g, b = this.lpd.x(this.nd.x()) * this.g;
-      const m = (a + b) * 0.5, l = m + (a - m) * this.w, d = m + (b - m) * this.w;   /* la largeur de la vague */
-      const el = this.ehp[0].x(this.ec[0].x()) * this.ge * 0.22, ed = this.ehp[1].x(this.ec[1].x()) * this.ge * 0.22;
-      if(this.rb > 1 && --this.ab <= 0){ this.bulles.push(new Bulle(0.00035 + 0.0007 * r(), 0.004 + 0.02 * r() * r(), r() * 2 - 1, this.sr)); this.ab = attente(r, this.rb, this.sr); }
+      const g = this.g, c = this.c, r = this.r;
+      for(let j = 0; j < 5; j++) g[j] += (c[j] - g[j]) * 0.02;
+      let l = 0, d = 0;
+      if(g[1] > 1e-4){
+        const ro = Math.min(2.2, this.roule.x(0.4));
+        const a = this.l2.x(this.l1.x(this.nl.x())) * g[1] * ro * 1.9, b = this.d2.x(this.d1.x(this.nd.x())) * g[1] * ro * 1.9;
+        const m = (a + b) * 0.5; l = m + (a - m) * this.w; d = m + (b - m) * this.w;   /* la largeur de la vague */
+      }
+      /* une couche qui se tait ne coûte rien : le choc, l'écume et le ressac ne vivent qu'un moment de la vague */
+      let bas = g[0] > 1e-4 ? this.hlp.x(this.hn.x()) * g[0] * 0.5 : 0, el = 0, ed = 0;
+      if(g[2] > 1e-4) bas += this.clp.x(this.cn.x()) * g[2] * 0.75;
+      if(g[4] > 1e-4) bas += this.rlp.x(this.ret.x()) * g[4] * 0.8;
+      if(g[3] > 1e-4){ el = this.ebp[0].x(this.ec[0].x()) * this.eg[0].x(0.8) * g[3] * 0.3; ed = this.ebp[1].x(this.ec[1].x()) * this.eg[1].x(0.8) * g[3] * 0.3; }
+      if(this.rb > 1 && --this.ab <= 0){ this.bulles.push(new Bulle(0.0005 + 0.0011 * r(), 0.003 + 0.013 * r() * r(), r() * 2 - 1, this.sr)); this.ab = attente(r, this.rb, this.sr); }
       voix(this.bulles, this.o);
-      const re = this.rlp.x(this.ret.x()) * this.gr2;
-      sortie[0] = (l + re) * this.gl * 1.41 + el + this.o[0];
-      sortie[1] = (d + re) * this.gr * 1.41 + ed + this.o[1];
+      sortie[0] = (l + bas) * this.gl * 1.41 + el + this.o[0];
+      sortie[1] = (d + bas) * this.gr * 1.41 + ed + this.o[1];
     }
   }
   class Vagues{
     constructor(sr, r){
       this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
       this.vagues = [new Vague(sr, r, true)]; this.prochaine = Math.round((6 + 5 * r()) * sr);
-      this.fond = [new Brun(r), new Brun(r)]; this.flp = [new Bq('lp', 220, 0.7, sr), new Bq('lp', 220, 0.7, sr)];
-      this.loin = [new Rose(r), new Rose(r)]; this.lbp = [new Bq('bp', 900, 0.5, sr), new Bq('bp', 900, 0.5, sr)];
-      this.F = new Errant(r, 1, 0.18, 15); this.gF = 0.18; this.o = [0, 0];
+      this.fond = [new Brun(r), new Brun(r)]; this.flp = [new Bq('lp', 200, 0.7, sr), new Bq('lp', 200, 0.7, sr)];
+      this.loin = [new Rose(r), new Rose(r)]; this.lbp = [new Bq('bp', 480, 0.6, sr), new Bq('bp', 480, 0.6, sr)]; this.llp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];   /* la mer au loin : sourde */
+      this.F = new Errant(r, 1, 0.18, 15); this.gF = 0.13; this.o = [0, 0];
     }
     process(L, R, n){
       const sr = this.sr, r = this.r;
       for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.gF = 0.1 * borne(this.F.pas(this.dt), 0.6, 1.4); }
-        if(--this.prochaine <= 0){   /* une vague toutes les 7 à 16 s, jamais au même rythme */
-          if(this.vagues.length < 4) this.vagues.push(new Vague(sr, r, false));
-          this.prochaine = Math.round(Math.min(16, 7 + -Math.log(1 - r()) * 3.2) * sr);
+        if(this.k-- <= 0){ this.k = K - 1; this.gF = 0.13 * borne(this.F.pas(this.dt), 0.6, 1.4); }
+        if(--this.prochaine <= 0){   /* une vague toutes les 6 à 19 s, jamais au même rythme */
+          if(this.vagues.length < 3) this.vagues.push(new Vague(sr, r, false));
+          this.prochaine = Math.round(Math.min(19, 6 + -Math.log(1 - r()) * 4.2) * sr);
         }
-        let l = this.flp[0].x(this.fond[0].x()) * this.gF + this.lbp[0].x(this.loin[0].x()) * 0.035;
-        let d = this.flp[1].x(this.fond[1].x()) * this.gF + this.lbp[1].x(this.loin[1].x()) * 0.035;
+        let l = this.flp[0].x(this.fond[0].x()) * this.gF + this.llp[0].x(this.lbp[0].x(this.loin[0].x())) * this.gF * 0.25;
+        let d = this.flp[1].x(this.fond[1].x()) * this.gF + this.llp[1].x(this.lbp[1].x(this.loin[1].x())) * this.gF * 0.25;
         for(let j = this.vagues.length - 1; j >= 0; j--){
           const v = this.vagues[j]; v.x(this.o); l += this.o[0]; d += this.o[1];
           if(v.t >= v.fin){ this.vagues.splice(j, 1); }
@@ -1452,67 +1491,58 @@ function fabriqueAmbiances(){
     }
   }
 
-  /* ---------- le feu (Farnell, « fire ») : quatre foyers, chacun avec son léchement (bruit passé à 30 Hz, amplifié et
-     écrêté), son sifflement par bouffées, ses crépitements en grappes ; chacun coloré par son propre filtre ---------- */
-  class Foyer{
-    constructor(sr, r, type, f, q, p){
-      this.sr = sr; this.r = r; this.lap = new Bq('bp', 30, 5, sr); this.lhp1 = new Bq('hp', 25, 0.7, sr); this.lhp2 = new Bq('hp', 25, 0.7, sr);
-      this.shp = new Bq('hp', 1000, 0.7, sr); this.sif = new Errant(r, 0, 0.12, 0.16); this.gs = 0; this.cs = 0;
-      this.coul = new Bq(type, f, q, sr); this.eclats = []; [this.gl, this.gr] = pan(p); this.o = [0, 0];
-      this.niv = new Errant(r, 0, 1, 0.16); this.attente = 0; this.fen = 0.62 + 0.1 * r();
-    }
-    regler(dt, F){
-      const x = this.sif.pas(dt) * 10; this.cs = Math.min(3, 600 * x * x * x * x * 0.0024) * F;   /* le sifflement : (bruit lent × 10)⁴, des bouffées rares */
-      /* le déclencheur de Farnell : une enveloppe lente qui passe dans une fenêtre étroite ; on la regarde toutes les 11,6 ms */
-      this.attente -= dt;
-      if(this.attente <= 0){
-        this.attente += 0.0116;
-        const y = Math.abs(this.niv.v); if(y > this.fen && y < this.fen + 0.075 * F){
-          const k = Math.floor(30 * Math.pow(this.r(), 1.6)), u = this.r();   /* plus de crépitements graves qu'aigus */
-          this.eclats.push(new Eclat(this.r, 1500 + 500 * k, 1, 1 + k, (0.25 + 0.75 * u * u) * 1.6, (this.r() * 2 - 1) * 0.25, 2, this.sr));
-        }
-      }
-      this.niv.pas(dt);
-    }
-    x(){
-      const r = this.r, l = this.lhp2.x(borne(this.lhp1.x(this.lap.x(r() * 2 - 1) * 100), -0.9, 0.9)) * 0.6;   /* écrêté à ±0,9 */
-      this.gs += (this.cs - this.gs) * 0.01;
-      const s = this.shp.x(r() * 2 - 1) * this.gs * 0.12;
-      voix(this.eclats, this.o);
-      const m = this.coul.x(l * 0.6 + s + (this.o[0] + this.o[1]) * 0.5 * 0.2);
-      return m;
-    }
-  }
+  /* ---------- le feu de foyer : un ronflement grave qui vacille (le « léchement » de Farnell et le souffle des
+     flammes), et par-dessus, des crépitements secs : chacun est un choc bref dans une petite résonance (un claquement,
+     pas un « tchh »), en grappes irrégulières ; de temps en temps une bûche claque ou siffle. Entre les crépitements,
+     aucun aigu : un souffle aigu continu, c'est du « statique », pas un feu ---------- */
   class Feu{
     constructor(sr, r){
       this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.F = new Errant(r, 1, 0.18, 7);   /* la flamme s'anime et se calme */
-      this.foyers = [new Foyer(sr, r, 'bp', 600, 0.2, -0.3), new Foyer(sr, r, 'bp', 1200, 0.6, -0.1), new Foyer(sr, r, 'bp', 2600, 0.4, 0.12), new Foyer(sr, r, 'hp', 1000, 0.7, 0.3)];
-      this.pops = []; this.ap = attente(r, 0.14, sr); this.braise = new Brun(r); this.blp = new Bq('lp', 160, 0.7, sr); this.gF = 1; this.o = [0, 0];
-      this.souffle = [new Rose(r), new Rose(r)]; this.slp = [new Bq('lp', 600, 0.7, sr), new Bq('lp', 600, 0.7, sr)];   /* le souffle des flammes, qui vacille vite */
-      this.vac = new Errant(r, 1, 0.35, 0.06); this.cv = 1; this.gv = 1;
+      this.F = new Errant(r, 1, 0.16, 8);                                             /* la flamme s'anime et se calme */
+      this.v1 = new Errant(r, 0, 1, 0.07); this.v2 = new Errant(r, 0, 1, 0.11);     /* le vacillement */
+      this.bas = [new Brun(r), new Brun(r)]; this.blp = [new Bq('lp', 190, 0.7, sr), new Bq('lp', 190, 0.7, sr)];
+      this.mil = [new Rose(r), new Rose(r)]; this.mbp = [new Bq('bp', 430, 0.9, sr), new Bq('bp', 430, 0.9, sr)]; this.mlp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];
+      this.lap = new Bq('bp', 30, 5, sr); this.lhp = new Bq('hp', 25, 0.7, sr); this.llp = new Bq('lp', 320, 0.7, sr);
+      this.clics = []; this.sif = []; this.o = [0, 0]; this.p = [0, 0];
+      this.ac = attente(r, 2, sr); this.reste = 0; this.base = 0.3; this.pg = 0; this.ap = attente(r, 0.11, sr); this.as = attente(r, 0.09, sr);
+      this.cb = 0.1; this.cm = 0.6; this.gb = 0.1; this.gm = 0.6; this.gF = 1;
+    }
+    regler(){
+      const F = this.gF = borne(this.F.pas(this.dt), 0.6, 1.5);
+      this.cb = 0.1 * F * borne(1 + 0.55 * this.v1.pas(this.dt), 0.2, 2.2);
+      this.cm = 0.6 * F * borne(1 + 0.7 * this.v2.pas(this.dt), 0.1, 2.6);
     }
     process(L, R, n){
       const r = this.r, sr = this.sr;
       for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.gF = borne(this.F.pas(this.dt), 0.55, 1.6); this.cv = borne(this.vac.pas(this.dt), 0.25, 1.9) * this.gF; for(const f of this.foyers) f.regler(this.dt, this.gF); }
-        if(--this.ap <= 0){   /* un claquement de bûche, de temps en temps */
-          this.pops.push(new Eclat(r, 260 + 520 * r(), 2.5, 22 + 45 * r(), 0.5 + 0.9 * r(), (r() * 2 - 1) * 0.3, 3, sr));
-          this.ap = attente(r, 0.14 * this.gF, sr);
+        if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
+        this.gb += (this.cb - this.gb) * 0.003; this.gm += (this.cm - this.gm) * 0.003;
+        if(--this.ac <= 0){   /* un crépitement ; souvent une grappe de 2 à 6, à quelques centièmes de seconde */
+          this.clics.push(new Clic(r, 900 * Math.pow(6.5, r()), 2.2 + 3.8 * r(), this.base * (0.45 + 0.55 * r()), this.pg + (r() * 2 - 1) * 0.15, sr));
+          if(this.reste > 0){ this.reste--; this.ac = attente(r, 16, sr); }
+          else {
+            this.base = Math.min(0.5, 0.09 * Math.exp(0.85 * gauss(r)));   /* beaucoup de petits, quelques forts */
+            this.reste = r() < 0.5 ? 1 + Math.floor(4 * r() * r()) : 0; this.pg = (r() * 2 - 1) * 0.55;
+            this.ac = attente(r, 1.2 * this.gF, sr);
+          }
         }
-        let l = 0, d = 0;
-        for(const f of this.foyers){ const m = f.x(); l += m * f.gl; d += m * f.gr; }
-        voix(this.pops, this.o);
-        this.gv += (this.cv - this.gv) * 0.004;
-        const b = this.blp.x(this.braise.x()) * 0.25 * this.gF, sl = this.slp[0].x(this.souffle[0].x()) * 0.3 * this.gv, sd = this.slp[1].x(this.souffle[1].x()) * 0.3 * this.gv;
-        L[i] = (l * 0.2 + this.o[0] + b + sl); R[i] = (d * 0.2 + this.o[1] + b + sd);
+        if(--this.ap <= 0){   /* une bûche claque : un coup grave et son éclat */
+          const a = 0.22 + 0.28 * r(), p = (r() * 2 - 1) * 0.4;
+          this.clics.push(new Clic(r, 170 + 300 * r(), 4 + 3 * r(), a, p, sr)); this.clics.push(new Clic(r, 1600 + 2200 * r(), 3, a * 0.7, p, sr));
+          this.ap = attente(r, 0.11 * this.gF, sr);
+        }
+        if(--this.as <= 0){ this.sif.push(new Siffle(r, 4200 + 3000 * r(), 0.05 + 0.06 * r(), 0.5 + 1.1 * r(), (r() * 2 - 1) * 0.5, sr)); this.as = attente(r, 0.09, sr); }
+        voix(this.clics, this.o); voix(this.sif, this.p);
+        const la = this.llp.x(this.lhp.x(borne(this.lap.x(r() * 2 - 1) * 100, -0.9, 0.9))) * 0.05 * this.gF;   /* le léchement : bruit à 30 Hz, amplifié, écrêté */
+        L[i] = this.blp[0].x(this.bas[0].x()) * this.gb + this.mlp[0].x(this.mbp[0].x(this.mil[0].x())) * this.gm + la + this.o[0] + this.p[0];
+        R[i] = this.blp[1].x(this.bas[1].x()) * this.gb + this.mlp[1].x(this.mbp[1].x(this.mil[1].x())) * this.gm + la + this.o[1] + this.p[1];
       }
     }
   }
 
   /* le niveau de chaque son, réglé par outils/test_bruit.js pour qu'ils sonnent aussi fort les uns que les autres
      (même niveau pondéré A, comme le bruit rose) */
-  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902, pluie:3.02, vagues:2.19, vent:2.95, feu:2.66};
+  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902, pluie:3.02, vagues:1.85, vent:2.95, feu:3.18};
   const NOMS = ['blanc', 'rose', 'brun', 'vagues', 'pluie', 'vent', 'feu'];
   function creer(nom, sr, r){
     const a = nom === 'pluie' ? new Pluie(sr, r) : nom === 'vagues' ? new Vagues(sr, r) : nom === 'vent' ? new Vent(sr, r) : nom === 'feu' ? new Feu(sr, r) : new Couleur(sr, r, nom, 1);
@@ -1654,7 +1684,7 @@ window.__bruit = {SONS, jouer:k => { const r = jouer(k); peindre(); return r; },
 /* @bruit:fin */</script>
 <script>
 (() => {
-  const ICI = 'f8984eb78953';
+  const ICI = '33d19b951ef1';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

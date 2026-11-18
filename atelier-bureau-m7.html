@@ -19924,6 +19924,9 @@ return {demarrer, qr:{charger:chargerQR, svg:svgQR}, etat:() => ({ordinateur:PC.
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-18', p:['anat-m6'], t:'Voies visuelles et champ visuel : la prof a annoncé le 18 novembre qu’elle ne les évalue pas à l’examen de vendredi, mais à l’UA3. Dans l’exerciseur d’Anatomie, ces questions sont maintenant éteintes au départ, et la progression guidée ne te les donne plus. Un interrupteur, en haut, les rallume si tu veux prendre de l’avance. Dans l’atelier, les deux écrans sur les voies visuelles le disent aussi.'},
+    {d:'2026-11-18', p:['anat-m6'], t:'Exerciseur d’Anatomie : après chaque réponse, une loupe apparaît à côté du résultat. Touche-la pour voir le dessin qui va avec la question, avec ses noms, et ce dont parle la question entouré en rouge : le trajet des larmes, la paupière en coupe, les couches de la cornée, la rétine… Le « ? » de chaque notion montre aussi son dessin.'},
+    {d:'2026-11-18', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Bruit de fond : le feu de foyer et les vagues ont été refaits. Le feu ne grésille plus comme une radio : un ronflement grave qui vacille, et des crépitements secs. Les vagues ne soufflent plus en montant : un grave qui enfle, le déferlement, puis l’écume qui pétille.'},
     {d:'2026-11-17', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Le bruit de fond sonne plus vrai. La pluie tombe goutte à goutte, jamais deux fois pareil, avec des flaques ; les vagues montent, déferlent et laissent leur écume ; le vent souffle par rafales et siffle quand il forcit ; le feu crépite par grappes et ronfle. Tous les sons ont maintenant le même volume.'},
     {d:'2026-11-17', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Pour te concentrer : un petit bouton en bas à droite des quatre exerciseurs lance un bruit de fond. Blanc, rose ou brun, ou une ambiance : vagues, pluie, vent, feu de foyer. Touche un son pour le lancer, touche-le encore pour l’arrêter ; le volume se règle juste dessous.'},
     {d:'2026-11-17', p:['anat-m6'], t:'L’exerciseur d’Anatomie suit le format annoncé par la prof pour vendredi : examen sur papier, choix multiples, courtes réponses et schémas. Nouveau : 41 courtes réponses (tu écris, tu compares, tu te corriges), dont les questions du projet du 13 novembre, 12 schémas à étiqueter (cornée, cristallin, larmes, rétine, disque optique, voies visuelles), et le module 9 sur le champ visuel. Tu peux pratiquer un format à la fois.'},
@@ -20362,7 +20365,7 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 </script>
 <script>
 (() => {
-  const ICI = 'f8984eb78953';
+  const ICI = '33d19b951ef1';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
