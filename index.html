@@ -723,6 +723,9 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Tu changes d’appareil ? Dans les quatre exerciseurs (Tests ophtalmiques, Optique, Bureau, Anatomie), un nouveau bouton en bas à droite (un ordinateur et un téléphone) montre un code. Vise-le avec l’appareil photo de ton téléphone : tu y retrouves ta progression et tu continues où tu en étais. Vers un ordinateur, envoie-toi le lien qui est juste dessous.'},
+    {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'La jauge de maîtrise des exerciseurs a maintenant des crans à 25, 50 et 75 % : un but à portée de main, et un mot quand tu en franchis un, bon moment pour une pause. Tu peux les enlever dans « Détails et calcul », sous la jauge.'},
+    {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Bruit de fond : les vagues, la pluie, le vent et le feu sont maintenant de vrais sons, enregistrés dehors : l’océan au Chili, une averse en Angleterre, le vent dans une forêt de pins, un feu de camp en Australie. La première fois que tu touches une ambiance, elle met quelques secondes à arriver.'},
     {d:'2026-11-19', p:['anat-m6'], t:'La prof a précisé : la rétine, le nerf optique et les voies non-visuelles (l’horloge, les réflexes de la pupille) du module 8 sont bien à l’examen de vendredi. Ce qui est reporté, ce sont le champ visuel et le parcours visuel avec ses déficits. L’exerciseur d’Anatomie suivait déjà ce partage ; il le dit maintenant en haut de la page.'},
     {d:'2026-11-18', p:['anat-m6'], t:'Voies visuelles et champ visuel : la prof a annoncé le 18 novembre qu’elle ne les évalue pas à l’examen de vendredi, mais à l’UA3. Dans l’exerciseur d’Anatomie, ces questions sont maintenant éteintes au départ, et la progression guidée ne te les donne plus. Un interrupteur, en haut, les rallume si tu veux prendre de l’avance. Dans l’atelier, les deux écrans sur les voies visuelles le disent aussi.'},
     {d:'2026-11-18', p:['anat-m6'], t:'Exerciseur d’Anatomie : après chaque réponse, une loupe apparaît à côté du résultat. Touche-la pour voir le dessin qui va avec la question, avec ses noms, et ce dont parle la question entouré en rouge : le trajet des larmes, la paupière en coupe, les couches de la cornée, la rétine… Le « ? » de chaque notion montre aussi son dessin.'},
@@ -898,7 +901,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = '2e8b87b4a4f8';
+  const ICI = 'a52a16f0a6ef';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;

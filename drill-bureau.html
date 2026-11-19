@@ -157,6 +157,14 @@ h1{margin:0;font:600 30px/1.1 var(--f-display);letter-spacing:-.01em}
 .m-delta.moins{background:var(--bad-soft);color:var(--bad)}
 .jauge{flex:1 1 130px;min-width:110px;max-width:240px;height:8px;border-radius:999px;background:var(--accent-soft);overflow:hidden}
 .jauge i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+/* les paliers : un cran à 25, 50 et 75 % (une coupure dans la jauge). Au choix de l'étudiant, dans « Détails et calcul » */
+.jauge{position:relative}
+.jauge.paliers{height:10px}
+.jauge.paliers::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent calc(25% - 1.5px),var(--panel) calc(25% - 1.5px),var(--panel) calc(25% + 1.5px),transparent calc(25% + 1.5px),transparent calc(50% - 1.5px),var(--panel) calc(50% - 1.5px),var(--panel) calc(50% + 1.5px),transparent calc(50% + 1.5px),transparent calc(75% - 1.5px),var(--panel) calc(75% - 1.5px),var(--panel) calc(75% + 1.5px),transparent calc(75% + 1.5px))}
+.choix-paliers{display:flex;align-items:flex-start;gap:10px}
+.choix-paliers .inter{margin-top:1px}
+.choix-paliers label{cursor:pointer}
+.bilan .palier{color:var(--ink);font-weight:700}
 .m-rep,.m-vit{font-size:13.5px;color:var(--ink-2)}
 .m-vit{margin-left:auto}
 .calcul{margin-top:6px}
@@ -266,6 +274,22 @@ details summary{cursor:pointer;font-weight:700;font-size:15px}
 .repere small{color:var(--ink-2);font-size:13.5px}
 .formats{display:flex;flex-direction:column;gap:6px}
 .formats p{margin:0;font-size:14px;line-height:1.4;color:var(--ink-2);max-width:86ch}
+/* continuer sur un autre appareil : un bouton dans le coin (au-dessus de celui du bruit de fond), et son panneau */
+.coin{position:fixed;z-index:15;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px))}
+.coin-btn{width:44px;height:44px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);box-shadow:0 2px 10px rgba(8,12,16,.14)}
+.coin-btn:hover{border-color:var(--accent);color:var(--accent)}
+.coin-btn svg{width:25px;height:25px}
+.tr-qr{flex:none;align-self:center;width:min(100%,470px);border-radius:10px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.tr-qr svg{display:block;width:100%;height:auto}
+.tr-qr p{padding:26px 16px;color:#333;font-size:14.5px;text-align:center}
+.tr-pas{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-size:15.5px;line-height:1.4}
+.tr-comp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tr-comp div{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;background:var(--panel-2);font-size:14.5px;line-height:1.35}
+.tr-comp div.recu{background:var(--accent-soft)}
+.tr-comp b{font:600 26px/1.1 var(--f-display)}
+.expl .bas{margin-top:0}
+.expl.transfert{width:min(540px,100%)}
+@media print{ .coin,.coin-btn{display:none} }
 @media (max-width:880px){ .corps{grid-template-columns:minmax(0,1fr)} }
 @media (max-width:560px){
   h1{font-size:26px}
@@ -644,7 +668,7 @@ function choisirType(l, etat, rnd = Math.random){
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const memo = {get(){ try{ return JSON.parse(localStorage.getItem(COURS.cle)) || null; }catch(e){ return null; } }, set(v){ try{ localStorage.setItem(COURS.cle, JSON.stringify(v)); }catch(e){} }};
-const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false, format:'', reportes:false});
+const VIDE = () => ({fam:{}, typ:{}, it:{}, err:[], dernier:null, portee:'tout', choix:[], journal:[], guide:false, format:'', reportes:false, paliers:true, pal:0});
 const SAUVE = memo.get();
 let D = Object.assign(VIDE(), SAUVE || {});
 const sauver = () => memo.set(D);
@@ -661,6 +685,9 @@ D.reportes = D.reportes === true && HORS.size > 0;
 const hors = f => HORS.has(f) && !D.reportes;
 const COMPTEES = Object.keys(FAMILLES).filter(f => !HORS.has(f));
 const pctTout = () => maitriseTout(D.fam, COMPTEES);
+/* les paliers (25, 50, 75 %) : un but à portée, et un bon moment pour une pause. Un cran sur la jauge, un mot quand on en
+   franchit un. D.pal : le plus haut déjà annoncé (un palier ne s'annonce qu'une fois, même si la maîtrise redescend) */
+const palierDe = p => Math.min(75, Math.floor((p + 1e-9) / 25) * 25);
 const modLong = m => m === APRES ? (REP && REP.long) || 'Notions reportées' : (NOMS_MOD[m] && NOMS_MOD[m].long) || 'Module ' + m;
 const modCourt = m => m === APRES ? (REP && REP.court) || 'Reporté' : (NOMS_MOD[m] && NOMS_MOD[m].court) || 'M' + m;
 const PORTEES = [['tout', COURS.tout || 'Tout l’UA2']].concat(MODS.map(m => [m, modLong(m)]), [['erreurs', 'Mes erreurs'], ['perso', 'Perso']]);
@@ -671,6 +698,9 @@ if(!Array.isArray(D.err)) D.err = [];
 if(!Array.isArray(D.choix)) D.choix = [];
 D.choix = D.choix.filter(f => FAMILLES[f]);
 if(D.portee === 'perso' && !D.choix.some(f => !hors(f))) D.portee = 'tout';
+/* une progression d'avant les paliers : ceux déjà dépassés ne s'annoncent pas après coup */
+D.paliers = D.paliers !== false;
+if(!Number.isFinite(D.pal) || (SAUVE && SAUVE.pal === undefined)) D.pal = palierDe(pctTout());
 /* un nouvel étudiant (rien d'enregistré) commence en progression guidée ; les autres gardent leur choix */
 D.guide = SAUVE ? D.guide === true : true;
 /* la progression guidée : le premier module qui a une notion pas encore réussie ; sa pile = ses notions pas encore
@@ -1009,6 +1039,7 @@ function conclure(bon){
   const mf = etapeDe(f);
   S.bilan = {fam:f, sorte, bon, avant, pourquoi:S.pourquoi || '', apres:{s:Math.min(3, e1.serie), serie:e1.serie, n:e1.n, r:reussi(e1), pct:pctTout()},
     guide:D.guide ? {m:mf, reste:resteGuide(mf), suivant:modGuide()} : null};
+  if(D.paliers){ const k = palierDe(S.bilan.apres.pct); if(k > D.pal){ D.pal = k; S.bilan.palier = k; sauver(); } }
   peindre();
 }
 function noter(p, net, neutre){
@@ -1059,7 +1090,8 @@ function bilanHtml(){
   }
   const d = Math.round(z.pct) - Math.round(a.pct);
   return '<div class="bilan ' + cls + '">' + dots + '<p><b>' + esc(titre) + '</b> · ' + esc(texte) + '</p>'
-    + (d ? '<p class="sous">Ta maîtrise : ' + virg(a.pct, 0) + ' % → ' + virg(z.pct, 0) + ' %</p>' : '') + '</div>';
+    + (d ? '<p class="sous">Ta maîtrise : ' + virg(a.pct, 0) + ' % → ' + virg(z.pct, 0) + ' %</p>' : '')
+    + (b.palier ? '<p class="sous palier">Palier de ' + b.palier + ' % franchi. Un bon moment pour une courte pause, si tu en veux une.</p>' : '') + '</div>';
 }
 /* ---------- la fiche d'une notion ---------- */
 let fond = null, retour = null;
@@ -1166,10 +1198,11 @@ function peindreProgression(){
   const z = $('#progression'), ouvert = !!(z.querySelector('details') && z.querySelector('details').open);
   z.innerHTML = '<div class="m-ligne"><h2 class="m-t" id="t-prog">' + esc(COURS.maitrise || 'Ta maîtrise de l’UA2') + '</h2><b class="m-pct">' + virg(pct, 0) + ' %</b>'
     + (d ? '<span class="m-delta' + (d < 0 ? ' moins' : '') + '">' + (d > 0 ? '+' : '−') + Math.abs(d) + '</span>' : '')
-    + '<div class="jauge" aria-hidden="true"><i style="width:' + Math.max(0, Math.min(100, pct)) + '%"></i></div>'
+    + '<div class="jauge' + (D.paliers ? ' paliers' : '') + '" aria-hidden="true"><i style="width:' + Math.max(0, Math.min(100, pct)) + '%"></i></div>'
     + '<span class="m-rep">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir</span><span class="m-vit">' + esc(court) + '</span></div>'
     + '<details class="calcul"' + (ouvert ? ' open' : '') + '><summary>Détails et calcul</summary><p class="seul-mobile">' + nR + ' réussie' + pl(nR) + ' · ' + nC + ' en cours · ' + nV + ' à découvrir. ' + esc(court) + '.</p><p>' + esc(long) + '</p>'
-    + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.' + (HORS.size ? ' ' + esc(REP.calcul || 'Les notions reportées ne comptent pas dans ce %.') : '') + '</p></details>';
+    + '<p>Le % : chaque notion compte autant. Une notion réussie (trois de suite, en au moins cinq essais) vaut 100 %. Les autres valent ta réussite du premier coup, sans aide, où tes essais récents pèsent plus ; freinée tant que tu n’as pas 3 réussites. Jamais essayée : 0.' + (HORS.size ? ' ' + esc(REP.calcul || 'Les notions reportées ne comptent pas dans ce %.') : '') + '</p>'
+    + '<p class="choix-paliers"><button type="button" class="inter" role="switch" id="pal-sw" aria-checked="' + D.paliers + '" data-a="paliers" aria-labelledby="pal-t"><span></span></button><label for="pal-sw" id="pal-t">Paliers : des crans sur la jauge à 25, 50 et 75 %, et un mot quand tu en franchis un. Un but à portée, et un bon moment pour une pause.' + (D.paliers && pct < 75 ? ' Le prochain : ' + (palierDe(pct) + 25) + ' %.' : '') + '</label></p></details>';
 }
 function peindreFormats(){
   const z = $('#formats');
@@ -1249,6 +1282,14 @@ document.addEventListener('click', e => {
     if(!D.guide){ const pt = PORTEES.find(([k]) => String(k) === String(D.portee)); SESS.avis.push({c:'info', t:'Progression guidée coupée. Tu reprends « ' + (pt ? pt[1] : '') + ' » : choisis ta portée en haut, ou tes notions sur ta carte.'}); }
     nouveau(); { const g = $('#guide-sw'); if(g) g.focus({preventScroll:true}); } return;
   }
+  if(b.dataset.a === 'paliers'){
+    D.paliers = !D.paliers; if(D.paliers) D.pal = palierDe(pctTout()); sauver(); peindreProgression();
+    { const g = $('#pal-sw'); if(g) g.focus({preventScroll:true}); } return;
+  }
+  if(b.dataset.a === 'tr-copier'){ copierLien(b); return; }
+  if(b.dataset.a === 'tr-envoyer'){ envoyerLien(); return; }
+  if(b.dataset.a === 'tr-oui'){ reprendre(); return; }
+  if(b.dataset.a === 'tr-non'){ fermerExpl(); return; }
   if(b.dataset.a === 'reportes'){
     abandonner(); D.reportes = !D.reportes; SESS.mg = null; SESS.dernierFam = ''; $('#annonce-carte').textContent = '';
     if(typeof D.portee === 'number' && moduleVide(D.portee)) D.portee = 'tout';
@@ -1300,7 +1341,178 @@ document.addEventListener('keydown', e => {
   if(e.key === 'Enter' && (S.p.k === 'num' || S.p.k === 'rx') && (dansChamp || e.target === document.body)){ e.preventDefault(); if(!e.repeat) valider(); }
 });
 document.addEventListener('input', e => { if(e.target.id === 'brouillon' && S) S.brouillon = e.target.value; else if(e.target.id === 'court' && S) S.ecrit = e.target.value; });
+/* ---------- continuer sur un autre appareil ----------
+   La progression vit dans le navigateur (localStorage). Pour la reprendre ailleurs, la page l'écrit dans un lien :
+   <page>#suite=1.<la progression, tassée>. Un code QR montre ce lien : l'appareil photo du téléphone l'ouvre, et la page
+   d'arrivée lit la progression dans l'adresse. Rien ne passe par un serveur (ce qui suit « # » n'est jamais envoyé).
+   emballer() : D en tableaux courts, les notions et les questions par leur rang dans la banque ; puis JSON, deflate,
+   base64. EMPREINTE : l'autre appareil doit avoir la même banque (sinon, recharger la page des deux côtés).
+   L'arrivée ne remplace rien sans demander, sauf sur un appareil qui n'a encore aucune réponse. */
+const SITE = COURS.site || 'https://zexonis.github.io/Lumiere/';
+const CLE_REPRISE = 'lumiere-reprise';
+const QR_LIB = 'vendor/qrcode-generator-1.4.4.js';
+const EMPREINTE = (() => { let h = 2166136261; const s = TYPES.map(t => t.id).join() + '|' + BANQUE.familles.map(f => f.id).join(); for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); })();
+function emballer(leger){
+  const fams = BANQUE.familles.map(f => f.id), rang = f => fams.indexOf(f), j = leger ? [] : (D.journal || []).slice(-80);
+  /* par question, un caractère (0 à 35 en base 36) : n et o, ses essais notés et réussis ; l, le dernier (0 raté, 1 réussi,
+     2 aucun, « - » jamais notée) ; y, les fois où elle a été montrée en plus de ses essais notés. Des suites de petits
+     chiffres se tassent bien mieux que des tableaux : le code QR reste lisible même après des centaines de questions */
+  const c36 = n => Math.max(0, Math.min(35, Math.floor(n) || 0)).toString(36), it = t => D.it[t.id];
+  return {v:1, k:COURS.cle, b:EMPREINTE, t:Math.round(Date.now() / 1000),
+    f:fams.map(id => { const e = D.fam[id]; return e && (e.n || e.serie) ? [e.n, e.ok, e.serie, parseInt('1' + histoire(e).join(''), 2)] : 0; }),
+    y:TYPES.map(t => c36((D.typ[t.id] || 0) - ((it(t) || {}).n || 0))).join(''),
+    n:TYPES.map(t => c36((it(t) || {}).n)).join(''), o:TYPES.map(t => c36((it(t) || {}).ok)).join(''),
+    l:TYPES.map(t => (!it(t) ? '-' : it(t).der === 0 ? '0' : it(t).der === 1 ? '1' : '2')).join(''),
+    e:D.err.map(x => { const k = BANQUE.items.findIndex(it => it.q === x.q); return k >= 0 ? k : [String(x.q).slice(0, 220), String(x.r).slice(0, 220), rang(x.f)]; }),
+    d:D.dernier ? [rang(D.dernier.fam), D.dernier.i] : 0,
+    p:D.portee, c:D.choix.map(rang), g:D.guide ? 1 : 0, m:D.format || '', r:D.reportes ? 1 : 0, pa:[D.paliers ? 1 : 0, D.pal || 0],
+    /* le journal (pour la vitesse et le rythme par jour) : l'heure à la minute, la maîtrise au dixième, d'un point au suivant */
+    j:j.length ? [Math.round(j[0].t / 60000), j.map((x, n) => (n ? Math.round(x.t / 60000) - Math.round(j[n - 1].t / 60000) : 0)), j.map((x, n) => Math.round(x.p * 10) - (n ? Math.round(j[n - 1].p * 10) : 0))] : 0};
+}
+function deballer(o){
+  if(!o || o.v !== 1 || o.k !== COURS.cle) throw new Error('autre');
+  if(o.b !== EMPREINTE) throw new Error('version');
+  const fams = BANQUE.familles.map(f => f.id), ent = x => (Number.isFinite(+x) && +x > 0 ? Math.floor(+x) : 0), N = VIDE();
+  (o.f || []).forEach((e, k) => { if(Array.isArray(e) && fams[k]) N.fam[fams[k]] = {n:ent(e[0]), ok:ent(e[1]), serie:ent(e[2]), h:[...ent(e[3]).toString(2).slice(1, 11)].map(Number)}; });
+  const de36 = (t, k) => { const v = parseInt(String(t || '')[k], 36); return Number.isFinite(v) ? v : 0; };
+  TYPES.forEach((t, k) => {
+    const l = String(o.l || '')[k], note = !t.gen && (l === '0' || l === '1' || l === '2'), n = note ? de36(o.n, k) : 0, vues = n + de36(o.y, k);
+    if(note){ N.it[t.id] = {n, ok:Math.min(n, de36(o.o, k))}; if(l !== '2') N.it[t.id].der = +l; }
+    if(vues) N.typ[t.id] = vues;
+  });
+  N.err = (o.e || []).map(x => { if(typeof x === 'number'){ const it = BANQUE.items[x]; return it ? {q:it.q, r:repTxt(copie(it)), f:it.fam} : null; } return Array.isArray(x) && fams[x[2]] ? {q:String(x[0]), r:String(x[1]), f:fams[x[2]]} : null; }).filter(Boolean).slice(0, 6);
+  if(Array.isArray(o.d) && fams[o.d[0]]) N.dernier = {fam:fams[o.d[0]], i:ent(o.d[1])};
+  N.portee = o.p; N.choix = (o.c || []).map(k => fams[k]).filter(Boolean); N.guide = !!o.g; N.format = String(o.m || ''); N.reportes = !!o.r;
+  N.paliers = !(o.pa && o.pa[0] === 0); N.pal = o.pa ? ent(o.pa[1]) : 0;
+  if(Array.isArray(o.j)){   /* un écart peut être négatif (une horloge remise à l'heure, une maîtrise qui baisse) */
+    const rel = x => (Number.isFinite(+x) ? Math.round(+x) : 0); let t = ent(o.j[0]), p = 0;
+    N.journal = (o.j[1] || []).map((dt, n) => { t += rel(dt); p += rel((o.j[2] || [])[n]); return {t:t * 60000, p:Math.max(0, Math.min(1000, p)) / 10}; });
+  }
+  return N;
+}
+const b64 = {vers(u){ let s = ''; for(let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
+  de(t){ const s = atob(t.replace(/-/g, '+').replace(/_/g, '/')), u = new Uint8Array(s.length); for(let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }};
+const tasser = async (u, Flux) => new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new Flux('deflate-raw'))).arrayBuffer());
+/* le lien : sur le site, l'adresse de cette page ; ailleurs (fichier ouvert du disque, serveur de travail), celle du site */
+async function lienTransfert(leger){
+  const brut = new TextEncoder().encode(JSON.stringify(emballer(leger)));
+  let charge;
+  try{ charge = '1.' + b64.vers(await tasser(brut, CompressionStream)); }catch(e){ charge = '0.' + b64.vers(brut); }
+  const ici = location.protocol === 'https:' && /(^|\.)github\.io$/.test(location.hostname);
+  return (ici ? location.origin + location.pathname : SITE + (location.pathname.split('/').pop() || '')) + '#suite=' + charge;
+}
+async function lireSuite(charge){
+  let u = b64.de(charge.slice(2));
+  if(charge[0] === '1') u = await tasser(u, DecompressionStream);
+  return JSON.parse(new TextDecoder().decode(u));
+}
+/* le code QR : la bibliothèque du site (vendor/), chargée au premier usage, comme dans tablette.js */
+let chargementQR = null;
+function chargerQR(){
+  if(!chargementQR){
+    const ici = /^https?:$/.test(location.protocol) ? [QR_LIB, '../_commun/' + QR_LIB, '../../' + QR_LIB].map(u => new URL(u, document.baseURI).href) : [];
+    chargementQR = ici.concat(SITE + QR_LIB).reduce((p, url) => p.catch(() => import(url)), Promise.reject())
+      .then(m => { if(typeof m.default !== 'function') throw new Error('qr'); return m.default; })
+      .catch(e => { chargementQR = null; throw e; });
+  }
+  return chargementQR;
+}
+/* noir sur blanc, avec sa marge de quatre modules, quel que soit le thème : c'est ce que lisent les appareils photo */
+function svgQR(qrcode, texte){
+  const q = qrcode(0, texte.length > 600 ? 'L' : 'M'); q.addData(texte); q.make();
+  const n = q.getModuleCount(), m = 4, t = n + 2 * m;
+  let d = '';
+  for(let r = 0; r < n; r++) for(let c = 0; c < n;){
+    if(!q.isDark(r, c)){ c++; continue; }
+    let f = c; while(f < n && q.isDark(r, f)) f++;
+    d += 'M' + (c + m) + ' ' + (r + m) + 'h' + (f - c) + 'v1h-' + (f - c) + 'z'; c = f;
+  }
+  return '<svg viewBox="0 0 ' + t + ' ' + t + '" shape-rendering="crispEdges" role="img" aria-label="Code QR : le lien qui emporte ta progression"><rect width="' + t + '" height="' + t + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
+}
+const resume = fam => ({pct:maitriseTout(fam, COMPTEES), r:COMPTEES.filter(f => reussi(fam[f])).length});
+const resumeHtml = x => '<b>' + virg(x.pct, 0) + ' %</b><span>' + (x.r ? x.r + ' notion' + (x.r > 1 ? 's' : '') + ' réussie' + (x.r > 1 ? 's' : '') : 'aucune notion réussie encore') + '</span>';
+let lienCourant = '', suiteRecue = null;
+async function transfert(depuis){
+  fermerExpl(); retour = depuis || null; lienCourant = '';
+  const moi = resume(D.fam);
+  ouvrirFond('Continuer sur un autre appareil',
+    '<p>Ta progression est gardée sur cet appareil seulement. Ce code l’emmène sur un autre : ton téléphone, une tablette, un autre ordinateur.</p>'
+    + '<div class="tr-qr" id="tr-qr"><p>Préparation du code…</p></div>'
+    + '<ol class="tr-pas"><li><b>Vers un téléphone ou une tablette :</b> vise le code avec l’appareil photo, puis touche le lien qui apparaît.</li><li><b>Vers un ordinateur :</b> envoie-toi le lien (courriel, message), puis ouvre-le là-bas.</li></ol>'
+    + '<div class="bas"><button type="button" class="bouton" data-a="tr-copier">Copier le lien</button>' + (navigator.share ? '<button type="button" class="bouton" data-a="tr-envoyer">Envoyer le lien…</button>' : '') + '</div>'
+    + '<small>Le code emporte ta progression telle qu’elle est maintenant : ta maîtrise (' + virg(moi.pct, 0) + ' %), tes notions réussies (' + moi.r + '), tes erreurs à revoir. Si tu continues ici ensuite, refais un code avant de changer d’appareil. L’autre appareil te demande avant de remplacer quoi que ce soit. Tout est dans le code lui-même : la page n’envoie rien à personne.</small>', 'transfert');
+  $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
+  const ici = fond, z = $('#tr-qr', ici);
+  try{
+    let lien = await lienTransfert(false);
+    if(lien.length > 1500) lien = await lienTransfert(true);   /* un code trop dense se lit mal : sans le journal (la vitesse se réestime en 8 questions) */
+    lienCourant = lien;
+    if(fond !== ici) return;
+    if(lien.length > 2900) throw new Error('long');
+    const qrcode = await chargerQR();
+    if(fond === ici) z.innerHTML = svgQR(qrcode, lien);
+  }catch(e){
+    if(fond === ici) z.innerHTML = '<p>' + (lienCourant ? 'Le code ne peut pas s’afficher ici (hors ligne ?). Le lien, lui, fonctionne : copie-le ou envoie-le-toi.' : 'Le code n’a pas pu être préparé sur ce navigateur.') + '</p>';
+  }
+}
+async function copierLien(b){
+  if(!lienCourant) return;
+  const ok = await versPressePapiers(lienCourant);
+  if(!b.isConnected) return;
+  b.textContent = ok ? 'Lien copié ✓' : 'Copie bloquée par le navigateur';
+  setTimeout(() => { if(b.isConnected) b.textContent = 'Copier le lien'; }, 2400);
+}
+function envoyerLien(){ if(lienCourant && navigator.share) navigator.share({title:COURS.titre, text:'Ma progression (' + COURS.titre + ') : à ouvrir sur l’autre appareil.', url:lienCourant}).catch(() => {}); }
+const quandTxt = d => (d.toDateString() === new Date().toDateString() ? 'aujourd’hui' : 'le ' + d.getDate() + ' ' + ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'][d.getMonth()]) + ' à ' + d.getHours() + ' h ' + String(d.getMinutes()).padStart(2, '0');
+/* l'arrivée : la page s'ouvre avec « #suite= » dans son adresse */
+async function arrivee(){
+  const m = location.hash.match(/(?:^#|&)suite=([01]\.[A-Za-z0-9_-]+)/);
+  if(!m) return;
+  try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  let o, N;
+  try{ o = await lireSuite(m[1]); N = deballer(o); }
+  catch(e){
+    const quoi = e && e.message === 'version' ? 'Ce code a été fait avec une autre version de cette page. Recharge la page sur tes deux appareils, puis refais un code.'
+      : e && e.message === 'autre' ? 'Ce code vient d’un autre exerciseur : ouvre le lien tel quel, sans changer l’adresse.'
+      : 'Ce code est incomplet, ou ce navigateur ne sait pas le lire. Refais-en un sur l’autre appareil.';
+    fermerExpl(); ouvrirFond('Progression non reprise', '<p class="msg warn">' + esc(quoi) + '</p><small>Rien n’a changé sur cet appareil.</small>');
+    $('[data-a="fermer-expl"]', fond).focus({preventScroll:true});
+    return;
+  }
+  suiteRecue = N;
+  if(!Object.values(D.fam).some(e => e && e.n)){ reprendre(); return; }   /* rien à perdre ici : on reprend sans demander */
+  const dernier = (D.journal || []).length ? D.journal[D.journal.length - 1].t : 0;
+  fermerExpl();
+  ouvrirFond('Reprendre ta progression ?', '<p>Tu arrives avec un code fait sur un autre appareil, ' + esc(quandTxt(new Date(o.t * 1000))) + '.</p>'
+    + '<div class="tr-comp"><div class="recu"><h3>Dans le code</h3>' + resumeHtml(resume(N.fam)) + '</div><div><h3>Sur cet appareil</h3>' + resumeHtml(resume(D.fam)) + '</div></div>'
+    + (dernier > o.t * 1000 + 60000 ? '<p class="msg warn">Tu as répondu à des questions sur cet appareil après la création de ce code : la progression d’ici est plus récente.</p>' : '')
+    + '<div class="bas"><button type="button" class="bouton plein" data-a="tr-oui">Reprendre celle du code</button><button type="button" class="bouton" data-a="tr-non">Garder celle d’ici</button></div>'
+    + '<small>Reprendre remplace la progression de cet appareil, pour cet exerciseur seulement. L’autre appareil garde la sienne.</small>');
+  $('[data-a="tr-oui"]', fond).focus({preventScroll:true});
+}
+function reprendre(){
+  if(!suiteRecue) return;
+  memo.set(suiteRecue);
+  if(JSON.stringify(memo.get()) !== JSON.stringify(suiteRecue)){   /* le navigateur ne garde rien (navigation privée, stockage plein) */
+    fermerExpl(); ouvrirFond('Progression non reprise', '<p class="msg warn">Ce navigateur refuse de garder la progression (navigation privée, peut-être). Ouvre le lien dans ton navigateur habituel.</p>');
+    return;
+  }
+  try{ sessionStorage.setItem(CLE_REPRISE, '1'); }catch(e){}
+  location.reload();
+}
+/* le bouton : dans le coin du bruit de fond, au-dessus de son bouton (bruit.js arrive après ce script) ; sans lui, seul */
+const ICONE_APPAREILS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.8" y="11" width="11.4" height="7.4" rx="1.2"/><path d="M0.9 21h13.2"/><rect x="16.6" y="10.4" width="6" height="10.8" rx="1.4"/><path d="M8.2 2.9h8m-1.8-1.8 1.8 1.8-1.8 1.8"/><path d="M16.2 6.7h-8m1.8-1.8-1.8 1.8 1.8 1.8"/></svg>';
+function poserCoin(){
+  const b = document.createElement('button'), B = window.__bruit;
+  b.type = 'button'; b.className = 'coin-btn'; b.id = 'transfert-btn'; b.title = 'Continuer sur un autre appareil';
+  b.setAttribute('aria-label', 'Continuer sur un autre appareil'); b.innerHTML = ICONE_APPAREILS;
+  b.addEventListener('click', e => { e.stopPropagation(); if(B && B.fermer) B.fermer(); transfert(b); });
+  if(B && B.racine && B.bouton) B.racine.insertBefore(b, B.bouton);
+  else { const d = document.createElement('div'); d.className = 'coin'; d.appendChild(b); document.body.appendChild(d); }
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', poserCoin); else setTimeout(poserCoin, 0);
 /* ---------- mise en place ---------- */
+try{ if(sessionStorage.getItem(CLE_REPRISE)){ sessionStorage.removeItem(CLE_REPRISE); SESS.avis.push({c:'ok', t:'Progression reprise ✓ : tu continues où tu en étais sur ton autre appareil.'}); } }catch(e){}
 document.title = COURS.titre;
 $('#titre').textContent = COURS.titre;
 $('#sous-titre').textContent = COURS.sousTitre;
@@ -1308,62 +1520,43 @@ $('#note').innerHTML = esc(COURS.note) + ' <button type="button" class="lien" id
 $('#effacer').addEventListener('click', e => {
   const b = e.target;
   if(b.dataset.sur !== '1'){ b.dataset.sur = '1'; b.textContent = 'Touche encore pour tout effacer'; setTimeout(() => { if(b.dataset.sur === '1'){ b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; } }, 5000); return; }
-  const p = D.portee, c = D.choix, g = D.guide, fm = D.format, rp = D.reportes; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; D.guide = g; D.format = fm; D.reportes = rp; sauver();
+  const p = D.portee, c = D.choix, g = D.guide, fm = D.format, rp = D.reportes, pa = D.paliers; D = VIDE(); D.portee = p === 'erreurs' ? 'tout' : p; D.choix = c; D.guide = g; D.format = fm; D.reportes = rp; D.paliers = pa; sauver();
   SESS.n = SESS.net = 0; SESS.rappels = []; SESS.dernierFam = ''; SESS.decouverte = false; SESS.mg = null;
   b.dataset.sur = ''; b.textContent = 'Effacer ma progression'; nouveau();
 });
 /* pour les tests (build/…/test) : afficher une question précise, lire l'état */
-window.__drill = {TYPES, FAMILLES, FIGURES, HORS, hors, dansPortee, pctTout, choisirType, jugerNum, jugerRx, maitriseTout, reussi, modGuide, dansGuide, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
+window.__drill = {TYPES, FAMILLES, FIGURES, HORS, hors, dansPortee, pctTout, choisirType, jugerNum, jugerRx, maitriseTout, reussi, modGuide, dansGuide, palierDe, emballer, deballer, lienTransfert, lireSuite, transfert, etat:() => ({D, S, SESS}), aller:id => nouveau(TYPES.find(t => t.id === id))};
 nouveau();
+arrivee();
 })();
 </script>
 <script>
 /* ======================================================================
    Bruit de fond : un petit bouton pour se concentrer pendant l'étude.
-   Blanc, rose, brun, et quatre ambiances : vagues, pluie, vent, feu de
-   foyer. Tout est fabriqué en direct, échantillon par échantillon, par le
-   « moteur » ci-dessous : aucun fichier son, et rien ne se répète jamais
-   (chaque goutte, crépitement ou vague est tiré au hasard).
-   Le moteur tourne dans le fil audio du navigateur (AudioWorklet) ; à
-   défaut, dans un ScriptProcessor. Le même code est rendu hors ligne par
-   outils/test_bruit.js, qui le mesure (niveau, spectre, hasard).
-   Recettes : Andy Farnell, « Designing Sound » (MIT Press), pratiques
-   « Rain », « Wind », « Fire » ; les bulles de K. van den Doel (« Physically
-   based models for liquid sounds », 2005) ; la vague, du bruit filtré dont
-   l'enveloppe et la clarté suivent la montée, le déferlement et l'écume.
+   Quatre ambiances : vagues, pluie, vent, feu. Ce sont de vraies prises de
+   son, du domaine public (radio aporee, sur l'Internet Archive ; qui, où et
+   quel passage : sons/sources.json). Un fichier par son, dans sons/, chargé
+   au premier clic seulement ; la page le rejoue sans fin, chaque passage
+   fondu dans le suivant (4 s), en partant chaque fois d'un autre endroit.
+   Trois bruits : blanc, rose, brun, fabriqués en direct par le « moteur »
+   ci-dessous (AudioWorklet ; à défaut, ScriptProcessor).
+   Avant le 19 nov. 2026 les quatre ambiances étaient fabriquées elles aussi
+   (trois essais) : à l'oreille, cela restait du « statique ». Ne pas y
+   revenir : une ambiance s'enregistre.
    Le module pose son bouton (en bas à droite) et son style ; il prend les
    couleurs de la page (--panel, --ink…). Le dernier son et le volume sont
    gardés sur l'appareil (lumiere-bruit), mais rien ne joue tout seul.
    Inclus dans les exerciseurs par drill-notions/construire.py, et dans
-   « Quelle formule ? » par outils/poser_bruit.py.
+   « Quelle formule ? » par outils/poser_bruit.py. Les fichiers de sons/
+   sont faits par outils/preparer_sons.py et copiés sur le site par
+   Lumiere/construire.py.
    ====================================================================== */
 (() => {
 'use strict';
 if(window.__bruit) return;
 
 /* === moteur : début (autonome : copié tel quel dans l'AudioWorklet ; testé par outils/test_bruit.js) === */
-function fabriqueAmbiances(){
-  const TAU = 2 * Math.PI, K = 64;   /* les réglages lents bougent tous les 64 échantillons */
-  const borne = (x, a, b) => (x < a ? a : x > b ? b : x);
-  const gauss = r => { let u = 0; while(u === 0) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * r()); };
-  const attente = (r, parSec, sr) => Math.max(1, Math.round(-Math.log(1 - r()) / Math.max(parSec, 1e-6) * sr));   /* Poisson, en échantillons */
-  const pan = p => { const a = (borne(p, -1, 1) + 1) * Math.PI / 4; return [Math.cos(a), Math.sin(a)]; };
-
-  /* un biquad (Robert Bristow-Johnson), forme directe transposée ; passe-bande à 0 dB au centre */
-  class Bq{
-    constructor(type, f, q, sr){ this.z1 = 0; this.z2 = 0; this.sr = sr; this.type = type; this.regler(f, q); }
-    regler(f, q){
-      const w = TAU * borne(f, 5, this.sr * 0.45) / this.sr, c = Math.cos(w), al = Math.sin(w) / (2 * q), a0 = 1 + al;
-      let b0, b1, b2;
-      if(this.type === 'lp'){ b0 = (1 - c) / 2; b1 = 1 - c; b2 = b0; }
-      else if(this.type === 'hp'){ b0 = (1 + c) / 2; b1 = -(1 + c); b2 = b0; }
-      else { b0 = al; b1 = 0; b2 = -al; }
-      this.b0 = b0 / a0; this.b1 = b1 / a0; this.b2 = b2 / a0; this.a1 = -2 * c / a0; this.a2 = (1 - al) / a0;
-      return this;
-    }
-    x(v){ const y = this.b0 * v + this.z1; this.z1 = this.b1 * v - this.a1 * y + this.z2; this.z2 = this.b2 * v - this.a2 * y; return y; }
-  }
-  /* les trois couleurs de bruit */
+function fabriqueCouleurs(){
   class Blanc{ constructor(r){ this.r = r; } x(){ return this.r() * 2 - 1; } }
   class Rose{   /* le filtre de Paul Kellet : −3 dB par octave */
     constructor(r){ this.r = r; this.b0 = this.b1 = this.b2 = this.b3 = this.b4 = this.b5 = this.b6 = 0; }
@@ -1376,334 +1569,43 @@ function fabriqueAmbiances(){
     }
   }
   class Brun{ constructor(r){ this.r = r; this.y = 0; } x(){ this.y = (this.y + 0.02 * (this.r() * 2 - 1)) / 1.02; return this.y * 3.5; } }   /* −6 dB par octave */
-  /* une valeur qui erre au hasard autour de m (Ornstein-Uhlenbeck) : écart type s, mémoire tau secondes */
-  class Errant{
-    constructor(r, m, s, tau, x0){ this.r = r; this.m = m; this.s = s; this.tau = tau; this.v = x0 === undefined ? m + s * gauss(r) : x0; }
-    pas(dt){ this.v += (this.m - this.v) * dt / this.tau + this.s * Math.sqrt(2 * dt / this.tau) * gauss(this.r); return this.v; }
-  }
-  /* une bulle (van den Doel) : un sinus amorti dont la hauteur monte. Rayon en mètres : f = 3,26 / r (Minnaert),
-     amortissement β = 0,13 / r + 0,0072 r^−1,5, montée f(t) = f0 (1 + ξ β t) avec ξ = 0,1 */
-  class Bulle{
-    constructor(rayon, amp, p, sr){
-      this.f0 = 3.26 / rayon; this.be = 0.13 / rayon + 0.0072 * Math.pow(rayon, -1.5); this.amp = amp; this.ph = 0;
-      this.t = 0; this.dt = 1 / sr; this.fin = 6.9 / this.be; [this.gl, this.gr] = pan(p);
-      this.e = 1; this.de = Math.exp(-this.be / sr); this.at = 1; this.dat = Math.exp(-4000 / sr);   /* l'amortissement et une attaque de 0,25 ms */
-    }
-    x(){
-      const f = this.f0 * (1 + 0.1 * this.be * this.t);
-      this.ph += TAU * f * this.dt; this.t += this.dt;
-      const y = this.amp * Math.sin(this.ph) * this.e * (1 - this.at);
-      this.e *= this.de; this.at *= this.dat; return y;
-    }
-  }
-  /* une goutte (Farnell, « pulse rain ») : une impulsion parabolique de quelques dixièmes de milliseconde */
-  class Goutte{
-    constructor(ms, amp, p, sr){ this.n = Math.max(3, Math.round(ms * sr / 1000)); this.i = 0; this.amp = amp; [this.gl, this.gr] = pan(p); }
-    x(){ const v = this.i++ / this.n; return this.amp * (1 - 4 * (v - 0.5) * (v - 0.5)); }
-  }
-  /* un grain : un gain qui frémit très vite (du bruit lissé sur tau secondes, mis au carré), de moyenne 1. Il change
-     un souffle lisse en une matière qui pétille : l'écume, l'eau qui roule, une bûche qui siffle */
-  class Grain{
-    constructor(r, tau, sr){ this.r = r; this.a = 1 - Math.exp(-1 / (tau * sr)); this.y = 0; this.k = Math.sqrt(3 * (2 - this.a) / this.a); }
-    x(m){ this.y += this.a * (this.r() * 2 - 1 - this.y); const u = this.y * this.k; return 1 - m + m * u * u; }
-  }
-  /* un claquement : un choc d'un quart de milliseconde dans une résonance qui s'éteint en quelques millisecondes.
-     amp = à peu près la hauteur de la pointe */
-  class Clic{
-    constructor(r, f, q, amp, p, sr){
-      const w = TAU * f / sr; this.r = r; this.bp = new Bq('bp', f, q, sr); this.k = amp * q / Math.sin(w);
-      this.ne = Math.max(2, Math.round(sr * 0.00025)); this.i = 0; this.n = this.ne + Math.round(Math.min(0.12 * sr, 10 * q / w));
-      [this.gl, this.gr] = pan(p);
-    }
-    x(){ const i = this.i++, e = i === 0 ? 1 : i < this.ne ? (this.r() * 2 - 1) * 0.5 * (1 - i / this.ne) : 0; return this.k * this.bp.x(e); }
-  }
-  /* une bûche qui siffle : un souffle étroit et aigu, qui pétille, monte vite et s'éteint */
-  class Siffle{
-    constructor(r, f, amp, duree, p, sr){ this.r = r; this.bp = new Bq('bp', f, 2.2, sr); this.grain = new Grain(r, 0.002, sr); this.amp = amp; this.i = 0; this.n = Math.round(duree * sr); this.at = Math.round(0.08 * sr); [this.gl, this.gr] = pan(p); }
-    x(){ const i = this.i++, e = i < this.at ? i / this.at : (1 - (i - this.at) / (this.n - this.at)), v = i < this.at ? e : e * e; return this.amp * v * this.bp.x(this.r() * 2 - 1) * this.grain.x(0.85); }
-  }
-  /* un ensemble de voix : on les additionne, on retire celles qui ont fini */
-  function voix(liste, sortie){
-    let l = 0, d = 0;
-    for(let i = liste.length - 1; i >= 0; i--){
-      const v = liste[i], y = v.x();
-      l += y * v.gl; d += y * v.gr;
-      if(v.n !== undefined ? v.i >= v.n : v.t >= v.fin){ liste[i] = liste[liste.length - 1]; liste.pop(); }
-    }
-    sortie[0] = l; sortie[1] = d;
-  }
-
-  /* ---------- les trois couleurs ---------- */
-  class Couleur{
-    constructor(sr, r, type, gain){
-      const G = type === 'blanc' ? Blanc : type === 'rose' ? Rose : Brun;
-      this.l = new G(r); this.d = new G(r); this.g = gain;   /* deux bruits indépendants : un son large, sans centre */
-    }
-    process(L, R, n){ for(let i = 0; i < n; i++){ L[i] = this.l.x() * this.g; R[i] = this.d.x() * this.g; } }
-  }
-
-  /* ---------- la pluie : un fond de gouttes lointaines, les gouttes proches une à une, quelques flaques ---------- */
-  class Pluie{
-    constructor(sr, r){
-      this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.I = new Errant(r, 1, 0.2, 10);                 /* l'averse forcit et faiblit, sans rythme */
-      this.fond = [new Rose(r), new Rose(r)]; this.fhp = [new Bq('hp', 700, 0.7, sr), new Bq('hp', 700, 0.7, sr)]; this.flp = [new Bq('lp', 7000, 0.7, sr), new Bq('lp', 7000, 0.7, sr)];
-      this.dhp = [new Bq('hp', 900, 0.7, sr), new Bq('hp', 900, 0.7, sr)];   /* Farnell : les impulsions passent un passe-haut à 900 Hz */
-      this.gouttes = []; this.bulles = []; this.o = [0, 0]; this.p = [0, 0];
-      this.ag = 1; this.ab = attente(r, 2, sr); this.gFond = 0.2; this.cible = 0.2; this.rg = 110; this.rb = 2;
-    }
-    regler(){
-      const I = borne(this.I.pas(this.dt), 0.45, 1.7);
-      this.cible = 0.16 * Math.pow(I, 0.8); this.rg = 120 * I; this.rb = 2.2 * I;
-    }
-    process(L, R, n){
-      const r = this.r, sr = this.sr;
-      for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-        this.gFond += (this.cible - this.gFond) * 0.0005;
-        if(--this.ag <= 0){   /* une goutte proche : durée 0,15 à 0,6 ms ; beaucoup de petites, quelques grosses (Farnell : amplitude ∝ √(d + 0,1)) */
-          const ms = 0.15 + 0.45 * r() * r(), u = r();
-          this.gouttes.push(new Goutte(ms, 0.75 * Math.sqrt(ms + 0.1) * (0.06 + 0.94 * u * u * u), r() * 2 - 1, sr));
-          this.ag = attente(r, this.rg, sr);
-        }
-        if(--this.ab <= 0){   /* une goutte tombe dans une flaque : une bulle de 1 à 4 mm */
-          this.bulles.push(new Bulle(0.001 * Math.exp(Math.log(4) * r()), 0.05 + 0.18 * r() * r(), r() * 1.6 - 0.8, sr));
-          this.ab = attente(r, this.rb, sr);
-        }
-        voix(this.gouttes, this.o); voix(this.bulles, this.p);
-        L[i] = this.flp[0].x(this.fhp[0].x(this.fond[0].x())) * this.gFond + this.dhp[0].x(this.o[0]) + this.p[0];
-        R[i] = this.flp[1].x(this.fhp[1].x(this.fond[1].x())) * this.gFond + this.dhp[1].x(this.o[1]) + this.p[1];
-      }
-    }
-  }
-
-  /* ---------- les vagues : chaque vague approche (un grave qui enfle), déferle (un choc sourd, l'eau qui roule),
-     puis laisse son écume pétiller pendant que l'eau redescend. Rien d'aigu pendant la montée : un souffle lisse
-     qui monte, c'est du « statique », pas de l'eau ---------- */
-  class Vague{
-    constructor(sr, r, premiere){
-      this.sr = sr; this.r = r; this.t = 0; this.dt = K / sr; this.k = 0;
-      this.tb = (premiere ? 1.6 : 2.6) + 1.8 * r();     /* la montée */
-      this.A = 0.55 + 0.6 * r();                         /* la force */
-      this.td = 1.8 + 1.6 * r();                         /* l'eau qui retombe */
-      this.tf = 2.6 + 2.6 * r();                         /* l'écume */
-      this.fc = 1400 + 1400 * r();                       /* la clarté du déferlement */
-      this.fin = this.tb + 4.2 * Math.max(this.td, this.tf);
-      [this.gl, this.gr] = pan((r() * 2 - 1) * 0.55); this.w = 0.35 + 0.45 * r();
-      this.hn = new Brun(r); this.hlp = new Bq('lp', 150, 0.7, sr);                                   /* la houle */
-      this.nl = new Rose(r); this.nd = new Rose(r);                                                    /* le corps : deux passe-bas en série, un grondement */
-      this.l1 = new Bq('lp', 300, 0.7, sr); this.l2 = new Bq('lp', 300, 0.7, sr); this.d1 = new Bq('lp', 300, 0.7, sr); this.d2 = new Bq('lp', 300, 0.7, sr);
-      this.roule = new Grain(r, 0.007, sr);
-      this.cn = new Brun(r); this.clp = new Bq('lp', 110, 0.8, sr);                                   /* le choc */
-      this.ec = [new Blanc(r), new Blanc(r)]; this.ebp = [new Bq('bp', 2600, 0.8, sr), new Bq('bp', 2600, 0.8, sr)]; this.eg = [new Grain(r, 0.0025, sr), new Grain(r, 0.0025, sr)];   /* l'écume */
-      this.ret = new Brun(r); this.rlp = new Bq('lp', 600, 0.8, sr);                                  /* le ressac */
-      this.bulles = []; this.ab = 1; this.rb = 0; this.o = [0, 0];
-      this.c = new Float64Array(5); this.g = new Float64Array(5);   /* houle, corps, choc, écume, ressac */
-    }
-    regler(){
-      const t = this.t, u = t - this.tb, A = this.A, c = this.c;
-      let fh, fcorps;
-      if(u < 0){
-        const x = t / this.tb;
-        c[0] = A * (0.04 + 0.96 * x * x); c[1] = A * 0.5 * Math.pow(x, 3.2); c[2] = 0; c[3] = 0; c[4] = 0;
-        fh = 120 + 200 * x; fcorps = 260 + 520 * x * x * x;
-      } else {
-        const e = Math.exp(-u / (0.5 * this.td));
-        c[0] = A * Math.exp(-u / (0.7 * this.td));
-        c[1] = A * (0.5 + 0.6 * (1 - Math.exp(-u / 0.08))) * Math.exp(-u / this.td);
-        c[2] = A * 0.7 * (1 - Math.exp(-u / 0.04)) * Math.exp(-u / 0.45);
-        c[3] = A * 0.42 * (1 - Math.exp(-u / 0.35)) * Math.exp(-u / this.tf);
-        const v = (u - 1.15 * this.td) / (0.9 + 0.3 * this.td); c[4] = A * 0.3 * Math.exp(-v * v);
-        fh = 160 + 160 * Math.exp(-u / this.td);
-        fcorps = 450 + 330 * e + (this.fc - 780) * (1 - Math.exp(-u / 0.05)) * e;
-        const fe = 1700 + 1100 * Math.exp(-u / this.tf); this.ebp[0].regler(fe, 0.8); this.ebp[1].regler(fe * 1.07, 0.8);
-        this.rlp.regler(250 + 450 * Math.exp(-Math.max(0, u - this.td) / 1.4), 0.8);
-      }
-      this.hlp.regler(fh, 0.7);
-      this.l1.regler(fcorps, 0.7); this.l2.regler(fcorps, 0.7); const fd = fcorps * (0.92 + 0.16 * this.w); this.d1.regler(fd, 0.7); this.d2.regler(fd, 0.7);
-      this.rb = 900 * c[3] / A;      /* les bulles de l'écume */
-      this.t += this.dt;
-      if(u > 1 && c[0] + c[1] + c[2] + c[3] + c[4] < 3e-4 * A && !this.bulles.length) this.t = this.fin;   /* la vague est finie */
-    }
-    x(sortie){
-      if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-      const g = this.g, c = this.c, r = this.r;
-      for(let j = 0; j < 5; j++) g[j] += (c[j] - g[j]) * 0.02;
-      let l = 0, d = 0;
-      if(g[1] > 1e-4){
-        const ro = Math.min(2.2, this.roule.x(0.4));
-        const a = this.l2.x(this.l1.x(this.nl.x())) * g[1] * ro * 1.9, b = this.d2.x(this.d1.x(this.nd.x())) * g[1] * ro * 1.9;
-        const m = (a + b) * 0.5; l = m + (a - m) * this.w; d = m + (b - m) * this.w;   /* la largeur de la vague */
-      }
-      /* une couche qui se tait ne coûte rien : le choc, l'écume et le ressac ne vivent qu'un moment de la vague */
-      let bas = g[0] > 1e-4 ? this.hlp.x(this.hn.x()) * g[0] * 0.5 : 0, el = 0, ed = 0;
-      if(g[2] > 1e-4) bas += this.clp.x(this.cn.x()) * g[2] * 0.75;
-      if(g[4] > 1e-4) bas += this.rlp.x(this.ret.x()) * g[4] * 0.8;
-      if(g[3] > 1e-4){ el = this.ebp[0].x(this.ec[0].x()) * this.eg[0].x(0.8) * g[3] * 0.3; ed = this.ebp[1].x(this.ec[1].x()) * this.eg[1].x(0.8) * g[3] * 0.3; }
-      if(this.rb > 1 && --this.ab <= 0){ this.bulles.push(new Bulle(0.0005 + 0.0011 * r(), 0.003 + 0.013 * r() * r(), r() * 2 - 1, this.sr)); this.ab = attente(r, this.rb, this.sr); }
-      voix(this.bulles, this.o);
-      sortie[0] = (l + bas) * this.gl * 1.41 + el + this.o[0];
-      sortie[1] = (d + bas) * this.gr * 1.41 + ed + this.o[1];
-    }
-  }
-  class Vagues{
-    constructor(sr, r){
-      this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.vagues = [new Vague(sr, r, true)]; this.prochaine = Math.round((6 + 5 * r()) * sr);
-      this.fond = [new Brun(r), new Brun(r)]; this.flp = [new Bq('lp', 200, 0.7, sr), new Bq('lp', 200, 0.7, sr)];
-      this.loin = [new Rose(r), new Rose(r)]; this.lbp = [new Bq('bp', 480, 0.6, sr), new Bq('bp', 480, 0.6, sr)]; this.llp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];   /* la mer au loin : sourde */
-      this.F = new Errant(r, 1, 0.18, 15); this.gF = 0.13; this.o = [0, 0];
-    }
-    process(L, R, n){
-      const sr = this.sr, r = this.r;
-      for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.gF = 0.13 * borne(this.F.pas(this.dt), 0.6, 1.4); }
-        if(--this.prochaine <= 0){   /* une vague toutes les 6 à 19 s, jamais au même rythme */
-          if(this.vagues.length < 3) this.vagues.push(new Vague(sr, r, false));
-          this.prochaine = Math.round(Math.min(19, 6 + -Math.log(1 - r()) * 4.2) * sr);
-        }
-        let l = this.flp[0].x(this.fond[0].x()) * this.gF + this.llp[0].x(this.lbp[0].x(this.loin[0].x())) * this.gF * 0.25;
-        let d = this.flp[1].x(this.fond[1].x()) * this.gF + this.llp[1].x(this.lbp[1].x(this.loin[1].x())) * this.gF * 0.25;
-        for(let j = this.vagues.length - 1; j >= 0; j--){
-          const v = this.vagues[j]; v.x(this.o); l += this.o[0]; d += this.o[1];
-          if(v.t >= v.fin){ this.vagues.splice(j, 1); }
-        }
-        L[i] = l; R[i] = d;
-      }
-    }
-  }
-
-  /* ---------- le vent (Farnell, « wind ») : une vitesse qui erre, avec rafales et bourrasques ; elle souffle dans
-     des obstacles qui la reçoivent chacun un peu plus tard : le corps du vent, un grondement, deux hurlements
-     d'embrasure, deux sifflements de fils, et le bruissement des feuilles ---------- */
-  class Vent{
-    constructor(sr, r){
-      this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.base = new Errant(r, 0.42, 0.08, 22); this.raf = new Errant(r, 0, 1, 1.6); this.bou = new Errant(r, 0, 1, 0.35);
-      const N = Math.ceil(3 / this.dt); this.hist = new Float32Array(N).fill(0.4); this.h = 0;
-      this.corps = [new Rose(r), new Rose(r)]; this.cbp = [new Bq('bp', 500, 0.8, sr), new Bq('bp', 500, 0.8, sr)];
-      this.gron = new Brun(r); this.glp = new Bq('lp', 120, 0.7, sr);
-      this.hur = [new Blanc(r), new Blanc(r)]; this.hbp = [new Bq('bp', 210, 30, sr), new Bq('bp', 395, 30, sr)];
-      this.sif = [new Blanc(r), new Blanc(r)]; this.sbp = [new Bq('bp', 900, 60, sr), new Bq('bp', 1500, 60, sr)];
-      this.feu = [new Blanc(r), new Blanc(r)]; this.fhp = [new Bq('hp', 700, 0.7, sr), new Bq('hp', 700, 0.7, sr)]; this.flp = [new Bq('lp', 5200, 0.7, sr), new Bq('lp', 5200, 0.7, sr)];
-      this.fris = new Errant(r, 0, 1, 0.025);   /* le froissement des feuilles : un grain rapide */
-      this.c = new Float64Array(8); this.g = new Float64Array(8);   /* corps, grondement, 2 hurlements, 2 sifflements, feuilles, leur grain */
-      this.pan = {h0:pan(-0.7), h1:pan(0.75), s0:pan(-0.3), s1:pan(0.45), f:pan(0.15)};
-    }
-    v(ms){ const n = this.hist.length, k = Math.min(n - 1, Math.round(ms / 1000 / this.dt)); return this.hist[(this.h - k + n * 2) % n]; }
-    regler(){
-      const dt = this.dt, b = borne(this.base.pas(dt), 0.12, 0.9);
-      const raf = this.raf.pas(dt) * 0.18 * ((b + 0.5) * (b + 0.5) - 0.125);
-      const q = (Math.max(b, 0.4) - 0.4) * 8, bou = this.bou.pas(dt) * 0.035 * q * q;
-      const s = borne(b + raf + bou, 0, 1);
-      this.h = (this.h + 1) % this.hist.length; this.hist[this.h] = s;
-      const s0 = s, s1 = this.v(450), s2 = this.v(1100), s3 = this.v(250), s4 = this.v(800), s5 = this.v(150);
-      this.cbp[0].regler(320 + 520 * s0, 0.8); this.cbp[1].regler(340 + 540 * this.v(60), 0.8);
-      this.hbp[0].regler(210 * (0.8 + 0.5 * s1), 30); this.hbp[1].regler(395 * (0.8 + 0.5 * s2), 30);
-      this.sbp[0].regler(700 + 900 * s3, 60); this.sbp[1].regler(1150 + 1200 * s4, 60);
-      const c = this.c;   /* un fond qui ne s'éteint jamais ; les sifflements n'apparaissent qu'avec les rafales */
-      c[0] = 0.55 * (0.3 + 0.7 * Math.pow(s0, 1.2)); c[1] = 0.45 * (0.15 + 0.85 * s0 * s0);
-      c[2] = 16 * Math.pow(Math.max(0, s1 - 0.3), 1.5); c[3] = 11 * Math.pow(Math.max(0, s2 - 0.36), 1.5);
-      c[4] = 24 * Math.pow(Math.max(0, s3 - 0.42), 1.6); c[5] = 17 * Math.pow(Math.max(0, s4 - 0.5), 1.6);
-      c[6] = 0.11 * (0.15 + 0.85 * Math.pow(s5, 1.8)); c[7] = 0.55 + 0.45 * Math.tanh(this.fris.pas(dt));
-    }
-    process(L, R, n){
-      const c = this.c, g = this.g, P = this.pan;
-      for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-        for(let j = 0; j < 8; j++) g[j] += (c[j] - g[j]) * 0.01;
-        const cl = this.cbp[0].x(this.corps[0].x()) * g[0], cd = this.cbp[1].x(this.corps[1].x()) * g[0];
-        const gr = this.glp.x(this.gron.x()) * g[1];
-        const h0 = this.hbp[0].x(this.hur[0].x()) * g[2], h1 = this.hbp[1].x(this.hur[1].x()) * g[3];
-        const s0 = this.sbp[0].x(this.sif[0].x()) * g[4], s1 = this.sbp[1].x(this.sif[1].x()) * g[5];
-        const fe = g[6] * g[7], fl = this.flp[0].x(this.fhp[0].x(this.feu[0].x())) * fe, fd = this.flp[1].x(this.fhp[1].x(this.feu[1].x())) * fe;
-        L[i] = cl + gr + h0 * P.h0[0] + h1 * P.h1[0] + s0 * P.s0[0] + s1 * P.s1[0] + fl * P.f[0];
-        R[i] = cd + gr + h0 * P.h0[1] + h1 * P.h1[1] + s0 * P.s0[1] + s1 * P.s1[1] + fd * P.f[1];
-      }
-    }
-  }
-
-  /* ---------- le feu de foyer : un ronflement grave qui vacille (le « léchement » de Farnell et le souffle des
-     flammes), et par-dessus, des crépitements secs : chacun est un choc bref dans une petite résonance (un claquement,
-     pas un « tchh »), en grappes irrégulières ; de temps en temps une bûche claque ou siffle. Entre les crépitements,
-     aucun aigu : un souffle aigu continu, c'est du « statique », pas un feu ---------- */
-  class Feu{
-    constructor(sr, r){
-      this.sr = sr; this.r = r; this.k = 0; this.dt = K / sr;
-      this.F = new Errant(r, 1, 0.16, 8);                                             /* la flamme s'anime et se calme */
-      this.v1 = new Errant(r, 0, 1, 0.07); this.v2 = new Errant(r, 0, 1, 0.11);     /* le vacillement */
-      this.bas = [new Brun(r), new Brun(r)]; this.blp = [new Bq('lp', 190, 0.7, sr), new Bq('lp', 190, 0.7, sr)];
-      this.mil = [new Rose(r), new Rose(r)]; this.mbp = [new Bq('bp', 430, 0.9, sr), new Bq('bp', 430, 0.9, sr)]; this.mlp = [new Bq('lp', 900, 0.7, sr), new Bq('lp', 900, 0.7, sr)];
-      this.lap = new Bq('bp', 30, 5, sr); this.lhp = new Bq('hp', 25, 0.7, sr); this.llp = new Bq('lp', 320, 0.7, sr);
-      this.clics = []; this.sif = []; this.o = [0, 0]; this.p = [0, 0];
-      this.ac = attente(r, 2, sr); this.reste = 0; this.base = 0.3; this.pg = 0; this.ap = attente(r, 0.11, sr); this.as = attente(r, 0.09, sr);
-      this.cb = 0.1; this.cm = 0.6; this.gb = 0.1; this.gm = 0.6; this.gF = 1;
-    }
-    regler(){
-      const F = this.gF = borne(this.F.pas(this.dt), 0.6, 1.5);
-      this.cb = 0.1 * F * borne(1 + 0.55 * this.v1.pas(this.dt), 0.2, 2.2);
-      this.cm = 0.6 * F * borne(1 + 0.7 * this.v2.pas(this.dt), 0.1, 2.6);
-    }
-    process(L, R, n){
-      const r = this.r, sr = this.sr;
-      for(let i = 0; i < n; i++){
-        if(this.k-- <= 0){ this.k = K - 1; this.regler(); }
-        this.gb += (this.cb - this.gb) * 0.003; this.gm += (this.cm - this.gm) * 0.003;
-        if(--this.ac <= 0){   /* un crépitement ; souvent une grappe de 2 à 6, à quelques centièmes de seconde */
-          this.clics.push(new Clic(r, 900 * Math.pow(6.5, r()), 2.2 + 3.8 * r(), this.base * (0.45 + 0.55 * r()), this.pg + (r() * 2 - 1) * 0.15, sr));
-          if(this.reste > 0){ this.reste--; this.ac = attente(r, 16, sr); }
-          else {
-            this.base = Math.min(0.5, 0.09 * Math.exp(0.85 * gauss(r)));   /* beaucoup de petits, quelques forts */
-            this.reste = r() < 0.5 ? 1 + Math.floor(4 * r() * r()) : 0; this.pg = (r() * 2 - 1) * 0.55;
-            this.ac = attente(r, 1.2 * this.gF, sr);
-          }
-        }
-        if(--this.ap <= 0){   /* une bûche claque : un coup grave et son éclat */
-          const a = 0.22 + 0.28 * r(), p = (r() * 2 - 1) * 0.4;
-          this.clics.push(new Clic(r, 170 + 300 * r(), 4 + 3 * r(), a, p, sr)); this.clics.push(new Clic(r, 1600 + 2200 * r(), 3, a * 0.7, p, sr));
-          this.ap = attente(r, 0.11 * this.gF, sr);
-        }
-        if(--this.as <= 0){ this.sif.push(new Siffle(r, 4200 + 3000 * r(), 0.05 + 0.06 * r(), 0.5 + 1.1 * r(), (r() * 2 - 1) * 0.5, sr)); this.as = attente(r, 0.09, sr); }
-        voix(this.clics, this.o); voix(this.sif, this.p);
-        const la = this.llp.x(this.lhp.x(borne(this.lap.x(r() * 2 - 1) * 100, -0.9, 0.9))) * 0.05 * this.gF;   /* le léchement : bruit à 30 Hz, amplifié, écrêté */
-        L[i] = this.blp[0].x(this.bas[0].x()) * this.gb + this.mlp[0].x(this.mbp[0].x(this.mil[0].x())) * this.gm + la + this.o[0] + this.p[0];
-        R[i] = this.blp[1].x(this.bas[1].x()) * this.gb + this.mlp[1].x(this.mbp[1].x(this.mil[1].x())) * this.gm + la + this.o[1] + this.p[1];
-      }
-    }
-  }
-
-  /* le niveau de chaque son, réglé par outils/test_bruit.js pour qu'ils sonnent aussi fort les uns que les autres
-     (même niveau pondéré A, comme le bruit rose) */
-  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902, pluie:3.02, vagues:1.85, vent:2.95, feu:3.18};
-  const NOMS = ['blanc', 'rose', 'brun', 'vagues', 'pluie', 'vent', 'feu'];
+  /* le niveau de chaque bruit, réglé par outils/test_bruit.js pour qu'ils sonnent aussi fort les uns que les autres
+     (même niveau pondéré A). outils/preparer_sons.py règle les prises de son sur le bruit rose */
+  const NIVEAU = {blanc:0.187, rose:0.675, brun:0.902};
+  const NOMS = ['blanc', 'rose', 'brun'];
   function creer(nom, sr, r){
-    const a = nom === 'pluie' ? new Pluie(sr, r) : nom === 'vagues' ? new Vagues(sr, r) : nom === 'vent' ? new Vent(sr, r) : nom === 'feu' ? new Feu(sr, r) : new Couleur(sr, r, nom, 1);
-    const g = NIVEAU[nom] || 1;
-    /* une saturation douce à la sortie : un déferlement ou un claquement ne dépasse jamais le plein niveau */
-    return {process(L, R, n){ a.process(L, R, n); for(let i = 0; i < n; i++){ L[i] = Math.tanh(L[i] * g); R[i] = Math.tanh(R[i] * g); } }};
+    const G = nom === 'blanc' ? Blanc : nom === 'rose' ? Rose : Brun, l = new G(r), d = new G(r), g = NIVEAU[nom] || 1;   /* deux bruits indépendants : un son large, sans centre */
+    return {process(L, R, n){ for(let i = 0; i < n; i++){ L[i] = Math.tanh(l.x() * g); R[i] = Math.tanh(d.x() * g); } }};
   }
   return {NOMS, NIVEAU, creer};
 }
 /* === moteur : fin === */
 
 const CLE = 'lumiere-bruit';
-const SONS = [['blanc', 'Blanc'], ['rose', 'Rose'], ['brun', 'Brun'], ['vagues', 'Vagues'], ['pluie', 'Pluie'], ['vent', 'Vent'], ['feu', 'Feu de foyer']];
+/* les ambiances d'abord : c'est ce qu'on cherche ; puis les trois bruits */
+const AMBIANCES = [['vagues', 'Vagues'], ['pluie', 'Pluie'], ['vent', 'Vent'], ['feu', 'Feu de camp']];
+const BRUITS = [['blanc', 'Blanc'], ['rose', 'Rose'], ['brun', 'Brun']];
+const SONS = AMBIANCES.concat(BRUITS);
+/* les prises de son : un fichier par ambiance, dans sons/ (changer V_SONS quand un fichier change : le navigateur garde l'ancien) */
+const PRISES = {vagues:'vagues.mp3', pluie:'pluie.mp3', vent:'vent.mp3', feu:'feu.mp3'}, V_SONS = '1';
+const LUMIERE = 'https://zexonis.github.io/Lumiere/';
+const FONDU = 4, BORD = 0.06;   /* le fondu d'un passage dans le suivant (s) ; ce qu'on saute à chaque bout du fichier (le MP3 y ajoute un silence) */
 const etat = {son:'', vol:0.5};
 try{ const s = JSON.parse(localStorage.getItem(CLE)); if(s && typeof s === 'object'){ if(SONS.some(([k]) => k === s.son)) etat.son = s.son; if(typeof s.vol === 'number' && s.vol >= 0 && s.vol <= 1) etat.vol = s.vol; } }catch(e){}
 const garder = () => { try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} };
 
-/* ---------- le branchement : le moteur dans un AudioWorklet (sinon un ScriptProcessor), puis le volume et un limiteur ---------- */
-const WORKLET = 'const A = (' + fabriqueAmbiances.toString() + ')();\n'
+/* ---------- le branchement : la source (une prise de son, ou le moteur des bruits), puis le volume et un limiteur ---------- */
+const WORKLET = 'const A = (' + fabriqueCouleurs.toString() + ')();\n'
   + 'class P extends AudioWorkletProcessor{constructor(o){super();const p=(o&&o.processorOptions)||{};this.a=A.creer(p.nom,sampleRate,Math.random);this.fini=false;this.port.onmessage=e=>{if(e.data==="fin")this.fini=true;};}'
   + 'process(i,o){const s=o[0];if(s&&s[0])this.a.process(s[0],s[1]||s[0],s[0].length);return !this.fini;}}\n'
-  + 'registerProcessor("ambiance-lumiere",P);';
-let ctx = null, maitre = null, analyse = null, courant = null, joue = '', module = null, jeton = 0;
+  + 'registerProcessor("bruit-lumiere",P);';
+let ctx = null, maitre = null, analyse = null, courant = null, joue = '', charge = '', module = null, jeton = 0, tampon = null;
 function contexte(){
   if(ctx) return true;
   const AC = window.AudioContext || window.webkitAudioContext;
   if(!AC) return false;
   ctx = new AC(); maitre = ctx.createGain(); analyse = ctx.createAnalyser(); analyse.fftSize = 2048;
-  /* un limiteur avant la sortie : un claquement de bûche ne doit jamais surprendre dans des écouteurs */
+  /* un limiteur avant la sortie : rien ne doit jamais surprendre dans des écouteurs */
   const limite = ctx.createDynamicsCompressor();
   limite.threshold.value = -8; limite.knee.value = 6; limite.ratio.value = 12; limite.attack.value = 0.003; limite.release.value = 0.2;
   maitre.connect(limite); limite.connect(analyse); limite.connect(ctx.destination);
@@ -1713,33 +1615,81 @@ function contexte(){
   } else module = Promise.resolve(false);
   return true;
 }
-function source(nom){
+/* un bruit : le moteur, branché sur « sortie ». Rend de quoi l'arrêter */
+function bruit(nom, sortie){
   return module.then(ok => {
-    if(ok) return new AudioWorkletNode(ctx, 'ambiance-lumiere', {numberOfInputs:0, numberOfOutputs:1, outputChannelCount:[2], processorOptions:{nom}});
-    const a = fabriqueAmbiances().creer(nom, ctx.sampleRate, Math.random), sp = ctx.createScriptProcessor(2048, 1, 2);
-    sp.onaudioprocess = e => { const b = e.outputBuffer; a.process(b.getChannelData(0), b.getChannelData(1), b.length); };
-    return sp;
+    let n;
+    if(ok) n = new AudioWorkletNode(ctx, 'bruit-lumiere', {numberOfInputs:0, numberOfOutputs:1, outputChannelCount:[2], processorOptions:{nom}});
+    else {
+      const a = fabriqueCouleurs().creer(nom, ctx.sampleRate, Math.random);
+      n = ctx.createScriptProcessor(2048, 1, 2);
+      n.onaudioprocess = e => { const b = e.outputBuffer; a.process(b.getChannelData(0), b.getChannelData(1), b.length); };
+    }
+    return {type:n.port ? 'worklet' : 'script', lancer(){ n.connect(sortie); }, fin(){ try{ n.disconnect(); }catch(e){} if(n.port) n.port.postMessage('fin'); else n.onaudioprocess = null; }};
   });
 }
+/* une prise de son : le fichier, cherché à côté de la page (le site), dans _commun/sons (le dossier de travail), puis sur
+   le site depuis n'importe où. Une seule reste en mémoire à la fois (une minute et demie de son décodé pèse 40 Mo) */
+function charger(nom){
+  if(tampon && tampon.nom === nom) return Promise.resolve(tampon.buf);
+  tampon = null;
+  const f = PRISES[nom] + '?v=' + V_SONS;
+  const ici = /^https?:$/.test(location.protocol) ? ['sons/', '../_commun/sons/', '../../sons/'].map(b => new URL(b, document.baseURI).href) : [];
+  const bases = ici.concat(LUMIERE + 'sons/').filter((b, i, l) => l.indexOf(b) === i);
+  const essai = i => i >= bases.length ? Promise.reject(new Error('son'))
+    : fetch(bases[i] + f).then(r => { if(!r.ok) throw new Error('absent'); return r.arrayBuffer(); })
+        .then(ab => new Promise((ok, ko) => ctx.decodeAudioData(ab, ok, ko)))
+        .then(buf => { if(!buf || buf.duration < 20) throw new Error('court'); return buf; })
+        .catch(() => essai(i + 1));
+  return essai(0).then(buf => { tampon = {nom, buf}; return buf; });
+}
+/* le fondu à puissance égale : la somme des deux passages garde le même niveau */
+const MONTE = new Float32Array(64), DESCEND = new Float32Array(64);
+for(let i = 0; i < 64; i++){ const u = i / 63 * Math.PI / 2; MONTE[i] = Math.sin(u); DESCEND[i] = Math.cos(u); }
+/* la boucle : le premier passage part d'un endroit au hasard ; chaque passage finit en fondu pendant que le suivant
+   commence. Il y a toujours un passage d'avance, posé à l'échantillon près dès que le précédent se tait : aucune
+   minuterie, donc rien ne se décale dans un onglet caché */
+function boucle(buf, sortie){
+  const debut = BORD, fin = buf.duration - BORD, X = Math.min(FONDU, (fin - debut) / 4), passes = new Set();
+  let vivant = true, prochain = 0;
+  const passe = (t, depuis, entree) => {
+    const s = ctx.createBufferSource(), g = ctx.createGain(), duree = fin - depuis;
+    s.buffer = buf; s.connect(g); g.connect(sortie);
+    if(entree) g.gain.setValueCurveAtTime(MONTE, t, X); else g.gain.setValueAtTime(1, t);
+    g.gain.setValueCurveAtTime(DESCEND, t + duree - X, X);
+    s.onended = () => { passes.delete(s); try{ g.disconnect(); }catch(e){} if(vivant) prochain = passe(prochain, debut, true); };
+    s.start(t, depuis, duree); passes.add(s);
+    return t + duree - X;
+  };
+  prochain = passe(ctx.currentTime + 0.05, debut + Math.random() * Math.max(0, fin - debut - 3 * X - 1), false);
+  prochain = passe(prochain, debut, true);
+  return {type:'prise', lancer(){}, fin(){ vivant = false; passes.forEach(s => { try{ s.stop(); }catch(e){} }); passes.clear(); }};
+}
 function arreter(){
-  jeton++;
+  jeton++; charge = '';
   if(!courant) return;
   const c = courant, t = ctx.currentTime;
   courant = null; joue = '';
   c.sortie.gain.cancelScheduledValues(t); c.sortie.gain.setTargetAtTime(0, t, 0.08);
-  setTimeout(() => { if(c.noeud){ try{ c.noeud.disconnect(); }catch(e){} if(c.noeud.port) c.noeud.port.postMessage('fin'); else c.noeud.onaudioprocess = null; } try{ c.sortie.disconnect(); }catch(e){} }, 600);
+  setTimeout(() => { if(c.source) c.source.fin(); try{ c.sortie.disconnect(); }catch(e){} }, 600);
 }
 function jouer(nom){
   if(!contexte()) return false;
   if(ctx.state === 'suspended') ctx.resume();
   arreter();
-  const mien = ++jeton, sortie = ctx.createGain();
+  const mien = ++jeton, sortie = ctx.createGain(), prise = !!PRISES[nom];
   sortie.gain.value = 0; sortie.connect(maitre);
-  courant = {sortie, noeud:null}; joue = nom;
+  if(!prise) tampon = null;   /* un bruit n'a pas besoin de la prise de son gardée en mémoire */
+  courant = {sortie, source:null}; joue = nom; charge = prise && !(tampon && tampon.nom === nom) ? nom : '';
   regler(etat.vol);
-  source(nom).then(n => {
-    if(mien !== jeton || !courant){ try{ n.disconnect(); }catch(e){} if(n.port) n.port.postMessage('fin'); return; }
-    courant.noeud = n; n.connect(sortie); sortie.gain.setTargetAtTime(1, ctx.currentTime, 0.3);
+  (prise ? charger(nom).then(buf => (mien === jeton ? boucle(buf, sortie) : null)) : bruit(nom, sortie)).then(src => {
+    if(mien !== jeton || !courant){ if(src) src.fin(); return; }
+    courant.source = src; src.lancer(); charge = '';
+    sortie.gain.setTargetAtTime(1, ctx.currentTime, prise ? 0.5 : 0.3);
+    dire(''); peindre();
+  }, () => {
+    if(mien !== jeton) return;
+    arreter(); dire('Ce son se télécharge à la première écoute : vérifie ta connexion, puis touche-le encore.'); peindre();
   });
   etat.son = nom; garder();
   return true;
@@ -1761,45 +1711,61 @@ style.textContent = `
 .bruit.joue .bruit-btn path:nth-child(4){animation-delay:-.15s}
 .bruit.joue .bruit-btn path:nth-child(5){animation-delay:-.45s}
 @keyframes bruit-barre{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1)}}
-@media (prefers-reduced-motion:reduce){.bruit.joue .bruit-btn path{animation:none}}
-.bruit-panneau{width:min(280px,calc(100vw - 28px));padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;border-radius:14px;border:1px solid var(--line,#D3DBE0);background:var(--panel,#fff);color:var(--ink,#13202A);box-shadow:0 8px 28px rgba(8,12,16,.2)}
+.bruit-panneau{width:min(290px,calc(100vw - 28px));max-height:calc(100vh - 140px);overflow-y:auto;padding:12px 14px 14px;display:flex;flex-direction:column;gap:9px;border-radius:14px;border:1px solid var(--line,#D3DBE0);background:var(--panel,#fff);color:var(--ink,#13202A);box-shadow:0 8px 28px rgba(8,12,16,.2)}
 .bruit-panneau[hidden]{display:none}
 .bruit-t{margin:0;font:600 12px var(--f-mono,ui-monospace,monospace);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3,#5F717D)}
+.bruit-g{margin:2px 0 -4px;font-size:12.5px;color:var(--ink-3,#5F717D)}
 .bruit-sons{display:flex;flex-wrap:wrap;gap:6px}
 .bruit-son{min-height:38px;padding:5px 12px;border:1px solid var(--line,#D3DBE0);border-radius:999px;background:var(--panel-2,#F3F6F8);color:inherit;font:inherit;cursor:pointer}
 .bruit-son:hover{border-color:var(--accent,#0F6E8C)}
 .bruit-son[aria-pressed="true"]{background:var(--accent,#0F6E8C);border-color:var(--accent,#0F6E8C);color:var(--on-accent,#fff);font-weight:700}
+.bruit-son[aria-busy="true"]{animation:bruit-charge 1s ease-in-out infinite}
+@keyframes bruit-charge{0%,100%{opacity:1}50%{opacity:.55}}
+@media (prefers-reduced-motion:reduce){.bruit.joue .bruit-btn path,.bruit-son[aria-busy="true"]{animation:none}}
 .bruit-vol{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2,#465763)}
 .bruit-vol input{flex:1;min-width:0;height:28px;accent-color:var(--accent,#0F6E8C)}
 .bruit-aide{margin:0;font-size:12.5px;line-height:1.35;color:var(--ink-3,#5F717D)}
+.bruit-aide:empty{display:none}
+.bruit-credits{font-size:12px;line-height:1.4;color:var(--ink-3,#5F717D)}
+.bruit-credits summary{cursor:pointer;min-height:24px}
+.bruit-credits p{margin:4px 0 0}
+.bruit-credits a{color:inherit}
 @media print{.bruit{display:none}}`;
 document.head.appendChild(style);
 
+const AIDE = 'Touche un son pour le lancer, touche-le encore pour l’arrêter.';
+const puces = l => '<div class="bruit-sons">' + l.map(([k, t]) => '<button type="button" class="bruit-son" data-son="' + k + '" aria-pressed="false">' + t + '<\/button>').join('') + '<\/div>';
 const racine = document.createElement('div');
 racine.className = 'bruit';
 racine.innerHTML = '<div class="bruit-panneau" id="bruit-panneau" role="group" aria-label="Bruit de fond" hidden><p class="bruit-t">Bruit de fond<\/p>'
-  + '<div class="bruit-sons">' + SONS.map(([k, t]) => '<button type="button" class="bruit-son" data-son="' + k + '" aria-pressed="false">' + t + '<\/button>').join('') + '<\/div>'
+  + '<p class="bruit-g">Ambiances (de vraies prises de son)<\/p>' + puces(AMBIANCES)
+  + '<p class="bruit-g">Bruits<\/p>' + puces(BRUITS)
   + '<label class="bruit-vol"><span>Volume<\/span><input type="range" min="0" max="100" step="1" id="bruit-vol" aria-label="Volume du bruit de fond"><\/label>'
-  + '<p class="bruit-aide" id="bruit-aide">Touche un son pour le lancer, touche-le encore pour l’arrêter.<\/p><\/div>'
+  + '<p class="bruit-aide" id="bruit-aide" role="status">' + AIDE + '<\/p>'
+  + '<details class="bruit-credits"><summary>D’où viennent les ambiances<\/summary><p>Enregistrées dehors, par des preneurs de son qui les ont placées dans le domaine public (radio aporee, sur l’<a href="https://archive.org/details/radio-aporee-maps" target="_blank" rel="noopener">Internet Archive<\/a>). Les vagues : Félix Blume, Caleta Portales, au Chili. La pluie : David J. Pitt, Malvern Wells, en Angleterre. Le vent dans les pins : Bojan Marušič, Miren, en Slovénie. Le feu de camp : Jeremy Hegge, Royal National Park, en Australie.<\/p><\/details><\/div>'
   + '<button type="button" class="bruit-btn" id="bruit-btn" aria-expanded="false" aria-controls="bruit-panneau" aria-label="Bruit de fond pour se concentrer" title="Bruit de fond">'
   + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 8v8"/><path d="M20 11v2"/><\/svg><\/button>';
 document.body.appendChild(racine);
 const $ = s => racine.querySelector(s), panneau = $('#bruit-panneau'), bouton = $('#bruit-btn'), curseur = $('#bruit-vol');
 curseur.value = Math.round(etat.vol * 100);
+const nomDe = k => SONS.find(([x]) => x === k)[1];
+function dire(t){ $('#bruit-aide').textContent = t || (charge ? nomDe(charge) + ' : chargement…' : AIDE); }
 function peindre(){
-  racine.classList.toggle('joue', !!joue);
-  racine.querySelectorAll('[data-son]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.son === joue)));
-  bouton.setAttribute('aria-label', joue ? 'Bruit de fond : ' + SONS.find(([k]) => k === joue)[1] + ' joue' : 'Bruit de fond pour se concentrer');
+  racine.classList.toggle('joue', !!joue && !charge);
+  racine.querySelectorAll('[data-son]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.son === joue)); if(b.dataset.son === charge) b.setAttribute('aria-busy', 'true'); else b.removeAttribute('aria-busy'); });
+  bouton.setAttribute('aria-label', joue ? 'Bruit de fond : ' + nomDe(joue) + (charge ? ', chargement' : ' joue') : 'Bruit de fond pour se concentrer');
 }
-function ouvrir(v){ panneau.hidden = !v; bouton.setAttribute('aria-expanded', String(v)); if(v){ const b = racine.querySelector('[data-son="' + (joue || etat.son || 'brun') + '"]'); if(b) b.focus({preventScroll:true}); } }
-/* les gestes restent dans le module : la page ne les voit pas (ses raccourcis clavier non plus) */
+function ouvrir(v){ panneau.hidden = !v; bouton.setAttribute('aria-expanded', String(v)); if(v){ const b = racine.querySelector('[data-son="' + (joue || etat.son || 'pluie') + '"]'); if(b) b.focus({preventScroll:true}); } }
+/* les gestes restent dans le module : la page ne les voit pas (ses raccourcis clavier non plus). Un bouton qu'une page
+   pose dans ce coin (au-dessus du bouton de bruit) s'écoute lui-même : son clic ne remonte pas plus haut non plus */
 racine.addEventListener('click', e => {
   e.stopPropagation();
-  const b = e.target.closest('button'); if(!b) return;
+  const b = e.target.closest('button'); if(!b || !panneau.contains(b) && b !== bouton) return;
   if(b === bouton){ ouvrir(panneau.hidden); return; }
   const k = b.dataset.son; if(!k) return;
-  if(joue === k) arreter();
-  else if(!jouer(k)) $('#bruit-aide').textContent = 'Ton navigateur ne peut pas fabriquer de son ici.';
+  if(joue === k){ arreter(); dire(''); }
+  else if(jouer(k)) dire('');
+  else dire('Ton navigateur ne peut pas jouer de son ici.');
   peindre();
 });
 racine.addEventListener('keydown', e => { e.stopPropagation(); if(e.key === 'Escape' && !panneau.hidden){ ouvrir(false); bouton.focus({preventScroll:true}); } });
@@ -1807,16 +1773,18 @@ curseur.addEventListener('input', () => { regler(curseur.value / 100); garder();
 document.addEventListener('click', () => { if(!panneau.hidden) ouvrir(false); });
 peindre();
 
-/* pour les tests : ce qui joue, par quel chemin, et le niveau mesuré à la sortie (0 = silence) */
-window.__bruit = {SONS, jouer:k => { const r = jouer(k); peindre(); return r; }, arreter:() => { arreter(); peindre(); },
-  etat:() => ({joue, vol:etat.vol, dernier:etat.son, contexte:ctx ? ctx.state : 'aucun', noeud:courant && courant.noeud ? (courant.noeud.port ? 'worklet' : 'script') : ''}),
+/* pour les tests : ce qui joue, par quel chemin, et le niveau mesuré à la sortie (0 = silence) ; boucle, ctx, tampon :
+   pour répéter la boucle sur un court extrait. racine, bouton, fermer : le coin et son bouton, pour qu'une page y pose
+   le sien (au-dessus) */
+window.__bruit = {SONS, PRISES, racine, bouton, boucle, ctx:() => ctx, tampon:() => tampon && tampon.buf, fermer:() => ouvrir(false), jouer:k => { const r = jouer(k); dire(''); peindre(); return r; }, arreter:() => { arreter(); dire(''); peindre(); },
+  etat:() => ({joue, charge, vol:etat.vol, dernier:etat.son, contexte:ctx ? ctx.state : 'aucun', noeud:courant && courant.source ? courant.source.type : '', duree:tampon ? tampon.buf.duration : 0}),
   niveau(){ if(!analyse) return 0; const d = new Float32Array(analyse.fftSize); analyse.getFloatTimeDomainData(d); let s = 0; for(const x of d) s += x * x; return Math.sqrt(s / d.length); }};
 })();
 
 </script>
 <script>
 (() => {
-  const ICI = '2e8b87b4a4f8';
+  const ICI = 'a52a16f0a6ef';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
