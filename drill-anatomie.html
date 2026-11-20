@@ -1325,7 +1325,7 @@ arrivee();
 <script>
 /* ======================================================================
    Bruit de fond : un petit bouton pour se concentrer pendant l'étude.
-   Quatre ambiances : vagues, pluie, vent, feu. Ce sont de vraies prises de
+   Cinq ambiances : vagues, pluie, pluie et tonnerre, vent, feu. De vraies prises de
    son, du domaine public (radio aporee, sur l'Internet Archive ; qui, où et
    quel passage : sons/sources.json). Un fichier par son, dans sons/, chargé
    au premier clic seulement ; la page le rejoue sans fin, chaque passage
@@ -1375,11 +1375,11 @@ function fabriqueCouleurs(){
 
 const CLE = 'lumiere-bruit';
 /* les ambiances d'abord : c'est ce qu'on cherche ; puis les trois bruits */
-const AMBIANCES = [['vagues', 'Vagues'], ['pluie', 'Pluie'], ['vent', 'Vent'], ['feu', 'Feu de camp']];
+const AMBIANCES = [['vagues', 'Vagues'], ['pluie', 'Pluie'], ['orage', 'Pluie et tonnerre'], ['vent', 'Vent'], ['feu', 'Feu de camp']];
 const BRUITS = [['blanc', 'Blanc'], ['rose', 'Rose'], ['brun', 'Brun']];
 const SONS = AMBIANCES.concat(BRUITS);
 /* les prises de son : un fichier par ambiance, dans sons/ (changer V_SONS quand un fichier change : le navigateur garde l'ancien) */
-const PRISES = {vagues:'vagues.mp3', pluie:'pluie.mp3', vent:'vent.mp3', feu:'feu.mp3'}, V_SONS = '1';
+const PRISES = {vagues:'vagues.mp3', pluie:'pluie.mp3', orage:'orage.mp3', vent:'vent.mp3', feu:'feu.mp3'}, V_SONS = '1';
 const LUMIERE = 'https://zexonis.github.io/Lumiere/';
 const FONDU = 4, BORD = 0.06;   /* le fondu d'un passage dans le suivant (s) ; ce qu'on saute à chaque bout du fichier (le MP3 y ajoute un silence) */
 const etat = {son:'', vol:0.5};
@@ -1421,7 +1421,8 @@ function bruit(nom, sortie){
   });
 }
 /* une prise de son : le fichier, cherché à côté de la page (le site), dans _commun/sons (le dossier de travail), puis sur
-   le site depuis n'importe où. Une seule reste en mémoire à la fois (une minute et demie de son décodé pèse 40 Mo) */
+   le site depuis n'importe où. Une seule reste en mémoire à la fois (une minute et demie de son décodé pèse 40 Mo ;
+   l'orage, le plus long, 2 min 40 s : environ 60 Mo) */
 function charger(nom){
   if(tampon && tampon.nom === nom) return Promise.resolve(tampon.buf);
   tampon = null;
@@ -1534,7 +1535,7 @@ racine.innerHTML = '<div class="bruit-panneau" id="bruit-panneau" role="group" a
   + '<p class="bruit-g">Bruits<\/p>' + puces(BRUITS)
   + '<label class="bruit-vol"><span>Volume<\/span><input type="range" min="0" max="100" step="1" id="bruit-vol" aria-label="Volume du bruit de fond"><\/label>'
   + '<p class="bruit-aide" id="bruit-aide" role="status">' + AIDE + '<\/p>'
-  + '<details class="bruit-credits"><summary>D’où viennent les ambiances<\/summary><p>Enregistrées dehors, par des preneurs de son qui les ont placées dans le domaine public (radio aporee, sur l’<a href="https://archive.org/details/radio-aporee-maps" target="_blank" rel="noopener">Internet Archive<\/a>). Les vagues : Félix Blume, Caleta Portales, au Chili. La pluie : David J. Pitt, Malvern Wells, en Angleterre. Le vent dans les pins : Bojan Marušič, Miren, en Slovénie. Le feu de camp : Jeremy Hegge, Royal National Park, en Australie.<\/p><\/details><\/div>'
+  + '<details class="bruit-credits"><summary>D’où viennent les ambiances<\/summary><p>Enregistrées dehors, par des preneurs de son qui les ont placées dans le domaine public (radio aporee, sur l’<a href="https://archive.org/details/radio-aporee-maps" target="_blank" rel="noopener">Internet Archive<\/a>). Les vagues : Félix Blume, Caleta Portales, au Chili. La pluie : David J. Pitt, Malvern Wells, en Angleterre. La pluie et le tonnerre : Félix Blume, Ban Na Tin, en Thaïlande (le tonnerre y est adouci, pour ne pas te faire sursauter). Le vent dans les pins : Bojan Marušič, Miren, en Slovénie. Le feu de camp : Jeremy Hegge, Royal National Park, en Australie.<\/p><\/details><\/div>'
   + '<button type="button" class="bruit-btn" id="bruit-btn" aria-expanded="false" aria-controls="bruit-panneau" aria-label="Bruit de fond pour se concentrer" title="Bruit de fond">'
   + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 8v8"/><path d="M20 11v2"/><\/svg><\/button>';
 document.body.appendChild(racine);
@@ -1576,7 +1577,7 @@ window.__bruit = {SONS, PRISES, racine, bouton, boucle, ctx:() => ctx, tampon:()
 </script>
 <script>
 (() => {
-  const ICI = '73fbb5f0e4ba';
+  const ICI = '746784e34efa';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
