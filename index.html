@@ -723,6 +723,7 @@ relancer();
    ====================================================================== */
 const Nouveautes = (() => {
   const LISTE = [
+    {d:'2026-11-20', p:['adm-m07'], t:'Exerciseur Bureau, pour lundi : chaque question a maintenant son dessin. Après ta réponse, touche la loupe : tu vois la croix optique finie avec ses trois étapes, l’œil et ses points focaux, les trois Rx simple vision, les bases d’un prisme, le parcours patient… Quand une question te donne une croix, elle est dessinée, comme sur une feuille d’examen. Les questions ont aussi été relues une à une avec les diapos de la prof : quelques énoncés flous ont été réécrits.'},
     {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Tu changes d’appareil ? Dans les quatre exerciseurs (Tests ophtalmiques, Optique, Bureau, Anatomie), un nouveau bouton en bas à droite (un ordinateur et un téléphone) montre un code. Vise-le avec l’appareil photo de ton téléphone : tu y retrouves ta progression et tu continues où tu en étais. Vers un ordinateur, envoie-toi le lien qui est juste dessous.'},
     {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'La jauge de maîtrise des exerciseurs a maintenant des crans à 25, 50 et 75 % : un but à portée de main, et un mot quand tu en franchis un, bon moment pour une pause. Tu peux les enlever dans « Détails et calcul », sous la jauge.'},
     {d:'2026-11-19', p:['to-m56', 'adm-m07', 'opt-ua2', 'anat-m6'], t:'Bruit de fond : les vagues, la pluie, le vent et le feu sont maintenant de vrais sons, enregistrés dehors : l’océan au Chili, une averse en Angleterre, le vent dans une forêt de pins, un feu de camp en Australie. La première fois que tu touches une ambiance, elle met quelques secondes à arriver.'},
@@ -901,7 +902,7 @@ Nouveautes.demarrer();
 </script>
 <script>
 (() => {
-  const ICI = 'a52a16f0a6ef';
+  const ICI = '73fbb5f0e4ba';
   let montre = false;
   const verifier = () => {
     if(montre || location.protocol === 'file:') return;
